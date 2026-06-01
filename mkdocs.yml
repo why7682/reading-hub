@@ -1,0 +1,90 @@
+site_name: Reading Hub
+site_description: 一个集中阅读入口 — 综述（subagent-lab）+ LeetCode 题解（leetcode-daily）
+site_url: https://why7682.github.io/reading-hub/
+
+docs_dir: docs
+site_dir: _site
+
+theme:
+  name: material
+  language: zh
+  palette:
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: deep purple
+      accent: deep purple
+      toggle:
+        icon: material/weather-sunny
+        name: 切换到暗色
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: deep purple
+      accent: deep purple
+      toggle:
+        icon: material/weather-night
+        name: 切换到亮色
+  features:
+    - navigation.instant
+    - navigation.tracking
+    - navigation.tabs
+    - navigation.sections
+    - navigation.top
+    - navigation.indexes
+    - navigation.footer
+    - search.suggest
+    - search.highlight
+    - search.share
+    - content.code.copy
+    - content.code.annotate
+    - toc.follow
+  font: false
+
+plugins:
+  - search:
+      lang:
+        - zh
+        - en
+  - monorepo
+
+# Use monorepo plugin's !include directive to splice in child sites' nav
+nav:
+  - 首页: index.md
+  - 综述 (subagent-lab): '!include ../subagent-lab/mkdocs.yml'
+  - LeetCode 题解 (leetcode-daily): '!include ../leetcode-daily/mkdocs.yml'
+
+markdown_extensions:
+  - pymdownx.arithmatex:
+      generic: true
+  - tables
+  - admonition
+  - pymdownx.details
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
+  - pymdownx.highlight:
+      anchor_linenums: false
+      pygments_lang_class: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.tabbed:
+      alternate_style: true
+  - pymdownx.tasklist:
+      custom_checkbox: true
+  - attr_list
+  - md_in_html
+  - footnotes
+  - def_list
+  - toc:
+      permalink: "#"
+      toc_depth: 4
+
+extra_javascript:
+  - js/mathjax.js
+  # polyfill.io 在 2024-06 被恶意收购，已被大多 CDN 加入 blocklist；MathJax 3 + modern browsers 不需要
+  - https://gcore.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js
+  - https://gcore.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js
+
+extra_css:
+  - css/extra.css
