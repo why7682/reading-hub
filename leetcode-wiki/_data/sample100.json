@@ -1,0 +1,902 @@
+[
+  {
+    "id": 19,
+    "title": "Remove Nth Node From End of List",
+    "slug": "remove-nth-node-from-end-of-list",
+    "difficulty_lvl": 2,
+    "ac_rate": 0.5155176361682848,
+    "total_acs": 4214600,
+    "difficulty": "Medium"
+  },
+  {
+    "id": 37,
+    "title": "Sudoku Solver",
+    "slug": "sudoku-solver",
+    "difficulty_lvl": 3,
+    "ac_rate": 0.6547220549263342,
+    "total_acs": 1040354,
+    "difficulty": "Hard"
+  },
+  {
+    "id": 55,
+    "title": "Jump Game",
+    "slug": "jump-game",
+    "difficulty_lvl": 2,
+    "ac_rate": 0.4086612853821075,
+    "total_acs": 3204618,
+    "difficulty": "Medium"
+  },
+  {
+    "id": 72,
+    "title": "Edit Distance",
+    "slug": "edit-distance",
+    "difficulty_lvl": 2,
+    "ac_rate": 0.6056455867099678,
+    "total_acs": 1461530,
+    "difficulty": "Medium"
+  },
+  {
+    "id": 177,
+    "title": "Nth Highest Salary",
+    "slug": "nth-highest-salary",
+    "difficulty_lvl": 2,
+    "ac_rate": 0.3914756021761448,
+    "total_acs": 672660,
+    "difficulty": "Medium"
+  },
+  {
+    "id": 218,
+    "title": "The Skyline Problem",
+    "slug": "the-skyline-problem",
+    "difficulty_lvl": 3,
+    "ac_rate": 0.45342268561899063,
+    "total_acs": 353730,
+    "difficulty": "Hard"
+  },
+  {
+    "id": 225,
+    "title": "Implement Stack using Queues",
+    "slug": "implement-stack-using-queues",
+    "difficulty_lvl": 1,
+    "ac_rate": 0.6989891275344843,
+    "total_acs": 1160496,
+    "difficulty": "Easy"
+  },
+  {
+    "id": 226,
+    "title": "Invert Binary Tree",
+    "slug": "invert-binary-tree",
+    "difficulty_lvl": 1,
+    "ac_rate": 0.8005642387913644,
+    "total_acs": 3046532,
+    "difficulty": "Easy"
+  },
+  {
+    "id": 234,
+    "title": "Palindrome Linked List",
+    "slug": "palindrome-linked-list",
+    "difficulty_lvl": 1,
+    "ac_rate": 0.5792350270113761,
+    "total_acs": 2912754,
+    "difficulty": "Easy"
+  },
+  {
+    "id": 322,
+    "title": "Coin Change",
+    "slug": "coin-change",
+    "difficulty_lvl": 2,
+    "ac_rate": 0.48382053294320815,
+    "total_acs": 2859330,
+    "difficulty": "Medium"
+  },
+  {
+    "id": 336,
+    "title": "Palindrome Pairs",
+    "slug": "palindrome-pairs",
+    "difficulty_lvl": 3,
+    "ac_rate": 0.37196390968198095,
+    "total_acs": 241996,
+    "difficulty": "Hard"
+  },
+  {
+    "id": 371,
+    "title": "Sum of Two Integers",
+    "slug": "sum-of-two-integers",
+    "difficulty_lvl": 2,
+    "ac_rate": 0.5547648913661986,
+    "total_acs": 705854,
+    "difficulty": "Medium"
+  },
+  {
+    "id": 387,
+    "title": "First Unique Character in a String",
+    "slug": "first-unique-character-in-a-string",
+    "difficulty_lvl": 1,
+    "ac_rate": 0.654583644156126,
+    "total_acs": 2394664,
+    "difficulty": "Easy"
+  },
+  {
+    "id": 458,
+    "title": "Poor Pigs",
+    "slug": "poor-pigs",
+    "difficulty_lvl": 3,
+    "ac_rate": 0.5912015224907383,
+    "total_acs": 133890,
+    "difficulty": "Hard"
+  },
+  {
+    "id": 461,
+    "title": "Hamming Distance",
+    "slug": "hamming-distance",
+    "difficulty_lvl": 1,
+    "ac_rate": 0.7677788597998517,
+    "total_acs": 693021,
+    "difficulty": "Easy"
+  },
+  {
+    "id": 535,
+    "title": "Encode and Decode TinyURL",
+    "slug": "encode-and-decode-tinyurl",
+    "difficulty_lvl": 2,
+    "ac_rate": 0.8663540412898993,
+    "total_acs": 311670,
+    "difficulty": "Medium"
+  },
+  {
+    "id": 559,
+    "title": "Maximum Depth of N-ary Tree",
+    "slug": "maximum-depth-of-n-ary-tree",
+    "difficulty_lvl": 1,
+    "ac_rate": 0.7356472660232972,
+    "total_acs": 357131,
+    "difficulty": "Easy"
+  },
+  {
+    "id": 584,
+    "title": "Find Customer Referee",
+    "slug": "find-customer-referee",
+    "difficulty_lvl": 1,
+    "ac_rate": 0.7283858348993477,
+    "total_acs": 2127540,
+    "difficulty": "Easy"
+  },
+  {
+    "id": 639,
+    "title": "Decode Ways II",
+    "slug": "decode-ways-ii",
+    "difficulty_lvl": 3,
+    "ac_rate": 0.3190716102872535,
+    "total_acs": 89550,
+    "difficulty": "Hard"
+  },
+  {
+    "id": 684,
+    "title": "Redundant Connection",
+    "slug": "redundant-connection",
+    "difficulty_lvl": 2,
+    "ac_rate": 0.6761116384251119,
+    "total_acs": 651775,
+    "difficulty": "Medium"
+  },
+  {
+    "id": 697,
+    "title": "Degree of an Array",
+    "slug": "degree-of-an-array",
+    "difficulty_lvl": 1,
+    "ac_rate": 0.5836754140858902,
+    "total_acs": 280536,
+    "difficulty": "Easy"
+  },
+  {
+    "id": 699,
+    "title": "Falling Squares",
+    "slug": "falling-squares",
+    "difficulty_lvl": 3,
+    "ac_rate": 0.47811006027852837,
+    "total_acs": 36803,
+    "difficulty": "Hard"
+  },
+  {
+    "id": 722,
+    "title": "Remove Comments",
+    "slug": "remove-comments",
+    "difficulty_lvl": 2,
+    "ac_rate": 0.4015472712399205,
+    "total_acs": 85901,
+    "difficulty": "Medium"
+  },
+  {
+    "id": 732,
+    "title": "My Calendar III",
+    "slug": "my-calendar-iii",
+    "difficulty_lvl": 3,
+    "ac_rate": 0.7169863987007714,
+    "total_acs": 113020,
+    "difficulty": "Hard"
+  },
+  {
+    "id": 775,
+    "title": "Global and Local Inversions",
+    "slug": "global-and-local-inversions",
+    "difficulty_lvl": 2,
+    "ac_rate": 0.42827097356633714,
+    "total_acs": 86339,
+    "difficulty": "Medium"
+  },
+  {
+    "id": 825,
+    "title": "Friends Of Appropriate Ages",
+    "slug": "friends-of-appropriate-ages",
+    "difficulty_lvl": 2,
+    "ac_rate": 0.4990631476708704,
+    "total_acs": 130512,
+    "difficulty": "Medium"
+  },
+  {
+    "id": 839,
+    "title": "Similar String Groups",
+    "slug": "similar-string-groups",
+    "difficulty_lvl": 3,
+    "ac_rate": 0.5628041851169717,
+    "total_acs": 143622,
+    "difficulty": "Hard"
+  },
+  {
+    "id": 874,
+    "title": "Walking Robot Simulation",
+    "slug": "walking-robot-simulation",
+    "difficulty_lvl": 2,
+    "ac_rate": 0.6461487214557714,
+    "total_acs": 256050,
+    "difficulty": "Medium"
+  },
+  {
+    "id": 915,
+    "title": "Partition Array into Disjoint Intervals",
+    "slug": "partition-array-into-disjoint-intervals",
+    "difficulty_lvl": 2,
+    "ac_rate": 0.49457587505704986,
+    "total_acs": 98612,
+    "difficulty": "Medium"
+  },
+  {
+    "id": 922,
+    "title": "Sort Array By Parity II",
+    "slug": "sort-array-by-parity-ii",
+    "difficulty_lvl": 1,
+    "ac_rate": 0.7131353482046145,
+    "total_acs": 350255,
+    "difficulty": "Easy"
+  },
+  {
+    "id": 976,
+    "title": "Largest Perimeter Triangle",
+    "slug": "largest-perimeter-triangle",
+    "difficulty_lvl": 1,
+    "ac_rate": 0.6217368687233581,
+    "total_acs": 430273,
+    "difficulty": "Easy"
+  },
+  {
+    "id": 1010,
+    "title": "Pairs of Songs With Total Durations Divisible by 60",
+    "slug": "pairs-of-songs-with-total-durations-divisible-by-60",
+    "difficulty_lvl": 2,
+    "ac_rate": 0.5346329039525886,
+    "total_acs": 327468,
+    "difficulty": "Medium"
+  },
+  {
+    "id": 1072,
+    "title": "Flip Columns For Maximum Number of Equal Rows",
+    "slug": "flip-columns-for-maximum-number-of-equal-rows",
+    "difficulty_lvl": 2,
+    "ac_rate": 0.7854135874155406,
+    "total_acs": 119031,
+    "difficulty": "Medium"
+  },
+  {
+    "id": 1108,
+    "title": "Defanging an IP Address",
+    "slug": "defanging-an-ip-address",
+    "difficulty_lvl": 1,
+    "ac_rate": 0.9002107654948273,
+    "total_acs": 858928,
+    "difficulty": "Easy"
+  },
+  {
+    "id": 1184,
+    "title": "Distance Between Bus Stops",
+    "slug": "distance-between-bus-stops",
+    "difficulty_lvl": 1,
+    "ac_rate": 0.5535391712753245,
+    "total_acs": 79672,
+    "difficulty": "Easy"
+  },
+  {
+    "id": 1206,
+    "title": "Design Skiplist",
+    "slug": "design-skiplist",
+    "difficulty_lvl": 3,
+    "ac_rate": 0.5968866708530257,
+    "total_acs": 36120,
+    "difficulty": "Hard"
+  },
+  {
+    "id": 1380,
+    "title": "Lucky Numbers in a Matrix",
+    "slug": "lucky-numbers-in-a-matrix",
+    "difficulty_lvl": 1,
+    "ac_rate": 0.7996239620626676,
+    "total_acs": 297277,
+    "difficulty": "Easy"
+  },
+  {
+    "id": 1448,
+    "title": "Count Good Nodes in Binary Tree",
+    "slug": "count-good-nodes-in-binary-tree",
+    "difficulty_lvl": 2,
+    "ac_rate": 0.7384570263050368,
+    "total_acs": 883761,
+    "difficulty": "Medium"
+  },
+  {
+    "id": 1477,
+    "title": "Find Two Non-overlapping Sub-arrays Each With Target Sum",
+    "slug": "find-two-non-overlapping-sub-arrays-each-with-target-sum",
+    "difficulty_lvl": 2,
+    "ac_rate": 0.3685842643024689,
+    "total_acs": 55626,
+    "difficulty": "Medium"
+  },
+  {
+    "id": 1487,
+    "title": "Making File Names Unique",
+    "slug": "making-file-names-unique",
+    "difficulty_lvl": 2,
+    "ac_rate": 0.3866813407476058,
+    "total_acs": 40054,
+    "difficulty": "Medium"
+  },
+  {
+    "id": 1595,
+    "title": "Minimum Cost to Connect Two Groups of Points",
+    "slug": "minimum-cost-to-connect-two-groups-of-points",
+    "difficulty_lvl": 3,
+    "ac_rate": 0.5007848661702556,
+    "total_acs": 12442,
+    "difficulty": "Hard"
+  },
+  {
+    "id": 1641,
+    "title": "Count Sorted Vowel Strings",
+    "slug": "count-sorted-vowel-strings",
+    "difficulty_lvl": 2,
+    "ac_rate": 0.7924003707136237,
+    "total_acs": 206910,
+    "difficulty": "Medium"
+  },
+  {
+    "id": 1758,
+    "title": "Minimum Changes To Make Alternating Binary String",
+    "slug": "minimum-changes-to-make-alternating-binary-string",
+    "difficulty_lvl": 1,
+    "ac_rate": 0.6783268579737805,
+    "total_acs": 298552,
+    "difficulty": "Easy"
+  },
+  {
+    "id": 1768,
+    "title": "Merge Strings Alternately",
+    "slug": "merge-strings-alternately",
+    "difficulty_lvl": 1,
+    "ac_rate": 0.8209551472006592,
+    "total_acs": 2068385,
+    "difficulty": "Easy"
+  },
+  {
+    "id": 1888,
+    "title": "Minimum Number of Flips to Make the Binary String Alternating",
+    "slug": "minimum-number-of-flips-to-make-the-binary-string-alternating",
+    "difficulty_lvl": 2,
+    "ac_rate": 0.5352401055408971,
+    "total_acs": 126785,
+    "difficulty": "Medium"
+  },
+  {
+    "id": 1899,
+    "title": "Merge Triplets to Form Target Triplet",
+    "slug": "merge-triplets-to-form-target-triplet",
+    "difficulty_lvl": 2,
+    "ac_rate": 0.690419663030887,
+    "total_acs": 120394,
+    "difficulty": "Medium"
+  },
+  {
+    "id": 1962,
+    "title": "Remove Stones to Minimize the Total",
+    "slug": "remove-stones-to-minimize-the-total",
+    "difficulty_lvl": 2,
+    "ac_rate": 0.6571699699283307,
+    "total_acs": 151663,
+    "difficulty": "Medium"
+  },
+  {
+    "id": 1985,
+    "title": "Find the Kth Largest Integer in the Array",
+    "slug": "find-the-kth-largest-integer-in-the-array",
+    "difficulty_lvl": 2,
+    "ac_rate": 0.4793168740584444,
+    "total_acs": 104041,
+    "difficulty": "Medium"
+  },
+  {
+    "id": 1997,
+    "title": "First Day Where You Have Been in All the Rooms",
+    "slug": "first-day-where-you-have-been-in-all-the-rooms",
+    "difficulty_lvl": 2,
+    "ac_rate": 0.4041761579347001,
+    "total_acs": 15969,
+    "difficulty": "Medium"
+  },
+  {
+    "id": 2100,
+    "title": "Find Good Days to Rob the Bank",
+    "slug": "find-good-days-to-rob-the-bank",
+    "difficulty_lvl": 2,
+    "ac_rate": 0.5165308230972334,
+    "total_acs": 44995,
+    "difficulty": "Medium"
+  },
+  {
+    "id": 2104,
+    "title": "Sum of Subarray Ranges",
+    "slug": "sum-of-subarray-ranges",
+    "difficulty_lvl": 2,
+    "ac_rate": 0.6110156666541003,
+    "total_acs": 226908,
+    "difficulty": "Medium"
+  },
+  {
+    "id": 2121,
+    "title": "Intervals Between Identical Elements",
+    "slug": "intervals-between-identical-elements",
+    "difficulty_lvl": 2,
+    "ac_rate": 0.4800674212902827,
+    "total_acs": 31045,
+    "difficulty": "Medium"
+  },
+  {
+    "id": 2127,
+    "title": "Maximum Employees to Be Invited to a Meeting",
+    "slug": "maximum-employees-to-be-invited-to-a-meeting",
+    "difficulty_lvl": 3,
+    "ac_rate": 0.6179574415011191,
+    "total_acs": 89183,
+    "difficulty": "Hard"
+  },
+  {
+    "id": 2132,
+    "title": "Stamping the Grid",
+    "slug": "stamping-the-grid",
+    "difficulty_lvl": 3,
+    "ac_rate": 0.35300550182824725,
+    "total_acs": 10330,
+    "difficulty": "Hard"
+  },
+  {
+    "id": 2203,
+    "title": "Minimum Weighted Subgraph With the Required Paths",
+    "slug": "minimum-weighted-subgraph-with-the-required-paths",
+    "difficulty_lvl": 3,
+    "ac_rate": 0.42077811189070796,
+    "total_acs": 22669,
+    "difficulty": "Hard"
+  },
+  {
+    "id": 2401,
+    "title": "Longest Nice Subarray",
+    "slug": "longest-nice-subarray",
+    "difficulty_lvl": 2,
+    "ac_rate": 0.6479202339531437,
+    "total_acs": 177466,
+    "difficulty": "Medium"
+  },
+  {
+    "id": 2410,
+    "title": "Maximum Matching of Players With Trainers",
+    "slug": "maximum-matching-of-players-with-trainers",
+    "difficulty_lvl": 2,
+    "ac_rate": 0.752866844007023,
+    "total_acs": 184813,
+    "difficulty": "Medium"
+  },
+  {
+    "id": 2471,
+    "title": "Minimum Number of Operations to Sort a Binary Tree by Level",
+    "slug": "minimum-number-of-operations-to-sort-a-binary-tree-by-level",
+    "difficulty_lvl": 2,
+    "ac_rate": 0.7423561615535585,
+    "total_acs": 114988,
+    "difficulty": "Medium"
+  },
+  {
+    "id": 2511,
+    "title": "Maximum Enemy Forts That Can Be Captured",
+    "slug": "maximum-enemy-forts-that-can-be-captured",
+    "difficulty_lvl": 1,
+    "ac_rate": 0.4138633206996398,
+    "total_acs": 35161,
+    "difficulty": "Easy"
+  },
+  {
+    "id": 2513,
+    "title": "Minimize the Maximum of Two Arrays",
+    "slug": "minimize-the-maximum-of-two-arrays",
+    "difficulty_lvl": 2,
+    "ac_rate": 0.32297582192171087,
+    "total_acs": 17005,
+    "difficulty": "Medium"
+  },
+  {
+    "id": 2629,
+    "title": "Function Composition",
+    "slug": "function-composition",
+    "difficulty_lvl": 1,
+    "ac_rate": 0.8684478398203436,
+    "total_acs": 248271,
+    "difficulty": "Easy"
+  },
+  {
+    "id": 2650,
+    "title": "Design Cancellable Function",
+    "slug": "design-cancellable-function",
+    "difficulty_lvl": 3,
+    "ac_rate": 0.5727074486399633,
+    "total_acs": 4990,
+    "difficulty": "Hard"
+  },
+  {
+    "id": 2682,
+    "title": "Find the Losers of the Circular Game",
+    "slug": "find-the-losers-of-the-circular-game",
+    "difficulty_lvl": 1,
+    "ac_rate": 0.5006363899334684,
+    "total_acs": 34614,
+    "difficulty": "Easy"
+  },
+  {
+    "id": 2683,
+    "title": "Neighboring Bitwise XOR",
+    "slug": "neighboring-bitwise-xor",
+    "difficulty_lvl": 2,
+    "ac_rate": 0.7980909426699586,
+    "total_acs": 164212,
+    "difficulty": "Medium"
+  },
+  {
+    "id": 2703,
+    "title": "Return Length of Arguments Passed",
+    "slug": "return-length-of-arguments-passed",
+    "difficulty_lvl": 1,
+    "ac_rate": 0.9448501511551237,
+    "total_acs": 303792,
+    "difficulty": "Easy"
+  },
+  {
+    "id": 2712,
+    "title": "Minimum Cost to Make All Characters Equal",
+    "slug": "minimum-cost-to-make-all-characters-equal",
+    "difficulty_lvl": 2,
+    "ac_rate": 0.5434485681989449,
+    "total_acs": 23077,
+    "difficulty": "Medium"
+  },
+  {
+    "id": 2713,
+    "title": "Maximum Strictly Increasing Cells in a Matrix",
+    "slug": "maximum-strictly-increasing-cells-in-a-matrix",
+    "difficulty_lvl": 3,
+    "ac_rate": 0.31395436687821093,
+    "total_acs": 16622,
+    "difficulty": "Hard"
+  },
+  {
+    "id": 2733,
+    "title": "Neither Minimum nor Maximum",
+    "slug": "neither-minimum-nor-maximum",
+    "difficulty_lvl": 1,
+    "ac_rate": 0.7639680162681594,
+    "total_acs": 138253,
+    "difficulty": "Easy"
+  },
+  {
+    "id": 2762,
+    "title": "Continuous Subarrays",
+    "slug": "continuous-subarrays",
+    "difficulty_lvl": 2,
+    "ac_rate": 0.57976207192071,
+    "total_acs": 119740,
+    "difficulty": "Medium"
+  },
+  {
+    "id": 2768,
+    "title": "Number of Black Blocks",
+    "slug": "number-of-black-blocks",
+    "difficulty_lvl": 2,
+    "ac_rate": 0.41783903856011845,
+    "total_acs": 22008,
+    "difficulty": "Medium"
+  },
+  {
+    "id": 2839,
+    "title": "Check if Strings Can be Made Equal With Operations I",
+    "slug": "check-if-strings-can-be-made-equal-with-operations-i",
+    "difficulty_lvl": 1,
+    "ac_rate": 0.6189994463108902,
+    "total_acs": 148688,
+    "difficulty": "Easy"
+  },
+  {
+    "id": 2858,
+    "title": "Minimum Edge Reversals So Every Node Is Reachable",
+    "slug": "minimum-edge-reversals-so-every-node-is-reachable",
+    "difficulty_lvl": 3,
+    "ac_rate": 0.5948631089314155,
+    "total_acs": 23531,
+    "difficulty": "Hard"
+  },
+  {
+    "id": 2933,
+    "title": "High-Access Employees",
+    "slug": "high-access-employees",
+    "difficulty_lvl": 2,
+    "ac_rate": 0.4746907114344761,
+    "total_acs": 33535,
+    "difficulty": "Medium"
+  },
+  {
+    "id": 3079,
+    "title": "Find the Sum of Encrypted Integers",
+    "slug": "find-the-sum-of-encrypted-integers",
+    "difficulty_lvl": 1,
+    "ac_rate": 0.7491870159049252,
+    "total_acs": 63355,
+    "difficulty": "Easy"
+  },
+  {
+    "id": 3086,
+    "title": "Minimum Moves to Pick K Ones",
+    "slug": "minimum-moves-to-pick-k-ones",
+    "difficulty_lvl": 3,
+    "ac_rate": 0.21478664559462662,
+    "total_acs": 4349,
+    "difficulty": "Hard"
+  },
+  {
+    "id": 3133,
+    "title": "Minimum Array End",
+    "slug": "minimum-array-end",
+    "difficulty_lvl": 2,
+    "ac_rate": 0.5543910625720154,
+    "total_acs": 110662,
+    "difficulty": "Medium"
+  },
+  {
+    "id": 3147,
+    "title": "Taking Maximum Energy From the Mystic Dungeon",
+    "slug": "taking-maximum-energy-from-the-mystic-dungeon",
+    "difficulty_lvl": 2,
+    "ac_rate": 0.6102220742864946,
+    "total_acs": 142997,
+    "difficulty": "Medium"
+  },
+  {
+    "id": 3153,
+    "title": "Sum of Digit Differences of All Pairs",
+    "slug": "sum-of-digit-differences-of-all-pairs",
+    "difficulty_lvl": 2,
+    "ac_rate": 0.430579760659928,
+    "total_acs": 29648,
+    "difficulty": "Medium"
+  },
+  {
+    "id": 3238,
+    "title": "Find the Number of Winning Players",
+    "slug": "find-the-number-of-winning-players",
+    "difficulty_lvl": 1,
+    "ac_rate": 0.6055146089424055,
+    "total_acs": 48225,
+    "difficulty": "Easy"
+  },
+  {
+    "id": 3261,
+    "title": "Count Substrings That Satisfy K-Constraint II",
+    "slug": "count-substrings-that-satisfy-k-constraint-ii",
+    "difficulty_lvl": 3,
+    "ac_rate": 0.23521589486858574,
+    "total_acs": 6014,
+    "difficulty": "Hard"
+  },
+  {
+    "id": 3314,
+    "title": "Construct the Minimum Bitwise Array I",
+    "slug": "construct-the-minimum-bitwise-array-i",
+    "difficulty_lvl": 1,
+    "ac_rate": 0.8523508658800478,
+    "total_acs": 137468,
+    "difficulty": "Easy"
+  },
+  {
+    "id": 3334,
+    "title": "Find the Maximum Factor Score of Array",
+    "slug": "find-the-maximum-factor-score-of-array",
+    "difficulty_lvl": 2,
+    "ac_rate": 0.4106474820143885,
+    "total_acs": 24259,
+    "difficulty": "Medium"
+  },
+  {
+    "id": 3386,
+    "title": "Button with Longest Push Time",
+    "slug": "button-with-longest-push-time",
+    "difficulty_lvl": 1,
+    "ac_rate": 0.41105379183778523,
+    "total_acs": 36733,
+    "difficulty": "Easy"
+  },
+  {
+    "id": 3407,
+    "title": "Substring Matching Pattern",
+    "slug": "substring-matching-pattern",
+    "difficulty_lvl": 1,
+    "ac_rate": 0.2876538939870041,
+    "total_acs": 39089,
+    "difficulty": "Easy"
+  },
+  {
+    "id": 3414,
+    "title": "Maximum Score of Non-overlapping Intervals",
+    "slug": "maximum-score-of-non-overlapping-intervals",
+    "difficulty_lvl": 3,
+    "ac_rate": 0.3150175287973099,
+    "total_acs": 4403,
+    "difficulty": "Hard"
+  },
+  {
+    "id": 3443,
+    "title": "Maximum Manhattan Distance After K Changes",
+    "slug": "maximum-manhattan-distance-after-k-changes",
+    "difficulty_lvl": 2,
+    "ac_rate": 0.5414081222184184,
+    "total_acs": 101213,
+    "difficulty": "Medium"
+  },
+  {
+    "id": 3447,
+    "title": "Assign Elements to Groups with Constraints",
+    "slug": "assign-elements-to-groups-with-constraints",
+    "difficulty_lvl": 2,
+    "ac_rate": 0.27001845258206203,
+    "total_acs": 20779,
+    "difficulty": "Medium"
+  },
+  {
+    "id": 3468,
+    "title": "Find the Number of Copy Arrays",
+    "slug": "find-the-number-of-copy-arrays",
+    "difficulty_lvl": 2,
+    "ac_rate": 0.47030951806436044,
+    "total_acs": 21440,
+    "difficulty": "Medium"
+  },
+  {
+    "id": 3577,
+    "title": "Count the Number of Computer Unlocking Permutations",
+    "slug": "count-the-number-of-computer-unlocking-permutations",
+    "difficulty_lvl": 2,
+    "ac_rate": 0.5893987736178274,
+    "total_acs": 94582,
+    "difficulty": "Medium"
+  },
+  {
+    "id": 3588,
+    "title": "Find Maximum Area of a Triangle",
+    "slug": "find-maximum-area-of-a-triangle",
+    "difficulty_lvl": 2,
+    "ac_rate": 0.2949077205527104,
+    "total_acs": 12208,
+    "difficulty": "Medium"
+  },
+  {
+    "id": 3599,
+    "title": "Partition Array to Minimize XOR",
+    "slug": "partition-array-to-minimize-xor",
+    "difficulty_lvl": 2,
+    "ac_rate": 0.4138364420577566,
+    "total_acs": 14488,
+    "difficulty": "Medium"
+  },
+  {
+    "id": 3609,
+    "title": "Minimum Moves to Reach Target in Grid",
+    "slug": "minimum-moves-to-reach-target-in-grid",
+    "difficulty_lvl": 3,
+    "ac_rate": 0.1512043201234321,
+    "total_acs": 5292,
+    "difficulty": "Hard"
+  },
+  {
+    "id": 3713,
+    "title": "Longest Balanced Substring I",
+    "slug": "longest-balanced-substring-i",
+    "difficulty_lvl": 2,
+    "ac_rate": 0.6968645223471993,
+    "total_acs": 135929,
+    "difficulty": "Medium"
+  },
+  {
+    "id": 3724,
+    "title": "Minimum Operations to Transform Array",
+    "slug": "minimum-operations-to-transform-array",
+    "difficulty_lvl": 2,
+    "ac_rate": 0.39878777814679506,
+    "total_acs": 14409,
+    "difficulty": "Medium"
+  },
+  {
+    "id": 3740,
+    "title": "Minimum Distance Between Three Equal Elements I",
+    "slug": "minimum-distance-between-three-equal-elements-i",
+    "difficulty_lvl": 1,
+    "ac_rate": 0.7348951974211874,
+    "total_acs": 143855,
+    "difficulty": "Easy"
+  },
+  {
+    "id": 3750,
+    "title": "Minimum Number of Flips to Reverse Binary String",
+    "slug": "minimum-number-of-flips-to-reverse-binary-string",
+    "difficulty_lvl": 1,
+    "ac_rate": 0.7648532652824498,
+    "total_acs": 32969,
+    "difficulty": "Easy"
+  },
+  {
+    "id": 3774,
+    "title": "Absolute Difference Between Maximum and Minimum K Elements",
+    "slug": "absolute-difference-between-maximum-and-minimum-k-elements",
+    "difficulty_lvl": 1,
+    "ac_rate": 0.7558656182073904,
+    "total_acs": 47293,
+    "difficulty": "Easy"
+  },
+  {
+    "id": 3794,
+    "title": "Reverse String Prefix",
+    "slug": "reverse-string-prefix",
+    "difficulty_lvl": 1,
+    "ac_rate": 0.8947162042936967,
+    "total_acs": 63889,
+    "difficulty": "Easy"
+  },
+  {
+    "id": 3796,
+    "title": "Find Maximum Value in a Constrained Sequence",
+    "slug": "find-maximum-value-in-a-constrained-sequence",
+    "difficulty_lvl": 2,
+    "ac_rate": 0.6218930803054848,
+    "total_acs": 13436,
+    "difficulty": "Medium"
+  },
+  {
+    "id": 3885,
+    "title": "Design Event Manager",
+    "slug": "design-event-manager",
+    "difficulty_lvl": 2,
+    "ac_rate": 0.5083274894810659,
+    "total_acs": 28995,
+    "difficulty": "Medium"
+  }
+]

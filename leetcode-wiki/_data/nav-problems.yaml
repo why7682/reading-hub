@@ -1,0 +1,601 @@
+      - "#1. Two Sum": problems/0001_two-sum.md
+      - "#12. Integer to Roman": problems/0012_integer-to-roman.md
+      - "#19. Remove Nth Node From End of List": problems/0019_remove-nth-node-from-end-of-list.md
+      - "#20. Valid Parentheses": problems/0020_valid-parentheses.md
+      - "#36. Valid Sudoku": problems/0036_valid-sudoku.md
+      - "#37. Sudoku Solver": problems/0037_sudoku-solver.md
+      - "#38. Count and Say": problems/0038_count-and-say.md
+      - "#40. Combination Sum II": problems/0040_combination-sum-ii.md
+      - "#55. Jump Game": problems/0055_jump-game.md
+      - "#58. Length of Last Word": problems/0058_length-of-last-word.md
+      - "#60. Permutation Sequence": problems/0060_permutation-sequence.md
+      - "#68. Text Justification": problems/0068_text-justification.md
+      - "#69. Sqrt(x)": problems/0069_sqrtx.md
+      - "#72. Edit Distance": problems/0072_edit-distance.md
+      - "#85. Maximal Rectangle": problems/0085_maximal-rectangle.md
+      - "#87. Scramble String": problems/0087_scramble-string.md
+      - "#92. Reverse Linked List II": problems/0092_reverse-linked-list-ii.md
+      - "#93. Restore IP Addresses": problems/0093_restore-ip-addresses.md
+      - "#103. Binary Tree Zigzag Level Order Traversal": problems/0103_binary-tree-zigzag-level-order-traversal.md
+      - "#110. Balanced Binary Tree": problems/0110_balanced-binary-tree.md
+      - "#113. Path Sum II": problems/0113_path-sum-ii.md
+      - "#116. Populating Next Right Pointers in Each Node": problems/0116_populating-next-right-pointers-in-each-node.md
+      - "#121. Best Time to Buy and Sell Stock": problems/0121_best-time-to-buy-and-sell-stock.md
+      - "#136. Single Number": problems/0136_single-number.md
+      - "#138. Copy List with Random Pointer": problems/0138_copy-list-with-random-pointer.md
+      - "#142. Linked List Cycle II": problems/0142_linked-list-cycle-ii.md
+      - "#149. Max Points on a Line": problems/0149_max-points-on-a-line.md
+      - "#162. Find Peak Element": problems/0162_find-peak-element.md
+      - "#177. Nth Highest Salary": problems/0177_nth-highest-salary.md
+      - "#185. Department Top Three Salaries": problems/0185_department-top-three-salaries.md
+      - "#196. Delete Duplicate Emails": problems/0196_delete-duplicate-emails.md
+      - "#199. Binary Tree Right Side View": problems/0199_binary-tree-right-side-view.md
+      - "#202. Happy Number": problems/0202_happy-number.md
+      - "#211. Design Add and Search Words Data Structure": problems/0211_design-add-and-search-words-data-structure.md
+      - "#213. House Robber II": problems/0213_house-robber-ii.md
+      - "#215. Kth Largest Element in an Array": problems/0215_kth-largest-element-in-an-array.md
+      - "#218. The Skyline Problem": problems/0218_the-skyline-problem.md
+      - "#221. Maximal Square": problems/0221_maximal-square.md
+      - "#225. Implement Stack using Queues": problems/0225_implement-stack-using-queues.md
+      - "#226. Invert Binary Tree": problems/0226_invert-binary-tree.md
+      - "#233. Number of Digit One": problems/0233_number-of-digit-one.md
+      - "#234. Palindrome Linked List": problems/0234_palindrome-linked-list.md
+      - "#237. Delete Node in a Linked List": problems/0237_delete-node-in-a-linked-list.md
+      - "#240. Search a 2D Matrix II": problems/0240_search-a-2d-matrix-ii.md
+      - "#241. Different Ways to Add Parentheses": problems/0241_different-ways-to-add-parentheses.md
+      - "#262. Trips and Users": problems/0262_trips-and-users.md
+      - "#300. Longest Increasing Subsequence": problems/0300_longest-increasing-subsequence.md
+      - "#322. Coin Change": problems/0322_coin-change.md
+      - "#326. Power of Three": problems/0326_power-of-three.md
+      - "#336. Palindrome Pairs": problems/0336_palindrome-pairs.md
+      - "#337. House Robber III": problems/0337_house-robber-iii.md
+      - "#342. Power of Four": problems/0342_power-of-four.md
+      - "#344. Reverse String": problems/0344_reverse-string.md
+      - "#349. Intersection of Two Arrays": problems/0349_intersection-of-two-arrays.md
+      - "#371. Sum of Two Integers": problems/0371_sum-of-two-integers.md
+      - "#372. Super Pow": problems/0372_super-pow.md
+      - "#376. Wiggle Subsequence": problems/0376_wiggle-subsequence.md
+      - "#377. Combination Sum IV": problems/0377_combination-sum-iv.md
+      - "#381. Insert Delete GetRandom O(1) - Duplicates allowed": problems/0381_insert-delete-getrandom-o1-duplicates-allowed.md
+      - "#387. First Unique Character in a String": problems/0387_first-unique-character-in-a-string.md
+      - "#389. Find the Difference": problems/0389_find-the-difference.md
+      - "#398. Random Pick Index": problems/0398_random-pick-index.md
+      - "#402. Remove K Digits": problems/0402_remove-k-digits.md
+      - "#440. K-th Smallest in Lexicographical Order": problems/0440_k-th-smallest-in-lexicographical-order.md
+      - "#446. Arithmetic Slices II - Subsequence": problems/0446_arithmetic-slices-ii-subsequence.md
+      - "#451. Sort Characters By Frequency": problems/0451_sort-characters-by-frequency.md
+      - "#455. Assign Cookies": problems/0455_assign-cookies.md
+      - "#458. Poor Pigs": problems/0458_poor-pigs.md
+      - "#461. Hamming Distance": problems/0461_hamming-distance.md
+      - "#468. Validate IP Address": problems/0468_validate-ip-address.md
+      - "#495. Teemo Attacking": problems/0495_teemo-attacking.md
+      - "#496. Next Greater Element I": problems/0496_next-greater-element-i.md
+      - "#498. Diagonal Traverse": problems/0498_diagonal-traverse.md
+      - "#503. Next Greater Element II": problems/0503_next-greater-element-ii.md
+      - "#515. Find Largest Value in Each Tree Row": problems/0515_find-largest-value-in-each-tree-row.md
+      - "#519. Random Flip Matrix": problems/0519_random-flip-matrix.md
+      - "#521. Longest Uncommon Subsequence I": problems/0521_longest-uncommon-subsequence-i.md
+      - "#529. Minesweeper": problems/0529_minesweeper.md
+      - "#535. Encode and Decode TinyURL": problems/0535_encode-and-decode-tinyurl.md
+      - "#538. Convert BST to Greater Tree": problems/0538_convert-bst-to-greater-tree.md
+      - "#540. Single Element in a Sorted Array": problems/0540_single-element-in-a-sorted-array.md
+      - "#541. Reverse String II": problems/0541_reverse-string-ii.md
+      - "#550. Game Play Analysis IV": problems/0550_game-play-analysis-iv.md
+      - "#552. Student Attendance Record II": problems/0552_student-attendance-record-ii.md
+      - "#553. Optimal Division": problems/0553_optimal-division.md
+      - "#554. Brick Wall": problems/0554_brick-wall.md
+      - "#559. Maximum Depth of N-ary Tree": problems/0559_maximum-depth-of-n-ary-tree.md
+      - "#576. Out of Boundary Paths": problems/0576_out-of-boundary-paths.md
+      - "#577. Employee Bonus": problems/0577_employee-bonus.md
+      - "#584. Find Customer Referee": problems/0584_find-customer-referee.md
+      - "#596. Classes With at Least 5 Students": problems/0596_classes-with-at-least-5-students.md
+      - "#602. Friend Requests II: Who Has the Most Friends": problems/0602_friend-requests-ii-who-has-the-most-friends.md
+      - "#605. Can Place Flowers": problems/0605_can-place-flowers.md
+      - "#610. Triangle Judgement": problems/0610_triangle-judgement.md
+      - "#623. Add One Row to Tree": problems/0623_add-one-row-to-tree.md
+      - "#626. Exchange Seats": problems/0626_exchange-seats.md
+      - "#629. K Inverse Pairs Array": problems/0629_k-inverse-pairs-array.md
+      - "#639. Decode Ways II": problems/0639_decode-ways-ii.md
+      - "#646. Maximum Length of Pair Chain": problems/0646_maximum-length-of-pair-chain.md
+      - "#654. Maximum Binary Tree": problems/0654_maximum-binary-tree.md
+      - "#678. Valid Parenthesis String": problems/0678_valid-parenthesis-string.md
+      - "#684. Redundant Connection": problems/0684_redundant-connection.md
+      - "#685. Redundant Connection II": problems/0685_redundant-connection-ii.md
+      - "#690. Employee Importance": problems/0690_employee-importance.md
+      - "#693. Binary Number with Alternating Bits": problems/0693_binary-number-with-alternating-bits.md
+      - "#695. Max Area of Island": problems/0695_max-area-of-island.md
+      - "#697. Degree of an Array": problems/0697_degree-of-an-array.md
+      - "#699. Falling Squares": problems/0699_falling-squares.md
+      - "#705. Design HashSet": problems/0705_design-hashset.md
+      - "#709. To Lower Case": problems/0709_to-lower-case.md
+      - "#718. Maximum Length of Repeated Subarray": problems/0718_maximum-length-of-repeated-subarray.md
+      - "#720. Longest Word in Dictionary": problems/0720_longest-word-in-dictionary.md
+      - "#722. Remove Comments": problems/0722_remove-comments.md
+      - "#731. My Calendar II": problems/0731_my-calendar-ii.md
+      - "#732. My Calendar III": problems/0732_my-calendar-iii.md
+      - "#733. Flood Fill": problems/0733_flood-fill.md
+      - "#740. Delete and Earn": problems/0740_delete-and-earn.md
+      - "#744. Find Smallest Letter Greater Than Target": problems/0744_find-smallest-letter-greater-than-target.md
+      - "#773. Sliding Puzzle": problems/0773_sliding-puzzle.md
+      - "#775. Global and Local Inversions": problems/0775_global-and-local-inversions.md
+      - "#794. Valid Tic-Tac-Toe State": problems/0794_valid-tic-tac-toe-state.md
+      - "#814. Binary Tree Pruning": problems/0814_binary-tree-pruning.md
+      - "#819. Most Common Word": problems/0819_most-common-word.md
+      - "#824. Goat Latin": problems/0824_goat-latin.md
+      - "#825. Friends Of Appropriate Ages": problems/0825_friends-of-appropriate-ages.md
+      - "#829. Consecutive Numbers Sum": problems/0829_consecutive-numbers-sum.md
+      - "#836. Rectangle Overlap": problems/0836_rectangle-overlap.md
+      - "#839. Similar String Groups": problems/0839_similar-string-groups.md
+      - "#848. Shifting Letters": problems/0848_shifting-letters.md
+      - "#858. Mirror Reflection": problems/0858_mirror-reflection.md
+      - "#859. Buddy Strings": problems/0859_buddy-strings.md
+      - "#861. Score After Flipping Matrix": problems/0861_score-after-flipping-matrix.md
+      - "#864. Shortest Path to Get All Keys": problems/0864_shortest-path-to-get-all-keys.md
+      - "#866. Prime Palindrome": problems/0866_prime-palindrome.md
+      - "#868. Binary Gap": problems/0868_binary-gap.md
+      - "#874. Walking Robot Simulation": problems/0874_walking-robot-simulation.md
+      - "#877. Stone Game": problems/0877_stone-game.md
+      - "#883. Projection Area of 3D Shapes": problems/0883_projection-area-of-3d-shapes.md
+      - "#889. Construct Binary Tree from Preorder and Postorder Traversal": problems/0889_construct-binary-tree-from-preorder-and-postorder-traversal.md
+      - "#896. Monotonic Array": problems/0896_monotonic-array.md
+      - "#897. Increasing Order Search Tree": problems/0897_increasing-order-search-tree.md
+      - "#908. Smallest Range I": problems/0908_smallest-range-i.md
+      - "#909. Snakes and Ladders": problems/0909_snakes-and-ladders.md
+      - "#913. Cat and Mouse": problems/0913_cat-and-mouse.md
+      - "#915. Partition Array into Disjoint Intervals": problems/0915_partition-array-into-disjoint-intervals.md
+      - "#922. Sort Array By Parity II": problems/0922_sort-array-by-parity-ii.md
+      - "#931. Minimum Falling Path Sum": problems/0931_minimum-falling-path-sum.md
+      - "#933. Number of Recent Calls": problems/0933_number-of-recent-calls.md
+      - "#942. DI String Match": problems/0942_di-string-match.md
+      - "#944. Delete Columns to Make Sorted": problems/0944_delete-columns-to-make-sorted.md
+      - "#953. Verifying an Alien Dictionary": problems/0953_verifying-an-alien-dictionary.md
+      - "#956. Tallest Billboard": problems/0956_tallest-billboard.md
+      - "#957. Prison Cells After N Days": problems/0957_prison-cells-after-n-days.md
+      - "#958. Check Completeness of a Binary Tree": problems/0958_check-completeness-of-a-binary-tree.md
+      - "#961. N-Repeated Element in Size 2N Array": problems/0961_n-repeated-element-in-size-2n-array.md
+      - "#969. Pancake Sorting": problems/0969_pancake-sorting.md
+      - "#974. Subarray Sums Divisible by K": problems/0974_subarray-sums-divisible-by-k.md
+      - "#976. Largest Perimeter Triangle": problems/0976_largest-perimeter-triangle.md
+      - "#979. Distribute Coins in Binary Tree": problems/0979_distribute-coins-in-binary-tree.md
+      - "#985. Sum of Even Numbers After Queries": problems/0985_sum-of-even-numbers-after-queries.md
+      - "#994. Rotting Oranges": problems/0994_rotting-oranges.md
+      - "#1000. Minimum Cost to Merge Stones": problems/1000_minimum-cost-to-merge-stones.md
+      - "#1010. Pairs of Songs With Total Durations Divisible by 60": problems/1010_pairs-of-songs-with-total-durations-divisible-by-60.md
+      - "#1023. Camelcase Matching": problems/1023_camelcase-matching.md
+      - "#1028. Recover a Tree From Preorder Traversal": problems/1028_recover-a-tree-from-preorder-traversal.md
+      - "#1035. Uncrossed Lines": problems/1035_uncrossed-lines.md
+      - "#1051. Height Checker": problems/1051_height-checker.md
+      - "#1072. Flip Columns For Maximum Number of Equal Rows": problems/1072_flip-columns-for-maximum-number-of-equal-rows.md
+      - "#1079. Letter Tile Possibilities": problems/1079_letter-tile-possibilities.md
+      - "#1089. Duplicate Zeros": problems/1089_duplicate-zeros.md
+      - "#1094. Car Pooling": problems/1094_car-pooling.md
+      - "#1108. Defanging an IP Address": problems/1108_defanging-an-ip-address.md
+      - "#1131. Maximum of Absolute Value Expression": problems/1131_maximum-of-absolute-value-expression.md
+      - "#1137. N-th Tribonacci Number": problems/1137_n-th-tribonacci-number.md
+      - "#1140. Stone Game II": problems/1140_stone-game-ii.md
+      - "#1141. User Activity for the Past 30 Days I": problems/1141_user-activity-for-the-past-30-days-i.md
+      - "#1145. Binary Tree Coloring Game": problems/1145_binary-tree-coloring-game.md
+      - "#1154. Day of the Year": problems/1154_day-of-the-year.md
+      - "#1169. Invalid Transactions": problems/1169_invalid-transactions.md
+      - "#1171. Remove Zero Sum Consecutive Nodes from Linked List": problems/1171_remove-zero-sum-consecutive-nodes-from-linked-list.md
+      - "#1184. Distance Between Bus Stops": problems/1184_distance-between-bus-stops.md
+      - "#1206. Design Skiplist": problems/1206_design-skiplist.md
+      - "#1207. Unique Number of Occurrences": problems/1207_unique-number-of-occurrences.md
+      - "#1208. Get Equal Substrings Within Budget": problems/1208_get-equal-substrings-within-budget.md
+      - "#1223. Dice Roll Simulation": problems/1223_dice-roll-simulation.md
+      - "#1234. Replace the Substring for Balanced String": problems/1234_replace-the-substring-for-balanced-string.md
+      - "#1237. Find Positive Integer Solution for a Given Equation": problems/1237_find-positive-integer-solution-for-a-given-equation.md
+      - "#1238. Circular Permutation in Binary Representation": problems/1238_circular-permutation-in-binary-representation.md
+      - "#1251. Average Selling Price": problems/1251_average-selling-price.md
+      - "#1253. Reconstruct a 2-Row Binary Matrix": problems/1253_reconstruct-a-2-row-binary-matrix.md
+      - "#1277. Count Square Submatrices with All Ones": problems/1277_count-square-submatrices-with-all-ones.md
+      - "#1280. Students and Examinations": problems/1280_students-and-examinations.md
+      - "#1284. Minimum Number of Flips to Convert Binary Matrix to Zero Matrix": problems/1284_minimum-number-of-flips-to-convert-binary-matrix-to-zero-matrix.md
+      - "#1289. Minimum Falling Path Sum II": problems/1289_minimum-falling-path-sum-ii.md
+      - "#1291. Sequential Digits": problems/1291_sequential-digits.md
+      - "#1301. Number of Paths with Max Score": problems/1301_number-of-paths-with-max-score.md
+      - "#1302. Deepest Leaves Sum": problems/1302_deepest-leaves-sum.md
+      - "#1319. Number of Operations to Make Network Connected": problems/1319_number-of-operations-to-make-network-connected.md
+      - "#1321. Restaurant Growth": problems/1321_restaurant-growth.md
+      - "#1324. Print Words Vertically": problems/1324_print-words-vertically.md
+      - "#1329. Sort the Matrix Diagonally": problems/1329_sort-the-matrix-diagonally.md
+      - "#1332. Remove Palindromic Subsequences": problems/1332_remove-palindromic-subsequences.md
+      - "#1337. The K Weakest Rows in a Matrix": problems/1337_the-k-weakest-rows-in-a-matrix.md
+      - "#1339. Maximum Product of Splitted Binary Tree": problems/1339_maximum-product-of-splitted-binary-tree.md
+      - "#1345. Jump Game IV": problems/1345_jump-game-iv.md
+      - "#1346. Check If N and Its Double Exist": problems/1346_check-if-n-and-its-double-exist.md
+      - "#1348. Tweet Counts Per Frequency": problems/1348_tweet-counts-per-frequency.md
+      - "#1373. Maximum Sum BST in Binary Tree": problems/1373_maximum-sum-bst-in-binary-tree.md
+      - "#1380. Lucky Numbers in a Matrix": problems/1380_lucky-numbers-in-a-matrix.md
+      - "#1393. Capital Gain/Loss": problems/1393_capital-gainloss.md
+      - "#1405. Longest Happy String": problems/1405_longest-happy-string.md
+      - "#1409. Queries on a Permutation With Key": problems/1409_queries-on-a-permutation-with-key.md
+      - "#1415. The k-th Lexicographical String of All Happy Strings of Length n": problems/1415_the-k-th-lexicographical-string-of-all-happy-strings-of-length-n.md
+      - "#1424. Diagonal Traverse II": problems/1424_diagonal-traverse-ii.md
+      - "#1434. Number of Ways to Wear Different Hats to Each Other": problems/1434_number-of-ways-to-wear-different-hats-to-each-other.md
+      - "#1441. Build an Array With Stack Operations": problems/1441_build-an-array-with-stack-operations.md
+      - "#1448. Count Good Nodes in Binary Tree": problems/1448_count-good-nodes-in-binary-tree.md
+      - "#1450. Number of Students Doing Homework at a Given Time": problems/1450_number-of-students-doing-homework-at-a-given-time.md
+      - "#1456. Maximum Number of Vowels in a Substring of Given Length": problems/1456_maximum-number-of-vowels-in-a-substring-of-given-length.md
+      - "#1477. Find Two Non-overlapping Sub-arrays Each With Target Sum": problems/1477_find-two-non-overlapping-sub-arrays-each-with-target-sum.md
+      - "#1482. Minimum Number of Days to Make m Bouquets": problems/1482_minimum-number-of-days-to-make-m-bouquets.md
+      - "#1487. Making File Names Unique": problems/1487_making-file-names-unique.md
+      - "#1488. Avoid Flood in The City": problems/1488_avoid-flood-in-the-city.md
+      - "#1492. The kth Factor of n": problems/1492_the-kth-factor-of-n.md
+      - "#1507. Reformat Date": problems/1507_reformat-date.md
+      - "#1514. Path with Maximum Probability": problems/1514_path-with-maximum-probability.md
+      - "#1523. Count Odd Numbers in an Interval Range": problems/1523_count-odd-numbers-in-an-interval-range.md
+      - "#1527. Patients With a Condition": problems/1527_patients-with-a-condition.md
+      - "#1530. Number of Good Leaf Nodes Pairs": problems/1530_number-of-good-leaf-nodes-pairs.md
+      - "#1534. Count Good Triplets": problems/1534_count-good-triplets.md
+      - "#1541. Minimum Insertions to Balance a Parentheses String": problems/1541_minimum-insertions-to-balance-a-parentheses-string.md
+      - "#1553. Minimum Number of Days to Eat N Oranges": problems/1553_minimum-number-of-days-to-eat-n-oranges.md
+      - "#1556. Thousand Separator": problems/1556_thousand-separator.md
+      - "#1557. Minimum Number of Vertices to Reach All Nodes": problems/1557_minimum-number-of-vertices-to-reach-all-nodes.md
+      - "#1563. Stone Game V": problems/1563_stone-game-v.md
+      - "#1589. Maximum Sum Obtained of Any Permutation": problems/1589_maximum-sum-obtained-of-any-permutation.md
+      - "#1594. Maximum Non Negative Product in a Matrix": problems/1594_maximum-non-negative-product-in-a-matrix.md
+      - "#1595. Minimum Cost to Connect Two Groups of Points": problems/1595_minimum-cost-to-connect-two-groups-of-points.md
+      - "#1600. Throne Inheritance": problems/1600_throne-inheritance.md
+      - "#1608. Special Array With X Elements Greater Than or Equal X": problems/1608_special-array-with-x-elements-greater-than-or-equal-x.md
+      - "#1622. Fancy Sequence": problems/1622_fancy-sequence.md
+      - "#1626. Best Team With No Conflicts": problems/1626_best-team-with-no-conflicts.md
+      - "#1632. Rank Transform of a Matrix": problems/1632_rank-transform-of-a-matrix.md
+      - "#1633. Percentage of Users Attended a Contest": problems/1633_percentage-of-users-attended-a-contest.md
+      - "#1637. Widest Vertical Area Between Two Points Containing No Points": problems/1637_widest-vertical-area-between-two-points-containing-no-points.md
+      - "#1641. Count Sorted Vowel Strings": problems/1641_count-sorted-vowel-strings.md
+      - "#1649. Create Sorted Array through Instructions": problems/1649_create-sorted-array-through-instructions.md
+      - "#1659. Maximize Grid Happiness": problems/1659_maximize-grid-happiness.md
+      - "#1668. Maximum Repeating Substring": problems/1668_maximum-repeating-substring.md
+      - "#1675. Minimize Deviation in Array": problems/1675_minimize-deviation-in-array.md
+      - "#1688. Count of Matches in Tournament": problems/1688_count-of-matches-in-tournament.md
+      - "#1697. Checking Existence of Edge Length Limited Paths": problems/1697_checking-existence-of-edge-length-limited-paths.md
+      - "#1703. Minimum Adjacent Swaps for K Consecutive Ones": problems/1703_minimum-adjacent-swaps-for-k-consecutive-ones.md
+      - "#1706. Where Will the Ball Fall": problems/1706_where-will-the-ball-fall.md
+      - "#1717. Maximum Score From Removing Substrings": problems/1717_maximum-score-from-removing-substrings.md
+      - "#1718. Construct the Lexicographically Largest Valid Sequence": problems/1718_construct-the-lexicographically-largest-valid-sequence.md
+      - "#1725. Number Of Rectangles That Can Form The Largest Square": problems/1725_number-of-rectangles-that-can-form-the-largest-square.md
+      - "#1735. Count Ways to Make Array With Product": problems/1735_count-ways-to-make-array-with-product.md
+      - "#1739. Building Boxes": problems/1739_building-boxes.md
+      - "#1744. Can You Eat Your Favorite Candy on Your Favorite Day?": problems/1744_can-you-eat-your-favorite-candy-on-your-favorite-day.md
+      - "#1749. Maximum Absolute Sum of Any Subarray": problems/1749_maximum-absolute-sum-of-any-subarray.md
+      - "#1752. Check if Array Is Sorted and Rotated": problems/1752_check-if-array-is-sorted-and-rotated.md
+      - "#1755. Closest Subsequence Sum": problems/1755_closest-subsequence-sum.md
+      - "#1758. Minimum Changes To Make Alternating Binary String": problems/1758_minimum-changes-to-make-alternating-binary-string.md
+      - "#1759. Count Number of Homogenous Substrings": problems/1759_count-number-of-homogenous-substrings.md
+      - "#1768. Merge Strings Alternately": problems/1768_merge-strings-alternately.md
+      - "#1773. Count Items Matching a Rule": problems/1773_count-items-matching-a-rule.md
+      - "#1780. Check if Number is a Sum of Powers of Three": problems/1780_check-if-number-is-a-sum-of-powers-of-three.md
+      - "#1782. Count Pairs Of Nodes": problems/1782_count-pairs-of-nodes.md
+      - "#1796. Second Largest Digit in a String": problems/1796_second-largest-digit-in-a-string.md
+      - "#1800. Maximum Ascending Subarray Sum": problems/1800_maximum-ascending-subarray-sum.md
+      - "#1808. Maximize Number of Nice Divisors": problems/1808_maximize-number-of-nice-divisors.md
+      - "#1816. Truncate Sentence": problems/1816_truncate-sentence.md
+      - "#1837. Sum of Digits in Base K": problems/1837_sum-of-digits-in-base-k.md
+      - "#1839. Longest Substring Of All Vowels in Order": problems/1839_longest-substring-of-all-vowels-in-order.md
+      - "#1845. Seat Reservation Manager": problems/1845_seat-reservation-manager.md
+      - "#1846. Maximum Element After Decreasing and Rearranging": problems/1846_maximum-element-after-decreasing-and-rearranging.md
+      - "#1848. Minimum Distance to the Target Element": problems/1848_minimum-distance-to-the-target-element.md
+      - "#1866. Number of Ways to Rearrange Sticks With K Sticks Visible": problems/1866_number-of-ways-to-rearrange-sticks-with-k-sticks-visible.md
+      - "#1869. Longer Contiguous Segments of Ones than Zeros": problems/1869_longer-contiguous-segments-of-ones-than-zeros.md
+      - "#1876. Substrings of Size Three with Distinct Characters": problems/1876_substrings-of-size-three-with-distinct-characters.md
+      - "#1888. Minimum Number of Flips to Make the Binary String Alternating": problems/1888_minimum-number-of-flips-to-make-the-binary-string-alternating.md
+      - "#1898. Maximum Number of Removable Characters": problems/1898_maximum-number-of-removable-characters.md
+      - "#1899. Merge Triplets to Form Target Triplet": problems/1899_merge-triplets-to-form-target-triplet.md
+      - "#1903. Largest Odd Number in String": problems/1903_largest-odd-number-in-string.md
+      - "#1907. Count Salary Categories": problems/1907_count-salary-categories.md
+      - "#1920. Build Array from Permutation": problems/1920_build-array-from-permutation.md
+      - "#1925. Count Square Sum Triples": problems/1925_count-square-sum-triples.md
+      - "#1926. Nearest Exit from Entrance in Maze": problems/1926_nearest-exit-from-entrance-in-maze.md
+      - "#1932. Merge BSTs to Create Single BST": problems/1932_merge-bsts-to-create-single-bst.md
+      - "#1943. Describe the Painting": problems/1943_describe-the-painting.md
+      - "#1945. Sum of Digits of String After Convert": problems/1945_sum-of-digits-of-string-after-convert.md
+      - "#1946. Largest Number After Mutating Substring": problems/1946_largest-number-after-mutating-substring.md
+      - "#1955. Count Number of Special Subsequences": problems/1955_count-number-of-special-subsequences.md
+      - "#1960. Maximum Product of the Length of Two Palindromic Substrings": problems/1960_maximum-product-of-the-length-of-two-palindromic-substrings.md
+      - "#1962. Remove Stones to Minimize the Total": problems/1962_remove-stones-to-minimize-the-total.md
+      - "#1970. Last Day Where You Can Still Cross": problems/1970_last-day-where-you-can-still-cross.md
+      - "#1974. Minimum Time to Type Word Using Special Typewriter": problems/1974_minimum-time-to-type-word-using-special-typewriter.md
+      - "#1978. Employees Whose Manager Left the Company": problems/1978_employees-whose-manager-left-the-company.md
+      - "#1984. Minimum Difference Between Highest and Lowest of K Scores": problems/1984_minimum-difference-between-highest-and-lowest-of-k-scores.md
+      - "#1985. Find the Kth Largest Integer in the Array": problems/1985_find-the-kth-largest-integer-in-the-array.md
+      - "#1997. First Day Where You Have Been in All the Rooms": problems/1997_first-day-where-you-have-been-in-all-the-rooms.md
+      - "#2024. Maximize the Confusion of an Exam": problems/2024_maximize-the-confusion-of-an-exam.md
+      - "#2028. Find Missing Observations": problems/2028_find-missing-observations.md
+      - "#2055. Plates Between Candles": problems/2055_plates-between-candles.md
+      - "#2060. Check if an Original String Exists Given Two Encoded Strings": problems/2060_check-if-an-original-string-exists-given-two-encoded-strings.md
+      - "#2062. Count Vowel Substrings of a String": problems/2062_count-vowel-substrings-of-a-string.md
+      - "#2068. Check Whether Two Strings are Almost Equivalent": problems/2068_check-whether-two-strings-are-almost-equivalent.md
+      - "#2075. Decode the Slanted Ciphertext": problems/2075_decode-the-slanted-ciphertext.md
+      - "#2088. Count Fertile Pyramids in a Land": problems/2088_count-fertile-pyramids-in-a-land.md
+      - "#2089. Find Target Indices After Sorting Array": problems/2089_find-target-indices-after-sorting-array.md
+      - "#2095. Delete the Middle Node of a Linked List": problems/2095_delete-the-middle-node-of-a-linked-list.md
+      - "#2100. Find Good Days to Rob the Bank": problems/2100_find-good-days-to-rob-the-bank.md
+      - "#2103. Rings and Rods": problems/2103_rings-and-rods.md
+      - "#2104. Sum of Subarray Ranges": problems/2104_sum-of-subarray-ranges.md
+      - "#2106. Maximum Fruits Harvested After at Most K Steps": problems/2106_maximum-fruits-harvested-after-at-most-k-steps.md
+      - "#2109. Adding Spaces to a String": problems/2109_adding-spaces-to-a-string.md
+      - "#2120. Execution of All Suffix Instructions Staying in a Grid": problems/2120_execution-of-all-suffix-instructions-staying-in-a-grid.md
+      - "#2121. Intervals Between Identical Elements": problems/2121_intervals-between-identical-elements.md
+      - "#2127. Maximum Employees to Be Invited to a Meeting": problems/2127_maximum-employees-to-be-invited-to-a-meeting.md
+      - "#2132. Stamping the Grid": problems/2132_stamping-the-grid.md
+      - "#2133. Check if Every Row and Column Contains All Numbers": problems/2133_check-if-every-row-and-column-contains-all-numbers.md
+      - "#2138. Divide a String Into Groups of Size k": problems/2138_divide-a-string-into-groups-of-size-k.md
+      - "#2145. Count the Hidden Sequences": problems/2145_count-the-hidden-sequences.md
+      - "#2150. Find All Lonely Numbers in the Array": problems/2150_find-all-lonely-numbers-in-the-array.md
+      - "#2154. Keep Multiplying Found Values by Two": problems/2154_keep-multiplying-found-values-by-two.md
+      - "#2157. Groups of Strings": problems/2157_groups-of-strings.md
+      - "#2162. Minimum Cost to Set Cooking Time": problems/2162_minimum-cost-to-set-cooking-time.md
+      - "#2163. Minimum Difference in Sums After Removal of Elements": problems/2163_minimum-difference-in-sums-after-removal-of-elements.md
+      - "#2177. Find Three Consecutive Integers That Sum to a Given Number": problems/2177_find-three-consecutive-integers-that-sum-to-a-given-number.md
+      - "#2179. Count Good Triplets in an Array": problems/2179_count-good-triplets-in-an-array.md
+      - "#2188. Minimum Time to Finish the Race": problems/2188_minimum-time-to-finish-the-race.md
+      - "#2190. Most Frequent Number Following Key In an Array": problems/2190_most-frequent-number-following-key-in-an-array.md
+      - "#2202. Maximize the Topmost Element After K Moves": problems/2202_maximize-the-topmost-element-after-k-moves.md
+      - "#2203. Minimum Weighted Subgraph With the Required Paths": problems/2203_minimum-weighted-subgraph-with-the-required-paths.md
+      - "#2212. Maximum Points in an Archery Competition": problems/2212_maximum-points-in-an-archery-competition.md
+      - "#2245. Maximum Trailing Zeros in a Cornered Path": problems/2245_maximum-trailing-zeros-in-a-cornered-path.md
+      - "#2250. Count Number of Rectangles Containing Each Point": problems/2250_count-number-of-rectangles-containing-each-point.md
+      - "#2256. Minimum Average Difference": problems/2256_minimum-average-difference.md
+      - "#2257. Count Unguarded Cells in the Grid": problems/2257_count-unguarded-cells-in-the-grid.md
+      - "#2271. Maximum White Tiles Covered by a Carpet": problems/2271_maximum-white-tiles-covered-by-a-carpet.md
+      - "#2287. Rearrange Characters to Make Target String": problems/2287_rearrange-characters-to-make-target-string.md
+      - "#2288. Apply Discount to Prices": problems/2288_apply-discount-to-prices.md
+      - "#2295. Replace Elements in an Array": problems/2295_replace-elements-in-an-array.md
+      - "#2303. Calculate Amount Paid in Taxes": problems/2303_calculate-amount-paid-in-taxes.md
+      - "#2315. Count Asterisks": problems/2315_count-asterisks.md
+      - "#2317. Maximum XOR After Operations": problems/2317_maximum-xor-after-operations.md
+      - "#2318. Number of Distinct Roll Sequences": problems/2318_number-of-distinct-roll-sequences.md
+      - "#2331. Evaluate Boolean Binary Tree": problems/2331_evaluate-boolean-binary-tree.md
+      - "#2333. Minimum Sum of Squared Difference": problems/2333_minimum-sum-of-squared-difference.md
+      - "#2338. Count the Number of Ideal Arrays": problems/2338_count-the-number-of-ideal-arrays.md
+      - "#2341. Maximum Number of Pairs in Array": problems/2341_maximum-number-of-pairs-in-array.md
+      - "#2375. Construct Smallest Number From DI String": problems/2375_construct-smallest-number-from-di-string.md
+      - "#2376. Count Special Integers": problems/2376_count-special-integers.md
+      - "#2381. Shifting Letters II": problems/2381_shifting-letters-ii.md
+      - "#2395. Find Subarrays With Equal Sum": problems/2395_find-subarrays-with-equal-sum.md
+      - "#2401. Longest Nice Subarray": problems/2401_longest-nice-subarray.md
+      - "#2410. Maximum Matching of Players With Trainers": problems/2410_maximum-matching-of-players-with-trainers.md
+      - "#2428. Maximum Sum of an Hourglass": problems/2428_maximum-sum-of-an-hourglass.md
+      - "#2430. Maximum Deletions on a String": problems/2430_maximum-deletions-on-a-string.md
+      - "#2443. Sum of Number and Its Reverse": problems/2443_sum-of-number-and-its-reverse.md
+      - "#2446. Determine if Two Events Have Conflict": problems/2446_determine-if-two-events-have-conflict.md
+      - "#2448. Minimum Cost to Make Array Equal": problems/2448_minimum-cost-to-make-array-equal.md
+      - "#2460. Apply Operations to an Array": problems/2460_apply-operations-to-an-array.md
+      - "#2467. Most Profitable Path in a Tree": problems/2467_most-profitable-path-in-a-tree.md
+      - "#2471. Minimum Number of Operations to Sort a Binary Tree by Level": problems/2471_minimum-number-of-operations-to-sort-a-binary-tree-by-level.md
+      - "#2472. Maximum Number of Non-overlapping Palindrome Substrings": problems/2472_maximum-number-of-non-overlapping-palindrome-substrings.md
+      - "#2484. Count Palindromic Subsequences": problems/2484_count-palindromic-subsequences.md
+      - "#2485. Find the Pivot Integer": problems/2485_find-the-pivot-integer.md
+      - "#2486. Append Characters to String to Make Subsequence": problems/2486_append-characters-to-string-to-make-subsequence.md
+      - "#2492. Minimum Score of a Path Between Two Cities": problems/2492_minimum-score-of-a-path-between-two-cities.md
+      - "#2497. Maximum Star Sum of a Graph": problems/2497_maximum-star-sum-of-a-graph.md
+      - "#2511. Maximum Enemy Forts That Can Be Captured": problems/2511_maximum-enemy-forts-that-can-be-captured.md
+      - "#2512. Reward Top K Students": problems/2512_reward-top-k-students.md
+      - "#2513. Minimize the Maximum of Two Arrays": problems/2513_minimize-the-maximum-of-two-arrays.md
+      - "#2523. Closest Prime Numbers in Range": problems/2523_closest-prime-numbers-in-range.md
+      - "#2525. Categorize Box According to Criteria": problems/2525_categorize-box-according-to-criteria.md
+      - "#2529. Maximum Count of Positive Integer and Negative Integer": problems/2529_maximum-count-of-positive-integer-and-negative-integer.md
+      - "#2537. Count the Number of Good Subarrays": problems/2537_count-the-number-of-good-subarrays.md
+      - "#2542. Maximum Subsequence Score": problems/2542_maximum-subsequence-score.md
+      - "#2559. Count Vowel Strings in Ranges": problems/2559_count-vowel-strings-in-ranges.md
+      - "#2564. Substring XOR Queries": problems/2564_substring-xor-queries.md
+      - "#2576. Find the Maximum Number of Marked Indices": problems/2576_find-the-maximum-number-of-marked-indices.md
+      - "#2589. Minimum Time to Complete All Tasks": problems/2589_minimum-time-to-complete-all-tasks.md
+      - "#2594. Minimum Time to Repair Cars": problems/2594_minimum-time-to-repair-cars.md
+      - "#2603. Collect Coins in a Tree": problems/2603_collect-coins-in-a-tree.md
+      - "#2611. Mice and Cheese": problems/2611_mice-and-cheese.md
+      - "#2619. Array Prototype Last": problems/2619_array-prototype-last.md
+      - "#2629. Function Composition": problems/2629_function-composition.md
+      - "#2648. Generate Fibonacci Sequence": problems/2648_generate-fibonacci-sequence.md
+      - "#2650. Design Cancellable Function": problems/2650_design-cancellable-function.md
+      - "#2665. Counter II": problems/2665_counter-ii.md
+      - "#2682. Find the Losers of the Circular Game": problems/2682_find-the-losers-of-the-circular-game.md
+      - "#2683. Neighboring Bitwise XOR": problems/2683_neighboring-bitwise-xor.md
+      - "#2685. Count the Number of Complete Components": problems/2685_count-the-number-of-complete-components.md
+      - "#2694. Event Emitter": problems/2694_event-emitter.md
+      - "#2703. Return Length of Arguments Passed": problems/2703_return-length-of-arguments-passed.md
+      - "#2707. Extra Characters in a String": problems/2707_extra-characters-in-a-string.md
+      - "#2712. Minimum Cost to Make All Characters Equal": problems/2712_minimum-cost-to-make-all-characters-equal.md
+      - "#2713. Maximum Strictly Increasing Cells in a Matrix": problems/2713_maximum-strictly-increasing-cells-in-a-matrix.md
+      - "#2733. Neither Minimum nor Maximum": problems/2733_neither-minimum-nor-maximum.md
+      - "#2739. Total Distance Traveled": problems/2739_total-distance-traveled.md
+      - "#2747. Count Zero Request Servers": problems/2747_count-zero-request-servers.md
+      - "#2750. Ways to Split Array Into Good Subarrays": problems/2750_ways-to-split-array-into-good-subarrays.md
+      - "#2761. Prime Pairs With Target Sum": problems/2761_prime-pairs-with-target-sum.md
+      - "#2762. Continuous Subarrays": problems/2762_continuous-subarrays.md
+      - "#2768. Number of Black Blocks": problems/2768_number-of-black-blocks.md
+      - "#2769. Find the Maximum Achievable Number": problems/2769_find-the-maximum-achievable-number.md
+      - "#2772. Apply Operations to Make All Array Elements Equal to Zero": problems/2772_apply-operations-to-make-all-array-elements-equal-to-zero.md
+      - "#2801. Count Stepping Numbers in Range": problems/2801_count-stepping-numbers-in-range.md
+      - "#2807. Insert Greatest Common Divisors in Linked List": problems/2807_insert-greatest-common-divisors-in-linked-list.md
+      - "#2808. Minimum Seconds to Equalize a Circular Array": problems/2808_minimum-seconds-to-equalize-a-circular-array.md
+      - "#2809. Minimum Time to Make Array Sum At Most x": problems/2809_minimum-time-to-make-array-sum-at-most-x.md
+      - "#2824. Count Pairs Whose Sum is Less than Target": problems/2824_count-pairs-whose-sum-is-less-than-target.md
+      - "#2831. Find the Longest Equal Subarray": problems/2831_find-the-longest-equal-subarray.md
+      - "#2839. Check if Strings Can be Made Equal With Operations I": problems/2839_check-if-strings-can-be-made-equal-with-operations-i.md
+      - "#2845. Count of Interesting Subarrays": problems/2845_count-of-interesting-subarrays.md
+      - "#2849. Determine if a Cell Is Reachable at a Given Time": problems/2849_determine-if-a-cell-is-reachable-at-a-given-time.md
+      - "#2855. Minimum Right Shifts to Sort the Array": problems/2855_minimum-right-shifts-to-sort-the-array.md
+      - "#2858. Minimum Edge Reversals So Every Node Is Reachable": problems/2858_minimum-edge-reversals-so-every-node-is-reachable.md
+      - "#2864. Maximum Odd Binary Number": problems/2864_maximum-odd-binary-number.md
+      - "#2869. Minimum Operations to Collect Elements": problems/2869_minimum-operations-to-collect-elements.md
+      - "#2870. Minimum Number of Operations to Make Array Empty": problems/2870_minimum-number-of-operations-to-make-array-empty.md
+      - "#2879. Display the First Three Rows": problems/2879_display-the-first-three-rows.md
+      - "#2882. Drop Duplicate Rows": problems/2882_drop-duplicate-rows.md
+      - "#2886. Change Data Type": problems/2886_change-data-type.md
+      - "#2899. Last Visited Integers": problems/2899_last-visited-integers.md
+      - "#2902. Count of Sub-Multisets With Bounded Sum": problems/2902_count-of-sub-multisets-with-bounded-sum.md
+      - "#2903. Find Indices With Index and Value Difference I": problems/2903_find-indices-with-index-and-value-difference-i.md
+      - "#2906. Construct Product Matrix": problems/2906_construct-product-matrix.md
+      - "#2909. Minimum Sum of Mountain Triplets II": problems/2909_minimum-sum-of-mountain-triplets-ii.md
+      - "#2929. Distribute Candies Among Children II": problems/2929_distribute-candies-among-children-ii.md
+      - "#2930. Number of Strings Which Can Be Rearranged to Contain Substring": problems/2930_number-of-strings-which-can-be-rearranged-to-contain-substring.md
+      - "#2932. Maximum Strong Pair XOR I": problems/2932_maximum-strong-pair-xor-i.md
+      - "#2933. High-Access Employees": problems/2933_high-access-employees.md
+      - "#2939. Maximum Xor Product": problems/2939_maximum-xor-product.md
+      - "#2947. Count Beautiful Substrings I": problems/2947_count-beautiful-substrings-i.md
+      - "#2951. Find the Peaks": problems/2951_find-the-peaks.md
+      - "#2952. Minimum Number of Coins to be Added": problems/2952_minimum-number-of-coins-to-be-added.md
+      - "#2967. Minimum Cost to Make Array Equalindromic": problems/2967_minimum-cost-to-make-array-equalindromic.md
+      - "#2970. Count the Number of Incremovable Subarrays I": problems/2970_count-the-number-of-incremovable-subarrays-i.md
+      - "#2983. Palindrome Rearrangement Queries": problems/2983_palindrome-rearrangement-queries.md
+      - "#3012. Minimize Length of Array Using Operations": problems/3012_minimize-length-of-array-using-operations.md
+      - "#3029. Minimum Time to Revert Word to Initial State I": problems/3029_minimum-time-to-revert-word-to-initial-state-i.md
+      - "#3039. Apply Operations to Make String Empty": problems/3039_apply-operations-to-make-string-empty.md
+      - "#3042. Count Prefix and Suffix Pairs I": problems/3042_count-prefix-and-suffix-pairs-i.md
+      - "#3049. Earliest Second to Mark Indices II": problems/3049_earliest-second-to-mark-indices-ii.md
+      - "#3072. Distribute Elements Into Two Arrays II": problems/3072_distribute-elements-into-two-arrays-ii.md
+      - "#3079. Find the Sum of Encrypted Integers": problems/3079_find-the-sum-of-encrypted-integers.md
+      - "#3086. Minimum Moves to Pick K Ones": problems/3086_minimum-moves-to-pick-k-ones.md
+      - "#3095. Shortest Subarray With OR at Least K I": problems/3095_shortest-subarray-with-or-at-least-k-i.md
+      - "#3120. Count the Number of Special Characters I": problems/3120_count-the-number-of-special-characters-i.md
+      - "#3128. Right Triangles": problems/3128_right-triangles.md
+      - "#3129. Find All Possible Stable Binary Arrays I": problems/3129_find-all-possible-stable-binary-arrays-i.md
+      - "#3131. Find the Integer Added to Array I": problems/3131_find-the-integer-added-to-array-i.md
+      - "#3133. Minimum Array End": problems/3133_minimum-array-end.md
+      - "#3134. Find the Median of the Uniqueness Array": problems/3134_find-the-median-of-the-uniqueness-array.md
+      - "#3136. Valid Word": problems/3136_valid-word.md
+      - "#3138. Minimum Length of Anagram Concatenation": problems/3138_minimum-length-of-anagram-concatenation.md
+      - "#3143. Maximum Points Inside the Square": problems/3143_maximum-points-inside-the-square.md
+      - "#3147. Taking Maximum Energy From the Mystic Dungeon": problems/3147_taking-maximum-energy-from-the-mystic-dungeon.md
+      - "#3148. Maximum Difference Score in a Grid": problems/3148_maximum-difference-score-in-a-grid.md
+      - "#3151. Special Array I": problems/3151_special-array-i.md
+      - "#3153. Sum of Digit Differences of All Pairs": problems/3153_sum-of-digit-differences-of-all-pairs.md
+      - "#3186. Maximum Total Damage With Spell Casting": problems/3186_maximum-total-damage-with-spell-casting.md
+      - "#3196. Maximize Total Cost of Alternating Subarrays": problems/3196_maximize-total-cost-of-alternating-subarrays.md
+      - "#3210. Find the Encrypted String": problems/3210_find-the-encrypted-string.md
+      - "#3219. Minimum Cost for Cutting Cake II": problems/3219_minimum-cost-for-cutting-cake-ii.md
+      - "#3226. Number of Bit Changes to Make Two Integers Equal": problems/3226_number-of-bit-changes-to-make-two-integers-equal.md
+      - "#3232. Find if Digit Game Can Be Won": problems/3232_find-if-digit-game-can-be-won.md
+      - "#3233. Find the Count of Numbers Which Are Not Special": problems/3233_find-the-count-of-numbers-which-are-not-special.md
+      - "#3238. Find the Number of Winning Players": problems/3238_find-the-number-of-winning-players.md
+      - "#3240. Minimum Number of Flips to Make Binary Grid Palindromic II": problems/3240_minimum-number-of-flips-to-make-binary-grid-palindromic-ii.md
+      - "#3242. Design Neighbor Sum Service": problems/3242_design-neighbor-sum-service.md
+      - "#3249. Count the Number of Good Nodes": problems/3249_count-the-number-of-good-nodes.md
+      - "#3255. Find the Power of K-Size Subarrays II": problems/3255_find-the-power-of-k-size-subarrays-ii.md
+      - "#3261. Count Substrings That Satisfy K-Constraint II": problems/3261_count-substrings-that-satisfy-k-constraint-ii.md
+      - "#3274. Check if Two Chessboard Squares Have the Same Color": problems/3274_check-if-two-chessboard-squares-have-the-same-color.md
+      - "#3281. Maximize Score of Numbers in Ranges": problems/3281_maximize-score-of-numbers-in-ranges.md
+      - "#3300. Minimum Element After Replacement With Digit Sum": problems/3300_minimum-element-after-replacement-with-digit-sum.md
+      - "#3314. Construct the Minimum Bitwise Array I": problems/3314_construct-the-minimum-bitwise-array-i.md
+      - "#3321. Find X-Sum of All K-Long Subarrays II": problems/3321_find-x-sum-of-all-k-long-subarrays-ii.md
+      - "#3324. Find the Sequence of Strings Appeared on the Screen": problems/3324_find-the-sequence-of-strings-appeared-on-the-screen.md
+      - "#3325. Count Substrings With K-Frequency Characters I": problems/3325_count-substrings-with-k-frequency-characters-i.md
+      - "#3331. Find Subtree Sizes After Changes": problems/3331_find-subtree-sizes-after-changes.md
+      - "#3334. Find the Maximum Factor Score of Array": problems/3334_find-the-maximum-factor-score-of-array.md
+      - "#3341. Find Minimum Time to Reach Last Room I": problems/3341_find-minimum-time-to-reach-last-room-i.md
+      - "#3349. Adjacent Increasing Subarrays Detection I": problems/3349_adjacent-increasing-subarrays-detection-i.md
+      - "#3354. Make Array Elements Equal to Zero": problems/3354_make-array-elements-equal-to-zero.md
+      - "#3364. Minimum Positive Sum Subarray": problems/3364_minimum-positive-sum-subarray.md
+      - "#3366. Minimum Array Sum": problems/3366_minimum-array-sum.md
+      - "#3377. Digit Operations to Make Two Integers Equal": problems/3377_digit-operations-to-make-two-integers-equal.md
+      - "#3379. Transformed Array": problems/3379_transformed-array.md
+      - "#3380. Maximum Area Rectangle With Point Constraints I": problems/3380_maximum-area-rectangle-with-point-constraints-i.md
+      - "#3386. Button with Longest Push Time": problems/3386_button-with-longest-push-time.md
+      - "#3388. Count Beautiful Splits in an Array": problems/3388_count-beautiful-splits-in-an-array.md
+      - "#3392. Count Subarrays of Length Three With a Condition": problems/3392_count-subarrays-of-length-three-with-a-condition.md
+      - "#3403. Find the Lexicographically Largest String From the Box I": problems/3403_find-the-lexicographically-largest-string-from-the-box-i.md
+      - "#3407. Substring Matching Pattern": problems/3407_substring-matching-pattern.md
+      - "#3412. Find Mirror Score of a String": problems/3412_find-mirror-score-of-a-string.md
+      - "#3414. Maximum Score of Non-overlapping Intervals": problems/3414_maximum-score-of-non-overlapping-intervals.md
+      - "#3419. Minimize the Maximum Edge Weight of Graph": problems/3419_minimize-the-maximum-edge-weight-of-graph.md
+      - "#3421. Find Students Who Improved": problems/3421_find-students-who-improved.md
+      - "#3424. Minimum Cost to Make Arrays Identical": problems/3424_minimum-cost-to-make-arrays-identical.md
+      - "#3428. Maximum and Minimum Sums of at Most Size K Subsequences": problems/3428_maximum-and-minimum-sums-of-at-most-size-k-subsequences.md
+      - "#3430. Maximum and Minimum Sums of at Most Size K Subarrays": problems/3430_maximum-and-minimum-sums-of-at-most-size-k-subarrays.md
+      - "#3432. Count Partitions with Even Sum Difference": problems/3432_count-partitions-with-even-sum-difference.md
+      - "#3435. Frequencies of Shortest Supersequences": problems/3435_frequencies-of-shortest-supersequences.md
+      - "#3440. Reschedule Meetings for Maximum Free Time II": problems/3440_reschedule-meetings-for-maximum-free-time-ii.md
+      - "#3443. Maximum Manhattan Distance After K Changes": problems/3443_maximum-manhattan-distance-after-k-changes.md
+      - "#3444. Minimum Increments for Target Multiples in an Array": problems/3444_minimum-increments-for-target-multiples-in-an-array.md
+      - "#3447. Assign Elements to Groups with Constraints": problems/3447_assign-elements-to-groups-with-constraints.md
+      - "#3452. Sum of Good Numbers": problems/3452_sum-of-good-numbers.md
+      - "#3454. Separate Squares II": problems/3454_separate-squares-ii.md
+      - "#3458. Select K Disjoint Special Substrings": problems/3458_select-k-disjoint-special-substrings.md
+      - "#3463. Check If Digits Are Equal in String After Operations II": problems/3463_check-if-digits-are-equal-in-string-after-operations-ii.md
+      - "#3468. Find the Number of Copy Arrays": problems/3468_find-the-number-of-copy-arrays.md
+      - "#3473. Sum of K Subarrays With Length at Least M": problems/3473_sum-of-k-subarrays-with-length-at-least-m.md
+      - "#3475. DNA Pattern Recognition": problems/3475_dna-pattern-recognition.md
+      - "#3488. Closest Equal Element Queries": problems/3488_closest-equal-element-queries.md
+      - "#3490. Count Beautiful Numbers": problems/3490_count-beautiful-numbers.md
+      - "#3498. Reverse Degree of a String": problems/3498_reverse-degree-of-a-string.md
+      - "#3502. Minimum Cost to Reach Every Position": problems/3502_minimum-cost-to-reach-every-position.md
+      - "#3504. Longest Palindrome After Substring Concatenation II": problems/3504_longest-palindrome-after-substring-concatenation-ii.md
+      - "#3505. Minimum Operations to Make Elements Within K Subarrays Equal": problems/3505_minimum-operations-to-make-elements-within-k-subarrays-equal.md
+      - "#3507. Minimum Pair Removal to Sort Array I": problems/3507_minimum-pair-removal-to-sort-array-i.md
+      - "#3519. Count Numbers with Non-Decreasing Digits": problems/3519_count-numbers-with-non-decreasing-digits.md
+      - "#3527. Find the Most Common Response": problems/3527_find-the-most-common-response.md
+      - "#3531. Count Covered Buildings": problems/3531_count-covered-buildings.md
+      - "#3532. Path Existence Queries in a Graph I": problems/3532_path-existence-queries-in-a-graph-i.md
+      - "#3550. Smallest Index With Digit Sum Equal to Index": problems/3550_smallest-index-with-digit-sum-equal-to-index.md
+      - "#3556. Sum of Largest Prime Substrings": problems/3556_sum-of-largest-prime-substrings.md
+      - "#3562. Maximum Profit from Trading Stocks with Discounts": problems/3562_maximum-profit-from-trading-stocks-with-discounts.md
+      - "#3572. Maximize Y-Sum by Picking a Triplet of Distinct X-Values": problems/3572_maximize-ysum-by-picking-a-triplet-of-distinct-xvalues.md
+      - "#3574. Maximize Subarray GCD Score": problems/3574_maximize-subarray-gcd-score.md
+      - "#3577. Count the Number of Computer Unlocking Permutations": problems/3577_count-the-number-of-computer-unlocking-permutations.md
+      - "#3578. Count Partitions With Max-Min Difference at Most K": problems/3578_count-partitions-with-max-min-difference-at-most-k.md
+      - "#3579. Minimum Steps to Convert String with Operations": problems/3579_minimum-steps-to-convert-string-with-operations.md
+      - "#3587. Minimum Adjacent Swaps to Alternate Parity": problems/3587_minimum-adjacent-swaps-to-alternate-parity.md
+      - "#3588. Find Maximum Area of a Triangle": problems/3588_find-maximum-area-of-a-triangle.md
+      - "#3591. Check if Any Element Has Prime Frequency": problems/3591_check-if-any-element-has-prime-frequency.md
+      - "#3599. Partition Array to Minimize XOR": problems/3599_partition-array-to-minimize-xor.md
+      - "#3600. Maximize Spanning Tree Stability with Upgrades": problems/3600_maximize-spanning-tree-stability-with-upgrades.md
+      - "#3602. Hexadecimal and Hexatrigesimal Conversion": problems/3602_hexadecimal-and-hexatrigesimal-conversion.md
+      - "#3606. Coupon Code Validator": problems/3606_coupon-code-validator.md
+      - "#3609. Minimum Moves to Reach Target in Grid": problems/3609_minimum-moves-to-reach-target-in-grid.md
+      - "#3615. Longest Palindromic Path in Graph": problems/3615_longest-palindromic-path-in-graph.md
+      - "#3617. Find Students with Study Spiral Pattern": problems/3617_find-students-with-study-spiral-pattern.md
+      - "#3618. Split Array by Prime Indices": problems/3618_split-array-by-prime-indices.md
+      - "#3622. Check Divisibility by Digit Sum and Product": problems/3622_check-divisibility-by-digit-sum-and-product.md
+      - "#3623. Count Number of Trapezoids I": problems/3623_count-number-of-trapezoids-i.md
+      - "#3625. Count Number of Trapezoids II": problems/3625_count-number-of-trapezoids-ii.md
+      - "#3628. Maximum Number of Subsequences After One Inserting": problems/3628_maximum-number-of-subsequences-after-one-inserting.md
+      - "#3638. Maximum Balanced Shipments": problems/3638_maximum-balanced-shipments.md
+      - "#3661. Maximum Walls Destroyed by Robots": problems/3661_maximum-walls-destroyed-by-robots.md
+      - "#3668. Restore Finishing Order": problems/3668_restore-finishing-order.md
+      - "#3669. Balanced K-Factor Decomposition": problems/3669_balanced-k-factor-decomposition.md
+      - "#3676. Count Bowl Subarrays": problems/3676_count-bowl-subarrays.md
+      - "#3683. Earliest Time to Finish One Task": problems/3683_earliest-time-to-finish-one-task.md
+      - "#3685. Subsequence Sum After Capping Elements": problems/3685_subsequence-sum-after-capping-elements.md
+      - "#3697. Compute Decimal Representation": problems/3697_compute-decimal-representation.md
+      - "#3701. Compute Alternating Sum": problems/3701_compute-alternating-sum.md
+      - "#3703. Remove K-Balanced Substrings": problems/3703_remove-k-balanced-substrings.md
+      - "#3704. Count No-Zero Pairs That Sum to N": problems/3704_count-no-zero-pairs-that-sum-to-n.md
+      - "#3713. Longest Balanced Substring I": problems/3713_longest-balanced-substring-i.md
+      - "#3714. Longest Balanced Substring II": problems/3714_longest-balanced-substring-ii.md
+      - "#3724. Minimum Operations to Transform Array": problems/3724_minimum-operations-to-transform-array.md
+      - "#3733. Minimum Time to Complete All Deliveries": problems/3733_minimum-time-to-complete-all-deliveries.md
+      - "#3737. Count Subarrays With Majority Element I": problems/3737_count-subarrays-with-majority-element-i.md
+      - "#3739. Count Subarrays With Majority Element II": problems/3739_count-subarrays-with-majority-element-ii.md
+      - "#3740. Minimum Distance Between Three Equal Elements I": problems/3740_minimum-distance-between-three-equal-elements-i.md
+      - "#3748. Count Stable Subarrays": problems/3748_count-stable-subarrays.md
+      - "#3750. Minimum Number of Flips to Reverse Binary String": problems/3750_minimum-number-of-flips-to-reverse-binary-string.md
+      - "#3753. Total Waviness of Numbers in Range II": problems/3753_total-waviness-of-numbers-in-range-ii.md
+      - "#3755. Find Maximum Balanced XOR Subarray Length": problems/3755_find-maximum-balanced-xor-subarray-length.md
+      - "#3764. Most Common Course Pairs": problems/3764_most-common-course-pairs.md
+      - "#3768. Minimum Inversion Count in Subarrays of Fixed Length": problems/3768_minimum-inversion-count-in-subarrays-of-fixed-length.md
+      - "#3771. Total Score of Dungeon Runs": problems/3771_total-score-of-dungeon-runs.md
+      - "#3774. Absolute Difference Between Maximum and Minimum K Elements": problems/3774_absolute-difference-between-maximum-and-minimum-k-elements.md
+      - "#3784. Minimum Deletion Cost to Make All Characters Equal": problems/3784_minimum-deletion-cost-to-make-all-characters-equal.md
+      - "#3794. Reverse String Prefix": problems/3794_reverse-string-prefix.md
+      - "#3796. Find Maximum Value in a Constrained Sequence": problems/3796_find-maximum-value-in-a-constrained-sequence.md
+      - "#3800. Minimum Cost to Make Two Binary Strings Equal": problems/3800_minimum-cost-to-make-two-binary-strings-equal.md
+      - "#3806. Maximum Bitwise AND After Increment Operations": problems/3806_maximum-bitwise-and-after-increment-operations.md
+      - "#3832. Find Users with Persistent Behavior Patterns": problems/3832_find-users-with-persistent-behavior-patterns.md
+      - "#3835. Count Subarrays With Cost Less Than or Equal to K": problems/3835_count-subarrays-with-cost-less-than-or-equal-to-k.md
+      - "#3838. Weighted Word Mapping": problems/3838_weighted-word-mapping.md
+      - "#3839. Number of Prefix Connected Groups": problems/3839_number-of-prefix-connected-groups.md
+      - "#3842. Toggle Light Bulbs": problems/3842_toggle-light-bulbs.md
+      - "#3848. Check Digitorial Permutation": problems/3848_check-digitorial-permutation.md
+      - "#3864. Minimum Cost to Partition a Binary String": problems/3864_minimum-cost-to-partition-a-binary-string.md
+      - "#3867. Sum of GCD of Formed Pairs": problems/3867_sum-of-gcd-of-formed-pairs.md
+      - "#3869. Count Fancy Numbers in a Range": problems/3869_count-fancy-numbers-in-a-range.md
+      - "#3878. Count Good Subarrays": problems/3878_count-good-subarrays.md
+      - "#3881. Direction Assignments with Exactly K Visible People": problems/3881_direction-assignments-with-exactly-k-visible-people.md
+      - "#3885. Design Event Manager": problems/3885_design-event-manager.md
+      - "#3891. Minimum Increase to Maximize Special Indices": problems/3891_minimum-increase-to-maximize-special-indices.md
+      - "#3899. Angles of a Triangle": problems/3899_angles-of-a-triangle.md
+      - "#3914. Minimum Operations to Make Array Non Decreasing": problems/3914_minimum-operations-to-make-array-non-decreasing.md
+      - "#3917. Count Indices With Opposite Parity": problems/3917_count-indices-with-opposite-parity.md
+      - "#3933. Largest Local Values in a Matrix II": problems/3933_largest-local-values-in-a-matrix-ii.md
