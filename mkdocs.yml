@@ -82,9 +82,9 @@ markdown_extensions:
 
 extra_javascript:
   - js/mathjax.js
-  # polyfill.io 在 2024-06 被恶意收购，已被大多 CDN 加入 blocklist；MathJax 3 + modern browsers 不需要
-  - https://gcore.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js
-  - https://gcore.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js
+  # 自托管，避免 CDN 依赖/被墙导致公式 FOUC 或不渲染（MathJax 3.2.2 / mermaid 10，随站点一起发布）
+  - js/mathjax/tex-mml-chtml.js
+  - js/mermaid.min.js
 
 extra_css:
   - css/extra.css
