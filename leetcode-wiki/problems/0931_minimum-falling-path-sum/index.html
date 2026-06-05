@@ -1466,6 +1466,8 @@
       
         
       
+        
+      
     
     
     
@@ -1521,6 +1523,34 @@
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../featured/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ⭐ Featured（已验证）
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
               
             
               
@@ -1610,10 +1640,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_4" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
         
           
-          <label class="md-nav__link" for="__nav_4_4" id="__nav_4_4_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_5" id="__nav_4_5_label" tabindex="">
             
   
   
@@ -1631,8 +1661,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_4_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_4">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_5">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1915,7 +1945,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -1937,14 +1967,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_4_5" id="__nav_4_5_label" tabindex="">
+              <label class="md-nav__link " for="__nav_4_6" id="__nav_4_6_label" tabindex="">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_5">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_6">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -5321,10 +5351,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_7" checked>
         
           
-          <label class="md-nav__link" for="__nav_4_6" id="__nav_4_6_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_7" id="__nav_4_7_label" tabindex="">
             
   
   
@@ -5342,8 +5372,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_4_6">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_7_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4_7">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -22467,13 +22497,21 @@
 <h2 id="problem">Problem<a class="headerlink" href="#problem" title="Permanent link">#</a></h2>
 <p><span class="arithmatex">\(n \times n\)</span> 整型矩阵。"下落路径"从首行任意起点，每步到下一行的同列或左右斜下相邻列（<span class="arithmatex">\((r+1, c-1), (r+1, c), (r+1, c+1)\)</span>）。求路径元素和的最小值。<span class="arithmatex">\(1 \le n \le 100\)</span>，<span class="arithmatex">\(-100 \le \text{matrix}[i][j] \le 100\)</span>。</p>
 <h2 id="background">背景 (Background)<a class="headerlink" href="#background" title="Permanent link">#</a></h2>
-<p><strong>DAG 上最短路</strong> 的网格特例。同类模型在 Viterbi 解码（HMM）、shortest path in trellis（信道编码 LDPC/Turbo）、动态规划范式中是核心范例——状态在层间转移，每层局部成本，layered DAG。</p>
+<p>先量一下暴力的代价。一条下落路径由每一行的列选择唯一确定：首行有 <span class="arithmatex">\(n\)</span> 个起点，之后每行从当前列出发有至多 <span class="arithmatex">\(3\)</span> 个走法。于是路径总数约为 <span class="arithmatex">\(n \cdot 3^{n-1}\)</span>，对 <span class="arithmatex">\(n=100\)</span> 已是天文数字，逐条枚举求和不可行。</p>
+<p>那贪心呢？每行只挑当前能到达的最小元素——这会失败。考虑</p>
+<div class="arithmatex">\[\begin{pmatrix} 1 &amp; 100 &amp; 100 \\ 100 &amp; 100 &amp; 1 \\ 1 &amp; 100 &amp; 100 \end{pmatrix}\]</div>
+<p>从 <span class="arithmatex">\((0,0)=1\)</span> 出发，贪心在第 1 行只能看到 <span class="arithmatex">\(\{(1,0)=100,(1,1)=100\}\)</span>，被迫吃下 <span class="arithmatex">\(100\)</span>；而最优路径需要先走到第 0 行的别处，才能在第 1 行落到那个 <span class="arithmatex">\(1\)</span>。局部最小不蕴含全局最小，因为当前的便宜可能锁死后续，问题不具备贪心所需的"无后效的局部可分性"。</p>
+<p>暴力枚举之所以浪费，是因为不同路径在网格中<strong>汇合</strong>：到达 <span class="arithmatex">\((1,1)\)</span> 的路径来自 <span class="arithmatex">\((0,0)\)</span>、<span class="arithmatex">\((0,1)\)</span>、<span class="arithmatex">\((0,2)\)</span> 三条，它们在 <span class="arithmatex">\((1,1)\)</span> 之后的走法完全一样。枚举把这段公共后缀重算了三遍。这种"多条路径共享同一子问题"的结构，正是动态规划要利用的——记录每个格子的最优值，而非重新枚举到达它的路径。下文据此展开。</p>
 <h2 id="formulation">形式化 (Formulation)<a class="headerlink" href="#formulation" title="Permanent link">#</a></h2>
-<p>设 $f(r, c) = $ 以 <span class="arithmatex">\((r, c)\)</span> 为终点的最小下落路径和。</p>
-<div class="arithmatex">\[f(r, c) = \text{matrix}[r][c] + \min\big(f(r-1, c-1), f(r-1, c), f(r-1, c+1)\big)\]</div>
-<p>边界 <span class="arithmatex">\(f(0, c) = \text{matrix}[0][c]\)</span>；越界视作 <span class="arithmatex">\(+\infty\)</span>。答案 <span class="arithmatex">\(\min_c f(n-1, c)\)</span>。</p>
+<p><strong>直觉</strong>：到达某格 <span class="arithmatex">\((r,c)\)</span> 的一条路径，其代价只由"在 <span class="arithmatex">\((r,c)\)</span> 处的元素值"和"如何到达上一行的某个前驱格"两部分组成；而后者与更早的具体走法无关——只要那个前驱格的到达代价最小，接到 <span class="arithmatex">\((r,c)\)</span> 上就最小。换言之，若一条以 <span class="arithmatex">\((r,c)\)</span> 结尾的最优路径，其前驱是 <span class="arithmatex">\((r-1,c')\)</span>，那么这条路径在 <span class="arithmatex">\((r-1,c')\)</span> 处的前缀也必须是到达 <span class="arithmatex">\((r-1,c')\)</span> 的最优路径——否则把前缀换成更便宜的，总和更小，与最优矛盾。这就是本题的最优子结构。</p>
+<p>定义 <span class="arithmatex">\(f(r, c)\)</span> 为以 <span class="arithmatex">\((r, c)\)</span> 为终点的最小下落路径和。<span class="arithmatex">\((r,c)\)</span> 的合法前驱恰是 <span class="arithmatex">\((r-1,c-1),(r-1,c),(r-1,c+1)\)</span> 三者中落在网格内的那些。一条以 <span class="arithmatex">\((r,c)\)</span> 结尾的路径必经其中之一，故取它们的最小值再加上本格元素：</p>
+<div class="arithmatex">\[f(r, c) = \text{matrix}[r][c] + \min\big(f(r-1, c-1), f(r-1, c), f(r-1, c+1)\big) \tag{1}\]</div>
+<p>边界列 <span class="arithmatex">\(c=0\)</span> 或 <span class="arithmatex">\(c=n-1\)</span> 会让某个前驱越出网格。一步只能落到 <span class="arithmatex">\(c-1,c,c+1\)</span> 这三列，越界的列根本无法作为前驱，把它的 <span class="arithmatex">\(f\)</span> 视作 <span class="arithmatex">\(+\infty\)</span> 即可让 <span class="arithmatex">\(\min\)</span> 自动忽略它，无需为边界单列分支。于是</p>
+<div class="arithmatex">\[f(0, c) = \text{matrix}[0][c], \qquad f(r, c) = +\infty \ \text{当}\ c&lt;0 \ \text{或}\ c\ge n.\]</div>
+<p>答案是末行所有终点的最小值 <span class="arithmatex">\(\min_c f(n-1, c)\)</span>。</p>
 <h2 id="approach">数据结构 / 想法 (Approach)<a class="headerlink" href="#approach" title="Permanent link">#</a></h2>
-<p><strong>自顶向下 DP</strong>，逐行滚动一维数组。原地修改 <code>matrix</code> 节省空间（不推荐改输入，但可读性高）。</p>
+<p>递推式 (1) 直接决定了实现。计算顺序：<span class="arithmatex">\(f(r,\cdot)\)</span> 只依赖 <span class="arithmatex">\(f(r-1,\cdot)\)</span>，所以按行号 <span class="arithmatex">\(r\)</span> 递增逐行计算，每行内各列彼此独立、顺序任意——这正是按拓扑序（行序）求解。</p>
+<p>依赖只跨一行，是关键的省空间线索：算第 <span class="arithmatex">\(r\)</span> 行时只需要第 <span class="arithmatex">\(r-1\)</span> 行的值，更早的行再不会被引用。因此无需存满 <span class="arithmatex">\(O(n^2)\)</span> 的表，只保留一行 <span class="arithmatex">\(f\)</span>（<code>prev</code>）滚动前进即可，空间降到 <span class="arithmatex">\(O(n)\)</span>。这是<strong>自底向上 DP + 滚动数组</strong>：迭代正向递推，不递归、不开记忆化缓存。</p>
 <div class="language-python highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">Solution</span><span class="p">:</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">minFallingPathSum</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">matrix</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]])</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
         <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">matrix</span><span class="p">)</span>
@@ -22490,6 +22528,7 @@
             <span class="n">prev</span> <span class="o">=</span> <span class="n">cur</span>
         <span class="k">return</span> <span class="nb">min</span><span class="p">(</span><span class="n">prev</span><span class="p">)</span>
 </code></pre></div>
+<p>代码与递推式逐项对应：<code>mid/left/right</code> 是式 (1) 里的三个前驱 <span class="arithmatex">\(f(r-1,c),f(r-1,c-1),f(r-1,c+1)\)</span>，越界以 <code>INF</code> 顶替对应那条 <span class="arithmatex">\(+\infty\)</span> 规则，<code>min(prev)</code> 即 <span class="arithmatex">\(\min_c f(n-1,c)\)</span>。注意 <code>left</code> 的守卫 <code>if c-1 &gt;= 0 else INF</code> 是必需的：直接写 <code>prev[c-1]</code> 在 <span class="arithmatex">\(c=0\)</span> 时会因 Python 负索引回卷读到末列，悄悄给出错误答案。</p>
 <p>样例 1：<code>[[2,1,3],[6,5,4],[7,8,9]]</code>。
 - r=0: prev=[2,1,3]
 - r=1: c=0 → 6+min(INF,2,1)=6+1=7; c=1 → 5+min(2,1,3)=5+1=6; c=2 → 4+min(1,3,INF)=4+1=5. prev=[7,6,5]
@@ -22499,14 +22538,14 @@
 - r=1: c=0 → -40+min(INF,-19,57)=-40-19=-59; c=1 → -5+min(-19,57,INF)=-5-19=-24. min=-59。✓</p>
 <h2 id="complexity">复杂度 (Complexity)<a class="headerlink" href="#complexity" title="Permanent link">#</a></h2>
 <ul>
-<li>Time: <span class="arithmatex">\(O(n^2)\)</span></li>
-<li>Space: <span class="arithmatex">\(O(n)\)</span>（滚动）；或 <span class="arithmatex">\(O(1)\)</span> 额外若原地修改</li>
+<li>Time: <span class="arithmatex">\(O(n^2)\)</span>。<span class="arithmatex">\(n\)</span> 行 <span class="arithmatex">\(\times\)</span> <span class="arithmatex">\(n\)</span> 列，每格固定做 3 路 <span class="arithmatex">\(\min\)</span>，无提前终止，故 best = avg = worst 同界。</li>
+<li>Space: <span class="arithmatex">\(O(n)\)</span>，滚动数组 <code>prev</code>/<code>cur</code>。若把每行结果写回 <code>matrix[r]</code> 原地复用，可降到 <span class="arithmatex">\(O(1)\)</span> 额外空间（代价是破坏输入；上面的代码选择非破坏写法，故为 <span class="arithmatex">\(O(n)\)</span>）。</li>
 </ul>
 <h2 id="pitfalls">陷阱 (Pitfalls)<a class="headerlink" href="#pitfalls" title="Permanent link">#</a></h2>
 <ul>
-<li>边界列 <span class="arithmatex">\(c = 0\)</span> 和 <span class="arithmatex">\(c = n-1\)</span> 的越界要正确处理，否则会错过最小路径或下标越界。</li>
-<li><span class="arithmatex">\(n=1\)</span> 时只有起点 = 终点，直接返回 <code>matrix[0][0]</code>。</li>
-<li>负值可能存在 → 不能用 0 初始化做"累加"，DP 必须用上述递推。</li>
+<li>边界列 <span class="arithmatex">\(c=0\)</span> 和 <span class="arithmatex">\(c=n-1\)</span> 的越界前驱必须正确处理。本题用 <span class="arithmatex">\(+\infty\)</span> 顶替越界列让 <span class="arithmatex">\(\min\)</span> 自动跳过；代码层面则要靠 <code>if c-1&gt;=0 else INF</code> 守卫，避免 Python 负索引 <code>prev[-1]</code> 回卷读到末列而静默出错。</li>
+<li><span class="arithmatex">\(n=1\)</span> 时起点即终点，无下落步，直接返回 <code>matrix[0][0]</code>。</li>
+<li><span class="arithmatex">\(\text{matrix}[i][j]\)</span> 可为负，递推必须如实携带负的部分和（样例 2 得 <span class="arithmatex">\(-59\)</span>）。不能把"未到达"的格子初始化成 <span class="arithmatex">\(0\)</span> 当作可累加的初值——<span class="arithmatex">\(0\)</span> 会被误当成一条代价为 <span class="arithmatex">\(0\)</span> 的合法前缀，反而比真实的负部分和更"贵"，把它挤出 <span class="arithmatex">\(\min\)</span>。本题用 <span class="arithmatex">\(+\infty\)</span> 表示不可达正是为此。</li>
 </ul>
 <h2 id="related">相关题目 (Related)<a class="headerlink" href="#related" title="Permanent link">#</a></h2>
 <ul>
@@ -22624,6 +22663,8 @@
         <script src="../../../js/mathjax/tex-mml-chtml.js"></script>
       
         <script src="../../../js/mermaid.min.js"></script>
+      
+        <script src="../../../js/featured.js"></script>
       
     
   </body>

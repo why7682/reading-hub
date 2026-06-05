@@ -1466,6 +1466,8 @@
       
         
       
+        
+      
     
     
     
@@ -1521,6 +1523,34 @@
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../featured/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ⭐ Featured（已验证）
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
               
             
               
@@ -1610,10 +1640,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_4" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
         
           
-          <label class="md-nav__link" for="__nav_4_4" id="__nav_4_4_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_5" id="__nav_4_5_label" tabindex="">
             
   
   
@@ -1631,8 +1661,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_4_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_4">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_5">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1915,7 +1945,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -1937,14 +1967,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_4_5" id="__nav_4_5_label" tabindex="">
+              <label class="md-nav__link " for="__nav_4_6" id="__nav_4_6_label" tabindex="">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_5">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_6">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -5321,10 +5351,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_7" checked>
         
           
-          <label class="md-nav__link" for="__nav_4_6" id="__nav_4_6_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_7" id="__nav_4_7_label" tabindex="">
             
   
   
@@ -5342,8 +5372,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_4_6">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_7_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4_7">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -22467,15 +22497,33 @@
 <h2 id="problem">Problem<a class="headerlink" href="#problem" title="Permanent link">#</a></h2>
 <p><code>stoneValue</code> 是一行石头。每轮 Alice 把当前行切成左右两非空段；Bob 比较两段和，把和<strong>更大</strong>的丢弃，Alice 得分加上<strong>剩下</strong>那段的和；若两段和相等，Alice 自选。游戏到只剩 1 块结束（无操作）。求 Alice 最大总分。<span class="arithmatex">\(|s| \leq 500\)</span>，值 <span class="arithmatex">\(\leq 10^6\)</span>。</p>
 <h2 id="background">背景 (Background)<a class="headerlink" href="#background" title="Permanent link">#</a></h2>
-<p>经典<strong>区间 DP</strong>（interval DP），结合<strong>前缀和</strong>做 <span class="arithmatex">\(O(1)\)</span> 区间和查询。区间 DP 的状态是 <span class="arithmatex">\([l, r]\)</span>，转移枚举切点 <span class="arithmatex">\(m\)</span>；本题与 Matrix Chain Multiplication、Optimal BST 同范式。</p>
-<p>朴素 <span class="arithmatex">\(O(n^3)\)</span> 可过；存在 <span class="arithmatex">\(O(n^2 \log n)\)</span>（前缀单调性 + 二分）甚至 <span class="arithmatex">\(O(n^2)\)</span>（Knuth-Yao 优化）的方案，但本题 <span class="arithmatex">\(n \leq 500\)</span> 无需。</p>
+<p>先看清楚 Alice 在每一轮里到底掌控什么，再决定怎么算。</p>
+<p>一轮的流程是：Alice 选一个切点把当前段分成左右两半，<strong>Bob</strong> 按固定规则丢掉和更大的那半，Alice 拿走剩下那半的和并继续在它上面玩。Alice 唯一能选的是<strong>切点</strong>；丢弃哪一半由 Bob 的规则决定，不由 Alice。</p>
+<p>关键的结构事实是：<strong>当前局面只由一个连续区间 <span class="arithmatex">\([l, r]\)</span> 决定</strong>。无论 Alice 之前怎么切、Bob 丢过哪些段，一旦剩下的石头落在 <span class="arithmatex">\([l, r]\)</span> 这段连续区间上，后续游戏与"怎么走到这里"完全无关——之前丢掉的段不会回来，也不影响当前段内的任何决策。于是"从 <span class="arithmatex">\([l, r]\)</span> 出发 Alice 能拿的最大分"是一个良定义的量，与历史无关。这正是把问题装进二维状态 <span class="arithmatex">\(f(l, r)\)</span> 的依据。</p>
+<p><strong>朴素做法会怎样失败。</strong> 最直接的想法是模拟整棵博弈树：枚举第一刀的所有切点，递归每个分支。问题在于同一个子区间 <span class="arithmatex">\([l, r]\)</span> 会在博弈树里被<strong>重复到达</strong>很多次——从完整数组出发，不同的前几刀序列会落到同一段 <span class="arithmatex">\([l, r]\)</span> 上，每次都把它从头重算一遍。博弈树的规模随 <span class="arithmatex">\(n\)</span> 指数膨胀，但本质不同的子区间只有 <span class="arithmatex">\(O(n^2)\)</span> 个。一旦意识到子区间数量是多项式级、且每个子区间的答案与到达路径无关，就该把 <span class="arithmatex">\(f(l, r)\)</span> 记下来复用——这就是记忆化，也就是区间 DP。</p>
+<p>"区间 DP"只是对上面这个结构的命名：状态是连续区间 <span class="arithmatex">\([l, r]\)</span>，转移枚举区间内的切点。命名留到结构清楚之后，不作为前提。</p>
 <h2 id="formulation">形式化 (Formulation)<a class="headerlink" href="#formulation" title="Permanent link">#</a></h2>
-<p>设 <span class="arithmatex">\(S[l..r] = \sum_{i=l}^{r} v_i\)</span>，<span class="arithmatex">\(f(l, r)\)</span> = 起始于段 <span class="arithmatex">\([l, r]\)</span> 时 Alice 的最大得分。</p>
+<p><strong>先说直觉。</strong> 固定一刀切在 <span class="arithmatex">\(m\)</span>（左段 <span class="arithmatex">\([l, m]\)</span>、右段 <span class="arithmatex">\([m+1, r]\)</span>）。Bob 丢掉和更大的一段，Alice 得到留下那段的和，并在留下那段上继续。所以这一刀的总收益 = 本轮拿到的和 + 留下那段上 Alice 之后的最优分。Alice 在所有切点里挑总收益最大的那一刀。Bob 的"丢大段"规则直接产生三种情况：</p>
+<ul>
+<li><span class="arithmatex">\(L &lt; R\)</span>：右段更大被丢，留下左段，本轮得 <span class="arithmatex">\(L\)</span>，之后在 <span class="arithmatex">\([l, m]\)</span> 上玩 → <span class="arithmatex">\(L + f(l, m)\)</span>。</li>
+<li><span class="arithmatex">\(L &gt; R\)</span>：左段更大被丢，留下右段，本轮得 <span class="arithmatex">\(R\)</span>，之后在 <span class="arithmatex">\([m+1, r]\)</span> 上玩 → <span class="arithmatex">\(R + f(m+1, r)\)</span>。</li>
+<li><span class="arithmatex">\(L = R\)</span>：两段和相等，规则允许 Alice 自选——她当然选<strong>之后能拿更多</strong>的那一段，即 <span class="arithmatex">\(L + \max(f(l, m), f(m+1, r))\)</span>。</li>
+</ul>
+<p>两个子问题 <span class="arithmatex">\(f(l, m)\)</span> 与 <span class="arithmatex">\(f(m+1, r)\)</span> 之所以能各自独立求最优，是因为 Bob 丢掉一段后游戏只在剩下那段上继续，不再与另一段或历史有任何耦合——这正是最优子结构。</p>
+<p><strong>形式化。</strong> 设 <span class="arithmatex">\(S[l..r] = \sum_{i=l}^{r} v_i\)</span>，<span class="arithmatex">\(f(l, r)\)</span> = 起始于段 <span class="arithmatex">\([l, r]\)</span> 时 Alice 的最大得分。</p>
 <div class="arithmatex">\[f(l, l) = 0.\]</div>
 <div class="arithmatex">\[f(l, r) = \max_{m \in [l, r-1]} \begin{cases} L + f(l, m) &amp; \text{if } L &lt; R \\ R + f(m+1, r) &amp; \text{if } L &gt; R \\ L + \max(f(l, m), f(m+1, r)) &amp; \text{if } L = R \end{cases}\]</div>
 <p>其中 <span class="arithmatex">\(L = S[l..m], R = S[m+1..r]\)</span>。</p>
+<p><strong>边界。</strong> 区间缩到单块 <span class="arithmatex">\([l, l]\)</span> 时已无法再切，游戏结束。Alice 的分来自她一路保留的各段，<strong>不包括</strong>最后剩下这块石头本身，故 <span class="arithmatex">\(f(l, l) = 0\)</span>（不是 <span class="arithmatex">\(v_l\)</span>）。又因石头值非负，所有候选收益 <span class="arithmatex">\(\ge 0\)</span>，取最大时以 <span class="arithmatex">\(0\)</span> 作下界是安全的。</p>
+<p><strong>为什么枚举全部切点。</strong> Alice 的总分 = 本轮收益 + 留下段上的最优分，而"留下哪段、留下段多大"都随切点 <span class="arithmatex">\(m\)</span> 改变，本轮收益与未来收益此消彼长，无法只看本轮和最大就定切点。下面这个小例子说明贪心会错。</p>
 <h2 id="approach">数据结构 / 想法 (Approach)<a class="headerlink" href="#approach" title="Permanent link">#</a></h2>
-<p><strong>法（推荐）：区间 DP，自底向上按长度递增</strong>。</p>
+<p>贪心反例（说明必须枚举全部切点、必须递归未来值）：取 <span class="arithmatex">\(v = [6, 2, 3]\)</span>，<span class="arithmatex">\(S = 11\)</span>。</p>
+<ul>
+<li>切 <span class="arithmatex">\(m=0\)</span>：<span class="arithmatex">\(L=6, R=5\)</span>，丢左留右，本轮 <span class="arithmatex">\(R=5\)</span>，之后在 <span class="arithmatex">\([2,3]\)</span> 上最优是再切得 <span class="arithmatex">\(2\)</span>，共 <span class="arithmatex">\(5+2=7\)</span>。</li>
+<li>切 <span class="arithmatex">\(m=1\)</span>：<span class="arithmatex">\(L=8, R=3\)</span>，丢左留右，本轮 <span class="arithmatex">\(R=3\)</span>，之后在 <span class="arithmatex">\([3]\)</span> 上得 <span class="arithmatex">\(0\)</span>，共 <span class="arithmatex">\(3\)</span>。</li>
+</ul>
+<p>只看"本轮收益最大"会选 <span class="arithmatex">\(m=1\)</span>（本轮 <span class="arithmatex">\(\max(L,R)\)</span> 不可得，Bob 丢大段，实际本轮收益是较小段；但若只贪心比较单刀的即时所得也会被未来值翻盘）。正确答案 <span class="arithmatex">\(f(0,2)=7\)</span> 来自 <span class="arithmatex">\(m=0\)</span> 这条把未来值算进去的路径。即时收益与未来收益的权衡，只有枚举切点并递归子区间才能解开。</p>
+<p>把递推式逐字翻译成带记忆化的递归，再用前缀和做 <span class="arithmatex">\(O(1)\)</span> 区间求和：</p>
 <div class="language-python highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">functools</span><span class="w"> </span><span class="kn">import</span> <span class="n">lru_cache</span>
 <span class="k">class</span><span class="w"> </span><span class="nc">Solution</span><span class="p">:</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">stoneGameV</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
@@ -22516,18 +22564,20 @@
 <span class="c1">#   m=2 cand=11+7=18</span>
 <span class="c1"># 其它 m 不超 18。f(0,5)=18 ✓</span>
 </code></pre></div>
-<p><strong>复杂度证明</strong>：<span class="arithmatex">\(\binom{n}{2} = O(n^2)\)</span> 个状态，每个 <span class="arithmatex">\(O(n)\)</span> 转移 → <span class="arithmatex">\(O(n^3)\)</span>。<span class="arithmatex">\(500^3 = 1.25 \times 10^8\)</span>，在 Python 边界但可过（lru_cache 慢；改 iterable DP 表会快）。</p>
+<p>Python 函数 <code>f(l, r)</code> 就是递推式本身：<code>if l == r: return 0</code> 是边界，三个分支逐一对应 <span class="arithmatex">\(L&lt;R\)</span> / <span class="arithmatex">\(L&gt;R\)</span> / <span class="arithmatex">\(L=R\)</span> 三种情况，<code>lru_cache</code> 保证每个子区间只算一次（这正是消除指数级重复的那一步）。</p>
+<p><strong>状态与转移数。</strong> 区间 <span class="arithmatex">\([l, r]\)</span>（含 <span class="arithmatex">\(l = r\)</span>）共 <span class="arithmatex">\(\binom{n+1}{2} = \tfrac{n(n+1)}{2} = O(n^2)\)</span> 个，每个枚举 <span class="arithmatex">\(O(n)\)</span> 个切点，故最坏 <span class="arithmatex">\(O(n^3)\)</span>。<span class="arithmatex">\(n = 500\)</span> 时最坏约 <span class="arithmatex">\(500^3 = 1.25\times10^8\)</span> 量级；对 <span class="arithmatex">\(n \le 500\)</span> 足以在时限内通过。注意 Bob 的"丢大段"规则会让许多子区间根本不可达，自顶向下记忆化只触及可达状态，实测远低于满表上界。</p>
 <h2 id="complexity">复杂度 (Complexity)<a class="headerlink" href="#complexity" title="Permanent link">#</a></h2>
 <ul>
-<li>Time <span class="arithmatex">\(O(n^3)\)</span>；Space <span class="arithmatex">\(O(n^2)\)</span> DP 表 + <span class="arithmatex">\(O(n)\)</span> 前缀和。</li>
-<li>可优化到 <span class="arithmatex">\(O(n^2 \log n)\)</span>（在每个 <span class="arithmatex">\(l\)</span> 用前缀和二分找平衡切点），常数小但码量大。</li>
+<li>Time <span class="arithmatex">\(O(n^3)\)</span> worst case；Space <span class="arithmatex">\(O(n^2)\)</span> DP 表 + <span class="arithmatex">\(O(n)\)</span> 前缀和。</li>
+<li>可优化到 <span class="arithmatex">\(O(n^2 \log n)\)</span>（在每个 <span class="arithmatex">\(l\)</span> 用前缀和二分找平衡切点），常数小但码量大；<span class="arithmatex">\(n \le 500\)</span> 无需。</li>
+<li>关于实现选择：自顶向下记忆化只展开可达子区间，因丢弃规则使大量区间不可达，本题里它通常比逐长度填满整张表的自底向上写法更快；不要想当然认为"改成迭代填表一定更快"。</li>
 </ul>
 <h2 id="pitfalls">陷阱 (Pitfalls)<a class="headerlink" href="#pitfalls" title="Permanent link">#</a></h2>
 <ul>
-<li><strong>base case</strong>：<span class="arithmatex">\(l = r\)</span> 时返回 0（题面：剩一块时游戏结束，无加分）。</li>
-<li><strong>平衡切点</strong>：<span class="arithmatex">\(L = R\)</span> 时 Alice 选<strong>更大</strong>的子问题（<span class="arithmatex">\(\max(f(l,m), f(m+1,r))\)</span>），不是 <span class="arithmatex">\(\min\)</span>。</li>
-<li><strong>递归深度 / lru_cache</strong>：Python 大数据时 lru_cache 慢，改自底向上二维数组（按区间长度遍历）更快。</li>
-<li><strong>前缀和越界</strong>：用 <code>P[r+1] - P[l]</code> 不要写成 <code>P[r] - P[l]</code>。</li>
+<li><strong>base case</strong>：<span class="arithmatex">\(l = r\)</span> 时返回 0（剩一块时游戏结束，最后那块不计分），不是 <span class="arithmatex">\(v_l\)</span>。</li>
+<li><strong>平衡切点</strong>：<span class="arithmatex">\(L = R\)</span> 时 Alice 自选，取<strong>之后能拿更多</strong>的子问题 <span class="arithmatex">\(\max(f(l,m), f(m+1,r))\)</span>，不是 <span class="arithmatex">\(\min\)</span>——这由"Alice 自选 + 最大化自身得分"直接推出。</li>
+<li><strong>状态数</strong>：含单元素区间共 <span class="arithmatex">\(\tfrac{n(n+1)}{2}\)</span> 个，不是 <span class="arithmatex">\(\binom{n}{2}\)</span>（后者漏掉 <span class="arithmatex">\(n\)</span> 个对角单元素状态）；两者都是 <span class="arithmatex">\(O(n^2)\)</span>，渐进不变。</li>
+<li><strong>前缀和越界</strong>：用 <code>P[r+1] - P[l]</code>，不要写成 <code>P[r] - P[l]</code>。</li>
 </ul>
 <h2 id="related">相关题目 (Related)<a class="headerlink" href="#related" title="Permanent link">#</a></h2>
 <ul>
@@ -22646,6 +22696,8 @@
         <script src="../../../js/mathjax/tex-mml-chtml.js"></script>
       
         <script src="../../../js/mermaid.min.js"></script>
+      
+        <script src="../../../js/featured.js"></script>
       
     
   </body>

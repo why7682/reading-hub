@@ -1466,6 +1466,8 @@
       
         
       
+        
+      
     
     
     
@@ -1521,6 +1523,34 @@
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../featured/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ⭐ Featured（已验证）
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
               
             
               
@@ -1610,10 +1640,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_4" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
         
           
-          <label class="md-nav__link" for="__nav_4_4" id="__nav_4_4_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_5" id="__nav_4_5_label" tabindex="">
             
   
   
@@ -1631,8 +1661,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_4_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_4">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_5">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1915,7 +1945,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -1937,14 +1967,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_4_5" id="__nav_4_5_label" tabindex="">
+              <label class="md-nav__link " for="__nav_4_6" id="__nav_4_6_label" tabindex="">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_5">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_6">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -5321,10 +5351,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_7" checked>
         
           
-          <label class="md-nav__link" for="__nav_4_6" id="__nav_4_6_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_7" id="__nav_4_7_label" tabindex="">
             
   
   
@@ -5342,8 +5372,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_4_6">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_7_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4_7">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -22467,54 +22497,81 @@
 <h2 id="problem">Problem<a class="headerlink" href="#problem" title="Permanent link">#</a></h2>
 <p>给定二叉树的 preorder 与 postorder（节点值互异），重建任意一棵满足两序列的二叉树。<span class="arithmatex">\(1 \le n \le 30\)</span>。</p>
 <h2 id="background">背景 (Background)<a class="headerlink" href="#background" title="Permanent link">#</a></h2>
-<p>和经典 #105 (preorder + inorder) 不同，<strong>preorder + postorder 不唯一确定二叉树</strong>：当某节点仅有一个子（左或右）时无法区分。这一不唯一性来自 Catalan 数的二叉树枚举—— preorder + inorder 唯一是因 inorder 把"左子树元素集合"与"右子树元素集合"严格分开，而 postorder + preorder 在 single-child 情形下二者重合。</p>
+<p>先回忆姐妹题 #105（preorder + inorder）的重建思路：根是 <span class="arithmatex">\(\text{pre}[0]\)</span>，在 inorder 中找到根的位置，根左边的元素是左子树、右边是右子树。inorder 显式给出了左右两边的<strong>分界</strong>，于是左右子树的元素集合被切干净，递归即可。本题只有 preorder 与 postorder，没有 inorder——问题首先是：还有没有这条分界线？</p>
+<p>答案是：不仅分界线更隐蔽，连<strong>树本身都可能不唯一</strong>。这不是需要引用任何枚举公式的外部事实，而是可以从两个序列的定义直接看出来。取最小的反例，一棵根 <span class="arithmatex">\(1\)</span> 只带一个孩子 <span class="arithmatex">\(2\)</span>：</p>
+<ul>
+<li>若 <span class="arithmatex">\(2\)</span> 是<strong>左</strong>孩子：preorder（根-左-右）<span class="arithmatex">\(= [1, 2]\)</span>，postorder（左-右-根）<span class="arithmatex">\(= [2, 1]\)</span>。</li>
+<li>若 <span class="arithmatex">\(2\)</span> 是<strong>右</strong>孩子：preorder <span class="arithmatex">\(= [1, 2]\)</span>，postorder <span class="arithmatex">\(= [2, 1]\)</span>。</li>
+</ul>
+<p>两棵不同的树给出<strong>完全相同</strong>的一对序列。所以从 <span class="arithmatex">\(\text{pre}=[1,2],\ \text{post}=[2,1]\)</span> 出发，无法判定 <span class="arithmatex">\(2\)</span> 该挂左还是挂右——这正是不唯一性，且它<strong>只在某节点恰好只有一个孩子时</strong>发生。两个及以上孩子时左右各自非空，下面会看到分界线立刻恢复。题目正因此只要求输出<strong>任意一棵</strong>满足两序列的树。</p>
 <h2 id="formulation">形式化 (Formulation)<a class="headerlink" href="#formulation" title="Permanent link">#</a></h2>
-<p>preorder: <span class="arithmatex">\(\text{root}, \text{preL}, \text{preR}\)</span>；postorder: <span class="arithmatex">\(\text{postL}, \text{postR}, \text{root}\)</span>。设 <span class="arithmatex">\(\text{preorder}[1]\)</span>（若存在）是左子树根。在 postorder 中找到该值的位置 <span class="arithmatex">\(k\)</span>，则 <span class="arithmatex">\(\text{postL} = \text{post}[0..k]\)</span>，左子树大小 <span class="arithmatex">\(L = k + 1\)</span>。递归求解左 <span class="arithmatex">\(\text{pre}[1..L]\)</span> + <span class="arithmatex">\(\text{post}[0..L-1]\)</span>、右 <span class="arithmatex">\(\text{pre}[L+1..]\)</span> + <span class="arithmatex">\(\text{post}[L..n-2]\)</span>。</p>
+<p><strong>直觉</strong>：根之后，preorder 紧接着的那个元素 <span class="arithmatex">\(\text{pre}[pl+1]\)</span> 是按"根-左-右"顺序第一个被访问的非根节点，因此它必是<strong>左子树的根</strong>（若左子树存在）。同一个左子树根，在 postorder 的"左-右-根"顺序里是整个左子树<strong>最后</strong>被访问的节点。于是：左子树在 postorder 中占据的那一段，正好以 <span class="arithmatex">\(\text{pre}[pl+1]\)</span> 在 postorder 里的位置 <span class="arithmatex">\(k\)</span> 收尾。找到 <span class="arithmatex">\(k\)</span>，就找回了 #105 里丢失的那条分界线——左子树是 <span class="arithmatex">\(\text{post}[ql..k]\)</span>，长度 <span class="arithmatex">\(L = k - ql + 1\)</span>。</p>
+<p><strong>形式化</strong>。设 <span class="arithmatex">\(\text{build}(pl, pr, ql, qr)\)</span> 用 preorder 的闭区间 <span class="arithmatex">\([pl, pr]\)</span> 与 postorder 的闭区间 <span class="arithmatex">\([ql, qr]\)</span> 重建一棵子树（两区间长度恒相等）。记 <span class="arithmatex">\(\text{pos}[v]\)</span> 为值 <span class="arithmatex">\(v\)</span> 在 postorder 中的下标。</p>
+<div class="arithmatex">\[
+\text{build}(pl, pr, ql, qr) =
+\begin{cases}
+\text{None}, &amp; pl &gt; pr \quad(\text{空区间})\\[4pt]
+\text{Node}(\text{pre}[pl]), &amp; pl = pr \quad(\text{单元素，叶子})\\[4pt]
+\text{Node}(\text{pre}[pl])\ \text{挂上左右子树}, &amp; pl &lt; pr
+\end{cases}
+\]</div>
+<p>第三种情形中，令 <span class="arithmatex">\(v = \text{pre}[pl+1]\)</span>（按上面的直觉，约定它为左子树根），<span class="arithmatex">\(k = \text{pos}[v]\)</span>，<span class="arithmatex">\(L = k - ql + 1\)</span>。则</p>
+<div class="arithmatex">\[
+\begin{aligned}
+\text{left} &amp;= \text{build}(pl+1,\ pl+L,\ ql,\ k),\\
+\text{right} &amp;= \text{build}(pl+L+1,\ pr,\ k+1,\ qr-1).
+\end{aligned}
+\]</div>
+<p>右子树的 postorder 区间末端取 <span class="arithmatex">\(qr-1\)</span> 而非 <span class="arithmatex">\(qr\)</span>，因为当前子树的根 <span class="arithmatex">\(\text{pre}[pl]\)</span> 坐在 postorder 这一段的最后一位（<span class="arithmatex">\(\text{post}[qr]\)</span>），需从右子树区间剔除。三种情形里 base case 不可省：<span class="arithmatex">\(pl = pr\)</span> 时若继续读 <span class="arithmatex">\(\text{pre}[pl+1]\)</span> 即越界。</p>
+<p><strong>为何这条递归是良定义的</strong>：当 <span class="arithmatex">\(pl &lt; pr\)</span> 时左子树至少含 <span class="arithmatex">\(v\)</span> 自身，故 <span class="arithmatex">\(L \ge 1\)</span>，左区间 <span class="arithmatex">\([pl+1, pl+L]\)</span> 非空且严格短于父区间；右区间可能为空（<span class="arithmatex">\(L\)</span> 等于剩余全部元素时），由 <span class="arithmatex">\(pl &gt; pr\)</span> 分支安全返回 None。每次递归两个区间同步收缩，故必然终止。这正是 #105 的分治骨架，差别只在分界线 <span class="arithmatex">\(k\)</span> 的来源：#105 从 inorder 直接读，本题从"左子树根在 postorder 的位置"推出。</p>
 <h2 id="approach">数据结构 / 想法 (Approach)<a class="headerlink" href="#approach" title="Permanent link">#</a></h2>
-<p><strong>分治</strong> + <strong>哈希加速定位</strong>（postorder 值 → 索引）。</p>
-<p><strong>关键约定</strong>：把 <span class="arithmatex">\(\text{preorder}[1]\)</span> 视为<strong>左</strong>子树根。若实际只有右子树，则此约定会把"右"误标为"左"——但题目允许任意有效答案，这种二叉树本身就有多种解，本约定输出其中一种。</p>
+<p>形式化已经给出完整递归，唯一的工程问题是：如何由 <span class="arithmatex">\(v = \text{pre}[pl+1]\)</span> 求出它在 postorder 中的位置 <span class="arithmatex">\(k\)</span>？</p>
+<p><strong>朴素做法</strong>：每次递归都用 <code>postorder.index(v)</code> 线性扫描。这会在每个节点上花 <span class="arithmatex">\(O(n)\)</span> 找位置，整棵树退化为 <span class="arithmatex">\(O(n^2)\)</span>。瓶颈很明确——同一个 postorder 数组被反复线性搜索，而它从不改变。</p>
+<p><strong>修正</strong>：既然 postorder 固定、值互异，开局一次性建哈希 <span class="arithmatex">\(\text{pos}: v \mapsto\)</span> 下标，之后每次定位降到 <span class="arithmatex">\(O(1)\)</span>。这是把"重复线性查找"换成"一次预处理 + 常数查询"的标准手法，把总时间从 <span class="arithmatex">\(O(n^2)\)</span> 拉回 <span class="arithmatex">\(O(n)\)</span>。</p>
 <div class="language-python highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">Solution</span><span class="p">:</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">constructFromPrePost</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">preorder</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">],</span> <span class="n">postorder</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]):</span>
-        <span class="kn">from</span><span class="w"> </span><span class="nn">collections</span><span class="w"> </span><span class="kn">import</span> <span class="n">defaultdict</span>
-        <span class="n">pos</span> <span class="o">=</span> <span class="p">{</span><span class="n">v</span><span class="p">:</span> <span class="n">i</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">postorder</span><span class="p">)}</span>
+        <span class="n">pos</span> <span class="o">=</span> <span class="p">{</span><span class="n">v</span><span class="p">:</span> <span class="n">i</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">postorder</span><span class="p">)}</span>  <span class="c1"># 一次预处理：值 -&gt; postorder 下标</span>
 
-        <span class="k">def</span><span class="w"> </span><span class="nf">build</span><span class="p">(</span><span class="n">pl</span><span class="p">,</span> <span class="n">pr</span><span class="p">,</span> <span class="n">ql</span><span class="p">,</span> <span class="n">qr</span><span class="p">):</span>  <span class="c1"># pre[pl..pr], post[ql..qr]</span>
+        <span class="k">def</span><span class="w"> </span><span class="nf">build</span><span class="p">(</span><span class="n">pl</span><span class="p">,</span> <span class="n">pr</span><span class="p">,</span> <span class="n">ql</span><span class="p">,</span> <span class="n">qr</span><span class="p">):</span>  <span class="c1"># pre[pl..pr], post[ql..qr]，两区间等长</span>
             <span class="k">if</span> <span class="n">pl</span> <span class="o">&gt;</span> <span class="n">pr</span><span class="p">:</span>
                 <span class="k">return</span> <span class="kc">None</span>
             <span class="n">root</span> <span class="o">=</span> <span class="n">TreeNode</span><span class="p">(</span><span class="n">preorder</span><span class="p">[</span><span class="n">pl</span><span class="p">])</span>
-            <span class="k">if</span> <span class="n">pl</span> <span class="o">==</span> <span class="n">pr</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">pl</span> <span class="o">==</span> <span class="n">pr</span><span class="p">:</span>                <span class="c1"># base case：单元素叶子，必须早返回</span>
                 <span class="k">return</span> <span class="n">root</span>
             <span class="n">left_root</span> <span class="o">=</span> <span class="n">preorder</span><span class="p">[</span><span class="n">pl</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span>
-            <span class="n">k</span> <span class="o">=</span> <span class="n">pos</span><span class="p">[</span><span class="n">left_root</span><span class="p">]</span>      <span class="c1"># 在 postorder 中的位置</span>
-            <span class="n">L</span> <span class="o">=</span> <span class="n">k</span> <span class="o">-</span> <span class="n">ql</span> <span class="o">+</span> <span class="mi">1</span>          <span class="c1"># 左子树大小</span>
+            <span class="n">k</span> <span class="o">=</span> <span class="n">pos</span><span class="p">[</span><span class="n">left_root</span><span class="p">]</span>          <span class="c1"># O(1) 查到左子树根在 postorder 的位置</span>
+            <span class="n">L</span> <span class="o">=</span> <span class="n">k</span> <span class="o">-</span> <span class="n">ql</span> <span class="o">+</span> <span class="mi">1</span>              <span class="c1"># 左子树大小</span>
             <span class="n">root</span><span class="o">.</span><span class="n">left</span> <span class="o">=</span> <span class="n">build</span><span class="p">(</span><span class="n">pl</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">pl</span> <span class="o">+</span> <span class="n">L</span><span class="p">,</span> <span class="n">ql</span><span class="p">,</span> <span class="n">k</span><span class="p">)</span>
             <span class="n">root</span><span class="o">.</span><span class="n">right</span> <span class="o">=</span> <span class="n">build</span><span class="p">(</span><span class="n">pl</span> <span class="o">+</span> <span class="n">L</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">pr</span><span class="p">,</span> <span class="n">k</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">qr</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
             <span class="k">return</span> <span class="n">root</span>
 
         <span class="k">return</span> <span class="n">build</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">preorder</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">postorder</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
 </code></pre></div>
-<p>样例：<code>preorder=[1,2,4,5,3,6,7], postorder=[4,5,2,6,7,3,1]</code>。pos={4:0,5:1,2:2,6:3,7:4,3:5,1:6}。
-- 根 1，left_root = pre[1]=2，pos[2]=2，L=3。
-- 左子树：pre[1..3]=[2,4,5]，post[0..2]=[4,5,2]，根 2，left_root=4，L=1 → 2.left=4(叶), 2.right=build(pre[3..3], post[1..1])=5(叶)。
-- 右子树：pre[4..6]=[3,6,7]，post[3..5]=[6,7,3]，根 3，类似 → 3.left=6, 3.right=7。
-- 拼出 [1,2,3,4,5,6,7]。✓</p>
-<p><strong>复杂度提升</strong>：用哈希后定位 <span class="arithmatex">\(O(1)\)</span>；递归本身 <span class="arithmatex">\(O(n)\)</span>。</p>
+<p><strong>走一遍样例</strong>，看分界线如何从 <span class="arithmatex">\(k\)</span> 浮现：<code>preorder=[1,2,4,5,3,6,7], postorder=[4,5,2,6,7,3,1]</code>，于是 <code>pos={4:0,5:1,2:2,6:3,7:4,3:5,1:6}</code>。</p>
+<ul>
+<li>根 <span class="arithmatex">\(\text{pre}[0]=1\)</span>。左子树根 <span class="arithmatex">\(\text{pre}[1]=2\)</span>，<span class="arithmatex">\(k=\text{pos}[2]=2\)</span>，<span class="arithmatex">\(L=2-0+1=3\)</span>。分界线把 postorder 切成左段 <span class="arithmatex">\(\text{post}[0..2]=[4,5,2]\)</span> 与右段。</li>
+<li>左子树 <code>build</code>：pre <span class="arithmatex">\([2,4,5]\)</span>，post <span class="arithmatex">\([4,5,2]\)</span>，根 <span class="arithmatex">\(2\)</span>，左子树根 <span class="arithmatex">\(4\)</span>，<span class="arithmatex">\(k=\text{pos}[4]=0\)</span>，<span class="arithmatex">\(L=1\)</span> → <span class="arithmatex">\(2.\text{left}=4\)</span>（叶），<span class="arithmatex">\(2.\text{right}=\text{build}(\text{pre}[5..5],\ \text{post}[1..1])=5\)</span>（叶）。</li>
+<li>右子树 <code>build</code>：pre <span class="arithmatex">\([3,6,7]\)</span>，post <span class="arithmatex">\([6,7,3]\)</span>，根 <span class="arithmatex">\(3\)</span>，同理 <span class="arithmatex">\(3.\text{left}=6,\ 3.\text{right}=7\)</span>。</li>
+<li>拼出层序 <span class="arithmatex">\([1,2,3,4,5,6,7]\)</span>。✓</li>
+</ul>
+<p><strong>关于"约定 <span class="arithmatex">\(\text{pre}[pl+1]\)</span> 为左子树根"</strong>：当一个节点其实只有右孩子时，这条约定会把它当作左孩子挂上。回到背景里的最小反例 <span class="arithmatex">\(\text{pre}=[1,2],\ \text{post}=[2,1]\)</span>：本算法令 <span class="arithmatex">\(L=1\)</span>，把 <span class="arithmatex">\(2\)</span> 挂为 <span class="arithmatex">\(1.\text{left}\)</span>。验证其 preorder 仍是 <span class="arithmatex">\([1,2]\)</span>、postorder 仍是 <span class="arithmatex">\([2,1]\)</span>——与输入一致。背景已证明这一对序列本就对应多棵树，算法输出的是其中合法的一棵，符合"任意有效答案"的判定。</p>
 <h2 id="complexity">复杂度 (Complexity)<a class="headerlink" href="#complexity" title="Permanent link">#</a></h2>
 <ul>
-<li>Time: <span class="arithmatex">\(O(n)\)</span>，哈希构建 + 递归各 <span class="arithmatex">\(O(n)\)</span>。</li>
-<li>Space: <span class="arithmatex">\(O(n)\)</span> 哈希 + <span class="arithmatex">\(O(h)\)</span> 递归（<span class="arithmatex">\(h\)</span> = 树高）。</li>
+<li>Time: <span class="arithmatex">\(O(n)\)</span>。哈希预处理一趟 <span class="arithmatex">\(O(n)\)</span>；递归对每个节点恰好访问一次，每次定位经哈希为 <span class="arithmatex">\(O(1)\)</span>，故递归共 <span class="arithmatex">\(O(n)\)</span> 常数工作，合计 <span class="arithmatex">\(O(n)\)</span>。</li>
+<li>Space: <span class="arithmatex">\(O(n)\)</span> 哈希 <span class="arithmatex">\(+\ O(h)\)</span> 递归栈（<span class="arithmatex">\(h\)</span> 为树高，退化树 <span class="arithmatex">\(h=O(n)\)</span>，被 <span class="arithmatex">\(O(n)\)</span> 哈希项吸收）。</li>
 </ul>
 <h2 id="pitfalls">陷阱 (Pitfalls)<a class="headerlink" href="#pitfalls" title="Permanent link">#</a></h2>
 <ul>
-<li>当 <code>pl == pr</code> 必须早返回，否则会读 <code>pre[pl+1]</code> 越界。</li>
-<li>"left_root" 约定的副作用：单子节点时输出左偏；接受任意答案的判定题这是 OK 的。</li>
-<li>不要用 <code>postorder.index(left_root)</code> 线性查找——会变 <span class="arithmatex">\(O(n^2)\)</span>；必须先建哈希。</li>
+<li><span class="arithmatex">\(pl = pr\)</span> 必须早返回。否则会继续读 <span class="arithmatex">\(\text{pre}[pl+1]\)</span>，对单元素区间即越界。</li>
+<li>右子树 postorder 区间取 <span class="arithmatex">\(qr-1\)</span>：当前根坐在 <span class="arithmatex">\(\text{post}[qr]\)</span>，须从右段剔除；写成 <span class="arithmatex">\(qr\)</span> 会把根重复计入。</li>
+<li>单孩子节点的左偏副作用：约定 <span class="arithmatex">\(\text{pre}[pl+1]\)</span> 为左根，使只有右孩子的节点被挂为左孩子。因背景中该序列对本就多解，这在"接受任意有效答案"的判定下成立。</li>
+<li>用 <code>postorder.index(left_root)</code> 线性定位会使总时间退化为 <span class="arithmatex">\(O(n^2)\)</span>；postorder 不变且值互异，应先建哈希把定位降到 <span class="arithmatex">\(O(1)\)</span>。</li>
 </ul>
 <h2 id="related">相关题目 (Related)<a class="headerlink" href="#related" title="Permanent link">#</a></h2>
 <ul>
 <li><a href="../0226_invert-binary-tree/">#226. Invert Binary Tree</a> — 同属树结构操作。</li>
 <li><a href="../0897_increasing-order-search-tree/">#897. Increasing Order Search Tree</a> — 同 batch，树重组。</li>
-<li><code>#105. Construct Binary Tree from Preorder and Inorder (Medium, off-wiki)</code> — 唯一构造的姐妹题。</li>
+<li><code>#105. Construct Binary Tree from Preorder and Inorder (Medium, off-wiki)</code> — 唯一构造的姐妹题：inorder 直接给出左右分界。</li>
 <li><code>#106. Construct Binary Tree from Inorder and Postorder (Medium, off-wiki)</code> — 同上。</li>
 </ul>
 <h2 id="further-reading">Further Reading<a class="headerlink" href="#further-reading" title="Permanent link">#</a></h2>
@@ -22627,6 +22684,8 @@
         <script src="../../../js/mathjax/tex-mml-chtml.js"></script>
       
         <script src="../../../js/mermaid.min.js"></script>
+      
+        <script src="../../../js/featured.js"></script>
       
     
   </body>

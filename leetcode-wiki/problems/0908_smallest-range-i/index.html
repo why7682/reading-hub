@@ -1466,6 +1466,8 @@
       
         
       
+        
+      
     
     
     
@@ -1521,6 +1523,34 @@
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../featured/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ⭐ Featured（已验证）
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
               
             
               
@@ -1610,10 +1640,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_4" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
         
           
-          <label class="md-nav__link" for="__nav_4_4" id="__nav_4_4_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_5" id="__nav_4_5_label" tabindex="">
             
   
   
@@ -1631,8 +1661,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_4_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_4">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_5">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1915,7 +1945,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -1937,14 +1967,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_4_5" id="__nav_4_5_label" tabindex="">
+              <label class="md-nav__link " for="__nav_4_6" id="__nav_4_6_label" tabindex="">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_5">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_6">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -5321,10 +5351,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_7" checked>
         
           
-          <label class="md-nav__link" for="__nav_4_6" id="__nav_4_6_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_7" id="__nav_4_7_label" tabindex="">
             
   
   
@@ -5342,8 +5372,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_4_6">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_7_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4_7">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -22467,20 +22497,35 @@
 <h2 id="problem">Problem<a class="headerlink" href="#problem" title="Permanent link">#</a></h2>
 <p>对 <code>nums</code> 每个下标至多加一次 <span class="arithmatex">\(x \in [-k, k]\)</span>（不同下标 <span class="arithmatex">\(x\)</span> 可不同），求修改后 <span class="arithmatex">\(\max - \min\)</span> 的最小值。<span class="arithmatex">\(1 \le n \le 10^4\)</span>，<span class="arithmatex">\(0 \le \text{nums}[i], k \le 10^4\)</span>。</p>
 <h2 id="background">背景 (Background)<a class="headerlink" href="#background" title="Permanent link">#</a></h2>
-<p>本题为基础区间收缩，无特殊学科背景。可视为"区间宽度的鲁棒优化"最小例：每个元素被一个 <span class="arithmatex">\([-k, k]\)</span> 区间噪声包围，要求最坏宽度最小。</p>
+<p>设原数组的最大值与最小值分别为 <span class="arithmatex">\(M = \max(\text{nums})\)</span>、<span class="arithmatex">\(m = \min(\text{nums})\)</span>。一个直接的想法是：既然要压缩 <span class="arithmatex">\(\max - \min\)</span>，就把每个元素都朝中心移动，希望整体挤到一起。但「朝中心移动」并不能直接告诉我们最终的 <span class="arithmatex">\(\max - \min\)</span> 是多少——中间那些元素移到哪里，对最终的极差毫无影响，因为极差只由移动后的最大者和最小者决定。这提示我们：不该盯着 <span class="arithmatex">\(n\)</span> 个元素，而该只盯着两个端点 <span class="arithmatex">\(M\)</span> 和 <span class="arithmatex">\(m\)</span>，并问它们各自能被推到多远。</p>
 <h2 id="formulation">形式化 (Formulation)<a class="headerlink" href="#formulation" title="Permanent link">#</a></h2>
-<p>新最大不超过 <span class="arithmatex">\(\max(\text{nums}) - k\)</span>（每个最大值各减 <span class="arithmatex">\(k\)</span>），新最小不低于 <span class="arithmatex">\(\min(\text{nums}) + k\)</span>。故新 spread <span class="arithmatex">\(\ge \max(\text{nums}) - \min(\text{nums}) - 2k\)</span>，且当 <span class="arithmatex">\(\ge 0\)</span> 时可达；否则下界 0。</p>
-<div class="arithmatex">\[\text{ans} = \max(0,\ \max(\text{nums}) - \min(\text{nums}) - 2k).\]</div>
+<p>每个下标 <span class="arithmatex">\(i\)</span> 独立选一个偏移 <span class="arithmatex">\(x_i \in [-k, k]\)</span>，目标是最小化修改后的极差。写成标准优化问题：</p>
+<div class="arithmatex">\[
+\min_{x_i \in [-k,\,k]} \ \Big( \max_i (\text{nums}[i] + x_i) \;-\; \min_i (\text{nums}[i] + x_i) \Big). \tag{1}
+\]</div>
+<p>直觉先行：要让 (1) 尽量小，应当把修改后的最大值压到尽量低、把修改后的最小值抬到尽量高，而这两件事互不干扰——压低最大值用的是某些下标的 <span class="arithmatex">\(x_i\)</span>，抬高最小值用的是另一些下标的 <span class="arithmatex">\(x_i\)</span>，可以各取所需。于是先分别给出两个极值的可达范围。</p>
+<p><strong>修改后最大值的下界。</strong> 对每个 <span class="arithmatex">\(i\)</span> 有 <span class="arithmatex">\(\text{nums}[i] + x_i \le \text{nums}[i] + k \le M + k\)</span>，所以最大值至多被压到 <span class="arithmatex">\(M - k\)</span>（取在原最大值那个下标上 <span class="arithmatex">\(x = -k\)</span>）；它无法更低，因为原最大者即便减满 <span class="arithmatex">\(k\)</span> 也只到 <span class="arithmatex">\(M - k\)</span>。故修改后最大值 <span class="arithmatex">\(\ge M - k\)</span>，且 <span class="arithmatex">\(M - k\)</span> 可达。</p>
+<p><strong>修改后最小值的上界。</strong> 对称地，最小值至多被抬到 <span class="arithmatex">\(m + k\)</span>（取在原最小值那个下标上 <span class="arithmatex">\(x = +k\)</span>）；它无法更高。故修改后最小值 <span class="arithmatex">\(\le m + k\)</span>，且 <span class="arithmatex">\(m + k\)</span> 可达。</p>
+<p><strong>合并为极差下界。</strong> 修改后极差 <span class="arithmatex">\(=\)</span>（修改后最大值）<span class="arithmatex">\(-\)</span>（修改后最小值）<span class="arithmatex">\(\ge (M - k) - (m + k) = M - m - 2k\)</span>。</p>
+<p><strong>下界是否可达（紧）。</strong> 上面只证明了 (1) 不小于 <span class="arithmatex">\(M - m - 2k\)</span>，还需说明这个值能真正取到，否则它只是个下界、不是答案。分两种情形：</p>
+<ul>
+<li>当 <span class="arithmatex">\(M - m - 2k \ge 0\)</span>：令原最大者取 <span class="arithmatex">\(x = -k\)</span>、原最小者取 <span class="arithmatex">\(x = +k\)</span>，其余下标取 <span class="arithmatex">\(x = 0\)</span>。新最大恰为 <span class="arithmatex">\(M - k\)</span>、新最小恰为 <span class="arithmatex">\(m + k\)</span>，极差恰为 <span class="arithmatex">\(M - m - 2k\)</span>，下界达到。</li>
+<li>当 <span class="arithmatex">\(M - m - 2k &lt; 0\)</span>，即 <span class="arithmatex">\(M - m \le 2k\)</span>：此时每个元素的可达区间 <span class="arithmatex">\([\text{nums}[i] - k,\ \text{nums}[i] + k]\)</span> 两两相交（任意两区间中心相距不超过 <span class="arithmatex">\(M - m \le 2k\)</span>，正好是两个半径 <span class="arithmatex">\(k\)</span> 之和），故存在一个公共点可被所有元素同时取到，极差为 <span class="arithmatex">\(0\)</span>。</li>
+</ul>
+<p>因此答案是下界与 <span class="arithmatex">\(0\)</span> 取较大者：</p>
+<div class="arithmatex">\[
+\text{ans} = \max\big(0,\ M - m - 2k\big) = \max\big(0,\ \max(\text{nums}) - \min(\text{nums}) - 2k\big). \tag{2}
+\]</div>
 <h2 id="approach">数据结构 / 想法 (Approach)<a class="headerlink" href="#approach" title="Permanent link">#</a></h2>
-<p>一次扫描求 max/min 即可。</p>
+<p>公式 (2) 把整道题归约为求出 <span class="arithmatex">\(\max(\text{nums})\)</span> 与 <span class="arithmatex">\(\min(\text{nums})\)</span> 两个量，二者各需一次线性扫描，因此一遍遍历即可直接给出答案，无需任何辅助结构。</p>
 <div class="language-python highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">Solution</span><span class="p">:</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">smallestRangeI</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">nums</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">],</span> <span class="n">k</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
         <span class="k">return</span> <span class="nb">max</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">max</span><span class="p">(</span><span class="n">nums</span><span class="p">)</span> <span class="o">-</span> <span class="nb">min</span><span class="p">(</span><span class="n">nums</span><span class="p">)</span> <span class="o">-</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">k</span><span class="p">)</span>
 </code></pre></div>
-<p>样例：
-- <code>[1], k=0</code>: max=min=1, 1-1-0=0 → 0。✓
-- <code>[0,10], k=2</code>: 10-0-4=6 → 6。✓
-- <code>[1,3,6], k=3</code>: 6-1-6=-1 → 0。✓</p>
+<p>样例（逐一对照公式 (2)）：
+- <code>[1], k=0</code>: <span class="arithmatex">\(M=m=1\)</span>，<span class="arithmatex">\(1-1-0=0 \to 0\)</span>。✓
+- <code>[0,10], k=2</code>: <span class="arithmatex">\(10-0-4=6 \to 6\)</span>。✓
+- <code>[1,3,6], k=3</code>: <span class="arithmatex">\(6-1-6=-1 \to 0\)</span>（落入 <span class="arithmatex">\(M-m \le 2k\)</span> 情形，可全部拉到同一点）。✓</p>
 <h2 id="complexity">复杂度 (Complexity)<a class="headerlink" href="#complexity" title="Permanent link">#</a></h2>
 <ul>
 <li>Time: <span class="arithmatex">\(O(n)\)</span></li>
@@ -22488,8 +22533,8 @@
 </ul>
 <h2 id="pitfalls">陷阱 (Pitfalls)<a class="headerlink" href="#pitfalls" title="Permanent link">#</a></h2>
 <ul>
-<li>必须 <code>max(0, ·)</code>：差值可能为负（<span class="arithmatex">\(2k\)</span> 足够大），否则会返回负数。</li>
-<li>题目允许"每个下标至多一次"，意味着可以不操作；当原差 <span class="arithmatex">\(\le 2k\)</span> 时全部可以拉到同一个值。</li>
+<li>公式 (2) 中的 <span class="arithmatex">\(\max(0, \cdot)\)</span> 不可省：当 <span class="arithmatex">\(2k &gt; M - m\)</span> 时下界 <span class="arithmatex">\(M - m - 2k\)</span> 为负，而极差不可能为负，此时真实答案是 <span class="arithmatex">\(0\)</span>（对应可达性分析的第二种情形）。</li>
+<li>「每个下标至多加一次」允许 <span class="arithmatex">\(x_i = 0\)</span>（即不操作），这正是上面 <span class="arithmatex">\(M - m \le 2k\)</span> 时把所有元素拉到公共点所依赖的自由度。</li>
 </ul>
 <h2 id="related">相关题目 (Related)<a class="headerlink" href="#related" title="Permanent link">#</a></h2>
 <ul>
@@ -22602,6 +22647,8 @@
         <script src="../../../js/mathjax/tex-mml-chtml.js"></script>
       
         <script src="../../../js/mermaid.min.js"></script>
+      
+        <script src="../../../js/featured.js"></script>
       
     
   </body>

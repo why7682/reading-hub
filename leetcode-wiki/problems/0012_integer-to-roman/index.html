@@ -1466,6 +1466,8 @@
       
         
       
+        
+      
     
     
     
@@ -1521,6 +1523,34 @@
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../featured/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ⭐ Featured（已验证）
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
               
             
               
@@ -1610,10 +1640,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_4" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
         
           
-          <label class="md-nav__link" for="__nav_4_4" id="__nav_4_4_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_5" id="__nav_4_5_label" tabindex="">
             
   
   
@@ -1631,8 +1661,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_4_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_4">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_5">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1915,7 +1945,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -1937,14 +1967,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_4_5" id="__nav_4_5_label" tabindex="">
+              <label class="md-nav__link " for="__nav_4_6" id="__nav_4_6_label" tabindex="">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_5">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_6">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -5321,10 +5351,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_7" checked>
         
           
-          <label class="md-nav__link" for="__nav_4_6" id="__nav_4_6_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_7" id="__nav_4_7_label" tabindex="">
             
   
   
@@ -5342,8 +5372,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_4_6">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_7_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4_7">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -22467,12 +22497,24 @@
 <h2 id="problem">Problem<a class="headerlink" href="#problem" title="Permanent link">#</a></h2>
 <p>给整数 <span class="arithmatex">\(1 \le \text{num} \le 3999\)</span>，把它转成罗马数字字符串。规则：每个十进制位从高到低分别用 <code>M / D / C / L / X / V / I</code> 表示；位首数字为 4 或 9 时用<strong>减法形式</strong>（<code>IV, IX, XL, XC, CD, CM</code>）；同位字母连写至多 3 次。</p>
 <h2 id="background">背景 (Background)<a class="headerlink" href="#background" title="Permanent link">#</a></h2>
-<p>罗马数字是<strong>符号性的非位置进制</strong>（sub-base 10 + 子基 5 混合），相比印度-阿拉伯位值制的代数闭合，它没有位权抽象，所以加减直接，但乘除几乎不可行——这是位值制取代它的根本原因。从算法视角看，本题等价于在 <strong>13 个面值</strong> <span class="arithmatex">\(\{1,4,5,9,10,40,50,90,100,400,500,900,1000\}\)</span> 上做<strong>贪心找零</strong> (greedy coin change)。这个面值集合是<strong>典范 (canonical)</strong> 的：贪心最优等价于全局最优——因为相邻面值之比 ∈ {2, 2.5, 5}，满足 Pearson (1975) 关于贪心找零最优性的判据（见 Coin Change #322 的讨论）。</p>
+<p>先尝试最朴素的做法，再看它在哪里失效——失效点会直接告诉我们需要怎样的符号表。</p>
+<p>罗马数字给出七个基本符号 <span class="arithmatex">\(\{\text{I}=1, \text{V}=5, \text{X}=10, \text{L}=50, \text{C}=100, \text{D}=500, \text{M}=1000\}\)</span>。最自然的第一想法：把这七个符号按值从大到小排好，每次尽量多地取当前最大符号，直到 <code>num</code> 归零。这就是"每步减去能放下的最大符号"的循环。</p>
+<p>对很多输入它没问题：<span class="arithmatex">\(\text{num}=30\)</span> 取三个 <code>X</code> 得 <code>XXX</code>；<span class="arithmatex">\(\text{num}=1000\)</span> 取一个 <code>M</code>。但在 <span class="arithmatex">\(\text{num}=4\)</span> 上它立刻崩溃：可用的最大符号是 <code>I</code>，于是输出四个 <code>I</code>，得 <code>IIII</code>——违反"同字母至多连写 3 次"的规则。<span class="arithmatex">\(\text{num}=9\)</span> 同理写成 <code>VIIII</code>。问题不在贪心策略本身，而在<strong>符号表不全</strong>：七个基本符号无法合法表示个位的 4 和 9。</p>
+<p>要修补，看清失效的成因即可：失效只发生在某一位等于 4 或 9 时。<span class="arithmatex">\(4\)</span> 介于 <span class="arithmatex">\(1\)</span> 与 <span class="arithmatex">\(5\)</span> 之间、<span class="arithmatex">\(9\)</span> 介于 <span class="arithmatex">\(5\)</span> 与 <span class="arithmatex">\(10\)</span> 之间，恰好落在"重复 3 次还差一个、重复 4 次又超限"的缝隙里。罗马数字为这些缝隙各设一个<strong>减法形式</strong>：<code>IV</code><span class="arithmatex">\(=4\)</span>、<code>IX</code><span class="arithmatex">\(=9\)</span>，以及十位、百位上的对应物 <code>XL</code><span class="arithmatex">\(=40\)</span>, <code>XC</code><span class="arithmatex">\(=90\)</span>, <code>CD</code><span class="arithmatex">\(=400\)</span>, <code>CM</code><span class="arithmatex">\(=900\)</span>。</p>
+<p>关键的一步：把这六个减法形式当作<strong>不可再分的独立面值</strong>，与七个基本符号并列。这样符号表从 7 个扩到 13 个，而每个面值连写都不超过 3 次——朴素贪心立刻重新可用，且不会再撞上 <code>IIII</code>。这 13 个面值不是任意拼凑：它们恰好是罗马写法"换符号"的全部断点，由十进制（基 10）叠加一个子基 5 的结构唯一确定。在这套面值下，每个十进制位 <span class="arithmatex">\(0\text{–}9\)</span> 都有固定写法。</p>
+<p>至此，整道题归约为：在这 13 个面值上从大到小逐个取最大可放的个数，把 <code>num</code> 写完：
+$<span class="arithmatex">\(\{1,4,5,9,10,40,50,90,100,400,500,900,1000\}.\)</span>$</p>
 <h2 id="formulation">形式化 (Formulation)<a class="headerlink" href="#formulation" title="Permanent link">#</a></h2>
-<p>设面值-符号对按降序排列</p>
-<div class="arithmatex">\[V = [(1000, \text{M}), (900, \text{CM}), (500, \text{D}), (400, \text{CD}), (100, \text{C}), (90, \text{XC}), (50, \text{L}), (40, \text{XL}), (10, \text{X}), (9, \text{IX}), (5, \text{V}), (4, \text{IV}), (1, \text{I})].\]</div>
-<p>求字符串 <span class="arithmatex">\(s\)</span> 使得：存在系数 <span class="arithmatex">\(c_k \in \mathbb{Z}_{\ge 0}\)</span> 满足 <span class="arithmatex">\(\sum c_k V_k.\text{val} = \text{num}\)</span>，且 <span class="arithmatex">\(s\)</span> 是按 <span class="arithmatex">\(V\)</span> 顺序拼接每个符号 <span class="arithmatex">\(c_k\)</span> 次的结果（贪心确定 <span class="arithmatex">\(c_k\)</span>）。</p>
+<p><strong>直觉先行。</strong> 操作上算法只有一句话：把面值从大到小扫一遍，对当前面值算"还能放下几个"，把对应符号写这么多次，剩下的值带到下一个更小的面值。"放下几个 + 剩多少"正是带余除法 <code>divmod</code> 的商与余，于是整个过程是 <code>divmod</code> 的链式应用。</p>
+<p>形式化之。设面值-符号对按降序排列
+$<span class="arithmatex">\(V = [(1000, \text{M}), (900, \text{CM}), (500, \text{D}), (400, \text{CD}), (100, \text{C}), (90, \text{XC}), (50, \text{L}), (40, \text{XL}), (10, \text{X}), (9, \text{IX}), (5, \text{V}), (4, \text{IV}), (1, \text{I})].\)</span>$</p>
+<p>记第 <span class="arithmatex">\(k\)</span> 个面值为 <span class="arithmatex">\(v_k\)</span>、其符号为 <span class="arithmatex">\(s_k\)</span>（<span class="arithmatex">\(v_1 &gt; v_2 &gt; \dots &gt; v_{13}\)</span>）。定义系数与余值的递推
+$<span class="arithmatex">\(c_k = \left\lfloor \frac{r_k}{v_k} \right\rfloor, \qquad r_1 = \text{num}, \quad r_{k+1} = r_k \bmod v_k.\)</span>$
+<span class="arithmatex">\(c_k\)</span> 是第 <span class="arithmatex">\(k\)</span> 步放下的个数，<span class="arithmatex">\(r_k\)</span> 是进入第 <span class="arithmatex">\(k\)</span> 步时尚未编码的余值。输出字符串为
+$<span class="arithmatex">\(s = s_1^{\,c_1} s_2^{\,c_2} \cdots s_{13}^{\,c_{13}},\)</span>$
+其中 <span class="arithmatex">\(s_k^{\,c_k}\)</span> 表示符号 <span class="arithmatex">\(s_k\)</span> 连写 <span class="arithmatex">\(c_k\)</span> 次。这套递推就是算法本身：<span class="arithmatex">\((c_k,\, r_{k+1})\)</span> 恰好是 <code>divmod(r_k, v_k)</code> 的（商，余）。下一节把它逐行译成代码。</p>
 <h2 id="approach">数据结构 / 想法 (Approach)<a class="headerlink" href="#approach" title="Permanent link">#</a></h2>
+<p>形式化直接决定了实现：数据结构是 13 个降序的 <span class="arithmatex">\((v_k, s_k)\)</span> 对，循环体是对每个面值做一次 <code>divmod</code> 取出 <span class="arithmatex">\(c_k\)</span> 并更新余值 <span class="arithmatex">\(r_{k+1}\)</span>。</p>
 <p><strong>解法 A：贪心扫面值表</strong>（最直接）</p>
 <div class="language-python highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">Solution</span><span class="p">:</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">intToRoman</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">num</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
@@ -22485,10 +22527,12 @@
             <span class="n">out</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">sym</span> <span class="o">*</span> <span class="n">q</span><span class="p">)</span>
         <span class="k">return</span> <span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">out</span><span class="p">)</span>
 </code></pre></div>
-<p><strong>心算 trace <code>num=3749</code></strong>：1000→<code>MMM</code> (余 749)；900→<code>(余 749)；500→`D` (余 249)；400→</code> (余 249)；100→<code>CC</code> (余 49)；90→<code>(余 49)；50→</code> (余 49)；40→<code>XL</code> (余 9)；10→<code>` (余 9)；9→</code>IX<code>(余 0)。结果</code>MMMDCCXLIX` ✓。</p>
-<p><strong>不变量</strong>：每次循环开始时，<code>num</code> 是尚未编码的值。因为面值表已<strong>预先把减法形式 (4/9 系)</strong> 当独立面值，所以每个十进制位 <span class="arithmatex">\(\{0..9\}\)</span> 都能被表内某一对面值 <span class="arithmatex">\((V_k, V_{k+1})\)</span> 唯一组合表示，贪心永不"卡住"。</p>
+<p>逐行对应形式化：<code>pairs</code> 是 <span class="arithmatex">\(V\)</span>；循环体 <code>q, num = divmod(num, v)</code> 就是 <span class="arithmatex">\(c_k = \lfloor r_k / v_k \rfloor\)</span> 与 <span class="arithmatex">\(r_{k+1} = r_k \bmod v_k\)</span>——<code>q</code> 是放下的个数 <span class="arithmatex">\(c_k\)</span>，更新后的 <code>num</code> 是余值 <span class="arithmatex">\(r_{k+1}\)</span>；<code>sym * q</code> 把符号连写 <span class="arithmatex">\(c_k\)</span> 次，即 <span class="arithmatex">\(s_k^{\,c_k}\)</span>。十三步走完，<code>out</code> 拼起来就是 <span class="arithmatex">\(s\)</span>。</p>
+<p><strong>执行 trace <code>num=3749</code></strong>：<span class="arithmatex">\(1000\to\)</span><code>MMM</code>（余 749）；<span class="arithmatex">\(900\to\)</span><code>（余 749）；$500\to$`D`（余 249）；$400\to$</code>（余 249）；<span class="arithmatex">\(100\to\)</span><code>CC</code>（余 49）；<span class="arithmatex">\(90\to\)</span><code>（余 49）；$50\to$</code>（余 49）；<span class="arithmatex">\(40\to\)</span><code>XL</code>（余 9）；<span class="arithmatex">\(10\to\)</span><code>`（余 9）；$9\to$</code>IX<code>（余 0）。结果</code>MMMDCCXLIX`。</p>
+<p><strong>不变量，以及降序为何必要。</strong> 进入第 <span class="arithmatex">\(k\)</span> 步时，<span class="arithmatex">\(r_k\)</span> 恰好是尚未编码的值——这是递推 <span class="arithmatex">\(r_{k+1} = r_k \bmod v_k\)</span> 的直接含义。带余除法保证 <span class="arithmatex">\(r_{k+1} &lt; v_k\)</span>，于是此后每一步面对的余值都严格小于已处理过的所有面值，贪心永不需要回头补放更大的符号。<strong>降序排列正是这个不变量成立的前提</strong>：把 <span class="arithmatex">\((4,\text{IV})\)</span> 排在 <span class="arithmatex">\((5,\text{V})\)</span> 之前无害（<span class="arithmatex">\(4&lt;5\)</span>，本就该先试），但若把某个小面值排到大面值之前，<code>divmod</code> 会先把值消耗在小面值上，破坏"逐位固定写法"。所以"面值表必须降序"不是一条孤立的经验，而是不变量的推论。</p>
+<p><strong>这个贪心追求什么。</strong> 不变量保证输出是合法的罗马写法，但它<strong>不</strong>保证用到的符号数最少。<span class="arithmatex">\(\text{num}=8\)</span> 被写成 <code>VIII</code>（<span class="arithmatex">\(5+1+1+1\)</span>，4 个符号），而若以"面值个数最少"为目标，<span class="arithmatex">\(8=4+4\)</span> 只需 2 个。两者并不等价：在 <span class="arithmatex">\(1\text{–}3999\)</span> 上，逐位固定写法与"面值个数最少"的最优解有 2468 处不一致。本算法的正确性来自编码规则本身——每个十进制位的固定写法——而非任何最优性。这一区分在 #322 的语境里才真正重要：判断一个面值集在"个数最少"意义下贪心是否最优，需要 Pearson (2005) 的多项式时间检验；本题不依赖它。</p>
 <p><strong>解法 B：按位查表</strong></p>
-<p>预存四张表：千、百、十、个位的所有 0-9 罗马串，然后取 <code>num</code> 的 4 位下标直接拼接。代码更短、常数最快，但<strong>不可扩展</strong>到 4000+。本题约束 <span class="arithmatex">\(\le 3999\)</span>，两法等价。</p>
+<p>形式化里"每个十进制位都有固定写法"这一点，可以更直接地利用：预存四张表，分别列出千、百、十、个位上 <span class="arithmatex">\(0\text{–}9\)</span> 的罗马串，再按 <code>num</code> 的每一位取下标拼接。代码更短、常数最快，但<strong>不可扩展</strong>到 4000 以上（千位表只到 <code>MMM</code>）。在约束 <span class="arithmatex">\(\text{num} \le 3999\)</span> 下，两法对所有输入产生完全相同的字符串（已逐一核对 <span class="arithmatex">\(1\text{–}3999\)</span>，零处不一致）。</p>
 <div class="language-python highlight"><pre><span></span><code><span class="n">TH</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;&quot;</span><span class="p">,</span><span class="s2">&quot;M&quot;</span><span class="p">,</span><span class="s2">&quot;MM&quot;</span><span class="p">,</span><span class="s2">&quot;MMM&quot;</span><span class="p">]</span>
 <span class="n">H</span>  <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;&quot;</span><span class="p">,</span><span class="s2">&quot;C&quot;</span><span class="p">,</span><span class="s2">&quot;CC&quot;</span><span class="p">,</span><span class="s2">&quot;CCC&quot;</span><span class="p">,</span><span class="s2">&quot;CD&quot;</span><span class="p">,</span><span class="s2">&quot;D&quot;</span><span class="p">,</span><span class="s2">&quot;DC&quot;</span><span class="p">,</span><span class="s2">&quot;DCC&quot;</span><span class="p">,</span><span class="s2">&quot;DCCC&quot;</span><span class="p">,</span><span class="s2">&quot;CM&quot;</span><span class="p">]</span>
 <span class="n">T</span>  <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;&quot;</span><span class="p">,</span><span class="s2">&quot;X&quot;</span><span class="p">,</span><span class="s2">&quot;XX&quot;</span><span class="p">,</span><span class="s2">&quot;XXX&quot;</span><span class="p">,</span><span class="s2">&quot;XL&quot;</span><span class="p">,</span><span class="s2">&quot;L&quot;</span><span class="p">,</span><span class="s2">&quot;LX&quot;</span><span class="p">,</span><span class="s2">&quot;LXX&quot;</span><span class="p">,</span><span class="s2">&quot;LXXX&quot;</span><span class="p">,</span><span class="s2">&quot;XC&quot;</span><span class="p">]</span>
@@ -22496,22 +22540,24 @@
 <span class="k">def</span><span class="w"> </span><span class="nf">intToRoman</span><span class="p">(</span><span class="n">num</span><span class="p">):</span> <span class="k">return</span> <span class="n">TH</span><span class="p">[</span><span class="n">num</span><span class="o">//</span><span class="mi">1000</span><span class="p">]</span><span class="o">+</span><span class="n">H</span><span class="p">[</span><span class="n">num</span><span class="o">//</span><span class="mi">100</span><span class="o">%</span><span class="mi">10</span><span class="p">]</span><span class="o">+</span><span class="n">T</span><span class="p">[</span><span class="n">num</span><span class="o">//</span><span class="mi">10</span><span class="o">%</span><span class="mi">10</span><span class="p">]</span><span class="o">+</span><span class="n">O</span><span class="p">[</span><span class="n">num</span><span class="o">%</span><span class="mi">10</span><span class="p">]</span>
 </code></pre></div>
 <h2 id="complexity">复杂度 (Complexity)<a class="headerlink" href="#complexity" title="Permanent link">#</a></h2>
+<p>两种解法的复杂度一致，下面以解法 A 为准。</p>
 <ul>
-<li>Time: <span class="arithmatex">\(O(1)\)</span>。面值表长度固定 13，循环次数与 <span class="arithmatex">\(\text{num}\)</span> 无关（最差 <code>MMMDCCCLXXXVIII</code> = 15 字符）。严格说是 <span class="arithmatex">\(O(\log \text{num})\)</span> 输出长度。</li>
-<li>Space: <span class="arithmatex">\(O(1)\)</span> 额外（输出除外）。</li>
+<li>Time: 在约束 <span class="arithmatex">\(\text{num} \le 3999\)</span> 下为 <span class="arithmatex">\(O(1)\)</span>。面值表长度固定 13，循环次数与 <code>num</code> 无关。若把输出字符串的拼接成本计入，则是 <span class="arithmatex">\(O(L)\)</span>，其中 <span class="arithmatex">\(L\)</span> 是输出长度（<span class="arithmatex">\(1\text{–}3999\)</span> 上最长为 <code>MMMDCCCLXXXVIII</code>，<span class="arithmatex">\(\text{num}=3888\)</span>，共 15 字符）。</li>
+<li>Space: <span class="arithmatex">\(O(1)\)</span> 额外空间（输出字符串除外）。</li>
 </ul>
+<p>注意输出长度 <span class="arithmatex">\(L\)</span> 并非 <span class="arithmatex">\(O(\log \text{num})\)</span>：千位是<strong>一进制</strong>（<code>M</code> 重复 <span class="arithmatex">\(\lfloor \text{num}/1000 \rfloor\)</span> 次），若放开上限，<span class="arithmatex">\(L\)</span> 随 <code>num</code> 线性增长。<span class="arithmatex">\(O(1)\)</span> 的结论严格依赖 <span class="arithmatex">\(\text{num} \le 3999\)</span> 这个约束。</p>
 <h2 id="pitfalls">陷阱 (Pitfalls)<a class="headerlink" href="#pitfalls" title="Permanent link">#</a></h2>
 <ul>
-<li><strong>顺序必须降序</strong>：把 <code>(4,'IV')</code> 放到 <code>(5,'V')</code> 之后就会让 4 输出成 <code>IIII</code>。</li>
-<li><strong>千位上限 3999</strong>：题面承诺；若不查约束写代码假定支持任意大整数，会输出非法的 <code>MMMM...</code>（罗马数字字面无 4M 符号）。</li>
-<li><strong>解法 B 别忘 <code>%10</code></strong>：每位要取自身位数，否则会重复计入高位。</li>
-<li><strong>不要用循环减法做朴素贪心</strong> <code>while num &gt;= v: num -= v; out += sym</code>——结果相同但 <span class="arithmatex">\(O(\text{num})\)</span> 比 divmod 慢一个量级（对本题无所谓，但写习惯了到 #322 会吃亏）。</li>
+<li><strong>顺序必须降序</strong>：根本原因见上节不变量——<code>divmod</code> 要求先消耗大面值。把 <code>(4,'IV')</code> 放到 <code>(5,'V')</code> 之后会让 4 输出成 <code>IIII</code>，违反"至多连写 3 次"。</li>
+<li><strong>千位上限 3999</strong>：题面承诺。若不查约束、假定支持任意大整数，会输出非法的 <code>MMMM...</code>（罗马数字并无 4000 的标准写法），且此时复杂度也不再是 <span class="arithmatex">\(O(1)\)</span>。</li>
+<li><strong>解法 B 别忘 <code>%10</code></strong>：每位要取自身那一位的数字（如 <code>num//100%10</code>），否则会把高位重复计入。</li>
+<li><strong>不要用循环减法做朴素贪心</strong> <code>while num &gt;= v: num -= v; out += sym</code>——输出与 <code>divmod</code> 版相同，但时间为 <span class="arithmatex">\(O(\text{num})\)</span>，比 <span class="arithmatex">\(O(1)\)</span> 的 <code>divmod</code> 慢一个量级。本题 <code>num</code> 有界无所谓，但同样的写法到 #322（<code>num</code> 可以很大）会成为性能瓶颈。</li>
 </ul>
 <h2 id="related">相关题目 (Related)<a class="headerlink" href="#related" title="Permanent link">#</a></h2>
 <ul>
 <li><code>#13. Roman to Integer (off-wiki)</code> — 本题的逆问题；扫一遍字符串，若当前面值 &lt; 下一面值则减，否则加。</li>
 <li><code>#273. Integer to English Words (off-wiki)</code> — 同型按位查表问题，规模更大（千/百万/十亿）。</li>
-<li><a href="../0322_coin-change/">#322. Coin Change</a> — 一般面值的找零问题，证明罗马面值集为何贪心可行。</li>
+<li><a href="../0322_coin-change/">#322. Coin Change</a> — 一般面值的"个数最少"问题。与本题形成对照：本题的罗马面值集在"个数最少"意义下并非贪心最优（见上方解法 A 的分析），其正确性来自编码规则而非最优性。</li>
 </ul>
 <h2 id="further-reading">Further Reading<a class="headerlink" href="#further-reading" title="Permanent link">#</a></h2>
 <ul>
@@ -22623,6 +22669,8 @@
         <script src="../../../js/mathjax/tex-mml-chtml.js"></script>
       
         <script src="../../../js/mermaid.min.js"></script>
+      
+        <script src="../../../js/featured.js"></script>
       
     
   </body>

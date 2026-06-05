@@ -1466,6 +1466,8 @@
       
         
       
+        
+      
     
     
     
@@ -1521,6 +1523,34 @@
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../featured/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ⭐ Featured（已验证）
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
               
             
               
@@ -1610,10 +1640,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_4" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
         
           
-          <label class="md-nav__link" for="__nav_4_4" id="__nav_4_4_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_5" id="__nav_4_5_label" tabindex="">
             
   
   
@@ -1631,8 +1661,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_4_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_4">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_5">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1915,7 +1945,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -1937,14 +1967,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_4_5" id="__nav_4_5_label" tabindex="">
+              <label class="md-nav__link " for="__nav_4_6" id="__nav_4_6_label" tabindex="">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_5">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_6">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -5321,10 +5351,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_7" checked>
         
           
-          <label class="md-nav__link" for="__nav_4_6" id="__nav_4_6_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_7" id="__nav_4_7_label" tabindex="">
             
   
   
@@ -5342,8 +5372,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_4_6">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_7_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4_7">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -22467,14 +22497,19 @@
 <h2 id="problem">Problem<a class="headerlink" href="#problem" title="Permanent link">#</a></h2>
 <p>给若干三元组 <code>triplets[i] = [a, b, c]</code> 与目标 <code>target = [x, y, z]</code>。每次操作可任选两组替换其一为两组按位 max。问能否得到 target。</p>
 <h2 id="_1">背景<a class="headerlink" href="#_1" title="Permanent link">#</a></h2>
-<p>"按位 max" 是<strong>单调上升 (monotone increasing) operation</strong>：合并只会让每维不变或变大，无法变小。所以：
-- 必要：必须存在三元组 (可能是不同的) 在三维分别达到 <span class="arithmatex">\(x, y, z\)</span> 且<strong>不超过</strong>（否则一旦合入再没法降下来）。
-- 充分：把这些"无超标"的三元组按 max 合并即可。</p>
-<p><strong>关键</strong>：合并不需要选同一三元组三维都达到 <span class="arithmatex">\(x, y, z\)</span> — 三个三元组各自负责一维即可。</p>
-<p>这是 <strong>closure under 操作</strong> 思维的代表：判定一个目标是否可达，通过分析操作的不变量与单调性。</p>
+<p>先看清这个操作能做什么、不能做什么。一次操作把两组 <span class="arithmatex">\((a_1,b_1,c_1)\)</span> 与 <span class="arithmatex">\((a_2,b_2,c_2)\)</span> 合成 <span class="arithmatex">\((\max(a_1,a_2),\max(b_1,b_2),\max(c_1,c_2))\)</span>，并替换掉其中一组。两点立即可见：每一维只会取更大者，永不下降；而且合并以整组为单位，没有"只取某一维、丢掉其余两维"的操作。</p>
+<p>最朴素的想法是放手去合并：哪个三元组看起来有用就合进来，凑齐 <span class="arithmatex">\(x,y,z\)</span> 三个数即可。试一个具体反例就知道这会出错。设 <code>triplets = [[3,9,9],[1,3,1],[1,1,3]]</code>，<code>target = [3,3,3]</code>。第一维的 <span class="arithmatex">\(3\)</span> 只出现在 <span class="arithmatex">\((3,9,9)\)</span> 里，若想拿到它就必须把 <span class="arithmatex">\((3,9,9)\)</span> 合进来；但一旦合进来，第二、三维立刻被抬到至少 <span class="arithmatex">\(9\)</span>，再无操作能把它们降回 <span class="arithmatex">\(3\)</span>。于是 target 不可达，朴素合并却以为可行。</p>
+<p>失败点很具体：某个三元组只要有一维超过了 target 对应分量，把它合进来就会把那一维永久卡在 target 之上。因为合并不能拆维，超标维和达标维是绑死的——不能只用它的好维度而丢掉坏维度。所以唯一安全的输入，是三维都不超标的三元组。</p>
+<p>把安全的三元组逐维取 max，结果每一维都 <span class="arithmatex">\(\le\)</span> target；只要其中确实存在某些三元组分别在三维顶到了 <span class="arithmatex">\(x,y,z\)</span>，逐维 max 就恰好等于 target。这给出一个判定：可达，当且仅当在"无超标"集合上的逐维 max 等于 target。</p>
 <h2 id="_2">形式化<a class="headerlink" href="#_2" title="Permanent link">#</a></h2>
-<p>设 <span class="arithmatex">\(S = \{(a_i, b_i, c_i) : a_i \le x, b_i \le y, c_i \le z\}\)</span>（"无超标"集合）。可达 ↔ <span class="arithmatex">\(\max_{i \in S} a_i = x \land \max_{i \in S} b_i = y \land \max_{i \in S} c_i = z\)</span>。</p>
+<p>直观上，把所有"无超标"三元组放进集合 <span class="arithmatex">\(S\)</span>，可达性要求 <span class="arithmatex">\(S\)</span> 内每一维的最大值都恰好顶到 target 对应分量。</p>
+<p>设三元组下标 <span class="arithmatex">\(i\)</span> 取遍所有输入，定义无超标集合</p>
+<div class="arithmatex">\[S = \{\, i : a_i \le x,\ b_i \le y,\ c_i \le z \,\}.\]</div>
+<p>则 target 可达当且仅当</p>
+<div class="arithmatex">\[\max_{i \in S} a_i = x \;\land\; \max_{i \in S} b_i = y \;\land\; \max_{i \in S} c_i = z. \tag{1}\]</div>
+<p>为何只看 <span class="arithmatex">\(S\)</span> 上的逐维 max 就够、而不必枚举 <span class="arithmatex">\(S\)</span> 的所有子集？因为按位 max 满足结合律、交换律与幂等律：任意一串合并、不论次序与是否重复，结果都等于所选那些三元组的逐维 max。于是任何合并序列的可达结果，都是某个子集的逐维 max；而在 <span class="arithmatex">\(S\)</span> 内，取全体的逐维 max 是其中最大的那个，又不会越过 target——它就是 <span class="arithmatex">\(S\)</span> 能合出的最优解。式 (1) 因此既必要又充分。</p>
 <h2 id="_3">数据结构 / 想法<a class="headerlink" href="#_3" title="Permanent link">#</a></h2>
+<p>式 (1) 直接翻译成一次扫描：遍历三元组，跳过任何一维超标的，对其余的逐维累积 max，最后与 target 比较。</p>
 <div class="language-python highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">mergeTriplets</span><span class="p">(</span><span class="n">triplets</span><span class="p">,</span> <span class="n">target</span><span class="p">):</span>
     <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span> <span class="o">=</span> <span class="n">target</span>
     <span class="n">a</span> <span class="o">=</span> <span class="n">b</span> <span class="o">=</span> <span class="n">c</span> <span class="o">=</span> <span class="mi">0</span>
@@ -22483,7 +22518,8 @@
             <span class="n">a</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">ta</span><span class="p">);</span> <span class="n">b</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="n">tb</span><span class="p">);</span> <span class="n">c</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">tc</span><span class="p">)</span>
     <span class="k">return</span> <span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">)</span> <span class="o">==</span> <span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">)</span>
 </code></pre></div>
-<p><strong>不变量</strong>：循环中 <code>a, b, c</code> 是当前为止"无超标"三元组的逐维 max。<strong>正确性</strong>：(1) 含超标的三元组合入会"卡"住对应维度永远 &gt; target → 必须排除。(2) 无超标三元组合并的 max 必 ≤ target 且单调不减 → 最终就是答案。</p>
+<p><strong>不变量</strong>：循环中 <code>(a, b, c)</code> 始终是已扫描过的无超标三元组的逐维 max，即式 (1) 左边在前缀上的值；扫完即得全集上的 max。</p>
+<p><strong>正确性</strong>：跳过的三元组至少有一维 <span class="arithmatex">\(&gt;\)</span> target，合入会把那一维永久卡在 target 之上（背景中的反例），故必须排除。保留的三元组逐维 max 必 <span class="arithmatex">\(\le\)</span> target 且单调不减，由式 (1) 这恰是判定所需的量。初值 <span class="arithmatex">\((0,0,0)\)</span> 在约束 <code>1 &lt;= target[i]</code> 下安全：若 <span class="arithmatex">\(S\)</span> 为空则结果 <span class="arithmatex">\((0,0,0)\ne\)</span> target，正确返回 <code>False</code>。</p>
 <h2 id="_4">复杂度<a class="headerlink" href="#_4" title="Permanent link">#</a></h2>
 <ul>
 <li>Time: <span class="arithmatex">\(O(n)\)</span></li>
@@ -22491,8 +22527,8 @@
 </ul>
 <h2 id="_5">陷阱<a class="headerlink" href="#_5" title="Permanent link">#</a></h2>
 <ul>
-<li>不能"忽略超标三元组中"良好"的维度"——它们必须整组排除。</li>
-<li>三元组单独看每维都满足 ≤ target 时即可纳入，无需 component-wise 决策。</li>
+<li>不能"挑走超标三元组里那些达标的维度"——合并以整组为单位，超标维与达标维绑死，必须整组排除。背景中的 <code>[[3,9,9],[1,3,1],[1,1,3]]</code> 正是这一点的反例。</li>
+<li>判定一个三元组能否纳入，只需三维同时 <span class="arithmatex">\(\le\)</span> target，无需对各维单独决策；这是因为式 (1) 已把可达性拆成三个独立的最大值，而 <span class="arithmatex">\(S\)</span> 的成员资格是整组条件。</li>
 </ul>
 <h2 id="_6">相关题目<a class="headerlink" href="#_6" title="Permanent link">#</a></h2>
 <ul>
@@ -22610,6 +22646,8 @@
         <script src="../../../js/mathjax/tex-mml-chtml.js"></script>
       
         <script src="../../../js/mermaid.min.js"></script>
+      
+        <script src="../../../js/featured.js"></script>
       
     
   </body>

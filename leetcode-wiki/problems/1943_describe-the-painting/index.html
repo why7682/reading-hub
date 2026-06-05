@@ -1466,6 +1466,8 @@
       
         
       
+        
+      
     
     
     
@@ -1521,6 +1523,34 @@
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../featured/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ⭐ Featured（已验证）
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
               
             
               
@@ -1610,10 +1640,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_4" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
         
           
-          <label class="md-nav__link" for="__nav_4_4" id="__nav_4_4_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_5" id="__nav_4_5_label" tabindex="">
             
   
   
@@ -1631,8 +1661,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_4_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_4">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_5">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1915,7 +1945,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -1937,14 +1967,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_4_5" id="__nav_4_5_label" tabindex="">
+              <label class="md-nav__link " for="__nav_4_6" id="__nav_4_6_label" tabindex="">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_5">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_6">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -5321,10 +5351,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_7" checked>
         
           
-          <label class="md-nav__link" for="__nav_4_6" id="__nav_4_6_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_7" id="__nav_4_7_label" tabindex="">
             
   
   
@@ -5342,8 +5372,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_4_6">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_7_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4_7">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -22465,29 +22495,29 @@
 <h1 id="1943-describe-the-painting-medium">1943. Describe the Painting  🟠 Medium<a class="headerlink" href="#1943-describe-the-painting-medium" title="Permanent link">#</a></h1>
 <p><strong>Tags</strong>: Array, Hash Table, Sorting, Prefix Sum</p>
 <h2 id="problem">Problem<a class="headerlink" href="#problem" title="Permanent link">#</a></h2>
-<p><span class="arithmatex">\(n\)</span> 条带颜色的半开区间 <span class="arithmatex">\([s_i, e_i)\)</span>，颜色互不相同。重叠处颜色"混合"——同一点上颜色集合不同则需切成不同段。返回最少段数的 painting 列表 <span class="arithmatex">\([l_j, r_j, \text{mix}_j]\)</span>，<span class="arithmatex">\(\text{mix}_j\)</span> 为该段的颜色和。约束 <span class="arithmatex">\(n \le 2 \times 10^4\)</span>，端点 <span class="arithmatex">\(\le 10^5\)</span>。注意：颜色集合不同的相邻段<strong>即使和相等</strong>也不能合并（例 3）。</p>
+<p><span class="arithmatex">\(n\)</span> 条带颜色的半开区间 <span class="arithmatex">\([s_i, e_i)\)</span>，颜色互不相同。重叠处颜色"混合"——同一点上颜色集合不同则需切成不同段。返回最少段数的 painting 列表 <span class="arithmatex">\([l_j, r_j, \text{mix}_j]\)</span>，<span class="arithmatex">\(\text{mix}_j\)</span> 为该段的颜色和。约束 <span class="arithmatex">\(n \le 2 \times 10^4\)</span>，端点 <span class="arithmatex">\(\le 10^5\)</span>，颜色 <span class="arithmatex">\(1 \le c_i \le 10^9\)</span>。注意：颜色集合不同的相邻段<strong>即使和相等</strong>也不能合并（例 3）。</p>
 <h2 id="background">背景 (Background)<a class="headerlink" href="#background" title="Permanent link">#</a></h2>
-<p>经典的<strong>"扫描线 (sweep line) + 差分 (difference array)"</strong> 问题，配合"重叠区间分组"。</p>
-<ul>
-<li>差分思想：在 <span class="arithmatex">\(s_i\)</span> 处 <span class="arithmatex">\(+c_i\)</span>，在 <span class="arithmatex">\(e_i\)</span> 处 <span class="arithmatex">\(-c_i\)</span>，扫描端点累计当前颜色和。</li>
-<li><strong>关键复杂点</strong>：题目要求"集合"不同就要切段——光看和值会错（例 3 两个段和都是 12，但集合 {5,7} 和 {1,11} 不同）。</li>
-</ul>
-<p>正确解法：以<strong>端点 (event points)</strong> 切分线段，每两个相邻 event 之间是一个"原子段"，原子段内的颜色集合不变。两相邻原子段合并仅当<strong>颜色集合相同</strong>——这等价于"两段之间没有任何区间端点（start 或 end）"。所以只需要在所有 event 点上切分即可。</p>
+<p>先把题目本身要求的量看清楚。沿数轴从左往右移动一个点，问"此刻有哪些区间覆盖我"。这个<strong>活跃区间集合</strong>随位置变化；输出的每一段恰好对应集合保持不变的一段坐标，段上的颜色和就是该集合中所有颜色之和。问题因此化为：找出活跃集合发生变化的所有位置，并在每段上求颜色和。</p>
+<p><strong>最朴素的做法</strong>：把端点范围 <span class="arithmatex">\([0, L]\)</span>（<span class="arithmatex">\(L \le 10^5\)</span>）当成一条离散数轴，逐整点扫描，每点维护当前活跃的颜色集合。但建立每点的集合需要对每个区间标记其覆盖的所有整点，代价是 <span class="arithmatex">\(O(L \cdot n)\)</span>，在 <span class="arithmatex">\(L = 10^5,\, n = 2\times 10^4\)</span> 下达到 <span class="arithmatex">\(2\times 10^9\)</span>，过慢。</p>
+<p>朴素法慢在哪？它在每一个整点都重算状态，可绝大多数相邻整点的活跃集合<strong>完全相同</strong>——集合只在区间的起点和终点处才可能改变。一个颜色 <span class="arithmatex">\(c_i\)</span> 唯一地在 <span class="arithmatex">\(s_i\)</span> 处进入、在 <span class="arithmatex">\(e_i\)</span> 处退出；在任何不含端点的开区间内，没有颜色能进出，活跃集合被冻结。于是只有 <span class="arithmatex">\(\{s_i\} \cup \{e_i\}\)</span> 这 <span class="arithmatex">\(\le 2n\)</span> 个<strong>端点 (event point)</strong> 是"有意义的"坐标，其余整点都是冗余。把数轴按这些端点切开，就得到一组活跃集合恒定的极大区间——下文称之为<strong>原子段</strong>。</p>
+<p>朴素法之外还藏着第二个陷阱。既然每段要切，能否事后把"和相等"的相邻段并掉以减少段数？不行。例 3 <code>[[1,4,5],[1,4,7],[4,7,1],[4,7,11]]</code> 中 <span class="arithmatex">\([1,4)\)</span> 的颜色集合是 <span class="arithmatex">\(\{5,7\}\)</span>、和为 12，<span class="arithmatex">\([4,7)\)</span> 是 <span class="arithmatex">\(\{1,11\}\)</span>、和也是 12；两段和相等但集合不同，<strong>必须分开</strong>。题目要的是集合不同就切，"和"只是巧合相等。这说明合并的判据只能是集合，不能是和。</p>
+<p>好在端点切分已经一劳永逸地解决了合并问题：每个端点至少伴随一个颜色的进或出，所以相邻两个原子段的活跃集合<strong>必然不同</strong>，永远不该合并。我们既不需要事后按和合并，也不会错误地把例 3 并成一段——只要在所有端点处切分即可。</p>
+<p>把这套"按端点离散化、从左到右维护活跃状态"的扫描方式称作<strong>扫描线 (sweep line)</strong>；端点处的颜色变化用<strong>差分 (difference array)</strong> 累加：在 <span class="arithmatex">\(s_i\)</span> 处 <span class="arithmatex">\(+c_i\)</span>、在 <span class="arithmatex">\(e_i\)</span> 处 <span class="arithmatex">\(-c_i\)</span>，前缀和即得每段的颜色和。这两个名字只是上面推导的命名，机制已由问题结构本身导出。</p>
 <h2 id="formulation">形式化 (Formulation)<a class="headerlink" href="#formulation" title="Permanent link">#</a></h2>
-<p>设 events <span class="arithmatex">\(E = \{s_i\} \cup \{e_i\}\)</span> 排序后为 <span class="arithmatex">\(x_1 &lt; x_2 &lt; \dots &lt; x_m\)</span>。对每个相邻区间 <span class="arithmatex">\([x_k, x_{k+1})\)</span>，若该区间被至少一个原区间覆盖（即和 <span class="arithmatex">\(&gt; 0\)</span>），输出 <span class="arithmatex">\((x_k, x_{k+1}, \sum_i c_i \cdot [s_i \le x_k \land e_i \ge x_{k+1}])\)</span>。</p>
+<p>直觉先行：在两个相邻端点之间，活跃区间集合恒定，故颜色和是一个固定量，等于所有"完整覆盖这一子段"的区间的颜色之和。形式化如下。</p>
+<p>设端点全集 <span class="arithmatex">\(E = \{s_i\} \cup \{e_i\}\)</span>，去重排序后为 <span class="arithmatex">\(x_1 &lt; x_2 &lt; \dots &lt; x_m\)</span>。对每个相邻对构成的原子段 <span class="arithmatex">\([x_k, x_{k+1})\)</span>，其颜色和定义为覆盖该段的所有区间颜色之和：</p>
+<div class="arithmatex">\[
+\text{mix}_k \;=\; \sum_{i=1}^{n} c_i \cdot \mathbb{1}\!\left[\, s_i \le x_k \;\wedge\; e_i \ge x_{k+1} \,\right],
+\]</div>
+<p>其中 <span class="arithmatex">\(\mathbb{1}[\cdot]\)</span> 为 Iverson 指示函数（条件成立取 1，否则取 0）。条件 <span class="arithmatex">\(s_i \le x_k \wedge e_i \ge x_{k+1}\)</span> 恰好表示半开区间 <span class="arithmatex">\([s_i, e_i)\)</span> 完整包含 <span class="arithmatex">\([x_k, x_{k+1})\)</span>——因为相邻端点之间无其他端点，"覆盖端点 <span class="arithmatex">\(x_k\)</span>"即等价于"覆盖整段"。当该段无任何区间覆盖（<span class="arithmatex">\(\text{mix}_k\)</span> 的求和为空）时跳过不输出。最终答案即所有非空段 <span class="arithmatex">\((x_k, x_{k+1}, \text{mix}_k)\)</span> 按序排列。</p>
 <h2 id="approach">数据结构 / 想法 (Approach)<a class="headerlink" href="#approach" title="Permanent link">#</a></h2>
-<p><strong>差分 + event 切段</strong>：</p>
-<ol>
-<li>用 <code>dict diff: x → 该点处的颜色变化和</code> 累计：对每个区间 <span class="arithmatex">\((s, e, c)\)</span>，<code>diff[s] += c</code>，<code>diff[e] -= c</code>。</li>
-<li>排序 events。</li>
-<li>维护 <code>cur_sum</code>，从左到右扫；同时维护"是否当前段被覆盖"——但只看 sum 会错（sum 可能 0 也可能非 0）。<strong>需要额外维护"当前活跃区间数"</strong> 或 用 set 跟踪进入/退出的颜色。</li>
-</ol>
-<p><strong>简化</strong>：用两个 diff 数组——一个累加颜色和，一个累加"活跃区间数"。当活跃数 &gt; 0 时段才输出。</p>
+<p>形式化直接翻译为算法：端点离散化得到切点，差分数组给出每段颜色和，从左到右前缀累加即可。具体地，维护一个差分字典 <code>sum_diff</code>，对每个区间 <span class="arithmatex">\((s, e, c)\)</span> 置 <code>sum_diff[s] += c</code>、<code>sum_diff[e] -= c</code>；排序端点后从左扫，<code>cur_sum</code> 的前缀和就是当前原子段的颜色和。</p>
+<p>剩下一个判定：某段是否被覆盖、是否该输出。由约束 <span class="arithmatex">\(c_i \ge 1\)</span>（颜色严格为正），当且仅当当前活跃区间数大于 0 时 <code>cur_sum &gt; 0</code>，故 <code>cur_sum &gt; 0</code> 已足够判断覆盖。为使逻辑对"颜色可能为 0 或负"也稳健、并让"覆盖"这一语义显式可读，我们额外维护一个计数差分 <code>cnt_diff</code>（进 <span class="arithmatex">\(+1\)</span>、出 <span class="arithmatex">\(-1\)</span>），以 <code>cur_cnt &gt; 0</code> 作为输出判据。</p>
 <div class="language-python highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">Solution</span><span class="p">:</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">splitPainting</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">segments</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]])</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]]:</span>
         <span class="kn">from</span><span class="w"> </span><span class="nn">collections</span><span class="w"> </span><span class="kn">import</span> <span class="n">defaultdict</span>
-        <span class="n">sum_diff</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>   <span class="c1"># color sum delta</span>
-        <span class="n">cnt_diff</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>   <span class="c1"># # active segments delta</span>
+        <span class="n">sum_diff</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>   <span class="c1"># color sum delta at each endpoint</span>
+        <span class="n">cnt_diff</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>   <span class="c1"># active-segment count delta</span>
         <span class="k">for</span> <span class="n">s</span><span class="p">,</span> <span class="n">e</span><span class="p">,</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">segments</span><span class="p">:</span>
             <span class="n">sum_diff</span><span class="p">[</span><span class="n">s</span><span class="p">]</span> <span class="o">+=</span> <span class="n">c</span>
             <span class="n">sum_diff</span><span class="p">[</span><span class="n">e</span><span class="p">]</span> <span class="o">-=</span> <span class="n">c</span>
@@ -22501,33 +22531,34 @@
             <span class="n">x</span> <span class="o">=</span> <span class="n">events</span><span class="p">[</span><span class="n">k</span><span class="p">]</span>
             <span class="n">cur_sum</span> <span class="o">+=</span> <span class="n">sum_diff</span><span class="p">[</span><span class="n">x</span><span class="p">]</span>
             <span class="n">cur_cnt</span> <span class="o">+=</span> <span class="n">cnt_diff</span><span class="p">[</span><span class="n">x</span><span class="p">]</span>
-            <span class="k">if</span> <span class="n">cur_cnt</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">cur_cnt</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>          <span class="c1"># 等价于 cur_sum &gt; 0（因 c_i &gt;= 1）</span>
                 <span class="n">result</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="n">x</span><span class="p">,</span> <span class="n">events</span><span class="p">[</span><span class="n">k</span> <span class="o">+</span> <span class="mi">1</span><span class="p">],</span> <span class="n">cur_sum</span><span class="p">])</span>
         <span class="k">return</span> <span class="n">result</span>
 </code></pre></div>
-<p><strong>正确性</strong>：
-- 在两相邻 event 之间，颜色集合恒定（因为没有 start/end 发生），所以是合法的"原子段"。
-- 若 <code>cur_cnt == 0</code>（无活跃区间），跳过——对应"未被任何颜色覆盖"的间隙（参见例 2 中 [7,8)? 不，例 2 中 [7,8) 单色 15 是覆盖的）。
-- 不需要再合并相邻段——因为每个 event 都对应至少一个区间端点变化，所以颜色集合都变了（至少有一个颜色进出）。</p>
-<p>Trace 例 3 <code>[[1,4,5],[1,4,7],[4,7,1],[4,7,11]]</code>:
-- diff sums: 1: +5+7=12; 4: -5-7+1+11=0; 7: -1-11=-12
-- diff cnt: 1: +2; 4: -2+2=0; 7: -2
-- events: [1,4,7]
-- k=0: x=1, cur_sum=12, cur_cnt=2 → output [1, 4, 12]
-- k=1: x=4, cur_sum=12+0=12, cur_cnt=2+0=2 → output [4, 7, 12]
-- result = [[1,4,12],[4,7,12]] ✓</p>
-<p>注意例 3 中 sum 相等（都是 12）但因为是不同的 event 间隔（颜色集合从 {5,7} 变到 {1,11}），算法正确地输出两段，不合并。</p>
+<p><strong>正确性</strong>与形式化逐条对应：</p>
+<ul>
+<li>每两个相邻端点之间的开区间不含任何端点，活跃集合恒定，故 <span class="arithmatex">\([x_k, x_{k+1})\)</span> 是合法的原子段，<code>cur_sum</code> 即其颜色和。</li>
+<li>相邻原子段之间隔着至少一个端点，至少有一个颜色进或出，活跃集合必不相同，因此无需也不应合并——这正是端点切分相对"按和合并"的优势（例 3）。</li>
+<li>当 <code>cur_cnt == 0</code>（无活跃区间），该段对应未被任何颜色覆盖的间隙，跳过。例如输入 <code>[[1,3,5],[5,7,7]]</code>，端点为 <span class="arithmatex">\([1,3,5,7]\)</span>，子段 <span class="arithmatex">\([3,5)\)</span> 的 <code>cur_cnt = 0</code>，正确略过，输出 <code>[[1,3,5],[5,7,7]]</code>。</li>
+</ul>
+<p><strong>例 3 验证</strong>。取 <code>[[1,4,5],[1,4,7],[4,7,1],[4,7,11]]</code>，逐端点求差分：</p>
+<ul>
+<li><code>sum_diff</code>：在 <span class="arithmatex">\(1\)</span> 处 <span class="arithmatex">\(+5+7 = 12\)</span>，在 <span class="arithmatex">\(4\)</span> 处 <span class="arithmatex">\(-5-7+1+11 = 0\)</span>，在 <span class="arithmatex">\(7\)</span> 处 <span class="arithmatex">\(-1-11 = -12\)</span>。</li>
+<li><code>cnt_diff</code>：在 <span class="arithmatex">\(1\)</span> 处 <span class="arithmatex">\(+2\)</span>，在 <span class="arithmatex">\(4\)</span> 处 <span class="arithmatex">\(-2+2 = 0\)</span>，在 <span class="arithmatex">\(7\)</span> 处 <span class="arithmatex">\(-2\)</span>。</li>
+<li>端点序列 <code>events = [1, 4, 7]</code>。</li>
+</ul>
+<p>从左扫描：<span class="arithmatex">\(k=0\)</span> 时到达 <span class="arithmatex">\(x=1\)</span>，<code>cur_sum = 12</code>、<code>cur_cnt = 2</code>，输出 <span class="arithmatex">\([1, 4, 12]\)</span>；<span class="arithmatex">\(k=1\)</span> 时到达 <span class="arithmatex">\(x=4\)</span>，<code>cur_sum = 12 + 0 = 12</code>、<code>cur_cnt = 2 + 0 = 2</code>，输出 <span class="arithmatex">\([4, 7, 12]\)</span>。结果 <code>[[1,4,12],[4,7,12]]</code> 正确。两段和都是 12，但因分属不同端点区间（集合从 <span class="arithmatex">\(\{5,7\}\)</span> 变到 <span class="arithmatex">\(\{1,11\}\)</span>），算法各自成段、不合并，与题意一致。</p>
 <h2 id="complexity">复杂度 (Complexity)<a class="headerlink" href="#complexity" title="Permanent link">#</a></h2>
 <ul>
-<li>Time: <span class="arithmatex">\(O(n \log n)\)</span>（排序 events），<span class="arithmatex">\(n\)</span> 为 segments 数量。</li>
-<li>Space: <span class="arithmatex">\(O(n)\)</span>（diff 字典 + 输出）。</li>
+<li>Time: <span class="arithmatex">\(O(n \log n)\)</span>，由对 <span class="arithmatex">\(\le 2n\)</span> 个端点排序主导（<span class="arithmatex">\(n\)</span> 为 segments 数量）；最好/平均/最坏一致，排序无条件执行。</li>
+<li>Space: <span class="arithmatex">\(O(n)\)</span>，差分字典加输出。</li>
 </ul>
 <h2 id="pitfalls">陷阱 (Pitfalls)<a class="headerlink" href="#pitfalls" title="Permanent link">#</a></h2>
 <ul>
-<li><strong>不能基于"sum 是否变化"判断切段</strong>——例 3 反例，不同集合可能 sum 相等。必须基于 event 点切。</li>
-<li><strong>半开区间 <code>[s, e)</code></strong>：end 处颜色"退出"，所以在 events[k] = end 那个点之后才不计该颜色。代码中 sum_diff[e] -= c 表"从 e 起此颜色不再贡献"。</li>
-<li><strong><code>cur_cnt &gt; 0</code> 必检</strong>：跳过空白间隙。如果输入是 <code>[[1,3,5],[5,7,7]]</code>，event=[1,3,5,7]，[3,5) 中 cur_cnt=0，要跳过。</li>
-<li><strong>defaultdict + sorted 拷贝 keys 列表</strong>——不要在迭代时改字典。</li>
+<li><strong>不能按"和相等"合并相邻段</strong>——例 3 中两段和都是 12 但颜色集合不同（<span class="arithmatex">\(\{5,7\}\)</span> vs <span class="arithmatex">\(\{1,11\}\)</span>），必须分开。判据是集合而非和；端点切分天然满足此判据，故无须事后合并。</li>
+<li><strong>半开区间 <code>[s, e)</code> 的退出语义</strong>：颜色在 <span class="arithmatex">\(e\)</span> 处退出，故 <code>sum_diff[e] -= c</code> 表示"自 <span class="arithmatex">\(e\)</span> 起此颜色不再贡献"。形式化中的 <span class="arithmatex">\(e_i \ge x_{k+1}\)</span> 正对应这一边界。</li>
+<li><strong><code>cur_cnt &gt; 0</code> 守卫不可省</strong>：跳过未被覆盖的空白间隙。如 <code>[[1,3,5],[5,7,7]]</code>，子段 <span class="arithmatex">\([3,5)\)</span> 的 <code>cur_cnt = 0</code> 须跳过。本题因 <span class="arithmatex">\(c_i \ge 1\)</span>，<code>cur_sum &gt; 0</code> 与之等价；保留计数判据是为对非正颜色稳健、且语义更自描述。</li>
+<li><strong><code>defaultdict</code> 与 <code>sorted</code> 取键快照</strong>：先 <code>sorted(sum_diff.keys())</code> 固定端点列表，迭代中不要再改字典。</li>
 </ul>
 <h2 id="related">相关题目 (Related)<a class="headerlink" href="#related" title="Permanent link">#</a></h2>
 <ul>
@@ -22647,6 +22678,8 @@
         <script src="../../../js/mathjax/tex-mml-chtml.js"></script>
       
         <script src="../../../js/mermaid.min.js"></script>
+      
+        <script src="../../../js/featured.js"></script>
       
     
   </body>

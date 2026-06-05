@@ -1466,6 +1466,8 @@
       
         
       
+        
+      
     
     
     
@@ -1521,6 +1523,34 @@
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../featured/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ⭐ Featured（已验证）
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
               
             
               
@@ -1610,10 +1640,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_4" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
         
           
-          <label class="md-nav__link" for="__nav_4_4" id="__nav_4_4_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_5" id="__nav_4_5_label" tabindex="">
             
   
   
@@ -1631,8 +1661,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_4_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_4">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_5">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1915,7 +1945,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -1937,14 +1967,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_4_5" id="__nav_4_5_label" tabindex="">
+              <label class="md-nav__link " for="__nav_4_6" id="__nav_4_6_label" tabindex="">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_5">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_6">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -5321,10 +5351,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_7" checked>
         
           
-          <label class="md-nav__link" for="__nav_4_6" id="__nav_4_6_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_7" id="__nav_4_7_label" tabindex="">
             
   
   
@@ -5342,8 +5372,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_4_6">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_7_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4_7">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -22467,11 +22497,21 @@
 <h2 id="problem">Problem<a class="headerlink" href="#problem" title="Permanent link">#</a></h2>
 <p><code>m×n</code> 二进制矩阵，初始全 0。每次 <code>flip()</code> 等概率选一个还是 0 的位置翻成 1 并返回其 <span class="arithmatex">\((i,j)\)</span>。<code>reset()</code> 全置 0。要求最少调用底层 RNG，并优化时空。<span class="arithmatex">\(1 \leq m, n \leq 10^4\)</span>（<span class="arithmatex">\(mn\)</span> 可达 <span class="arithmatex">\(10^8\)</span>，不能开 dense array），最多 1000 次 <code>flip/reset</code>。</p>
 <h2 id="background">背景 (Background)<a class="headerlink" href="#background" title="Permanent link">#</a></h2>
-<p>这是 <strong>Fisher–Yates shuffle 的 lazy / partial 版本</strong> 经典应用。完整 Fisher–Yates 需 <span class="arithmatex">\(O(mn)\)</span> 预处理，本题约束下不可行。技巧是用哈希表"延迟"维护交换记录——只跟踪那些已被映射过的位置（小到 1000 条目），未访问位置隐式认为映射到自己。这种 lazy 化随机访问技术在外存随机抽样、reservoir sampling 中也有出现。</p>
+<p>把题目要求剥到最小，<code>flip()</code> 必须同时满足三件事：(1) 从<strong>当前仍为 0</strong> 的位置中等概率选一个；(2) 选过的位置不再被选；(3) 整个过程只调用一次底层 RNG。三者单独都不难，难在同时满足。</p>
+<p>最直接的写法是把全部 <span class="arithmatex">\(mn\)</span> 个 cell 物化出来。开一个大小 <span class="arithmatex">\(N=mn\)</span> 的数组，记录每个位置翻没翻；<code>flip()</code> 时反复 <code>randrange(N)</code> 直到撞上一个还是 0 的位置。这在矩阵稀疏时几乎一次命中，但当大部分位置已被翻过，期望重试次数趋于无穷——既违反"只调一次 RNG"，又可能不终止。</p>
+<p>退一步，维护一个"剩余 0 位置"的列表，<code>flip()</code> 在列表里 <code>randrange(len)</code> 取一个，再把它删掉。这一步把三个要求一次满足了：列表恰好枚举剩余 0 位置，下标随机即均匀，取出即删除即不重选，且只调一次 RNG。问题只剩<strong>空间</strong>：显式建这个列表要先写满 <span class="arithmatex">\(N\)</span> 个元素，<span class="arithmatex">\(N\)</span> 可达 <span class="arithmatex">\(10^8\)</span>，初始化的时间和内存都不可接受。</p>
+<p>于是真正的障碍被定位了：算法逻辑（在剩余位置上随机取并删除）是对的，付不起的只是"显式物化 <span class="arithmatex">\(N\)</span> 个元素"。下面整节就是把这个显式列表替换成一个<strong>只在被动过的位置上花内存</strong>的隐式表示——条目数是 flip 次数（≤1000），与 <span class="arithmatex">\(mn\)</span> 无关。</p>
 <h2 id="formulation">形式化 (Formulation)<a class="headerlink" href="#formulation" title="Permanent link">#</a></h2>
-<p>设 <span class="arithmatex">\(N = mn\)</span>。维护一个隐式数组 <span class="arithmatex">\(A[0..N-1]\)</span>，初始 <span class="arithmatex">\(A[k] = k\)</span>（编码 <span class="arithmatex">\((k/n, k \bmod n)\)</span>）。<code>flip()</code>：在剩余 <span class="arithmatex">\(r\)</span> 个位置中随机选一个 <span class="arithmatex">\(x \in [0, r)\)</span>，返回 <span class="arithmatex">\(A[x]\)</span>，并将 <span class="arithmatex">\(A[x] \leftarrow A[r-1]\)</span>（把"被选的"换到尾部，逻辑剔除）。<span class="arithmatex">\(r\)</span> 每次 -1。<code>reset()</code>：清空映射，<span class="arithmatex">\(r \leftarrow N\)</span>。</p>
+<p>先说清楚我们要维护什么。从一个长度为 <span class="arithmatex">\(r\)</span> 的逻辑序列里"等概率取一个并删除"，最省事的删除方式是：取出第 <span class="arithmatex">\(x\)</span> 个，把序列<strong>末尾</strong>那个搬到第 <span class="arithmatex">\(x\)</span> 位，再把长度减 1。被取走的元素消失，幸存元素仍占满前缀 <span class="arithmatex">\([0,r-1)\)</span>，下一次取样照样均匀。删除只动一个位置，这正是我们能负担得起隐式化的关键。</p>
+<p>把这句话写成数组操作。设 <span class="arithmatex">\(N=mn\)</span>，隐式数组 <span class="arithmatex">\(A[0..N-1]\)</span> 初始 <span class="arithmatex">\(A[k]=k\)</span>，下标 <span class="arithmatex">\(k\)</span> 编码 cell</p>
+<div class="arithmatex">\[(i,j)=\bigl(\lfloor k/n\rfloor,\; k \bmod n\bigr).\tag{1}\]</div>
+<p>维护剩余计数 <span class="arithmatex">\(r\)</span>，初始 <span class="arithmatex">\(r=N\)</span>。<code>flip()</code> 抽 <span class="arithmatex">\(x\in[0,r)\)</span>，记录答案 <span class="arithmatex">\(A[x]\)</span>，然后</p>
+<div class="arithmatex">\[A[x] \leftarrow A[r-1],\qquad r \leftarrow r-1.\tag{2}\]</div>
+<p><code>reset()</code>：清空对 <span class="arithmatex">\(A\)</span> 的所有改写，<span class="arithmatex">\(r\leftarrow N\)</span>。</p>
+<p><strong>不变量</strong>：每次 <code>flip()</code> 开始时，<span class="arithmatex">\(\{A[0],\dots,A[r-1]\}\)</span> 恰好是当前所有未翻过的 cell，且互不相同。初始时 <span class="arithmatex">\(A[k]=k\)</span> 枚举全部 <span class="arithmatex">\(N\)</span> 个 cell，不变量成立。归纳一步：在 <span class="arithmatex">\([0,r)\)</span> 上均匀抽 <span class="arithmatex">\(x\)</span> 即在未翻 cell 上均匀抽，符合要求 (1)；式 (2) 把 <span class="arithmatex">\(A[x]\)</span> 替换为原来的 <span class="arithmatex">\(A[r-1]\)</span> 并令 <span class="arithmatex">\(r\)</span> 减 1，结果 <span class="arithmatex">\(\{A[0],\dots,A[r-2]\}\)</span> 等于原集合去掉刚取走的那个，仍互不相同。不变量对 <span class="arithmatex">\(r-1\)</span> 成立，故归纳完成。每步只调一次 RNG（抽 <span class="arithmatex">\(x\)</span>），满足 (3)。</p>
+<p><strong>隐式化</strong>：式 (2) 每次至多改动两个下标的值（<span class="arithmatex">\(A[x]\)</span> 与被读走的 <span class="arithmatex">\(A[r-1]\)</span>），其余下标始终等于初始的 <span class="arithmatex">\(A[k]=k\)</span>。所以无需物化整个 <span class="arithmatex">\(A\)</span>，只记录"值已偏离默认 <span class="arithmatex">\(k\)</span>"的那些下标即可。用一张映射表存这些偏离项，未在表中的下标 <span class="arithmatex">\(k\)</span> 隐式认为 <span class="arithmatex">\(A[k]=k\)</span>。条目数被 flip 次数界住，与 <span class="arithmatex">\(N\)</span> 无关——这正是 Background 末尾要的隐式表示。</p>
 <h2 id="approach">数据结构 / 想法 (Approach)<a class="headerlink" href="#approach" title="Permanent link">#</a></h2>
-<p><strong>Lazy Fisher–Yates</strong>：用 <code>dict</code> 记录"非默认"位置的当前值。隐式语义：未在 dict 中的位置 <span class="arithmatex">\(k\)</span> 仍是 <span class="arithmatex">\(k\)</span>。</p>
+<p>映射表用 <code>dict</code>，键是被改写过的下标，值是该下标当前的 <span class="arithmatex">\(A\)</span> 值；查 <code>swap.get(k, k)</code> 即"表里有就用表里值，否则回退默认 <span class="arithmatex">\(k\)</span>"。下面代码是式 (1)(2) 与不变量的直接落地。</p>
 <div class="language-python highlight"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">random</span>
 <span class="k">class</span><span class="w"> </span><span class="nc">Solution</span><span class="p">:</span>
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">m</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">n</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
@@ -22496,12 +22536,15 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">swap</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">remaining</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">total</span>
 </code></pre></div>
-<p><strong>为什么对</strong>：等价于在每次 flip 时从 <span class="arithmatex">\([0, r)\)</span> 等概率抽一个尚未被选的 cell。把"被选位置"换到尾部 + <span class="arithmatex">\(r\)</span> 减 1，保证下次抽样在"剩下的 <span class="arithmatex">\(r-1\)</span> 个"上均匀。</p>
-<p><strong>Trace <code>m=3, n=1</code></strong>：total=3, remaining=3
-- flip(): x=random[0,3)，比如 1。val=swap.get(1,1)=1。last=2, swap[1]=swap.get(2,2)=2, swap={1:2}, remaining=2。返回 <code>[1,0]</code>
-- flip(): x=random[0,2)，比如 1。val=swap.get(1,1)=2。last=1, swap[1]=swap.get(1,1)=2, swap={1:2}, remaining=1。返回 <code>[2,0]</code>
-- flip(): x=0, val=0, last=0, swap=...; remaining=0。返回 <code>[0,0]</code></p>
-<p>每次 flip 都是 1 次 RNG ✓</p>
+<p>逐行对照形式化：<code>val = self.swap.get(x, x)</code> 读出 <span class="arithmatex">\(A[x]\)</span>（先读后写，故 <span class="arithmatex">\(x=\text{last}\)</span> 时返回的仍是被选 cell）；<code>self.swap[x] = self.swap.get(last, last)</code> 实现式 (2) 的 <span class="arithmatex">\(A[x]\leftarrow A[r-1]\)</span>，右侧必须经过 <code>get</code> 回退，因为 <code>last</code> 位置可能在之前某次 flip 里已被改写；<code>del self.swap[last]</code> 把腾空的尾下标移出表，纯属省内存；<code>return [val // self.n, val % self.n]</code> 是式 (1) 的解码。</p>
+<p><strong>Trace <code>m=3, n=1</code></strong>：total=3, remaining=3，每步给出全部三个下标的隐式值 <span class="arithmatex">\(A[0],A[1],A[2]\)</span>。</p>
+<ul>
+<li>初始 <span class="arithmatex">\(A=[0,1,2]\)</span>，swap={}。</li>
+<li>flip(): 设 <span class="arithmatex">\(x=1\)</span>。<span class="arithmatex">\(A[1]=1\)</span> → 返回 cell 1 = <code>[1,0]</code>。last=2，<span class="arithmatex">\(A[1]\leftarrow A[2]=2\)</span>，删 <span class="arithmatex">\(A[2]\)</span>。现 swap={1:2}，remaining=2，隐式 <span class="arithmatex">\(A=[0,2,\_]\)</span>，前缀 <span class="arithmatex">\(\{A[0],A[1]\}=\{0,2\}\)</span> 正是剩余两个未翻 cell。✓</li>
+<li>flip(): 设 <span class="arithmatex">\(x=1\)</span>。<span class="arithmatex">\(A[1]=\)</span> swap.get(1,1)=2 → 返回 cell 2 = <code>[2,0]</code>。last=1，恰有 <span class="arithmatex">\(x=\)</span> last，先 <code>swap[1]=swap.get(1,1)=2</code>，紧接 <code>del swap[1]</code>，故末态 swap={}，remaining=1，隐式 <span class="arithmatex">\(A=[0,\_,\_]\)</span>，前缀 <span class="arithmatex">\(\{A[0]\}=\{0\}\)</span>。✓</li>
+<li>flip(): <span class="arithmatex">\(x=0\)</span>。<span class="arithmatex">\(A[0]=0\)</span> → 返回 cell 0 = <code>[0,0]</code>。remaining=0，三个 cell 各出现一次，无重复。✓</li>
+</ul>
+<p>每次 flip 恰好 1 次 RNG，且每步末态都满足不变量。</p>
 <h2 id="complexity">复杂度 (Complexity)<a class="headerlink" href="#complexity" title="Permanent link">#</a></h2>
 <ul>
 <li><code>flip()</code>: Time <span class="arithmatex">\(O(1)\)</span> 期望（hash op），Space 增长 <span class="arithmatex">\(O(\text{flips})\)</span></li>
@@ -22632,6 +22675,8 @@
         <script src="../../../js/mathjax/tex-mml-chtml.js"></script>
       
         <script src="../../../js/mermaid.min.js"></script>
+      
+        <script src="../../../js/featured.js"></script>
       
     
   </body>

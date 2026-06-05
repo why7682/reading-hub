@@ -1466,6 +1466,8 @@
       
         
       
+        
+      
     
     
     
@@ -1521,6 +1523,34 @@
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../featured/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ⭐ Featured（已验证）
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
               
             
               
@@ -1610,10 +1640,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_4" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
         
           
-          <label class="md-nav__link" for="__nav_4_4" id="__nav_4_4_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_5" id="__nav_4_5_label" tabindex="">
             
   
   
@@ -1631,8 +1661,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_4_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_4">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_5">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1915,7 +1945,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -1937,14 +1967,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_4_5" id="__nav_4_5_label" tabindex="">
+              <label class="md-nav__link " for="__nav_4_6" id="__nav_4_6_label" tabindex="">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_5">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_6">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -5321,10 +5351,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_7" checked>
         
           
-          <label class="md-nav__link" for="__nav_4_6" id="__nav_4_6_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_7" id="__nav_4_7_label" tabindex="">
             
   
   
@@ -5342,8 +5372,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_4_6">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_7_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4_7">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -22467,59 +22497,104 @@
 <h2 id="problem">Problem<a class="headerlink" href="#problem" title="Permanent link">#</a></h2>
 <p>给整数 <span class="arithmatex">\(n\)</span>，判断是否 <span class="arithmatex">\(n = 4^k\)</span>（<span class="arithmatex">\(k \ge 0\)</span>）。<span class="arithmatex">\(-2^{31} \le n \le 2^{31}-1\)</span>。</p>
 <h2 id="background">背景 (Background)<a class="headerlink" href="#background" title="Permanent link">#</a></h2>
-<p>继 #231 Power of Two、#326 Power of Three 后的第三型。<span class="arithmatex">\(4 = 2^2\)</span> 故 <span class="arithmatex">\(4^k = 2^{2k}\)</span>——4 的幂是 2 的幂的子集：<strong>那些唯一二进制 1 位于偶数下标 (从 0 起)</strong> 的整数。</p>
-<p>由此引出 <strong>位掩码技巧</strong>：用常数 <code>0x55555555 = 0101 0101 0101 ... (32-bit)</code> 表示"偶数位为 1、奇数位为 0"，则
-- <span class="arithmatex">\(n\)</span> 是 2 的幂 ⟺ <code>n &gt; 0 and (n &amp; (n - 1)) == 0</code>（Hacker's Delight §2-1）。
-- <span class="arithmatex">\(n\)</span> 是 4 的幂 ⟺ 上述 <strong>且</strong> <code>(n &amp; 0x55555555) != 0</code>。</p>
-<p>这是 <strong>位操作类问题"加分解条件"</strong> 的经典范式。</p>
+<p>最直接的判定方法来自定义：<span class="arithmatex">\(n\)</span> 是 4 的幂，当且仅当反复除以 4 能恰好落到 1。</p>
+<div class="language-python highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">isPowerOfFour</span><span class="p">(</span><span class="n">n</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">n</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">False</span>
+    <span class="k">while</span> <span class="n">n</span> <span class="o">%</span> <span class="mi">4</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">n</span> <span class="o">//=</span> <span class="mi">4</span>
+    <span class="k">return</span> <span class="n">n</span> <span class="o">==</span> <span class="mi">1</span>
+</code></pre></div>
+<p>这是对的，且容易看清：循环把所有因子 4 剥掉，若剩下的恰是 1，则原数只由因子 4 构成。代价是 <span class="arithmatex">\(O(\log n)\)</span> 次除法——对 32 位整数最多 15 次。</p>
+<p>问题不在于慢，而在于它没有利用 4 的幂在二进制下的特殊结构。一旦把 <span class="arithmatex">\(n\)</span> 写成二进制，这个结构会暴露出一个 <span class="arithmatex">\(O(1)\)</span> 的判定，并解释清楚"4 的幂"与"2 的幂"究竟差在哪里。下一节先把这个结构找出来，再据此推导判定式。</p>
 <h2 id="formulation">形式化 (Formulation)<a class="headerlink" href="#formulation" title="Permanent link">#</a></h2>
-<p><span class="arithmatex">\(\exists k \in \mathbb{Z}_{\ge 0}: n = 4^k = 2^{2k}\)</span>？</p>
+<p>直觉先行：每乘一次 4，二进制表示就左移两位，所以 4 的幂的那个唯一的 1 总停在偶数下标上。把这句话写成等式即可驱动后续全部推导。</p>
+<p>形式化问题：
+$$
+\exists\, k \in \mathbb{Z}_{\ge 0}:\quad n = 4^k.
+$$</p>
+<p>关键恒等式：<span class="arithmatex">\(4 = 2^2\)</span>，故
+$$
+n = 4^k = 2^{2k}.
+$$</p>
+<p>由此读出两条结构性事实，二者将分别对应一个判定条件：</p>
+<ol>
+<li><span class="arithmatex">\(n = 2^{2k}\)</span> 是 2 的幂，其二进制表示<strong>恰好一个 1 位</strong>，位于下标 <span class="arithmatex">\(2k\)</span>。</li>
+<li>这个下标 <span class="arithmatex">\(2k\)</span> 是<strong>偶数</strong>。下标为奇数的 2 的幂（如 <span class="arithmatex">\(2^1=2\)</span>、<span class="arithmatex">\(2^3=8\)</span>）正是"是 2 的幂但不是 4 的幂"的全部情形。</li>
+</ol>
+<p>于是"判断 4 的幂"被分解为两个独立可检的子问题：<strong>唯一的 1 位</strong>（确认是 2 的幂）与<strong>该位下标为偶</strong>（确认指数为偶）。下一节把这两条逐一翻译成位运算。</p>
 <h2 id="approach">数据结构 / 想法 (Approach)<a class="headerlink" href="#approach" title="Permanent link">#</a></h2>
+<p><strong>从两条结构事实推导判定式。</strong></p>
+<p>第一条：<span class="arithmatex">\(n\)</span> 是 2 的幂 <span class="arithmatex">\(\iff\)</span> 二进制恰有一个 1 位。如何 <span class="arithmatex">\(O(1)\)</span> 检出"恰有一个 1 位"？观察从一个 2 的幂减 1 时发生了什么。设 <span class="arithmatex">\(n = 2^m\)</span>，二进制是单个 1 后跟 <span class="arithmatex">\(m\)</span> 个 0；则 <span class="arithmatex">\(n-1\)</span> 把那个 1 翻成 0、把其后所有 0 翻成 1：</p>
+<div class="language-text highlight"><pre><span></span><code>n   = 1000  (8)
+n-1 = 0111  (7)
+n &amp; (n-1) = 0000
+</code></pre></div>
+<p>两者在每一位上互补，故 <code>n &amp; (n-1) == 0</code>。反之若 <span class="arithmatex">\(n\)</span> 有两个以上的 1 位，最高位以下仍存在共同的 1 位，AND 不为 0。所以</p>
+<div class="arithmatex">\[
+n \text{ 是 2 的幂（} n&gt;0\text{）} \iff n&gt;0 \;\wedge\; (n \mathbin{\&amp;} (n-1)) = 0.
+\]</div>
+<p>第二条：那个唯一的 1 位下标为偶。要 <span class="arithmatex">\(O(1)\)</span> 区分偶下标与奇下标，需要一个"偶数位全 1、奇数位全 0"的掩码，与 <span class="arithmatex">\(n\)</span> 做 AND：若 <span class="arithmatex">\(n\)</span> 的 1 位在偶下标，AND 非零；在奇下标，AND 为零。这个掩码就是把下标 <span class="arithmatex">\(0,2,4,\dots,30\)</span> 全置 1：</p>
+<div class="arithmatex">\[
+\texttt{0x55555555} = \underbrace{0101\,0101\cdots0101}_{32\text{ 位}},
+\]</div>
+<p>它恰有 16 个 1 位，分布在全部偶数下标上。于是</p>
+<div class="arithmatex">\[
+\text{唯一的 1 位下标为偶} \iff (n \mathbin{\&amp;} \texttt{0x55555555}) \ne 0.
+\]</div>
+<p>两条合起来即得 <span class="arithmatex">\(O(1)\)</span> 判定：</p>
 <p><strong>解法 A — 位运算 <span class="arithmatex">\(O(1)\)</span></strong>：</p>
 <div class="language-python highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">Solution</span><span class="p">:</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">isPowerOfFour</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">n</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="ow">and</span> <span class="p">(</span><span class="n">n</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">n</span> <span class="o">-</span> <span class="mi">1</span><span class="p">))</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">and</span> <span class="p">(</span><span class="n">n</span> <span class="o">&amp;</span> <span class="mh">0x55555555</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">0</span>
 </code></pre></div>
-<p><strong>正确性</strong>：
-1. <code>n &gt; 0</code>：4 的幂为正。
-2. <code>n &amp; (n - 1) == 0</code>：恰好一个二进制 1 → 2 的幂。
-3. <code>n &amp; 0x55555555 != 0</code>：那个 1 位于偶数下标（0, 2, 4, ..., 30）→ 指数为 <span class="arithmatex">\(2k\)</span> → <span class="arithmatex">\(n = 2^{2k} = 4^k\)</span>。</p>
-<p>三条合起来等价于"<span class="arithmatex">\(n\)</span> 是 4 的幂"。</p>
-<p><strong>解法 B — 循环除法</strong>：</p>
+<p>三个条件正是上面三步推导的产物，逐条对应：</p>
+<ol>
+<li><code>n &gt; 0</code>：4 的幂为正，排除 <span class="arithmatex">\(0\)</span> 与负数。</li>
+<li><code>n &amp; (n - 1) == 0</code>：恰好一个 1 位 → <span class="arithmatex">\(n\)</span> 是 2 的幂 <span class="arithmatex">\(2^m\)</span>。</li>
+<li><code>n &amp; 0x55555555 != 0</code>：那个 1 位在偶下标 → <span class="arithmatex">\(m = 2k\)</span> → <span class="arithmatex">\(n = 2^{2k} = 4^k\)</span>。</li>
+</ol>
+<p>三条缺一不可：去掉第 3 条，<span class="arithmatex">\(2^1, 2^3, 2^5\)</span> 等奇次幂会被误判；去掉第 1 条，<span class="arithmatex">\(n=0\)</span> 会通过前两条（<span class="arithmatex">\(0 \mathbin{\&amp;} (-1) = 0\)</span>）。</p>
+<p><strong>解法 B — 循环除法</strong>（背景中的朴素法，作为基线保留）：</p>
 <div class="language-python highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">Solution</span><span class="p">:</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">isPowerOfFour</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
-        <span class="k">if</span> <span class="n">n</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="p">:</span> <span class="k">return</span> <span class="kc">False</span>
+        <span class="k">if</span> <span class="n">n</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">False</span>
         <span class="k">while</span> <span class="n">n</span> <span class="o">%</span> <span class="mi">4</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
             <span class="n">n</span> <span class="o">//=</span> <span class="mi">4</span>
         <span class="k">return</span> <span class="n">n</span> <span class="o">==</span> <span class="mi">1</span>
 </code></pre></div>
-<p><strong>解法 C — 整除技巧</strong>：32-bit 内最大 <span class="arithmatex">\(4^k = 4^{15} = 1073741824\)</span>。则 <span class="arithmatex">\(n\)</span> 是 4 的幂 ⟺ <span class="arithmatex">\(n &gt; 0\)</span> 且 <code>1073741824 % n == 0</code> 且 <span class="arithmatex">\(n\)</span> 是 2 的幂。但 4 与 16 同时整除 <span class="arithmatex">\(4^{15}\)</span> 故此法<strong>仅当再加"是 2 的幂"判定时正确</strong>——直接位掩码更简洁。</p>
-<p>Trace n=16: n&gt;0 ✓; 16 &amp; 15 = 0 ✓; 16 &amp; 0x55555555 = 16 (位 4 为 1，偶数下标) ≠ 0 ✓ → True ✓
-Trace n=5: n&gt;0 ✓; 5 &amp; 4 = 4 ≠ 0 → False ✓ (二进制 101 有两个 1，非 2 的幂)
-Trace n=1: n&gt;0 ✓; 1 &amp; 0 = 0 ✓; 1 &amp; 0x55555555 = 1 ≠ 0 ✓ → True ✓
-Trace n=8 (是 2^3 而非 4^k): n&gt;0; 8&amp;7=0 ✓; 8 &amp; 0x55555555 = 0 (位 3，奇数下标) → False ✓</p>
+<p>它不依赖二进制结构，直接照定义剥因子，<span class="arithmatex">\(O(\log n)\)</span>。当掩码常数容易记错、或需要在不支持位运算的语境里表达时，它更稳妥。</p>
+<p><strong>解法 C — 整除技巧</strong>：32 位内最大的 4 的幂是 <span class="arithmatex">\(4^{15} = 1073741824\)</span>。任何 4 的幂都整除它，于是想用 <code>1073741824 % n == 0</code> 判定。但这单独不成立：<span class="arithmatex">\(4^{15}\)</span> 也被 <span class="arithmatex">\(16 = 2^4\)</span>、<span class="arithmatex">\(2 = 2^1\)</span> 等非 4 幂整除。须再补一个"是 2 的幂"的判定才正确。既然都要判 2 的幂，不如直接用解法 A 的掩码，更简洁——故 C 在此仅作对照。</p>
+<p><strong>逐例验证</strong>（覆盖关键边界）：</p>
+<div class="language-text highlight"><pre><span></span><code>n=16:  n&gt;0 ✓; 16 &amp; 15 = 0 ✓; 16 &amp; 0x55555555 = 16 (位 4，偶下标) ≠ 0 ✓ → True
+n=5:   n&gt;0 ✓; 5 &amp; 4 = 4 ≠ 0 → False (二进制 101 有两个 1 位，非 2 的幂)
+n=1:   n&gt;0 ✓; 1 &amp; 0 = 0 ✓; 1 &amp; 0x55555555 = 1 ≠ 0 ✓ → True (即 4^0)
+n=8:   n&gt;0 ✓; 8 &amp; 7 = 0 ✓; 8 &amp; 0x55555555 = 0 (位 3，奇下标) → False (是 2^3 而非 4^k)
+</code></pre></div>
+<p><span class="arithmatex">\(n=8\)</span> 一例正好坐实第二条结构事实：它通过了"是 2 的幂"，却因 1 位落在奇下标而被掩码拦下。</p>
 <h2 id="complexity">复杂度 (Complexity)<a class="headerlink" href="#complexity" title="Permanent link">#</a></h2>
 <ul>
-<li>解法 A：Time <span class="arithmatex">\(O(1)\)</span>, Space <span class="arithmatex">\(O(1)\)</span>。</li>
-<li>解法 B：Time <span class="arithmatex">\(O(\log n)\)</span>, Space <span class="arithmatex">\(O(1)\)</span>。</li>
+<li>解法 A：Time <span class="arithmatex">\(O(1)\)</span>，Space <span class="arithmatex">\(O(1)\)</span>。</li>
+<li>解法 B：Time <span class="arithmatex">\(O(\log n)\)</span>，Space <span class="arithmatex">\(O(1)\)</span>。</li>
 </ul>
 <h2 id="pitfalls">陷阱 (Pitfalls)<a class="headerlink" href="#pitfalls" title="Permanent link">#</a></h2>
 <ul>
-<li><strong>三条件缺一不可</strong>。常见错误：只检查 <code>n &amp; (n-1) == 0</code>——会把 2, 8, 32 等 2 的非偶次幂误判为 True。</li>
-<li><strong>掩码常数</strong>：<code>0x55555555</code> 是 32-bit；64-bit 需扩展为 <code>0x5555555555555555</code>。</li>
-<li><strong>n=1 是 <span class="arithmatex">\(4^0\)</span> 应为 True</strong>：上面代码自然正确。</li>
-<li>不要漏 <code>n &gt; 0</code>：负数与 0 在补码下与掩码 AND 结果可能"巧合"非零。</li>
+<li><strong>三条件缺一不可</strong>。最常见错误是只检查 <code>n &amp; (n-1) == 0</code>——这会把 <span class="arithmatex">\(2, 8, 32\)</span> 等奇次幂误判为 True，因为它们确是 2 的幂，只是 1 位在奇下标。</li>
+<li><strong>掩码常数与位宽绑定</strong>：<code>0x55555555</code> 是 32 位；64 位需扩展为 <code>0x5555555555555555</code>，否则高 32 位的偶下标 1 位检不出来。</li>
+<li><strong><span class="arithmatex">\(n=1\)</span> 是 <span class="arithmatex">\(4^0\)</span>，应为 True</strong>：上面代码自然给出 <code>1 &amp; 0 == 0</code> 且 <code>1 &amp; mask = 1</code>，正确。</li>
+<li><strong>不要漏 <code>n &gt; 0</code></strong>：Python 整数是任意精度，负数等价于无限符号位扩展，<code>n &amp; 0x55555555</code> 是确定值而非"巧合"非零（例如 <code>-1 &amp; 0x55555555 == 1431655765</code>）；而 <span class="arithmatex">\(n=0\)</span> 会满足前两条。<code>n &gt; 0</code> 这一条专门排除非正输入，是结构性必需。</li>
 </ul>
 <h2 id="related">相关题目 (Related)<a class="headerlink" href="#related" title="Permanent link">#</a></h2>
 <ul>
-<li><code>#231. Power of Two (off-wiki)</code> — 仅 <code>n &amp; (n-1)</code> 判定。</li>
-<li><a href="../0326_power-of-three/">#0326. Power of Three</a> — 无对应位技巧，用整除。</li>
+<li><code>#231. Power of Two (off-wiki)</code> — 仅 <code>n &amp; (n-1)</code> 判定，本题的第一条结构事实。</li>
+<li><a href="../0326_power-of-three/">#0326. Power of Three</a> — 3 非 2 的幂，无对应位技巧，回退到整除。</li>
 <li><a href="../0371_sum-of-two-integers/">#0371. Sum of Two Integers</a> — 位运算综合。</li>
 <li><a href="../3133_minimum-array-end/">#3133. Minimum Array End</a> — 位掩码构造。</li>
 </ul>
 <h2 id="further-reading">Further Reading<a class="headerlink" href="#further-reading" title="Permanent link">#</a></h2>
 <ul>
-<li><em>Hacker's Delight</em> 2e §2-1, §2-12 — 位运算判定 2 的幂与变体；本题为标准例。</li>
+<li><em>Hacker's Delight</em> 2e §2-1, §2-12 — 位运算判定 2 的幂与变体；本题的 <code>n &amp; (n-1)</code> 判定为其标准例。</li>
 </ul>
 
 
@@ -22626,6 +22701,8 @@ Trace n=8 (是 2^3 而非 4^k): n&gt;0; 8&amp;7=0 ✓; 8 &amp; 0x55555555 = 0 (�
         <script src="../../../js/mathjax/tex-mml-chtml.js"></script>
       
         <script src="../../../js/mermaid.min.js"></script>
+      
+        <script src="../../../js/featured.js"></script>
       
     
   </body>

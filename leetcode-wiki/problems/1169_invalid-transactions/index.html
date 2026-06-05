@@ -1466,6 +1466,8 @@
       
         
       
+        
+      
     
     
     
@@ -1521,6 +1523,34 @@
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../featured/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ⭐ Featured（已验证）
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
               
             
               
@@ -1610,10 +1640,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_4" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
         
           
-          <label class="md-nav__link" for="__nav_4_4" id="__nav_4_4_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_5" id="__nav_4_5_label" tabindex="">
             
   
   
@@ -1631,8 +1661,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_4_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_4">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_5">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1915,7 +1945,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -1937,14 +1967,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_4_5" id="__nav_4_5_label" tabindex="">
+              <label class="md-nav__link " for="__nav_4_6" id="__nav_4_6_label" tabindex="">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_5">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_6">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -5321,10 +5351,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_7" checked>
         
           
-          <label class="md-nav__link" for="__nav_4_6" id="__nav_4_6_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_7" id="__nav_4_7_label" tabindex="">
             
   
   
@@ -5342,8 +5372,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_4_6">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_7_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4_7">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -22465,18 +22495,25 @@
 <h1 id="1169-invalid-transactions-medium">1169. Invalid Transactions  🟠 Medium<a class="headerlink" href="#1169-invalid-transactions-medium" title="Permanent link">#</a></h1>
 <p><strong>Tags</strong>: Array, Hash Table, String, Sorting</p>
 <h2 id="problem">Problem<a class="headerlink" href="#problem" title="Permanent link">#</a></h2>
-<p>每条交易格式 <code>name,time,amount,city</code>。<strong>可能</strong>无效若：
+<p>每条交易格式 <code>name,time,amount,city</code>。一条交易<strong>可能</strong>无效，若满足下列任一条件：
 - <code>amount &gt; 1000</code>，<strong>或</strong>
-- 同名交易在不同城市，时间差 <span class="arithmatex">\(\leq 60\)</span> 分钟。</p>
+- 存在另一条<strong>同名</strong>交易，发生在<strong>不同城市</strong>，且时间差 <span class="arithmatex">\(\leq 60\)</span> 分钟。</p>
 <p>返回所有可能无效的交易。<span class="arithmatex">\(|trans| \leq 1000\)</span>。</p>
 <h2 id="background">背景 (Background)<a class="headerlink" href="#background" title="Permanent link">#</a></h2>
-<p>经典「<strong>多字段过滤 + 时间窗口冲突检测</strong>」。属于反欺诈 / fraud detection 模型最朴素的 rule engine。本题 <span class="arithmatex">\(n \leq 1000\)</span> 允许 <span class="arithmatex">\(O(n^2)\)</span> 配对扫描；规模大需按 <code>name</code> 分桶 + 时间排序 + 双指针滑窗（<span class="arithmatex">\(O(n \log n)\)</span>）。</p>
+<p>先看一条交易何时被判无效。它要么自己金额超标，要么和别人撞上了一次跨城冲突。这两个条件结构完全不同：</p>
+<ul>
+<li>第一个条件 <code>amount &gt; 1000</code> 只看交易自身。给我这一条交易，我立刻能判断，无需任何其他信息。这是一个<strong>局部</strong>条件。</li>
+<li>第二个条件需要一个<strong>见证者</strong>：另一条同名、异城、且时间相近的交易。我手里这一条交易本身说明不了任何东西——必须去其余交易里找。这是一个<strong>关系</strong>条件。</li>
+</ul>
+<p>这条不对称是全题的脊梁。局部条件每条 <span class="arithmatex">\(O(1)\)</span> 扫一遍即可；关系条件没有任何捷径能绕过「拿一条去比对其他条」，因为见证者可能藏在任意一条同名交易里。算法的形状由此决定：先做一遍局部检查，再为关系条件做一轮配对比对。</p>
 <h2 id="formulation">形式化 (Formulation)<a class="headerlink" href="#formulation" title="Permanent link">#</a></h2>
-<p>设交易集 <span class="arithmatex">\(T = \{t_i = (n_i, \tau_i, a_i, c_i)\}\)</span>。<span class="arithmatex">\(t_i\)</span> 无效当且仅当</p>
-<div class="arithmatex">\[a_i &gt; 1000 \ \lor\ \exists\, j \neq i:\ n_j = n_i \land c_j \neq c_i \land |\tau_j - \tau_i| \leq 60.\]</div>
+<p>把上面两个条件写成一个谓词。设交易集 <span class="arithmatex">\(T = \{t_1, \dots, t_n\}\)</span>，每条交易是四元组 <span class="arithmatex">\(t_i = (n_i, \tau_i, a_i, c_i)\)</span>，分别为名字、时间（分钟）、金额、城市。沿用「局部条件 <span class="arithmatex">\(\lor\)</span> 关系条件」的结构：</p>
+<div class="arithmatex">\[
+\text{invalid}(t_i) \iff \underbrace{a_i &gt; 1000}_{\text{局部}} \ \lor\ \underbrace{\exists\, j \neq i:\ n_j = n_i \land c_j \neq c_i \land |\tau_j - \tau_i| \leq 60}_{\text{关系（需见证者 }t_j\text{）}}. \tag{1}\]</div>
+<p>谓词 (1) 直接读出了算法。局部项是 <span class="arithmatex">\(a_i\)</span> 的单点比较；关系项是一个对见证者 <span class="arithmatex">\(t_j\)</span> 的存在量词。判定存在量词最朴素的办法，就是把所有候选 <span class="arithmatex">\(j\)</span> 逐个试一遍——这正是配对扫描的来源。</p>
 <h2 id="approach">数据结构 / 想法 (Approach)<a class="headerlink" href="#approach" title="Permanent link">#</a></h2>
-<p><strong><span class="arithmatex">\(O(n^2)\)</span> 朴素</strong>（足以通过）：解析每条交易；对每对 <span class="arithmatex">\((i, j)\)</span> 检查名+城+时间条件。</p>
-<p><strong>优化</strong>：按 <code>name</code> 分桶，每桶按 <code>time</code> 排序，双指针滑窗。本题不必。</p>
+<p><strong>从关系项推出最朴素的算法。</strong> 谓词 (1) 里的 <span class="arithmatex">\(\exists j\)</span> 没有任何结构假设：见证者可能是任意一条交易。要确认它不存在，必须把每个 <span class="arithmatex">\(j \neq i\)</span> 都查一遍。于是对每条 <span class="arithmatex">\(t_i\)</span>，内层遍历所有 <span class="arithmatex">\(t_j\)</span>，逐对检验三个合取子句 <span class="arithmatex">\(n_j = n_i\)</span>、<span class="arithmatex">\(c_j \neq c_i\)</span>、<span class="arithmatex">\(|\tau_j - \tau_i| \leq 60\)</span>。局部项 <span class="arithmatex">\(a_i &gt; 1000\)</span> 在进入内层前先查一次即可。这就给出一个双重循环，时间 <span class="arithmatex">\(O(n^2)\)</span>。</p>
+<p>实现前先定一个设计决定：<strong>为什么用一个 <code>invalid</code> 布尔数组、最后统一收集，而不是边判边输出？</strong> 因为一次冲突会同时让两条交易无效——<span class="arithmatex">\(t_i\)</span> 与 <span class="arithmatex">\(t_j\)</span> 互为对方的见证者。如果在循环里直接 append，同一条交易可能被多个见证者重复加入，产生重复输出。布尔数组按下标去重，最后再按下标收集原串。</p>
 <div class="language-python highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">Solution</span><span class="p">:</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">invalidTransactions</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">transactions</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
         <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">transactions</span><span class="p">)</span>
@@ -22486,9 +22523,9 @@
             <span class="n">parsed</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">name</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="n">time</span><span class="p">),</span> <span class="nb">int</span><span class="p">(</span><span class="n">amount</span><span class="p">),</span> <span class="n">city</span><span class="p">,</span> <span class="n">t</span><span class="p">))</span>
         <span class="n">invalid</span> <span class="o">=</span> <span class="p">[</span><span class="kc">False</span><span class="p">]</span> <span class="o">*</span> <span class="n">n</span>
         <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
-            <span class="k">if</span> <span class="n">parsed</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">1000</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">parsed</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">1000</span><span class="p">:</span>        <span class="c1"># 局部项：a_i &gt; 1000</span>
                 <span class="n">invalid</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
-            <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>             <span class="c1"># 关系项：寻找见证者 t_j</span>
                 <span class="k">if</span> <span class="n">i</span> <span class="o">==</span> <span class="n">j</span><span class="p">:</span>
                     <span class="k">continue</span>
                 <span class="k">if</span> <span class="p">(</span><span class="n">parsed</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="n">parsed</span><span class="p">[</span><span class="n">j</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="ow">and</span>
@@ -22498,30 +22535,32 @@
                     <span class="k">break</span>
         <span class="k">return</span> <span class="p">[</span><span class="n">parsed</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">4</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">)</span> <span class="k">if</span> <span class="n">invalid</span><span class="p">[</span><span class="n">i</span><span class="p">]]</span>
 </code></pre></div>
-<p><strong>手动 trace 样例 1</strong>：<code>["alice,20,800,mtv","alice,50,100,beijing"]</code>. 
-- i=0: amount=800 ≤ 1000; 与 j=1 同名、city 不同、|20-50|=30 ≤ 60 → invalid.
-- i=1: amount=100 ≤ 1000; 与 j=0 同上 → invalid.
-返回两条。✓</p>
-<p><strong>样例 3</strong>：<code>["alice,20,800,mtv","bob,50,1200,mtv"]</code>. 
-- i=0: amount=800; 与 j=1 不同名（alice vs bob），不冲突. valid.
-- i=1: amount=1200&gt;1000 → invalid.
-返回 bob 那条。✓</p>
+<p><strong>手动验证谓词 (1)。</strong> 取两条 trace 确认两项各自生效。</p>
+<p>样例 1，<code>["alice,20,800,mtv","alice,50,100,beijing"]</code>，触发关系项：
+- <span class="arithmatex">\(t_0\)</span>：<span class="arithmatex">\(a_0=800 \leq 1000\)</span>，局部项不成立；与 <span class="arithmatex">\(t_1\)</span> 同名、异城（mtv vs beijing）、<span class="arithmatex">\(|20-50|=30 \leq 60\)</span>，关系项成立 → invalid。
+- <span class="arithmatex">\(t_1\)</span>：<span class="arithmatex">\(a_1=100 \leq 1000\)</span>；与 <span class="arithmatex">\(t_0\)</span> 对称成立 → invalid。
+- 返回两条。一次冲突标记两条，正是布尔数组去重的场景。✓</p>
+<p>样例 3，<code>["alice,20,800,mtv","bob,50,1200,mtv"]</code>，触发局部项：
+- <span class="arithmatex">\(t_0\)</span>：<span class="arithmatex">\(a_0=800\)</span>；与 <span class="arithmatex">\(t_1\)</span> 不同名（alice vs bob），关系项不成立 → valid。
+- <span class="arithmatex">\(t_1\)</span>：<span class="arithmatex">\(a_1=1200 &gt; 1000\)</span>，局部项直接成立 → invalid。
+- 返回 bob 那条。✓</p>
+<p><strong>当 <span class="arithmatex">\(n\)</span> 变大时朴素法在哪里崩。</strong> 配对扫描在 <span class="arithmatex">\(n \leq 1000\)</span> 下是 <span class="arithmatex">\(10^6\)</span> 次比较，可接受；但它对每条 <span class="arithmatex">\(t_i\)</span> 都重扫全部 <span class="arithmatex">\(n\)</span> 条，包括大量名字根本不同、注定不可能成为见证者的交易。<span class="arithmatex">\(n\)</span> 上到 <span class="arithmatex">\(10^5\)</span> 时 <span class="arithmatex">\(O(n^2)\)</span> 就失控。崩点指向修复方向：关系项的见证者必然<strong>同名</strong>，所以只需在同名交易内部找。按 <code>name</code> 分桶把候选集缩小到同名子集；桶内再按 <code>time</code> 排序，则时间窗口 <span class="arithmatex">\(|\tau_j - \tau_i| \leq 60\)</span> 变成一段连续区间，用双指针滑窗即可在线性时间内扫完每个桶，整体降到 <span class="arithmatex">\(O(n \log n)\)</span>。本题规模不需要这一步，但它正是从朴素法崩点自然长出的优化。</p>
 <h2 id="complexity">复杂度 (Complexity)<a class="headerlink" href="#complexity" title="Permanent link">#</a></h2>
 <ul>
-<li>Time: <span class="arithmatex">\(O(n^2)\)</span>。<span class="arithmatex">\(n \leq 1000\)</span> 时 <span class="arithmatex">\(10^6\)</span> 可接受。</li>
-<li>Space: <span class="arithmatex">\(O(n)\)</span>。</li>
+<li>Time: <span class="arithmatex">\(O(n^2)\)</span>。外层 <span class="arithmatex">\(n\)</span> 条交易，每条内层扫全部 <span class="arithmatex">\(n\)</span> 条找见证者；内层 <code>break</code> 只在单个 <span class="arithmatex">\(i\)</span> 内短路，外层始终跑满，故最好=平均=最坏 <span class="arithmatex">\(=\Theta(n^2)\)</span>。解析为 <span class="arithmatex">\(O(n)\)</span> 低阶项。<span class="arithmatex">\(n \leq 1000\)</span> 时约 <span class="arithmatex">\(10^6\)</span> 次操作，可接受。</li>
+<li>Space: <span class="arithmatex">\(O(n)\)</span>。<code>parsed</code> 列表与 <code>invalid</code> 数组各 <span class="arithmatex">\(O(n)\)</span>，输出 <span class="arithmatex">\(O(n)\)</span>。</li>
 </ul>
 <h2 id="pitfalls">陷阱 (Pitfalls)<a class="headerlink" href="#pitfalls" title="Permanent link">#</a></h2>
 <ul>
-<li>"同名交易在不同城市" 这一条<strong>不要求</strong> amount &gt; 1000；任何金额都触发。</li>
-<li>题目说"60 分钟内"含 60，要用 <span class="arithmatex">\(\leq 60\)</span> 而非 <span class="arithmatex">\(&lt; 60\)</span>。</li>
-<li>输出顺序题目允许任意，但保留原 string 以便恢复（如本代码所做）。</li>
-<li>同时间同名不同城市也算（差 = 0 ≤ 60）。</li>
+<li>关系项（谓词 (1) 的第二个析取支）<strong>不要求</strong> <code>amount &gt; 1000</code>；任何金额都可触发跨城冲突。两项是 <span class="arithmatex">\(\lor\)</span> 关系，独立成立。</li>
+<li>时间窗口含端点：题目「60 分钟内」要用 <span class="arithmatex">\(|\tau_j - \tau_i| \leq 60\)</span>，而非 <span class="arithmatex">\(&lt; 60\)</span>。时间差恰为 60 仍算冲突。</li>
+<li>同时间同名异城也算：时间差 <span class="arithmatex">\(= 0 \leq 60\)</span>，关系项成立。</li>
+<li>输出顺序题目允许任意，但需保留原 string 以便恢复——故 <code>parsed[i][4]</code> 存了原串，且每条按下标独立判定。这也使重复交易能各自被标记：<code>["alice,20,800,mtv","alice,20,800,mtv","alice,30,800,beijing"]</code> 三条全部无效（两条 mtv 各自与 beijing 冲突，beijing 与两条 mtv 冲突），按下标的全配对扫描天然处理此情形，而基于 set/dict 去重的写法会漏判。</li>
 </ul>
 <h2 id="related">相关题目 (Related)<a class="headerlink" href="#related" title="Permanent link">#</a></h2>
 <ul>
-<li><a href="../2933_high-access-employees/">#2933. High-Access Employees</a> — 同为按用户分组 + 时间窗口检测。</li>
-<li><code>#218. The Skyline Problem (Hard)</code> (./0218_the-skyline-problem.md) — 区间事件处理。</li>
+<li><a href="../2933_high-access-employees/">#2933. High-Access Employees</a> — 同样的脊梁：判定条件需要在同一用户的交易里找见证者，按用户分组后在时间窗口内检测，与本题关系项的「分桶 + 时间窗」结构一致。</li>
+<li><code>#218. The Skyline Problem (Hard)</code> (./0218_the-skyline-problem.md) — 关系项的优化路径止于按时间排序后的区间扫描；本题若推到 <span class="arithmatex">\(O(n\log n)\)</span>，桶内滑窗正是一种区间事件处理，与天际线把建筑边界当事件排序扫描同源。</li>
 </ul>
 <h2 id="further-reading">Further Reading<a class="headerlink" href="#further-reading" title="Permanent link">#</a></h2>
 <ul>
@@ -22632,6 +22671,8 @@
         <script src="../../../js/mathjax/tex-mml-chtml.js"></script>
       
         <script src="../../../js/mermaid.min.js"></script>
+      
+        <script src="../../../js/featured.js"></script>
       
     
   </body>

@@ -1466,6 +1466,8 @@
       
         
       
+        
+      
     
     
     
@@ -1521,6 +1523,34 @@
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../featured/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ⭐ Featured（已验证）
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
               
             
               
@@ -1610,10 +1640,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_4" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
         
           
-          <label class="md-nav__link" for="__nav_4_4" id="__nav_4_4_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_5" id="__nav_4_5_label" tabindex="">
             
   
   
@@ -1631,8 +1661,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_4_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_4">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_5">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1915,7 +1945,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -1937,14 +1967,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_4_5" id="__nav_4_5_label" tabindex="">
+              <label class="md-nav__link " for="__nav_4_6" id="__nav_4_6_label" tabindex="">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_5">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_6">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -5321,10 +5351,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_7" checked>
         
           
-          <label class="md-nav__link" for="__nav_4_6" id="__nav_4_6_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_7" id="__nav_4_7_label" tabindex="">
             
   
   
@@ -5342,8 +5372,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_4_6">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_7_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4_7">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -22467,11 +22497,32 @@
 <h2 id="problem">Problem<a class="headerlink" href="#problem" title="Permanent link">#</a></h2>
 <p>给矩形数组 <code>rectangles[i] = [l, w]</code>。每矩形可裁出最大边长 <span class="arithmatex">\(\min(l, w)\)</span> 的正方形。求"全局最大可裁正方形边长" <span class="arithmatex">\(maxLen\)</span>，并返回有多少矩形可裁出此 <span class="arithmatex">\(maxLen\)</span> 大小。约束 <span class="arithmatex">\(1 \le n \le 1000\)</span>，<span class="arithmatex">\(l, w \le 10^9\)</span>。</p>
 <h2 id="background">背景 (Background)<a class="headerlink" href="#background" title="Permanent link">#</a></h2>
-<p>两次扫描的"求 max + 计数 max"模式：第一遍找最大值，第二遍数其出现次数。也可一次扫描维护 <code>(maxVal, count)</code>：遇到更大值则重置 count=1，相等则 +1。无特殊学科背景。</p>
+<p>先从单个矩形入手。一个 <span class="arithmatex">\(l \times w\)</span> 的矩形里能裁出多大的正方形？正方形要完整放进去，它的两条边都不能超出矩形——宽方向被 <span class="arithmatex">\(w\)</span> 限制，长方向被 <span class="arithmatex">\(l\)</span> 限制。两个限制取更紧的那个，于是边长上界是 <span class="arithmatex">\(\min(l, w)\)</span>；而边长恰好等于 <span class="arithmatex">\(\min(l, w)\)</span> 的正方形确实放得下。所以每个矩形贡献唯一一个候选边长 <span class="arithmatex">\(\min(l, w)\)</span>，较短边是瓶颈。</p>
+<p>把候选边长收集成一个序列后，题目就退化为对这个序列的两个查询：最大值是多少，以及有多少个元素等于它。这就是"求 max + 计数 max"。下面先按这个序列的定义把目标写成精确形式。</p>
 <h2 id="formulation">形式化 (Formulation)<a class="headerlink" href="#formulation" title="Permanent link">#</a></h2>
-<p>设 <span class="arithmatex">\(s_i = \min(l_i, w_i)\)</span>。<span class="arithmatex">\(M = \max_i s_i\)</span>。答案 <span class="arithmatex">\(= |\{i : s_i = M\}|\)</span>。</p>
+<p>设第 <span class="arithmatex">\(i\)</span> 个矩形 <code>rectangles[i] = [l_i, w_i]</code>，其可裁正方形边长为</p>
+<div class="arithmatex">\[s_i = \min(l_i, w_i).\]</div>
+<p>全局最大边长与答案分别是</p>
+<div class="arithmatex">\[M = \max_{1 \le i \le n} s_i, \qquad \text{answer} = \big|\{\, i : s_i = M \,\}\big|.\]</div>
+<p>即答案是序列 <span class="arithmatex">\(\{s_i\}\)</span> 中达到最大值的元素个数。</p>
 <h2 id="approach">数据结构 / 想法 (Approach)<a class="headerlink" href="#approach" title="Permanent link">#</a></h2>
-<p><strong>单次扫描</strong>：
+<p><strong>朴素两遍扫描。</strong> 直接照形式化做：第一遍算出所有 <span class="arithmatex">\(s_i\)</span> 并取最大值 <span class="arithmatex">\(M\)</span>，第二遍数有多少 <span class="arithmatex">\(s_i = M\)</span>。</p>
+<div class="language-python highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">countGoodRectangles</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rectangles</span><span class="p">):</span>
+    <span class="n">sides</span> <span class="o">=</span> <span class="p">[</span><span class="nb">min</span><span class="p">(</span><span class="n">l</span><span class="p">,</span> <span class="n">w</span><span class="p">)</span> <span class="k">for</span> <span class="n">l</span><span class="p">,</span> <span class="n">w</span> <span class="ow">in</span> <span class="n">rectangles</span><span class="p">]</span>
+    <span class="n">M</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">sides</span><span class="p">)</span>
+    <span class="k">return</span> <span class="nb">sum</span><span class="p">(</span><span class="mi">1</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">sides</span> <span class="k">if</span> <span class="n">s</span> <span class="o">==</span> <span class="n">M</span><span class="p">)</span>
+</code></pre></div>
+<p>这已经是 <span class="arithmatex">\(O(n)\)</span> 时间，但它扫了两遍，还额外存了长度为 <span class="arithmatex">\(n\)</span> 的 <code>sides</code>。瓶颈在于：要数 <span class="arithmatex">\(M\)</span> 的出现次数，似乎得先知道 <span class="arithmatex">\(M\)</span>，所以才需要第二遍。能不能在同一遍里既确定 <span class="arithmatex">\(M\)</span>、又把计数维护好？</p>
+<p><strong>一遍扫描的不变量。</strong> 关键在于 <span class="arithmatex">\(M\)</span> 虽然全局未知，但"到目前为止的最大值"是可以边扫边维护的。设处理完前 <span class="arithmatex">\(k\)</span> 个矩形后维护一对状态 <span class="arithmatex">\((\hat M, c)\)</span>，满足不变量</p>
+<div class="arithmatex">\[\hat M = \max_{j \le k} s_j, \qquad c = \big|\{\, j \le k : s_j = \hat M \,\}\big|.\]</div>
+<p>即 <span class="arithmatex">\(\hat M\)</span> 是前缀最大值、<span class="arithmatex">\(c\)</span> 是前缀中达到它的个数。扫完全部 <span class="arithmatex">\(n\)</span> 个后，<span class="arithmatex">\((\hat M, c) = (M, \text{answer})\)</span>，正是所求。</p>
+<p>要维护这个不变量，看新来的 <span class="arithmatex">\(s\)</span> 相对 <span class="arithmatex">\(\hat M\)</span> 的三种情形即可：</p>
+<ul>
+<li><span class="arithmatex">\(s &gt; \hat M\)</span>：出现了更大的前缀最大值，旧的计数作废，新最大值此刻只有当前这一个矩形达到，故 <span class="arithmatex">\(\hat M \leftarrow s\)</span>、<span class="arithmatex">\(c \leftarrow 1\)</span>。</li>
+<li><span class="arithmatex">\(s = \hat M\)</span>：又一个矩形达到当前最大值，<span class="arithmatex">\(c \leftarrow c + 1\)</span>。</li>
+<li><span class="arithmatex">\(s &lt; \hat M\)</span>：最大值与计数都不变。</li>
+</ul>
+<p>由于 <span class="arithmatex">\(l, w \ge 1\)</span>，所有 <span class="arithmatex">\(s_i \ge 1\)</span>，把 <span class="arithmatex">\(\hat M\)</span> 初始化为 <span class="arithmatex">\(0\)</span> 可保证第一个矩形必然走 <span class="arithmatex">\(s &gt; \hat M\)</span> 分支，把 <span class="arithmatex">\(c\)</span> 正确置为 <span class="arithmatex">\(1\)</span>。</p>
 <div class="language-python highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">Solution</span><span class="p">:</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">countGoodRectangles</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rectangles</span><span class="p">):</span>
         <span class="n">max_side</span> <span class="o">=</span> <span class="mi">0</span>
@@ -22484,7 +22535,8 @@
             <span class="k">elif</span> <span class="n">s</span> <span class="o">==</span> <span class="n">max_side</span><span class="p">:</span>
                 <span class="n">cnt</span> <span class="o">+=</span> <span class="mi">1</span>
         <span class="k">return</span> <span class="n">cnt</span>
-</code></pre></div></p>
+</code></pre></div>
+<p>代码逐行实现上面三种情形，扫一遍、只存 <span class="arithmatex">\((\hat M, c)\)</span> 两个标量，省掉了 <code>sides</code> 数组和第二遍。</p>
 <h2 id="complexity">复杂度 (Complexity)<a class="headerlink" href="#complexity" title="Permanent link">#</a></h2>
 <ul>
 <li>Time: <span class="arithmatex">\(O(n)\)</span></li>
@@ -22492,7 +22544,7 @@
 </ul>
 <h2 id="pitfalls">陷阱 (Pitfalls)<a class="headerlink" href="#pitfalls" title="Permanent link">#</a></h2>
 <ul>
-<li><strong>更大时重置 count=1</strong>（不是 0）：因为当前矩形本身贡献 1。</li>
+<li><strong>遇到更大边长时把 <code>cnt</code> 重置为 1，而不是 0。</strong> 这直接来自不变量：分支 <span class="arithmatex">\(s &gt; \hat M\)</span> 触发时，当前矩形本身就是新最大值的一个达成者，故 <span class="arithmatex">\(c\)</span> 应等于 <span class="arithmatex">\(1\)</span>。若误写成 <code>cnt = 0</code>，考虑首个矩形即已刷新最大值的情形——它的贡献被丢掉，最终计数恒少 1。</li>
 </ul>
 <h2 id="related">相关题目 (Related)<a class="headerlink" href="#related" title="Permanent link">#</a></h2>
 <ul>
@@ -22607,6 +22659,8 @@
         <script src="../../../js/mathjax/tex-mml-chtml.js"></script>
       
         <script src="../../../js/mermaid.min.js"></script>
+      
+        <script src="../../../js/featured.js"></script>
       
     
   </body>

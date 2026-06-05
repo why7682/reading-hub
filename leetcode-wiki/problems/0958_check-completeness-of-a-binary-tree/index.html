@@ -1466,6 +1466,8 @@
       
         
       
+        
+      
     
     
     
@@ -1521,6 +1523,34 @@
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../featured/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ⭐ Featured（已验证）
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
               
             
               
@@ -1610,10 +1640,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_4" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
         
           
-          <label class="md-nav__link" for="__nav_4_4" id="__nav_4_4_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_5" id="__nav_4_5_label" tabindex="">
             
   
   
@@ -1631,8 +1661,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_4_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_4">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_5">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1915,7 +1945,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -1937,14 +1967,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_4_5" id="__nav_4_5_label" tabindex="">
+              <label class="md-nav__link " for="__nav_4_6" id="__nav_4_6_label" tabindex="">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_5">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_6">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -5321,10 +5351,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_7" checked>
         
           
-          <label class="md-nav__link" for="__nav_4_6" id="__nav_4_6_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_7" id="__nav_4_7_label" tabindex="">
             
   
   
@@ -5342,8 +5372,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_4_6">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_7_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4_7">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -22467,11 +22497,23 @@
 <h2 id="problem">Problem<a class="headerlink" href="#problem" title="Permanent link">#</a></h2>
 <p>判断二叉树是否完全：除最后一层外每层全满，最后一层节点尽量靠左。<span class="arithmatex">\(1 \le n \le 100\)</span>。</p>
 <h2 id="background">背景 (Background)<a class="headerlink" href="#background" title="Permanent link">#</a></h2>
-<p><strong>层序遍历 + 终止状态机</strong>。完全二叉树是堆（heap）的拓扑骨架；其判定与 array-encoded heap 的合法性等价。Knuth <em>TAOCP</em> Vol. 3 §5.2.3 详述堆形。</p>
+<p>完全性的定义说的是节点在树中的<strong>位置</strong>：每层从左到右逐个填满，最后一层允许在右侧留空，但中间不能有洞。难点在于"中间有洞"这件事是局部判断不出来的——只看任意单个节点，无法知道它左边某一层是否漏了一个位置。需要一种把所有位置按统一顺序排成一列、再检查这一列长什么样的视角。</p>
+<p>层序遍历（BFS）正好提供这个顺序：它按照"自上而下、每层从左到右"访问节点，而这恰恰是完全树被填充的顺序。把位置的几何约束翻译成序列上的约束，是本题的主线。下面先建立这个翻译，再从它推出算法。</p>
 <h2 id="formulation">形式化 (Formulation)<a class="headerlink" href="#formulation" title="Permanent link">#</a></h2>
-<p>完全 <span class="arithmatex">\(\iff\)</span> 在 BFS 层序中，一旦出现 <code>None</code>，之后<strong>不能再有非空节点</strong>。形式化：存在 <span class="arithmatex">\(k\)</span> 使前 <span class="arithmatex">\(k\)</span> 个 BFS 位置非空，其余皆空，且空节点的子也算作 None 入队列。</p>
+<p>先看一个最直接的想法为什么不够。最朴素的尝试是<strong>计数</strong>：数出节点总数 <span class="arithmatex">\(n\)</span>，算出树高 <span class="arithmatex">\(h\)</span>，检查节点数是否等于一棵满树 <span class="arithmatex">\(2^h - 1\)</span>，或最后一层是否靠左。问题在于"靠左"本身才是要判定的东西——同样的节点数，最后一层可以靠左排（完全），也可以中间留洞、右侧有节点（不完全），计数完全区分不开这两种情况。计数丢掉了位置信息，而位置信息正是题目的核心。</p>
+<p>所以必须保留位置。把每个<strong>位置</strong>（包括空缺）按 BFS 顺序排成一列：访问一个节点时，无论左右孩子是否存在，都把这两个孩子位置记入序列，空缺记为 <code>None</code>。</p>
+<p>关键观察是：在这个序列里，<strong>完全 <span class="arithmatex">\(\iff\)</span> 所有被填的位置都排在所有空位之前</strong>。直觉来自完全性的定义本身——逐层从左到右填满意味着填充是序列的一个前缀，空缺是序列的一个后缀，两者之间没有交错。反过来，若序列中先出现一个 <code>None</code>（空位 <span class="arithmatex">\(i\)</span>），其后又出现一个非空节点（位置 <span class="arithmatex">\(j &gt; i\)</span>），则位置 <span class="arithmatex">\(j\)</span> 被填而其左侧的位置 <span class="arithmatex">\(i\)</span> 为空，正是定义所禁止的"中间的洞"。</p>
+<p>形式化：设 BFS 位置序列为 <span class="arithmatex">\(p_1, p_2, \dots\)</span>（含空位）。树完全当且仅当存在 <span class="arithmatex">\(k\)</span>，使得</p>
+<div class="arithmatex">\[p_1, \dots, p_k \text{ 全部非空}, \qquad p_{k+1}, p_{k+2}, \dots \text{ 全部为 None}. \tag{1}\]</div>
+<p>等价地：序列中一旦出现 <code>None</code>，其后不能再有非空节点。</p>
 <h2 id="approach">数据结构 / 想法 (Approach)<a class="headerlink" href="#approach" title="Permanent link">#</a></h2>
-<p><strong>核心</strong>：BFS 把 <code>None</code> 子也入队；扫描队列，遇到 <code>None</code> 后若再遇非 <code>None</code> → 非完全。</p>
+<p>由式 (1) 直接得到算法，无需额外构造。序列只有两个阶段：前缀全非空，后缀全空。因此只需一个布尔标志 <code>seen_null</code> 记录"是否已进入后缀阶段"，配合一次 BFS 线性扫描即可——这是一个两状态的判定：</p>
+<ul>
+<li>状态 0（<code>seen_null = False</code>）：到目前为止全部非空，仍在前缀中；</li>
+<li>状态 1（<code>seen_null = True</code>）：已遇到至少一个空位，已进入后缀，此后任何非空节点都违反式 (1)。</li>
+</ul>
+<p>两个状态足够，因为式 (1) 只关心"第一个 <code>None</code> 之后是否还有非空"，不需要记录更细的历史。BFS 出队时，遇到 <code>None</code> 就置位 <code>seen_null</code>；在已置位的情况下又出队一个非空节点，立即返回 <code>False</code>。</p>
+<p>注意"把 <code>None</code> 孩子也入队"是这个翻译能成立的前提：只有把空位也放进序列，洞才会显现为序列中间的 <code>None</code>。若只入队非空孩子，空位被直接跳过，式 (1) 的序列就无从构造。</p>
 <div class="language-python highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">collections</span><span class="w"> </span><span class="kn">import</span> <span class="n">deque</span>
 <span class="k">class</span><span class="w"> </span><span class="nc">Solution</span><span class="p">:</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">isCompleteTree</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">root</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
@@ -22488,20 +22530,20 @@
                 <span class="n">q</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">right</span><span class="p">)</span>
         <span class="k">return</span> <span class="kc">True</span>
 </code></pre></div>
-<p>样例 1：<code>[1,2,3,4,5,6]</code>。BFS 序：1,2,3,4,5,6,None,None,None,None,None,None。第一个 None 出现于位 6，其后全 None → True。✓</p>
-<p>样例 2：<code>[1,2,3,4,5,null,7]</code>。BFS 序：1,2,3,4,5,None,7,...。遇 None 后又出现 7 → False。✓</p>
-<p><strong>为什么不用计数法</strong>：可计算 size 与最大深度对比 <span class="arithmatex">\(2^h - 1\)</span>，但需额外遍历且对"最后一层是否靠左"需更复杂的下标检查（heap 索引 i &lt; n 的检验）。BFS + 终止机最简。</p>
-<p><strong>替代方案</strong>：DFS 计算每节点 heap 索引（root=1，左=2i，右=2i+1），完全 <span class="arithmatex">\(\iff\)</span> <span class="arithmatex">\(\max(\text{idx}) = n\)</span>。</p>
+<p>下面用两个样例验证式 (1)：完全树应在第一个 <code>None</code> 之后再无非空节点，不完全树则在 <code>None</code> 之后仍出现非空节点。</p>
+<p>样例 1：<code>[1,2,3,4,5,6]</code>。节点 3 只有左孩子 6，叶子 4、5、6 各入队两个 <code>None</code>。BFS 出队序列为 <code>1,2,3,4,5,6</code> 后接七个 <code>None</code>（节点 3 的右空位贡献一个，三个叶子各贡献两个）。第一个 <code>None</code> 出现在出队的第 7 个位置，其后全为 <code>None</code>，满足式 (1)，返回 <code>True</code>。</p>
+<p>样例 2：<code>[1,2,3,4,5,null,7]</code>。节点 3 的左孩子为空、右孩子为 7。BFS 出队序列为 <code>1,2,3,4,5,None,7,...</code>：在第 6 位出队 <code>None</code> 置位 <code>seen_null</code>，第 7 位又出队非空节点 7，违反式 (1)，返回 <code>False</code>。</p>
+<p><strong>替代形式化：堆下标。</strong> 完全树与数组编码堆共享同一拓扑，这给出一个独立的判定。给每个节点分配堆下标（根 = 1，左孩子 = <span class="arithmatex">\(2i\)</span>，右孩子 = <span class="arithmatex">\(2i+1\)</span>）。在一棵完全树中，下标恰好取遍 <span class="arithmatex">\(1, 2, \dots, n\)</span> 无空缺——因为逐层从左到右填充正是堆下标递增的顺序；任何洞都会在下标序列里留下缺口，使最大下标超过 <span class="arithmatex">\(n\)</span>。于是完全 <span class="arithmatex">\(\iff \max(\text{idx}) = n\)</span>。DFS 一趟即可计算每个节点的下标并取最大值，与上面的 BFS 判据等价。</p>
 <h2 id="complexity">复杂度 (Complexity)<a class="headerlink" href="#complexity" title="Permanent link">#</a></h2>
 <ul>
-<li>Time: <span class="arithmatex">\(O(n)\)</span></li>
-<li>Space: <span class="arithmatex">\(O(n)\)</span> for 队列</li>
+<li>Time: <span class="arithmatex">\(O(n)\)</span>，每个节点及其 <code>None</code> 孩子各出队一次。</li>
+<li>Space: <span class="arithmatex">\(O(n)\)</span>，队列规模上界为最宽一层的宽度，为 <span class="arithmatex">\(O(n)\)</span>。</li>
 </ul>
 <h2 id="pitfalls">陷阱 (Pitfalls)<a class="headerlink" href="#pitfalls" title="Permanent link">#</a></h2>
-<ul>
-<li>必须把 <code>None</code> 子节点入队；否则无法检测"中间空格"。</li>
-<li><code>seen_null</code> 必须在遇到 <code>None</code> 时设置，并在之后任何非 None 上返回 False，而不能在循环最后才统一判。</li>
-</ul>
+<ol>
+<li><strong>必须把 <code>None</code> 孩子入队</strong>，否则中间的空位被跳过，式 (1) 的序列无法构造。具体后果：在样例 2 中若不入队 <code>None</code> 孩子，节点 3 的空左孩子不进队列，节点 7 仍会被当作普通节点入队并正常出队，算法永远看不到那个洞，错误地返回 <code>True</code>——而且是静默错误，没有任何报警。</li>
+<li><strong><code>seen_null</code> 必须在出队 <code>None</code> 的当下置位，并在其后任何非空节点上立即返回 <code>False</code></strong>，不能把判定推迟到循环结束统一处理。式 (1) 是关于序列顺序的约束，推迟判定就丢失了"<code>None</code> 之后才出现非空"这一时序信息。</li>
+</ol>
 <h2 id="related">相关题目 (Related)<a class="headerlink" href="#related" title="Permanent link">#</a></h2>
 <ul>
 <li><a href="../0226_invert-binary-tree/">#226. Invert Binary Tree</a> — 同属树结构操作。</li>
@@ -22617,6 +22659,8 @@
         <script src="../../../js/mathjax/tex-mml-chtml.js"></script>
       
         <script src="../../../js/mermaid.min.js"></script>
+      
+        <script src="../../../js/featured.js"></script>
       
     
   </body>

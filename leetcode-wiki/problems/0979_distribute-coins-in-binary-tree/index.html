@@ -1466,6 +1466,8 @@
       
         
       
+        
+      
     
     
     
@@ -1521,6 +1523,34 @@
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../featured/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ⭐ Featured（已验证）
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
               
             
               
@@ -1610,10 +1640,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_4" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
         
           
-          <label class="md-nav__link" for="__nav_4_4" id="__nav_4_4_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_5" id="__nav_4_5_label" tabindex="">
             
   
   
@@ -1631,8 +1661,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_4_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_4">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_5">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1915,7 +1945,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -1937,14 +1967,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_4_5" id="__nav_4_5_label" tabindex="">
+              <label class="md-nav__link " for="__nav_4_6" id="__nav_4_6_label" tabindex="">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_5">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_6">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -5321,10 +5351,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_7" checked>
         
           
-          <label class="md-nav__link" for="__nav_4_6" id="__nav_4_6_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_7" id="__nav_4_7_label" tabindex="">
             
   
   
@@ -5342,8 +5372,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_4_6">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_7_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4_7">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -22467,15 +22497,22 @@
 <h2 id="problem">Problem<a class="headerlink" href="#problem" title="Permanent link">#</a></h2>
 <p>二叉树有 <span class="arithmatex">\(n\)</span> 个节点，节点上有总数为 <span class="arithmatex">\(n\)</span> 的硬币。一次操作可在相邻节点（父子）间移动一枚硬币。求让每个节点恰好持有 <span class="arithmatex">\(1\)</span> 枚硬币的最少操作次数。<span class="arithmatex">\(1 \leq n \leq 100\)</span>，<code>0 &lt;= Node.val &lt;= n</code>。</p>
 <h2 id="background">背景 (Background)<a class="headerlink" href="#background" title="Permanent link">#</a></h2>
-<p>本题是「树上流量守恒」的最小搬运总量问题，与一维数轴上的 <em>transportation / earth-mover</em> 经典题同构：若把树边视作容量无限的双向通道，每条边的搬运量等于其下方子树的「硬币盈亏」绝对值。这种"看每条边被穿越多少次"的视角在 #834 Sum of Distances in Tree、Kontest 上的 trees with flow 题中都用，本质是把一阶矩拆到边上的线性算法（CLRS §22 的 DFS post-order 框架）。</p>
+<p>先看最直接的想法：模拟。从某个硬币过多的节点出发，把多余的硬币一枚枚推向缺硬币的节点，每推一步计一次操作。问题是「推向哪里」没有唯一答案——一枚多余的硬币可以走多条路径到达不同的空节点，贪心地就近匹配也未必最优。要枚举所有「哪枚硬币补哪个空位」的配对，规模是阶乘级的，行不通。</p>
+<p>模拟之所以困难，是因为它盯着「单枚硬币的轨迹」。但答案只关心<strong>总操作次数</strong>，而一次操作恰好是「一枚硬币穿越一条边」。所以总操作次数等于所有边上硬币穿越次数之和：</p>
+<div class="arithmatex">\[\text{ans} = \sum_{e} (\text{边 } e \text{ 上的硬币穿越次数}).\]</div>
+<p>这把问题从「追踪每枚硬币」转成了「逐条边计数」。下一步要回答的就是：单独看一条边，它上面究竟要穿过多少枚硬币？而这恰好可以脱离全局模拟、由这条边两侧的硬币盈亏唯一确定。</p>
 <h2 id="formulation">形式化 (Formulation)<a class="headerlink" href="#formulation" title="Permanent link">#</a></h2>
-<p>定义子树 <span class="arithmatex">\(T_v\)</span> 的「盈余」</p>
-<div class="arithmatex">\[\text{excess}(v) = \Big(\sum_{u \in T_v} \text{val}(u)\Big) - |T_v|\]</div>
-<p>则连接 <span class="arithmatex">\(v\)</span> 与其父的边需要承担 <span class="arithmatex">\(|\text{excess}(v)|\)</span> 次单位硬币穿越。总操作数</p>
-<div class="arithmatex">\[\text{ans} = \sum_{v \neq \text{root}} |\text{excess}(v)|.\]</div>
+<p>树的关键结构是：删掉任意一条边 <span class="arithmatex">\(e=(v,\text{parent}(v))\)</span>，树恰好裂成两块——子树 <span class="arithmatex">\(T_v\)</span>（<span class="arithmatex">\(v\)</span> 及其后代）和其余部分。<span class="arithmatex">\(T_v\)</span> 与外界的<strong>唯一</strong>通道就是 <span class="arithmatex">\(e\)</span>；任何进出 <span class="arithmatex">\(T_v\)</span> 的硬币都必须、且只能穿过 <span class="arithmatex">\(e\)</span>。这是树的性质：任意两点间路径唯一，所以一枚要进出 <span class="arithmatex">\(T_v\)</span> 的硬币没有别的边可走。</p>
+<p>由此，记 <span class="arithmatex">\(T_v\)</span> 的硬币盈余为</p>
+<div class="arithmatex">\[\text{excess}(v) = \Big(\sum_{u \in T_v} \text{val}(u)\Big) - |T_v|. \tag{1}\]</div>
+<p>终态要求 <span class="arithmatex">\(T_v\)</span> 内恰好持有 <span class="arithmatex">\(|T_v|\)</span> 枚硬币，当前持有 <span class="arithmatex">\(\sum_{u \in T_v}\text{val}(u)\)</span> 枚。若 <span class="arithmatex">\(\text{excess}(v)&gt;0\)</span>，多出的 <span class="arithmatex">\(\text{excess}(v)\)</span> 枚必须流出 <span class="arithmatex">\(T_v\)</span>；若 <span class="arithmatex">\(&lt;0\)</span>，缺的 <span class="arithmatex">\(|\text{excess}(v)|\)</span> 枚必须流入。无论哪种情形，这些硬币都只能走 <span class="arithmatex">\(e\)</span>，故边 <span class="arithmatex">\(e\)</span> 上的净穿越次数恰为 <span class="arithmatex">\(|\text{excess}(v)|\)</span>，且没有更省的走法（少穿一次就有一枚硬币留错位置）。每条非根边对应唯一的 <span class="arithmatex">\(v\)</span>，于是</p>
+<div class="arithmatex">\[\text{ans} = \sum_{v \neq \text{root}} |\text{excess}(v)|. \tag{2}\]</div>
+<p>求和成立是因为每次操作只发生在一条边上，不同边的穿越互不重叠，故可逐边相加。根节点没有父边，不进入求和；又因硬币总数 <span class="arithmatex">\(=\)</span> 节点数，<span class="arithmatex">\(\text{excess}(\text{root}) = 0\)</span>，即使把它算进去也不改变结果。</p>
 <h2 id="approach">数据结构 / 想法 (Approach)<a class="headerlink" href="#approach" title="Permanent link">#</a></h2>
-<p><strong>关键观察</strong>：每条边的搬运量唯一确定。子树 <span class="arithmatex">\(T_v\)</span> 终态需 <span class="arithmatex">\(|T_v|\)</span> 枚硬币，当前有 <span class="arithmatex">\(\sum \text{val}\)</span> 枚；差额必须通过 <span class="arithmatex">\(v\)</span> 到其父的那条边传递。绝对值即净穿越数（正向出多次或负向入多次）。</p>
-<p><strong>算法</strong>：一次后序 DFS，对每个节点返回其子树盈余 <span class="arithmatex">\(e\)</span>，把 <span class="arithmatex">\(|e|\)</span> 累加到答案。</p>
+<p>式 <span class="arithmatex">\((2)\)</span> 直接给出算法骨架：只需对每个 <span class="arithmatex">\(v\)</span> 求 <span class="arithmatex">\(\text{excess}(v)\)</span> 并把 <span class="arithmatex">\(|\text{excess}(v)|\)</span> 累加。而式 <span class="arithmatex">\((1)\)</span> 满足天然的自底向上递推</p>
+<div class="arithmatex">\[\text{excess}(v) = \text{val}(v) - 1 + \text{excess}(\text{left}) + \text{excess}(\text{right}),\]</div>
+<p>空子树盈余记为 <span class="arithmatex">\(0\)</span>。一次后序 DFS 即可：先递归得到左右子树盈余，再合成 <span class="arithmatex">\(v\)</span> 的盈余返回给父节点。</p>
+<p>累加的位置要对准「边」。边 <span class="arithmatex">\(e=(v,\text{parent}(v))\)</span> 的载荷是 <span class="arithmatex">\(|\text{excess}(v)|\)</span>。在 DFS 中，当处理节点 <span class="arithmatex">\(p\)</span>、其孩子 <span class="arithmatex">\(v\)</span> 的盈余 <span class="arithmatex">\(\text{excess}(v)\)</span> 刚由递归返回时，正是记账边 <span class="arithmatex">\((v,p)\)</span> 的时机。所以在每个节点处累加 <code>abs(left) + abs(right)</code>——即它与两个孩子相连的两条边的载荷。每条非根边都恰好作为「某节点的孩子边」被记一次，根节点因无父边自然不被记，与式 <span class="arithmatex">\((2)\)</span> 的求和范围严格对应。</p>
 <div class="language-python highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">Solution</span><span class="p">:</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">distributeCoins</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">root</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">ans</span> <span class="o">=</span> <span class="mi">0</span>
@@ -22484,16 +22521,15 @@
                 <span class="k">return</span> <span class="mi">0</span>
             <span class="n">left</span> <span class="o">=</span> <span class="n">dfs</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">left</span><span class="p">)</span>
             <span class="n">right</span> <span class="o">=</span> <span class="n">dfs</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">right</span><span class="p">)</span>
-            <span class="c1"># 当前子树盈余 = 自身 val - 1（自己需要 1 枚）+ 子树盈余</span>
-            <span class="n">excess</span> <span class="o">=</span> <span class="n">node</span><span class="o">.</span><span class="n">val</span> <span class="o">-</span> <span class="mi">1</span> <span class="o">+</span> <span class="n">left</span> <span class="o">+</span> <span class="n">right</span>
+            <span class="c1"># 在 node 处记账与两个孩子相连的两条边：载荷 = 孩子子树盈余的绝对值</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">ans</span> <span class="o">+=</span> <span class="nb">abs</span><span class="p">(</span><span class="n">left</span><span class="p">)</span> <span class="o">+</span> <span class="nb">abs</span><span class="p">(</span><span class="n">right</span><span class="p">)</span>
-            <span class="k">return</span> <span class="n">excess</span>
+            <span class="c1"># 返回 node 自身子树的盈余给父节点</span>
+            <span class="k">return</span> <span class="n">node</span><span class="o">.</span><span class="n">val</span> <span class="o">-</span> <span class="mi">1</span> <span class="o">+</span> <span class="n">left</span> <span class="o">+</span> <span class="n">right</span>
         <span class="n">dfs</span><span class="p">(</span><span class="n">root</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">ans</span>
 </code></pre></div>
-<p>注意累加的是 <code>abs(left) + abs(right)</code>：在节点 <span class="arithmatex">\(v\)</span> 处把 <span class="arithmatex">\(v\)</span> 的两条子树边的搬运量记账，避免根节点被重复计入（根本身没有父边）。</p>
-<p><strong>手动 trace</strong>：<code>root = [3,0,0]</code>，DFS 返回左子树 <code>excess = 0 - 1 = -1</code>，右子树 <code>-1</code>，根处累加 <code>|-1|+|-1| = 2</code>。✅</p>
-<p><strong>手动 trace 2</strong>：<code>root = [0,3,0]</code>，左子树 <code>excess = 3-1 = 2</code>，右子树 <code>-1</code>，根处累加 <code>|2|+|-1| = 3</code>。✅</p>
+<p><strong>手动 trace</strong>：<code>root = [3,0,0]</code>。左子树盈余 <span class="arithmatex">\(0-1=-1\)</span>，右子树 <span class="arithmatex">\(-1\)</span>，在根处累加 <span class="arithmatex">\(|-1|+|-1|=2\)</span>。✅</p>
+<p><strong>手动 trace 2</strong>：<code>root = [0,3,0]</code>。左子树盈余 <span class="arithmatex">\(3-1=2\)</span>，右子树 <span class="arithmatex">\(-1\)</span>，在根处累加 <span class="arithmatex">\(|2|+|-1|=3\)</span>。✅</p>
 <h2 id="complexity">复杂度 (Complexity)<a class="headerlink" href="#complexity" title="Permanent link">#</a></h2>
 <ul>
 <li>Time: <span class="arithmatex">\(O(n)\)</span>，每个节点常数工作。</li>
@@ -22501,9 +22537,9 @@
 </ul>
 <h2 id="pitfalls">陷阱 (Pitfalls)<a class="headerlink" href="#pitfalls" title="Permanent link">#</a></h2>
 <ul>
-<li>累加 <code>abs(left)+abs(right)</code> 而非 <code>abs(excess)</code>：根的盈余必为 <span class="arithmatex">\(0\)</span>（题目保证硬币总数 = 节点数），但中间节点若误用 <code>abs(excess)</code> 会少算根到深节点的多次穿越。</li>
-<li>「相邻节点」只指父-子，<strong>不能跨子树横移</strong>——这是为什么按边累加正确的物理原因。</li>
-<li>节点值可以为 <span class="arithmatex">\(0\)</span>，但子树盈余可能任意大（不超过 <span class="arithmatex">\(n\)</span>）。</li>
+<li>累加点必须对准边。在节点 <span class="arithmatex">\(v\)</span> 处累加 <code>abs(left) + abs(right)</code>（两条孩子边的载荷），而不是 <code>abs(excess)</code>（<span class="arithmatex">\(v\)</span> 自身那条父边的载荷）。两者其实给出<strong>相同</strong>的答案：每条非根边 <span class="arithmatex">\((v,\text{parent}(v))\)</span> 的载荷 <span class="arithmatex">\(|\text{excess}(v)|\)</span>，前者在 <span class="arithmatex">\(\text{parent}(v)\)</span> 处记一次，后者在 <span class="arithmatex">\(v\)</span> 处记一次，差别只在 <code>abs(excess)</code> 版本多算了根的 <span class="arithmatex">\(|\text{excess}(\text{root})|\)</span>；而本题保证硬币总数 <span class="arithmatex">\(=\)</span> 节点数，<span class="arithmatex">\(\text{excess}(\text{root})=0\)</span>，故二者恒等。换言之 <code>abs(excess)</code> 并不会算错——它只是把同一条边的记账时机换到了边的另一端。</li>
+<li>「相邻节点」只指父-子，<strong>不能跨子树横移</strong>。正因如此，进出 <span class="arithmatex">\(T_v\)</span> 的硬币只能走 <span class="arithmatex">\(e\)</span> 这一条边，逐边计数才成立。</li>
+<li>节点值可以为 <span class="arithmatex">\(0\)</span>，但子树盈余的绝对值可能任意大（不超过 <span class="arithmatex">\(n\)</span>）。</li>
 </ul>
 <h2 id="related">相关题目 (Related)<a class="headerlink" href="#related" title="Permanent link">#</a></h2>
 <ul>
@@ -22621,6 +22657,8 @@
         <script src="../../../js/mathjax/tex-mml-chtml.js"></script>
       
         <script src="../../../js/mermaid.min.js"></script>
+      
+        <script src="../../../js/featured.js"></script>
       
     
   </body>

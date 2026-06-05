@@ -1466,6 +1466,8 @@
       
         
       
+        
+      
     
     
     
@@ -1521,6 +1523,34 @@
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../featured/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ⭐ Featured（已验证）
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
               
             
               
@@ -1610,10 +1640,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_4" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
         
           
-          <label class="md-nav__link" for="__nav_4_4" id="__nav_4_4_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_5" id="__nav_4_5_label" tabindex="">
             
   
   
@@ -1631,8 +1661,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_4_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_4">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_5">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1915,7 +1945,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -1937,14 +1967,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_4_5" id="__nav_4_5_label" tabindex="">
+              <label class="md-nav__link " for="__nav_4_6" id="__nav_4_6_label" tabindex="">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_5">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_6">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -5321,10 +5351,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_7" checked>
         
           
-          <label class="md-nav__link" for="__nav_4_6" id="__nav_4_6_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_7" id="__nav_4_7_label" tabindex="">
             
   
   
@@ -5342,8 +5372,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_4_6">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_7_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4_7">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -13489,10 +13519,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#approach" class="md-nav__link">
+  <a href="#algorithm" class="md-nav__link">
     <span class="md-ellipsis">
       
-        数据结构 / 想法 (Approach)
+        数据结构 / 想法 (Algorithm)
       
     </span>
   </a>
@@ -22391,10 +22421,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#approach" class="md-nav__link">
+  <a href="#algorithm" class="md-nav__link">
     <span class="md-ellipsis">
       
-        数据结构 / 想法 (Approach)
+        数据结构 / 想法 (Algorithm)
       
     </span>
   </a>
@@ -22467,12 +22497,27 @@
 <h2 id="problem">Problem<a class="headerlink" href="#problem" title="Permanent link">#</a></h2>
 <p>求 <span class="arithmatex">\(1 \le a, b, c \le n\)</span> 的有序三元组 <span class="arithmatex">\((a, b, c)\)</span> 满足 <span class="arithmatex">\(a^2 + b^2 = c^2\)</span> 的数目。约束 <span class="arithmatex">\(1 \le n \le 250\)</span>。</p>
 <h2 id="background">背景 (Background)<a class="headerlink" href="#background" title="Permanent link">#</a></h2>
-<p>本题询问的是 <strong>Pythagorean triples (毕达哥拉斯三元组)</strong> 的有界计数。理论上所有原始毕达哥拉斯三元组由 Euclid 公式 <span class="arithmatex">\((m^2 - k^2, 2mk, m^2 + k^2)\)</span> (<span class="arithmatex">\(m &gt; k &gt; 0\)</span>, <span class="arithmatex">\(\gcd(m,k)=1\)</span>, 一奇一偶) 参数化，所有非原始三元组是原始的整数倍 <span class="arithmatex">\((\ell a_0, \ell b_0, \ell c_0)\)</span>。但 <span class="arithmatex">\(n \le 250\)</span> 极小，无需用公式——<span class="arithmatex">\(O(n^2)\)</span> 暴力枚举即可。</p>
+<p>我们要计数满足 <span class="arithmatex">\(a^2 + b^2 = c^2\)</span> 的三元组，三个分量都落在 <span class="arithmatex">\(\{1, \dots, n\}\)</span> 内。先把"有序"这个词的含义钉死，因为它直接决定计数结果：题目把 <span class="arithmatex">\((a, b, c)\)</span> 视为有序三元组，因此当 <span class="arithmatex">\(a \ne b\)</span> 时，<span class="arithmatex">\((a, b, c)\)</span> 和 <span class="arithmatex">\((b, a, c)\)</span> 是两个不同的解。例如 <span class="arithmatex">\(n=5\)</span> 时，<span class="arithmatex">\((3,4,5)\)</span> 与 <span class="arithmatex">\((4,3,5)\)</span> 各算一次，答案为 <span class="arithmatex">\(2\)</span>。约束 <span class="arithmatex">\(n \le 250\)</span> 很小，这一点稍后会决定我们能接受多粗暴的算法。</p>
 <h2 id="formulation">形式化 (Formulation)<a class="headerlink" href="#formulation" title="Permanent link">#</a></h2>
-<div class="arithmatex">\[\#\{(a, b, c) \in \mathbb{Z}_{&gt;0}^3 : a, b, c \le n,\ a^2 + b^2 = c^2\}\]</div>
-<p>注意 <span class="arithmatex">\((a, b)\)</span> 与 <span class="arithmatex">\((b, a)\)</span> 当 <span class="arithmatex">\(a \ne b\)</span> 计两次（"有序"）。</p>
-<h2 id="approach">数据结构 / 想法 (Approach)<a class="headerlink" href="#approach" title="Permanent link">#</a></h2>
-<p><strong>暴力 <span class="arithmatex">\(O(n^2)\)</span></strong>：枚举 <span class="arithmatex">\((a, b)\)</span>，算 <span class="arithmatex">\(c^2 = a^2 + b^2\)</span>，验证 <span class="arithmatex">\(c\)</span> 是整数且 <span class="arithmatex">\(c \le n\)</span>。</p>
+<p>设 <span class="arithmatex">\(a, b, c\)</span> 为正整数。我们要计数的集合是</p>
+<div class="arithmatex">\[\#\{(a, b, c) \in \mathbb{Z}_{&gt;0}^3 : a, b, c \le n,\ a^2 + b^2 = c^2\},\]</div>
+<p>其中 <span class="arithmatex">\(\mathbb{Z}_{&gt;0}\)</span> 表示正整数集，三元组按分量顺序区分——这正是上文"有序"的形式表述：交换 <span class="arithmatex">\(a, b\)</span> 得到的是集合中另一个元素（除非 <span class="arithmatex">\(a = b\)</span>，而 <span class="arithmatex">\(a=b\)</span> 时 <span class="arithmatex">\(2a^2 = c^2\)</span> 在正整数内无解）。</p>
+<p>这个集合表达式不只是一个待求的数值，它本身就是算法的脊柱：下面的每一步推导都是在回答"如何遍历这个集合的元素"。</p>
+<h2 id="algorithm">数据结构 / 想法 (Algorithm)<a class="headerlink" href="#algorithm" title="Permanent link">#</a></h2>
+<p><strong>从最朴素的枚举出发。</strong> 集合定义里有三个自由变量 <span class="arithmatex">\(a, b, c\)</span>，最直接的做法就是三重循环，对每个 <span class="arithmatex">\((a, b, c) \in \{1, \dots, n\}^3\)</span> 检查 <span class="arithmatex">\(a^2 + b^2 = c^2\)</span> 是否成立：</p>
+<div class="language-python highlight"><pre><span></span><code><span class="c1"># 朴素 O(n^3)：枚举全部三元组</span>
+<span class="n">cnt</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">n</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">b</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">n</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">n</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">a</span> <span class="o">*</span> <span class="n">a</span> <span class="o">+</span> <span class="n">b</span> <span class="o">*</span> <span class="n">b</span> <span class="o">==</span> <span class="n">c</span> <span class="o">*</span> <span class="n">c</span><span class="p">:</span>
+                <span class="n">cnt</span> <span class="o">+=</span> <span class="mi">1</span>
+</code></pre></div>
+<p>这显然正确，但它在做无用功。问题出在最内层的 <span class="arithmatex">\(c\)</span> 循环：对固定的 <span class="arithmatex">\((a, b)\)</span>，等式 <span class="arithmatex">\(a^2 + b^2 = c^2\)</span> 左边是一个已知常数，因此 <span class="arithmatex">\(c^2\)</span> 被完全确定，<span class="arithmatex">\(c\)</span> 没有任何自由度。我们却仍然把 <span class="arithmatex">\(1\)</span> 到 <span class="arithmatex">\(n\)</span> 的每个 <span class="arithmatex">\(c\)</span> 都试一遍，其中至多一个能满足等式。</p>
+<p><strong>这正是可以削去一整维的地方。</strong> 一旦固定 <span class="arithmatex">\((a, b)\)</span>，令 <span class="arithmatex">\(c^2 = a^2 + b^2\)</span>，剩下的问题不再是"搜索 <span class="arithmatex">\(c\)</span>"，而是一个判定：这个确定的值 <span class="arithmatex">\(c^2\)</span> 是否等于某个 <span class="arithmatex">\(\le n\)</span> 的正整数的平方？等价地，记平方集合</p>
+<div class="arithmatex">\[S = \{1^2, 2^2, \dots, n^2\},\]</div>
+<p>则三元组 <span class="arithmatex">\((a, b, c)\)</span> 是解当且仅当 <span class="arithmatex">\(a^2 + b^2 \in S\)</span>，且对应的 <span class="arithmatex">\(c = \sqrt{a^2+b^2}\)</span> 满足 <span class="arithmatex">\(c \le n\)</span>。判断一个数是否为完全平方数，用整数平方根 <span class="arithmatex">\(c = \lfloor\sqrt{a^2+b^2}\rfloor\)</span> 再验证 <span class="arithmatex">\(c^2 = a^2+b^2\)</span> 即可，单次 <span class="arithmatex">\(O(1)\)</span>。</p>
+<p>于是内层循环坍缩为一次 <span class="arithmatex">\(O(1)\)</span> 检查，三重循环降为二重，得到 <span class="arithmatex">\(O(n^2)\)</span> 算法。它是上面形式化集合的直接转写：外两层遍历所有 <span class="arithmatex">\((a, b) \in \{1,\dots,n\}^2\)</span>，内部判定该对是否贡献集合中的一个元素。</p>
 <div class="language-python highlight"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">math</span>
 <span class="k">class</span><span class="w"> </span><span class="nc">Solution</span><span class="p">:</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">countTriples</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
@@ -22485,18 +22530,18 @@
                     <span class="n">cnt</span> <span class="o">+=</span> <span class="mi">1</span>
         <span class="k">return</span> <span class="n">cnt</span>
 </code></pre></div>
-<p>Trace 例 1 <span class="arithmatex">\(n=5\)</span>：(3,4,5)、(4,3,5) → 2 ✓
-Trace 例 2 <span class="arithmatex">\(n=10\)</span>：(3,4,5)(4,3,5)(6,8,10)(8,6,10) → 4 ✓</p>
-<p><strong>优化（不必要但可学）</strong>：用 set <span class="arithmatex">\(\{c^2 : 1 \le c \le n\}\)</span> 加速判定；或只枚举 <span class="arithmatex">\(a &lt; b\)</span> 然后乘 2。</p>
+<p>验证 (<span class="arithmatex">\(n=5\)</span>)：枚举到 <span class="arithmatex">\((3,4)\)</span> 与 <span class="arithmatex">\((4,3)\)</span> 时 <span class="arithmatex">\(a^2+b^2 = 25 = 5^2\)</span> 且 <span class="arithmatex">\(5 \le 5\)</span>，各贡献一次，其余 <span class="arithmatex">\((a,b)\)</span> 均不满足，故答案为 <span class="arithmatex">\(2\)</span>，与样例一致。验证 (<span class="arithmatex">\(n=10\)</span>)：除 <span class="arithmatex">\((3,4,5)\)</span>、<span class="arithmatex">\((4,3,5)\)</span> 外，还有 <span class="arithmatex">\((6,8,10)\)</span>、<span class="arithmatex">\((8,6,10)\)</span>，共 <span class="arithmatex">\(4\)</span> 个，与样例一致。</p>
+<p>进一步的优化在本题规模下并不需要，但展示了可推广的技巧。例如预先构造集合 <span class="arithmatex">\(S\)</span> 用哈希查表代替整数平方根；或只枚举 <span class="arithmatex">\(a &lt; b\)</span> 再将结果乘 <span class="arithmatex">\(2\)</span>（利用有序对的对称性）。在 <span class="arithmatex">\(n \le 250\)</span> 时这些都不影响可行性，整数平方根判定已经足够。</p>
 <h2 id="complexity">复杂度 (Complexity)<a class="headerlink" href="#complexity" title="Permanent link">#</a></h2>
 <ul>
-<li>Time: <span class="arithmatex">\(O(n^2)\)</span>，<span class="arithmatex">\(n = 250\)</span> → 62500 次，极快。</li>
+<li>Time: <span class="arithmatex">\(O(n^2)\)</span>。<span class="arithmatex">\(n = 250\)</span> 时为 <span class="arithmatex">\(62500\)</span> 次迭代，计算量微不足道。</li>
 <li>Space: <span class="arithmatex">\(O(1)\)</span>。</li>
 </ul>
 <h2 id="pitfalls">陷阱 (Pitfalls)<a class="headerlink" href="#pitfalls" title="Permanent link">#</a></h2>
 <ul>
-<li>不要用 <code>math.sqrt</code> 后强转 int 比较——浮点误差可能漏算（<span class="arithmatex">\(10^9\)</span> 量级偶尔出错）。用 <code>math.isqrt</code>（Python 3.8+）做整数平方根，精确。</li>
-<li>"有序"对——<span class="arithmatex">\((3,4,5)\)</span> 和 <span class="arithmatex">\((4,3,5)\)</span> 计两次。</li>
+<li>不要用 <code>math.sqrt</code> 后强转 <code>int</code> 比较——浮点的整数平方根在大数上可能舍入错误，导致漏算或误算。这种错误并非"<span class="arithmatex">\(10^9\)</span> 量级"就会发生：实测 <code>int(math.sqrt(v))</code> 在远超 <span class="arithmatex">\(10^9\)</span> 时仍精确，首次失效出现在平方值超过 <span class="arithmatex">\(2^{52} \approx 4.5\times10^{15}\)</span>（即 <span class="arithmatex">\(c \approx 6.7\times10^7\)</span>）之后。具体反例：<span class="arithmatex">\(v = 4503599761588224\)</span> 时 <code>int(math.sqrt(v))</code> 给出 <span class="arithmatex">\(67108865\)</span>，而真实 <code>isqrt</code> 为 <span class="arithmatex">\(67108864\)</span>。本题 <span class="arithmatex">\(c^2 \le 2\cdot250^2 = 125000\)</span> 远在安全区内，浮点其实不会出错——但 <code>math.isqrt</code>（Python 3.8+）做精确整数平方根，是无需推敲阈值的防御性写法。</li>
+<li>"有序"对——<span class="arithmatex">\((3,4,5)\)</span> 和 <span class="arithmatex">\((4,3,5)\)</span> 计两次，不要去重。</li>
+<li>附带的数论事实：所有原始毕达哥拉斯三元组由 Euclid 公式 <span class="arithmatex">\((m^2 - k^2,\, 2mk,\, m^2 + k^2)\)</span> 参数化（<span class="arithmatex">\(m &gt; k &gt; 0\)</span>，<span class="arithmatex">\(\gcd(m,k)=1\)</span>，一奇一偶），非原始三元组是原始三元组的整数倍。本题 <span class="arithmatex">\(n\)</span> 极小，无需借助该公式——<span class="arithmatex">\(O(n^2)\)</span> 枚举已经足够；列出仅供想深入数论结构的读者参考。</li>
 </ul>
 <h2 id="related">相关题目 (Related)<a class="headerlink" href="#related" title="Permanent link">#</a></h2>
 <ul>
@@ -22614,6 +22659,8 @@ Trace 例 2 <span class="arithmatex">\(n=10\)</span>：(3,4,5)(4,3,5)(6,8,10)(8,
         <script src="../../../js/mathjax/tex-mml-chtml.js"></script>
       
         <script src="../../../js/mermaid.min.js"></script>
+      
+        <script src="../../../js/featured.js"></script>
       
     
   </body>

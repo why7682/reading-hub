@@ -1466,6 +1466,8 @@
       
         
       
+        
+      
     
     
     
@@ -1521,6 +1523,34 @@
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../featured/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ⭐ Featured（已验证）
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
               
             
               
@@ -1610,10 +1640,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_4" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
         
           
-          <label class="md-nav__link" for="__nav_4_4" id="__nav_4_4_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_5" id="__nav_4_5_label" tabindex="">
             
   
   
@@ -1631,8 +1661,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_4_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_4">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_5">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1915,7 +1945,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -1937,14 +1967,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_4_5" id="__nav_4_5_label" tabindex="">
+              <label class="md-nav__link " for="__nav_4_6" id="__nav_4_6_label" tabindex="">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_5">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_6">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -5321,10 +5351,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_7" checked>
         
           
-          <label class="md-nav__link" for="__nav_4_6" id="__nav_4_6_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_7" id="__nav_4_7_label" tabindex="">
             
   
   
@@ -5342,8 +5372,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_4_6">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_7_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4_7">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -22467,30 +22497,46 @@
 <h2 id="problem">Problem<a class="headerlink" href="#problem" title="Permanent link">#</a></h2>
 <p>仅用 queue 的标准操作（push back / pop front / peek front / size / empty）实现栈，支持 <code>push, pop, top, empty</code>。Follow-up: 用单个 queue。</p>
 <h2 id="_1">背景<a class="headerlink" href="#_1" title="Permanent link">#</a></h2>
-<p>这是一个<strong>ADT 互模拟 (ADT simulation)</strong> 练习：在 ADT 间建立同伦——证明栈 (LIFO) 可被 queue (FIFO) 在不破坏抽象的前提下模拟，反之亦然。属于数据结构教学中<strong>抽象数据类型等价性</strong>的入门示范，是 Knuth TAOCP Vol. 1 §2.2 队列/栈定义后的练习题原型。注意"等价"是<strong>可计算性意义上的</strong>，效率可能下降（这里 push 变 <span class="arithmatex">\(O(n)\)</span>）。</p>
+<p>先看直接做法在哪里失败。手上只有一个 queue，最朴素的实现是：<code>push(x)</code> 就把 <code>x</code> 入队尾，<code>pop()</code> 就出队首。跑一段序列试试——<code>push(1), push(2), push(3)</code>。此刻 queue 从头到尾是 <code>[1, 2, 3]</code>。栈语义要求 <code>pop()</code> 返回最后压入的 <code>3</code>，但 queue 的 <code>dequeue</code> 只能取出最早入队的 <code>1</code>。</p>
+<p>冲突的根源是访问端的方向相反：栈要的元素（最近压入的）恰好停在 queue 的尾部，而 queue 只允许从头部取。这不是某个实现细节没调好，而是 FIFO 与 LIFO 的结构性对立。任何用 queue 模拟 stack 的方案，本质上都要回答同一个问题：<strong>如何用只能从头部取的结构，交付停在尾部的元素。</strong></p>
+<p>这把本题归入<strong>抽象数据类型（ADT）互模拟</strong>这一类练习：在不破坏抽象边界的前提下，用一种 ADT 实现另一种。注意"可实现"是可计算性意义上的——能做到，但效率会下降（下面会看到某个操作必然退化到 <span class="arithmatex">\(O(n)\)</span>）。Knuth, <em>TAOCP</em> Vol. 1 §2.2 在定义栈与队列后给出这类练习作为入门示范。</p>
 <h2 id="_2">形式化<a class="headerlink" href="#_2" title="Permanent link">#</a></h2>
 <p>给定 FIFO queue <span class="arithmatex">\(Q\)</span> 上的操作 <span class="arithmatex">\(\{\text{enqueue}, \text{dequeue}, \text{front}, \text{size}\}\)</span>，构造满足 LIFO 语义的 push / pop / top / empty。</p>
+<p>把上面的冲突写成一条约束。设当前已压入的元素按压入顺序为 <span class="arithmatex">\(x_1, x_2, \dots, x_k\)</span>。LIFO 要求 <code>pop</code>/<code>top</code> 访问到的是<strong>最后压入</strong>的 <span class="arithmatex">\(x_k\)</span>；而 queue 的 <code>dequeue</code>/<code>front</code> 总是访问<strong>最早入队</strong>的那个。于是模拟的全部工作，就是维持一条不变量：</p>
+<blockquote>
+<p><strong>不变量</strong> <span class="arithmatex">\(I\)</span>：queue 从头到尾恰好是 <span class="arithmatex">\(x_k, x_{k-1}, \dots, x_1\)</span>，即栈顶停在 queue 头部。</p>
+</blockquote>
+<p>只要 <span class="arithmatex">\(I\)</span> 成立，<code>pop</code> 就是 <code>dequeue</code>、<code>top</code> 就是 <code>front</code>、<code>empty</code> 就是 <code>size == 0</code>，三者都是 <span class="arithmatex">\(O(1)\)</span>。问题被压缩成一件事：<strong>每次 <code>push</code> 之后如何重建 <span class="arithmatex">\(I\)</span>。</strong> 下面所有方案都是对这件事的不同回答。</p>
 <h2 id="_3">数据结构 / 想法<a class="headerlink" href="#_3" title="Permanent link">#</a></h2>
-<p><strong>方案 A：两队列，push 是 O(1)、pop 是 O(n)</strong>
-- <code>push(x)</code>：<code>q1.enqueue(x)</code>。
-- <code>pop()</code>：把 <code>q1</code> 的前 <code>size-1</code> 个出列入 <code>q2</code>；剩下的一个 dequeue 即为结果；然后交换 <code>q1, q2</code>。</p>
-<p><strong>方案 B：两队列，push 是 O(n)、pop 是 O(1)</strong>
-- <code>push(x)</code>：先把 <code>x</code> 入 <code>q2</code>，再把 <code>q1</code> 整队迁到 <code>q2</code> 后面；交换。
+<p><strong>从不变量推导单队列做法（方案 C）。</strong> 设 push 前 queue 满足 <span class="arithmatex">\(I\)</span>，内容是 <span class="arithmatex">\(x_{k}, \dots, x_1\)</span>（此处把新元素记为 <span class="arithmatex">\(x_{k+1}\)</span>，push 前共 <span class="arithmatex">\(k\)</span> 个）。<code>enqueue(x_{k+1})</code> 后 queue 变成
+$<span class="arithmatex">\(x_{k}, x_{k-1}, \dots, x_1, x_{k+1}.\)</span>$
+但 <span class="arithmatex">\(I\)</span> 要求新元素 <span class="arithmatex">\(x_{k+1}\)</span> 排在<strong>头部</strong>，它现在却在尾部。要修复 <span class="arithmatex">\(I\)</span>，必须把 <span class="arithmatex">\(x_{k+1}\)</span> 前面的 <span class="arithmatex">\(k\)</span> 个元素挪到它后面。queue 只提供 <code>dequeue</code>+<code>enqueue</code>：从头取一个再放回尾，正好把头部元素送到尾部，且不改变其余相对顺序。连做 <span class="arithmatex">\(k\)</span> 次（即 <code>enqueue</code> 后的 <code>size − 1</code> 次），队列变为
+$<span class="arithmatex">\(x_{k+1}, x_{k}, x_{k-1}, \dots, x_1,\)</span>$
+<span class="arithmatex">\(I\)</span> 恢复。这一步不是外加的技巧，而是"把尾部新元素搬到头部、只许 <code>dequeue</code>/<code>enqueue</code>"的唯一做法。</p>
+<ul>
+<li><code>push(x)</code>：<code>q.enqueue(x)</code>，再做 <code>size − 1</code> 次 <code>dequeue</code> 后 <code>enqueue</code>。</li>
+<li><code>pop()</code> / <code>top()</code>：直接对队首操作（<code>I</code> 保证队首即栈顶）。</li>
+</ul>
+<p><strong>正确性（归纳 <span class="arithmatex">\(I\)</span>）</strong>：空队列平凡满足 <span class="arithmatex">\(I\)</span>。设 push 前 <span class="arithmatex">\(I\)</span> 成立，上面的推导说明 push 后队列恰为 <span class="arithmatex">\(x_{k+1}, x_k, \dots, x_1\)</span>，<span class="arithmatex">\(I\)</span> 重新成立。故每次 push 后队首即栈顶。</p>
+<p><strong>为什么需要两个 queue：把 <span class="arithmatex">\(O(n)\)</span> 搬到另一端。</strong> 方案 C 把全部代价压在 <code>push</code>。若调用以 <code>pop</code> 为主，更想要 <code>push</code> 是 <span class="arithmatex">\(O(1)\)</span>。回到不变量：<span class="arithmatex">\(I\)</span> 必须在<strong>某个操作边界</strong>被重建，重建一次要触碰 <span class="arithmatex">\(k\)</span> 个元素。我们能选的只是把这次 <span class="arithmatex">\(O(n)\)</span> 放在 <code>push</code> 还是放在 <code>pop</code>。引入第二个 queue 作为搬运缓冲，就得到两种放置：</p>
+<p><strong>方案 A：push 是 <span class="arithmatex">\(O(1)\)</span>、pop 是 <span class="arithmatex">\(O(n)\)</span></strong>——push 时不维护 <span class="arithmatex">\(I\)</span>，把代价推迟到 pop。
+- <code>push(x)</code>：<code>q1.enqueue(x)</code>。队列保持纯 FIFO 顺序 <span class="arithmatex">\(x_1, \dots, x_k\)</span>。
+- <code>pop()</code>：把 <code>q1</code> 的前 <code>size − 1</code> 个 <code>dequeue</code> 后 <code>enqueue</code> 进 <code>q2</code>；<code>q1</code> 剩下的最后一个 <code>dequeue</code> 即栈顶（最近压入者）；再交换 <code>q1, q2</code>。交换维持的不变量是"<code>q1</code> 始终持有当前栈内容"，没有它下次操作就会读到空的 <code>q2</code>。</p>
+<p><strong>方案 B：push 是 <span class="arithmatex">\(O(n)\)</span>、pop 是 <span class="arithmatex">\(O(1)\)</span></strong>——和方案 C 同样在 push 端重建 <span class="arithmatex">\(I\)</span>，只是借第二个 queue 完成搬运。
+- <code>push(x)</code>：先 <code>q2.enqueue(x)</code>，再把 <code>q1</code> 全部按序 <code>dequeue</code> 后 <code>enqueue</code> 进 <code>q2</code>；交换 <code>q1, q2</code>。结果 <code>q1</code> 头部是新元素，满足 <span class="arithmatex">\(I\)</span>。
 - <code>pop()</code>：直接 <code>q1.dequeue()</code>。</p>
-<p><strong>方案 C（单队列）</strong>：
-- <code>push(x)</code>：<code>q.enqueue(x)</code>，然后把前 <code>size-1</code> 个元素逐个 dequeue 再 enqueue（"循环旋转"）。这样新元素被旋到队首。
-- <code>pop</code>, <code>top</code>: 直接对队首操作。</p>
-<p><strong>不变量</strong>（方案 C）：每次 push 后，queue 头部按 LIFO 顺序排列已 push 的元素。<strong>正确性</strong>：归纳，初始 empty 成立；push 完旋转 <span class="arithmatex">\(n\)</span> 次后新元素位于队首，其余顺序保持不变。</p>
+<p>A 与 B 是同一笔 <span class="arithmatex">\(O(n)\)</span> 代价的两种安放位置；C 是 B 在单队列上的特化（不借第二个 queue，用旋转就地完成同样的搬运）。</p>
 <h2 id="_4">复杂度<a class="headerlink" href="#_4" title="Permanent link">#</a></h2>
 <ul>
 <li>A：push <span class="arithmatex">\(O(1)\)</span>，pop <span class="arithmatex">\(O(n)\)</span>，top <span class="arithmatex">\(O(n)\)</span>。</li>
-<li>B/C：push <span class="arithmatex">\(O(n)\)</span>，pop <span class="arithmatex">\(O(1)\)</span>，top <span class="arithmatex">\(O(1)\)</span>。</li>
-<li>摊销：若 push/pop 调用频率差异大，可选对应方案优化均摊。但<strong>无法</strong>让两者同时 <span class="arithmatex">\(O(1)\)</span>（信息论下界：仅 FIFO 操作不足以在 <span class="arithmatex">\(o(n)\)</span> 复杂度内反转访问顺序，参见 Tarjan amortized analysis）。</li>
+<li>B / C：push <span class="arithmatex">\(O(n)\)</span>，pop <span class="arithmatex">\(O(1)\)</span>，top <span class="arithmatex">\(O(1)\)</span>。</li>
 </ul>
+<p><strong>为什么不能两端同时 <span class="arithmatex">\(O(1)\)</span>。</strong> 这是问题自身结构强加的，不是实现没优化好。栈下一个要交付的是最近压入的元素 <span class="arithmatex">\(x_k\)</span>；只要它还在 queue 里，所有在它之后入队的元素都排在它前面（FIFO），而 <code>dequeue</code> 只能从头取。要触达 <span class="arithmatex">\(x_k\)</span>，必须先把它前面的元素逐个移走，且这些元素还要为后续操作保留——于是至少要搬动 <span class="arithmatex">\(\Omega(k)\)</span> 个元素。这笔搬运可以提前到 <code>push</code>、推迟到 <code>pop</code>，或在多次操作间摊销，但总量躲不掉。因此 <code>push</code> 与 <code>pop</code> 无法同时做到 <span class="arithmatex">\(O(1)\)</span>（无论最坏还是摊销）。</p>
+<p>对比 #232（两 stack 模拟 queue）：那里能做到<strong>摊销 <span class="arithmatex">\(O(1)\)</span></strong> push/pop，因为 stack 的 LIFO 反转方向与目标 FIFO 一致，懒翻转后每个元素至多进出 output stack 一次。本题方向相反，没有这种顺手的摊销，正是这条不对称构成了两题对照的看点。</p>
 <h2 id="_5">陷阱<a class="headerlink" href="#_5" title="Permanent link">#</a></h2>
 <ul>
-<li>方案 A 中"剩 1 个 dequeue"边界——若 queue 空了再 pop 即 UB。</li>
-<li>实现 <code>top()</code> 时不要忘记把元素重新放回去（仅 dequeue 再 enqueue）。</li>
+<li>方案 A 中"剩 1 个再 <code>dequeue</code>"是边界点：必须确保 <code>q1</code> 非空再取。本题约束保证只在非空栈上 <code>pop</code>/<code>top</code>；空时取队首在 Python 里会抛 <code>IndexError</code>（不是无定义行为，但同样要避免）。</li>
+<li>实现 <code>top()</code> 用"出队读取"方式时，读完务必把元素重新 <code>enqueue</code> 回去，否则丢元素。方案 B/C 下 <code>top()</code> 直接读队首，无此问题。</li>
 <li>多线程下需额外同步；本题只考虑单线程语义。</li>
 </ul>
 <h2 id="_6">相关题目<a class="headerlink" href="#_6" title="Permanent link">#</a></h2>
@@ -22609,6 +22655,8 @@
         <script src="../../../js/mathjax/tex-mml-chtml.js"></script>
       
         <script src="../../../js/mermaid.min.js"></script>
+      
+        <script src="../../../js/featured.js"></script>
       
     
   </body>

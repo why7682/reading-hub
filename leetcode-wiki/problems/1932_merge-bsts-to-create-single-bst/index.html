@@ -1466,6 +1466,8 @@
       
         
       
+        
+      
     
     
     
@@ -1521,6 +1523,34 @@
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../featured/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ⭐ Featured（已验证）
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
               
             
               
@@ -1610,10 +1640,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_4" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
         
           
-          <label class="md-nav__link" for="__nav_4_4" id="__nav_4_4_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_5" id="__nav_4_5_label" tabindex="">
             
   
   
@@ -1631,8 +1661,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_4_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_4">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_5">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1915,7 +1945,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -1937,14 +1967,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_4_5" id="__nav_4_5_label" tabindex="">
+              <label class="md-nav__link " for="__nav_4_6" id="__nav_4_6_label" tabindex="">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_5">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_6">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -5321,10 +5351,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_7" checked>
         
           
-          <label class="md-nav__link" for="__nav_4_6" id="__nav_4_6_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_7" id="__nav_4_7_label" tabindex="">
             
   
   
@@ -5342,8 +5372,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_4_6">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_7_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4_7">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -22467,23 +22497,78 @@
 <h2 id="problem">Problem<a class="headerlink" href="#problem" title="Permanent link">#</a></h2>
 <p>给 <span class="arithmatex">\(n\)</span> 棵 BST（每棵最多 3 节点，根值互不相同）。可重复操作：若 <code>trees[i]</code> 某叶子值 = <code>trees[j]</code> 的根值，把那个叶子替换为 <code>trees[j]</code> 整棵，并从列表删 <code>trees[j]</code>。问能否做 <span class="arithmatex">\(n - 1\)</span> 次操作合成单棵合法 BST，能则返回根。约束 <span class="arithmatex">\(n \le 5 \times 10^4\)</span>。</p>
 <h2 id="background">背景 (Background)<a class="headerlink" href="#background" title="Permanent link">#</a></h2>
-<p>本题综合多个知识点：
-- <strong>图论 / 拓扑性质</strong>：把每棵小树看作"必须被另一棵的叶子吸收"，这构成有向关系。最终合成单棵 = 找到唯一"无入度"的树作为最终根（其根值不出现在任何其它树的叶子里）。
-- <strong>BST 验证</strong>：合并后必须是合法 BST。可用经典中序遍历 + 严格递增检查（或带 [min, max] 区间的递归）。
-- <strong>哈希表</strong>做 root-value → tree 的索引以 <span class="arithmatex">\(O(1)\)</span> 找到要插入的子树。</p>
+<p>先尝试最朴素的做法，看它在哪里崩，崩在哪里就是真正要解决的问题。</p>
+<p><strong>朴素贪心</strong>：扫描所有树，每当某棵树的一个叶子值等于另一棵树的根值，就把后者贴上去并删除它，重复到无法再贴。这个过程会在三处失败，每一处都暴露出题目的一个隐藏约束。</p>
+<p><strong>失败一：贴哪一棵不唯一。</strong> 假设叶子 <span class="arithmatex">\(\ell\)</span> 的值是 <span class="arithmatex">\(v\)</span>，而有两棵树 <span class="arithmatex">\(T_a, T_b\)</span> 根值都等于 <span class="arithmatex">\(v\)</span>——但题目说"根值互不相同"，所以这不会发生。反过来，一棵树的根值 <span class="arithmatex">\(v\)</span> 可能被多个叶子引用：两个叶子都等于 <span class="arithmatex">\(v\)</span>，却只有一棵根为 <span class="arithmatex">\(v\)</span> 的树可贴。贴给谁？无论贴给谁，另一个叶子都悬空，无树可填。贪心在这里没有正确的局部选择。</p>
+<p><strong>失败二：从哪棵树开始合并不明确。</strong> 每次操作都把一整棵树 <span class="arithmatex">\(T_j\)</span> 挂到另一棵的叶子下，<span class="arithmatex">\(T_j\)</span> 的根从此不再是顶层根。<span class="arithmatex">\(n-1\)</span> 次操作正好挂进 <span class="arithmatex">\(n-1\)</span> 棵树，剩下唯一一棵从未被挂走——它就是最终的根。所以"从哪开始"不是自由选择，而是被约束唯一确定的：最终根的根值从不作为任何叶子出现（否则它会被那个叶子挂走）。</p>
+<p><strong>失败三：贴完了不一定是合法 BST。</strong> 每棵输入树各自是合法 BST，但把两棵局部合法的 BST 在叶子处拼接，全局顺序可能被破坏。例如把根为 <span class="arithmatex">\(4\)</span> 的小树贴到一个值为 <span class="arithmatex">\(4\)</span>、其右兄弟应满足 <span class="arithmatex">\(&gt; 3\)</span> 的叶子上没问题；但若贴进来的子树含值 <span class="arithmatex">\(2\)</span> 的节点，而该叶子在父节点 <span class="arithmatex">\(3\)</span> 的右子树里（要求 <span class="arithmatex">\(&gt; 3\)</span>），全局严格递增就被违反。局部合法不蕴含全局合法。</p>
+<p>这三处失败分别指向三个必须验证的条件：根的唯一性、吸收的不重不漏、合并后的全局 BST 性。下一节把它们写成精确的形式。</p>
 <h2 id="formulation">形式化 (Formulation)<a class="headerlink" href="#formulation" title="Permanent link">#</a></h2>
-<p>设森林 <span class="arithmatex">\(F = \{T_1, ..., T_n\}\)</span>。定义有向多重图：<span class="arithmatex">\(T_i \to T_j\)</span> 若 <span class="arithmatex">\(T_i\)</span> 有叶子 <span class="arithmatex">\(= \text{root}(T_j)\)</span>。合成条件：
-1. <strong>唯一根候选</strong>：恰有一棵 <span class="arithmatex">\(T_r\)</span> 其根值不被任何其它树作叶值。
-2. <strong>每个非根树</strong>恰被一个叶子吸收（否则没法只做 <span class="arithmatex">\(n-1\)</span> 次操作）。
-3. <strong>合并后整体是 BST</strong>（即中序严格递增）。</p>
+<p>把操作的定义直接翻译成图，再从图上读出三个条件。</p>
+<p>设森林 <span class="arithmatex">\(F = \{T_1, \ldots, T_n\}\)</span>。操作"<span class="arithmatex">\(T_i\)</span> 的叶子 <span class="arithmatex">\(\ell\)</span>（值为 <span class="arithmatex">\(v\)</span>）被替换为根值等于 <span class="arithmatex">\(v\)</span> 的 <span class="arithmatex">\(T_j\)</span>"在森林上诱导一条有向边。形式地，定义有向图 <span class="arithmatex">\(G = (F, E)\)</span>：</p>
+<div class="arithmatex">\[
+(T_i, T_j) \in E \iff \exists\, \ell \in \mathrm{leaves}(T_i) \text{ s.t. } \mathrm{val}(\ell) = \mathrm{val}(\mathrm{root}(T_j)).
+\]</div>
+<p>合成单棵合法 BST 当且仅当下面三条同时成立。每一条都对应背景里的一处失败。</p>
+<p><strong>条件 1（唯一根，对应失败二）。</strong> 直觉：每次操作消去一个顶层根，<span class="arithmatex">\(n-1\)</span> 次操作后只剩一个顶层根，它从未被任何叶子挂走，故其根值不出现在任何叶子里。形式化：</p>
+<div class="arithmatex">\[
+\bigl|\{\, T_r \in F : \mathrm{val}(\mathrm{root}(T_r)) \notin \mathrm{LeafVals}(F) \,\}\bigr| = 1,
+\]</div>
+<p>其中 <span class="arithmatex">\(\mathrm{LeafVals}(F)\)</span> 是所有树的全部叶子值的集合。候选数 <span class="arithmatex">\(\ne 1\)</span> 直接判否：<span class="arithmatex">\(0\)</span> 个意味着每棵树都被某叶子引用，无法收口；<span class="arithmatex">\(\ge 2\)</span> 意味着有两棵树谁都吸收不了对方，必留游离。</p>
+<p><strong>条件 2（吸收不重不漏，对应失败一）。</strong> 直觉来自一个计数论证：<span class="arithmatex">\(n\)</span> 棵树、<span class="arithmatex">\(n-1\)</span> 次操作，每次操作恰好从列表删去一棵树，故除最终根外的每棵树都必须被<strong>恰好一次</strong>吸收——不能漏（漏了则操作数不足 <span class="arithmatex">\(n-1\)</span>，留游离），也不能重（题目根互不相同，一棵树只有一个根值，但若某根值被两个叶子引用，第二个叶子将无树可填）。形式化：每个非根树 <span class="arithmatex">\(T_j\)</span> 在 <span class="arithmatex">\(G\)</span> 中入度恰为 <span class="arithmatex">\(1\)</span>，且这条入边在合并过程中被真正使用。实现上不显式查入度，而是合并后检查是否还有未被吸收的树（见条件等价的代码判定 <code>if root_to_tree:</code>）。</p>
+<p><strong>条件 3（全局 BST，对应失败三）。</strong> 直觉：两棵局部合法的 BST 在叶子处拼接后，拼接点的子树值必须落在该叶子从根到此处累积的开区间 <span class="arithmatex">\((\mathrm{lo}, \mathrm{hi})\)</span> 内，否则全局中序不再严格递增。形式化：合并后的整棵树满足 BST 不变量，即存在区间标注使每个节点 <span class="arithmatex">\(x\)</span> 满足 <span class="arithmatex">\(\mathrm{lo}(x) &lt; \mathrm{val}(x) &lt; \mathrm{hi}(x)\)</span>，等价于中序遍历严格递增。</p>
+<p>三个条件构成解的脊柱：条件 1 定位起点，条件 2 保证收口，条件 3 保证合法。下一节的算法逐条验证它们。</p>
 <h2 id="approach">数据结构 / 想法 (Approach)<a class="headerlink" href="#approach" title="Permanent link">#</a></h2>
-<p><strong>算法步骤</strong>：
-1. 用 <code>root_to_tree: dict[int, TreeNode]</code> 索引每棵树的根。
-2. 用 <code>Counter</code> 统计每个值作为<strong>叶子</strong>出现的次数。
-3. <strong>找最终根</strong>：遍历每棵树，若其根值不在叶子计数中，作为候选；若候选数 <span class="arithmatex">\(\ne 1\)</span>，返回 None。
-4. <strong>DFS 替换</strong>：从最终根开始 DFS，遇到叶子若其值在 <code>root_to_tree</code> 中就替换为对应子树并从字典删除。同时做 BST 检查（带 [low, high] 区间）+ 节点计数。
-5. 最终若用过的子树数 == <span class="arithmatex">\(n\)</span> 且 BST 合法，返回根。</p>
-<p><strong>BST 检查 + 替换合并</strong>（单次 DFS）：</p>
+<p>算法直接照三个条件展开，并把它们合进<strong>一趟 DFS</strong>。先讲清楚两个非显然的设计决定，再给代码。</p>
+<p><strong>为什么吸收要"嫁接孩子"而非"替换节点"。</strong> 当 DFS 走到一个叶子 <span class="arithmatex">\(\ell\)</span>（值为 <span class="arithmatex">\(v\)</span>），且存在根值为 <span class="arithmatex">\(v\)</span> 的子树 <span class="arithmatex">\(T_j\)</span> 要贴上来，我们不能把 <span class="arithmatex">\(\ell\)</span> 这个节点对象本身换成 <span class="arithmatex">\(T_j\)</span> 的根——因为 <span class="arithmatex">\(\ell\)</span> 的父节点已经持有指向 <span class="arithmatex">\(\ell\)</span> 的引用，换对象会留下悬挂指针。正确做法是把 <span class="arithmatex">\(T_j\)</span> 根的左右孩子拷进 <span class="arithmatex">\(\ell\)</span>（<code>node.left, node.right = sub.left, sub.right</code>）：<span class="arithmatex">\(\ell\)</span> 的值仍是 <span class="arithmatex">\(v\)</span>（恰好等于 <span class="arithmatex">\(T_j\)</span> 根值，无矛盾），但它从叶子变成了合并树的内部节点。</p>
+<p><strong>为什么吸收要在同一 DFS 帧内、BST 区间检查之前完成。</strong> 这是正确性的承重点。DFS 到 <span class="arithmatex">\(\ell\)</span> 时，<span class="arithmatex">\(\ell\)</span> 已满足从根累积下来的区间 <span class="arithmatex">\((\mathrm{lo}, \mathrm{hi})\)</span>。若先嫁接再递归进 <code>dfs(node.left, lo, v)</code> 和 <code>dfs(node.right, v, hi)</code>，新贴进来的子树立刻继承这套收紧的边界——条件 3 的全局检查就这样无缝覆盖了 <span class="arithmatex">\(T_j\)</span> 内部，无需第二趟。若反过来先检查再嫁接，<span class="arithmatex">\(T_j\)</span> 的值就漏出了有序性校验。</p>
+<p><strong>算法步骤</strong>（每步标注它验证哪个条件）：
+1. 用 <code>root_to_tree: dict[int, TreeNode]</code> 索引每棵树的根值（条件 2 的吸收靠它 <span class="arithmatex">\(O(1)\)</span> 定位子树）。
+2. 用 <code>leaf_count</code> 统计每个值作为<strong>叶子</strong>出现的次数（条件 1 用它判断哪些根值未被引用）。
+3. <strong>验证条件 1</strong>：根值不在 <code>leaf_count</code> 中的树即候选；候选数 <span class="arithmatex">\(\ne 1\)</span> 返回 <code>None</code>。
+4. <strong>一趟 DFS 同时验证条件 2 与条件 3</strong>：从最终根 DFS，每到一个叶子若其值在 <code>root_to_tree</code> 中就嫁接对应子树并 <code>pop</code>（推进条件 2 的吸收），随即用 <span class="arithmatex">\((\mathrm{lo}, \mathrm{hi})\)</span> 区间校验（验证条件 3）。
+5. <strong>收口检查条件 2</strong>：DFS 结束后 <code>root_to_tree</code> 必须为空——非空即存在游离子树，返回 <code>None</code>。</p>
+<p><strong>先看一个例子驱动设计</strong>，<code>trees=[[2,1],[3,2,5],[5,4]]</code>：</p>
+<table>
+<thead>
+<tr>
+<th>步骤</th>
+<th>状态</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>建索引</td>
+<td><code>root_to_tree = {2:T1, 3:T2, 5:T3}</code></td>
+</tr>
+<tr>
+<td>统计叶子</td>
+<td><code>leaf_count = {1:1, 2:1, 5:1, 4:1}</code>（T1 叶 1；T2 叶 2、5；T3 叶 4）</td>
+</tr>
+<tr>
+<td>条件 1</td>
+<td>根值 2 在叶中、5 在叶中、唯 3 不在 → 最终根 = T2 <code>(3,2,5)</code>，候选数 1 ✓</td>
+</tr>
+<tr>
+<td>DFS 根 3</td>
+<td><span class="arithmatex">\(3 \in (-\infty, \infty)\)</span>，非叶，递归左 <code>(lo=-∞,hi=3)</code>、右 <code>(lo=3,hi=∞)</code></td>
+</tr>
+<tr>
+<td>左子 2</td>
+<td>叶且 2 ∈ <code>root_to_tree</code> → 嫁接 T1=<code>(2,1)</code>，节点 2 的孩子变成 <code>1, None</code>；递归到 1，<span class="arithmatex">\(1&lt;2\)</span> ✓</td>
+</tr>
+<tr>
+<td>右子 5</td>
+<td>叶且 5 ∈ <code>root_to_tree</code> → 嫁接 T3=<code>(5,4)</code>，节点 5 的孩子变成 <code>4, None</code>；递归到 4，<span class="arithmatex">\(3&lt;4&lt;5\)</span> ✓</td>
+</tr>
+<tr>
+<td>收口</td>
+<td><code>root_to_tree</code> 已空 ✓ → 返回最终根</td>
+</tr>
+</tbody>
+</table>
+<p>最终中序 <span class="arithmatex">\([1,2,3,4,5]\)</span> 严格递增，合法。这个例子把每步算法动作和它验证的条件一一对上，代码即此过程的直译。</p>
+<p><strong>一趟 DFS 实现（吸收 + BST 校验合一）</strong>：</p>
 <div class="language-python highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">Solution</span><span class="p">:</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">canMerge</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">trees</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">TreeNode</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">TreeNode</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">root_to_tree</span> <span class="o">=</span> <span class="p">{</span><span class="n">t</span><span class="o">.</span><span class="n">val</span><span class="p">:</span> <span class="n">t</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">trees</span><span class="p">}</span>
@@ -22492,16 +22577,15 @@
             <span class="k">for</span> <span class="n">child</span> <span class="ow">in</span> <span class="p">(</span><span class="n">t</span><span class="o">.</span><span class="n">left</span><span class="p">,</span> <span class="n">t</span><span class="o">.</span><span class="n">right</span><span class="p">):</span>
                 <span class="k">if</span> <span class="n">child</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
                     <span class="n">leaf_count</span><span class="p">[</span><span class="n">child</span><span class="o">.</span><span class="n">val</span><span class="p">]</span> <span class="o">=</span> <span class="n">leaf_count</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">child</span><span class="o">.</span><span class="n">val</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span>
-                    <span class="c1"># 注意：题面保证每个 tree 最多 3 节点且无 grandchild，</span>
-                    <span class="c1"># 所以 t.left/t.right 都是叶子或 None</span>
-        <span class="c1"># 找最终根：其根值不出现在任何叶子里</span>
+                    <span class="c1"># 每棵树至多 3 节点，故 t.left/t.right 必是叶子或 None</span>
+        <span class="c1"># 条件 1：根值不出现在任何叶子里的树即候选，须恰一个</span>
         <span class="n">roots</span> <span class="o">=</span> <span class="p">[</span><span class="n">t</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">trees</span> <span class="k">if</span> <span class="n">t</span><span class="o">.</span><span class="n">val</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">leaf_count</span><span class="p">]</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">roots</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">:</span>
             <span class="k">return</span> <span class="kc">None</span>
         <span class="n">final_root</span> <span class="o">=</span> <span class="n">roots</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
         <span class="k">del</span> <span class="n">root_to_tree</span><span class="p">[</span><span class="n">final_root</span><span class="o">.</span><span class="n">val</span><span class="p">]</span>
 
-        <span class="c1"># DFS：合并 + 验证 BST</span>
+        <span class="c1"># 一趟 DFS：嫁接（条件 2）+ 区间校验（条件 3）</span>
         <span class="kn">from</span><span class="w"> </span><span class="nn">sys</span><span class="w"> </span><span class="kn">import</span> <span class="n">setrecursionlimit</span>
         <span class="n">setrecursionlimit</span><span class="p">(</span><span class="mi">200000</span><span class="p">)</span>
 
@@ -22510,7 +22594,7 @@
                 <span class="k">return</span> <span class="kc">True</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="n">lo</span> <span class="o">&lt;</span> <span class="n">node</span><span class="o">.</span><span class="n">val</span> <span class="o">&lt;</span> <span class="n">hi</span><span class="p">):</span>
                 <span class="k">return</span> <span class="kc">False</span>
-            <span class="c1"># 若 node 是叶子且其值在 root_to_tree 中，先替换</span>
+            <span class="c1"># 叶子且其值是某树根值 → 先嫁接，再让新子树继承区间校验</span>
             <span class="k">if</span> <span class="n">node</span><span class="o">.</span><span class="n">left</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">node</span><span class="o">.</span><span class="n">right</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">node</span><span class="o">.</span><span class="n">val</span> <span class="ow">in</span> <span class="n">root_to_tree</span><span class="p">:</span>
                 <span class="n">sub</span> <span class="o">=</span> <span class="n">root_to_tree</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">val</span><span class="p">)</span>
                 <span class="n">node</span><span class="o">.</span><span class="n">left</span><span class="p">,</span> <span class="n">node</span><span class="o">.</span><span class="n">right</span> <span class="o">=</span> <span class="n">sub</span><span class="o">.</span><span class="n">left</span><span class="p">,</span> <span class="n">sub</span><span class="o">.</span><span class="n">right</span>
@@ -22518,34 +22602,23 @@
 
         <span class="k">if</span> <span class="ow">not</span> <span class="n">dfs</span><span class="p">(</span><span class="n">final_root</span><span class="p">,</span> <span class="nb">float</span><span class="p">(</span><span class="s1">&#39;-inf&#39;</span><span class="p">),</span> <span class="nb">float</span><span class="p">(</span><span class="s1">&#39;inf&#39;</span><span class="p">)):</span>
             <span class="k">return</span> <span class="kc">None</span>
-        <span class="c1"># 所有树都必须被合并</span>
+        <span class="c1"># 条件 2 收口：仍有树未被吸收 → 游离 → 不可合并</span>
         <span class="k">if</span> <span class="n">root_to_tree</span><span class="p">:</span>
             <span class="k">return</span> <span class="kc">None</span>
         <span class="k">return</span> <span class="n">final_root</span>
 </code></pre></div>
-<p><strong>关键不变量</strong>：
-- 替换发生在 BST 合法性递归检查之前（同一函数调用内），所以替换进来的子树立即被 [lo, hi] 区间继承校验。
-- <code>root_to_tree</code> 在 DFS 结束时若非空 → 存在游离子树 → 不可合并成单棵。</p>
-<p>Trace 例 1 <code>trees=[[2,1],[3,2,5],[5,4]]</code>：
-- root_to_tree = {2: T1, 3: T2, 5: T3}
-- 叶子值：T1.left=1; T2.left=2, T2.right=5; T3.left=4 → leaf_count = {1:1, 2:1, 5:1, 4:1}
-- 找最终根：T1.val=2 在 leaves; T2.val=3 不在 leaves ✓; T3.val=5 在 leaves → final_root = T2 (3,2,5)
-- DFS(T2, -∞, ∞)：值 3 ∈ (−∞, ∞)；非叶子；递归 left(2, -∞, 3), right(5, 3, ∞)
-  - left=val 2，叶子，值 2 在 root_to_tree → 替换 left = T1 的 children: T1 是 (2,1) 即 val=2, left=1。所以 T2.left 现在 = T1.left=1, T1.right=None。等等——代码替换 <code>node.left, node.right = sub.left, sub.right</code> 也就是把 T2.left（节点 val=2）的左右子改成 T1 的左右子。Yes：节点对象 val 保持 2，但左右子变成 1, None。然后再递归到这个 2 的 left=1 (lo=-∞, hi=2)，是叶子，不在 root_to_tree（已删），值 1 &lt; 2 ✓，返回 True。
-  - right=val 5，叶子，值 5 在 root_to_tree → 替换：T3=(5,4) → 5 节点 left=4, right=None。递归 left=4, lo=3, hi=5: 4 在 (3,5) ✓，叶子无替换，True。
-- 最后 root_to_tree 应空 ✓，返回 final_root。✓</p>
 <h2 id="complexity">复杂度 (Complexity)<a class="headerlink" href="#complexity" title="Permanent link">#</a></h2>
+<p>记 <span class="arithmatex">\(N\)</span> 为所有树的节点总数；因每棵树至多 3 节点，<span class="arithmatex">\(N = O(n)\)</span>，两种记法等价。</p>
 <ul>
-<li>Time: <span class="arithmatex">\(O(n)\)</span> 摊销——每个原始树节点至多被访问 <span class="arithmatex">\(O(1)\)</span> 次（DFS 一遍）；构建索引也是 <span class="arithmatex">\(O(n)\)</span>。</li>
-<li>Space: <span class="arithmatex">\(O(n)\)</span> 哈希表 + 递归栈（最差合并后树高 <span class="arithmatex">\(O(n)\)</span>，建议改迭代以防爆栈）。</li>
+<li>Time: <span class="arithmatex">\(O(N) = O(n)\)</span>。建索引与统计叶子各扫一遍；DFS 中每个原始节点至多被访问一次（嫁接后 <code>pop</code> 保证子树不被重复进入）。</li>
+<li>Space: <span class="arithmatex">\(O(N) = O(n)\)</span>。哈希表 <span class="arithmatex">\(O(n)\)</span>；递归栈深至多为合并后树高，最坏 <span class="arithmatex">\(O(n)\)</span>（左/右单链）。</li>
 </ul>
 <h2 id="pitfalls">陷阱 (Pitfalls)<a class="headerlink" href="#pitfalls" title="Permanent link">#</a></h2>
 <ul>
-<li><strong>多个候选根</strong> → 立即 None（例 3：<code>[5,4]</code>, <code>[3]</code> 中 3 不被任何叶子引用且 5 也不被 → 两个候选）。</li>
-<li><strong>替换前先 BST 检查</strong>还是<strong>替换后</strong>：必须<strong>先替换再用 [lo, hi] 校验新子树</strong>（否则游离子树值未被纳入有序性检查）。</li>
-<li><strong>节点值重复</strong>：若两个不同树有相同叶值，吸收顺序不唯一，但合法解最多一种（BST 要求严格递增）。实际上替换"node.val in root_to_tree"后立即 <code>pop</code>，确保同一根只被吸收一次；若 leaf_count[v] &gt; 1（多个叶子等于同一根），就有多余叶子无处合并 → 最终 <code>root_to_tree</code> 空但 BST 中存在重复值（违反严格 BST）→ DFS 会失败。</li>
-<li><strong>递归深度</strong>：<span class="arithmatex">\(n = 5 \times 10^4\)</span> 极端情况合并后树可能极深，要 <code>sys.setrecursionlimit</code> 或改迭代 DFS。</li>
-<li><strong>每个 leaf 计数 &gt; 1</strong>也要排除（题目根互异但叶可重复；若叶重复且都等于某个根，那只有一个能被吸收）—— DFS 自然处理。</li>
+<li><strong>多个候选根 → 立即 <code>None</code></strong>（条件 1）。例如 <code>[[5,4],[3]]</code>：3 不被任何叶引用、5 也不被引用 → 两个候选，谁也吸收不了谁。</li>
+<li><strong>吸收必须在区间校验之前</strong>（条件 3 的承重设计）。代码在同一 DFS 帧内先嫁接、后递归，使新子树继承收紧的 <span class="arithmatex">\((\mathrm{lo}, \mathrm{hi})\)</span>；颠倒顺序会让游离子树的值漏出有序性校验。详见 Approach 第二段。</li>
+<li><strong>一个根值被多个叶子引用</strong>（条件 2 的失败一）。若两个叶子值都等于某树的根值 <span class="arithmatex">\(v\)</span>：第一次 DFS 访问 <span class="arithmatex">\(v\)</span> 时 <code>pop</code> 出该树并嫁接，第二次访问发现 <span class="arithmatex">\(v\)</span> 已不在 <code>root_to_tree</code>，什么都不做——于是留下一个值为 <span class="arithmatex">\(v\)</span> 的裸叶子，与已嫁接进来的 <span class="arithmatex">\(v\)</span> 节点重复。两个相同值无法同时满足严格 <code>lo &lt; val &lt; hi</code>，DFS 在此处判否。</li>
+<li><strong>递归深度</strong>：<span class="arithmatex">\(n = 5 \times 10^4\)</span> 时合并后树可能极深，需 <code>sys.setrecursionlimit</code>；更稳妥是改迭代 DFS，因为 Python 的 C 栈在极深递归下即便提高了 recursion limit 仍可能段错误。</li>
 </ul>
 <h2 id="related">相关题目 (Related)<a class="headerlink" href="#related" title="Permanent link">#</a></h2>
 <ul>
@@ -22664,6 +22737,8 @@
         <script src="../../../js/mathjax/tex-mml-chtml.js"></script>
       
         <script src="../../../js/mermaid.min.js"></script>
+      
+        <script src="../../../js/featured.js"></script>
       
     
   </body>

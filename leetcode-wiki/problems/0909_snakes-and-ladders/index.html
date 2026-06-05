@@ -1466,6 +1466,8 @@
       
         
       
+        
+      
     
     
     
@@ -1521,6 +1523,34 @@
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../featured/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ⭐ Featured（已验证）
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
               
             
               
@@ -1610,10 +1640,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_4" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
         
           
-          <label class="md-nav__link" for="__nav_4_4" id="__nav_4_4_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_5" id="__nav_4_5_label" tabindex="">
             
   
   
@@ -1631,8 +1661,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_4_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_4">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_5">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1915,7 +1945,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -1937,14 +1967,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_4_5" id="__nav_4_5_label" tabindex="">
+              <label class="md-nav__link " for="__nav_4_6" id="__nav_4_6_label" tabindex="">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_5">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_6">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -5321,10 +5351,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_7" checked>
         
           
-          <label class="md-nav__link" for="__nav_4_6" id="__nav_4_6_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_7" id="__nav_4_7_label" tabindex="">
             
   
   
@@ -5342,8 +5372,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_4_6">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_7_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4_7">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -22467,22 +22497,61 @@
 <h2 id="problem">Problem<a class="headerlink" href="#problem" title="Permanent link">#</a></h2>
 <p><span class="arithmatex">\(n \times n\)</span> 棋盘，格子按 <strong>Boustrophedon</strong>（蛇形回转，左下起，按行交替方向）从 1 编号到 <span class="arithmatex">\(n^2\)</span>。从格 1 起每步掷 6 面骰子选下一个格 <span class="arithmatex">\(\in [\text{curr}+1, \min(\text{curr}+6, n^2)]\)</span>；落格若有蛇/梯（<code>board[r][c] != -1</code>）必须移到目的地（不再叠加下一段蛇/梯）。求到达 <span class="arithmatex">\(n^2\)</span> 最少步数；不可达返回 <span class="arithmatex">\(-1\)</span>。<span class="arithmatex">\(2 \le n \le 20\)</span>。</p>
 <h2 id="background">背景 (Background)<a class="headerlink" href="#background" title="Permanent link">#</a></h2>
-<p><strong>网格 BFS 在状态/编号映射下的应用</strong>。把网格"展开"到 1D 序列后变成"从 1 到 <span class="arithmatex">\(n^2\)</span> 的最短路径"，边为 [+1..+6] 跳跃 + 强制传送。该模型与 Markov chain 在 ladder game 的期望步数研究相关（Diaconis–Graham 等），但本题要的是最优/最短而非期望。</p>
+<p>读题后第一个矛盾就摆在面前：棋盘是二维的，但一步移动却是一维的。骰子给出的是一个<strong>数字</strong> <span class="arithmatex">\(1..6\)</span>，不是上下左右的方向；它把当前格号 <span class="arithmatex">\(s\)</span> 推进到 <span class="arithmatex">\(s+1, \dots, s+6\)</span> 中的某一个。换言之，棋盘的二维形状对<strong>移动规则</strong>毫无影响——决定能去哪里的，只有格子的<strong>编号</strong>。</p>
+<p>这个观察直接否定了一类朴素做法。如果把它当成普通网格 BFS、按"上下左右相邻格"扩展，就完全错了：相邻并不等于可达，而且蛇/梯还会把你瞬移到棋盘另一端。二维的几何邻接在这里没有意义。</p>
+<p>真正成立的结构是一维的：<span class="arithmatex">\(n^2\)</span> 个格子排成一条编号链 <span class="arithmatex">\(1, 2, \dots, n^2\)</span>，每个格子最多分叉出 6 个后继（骰子的 6 个点数），蛇和梯只是把某些后继<strong>确定性地重定向</strong>到别处。"蛇形回转"的二维布局唯一的作用，是告诉我们编号 <span class="arithmatex">\(s\)</span> 落在棋盘的哪个 <code>(r, c)</code>，从而查出 <code>board[r][c]</code> 是否藏着一条蛇或梯——它是一张查表用的索引，不是移动空间。</p>
+<p>把矛盾说清楚之后，求解路线就只剩两件事：先把"在编号链上找最少步数"形式化成一个图最短路问题，再把"编号 <span class="arithmatex">\(\to\)</span> 坐标"这张索引算对。下面依次处理。</p>
 <h2 id="formulation">形式化 (Formulation)<a class="headerlink" href="#formulation" title="Permanent link">#</a></h2>
-<p>图 <span class="arithmatex">\(G\)</span>：节点 <span class="arithmatex">\(\{1, \dots, n^2\}\)</span>，从 <span class="arithmatex">\(u\)</span> 到 <span class="arithmatex">\(v\)</span> 有边当 <span class="arithmatex">\(v \in [u+1, \min(u+6, n^2)]\)</span>；若 <code>board[r(v)][c(v)] != -1</code> 则边目的地替换为 <code>board[r(v)][c(v)]</code>。求 <span class="arithmatex">\(1 \to n^2\)</span> 最短路径。所有边权 1 → BFS。</p>
+<p><strong>直觉</strong>：每个格号是一个状态，一次掷骰是一条从当前状态到某个后继状态的转移，每条转移恰好花一步。于是"最少步数"就是这个状态图上从 <span class="arithmatex">\(1\)</span> 到 <span class="arithmatex">\(n^2\)</span> 的最短路；而且由于每条边代价都是 <span class="arithmatex">\(1\)</span>，"最短"指的就是边数最少。</p>
+<p>先定义编号到坐标的映射 <span class="arithmatex">\(r(\cdot), c(\cdot)\)</span>（其闭式将在下一节导出）：对格号 <span class="arithmatex">\(v \in [1, n^2]\)</span>，<span class="arithmatex">\(\big(r(v), c(v)\big)\)</span> 是它在棋盘上的行列。</p>
+<p><strong>形式化</strong>。构造有向图 <span class="arithmatex">\(G = (V, E)\)</span>：</p>
+<div class="arithmatex">\[V = \{1, 2, \dots, n^2\}.\]</div>
+<p>对每个 <span class="arithmatex">\(u\)</span> 和每个点数偏移，先得到落点</p>
+<div class="arithmatex">\[w \in [\,u+1,\ \min(u+6,\, n^2)\,],\]</div>
+<p>再做一次蛇/梯重定向，得到边的真正终点</p>
+<div class="arithmatex">\[
+\text{dest}(w) =
+\begin{cases}
+\texttt{board}[r(w)][c(w)], &amp; \texttt{board}[r(w)][c(w)] \ne -1,\\[4pt]
+w, &amp; \text{否则}.
+\end{cases}
+\tag{1}
+\]</div>
+<p>于是 <span class="arithmatex">\(E = \big\{\, (u,\ \text{dest}(w)) : u \in V,\ w \in [u+1, \min(u+6, n^2)] \,\big\}\)</span>，每条边权为 <span class="arithmatex">\(1\)</span>。所求即 <span class="arithmatex">\(G\)</span> 中 <span class="arithmatex">\(1 \to n^2\)</span> 的最短路长度，无路则为 <span class="arithmatex">\(-1\)</span>。</p>
+<p><strong>为什么是 BFS 而不是 Dijkstra/DFS</strong>。式 (1) 的图所有边权相同（都是 <span class="arithmatex">\(1\)</span>），所以"最短路"退化为"最少边数"。在这种均权图上，BFS 按距离非降的顺序逐层访问节点：第一次到达某节点时，所走的边数就是它的最短距离。这正是 BFS 的核心保证，也是它优于 Dijkstra（无需优先队列、无需处理权重）、优于 DFS（DFS 不保证先到达者距离最短）的原因。Dijkstra 在均权图上会退化成 BFS，徒增 <span class="arithmatex">\(\log\)</span> 因子；DFS 则根本不给最短路。</p>
+<p>至此"算法"已经定下：<strong>对 <span class="arithmatex">\(G\)</span> 跑 BFS</strong>。形式化是脊梁——后面每一步都是它的推论。唯一还没算的，是式 (1) 里的 <span class="arithmatex">\(r(w), c(w)\)</span>：把它求出来，边集 <span class="arithmatex">\(E\)</span> 就完全确定，BFS 即可运行。</p>
 <h2 id="approach">数据结构 / 想法 (Approach)<a class="headerlink" href="#approach" title="Permanent link">#</a></h2>
-<p><strong>核心：编号到坐标的转换</strong>。设格号 <span class="arithmatex">\(s \in [1, n^2]\)</span>，则
-- <span class="arithmatex">\(\text{quot} = (s-1) \div n\)</span>，<span class="arithmatex">\(\text{rem} = (s-1) \bmod n\)</span>
-- 行 <span class="arithmatex">\(r = n - 1 - \text{quot}\)</span>（自底向上）
-- 列 <span class="arithmatex">\(c\)</span>：若 <span class="arithmatex">\(\text{quot}\)</span> 为偶（最底行 quot=0），<span class="arithmatex">\(c = \text{rem}\)</span>；否则 <span class="arithmatex">\(c = n - 1 - \text{rem}\)</span>（回转方向反转）。</p>
+<p>剩下的全部工作，是把式 (1) 用到的编号到坐标映射算对。这一节先从一个会出错的朴素版推起，看它在哪里崩，再据此导出正确闭式。</p>
+<p><strong>朴素尝试与它的崩溃</strong>。最自然的想法是行主序展开：格 <span class="arithmatex">\(1..n\)</span> 在最底行从左到右，格 <span class="arithmatex">\(n+1..2n\)</span> 在上一行从左到右……于是 <code>行号 = (s-1) // n</code>、<code>列号 = (s-1) % n</code>。但题目是 <strong>Boustrophedon（蛇形回转）</strong>：最底行从左到右，再上一行却是从右到左，方向逐行翻转。朴素的行主序对所有行都用"从左到右"，凡是反向行（第二、第四……行）全部算错列号。所以朴素版的崩溃点很明确：<strong>它漏掉了逐行方向翻转</strong>。</p>
+<p><strong>从崩溃中导出正确闭式</strong>。蛇形布局有两层结构，分别对应行与列：</p>
+<ol>
+<li><strong>行（自底向上）</strong>。编号从最底行开始往上增长，而棋盘的行索引 <span class="arithmatex">\(r\)</span> 是自顶向下的（<span class="arithmatex">\(r=0\)</span> 是最顶行）。令</li>
+</ol>
+<div class="arithmatex">\[q = \Big\lfloor \tfrac{s-1}{n} \Big\rfloor\]</div>
+<p>为"从最底行往上数的偏移"（最底行 <span class="arithmatex">\(q=0\)</span>）。则真实行索引为</p>
+<div class="arithmatex">\[r(s) = n - 1 - q.
+\tag{2}
+\]</div>
+<ol>
+<li><strong>列（方向交替）</strong>。设行内偏移 <span class="arithmatex">\(\text{rem} = (s-1) \bmod n\)</span>。关键问题是：方向翻转该由<strong>哪个量</strong>的奇偶决定？答案是 <span class="arithmatex">\(q\)</span>，<strong>不是</strong> <span class="arithmatex">\(r\)</span>。理由直接来自结构：方向是按"距最底行的层数"交替的——第 <span class="arithmatex">\(0\)</span> 层（最底行）从左到右，第 <span class="arithmatex">\(1\)</span> 层从右到左，逐层翻转，而这个层数正是 <span class="arithmatex">\(q\)</span>。于是</li>
+</ol>
+<div class="arithmatex">\[c(s) =
+\begin{cases}
+\text{rem}, &amp; q \text{ 为偶}\ (\text{从左到右}),\\[4pt]
+n - 1 - \text{rem}, &amp; q \text{ 为奇}\ (\text{从右到左}).
+\end{cases}
+\tag{3}
+\]</div>
+<p>为什么强调"<span class="arithmatex">\(q\)</span> 的奇偶，不是 <span class="arithmatex">\(r\)</span> 的奇偶"？由式 (2)，<span class="arithmatex">\(r = n-1-q\)</span>，所以 <span class="arithmatex">\(r\)</span> 与 <span class="arithmatex">\(q\)</span> 的奇偶在 <span class="arithmatex">\(n\)</span> 为奇时一致、在 <span class="arithmatex">\(n\)</span> 为偶时相反。也就是说：当 <span class="arithmatex">\(n\)</span> 为偶数，用 <span class="arithmatex">\(r\)</span> 判奇偶会得到与 <span class="arithmatex">\(q\)</span> 完全相反的方向，每一行都翻反——这是本题最常见的 bug。式 (3) 用 <span class="arithmatex">\(q\)</span> 就绕开了它。</p>
+<p><strong>实现</strong>。式 (1)-(3) 直接落成代码：<code>to_rc</code> 实现映射，主循环对每个出队格扩展其 6 个后继并按式 (1) 重定向，其余就是标准 BFS 骨架。</p>
 <div class="language-python highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">collections</span><span class="w"> </span><span class="kn">import</span> <span class="n">deque</span>
 <span class="k">class</span><span class="w"> </span><span class="nc">Solution</span><span class="p">:</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">snakesAndLadders</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">board</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]])</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
         <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">board</span><span class="p">)</span>
         <span class="k">def</span><span class="w"> </span><span class="nf">to_rc</span><span class="p">(</span><span class="n">s</span><span class="p">):</span>
-            <span class="n">q</span><span class="p">,</span> <span class="n">r</span> <span class="o">=</span> <span class="nb">divmod</span><span class="p">(</span><span class="n">s</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span>
-            <span class="n">row</span> <span class="o">=</span> <span class="n">n</span> <span class="o">-</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">q</span>
-            <span class="n">col</span> <span class="o">=</span> <span class="n">r</span> <span class="k">if</span> <span class="n">q</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">0</span> <span class="k">else</span> <span class="n">n</span> <span class="o">-</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">r</span>
+            <span class="n">q</span><span class="p">,</span> <span class="n">r</span> <span class="o">=</span> <span class="nb">divmod</span><span class="p">(</span><span class="n">s</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span>          <span class="c1"># q: 自底向上偏移; r: 行内偏移</span>
+            <span class="n">row</span> <span class="o">=</span> <span class="n">n</span> <span class="o">-</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">q</span>                  <span class="c1"># 式 (2)</span>
+            <span class="n">col</span> <span class="o">=</span> <span class="n">r</span> <span class="k">if</span> <span class="n">q</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">0</span> <span class="k">else</span> <span class="n">n</span> <span class="o">-</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">r</span>  <span class="c1"># 式 (3)</span>
             <span class="k">return</span> <span class="n">row</span><span class="p">,</span> <span class="n">col</span>
         <span class="n">target</span> <span class="o">=</span> <span class="n">n</span> <span class="o">*</span> <span class="n">n</span>
         <span class="n">seen</span> <span class="o">=</span> <span class="p">{</span><span class="mi">1</span><span class="p">}</span>
@@ -22493,25 +22562,29 @@
                 <span class="k">return</span> <span class="n">d</span>
             <span class="k">for</span> <span class="n">nxt</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">s</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="nb">min</span><span class="p">(</span><span class="n">s</span> <span class="o">+</span> <span class="mi">6</span><span class="p">,</span> <span class="n">target</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
                 <span class="n">r</span><span class="p">,</span> <span class="n">c</span> <span class="o">=</span> <span class="n">to_rc</span><span class="p">(</span><span class="n">nxt</span><span class="p">)</span>
-                <span class="k">if</span> <span class="n">board</span><span class="p">[</span><span class="n">r</span><span class="p">][</span><span class="n">c</span><span class="p">]</span> <span class="o">!=</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">board</span><span class="p">[</span><span class="n">r</span><span class="p">][</span><span class="n">c</span><span class="p">]</span> <span class="o">!=</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>        <span class="c1"># 式 (1) 的重定向</span>
                     <span class="n">nxt</span> <span class="o">=</span> <span class="n">board</span><span class="p">[</span><span class="n">r</span><span class="p">][</span><span class="n">c</span><span class="p">]</span>
                 <span class="k">if</span> <span class="n">nxt</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">seen</span><span class="p">:</span>
                     <span class="n">seen</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">nxt</span><span class="p">)</span>
                     <span class="n">q</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">nxt</span><span class="p">,</span> <span class="n">d</span> <span class="o">+</span> <span class="mi">1</span><span class="p">))</span>
         <span class="k">return</span> <span class="o">-</span><span class="mi">1</span>
 </code></pre></div>
-<p>样例 1：<span class="arithmatex">\(n=6\)</span>。从 1 起，邻 2..7。格 2 在 row 5 col 1（最底行从左到右），<code>board[5][1]=15</code> → 跳 15。一连串 BFS 后 4 步到 36。✓
-样例 2：<span class="arithmatex">\(n=2\)</span>，<code>[[-1,-1],[-1,3]]</code>。target=4。从 1 邻 2,3,4。格 2 → row=1, col=1（最底 row，第二格 col=1）；<code>board[1][1]=3</code> → 跳 3。格 3 → quot=1 odd, col=n-1-0=1；row=0；<code>board[0][1]=-1</code>，停 3。格 4 → row=0,col=0，<code>board[0][0]=-1</code>，到 target。所以从 1 出发 1 步到 4。✓</p>
+<p><strong>为什么 <code>seen</code> 在入队时标记，而不是出队时</strong>。代码在 <code>q.append</code> 之前就把 <code>nxt</code> 加进 <code>seen</code>。若改成出队时才标记，同一节点会在被首次出队之前被反复入队（多条边指向它），队列膨胀、计数虚高。入队即标记保证每个节点至多入队一次，这既是正确性也是 <span class="arithmatex">\(O(n^2)\)</span> 复杂度的来源。</p>
+<p><strong>验证 (两个样例)</strong>。映射式 (2)-(3) 与 BFS 逐层扩展可分别核对。</p>
+<p>样例 1：<span class="arithmatex">\(n=6\)</span>，求最少步数 <span class="arithmatex">\(=4\)</span>。格 <span class="arithmatex">\(2\)</span> 由式 (2)-(3) 落在 <code>(5, 1)</code>（最底行 <span class="arithmatex">\(q=0\)</span> 偶，从左到右，<span class="arithmatex">\(\text{rem}=1\)</span>），<code>board[5][1]=15</code> <span class="arithmatex">\(\ne -1\)</span>，按式 (1) 重定向到 <span class="arithmatex">\(15\)</span>。BFS 第一层从格 <span class="arithmatex">\(1\)</span> 出发可达 <span class="arithmatex">\(\{2..7\}\)</span> 经重定向后的格集，逐层推进，第 <span class="arithmatex">\(4\)</span> 层首次触达 <span class="arithmatex">\(36\)</span>，返回 <span class="arithmatex">\(4\)</span>。✓</p>
+<p>样例 2：<span class="arithmatex">\(n=2\)</span>，<code>board=[[-1,-1],[-1,3]]</code>，target <span class="arithmatex">\(=4\)</span>，答案 <span class="arithmatex">\(1\)</span>。逐格映射：<span class="arithmatex">\(1\to(1,0)\)</span>，<span class="arithmatex">\(2\to(1,1)\)</span>（<span class="arithmatex">\(q=0\)</span> 偶），<span class="arithmatex">\(3\to(0,1)\)</span>（<span class="arithmatex">\(q=1\)</span> 奇，<span class="arithmatex">\(\text{rem}=0\)</span>，列 <span class="arithmatex">\(=n-1-0=1\)</span>），<span class="arithmatex">\(4\to(0,0)\)</span>（<span class="arithmatex">\(q=1\)</span> 奇，<span class="arithmatex">\(\text{rem}=1\)</span>，列 <span class="arithmatex">\(=0\)</span>）。从格 <span class="arithmatex">\(1\)</span> 第一层扩展 <span class="arithmatex">\(\{2,3,4\}\)</span>：格 <span class="arithmatex">\(2\)</span> 的 <code>board[1][1]=3</code> 重定向到 <span class="arithmatex">\(3\)</span>；格 <span class="arithmatex">\(3\)</span>、<span class="arithmatex">\(4\)</span> 处 <code>board</code> 为 <span class="arithmatex">\(-1\)</span> 不动。第一层即含 <span class="arithmatex">\(4=\)</span> target，返回 <span class="arithmatex">\(1\)</span>。✓</p>
 <h2 id="complexity">复杂度 (Complexity)<a class="headerlink" href="#complexity" title="Permanent link">#</a></h2>
 <ul>
-<li>Time: <span class="arithmatex">\(O(n^2)\)</span> 节点，每个最多 6 条边 → <span class="arithmatex">\(O(n^2)\)</span></li>
-<li>Space: <span class="arithmatex">\(O(n^2)\)</span></li>
+<li>Time：<span class="arithmatex">\(|V| = n^2\)</span> 个节点，入队即标记保证每个至多入队一次；每次出队扫至多 <span class="arithmatex">\(6\)</span> 个后继 → <span class="arithmatex">\(O(6 n^2) = O(n^2)\)</span>。</li>
+<li>Space：<code>seen</code> 与队列各 <span class="arithmatex">\(O(n^2)\)</span>。</li>
 </ul>
 <h2 id="pitfalls">陷阱 (Pitfalls)<a class="headerlink" href="#pitfalls" title="Permanent link">#</a></h2>
+<p>本节的陷阱全部源自上一节的坐标映射式 (2)-(3) 与重定向式 (1)，集中列出以便对照。</p>
 <ul>
-<li><strong>回转方向</strong>：最底行 row <span class="arithmatex">\(n-1\)</span> 是左→右，再上一行右→左。常见错误是用 row 而非 quot 判奇偶（行+列基数若 <span class="arithmatex">\(n\)</span> 偶/奇不同会错位）。<code>quot = (s-1) // n</code> 才是正确依据。</li>
-<li><strong>只传送一次</strong>：到达蛇/梯后用其目的地为 nxt，不再读 <code>board[目的地]</code>——本算法正是把替换写在循环里，对替换后的 nxt 不再判定。</li>
-<li>起点 1 即 <code>(n-1, 0)</code>，已访问；不要将 1 自己当蛇/梯（题目保证 <code>board[起]==-1</code>）。</li>
+<li><strong>方向奇偶用 <span class="arithmatex">\(q\)</span> 不用 <span class="arithmatex">\(r\)</span></strong>：式 (3) 的方向翻转依据是 <span class="arithmatex">\(q = (s-1)//n\)</span>（距底层数），而非行索引 <span class="arithmatex">\(r\)</span>。两者奇偶在 <span class="arithmatex">\(n\)</span> 为偶时相反，误用 <span class="arithmatex">\(r\)</span> 会让每行列号翻反——这是本题最常见的 bug。</li>
+<li><strong>只传送一次</strong>：落在蛇/梯格后移到目的地，<strong>不再</strong>读 <code>board[目的地]</code> 叠加下一段。代码把式 (1) 的替换写在循环里、对替换后的 <code>nxt</code> 不再判定，正好实现这点。</li>
+<li><strong>起点不当蛇/梯</strong>：格 <span class="arithmatex">\(1\)</span> 即 <code>(n-1, 0)</code>，初始已在 <code>seen</code>；题目保证 <code>board[起点]==-1</code>，无需特判。</li>
+<li><strong>target 自带蛇/梯</strong>：若 <span class="arithmatex">\(n^2\)</span> 格本身是蛇/梯，则一旦落上就被传走、永远不"占住" target，应返回 <span class="arithmatex">\(-1\)</span>；本算法因在出队时才判 <code>s==target</code>、且重定向已改写落点，自然正确处理。</li>
 </ul>
 <h2 id="related">相关题目 (Related)<a class="headerlink" href="#related" title="Permanent link">#</a></h2>
 <ul>
@@ -22520,7 +22593,7 @@
 </ul>
 <h2 id="further-reading">Further Reading<a class="headerlink" href="#further-reading" title="Permanent link">#</a></h2>
 <ul>
-<li>cp-algorithms.com/graph/breadth-first-search.html ⭐ — 边权 1 最短路的 BFS 模板。</li>
+<li>cp-algorithms.com/graph/breadth-first-search.html — 边权 1 最短路的 BFS 模板。</li>
 <li>CLRS, 3e, §22.2 — BFS 正确性证明。</li>
 </ul>
 
@@ -22628,6 +22701,8 @@
         <script src="../../../js/mathjax/tex-mml-chtml.js"></script>
       
         <script src="../../../js/mermaid.min.js"></script>
+      
+        <script src="../../../js/featured.js"></script>
       
     
   </body>

@@ -1466,6 +1466,8 @@
       
         
       
+        
+      
     
     
     
@@ -1521,6 +1523,34 @@
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../featured/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ⭐ Featured（已验证）
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
               
             
               
@@ -1610,10 +1640,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_4" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
         
           
-          <label class="md-nav__link" for="__nav_4_4" id="__nav_4_4_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_5" id="__nav_4_5_label" tabindex="">
             
   
   
@@ -1631,8 +1661,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_4_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_4">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_5">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1915,7 +1945,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -1937,14 +1967,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_4_5" id="__nav_4_5_label" tabindex="">
+              <label class="md-nav__link " for="__nav_4_6" id="__nav_4_6_label" tabindex="">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_5">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_6">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -5321,10 +5351,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_7" checked>
         
           
-          <label class="md-nav__link" for="__nav_4_6" id="__nav_4_6_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_7" id="__nav_4_7_label" tabindex="">
             
   
   
@@ -5342,8 +5372,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_4_6">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_7_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4_7">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -9488,7 +9518,7 @@
   <a href="#_3" class="md-nav__link">
     <span class="md-ellipsis">
       
-        数据结构 / 想法
+        数据结构 / 算法描述
       
     </span>
   </a>
@@ -22394,7 +22424,7 @@
   <a href="#_3" class="md-nav__link">
     <span class="md-ellipsis">
       
-        数据结构 / 想法
+        数据结构 / 算法描述
       
     </span>
   </a>
@@ -22467,17 +22497,44 @@
 <h2 id="problem">Problem<a class="headerlink" href="#problem" title="Permanent link">#</a></h2>
 <p>把 <code>nums</code> 切成两个<strong>非空连续段</strong> <code>left</code>, <code>right</code> 使 <span class="arithmatex">\(\max(\text{left}) \le \min(\text{right})\)</span> 且 <code>left</code> 长度最小。返回 <code>len(left)</code>。<span class="arithmatex">\(n \le 10^5\)</span>。保证有解。</p>
 <h2 id="_1">背景<a class="headerlink" href="#_1" title="Permanent link">#</a></h2>
-<p><strong>"前缀-后缀比较"</strong> 的经典：把"满足约束的最小切点"问题转化为"维护前缀最大、后缀最小，找首个满足关系的切点"。这是 <em>#42 Trapping Rain Water</em> 的左右扫描 + max 思路的近亲；也是 <em>segment partitioning</em> 在统计 / online learning 中的常用范式（如 CUSUM、change-point detection）。</p>
-<p>可在<strong>一次扫描</strong>完成（更优雅）：维护"当前最大值 cur_max"和"分界点前的最大值 left_max"；如果遇到 <code>nums[i] &lt; left_max</code>，则切点必须扩展到 <span class="arithmatex">\(i+1\)</span>，并更新 <code>left_max = cur_max</code>。</p>
+<p>切点是 <code>left</code> 段末尾之后的位置。一个切点 <span class="arithmatex">\(k\)</span>（<code>left</code> <span class="arithmatex">\(=\)</span> <code>nums[0..k-1]</code>，<code>right</code> <span class="arithmatex">\(=\)</span> <code>nums[k..n-1]</code>）合法，当且仅当左段的最大值不超过右段的最小值。先看一个朴素的切法为什么会失败，再问合法切点必须满足什么。</p>
+<p>取 <code>nums = [5, 0, 3, 8, 6]</code>。最短的尝试是 <code>left = [5]</code>：左段最大值是 <span class="arithmatex">\(5\)</span>，但右段 <code>[0, 3, 8, 6]</code> 的最小值是 <span class="arithmatex">\(0 &lt; 5\)</span>，违反约束。<span class="arithmatex">\(k=2\)</span> 同样不行（左段含 <span class="arithmatex">\(5\)</span>，右段仍含 <span class="arithmatex">\(0\)</span>）。直到 <span class="arithmatex">\(k=3\)</span>，<code>left = [5, 0, 3]</code> 最大值 <span class="arithmatex">\(5\)</span>，<code>right = [8, 6]</code> 最小值 <span class="arithmatex">\(6 \ge 5\)</span>，才合法。</p>
+<p>失败暴露的结构是：只要右段里还留着比左段最大值小的元素，切点就不合法。换言之，<strong>左段必须吞下所有"会拖低右段最小值"的小元素</strong>。这给出合法切点的判据——它只依赖左段最大值与右段最小值两个量，与段内其余元素无关。</p>
 <h2 id="_2">形式化<a class="headerlink" href="#_2" title="Permanent link">#</a></h2>
-<p>求最小 <span class="arithmatex">\(k \in [1, n-1]\)</span> 使 <span class="arithmatex">\(\max(\text{nums}[0..k-1]) \le \min(\text{nums}[k..n-1])\)</span>。</p>
-<h2 id="_3">数据结构 / 想法<a class="headerlink" href="#_3" title="Permanent link">#</a></h2>
-<p><strong>两遍扫描 + 数组</strong>（直观）：
-1. <code>prefix_max[i]</code> = <span class="arithmatex">\(\max(\text{nums}[0..i])\)</span>。
-2. <code>suffix_min[i]</code> = <span class="arithmatex">\(\min(\text{nums}[i..n-1])\)</span>。
-3. 找最小 <span class="arithmatex">\(k\)</span> 使 <code>prefix_max[k-1] &lt;= suffix_min[k]</code>。</p>
-<p><span class="arithmatex">\(O(n)\)</span> 时间 <span class="arithmatex">\(O(n)\)</span> 空间。</p>
-<p><strong>一遍扫描</strong>（最优 <span class="arithmatex">\(O(1)\)</span> 空间）：
+<p>求最小 <span class="arithmatex">\(k \in [1, n-1]\)</span> 使
+$$
+M_k \le m_k, \qquad M_k := \max_{0 \le i &lt; k} \text{nums}[i], \qquad m_k := \min_{k \le i &lt; n} \text{nums}[i].
+$$
+约束 <span class="arithmatex">\(k \ge 1\)</span> 保证两段均非空。<span class="arithmatex">\(M_k\)</span> 是左段最大值，随 <span class="arithmatex">\(k\)</span> 单调不减；<span class="arithmatex">\(m_k\)</span> 是右段最小值，随 <span class="arithmatex">\(k\)</span> 单调不减。我们要的是首个让二者满足 <span class="arithmatex">\(M_k \le m_k\)</span> 的位置。</p>
+<h2 id="_3">数据结构 / 算法描述<a class="headerlink" href="#_3" title="Permanent link">#</a></h2>
+<p><strong>两遍扫描 + 数组</strong>（直接对应形式化）。判据需要每个 <span class="arithmatex">\(k\)</span> 处的 <span class="arithmatex">\(M_k\)</span> 和 <span class="arithmatex">\(m_k\)</span>，二者都可用一遍线性扫描预计算：</p>
+<div class="language-python highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">partitionDisjoint</span><span class="p">(</span><span class="n">nums</span><span class="p">):</span>
+    <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">nums</span><span class="p">)</span>
+    <span class="n">prefix_max</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">n</span>
+    <span class="n">suffix_min</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">n</span>
+    <span class="n">prefix_max</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">nums</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
+        <span class="n">prefix_max</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">prefix_max</span><span class="p">[</span><span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">],</span> <span class="n">nums</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+    <span class="n">suffix_min</span><span class="p">[</span><span class="n">n</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">nums</span><span class="p">[</span><span class="n">n</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span> <span class="o">-</span> <span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">):</span>
+        <span class="n">suffix_min</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">suffix_min</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">],</span> <span class="n">nums</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+    <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">prefix_max</span><span class="p">[</span><span class="n">k</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="n">suffix_min</span><span class="p">[</span><span class="n">k</span><span class="p">]:</span>
+            <span class="k">return</span> <span class="n">k</span>
+</code></pre></div>
+<p><code>prefix_max[k-1]</code> <span class="arithmatex">\(= M_k\)</span>，<code>suffix_min[k]</code> <span class="arithmatex">\(= m_k\)</span>，从小到大找首个满足判据的 <span class="arithmatex">\(k\)</span>。<span class="arithmatex">\(O(n)\)</span> 时间，<span class="arithmatex">\(O(n)\)</span> 空间。</p>
+<p><strong>压缩到一遍扫描</strong>。两遍法的开销在于先反向扫一遍把整个 <code>suffix_min</code> 物化。问题是：判据真的需要完整的 <code>suffix_min</code> 吗？</p>
+<p>从左到右考虑当前切点候选 <code>cut</code>（左段为 <code>nums[0..cut-1]</code>，记其最大值为 <code>left_max</code> <span class="arithmatex">\(= M_{\text{cut}}\)</span>）。再向右走到下标 <span class="arithmatex">\(i\)</span>，只有两种情况：</p>
+<ul>
+<li><strong><code>nums[i] &gt;= left_max</code></strong>：此时 <code>nums[i]</code> 不小于左段最大值，把它留在右段不会让 <span class="arithmatex">\(m_{\text{cut}}\)</span> 跌破 <code>left_max</code>，当前切点仍然合法。无需移动 <code>cut</code>。</li>
+<li><strong><code>nums[i] &lt; left_max</code></strong>：右段里出现了一个比左段最大值还小的元素，判据被破坏。由 <span class="arithmatex">\(m_k\)</span> 的定义，任何 <span class="arithmatex">\(\text{cut} &lt; k \le i\)</span> 的切点都把 <code>nums[i]</code> 留在右段，于是 <span class="arithmatex">\(m_k \le \text{nums}[i] &lt; \text{left\_max} \le M_k\)</span>，全都不合法。要恢复合法，必须把切点推过 <span class="arithmatex">\(i\)</span>，即 <code>cut = i + 1</code>，让 <code>nums[i]</code> 进入左段。</li>
+</ul>
+<p>切点推进后，左段变成 <code>nums[0..i]</code>，新的 <code>left_max</code> 是这一段的最大值。这个值无需重新扫描：它正是"走到 <span class="arithmatex">\(i\)</span> 为止见过的全局最大值"。所以只要再维护一个标量 <code>cur_max</code> <span class="arithmatex">\(= \max(\text{nums}[0..i])\)</span>，推进时令 <code>left_max = cur_max</code> 即可。两个 <span class="arithmatex">\(O(n)\)</span> 数组就此坍缩成两个标量。</p>
+<p>下面把循环不变量写在代码之前。设循环处理完下标 <span class="arithmatex">\(i\)</span> 后：</p>
+<div class="arithmatex">\[
+\texttt{cur\_max} = \max_{0 \le j \le i} \text{nums}[j], \qquad \texttt{left\_max} = M_{\text{cut}} = \max_{0 \le j &lt; \text{cut}} \text{nums}[j].
+\]</div>
+<p>即 <code>cur_max</code> 是已扫描前缀的最大值，<code>left_max</code> 是当前左段的最大值。</p>
 <div class="language-python highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">partitionDisjoint</span><span class="p">(</span><span class="n">nums</span><span class="p">):</span>
     <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">nums</span><span class="p">)</span>
     <span class="n">left_max</span> <span class="o">=</span> <span class="n">cur_max</span> <span class="o">=</span> <span class="n">nums</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
@@ -22489,9 +22546,9 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="n">cur_max</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">cur_max</span><span class="p">,</span> <span class="n">nums</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
     <span class="k">return</span> <span class="n">cut</span> <span class="o">+</span> <span class="mi">1</span>
-</code></pre></div></p>
-<p><strong>不变量</strong>：循环开始时 <code>left_max</code> 是切点 <span class="arithmatex">\(\le \text{cut}\)</span> 的所有元素的最大值；<code>cur_max</code> 是 <span class="arithmatex">\(0..i-1\)</span> 的最大值。若 <code>nums[i] &lt; left_max</code>，则切点至少要推到 <span class="arithmatex">\(i+1\)</span>（包含 <span class="arithmatex">\(i\)</span> 到 left 段），并刷新 left_max 为 cur_max（左段扩展后新的最大）。</p>
-<p><strong>正确性</strong>：若到 <span class="arithmatex">\(i\)</span> 都不需推切点，意味着 <span class="arithmatex">\(\text{nums}[0..\text{cut}]\)</span> 最大 <span class="arithmatex">\(\le \text{nums}[\text{cut}+1..i]\)</span> 最小，仍满足切割条件；遇到违反时必须推切点。</p>
+</code></pre></div>
+<p>代码用 <code>cut</code> 记录左段最后一个下标（即上文的 <code>cut - 1</code>），故返回 <code>cut + 1</code> 作为左段长度。遇到 <code>nums[i] &lt; left_max</code> 时把 <code>cut</code> 推到 <span class="arithmatex">\(i\)</span> 并刷新 <code>left_max</code>；否则只更新 <code>cur_max</code>。</p>
+<p><strong>正确性</strong>。分两面。其一，返回的切点合法：循环结束时所有 <span class="arithmatex">\(j &gt; \text{cut}\)</span> 都满足 <code>nums[j] &gt;= left_max</code>（否则会触发推进），故右段最小值 <span class="arithmatex">\(\ge\)</span> <code>left_max</code> <span class="arithmatex">\(=\)</span> 左段最大值，判据成立。其二，切点最小：<code>cut</code> 只在 <code>nums[i] &lt; left_max</code> 时推进，而上面已证此时所有更早的候选切点都不合法，因此每次推进都是必需的，从不越过任何合法切点。两面合起来，<code>cut + 1</code> 是最小的合法左段长度。</p>
 <h2 id="_4">复杂度<a class="headerlink" href="#_4" title="Permanent link">#</a></h2>
 <ul>
 <li>Time: <span class="arithmatex">\(O(n)\)</span></li>
@@ -22619,6 +22676,8 @@
         <script src="../../../js/mathjax/tex-mml-chtml.js"></script>
       
         <script src="../../../js/mermaid.min.js"></script>
+      
+        <script src="../../../js/featured.js"></script>
       
     
   </body>

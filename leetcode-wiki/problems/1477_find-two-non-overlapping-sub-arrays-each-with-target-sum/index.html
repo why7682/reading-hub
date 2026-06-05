@@ -1466,6 +1466,8 @@
       
         
       
+        
+      
     
     
     
@@ -1521,6 +1523,34 @@
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../featured/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ⭐ Featured（已验证）
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
               
             
               
@@ -1610,10 +1640,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_4" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
         
           
-          <label class="md-nav__link" for="__nav_4_4" id="__nav_4_4_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_5" id="__nav_4_5_label" tabindex="">
             
   
   
@@ -1631,8 +1661,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_4_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_4">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_5">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1915,7 +1945,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -1937,14 +1967,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_4_5" id="__nav_4_5_label" tabindex="">
+              <label class="md-nav__link " for="__nav_4_6" id="__nav_4_6_label" tabindex="">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_5">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_6">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -5321,10 +5351,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_7" checked>
         
           
-          <label class="md-nav__link" for="__nav_4_6" id="__nav_4_6_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_7" id="__nav_4_7_label" tabindex="">
             
   
   
@@ -5342,8 +5372,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_4_6">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_7_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4_7">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -22467,13 +22497,30 @@
 <h2 id="problem">Problem<a class="headerlink" href="#problem" title="Permanent link">#</a></h2>
 <p>正整数数组 <code>arr</code> 和 <code>target</code>，找<strong>两个不相交连续子数组</strong>各自和为 <code>target</code>，使长度之和最小；无则 <span class="arithmatex">\(-1\)</span>。<span class="arithmatex">\(n \le 10^5\)</span>, <span class="arithmatex">\(\text{arr}[i] \ge 1\)</span>。</p>
 <h2 id="_1">背景<a class="headerlink" href="#_1" title="Permanent link">#</a></h2>
-<p>"两子数组求最优"问题的通用范式：<strong>预处理"以每个位置为右端点的最优单子数组"</strong>，然后枚举切分点，左右各取最优组合。这与 <em>Maximum Sum of Two Non-Overlapping Subarrays</em> (#1031)、Best Time to Buy/Sell with Two Transactions (#123) 同源。</p>
-<p>特殊条件 "正整数 + 固定和" → <strong>滑动窗口</strong> <span class="arithmatex">\(O(n)\)</span> 找所有"和为 target 的最短子数组"（窗口扩张直到和 ≥ target；若 = target 则记录长度并左移）。负数情况下需改用前缀和 + 哈希。</p>
+<p>先看朴素做法在哪里崩，再让修复手段从崩点长出来。</p>
+<p><strong>朴素枚举。</strong> 我们要两段不相交、各自和为 <code>target</code> 的子数组，长度之和最小。最直接的做法：枚举所有满足条件的子数组对。设 <span class="arithmatex">\(W\)</span> 是所有"和为 target"的窗口集合，朴素算法对每一对 <span class="arithmatex">\(([l_1,r_1],[l_2,r_2]) \in W \times W\)</span> 检查是否不相交，再更新答案。<span class="arithmatex">\(|W|\)</span> 可达 <span class="arithmatex">\(\Theta(n)\)</span>，配对是 <span class="arithmatex">\(\Theta(n^2)\)</span>，对 <span class="arithmatex">\(n = 10^5\)</span> 不可行。</p>
+<p><strong>冗余在哪。</strong> <span class="arithmatex">\(\Theta(n^2)\)</span> 来自把"找窗口"和"判不相交"耦合在一起。但不相交约束有结构：两段 <span class="arithmatex">\([l_1,r_1]\)</span>、<span class="arithmatex">\([l_2,r_2]\)</span>（设前者在左）不相交当且仅当 <span class="arithmatex">\(r_1 &lt; l_2\)</span>，等价地</p>
+<div class="arithmatex">\[\exists\, k:\quad r_1 \le k &lt; l_2. \tag{1}\]</div>
+<p>这个索引 <span class="arithmatex">\(k\)</span> 把数组切成两半：左段整体落在 <span class="arithmatex">\([0,k]\)</span>，右段整体落在 <span class="arithmatex">\([k+1, n-1]\)</span>。一旦固定切点 <span class="arithmatex">\(k\)</span>，左段和右段的选择<strong>互不影响</strong>——左段只需在 <span class="arithmatex">\(\{0,\dots,k\}\)</span> 内最短，右段只需在 <span class="arithmatex">\(\{k+1,\dots,n-1\}\)</span> 内最短。于是两段联合优化被 <span class="arithmatex">\((1)\)</span> 因子化为两个独立的单段子问题。这正是 <span class="arithmatex">\(\Theta(n^2)\)</span> 配对里被浪费掉的结构：右段的左边界不必逐对枚举，它被切点 <span class="arithmatex">\(k\)</span> 决定。</p>
+<p><strong>剩下的单段子问题。</strong> 因子化把问题归约为：对每个切点，求"右端点 <span class="arithmatex">\(\le k\)</span> 的最短 target 窗口"和"左端点 <span class="arithmatex">\(&gt; k\)</span> 的最短 target 窗口"。要让总复杂度降到 <span class="arithmatex">\(O(n)\)</span>，必须 <span class="arithmatex">\(O(1)\)</span> 摊还地拿到这两个量，而非每次重扫。两件事要解决——如何 <span class="arithmatex">\(O(n)\)</span> 枚举所有 target 窗口（下一段），以及如何让切点扫描复用前缀信息（见 §形式化）。</p>
+<p><strong>正整数为何关键。</strong> 枚举 target 窗口要用双指针。设窗口 <span class="arithmatex">\([l,r]\)</span> 的和为 <span class="arithmatex">\(s(l,r)=\sum_{i=l}^{r}\text{arr}[i]\)</span>。因为 <span class="arithmatex">\(\text{arr}[i]\ge 1\)</span>，固定 <span class="arithmatex">\(l\)</span> 时 <span class="arithmatex">\(s(l,r)\)</span> 关于 <span class="arithmatex">\(r\)</span> <strong>严格递增</strong>，固定 <span class="arithmatex">\(r\)</span> 时关于 <span class="arithmatex">\(l\)</span> 严格递减。这个单调性使双指针成立：右移 <code>right</code> 让和增大，当和超过 target 时右移 <code>left</code> 让和减小，且每个指针只单向移动。若数组含 <span class="arithmatex">\(0\)</span> 或负数，<span class="arithmatex">\(s\)</span> 不再单调，收缩步失去依据，必须改用前缀和 + 哈希（见 §陷阱）。</p>
+<p>本题属于<strong>两段优化</strong>问题类，#1031 与 #123 是同类的其他实例；它们共享"前缀最优 + 切点"这一因子化结构，但下面的推导只依赖本题的不相交约束 <span class="arithmatex">\((1)\)</span>，不借助这些外部对应。</p>
 <h2 id="_2">形式化<a class="headerlink" href="#_2" title="Permanent link">#</a></h2>
-<p>设 <span class="arithmatex">\(f(i)\)</span> = 在 <code>arr[0..i]</code> 中以 <span class="arithmatex">\(i\)</span> 为右端点的"和为 target 的最短子数组长度"，<span class="arithmatex">\(+\infty\)</span> 若不存在。令 <span class="arithmatex">\(g(i) = \min_{j \le i} f(j)\)</span> 为"右端点 <span class="arithmatex">\(\le i\)</span> 中最短"。
-对每个右端点 <span class="arithmatex">\(i\)</span>，第二段必须从 <span class="arithmatex">\(&gt; i\)</span> 开始。答案 <span class="arithmatex">\(= \min_i \{g(i) + f'(i+1)\}\)</span>，其中 <span class="arithmatex">\(f'(j) =\)</span> 以 <span class="arithmatex">\(j\)</span> 为左端点的最短。等价地：对每个"和为 target" 的窗口 <span class="arithmatex">\([l, r]\)</span>，与 <span class="arithmatex">\(g(l-1)\)</span> 配对。</p>
+<p><strong>直觉（先于符号）。</strong> 由 <span class="arithmatex">\((1)\)</span>，对每个切点 <span class="arithmatex">\(k\)</span>，候选解 = (右端点 <span class="arithmatex">\(\le k\)</span> 的最短 target 窗口) + (左端点 <span class="arithmatex">\(&gt; k\)</span> 的最短 target 窗口)。前一项只随 <span class="arithmatex">\(k\)</span> 增大而变好，是个<strong>前缀最小值</strong>：把它沿 <span class="arithmatex">\(k\)</span> 递推维护，就能在扫描中 <span class="arithmatex">\(O(1)\)</span> 取用，而不必为每个切点重扫左半。下面把这句话翻译成符号。</p>
+<p>设索引 <span class="arithmatex">\(i\)</span> 取遍 <span class="arithmatex">\(\{0,1,\dots,n-1\}\)</span>。定义</p>
+<div class="arithmatex">\[f(i) = \begin{cases} \min\{\, r-l+1 : s(l,r)=\text{target},\ r=i \,\} &amp; \text{若存在这样的 } l, \\ +\infty &amp; \text{否则,} \end{cases} \tag{2}\]</div>
+<p>即以 <span class="arithmatex">\(i\)</span> 为右端点的最短 target 窗口长度。再定义前缀最小值</p>
+<div class="arithmatex">\[g(i) = \min_{0 \le j \le i} f(j), \tag{3}\]</div>
+<p>即右端点 <span class="arithmatex">\(\le i\)</span> 中最短的 target 窗口长度。对称地，设 <span class="arithmatex">\(f'(j)\)</span> 为以 <span class="arithmatex">\(j\)</span> 为<strong>左端点</strong>的最短 target 窗口长度。</p>
+<p>把切点 <span class="arithmatex">\(k\)</span> 与 <span class="arithmatex">\((1)\)</span> 代入：左段右端点 <span class="arithmatex">\(\le k\)</span>，其最短长度是 <span class="arithmatex">\(g(k)\)</span>；右段左端点 <span class="arithmatex">\(\ge k+1\)</span>。取所有窗口枚举即等价于扫描每个 target 窗口 <span class="arithmatex">\([l,r]\)</span> 并令它充当右段，配以切点 <span class="arithmatex">\(k=l-1\)</span>，则左段最优长度为 <span class="arithmatex">\(g(l-1)\)</span>。故</p>
+<div class="arithmatex">\[\boxed{\ \text{答案} = \min_{[l,r]\in W}\ \big(\, g(l-1) + (r-l+1) \,\big),\ } \tag{4}\]</div>
+<p>无可行对时为 <span class="arithmatex">\(+\infty\)</span>（输出 <span class="arithmatex">\(-1\)</span>）。<span class="arithmatex">\(g\)</span> 的前缀最小值形式 <span class="arithmatex">\((3)\)</span> 正是因子化的编码：没有它，每个右段都要重扫所有左段，退回 <span class="arithmatex">\(\Theta(n^2)\)</span>；有了它，每个右段 <span class="arithmatex">\(O(1)\)</span> 配对。<span class="arithmatex">\(f'\)</span> 在 <span class="arithmatex">\((4)\)</span> 中被"枚举每个窗口当右段"的写法吸收，无需单独维护，故不再出现。</p>
 <h2 id="_3">数据结构 / 想法<a class="headerlink" href="#_3" title="Permanent link">#</a></h2>
-<p><strong>滑动窗口 + DP</strong>：
+<p><span class="arithmatex">\((4)\)</span> 直接指明实现：一边用双指针枚举 target 窗口 <span class="arithmatex">\([l,r]\)</span>（每个充当右段），一边维护 <span class="arithmatex">\(g\)</span> 的前缀最小值供左段配对。用数组 <code>best[i]</code> 编码 <span class="arithmatex">\(g\)</span>：</p>
+<blockquote>
+<p><strong>不变量。</strong> 处理完右端点 <span class="arithmatex">\(r\)</span> 后，<code>best[r]</code> <span class="arithmatex">\(= g(r)\)</span>，即右端点 <span class="arithmatex">\(\le r\)</span> 中最短 target 窗口长度（无则 <span class="arithmatex">\(+\infty\)</span>）。</p>
+</blockquote>
+<p>关键点：<span class="arithmatex">\(g(r)=\min(g(r-1), f(r))\)</span>，所以 <code>best</code> 在<strong>每个</strong>索引都要递推，而不只在窗口结束处更新——否则没有窗口结束的位置 <code>best</code> 会断链。这也解释了为何下面的 <code>else</code> 分支必须把 <code>best[r-1]</code> 前推到 <code>best[r]</code>：让每个位置都携带其左侧已见的最优。数组取 <span class="arithmatex">\(n+1\)</span> 大小，使 <span class="arithmatex">\(l=0\)</span> 时 <code>best[l-1]=best[-1]</code> 不越界地表示"左侧无窗口"。</p>
 <div class="language-python highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">minSumOfLengths</span><span class="p">(</span><span class="n">arr</span><span class="p">,</span> <span class="n">target</span><span class="p">):</span>
     <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">arr</span><span class="p">);</span> <span class="n">INF</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="s1">&#39;inf&#39;</span><span class="p">)</span>
     <span class="n">best</span> <span class="o">=</span> <span class="p">[</span><span class="n">INF</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="n">n</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>  <span class="c1"># best[i] = 右端点&lt;=i 中和为 target 的最短长度</span>
@@ -22492,22 +22539,20 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="n">best</span><span class="p">[</span><span class="n">right</span><span class="p">]</span> <span class="o">=</span> <span class="n">best</span><span class="p">[</span><span class="n">right</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span> <span class="k">if</span> <span class="n">right</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="k">else</span> <span class="n">INF</span>
     <span class="k">return</span> <span class="n">res</span> <span class="k">if</span> <span class="n">res</span> <span class="o">!=</span> <span class="n">INF</span> <span class="k">else</span> <span class="o">-</span><span class="mi">1</span>
-</code></pre></div></p>
-<p><strong>不变量</strong>：处理完右端点 <span class="arithmatex">\(r\)</span> 后，<code>best[r]</code> = 右端点 <span class="arithmatex">\(\le r\)</span> 中和为 target 的最短子数组长度。<strong>正确性</strong>：枚举右段时配对的左段在 <code>best[left-1]</code> 中已最优，故 <span class="arithmatex">\(\min\)</span> 全局最优。</p>
-<p><strong>几个细节</strong>：
-- "正整数" 保证窗口和单调随长度增长 → 滑动窗口可正确收缩。
-- 若有负数 / 零，必须改用 prefix sum + 哈希 + DP <code>best[i]</code>。</p>
+</code></pre></div>
+<p><strong>正确性。</strong> 由不变量，当扫到 target 窗口 <span class="arithmatex">\([l,r]\)</span> 时 <code>best[left-1]</code> <span class="arithmatex">\(=g(l-1)\)</span> 已是切点 <span class="arithmatex">\(k=l-1\)</span> 处左段的最优值，故 <code>res</code> 取的恰是 <span class="arithmatex">\((4)\)</span> 的逐项最小值，扫完即全局最优。<code>best[left-1]</code> 保证左段在索引 <span class="arithmatex">\(l-1\)</span> 及以前结束，与右段 <span class="arithmatex">\([l,r]\)</span> 不相交，正是约束 <span class="arithmatex">\((1)\)</span>。</p>
+<p><strong>正整数的作用。</strong> 见 §背景：<span class="arithmatex">\(\text{arr}[i]\ge 1\)</span> 使窗口和严格随长度增长，<code>while s &gt; target</code> 的收缩既正确又终止（每个 <code>left</code> 至多右移一次）。</p>
 <h2 id="_4">复杂度<a class="headerlink" href="#_4" title="Permanent link">#</a></h2>
 <ul>
-<li>Time: <span class="arithmatex">\(O(n)\)</span> —— 每元素入窗出窗各一次。</li>
-<li>Space: <span class="arithmatex">\(O(n)\)</span> DP 数组。</li>
+<li>Time: <span class="arithmatex">\(O(n)\)</span> —— 每元素入窗出窗各一次，内层 <code>while</code> 总迭代 <span class="arithmatex">\(\le n\)</span>，摊还线性。</li>
+<li>Space: <span class="arithmatex">\(O(n)\)</span> —— <code>best</code> DP 数组。</li>
 </ul>
 <h2 id="_5">陷阱<a class="headerlink" href="#_5" title="Permanent link">#</a></h2>
 <ul>
-<li>必须<strong>不相交</strong> —— 用 <code>best[left - 1]</code> 保证左段在 <code>left - 1</code> 及以前结束。</li>
-<li><span class="arithmatex">\(\text{arr}[i] \ge 1\)</span> 至关重要；放宽则要重写。</li>
-<li>题目要求<strong>两个</strong>子数组，单一不满足。</li>
-<li>当无第二段可配时，best 仍要更新（向后传递）。</li>
+<li>必须<strong>不相交</strong> —— 用 <code>best[left - 1]</code> 把左段锁在索引 <span class="arithmatex">\(l-1\)</span> 及以前结束，正是约束 <span class="arithmatex">\((1)\)</span>。</li>
+<li><span class="arithmatex">\(\text{arr}[i] \ge 1\)</span> 是承重条件：它保证窗口和的单调性，进而保证双指针收缩有效。放宽到含 <span class="arithmatex">\(0\)</span> 或负数则 <span class="arithmatex">\(s\)</span> 不再单调，必须改用前缀和 + 哈希维护 <span class="arithmatex">\((2)\)</span> 的 <span class="arithmatex">\(f\)</span>，再照 <span class="arithmatex">\((4)\)</span> 配对。</li>
+<li>若把 <code>best</code> 只在窗口结束处更新，没有窗口的位置会断链，左段配对将漏取——<code>else</code> 分支的前推不可省。</li>
+<li>单个窗口不构成解：代码仅在存在左侧伙伴（<code>best[left-1]</code> 有限）时更新 <code>res</code>，否则返回 <span class="arithmatex">\(-1\)</span>。</li>
 </ul>
 <h2 id="_6">相关题目<a class="headerlink" href="#_6" title="Permanent link">#</a></h2>
 <ul>
@@ -22518,8 +22563,8 @@
 </ul>
 <h2 id="further-reading">Further Reading<a class="headerlink" href="#further-reading" title="Permanent link">#</a></h2>
 <ul>
-<li>cp-algorithms.com/dynamic_programming/longest_increasing_subsequence.html — 不同问题但同款"前缀 best + 配对"思想。</li>
-<li>Sedgewick <em>Algorithms</em> §1.4 — sliding window 和 amortized analysis。</li>
+<li>cp-algorithms.com/dynamic_programming/longest_increasing_subsequence.html — LIS 的 <span class="arithmatex">\(O(n\log n)\)</span> 解同样把子问题最优值维护成可 <span class="arithmatex">\(O(1)\)</span>/<span class="arithmatex">\(O(\log n)\)</span> 查询的前缀结构，可对照 <span class="arithmatex">\((3)\)</span> 的前缀最小值思想。</li>
+<li>Sedgewick <em>Algorithms</em> §1.4 — two-pointer/滑动窗口的摊还分析，正是 §复杂度中"每元素入窗出窗各一次"得到 <span class="arithmatex">\(O(n)\)</span> 的依据。</li>
 </ul>
 
 
@@ -22626,6 +22671,8 @@
         <script src="../../../js/mathjax/tex-mml-chtml.js"></script>
       
         <script src="../../../js/mermaid.min.js"></script>
+      
+        <script src="../../../js/featured.js"></script>
       
     
   </body>

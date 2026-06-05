@@ -1466,6 +1466,8 @@
       
         
       
+        
+      
     
     
     
@@ -1521,6 +1523,34 @@
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../featured/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ⭐ Featured（已验证）
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
               
             
               
@@ -1610,10 +1640,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_4" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
         
           
-          <label class="md-nav__link" for="__nav_4_4" id="__nav_4_4_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_5" id="__nav_4_5_label" tabindex="">
             
   
   
@@ -1631,8 +1661,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_4_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_4">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_5">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1915,7 +1945,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -1937,14 +1967,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_4_5" id="__nav_4_5_label" tabindex="">
+              <label class="md-nav__link " for="__nav_4_6" id="__nav_4_6_label" tabindex="">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_5">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_6">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -5321,10 +5351,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_7" checked>
         
           
-          <label class="md-nav__link" for="__nav_4_6" id="__nav_4_6_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_7" id="__nav_4_7_label" tabindex="">
             
   
   
@@ -5342,8 +5372,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_4_6">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_7_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4_7">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -22467,19 +22497,43 @@
 <h2 id="problem">Problem<a class="headerlink" href="#problem" title="Permanent link">#</a></h2>
 <p>骰子每次掷出 1-6。<code>rollMax[i]</code> 限制数字 <code>i+1</code> 至多连续出现 <code>rollMax[i]</code> 次。求长度 <span class="arithmatex">\(n\)</span> 的合法序列数（模 <span class="arithmatex">\(10^9 + 7\)</span>）。<span class="arithmatex">\(1 \leq n \leq 5000\)</span>，<span class="arithmatex">\(\text{rollMax}[i] \in [1, 15]\)</span>。</p>
 <h2 id="background">背景 (Background)<a class="headerlink" href="#background" title="Permanent link">#</a></h2>
-<p>经典「<strong>带禁止串的有限自动机计数</strong>」：状态 = (上次掷的面 <code>last</code>, 该面已连续出现次数 <code>streak</code>)，转移由 6 种新面决定。可用 DP 直接做，状态数 <span class="arithmatex">\(O(n \cdot 6 \cdot \max(\text{rollMax}))\)</span>；亦可写成 transfer matrix 用矩阵幂 <span class="arithmatex">\(O(M^3 \log n)\)</span>（<span class="arithmatex">\(M\)</span> 为状态数）。同型问题在 Hopcroft-Motwani-Ullman §3 的 DFA 字符串计数、信息论 <em>constrained channel</em> (Cover &amp; Thomas §4) 中常见。</p>
-<h2 id="formulation">形式化 (Formulation)<a class="headerlink" href="#formulation" title="Permanent link">#</a></h2>
-<p>设 $f(t, j, k) = $ 长度 <span class="arithmatex">\(t\)</span>、最后一面为 <span class="arithmatex">\(j+1\)</span>、该面已连续 <span class="arithmatex">\(k\)</span> 次的合法序列数。</p>
-<p>转移（从 <span class="arithmatex">\(f(t, j, k)\)</span> 出发掷新面 <span class="arithmatex">\(j'\)</span>）：</p>
+<p>没有约束时，长度 <span class="arithmatex">\(n\)</span> 的序列共有 <span class="arithmatex">\(6^n\)</span> 个：每一位独立地从 6 个面里挑一个。约束「面 <span class="arithmatex">\(j+1\)</span> 至多连续出现 <span class="arithmatex">\(\text{rollMax}[j]\)</span> 次」破坏了这种独立性——某一位能不能填面 <span class="arithmatex">\(j\)</span>，取决于它前面已经连续出现了几个 <span class="arithmatex">\(j\)</span>。</p>
+<p>先看最朴素的计数尝试，弄清它在哪里卡住，再由卡住的地方推出需要追踪什么状态。</p>
+<p><strong>朴素尝试：只记住最后一面。</strong> 定义 <span class="arithmatex">\(g(t, j)\)</span> 为长度 <span class="arithmatex">\(t\)</span>、最后一面是 <span class="arithmatex">\(j+1\)</span> 的合法序列数。要往后再掷一面 <span class="arithmatex">\(j'\)</span>：</p>
 <ul>
-<li><span class="arithmatex">\(j' = j\)</span> 且 <span class="arithmatex">\(k+1 \leq \text{rollMax}[j]\)</span>：<span class="arithmatex">\(f(t+1, j, k+1) \mathrel{+}= f(t, j, k)\)</span></li>
-<li><span class="arithmatex">\(j' \neq j\)</span>：<span class="arithmatex">\(f(t+1, j', 1) \mathrel{+}= f(t, j, k)\)</span></li>
+<li>若 <span class="arithmatex">\(j' \neq j\)</span>，新序列以 <span class="arithmatex">\(j'\)</span> 结尾，看起来总是合法。</li>
+<li>若 <span class="arithmatex">\(j' = j\)</span>，连续段又长了一位，可能撞上 <span class="arithmatex">\(\text{rollMax}[j]\)</span> 上限。</li>
 </ul>
-<p>边界 <span class="arithmatex">\(f(1, j, 1) = 1\)</span> 对所有 <span class="arithmatex">\(j\)</span>。</p>
-<p>答案 <span class="arithmatex">\(\sum_{j, k} f(n, j, k) \bmod (10^9 + 7)\)</span>。</p>
+<p>第一条没问题，第二条就是断点。<span class="arithmatex">\(g(t, j)\)</span> 把「最后一面是 <span class="arithmatex">\(j\)</span>」的序列全部混在一个数里，但它们的尾部连续段有长有短：有的尾巴是一个孤立的 <span class="arithmatex">\(j\)</span>，有的已经连了 <span class="arithmatex">\(\text{rollMax}[j]\)</span> 个。当 <span class="arithmatex">\(\text{rollMax}[j] &lt; n\)</span>、约束真正起作用时，要决定「再掷一个 <span class="arithmatex">\(j\)</span> 是否越界」，必须知道当前尾部连了几个 <span class="arithmatex">\(j\)</span>——而 <span class="arithmatex">\(g(t, j)\)</span> 恰好把这个数丢掉了。只记最后一面，信息不足。</p>
+<p><strong>断点指向修复。</strong> 既然卡在「不知道尾部连了几个」，就把这个数补进状态：除了最后一面 <span class="arithmatex">\(j\)</span>，再记下它已连续出现的次数 <span class="arithmatex">\(k\)</span>。这一对 <span class="arithmatex">\((j, k)\)</span> 之所以足够，是因为约束是<strong>局部</strong>的——它只读「当前这一面、当前连了几次」，完全不看序列更早的部分。于是任意合法序列的「可继续性」只由它的尾段 <span class="arithmatex">\((j, k)\)</span> 决定，更早的历史与未来转移无关。这正是让状态空间有限、转移只依赖当前状态的性质，也是下面 DP 正确的根本原因。</p>
+<p>每个合法序列的尾段恰好对应唯一一对 <span class="arithmatex">\((j, k)\)</span>（最后一面唯一，尾部连续次数唯一）。因此按 <span class="arithmatex">\((j, k)\)</span> 分类计数，既不重复也不遗漏。形式化即据此展开。</p>
+<h2 id="formulation">形式化 (Formulation)<a class="headerlink" href="#formulation" title="Permanent link">#</a></h2>
+<p>设 <span class="arithmatex">\(f(t, j, k)\)</span> 为长度 <span class="arithmatex">\(t\)</span>、最后一面为 <span class="arithmatex">\(j+1\)</span>、该面已连续出现 <span class="arithmatex">\(k\)</span> 次的合法序列数，其中 <span class="arithmatex">\(0 \leq j \leq 5\)</span>，<span class="arithmatex">\(1 \leq k \leq \text{rollMax}[j]\)</span>。</p>
+<p><strong>边界。</strong> 长度 1 的序列只有单独一面，其尾部连续次数为 1：</p>
+<div class="arithmatex">\[f(1, j, 1) = 1 \quad \text{对所有 } j.\]</div>
+<p><strong>转移。</strong> 从一个以 <span class="arithmatex">\((j, k)\)</span> 结尾的序列再掷一面 <span class="arithmatex">\(j'\)</span>，按前面两条断点分析，只有两种走法：</p>
+<ul>
+<li><strong>续上同一面</strong> <span class="arithmatex">\(j' = j\)</span>：连续段从 <span class="arithmatex">\(k\)</span> 长到 <span class="arithmatex">\(k+1\)</span>，仅当不越界时合法，</li>
+</ul>
+<div class="arithmatex">\[f(t+1, j, k+1) \mathrel{+}= f(t, j, k), \quad \text{当 } k+1 \leq \text{rollMax}[j].\]</div>
+<ul>
+<li><strong>换一面</strong> <span class="arithmatex">\(j' \neq j\)</span>：新尾段是孤立的一个 <span class="arithmatex">\(j'\)</span>，连续次数归 1。因 <span class="arithmatex">\(\text{rollMax} \geq 1\)</span>，这一步永远合法，</li>
+</ul>
+<div class="arithmatex">\[f(t+1, j', 1) \mathrel{+}= f(t, j, k).\]</div>
+<p><strong>答案。</strong> 所有合法的长度 <span class="arithmatex">\(n\)</span> 序列按尾段分类后求和：</p>
+<div class="arithmatex">\[\sum_{j=0}^{5} \sum_{k=1}^{\text{rollMax}[j]} f(n, j, k) \bmod (10^9 + 7).\]</div>
+<p>转移只把当前状态的计数累加给下一步——续段或换面——所以表中每个序列恰好被其唯一的尾段 <span class="arithmatex">\((j, k)\)</span> 数到一次，与背景里「不重不漏」的论证对齐。</p>
 <h2 id="approach">数据结构 / 想法 (Approach)<a class="headerlink" href="#approach" title="Permanent link">#</a></h2>
-<p>直接二维转移（合并 <span class="arithmatex">\(k\)</span> 维度成"上次该面累计次数"），状态数约 <span class="arithmatex">\(n \cdot 6 \cdot 15 = 4.5 \times 10^5\)</span>。</p>
-<p><strong>关键不变量</strong>：DP 表的每个状态恰好枚举了所有"以当前 <code>last</code>/<code>streak</code> 结尾的合法序列"，无重复无遗漏（因为 (last, streak) 对每个序列后缀唯一）。</p>
+<p>直接把形式化逐字翻译成 DP。第 <span class="arithmatex">\(t\)</span> 层只需第 <span class="arithmatex">\(t-1\)</span> 层，故用两个 <span class="arithmatex">\(6 \times 16\)</span> 的滚动表 <code>f</code>、<code>g</code>，下标 <span class="arithmatex">\(k\)</span> 用到 <span class="arithmatex">\(1\ldots15\)</span>（<code>rollMax</code> 上限 15，多留一格）。每步遍历当前所有非空状态 <span class="arithmatex">\((j, k)\)</span>，向「换面」与「续段」两个出口累加。</p>
+<p>下面的手算先把转移走一遍，再看代码。<strong>样例 1</strong>：<span class="arithmatex">\(n=2\)</span>，<span class="arithmatex">\(\text{rollMax}=[1,1,2,2,2,3]\)</span>。</p>
+<ul>
+<li><span class="arithmatex">\(t=1\)</span>：<span class="arithmatex">\(f(1, j, 1) = 1\)</span>，<span class="arithmatex">\(j = 0\ldots5\)</span>，总和 6。</li>
+<li><span class="arithmatex">\(t=2\)</span>，逐个处理 <span class="arithmatex">\((j, 1)\)</span>，<span class="arithmatex">\(\text{val}=1\)</span>：</li>
+<li><strong>换面</strong>：每个 <span class="arithmatex">\(j\)</span> 把 1 贡献给其余 5 个面的 <span class="arithmatex">\(g[j'][1]\)</span>。六个面各被另外 5 个面贡献一次，故每个 <span class="arithmatex">\(g[j'][1] = 5\)</span>，六个共 <span class="arithmatex">\(6 \times 5 = 30\)</span>。</li>
+<li><strong>续段</strong>：仅当 <span class="arithmatex">\(k+1 = 2 \leq \text{rollMax}[j]\)</span>。<span class="arithmatex">\(j=0,1\)</span>（<span class="arithmatex">\(\text{rollMax}=1\)</span>）不可；<span class="arithmatex">\(j=2,3,4,5\)</span>（<span class="arithmatex">\(\text{rollMax}\geq 2\)</span>）可，各得 <span class="arithmatex">\(g[j][2] = 1\)</span>，共 4。</li>
+<li>合计 <span class="arithmatex">\(30 + 4 = 34\)</span>。✓</li>
+</ul>
+<p>这正是官方答案。手算里每个状态出口与转移规则一一对应，代码只是把它批量执行：</p>
 <div class="language-python highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">Solution</span><span class="p">:</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">dieSimulator</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">rollMax</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
         <span class="n">MOD</span> <span class="o">=</span> <span class="mi">10</span><span class="o">**</span><span class="mi">9</span> <span class="o">+</span> <span class="mi">7</span>
@@ -22494,35 +22548,28 @@
                     <span class="k">if</span> <span class="n">f</span><span class="p">[</span><span class="n">j</span><span class="p">][</span><span class="n">k</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
                         <span class="k">continue</span>
                     <span class="n">val</span> <span class="o">=</span> <span class="n">f</span><span class="p">[</span><span class="n">j</span><span class="p">][</span><span class="n">k</span><span class="p">]</span>
-                    <span class="c1"># 选新面 != j：贡献到 g[j&#39;][1]</span>
+                    <span class="c1"># 换面 j&#39; != j：尾段归 1，贡献到 g[j&#39;][1]</span>
                     <span class="k">for</span> <span class="n">jp</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">6</span><span class="p">):</span>
                         <span class="k">if</span> <span class="n">jp</span> <span class="o">!=</span> <span class="n">j</span><span class="p">:</span>
                             <span class="n">g</span><span class="p">[</span><span class="n">jp</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">g</span><span class="p">[</span><span class="n">jp</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">val</span><span class="p">)</span> <span class="o">%</span> <span class="n">MOD</span>
-                    <span class="c1"># 选新面 == j：streak+1，需 &lt;= rollMax[j]</span>
+                    <span class="c1"># 续段 j&#39; == j：streak+1，需 &lt;= rollMax[j]</span>
                     <span class="k">if</span> <span class="n">k</span> <span class="o">+</span> <span class="mi">1</span> <span class="o">&lt;=</span> <span class="n">rollMax</span><span class="p">[</span><span class="n">j</span><span class="p">]:</span>
                         <span class="n">g</span><span class="p">[</span><span class="n">j</span><span class="p">][</span><span class="n">k</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">g</span><span class="p">[</span><span class="n">j</span><span class="p">][</span><span class="n">k</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">val</span><span class="p">)</span> <span class="o">%</span> <span class="n">MOD</span>
             <span class="n">f</span> <span class="o">=</span> <span class="n">g</span>
         <span class="k">return</span> <span class="nb">sum</span><span class="p">(</span><span class="n">f</span><span class="p">[</span><span class="n">j</span><span class="p">][</span><span class="n">k</span><span class="p">]</span> <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">6</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">16</span><span class="p">))</span> <span class="o">%</span> <span class="n">MOD</span>
 </code></pre></div>
-<p><strong>手动 trace 样例 1</strong>：n=2, rollMax=[1,1,2,2,2,3].
-t=1: f[j][1]=1 for j=0..5. 总和 = 6.
-t=2:
-- 对每个 j, k=1, val=1:
-  - 选 j'≠j：5 种新面，每种 g[j'][1] += 1.
-  - 选 j'=j：仅当 k+1=2 ≤ rollMax[j]. j=0,1 不可（rollMax=1）; j=2,3,4 可（rollMax=2）, g[j][2] += 1; j=5 也可, g[5][2] += 1.
-所以 g[j'][1] = 5 (来自其它 5 个面各 +1) for all j'. 即 6 个 j' 各贡献 5 = 30.
-g[2][2]=g[3][2]=g[4][2]=g[5][2]=1, 共 4.
-总 = 30 + 4 = 34. ✓</p>
+<p><span class="arithmatex">\(n=1\)</span> 时循环 <code>range(2, n+1)</code> 为空，直接返回初始化后的总和 6，与边界一致。</p>
+<p>把状态 <span class="arithmatex">\((j, k)\)</span> 看成节点、两类转移看成有向边，这张 DP 表就是一台有限自动机：节点是它的状态集，转移规则是它的边，答案是长度 <span class="arithmatex">\(n\)</span> 的接受路径数。这一对应是精确的，不是类比，下节复杂度即按状态数与边数直接计。</p>
 <h2 id="complexity">复杂度 (Complexity)<a class="headerlink" href="#complexity" title="Permanent link">#</a></h2>
 <ul>
-<li>Time: <span class="arithmatex">\(O(n \cdot 6 \cdot \max(\text{rollMax}) \cdot 6) = O(n \cdot 36 \cdot 15) \approx O(540 n)\)</span>。</li>
-<li>Space: <span class="arithmatex">\(O(6 \cdot 16) = O(1)\)</span>（滚动两层）。</li>
+<li><strong>时间</strong>：每步遍历 6 个面 <span class="arithmatex">\(\times\)</span> 至多 <span class="arithmatex">\(\max(\text{rollMax}) \leq 15\)</span> 个连续次数 <span class="arithmatex">\(\times\)</span> 6 个新面，共至多 <span class="arithmatex">\(6 \times 15 \times 6 = 540\)</span> 次累加；<span class="arithmatex">\(n-1\)</span> 步合计 <span class="arithmatex">\(O(n)\)</span>（常数 540）。<code>f[j][k]==0</code> 跳过只省常数，不改渐进阶。</li>
+<li><strong>空间</strong>：两层滚动表各 <span class="arithmatex">\(6 \times 16\)</span> 项，与 <span class="arithmatex">\(n\)</span> 无关，辅助空间 <span class="arithmatex">\(O(1)\)</span>。</li>
 </ul>
 <h2 id="pitfalls">陷阱 (Pitfalls)<a class="headerlink" href="#pitfalls" title="Permanent link">#</a></h2>
 <ul>
-<li>取模 <code>10**9 + 7</code> 在每一步加法都做，避免 64 位溢出（虽 Python 整数任意精度，统一加 <code>% MOD</code> 习惯好）。</li>
-<li><span class="arithmatex">\(k\)</span> 索引从 1 开始（连续 1 次起）。</li>
-<li>别用 <code>int(...)</code> 在 mod 之后再次取——已为 int。</li>
+<li><span class="arithmatex">\(k\)</span> 下标从 1 开始（连续 1 次起），<span class="arithmatex">\(k=0\)</span> 不用；最终求和扫 <code>range(16)</code> 把恒为 0 的 <span class="arithmatex">\(f[j][0]\)</span> 一并加上，无害。</li>
+<li>每一步加法后立即取模 <span class="arithmatex">\(10^9+7\)</span>。Python 整数任意精度，但统一取模是好习惯，也便于移植到定长整型语言。</li>
+<li>「续段」的越界判断 <code>k+1 &lt;= rollMax[j]</code> 约束的是被延长的那一面 <span class="arithmatex">\(j\)</span>；「换面」永远合法，不需判断，因为 <span class="arithmatex">\(\text{rollMax} \geq 1\)</span>。</li>
 </ul>
 <h2 id="related">相关题目 (Related)<a class="headerlink" href="#related" title="Permanent link">#</a></h2>
 <ul>
@@ -22532,8 +22579,8 @@ g[2][2]=g[3][2]=g[4][2]=g[5][2]=1, 共 4.
 </ul>
 <h2 id="further-reading">Further Reading<a class="headerlink" href="#further-reading" title="Permanent link">#</a></h2>
 <ul>
-<li>Hopcroft, Motwani, Ullman, <em>Introduction to Automata Theory</em> (3e) §3 — DFA 字符串接受数。</li>
-<li>Cover &amp; Thomas, <em>Elements of Information Theory</em> (2e) §4 — constrained channel 序列计数。</li>
+<li>Hopcroft, Motwani, Ullman, <em>Introduction to Automata Theory</em> (3e) §3 — DFA 字符串接受数；上节「状态-节点、转移-边」的对应即此框架，长度 <span class="arithmatex">\(n\)</span> 接受路径数对应本题答案。</li>
+<li>Cover &amp; Thomas, <em>Elements of Information Theory</em> (2e) §4 — constrained channel 序列计数，同型的局部约束下的序列计数。</li>
 </ul>
 
 
@@ -22640,6 +22687,8 @@ g[2][2]=g[3][2]=g[4][2]=g[5][2]=1, 共 4.
         <script src="../../../js/mathjax/tex-mml-chtml.js"></script>
       
         <script src="../../../js/mermaid.min.js"></script>
+      
+        <script src="../../../js/featured.js"></script>
       
     
   </body>

@@ -1466,6 +1466,8 @@
       
         
       
+        
+      
     
     
     
@@ -1521,6 +1523,34 @@
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../featured/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ⭐ Featured（已验证）
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
               
             
               
@@ -1610,10 +1640,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_4" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
         
           
-          <label class="md-nav__link" for="__nav_4_4" id="__nav_4_4_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_5" id="__nav_4_5_label" tabindex="">
             
   
   
@@ -1631,8 +1661,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_4_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_4">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_5">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1915,7 +1945,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -1937,14 +1967,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_4_5" id="__nav_4_5_label" tabindex="">
+              <label class="md-nav__link " for="__nav_4_6" id="__nav_4_6_label" tabindex="">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_5">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_6">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -5321,10 +5351,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_7" checked>
         
           
-          <label class="md-nav__link" for="__nav_4_6" id="__nav_4_6_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_7" id="__nav_4_7_label" tabindex="">
             
   
   
@@ -5342,8 +5372,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_4_6">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_7_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4_7">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -22467,44 +22497,59 @@
 <h2 id="problem">Problem<a class="headerlink" href="#problem" title="Permanent link">#</a></h2>
 <p>有向图原本是一棵有根树（恰一个根节点入度 0，其它节点入度 1），在其上多加了一条有向边。给定 <code>edges</code>（按加入顺序），返回一条可删除的边使图重新变为有根树。如有多解，返回输入中最后出现的那条。<span class="arithmatex">\(3 \le n \le 1000\)</span>。</p>
 <h2 id="background">背景 (Background)<a class="headerlink" href="#background" title="Permanent link">#</a></h2>
-<p>这是 <a href="../0684_redundant-connection/">#684 Redundant Connection</a> 的有向版本，难度跃升来自"环"和"双父"两种坏情形可单独或同时出现，需要精心<strong>分类讨论</strong>。底层工具仍是 <strong>DSU</strong>（Tarjan 1975），核心创新是先识别"哪个节点入度为 2"，再决定优先尝试删除哪条边。这道题是面试中检验"边界推理而非堆模板"能力的代表。</p>
+<p>一棵有根树的每个非根节点恰有一个父亲，且整张图无环。删去多加的那条边，等价于把这两条性质同时恢复。难点在于：一条多余的有向边可以<strong>单独</strong>破坏其中一条性质，也可以<strong>同时</strong>破坏两条——这正是它比无向版 <a href="../0684_redundant-connection/">#684 Redundant Connection</a> 更难的地方。无向版只有"成环"一种坏情况；有向版还多了"某节点有两个父亲"，二者的组合才是本题真正要分类讨论的对象。</p>
+<p>先确立一个最朴素的能跑通的办法，再看它为什么慢，由此逼出快的做法。</p>
 <h2 id="formulation">形式化 (Formulation)<a class="headerlink" href="#formulation" title="Permanent link">#</a></h2>
-<p>输入有向图 <span class="arithmatex">\(G = (V, E)\)</span>，<span class="arithmatex">\(|V| = |E| = n\)</span>。一棵有根树对应满足以下条件的有向图：(1) 恰一根入度 0；(2) 其它入度 1；(3) 无环（弱连通）。多加一条边可能：</p>
+<p>输入有向图 <span class="arithmatex">\(G = (V, E)\)</span>，<span class="arithmatex">\(|V| = |E| = n\)</span>。<span class="arithmatex">\(G\)</span> 是一棵有根树当且仅当：</p>
 <ul>
-<li><strong>情形 A（双父）</strong>：某节点 <span class="arithmatex">\(v\)</span> 入度 = 2，且去掉两入边之一后无环。</li>
-<li><strong>情形 B（成环且无双父）</strong>：所有节点入度 1，但存在有向环。</li>
-<li><strong>情形 C（双父 + 成环）</strong>：某节点 <span class="arithmatex">\(v\)</span> 入度 = 2，且加入两入边之一后形成包含 <span class="arithmatex">\(v\)</span> 的环；此时必须删那条<strong>构成环的入边</strong>。</li>
+<li><strong>(R1)</strong> 恰有一个节点入度 0（根）；</li>
+<li><strong>(R2)</strong> 其余每个节点入度 1；</li>
+<li><strong>(R3)</strong> 无环。</li>
 </ul>
+<p>原图满足 (R1)–(R3)，加一条边后得到 <span class="arithmatex">\(G\)</span>；要删去一条边使 (R1)–(R3) 重新成立。多加的边对父亲计数和环的影响，决定了破坏的形态。先看这条边能造成什么后果，再据此分类。</p>
+<p>加一条边 <span class="arithmatex">\((u, v)\)</span>，只会让 <span class="arithmatex">\(v\)</span> 的入度从 1 增到 2，或从 0 增到 1。于是：</p>
+<ul>
+<li>若它把某个已有父亲的节点 <span class="arithmatex">\(v\)</span> 变成入度 2，就违反了 (R2)——<span class="arithmatex">\(v\)</span> <strong>有两个父亲</strong>；</li>
+<li>若它的两端在原树中已连通（沿父指针可达），就闭合出一个<strong>有向环</strong>，违反 (R3)。</li>
+</ul>
+<p>这两件事彼此独立，可以发生其一、其二、或两者。由此得到一个穷尽的三分：</p>
+<ul>
+<li><strong>情形 A（双父，无环）</strong>：某节点 <span class="arithmatex">\(v\)</span> 入度 = 2，去掉两条入边之一后无环。</li>
+<li><strong>情形 B（成环，无双父）</strong>：所有节点入度 1，但存在有向环。</li>
+<li><strong>情形 C（双父 + 成环）</strong>：某节点 <span class="arithmatex">\(v\)</span> 入度 = 2，且它的某条入边正是闭环的那条边。</li>
+</ul>
+<p><strong>为什么恰好三种、不会更多。</strong> 约束 <span class="arithmatex">\(|E| = n = |V|\)</span> 是关键。原树有 <span class="arithmatex">\(n-1\)</span> 条边、<span class="arithmatex">\(n\)</span> 个节点；多一条边后边数 <span class="arithmatex">\(= n\)</span>。入度总和 <span class="arithmatex">\(= |E| = n\)</span>。若有两个节点各入度 2，入度总和至少为 <span class="arithmatex">\(2 + 2 + (n-2)\cdot 1 = n + 2 &gt; n\)</span>，矛盾。故<strong>至多一个节点入度为 2</strong>，"双父"的节点唯一。同理，多出的这一条边至多闭合一个环（环需要回到已连通的部分，而新增连通性只来自这一条边）。于是"双父"取值 <span class="arithmatex">\(\{0, 1\}\)</span> 个、"环"取值 <span class="arithmatex">\(\{0, 1\}\)</span> 个，四种组合里 <span class="arithmatex">\((0,0)\)</span> 是合法树（不会出现），剩下三种正是 A、B、C。</p>
 <h2 id="approach">数据结构 / 想法 (Approach)<a class="headerlink" href="#approach" title="Permanent link">#</a></h2>
-<p><strong>统一框架（Union-Find，<span class="arithmatex">\(O(n \cdot \alpha(n))\)</span>）</strong>：</p>
-<ol>
-<li><strong>第一遍</strong>扫描，记录入度为 2 的节点的两条入边 <span class="arithmatex">\(e_1, e_2\)</span>（按出现顺序；<span class="arithmatex">\(e_1\)</span> 较早，<span class="arithmatex">\(e_2\)</span> 较晚）。若无，则一定是情形 B。</li>
-<li>若情形 A/C（有 <span class="arithmatex">\(e_1, e_2\)</span>）：<strong>屏蔽 <span class="arithmatex">\(e_2\)</span></strong>，对剩下 <span class="arithmatex">\(n-1\)</span> 条边跑 DSU：</li>
-<li>若中途遇到环（要 union 的两点已同集合）→ 实际是情形 C，要删的环边其实是 <span class="arithmatex">\(e_1\)</span>（因为屏蔽 <span class="arithmatex">\(e_2\)</span> 后仍成环说明 <span class="arithmatex">\(e_1\)</span> 在环上）。</li>
-<li>否则正常完成 → 是情形 A，删 <span class="arithmatex">\(e_2\)</span>。</li>
-<li>若情形 B：DSU 一次扫描，找到第一条形成环的边并返回。</li>
-</ol>
-<p><strong>不变量</strong>：DSU 中 <code>find</code> 路径压缩保证摊销 <span class="arithmatex">\(O(\alpha(n))\)</span>；屏蔽 <span class="arithmatex">\(e_2\)</span> 后建图，"是否还有环"等价于 <span class="arithmatex">\(e_1\)</span> 是否在环上。</p>
+<p><strong>朴素解：枚举删边。</strong> 逐条把每一条边删掉，检查剩下 <span class="arithmatex">\(n-1\)</span> 条边是否构成有根树（验 (R1)–(R3)），按题意要返回最后出现的合法删边，故从后往前枚举，第一个使图合法的就返回。验一次有根树是 <span class="arithmatex">\(O(n)\)</span>，共 <span class="arithmatex">\(n\)</span> 条边，总 <span class="arithmatex">\(O(n^2)\)</span>。<span class="arithmatex">\(n \le 1000\)</span> 时可过，但它没有利用上面三分结构，做了大量重复的连通性检查。</p>
+<p><strong>把朴素解压成一遍扫描。</strong> 三分告诉我们：坏边一定与"双父节点的两条入边"或"环"有关。所以先一遍扫描定位双父节点，记下它较早、较晚出现的两条入边 <span class="arithmatex">\(e_1, e_2\)</span>（若不存在，则一定是情形 B）。剩下的问题是：当 <span class="arithmatex">\(e_1, e_2\)</span> 都存在时，到底删哪条？</p>
+<p><strong>先试着删 <span class="arithmatex">\(e_1\)</span>，看它为什么不够。</strong> 直觉上似乎该删较早的边。但若删掉 <span class="arithmatex">\(e_1\)</span>（屏蔽它、只保留 <span class="arithmatex">\(e_2\)</span> 和其余边）后图仍有环，我们无法判断这个环是否本来就该靠删 <span class="arithmatex">\(e_2\)</span> 消除——情形 A 与情形 C 在"删 <span class="arithmatex">\(e_1\)</span>"这个探针下表现一样，区分不开。问题出在探针选错了边。</p>
+<p><strong>改试屏蔽 <span class="arithmatex">\(e_2\)</span>，结构立刻清晰。</strong> 屏蔽较晚的 <span class="arithmatex">\(e_2\)</span>、对其余 <span class="arithmatex">\(n-1\)</span> 条边跑 DSU（并查集），用"两端是否已在同一集合"判环：</p>
+<ul>
+<li>若<strong>无环</strong>：此时图里只剩 <span class="arithmatex">\(e_1\)</span> 作为 <span class="arithmatex">\(v\)</span> 的入边，且不成环，三条性质都满足——这是<strong>情形 A</strong>，删掉的 <span class="arithmatex">\(e_2\)</span> 就是答案。题目要"多解返回最后出现的那条"，<span class="arithmatex">\(e_2\)</span> 较晚，正好契合。</li>
+<li>若<strong>仍有环</strong>：环只可能经过 <span class="arithmatex">\(v\)</span> 的那条保留入边 <span class="arithmatex">\(e_1\)</span>（因为唯一被屏蔽的边是 <span class="arithmatex">\(e_2\)</span>，环若存在必须用到 <span class="arithmatex">\(e_1\)</span>）。这是<strong>情形 C</strong>，要删的环边正是 <span class="arithmatex">\(e_1\)</span>。</li>
+</ul>
+<p>这就是屏蔽 <span class="arithmatex">\(e_2\)</span> 而非 <span class="arithmatex">\(e_1\)</span> 的理由：屏蔽 <span class="arithmatex">\(e_2\)</span> 后，"是否仍有环"成为一个<strong>充分</strong>判据——有环 <span class="arithmatex">\(\Rightarrow\)</span> <span class="arithmatex">\(e_1\)</span> 在环上 <span class="arithmatex">\(\Rightarrow\)</span> 删 <span class="arithmatex">\(e_1\)</span>；无环 <span class="arithmatex">\(\Rightarrow\)</span> 删 <span class="arithmatex">\(e_2\)</span>。这个不对称完全由问题结构（环只能经过保留的那条入边）和题意的"返回较晚边"共同决定。</p>
+<p><strong>情形 B（无双父）</strong>：没有节点入度 2，唯一的坏性质是环。一遍 DSU，找到第一条让两端已连通的边并返回。</p>
+<p>形式化对应：屏蔽 <span class="arithmatex">\(e_2\)</span> 后跑 DSU，本质是检验"仅保留 <span class="arithmatex">\(e_1\)</span> 这一候选入边"的子图是否满足 (R3)。若不满足（成环），则 (R3) 被 <span class="arithmatex">\(e_1\)</span> 破坏，必须删 <span class="arithmatex">\(e_1\)</span>；若满足，则坏边是被屏蔽的 <span class="arithmatex">\(e_2\)</span>。</p>
 <div class="language-python highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">Solution</span><span class="p">:</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">findRedundantDirectedConnection</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">edges</span><span class="p">):</span>
         <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">edges</span><span class="p">)</span>
-        <span class="n">parent_of</span> <span class="o">=</span> <span class="p">{}</span>  <span class="c1"># 节点 -&gt; 它的入边索引列表</span>
+        <span class="n">parent_of</span> <span class="o">=</span> <span class="p">{}</span>  <span class="c1"># 节点 -&gt; 它的入边 (u, v)</span>
         <span class="n">cand1</span> <span class="o">=</span> <span class="n">cand2</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="n">edges_masked_idx</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
         <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">edges</span><span class="p">):</span>
             <span class="k">if</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">parent_of</span><span class="p">:</span>
-                <span class="n">cand1</span> <span class="o">=</span> <span class="n">parent_of</span><span class="p">[</span><span class="n">v</span><span class="p">]</span>  <span class="c1"># 较早的那条 [pu, v]</span>
-                <span class="n">cand2</span> <span class="o">=</span> <span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span>        <span class="c1"># 较晚的这条</span>
-                <span class="c1"># 屏蔽 cand2（记下索引）</span>
-                <span class="n">edges_masked_idx</span> <span class="o">=</span> <span class="n">i</span>
+                <span class="n">cand1</span> <span class="o">=</span> <span class="n">parent_of</span><span class="p">[</span><span class="n">v</span><span class="p">]</span>   <span class="c1"># 较早的入边 (pu, v)</span>
+                <span class="n">cand2</span> <span class="o">=</span> <span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span>         <span class="c1"># 较晚的入边</span>
+                <span class="n">edges_masked_idx</span> <span class="o">=</span> <span class="n">i</span>   <span class="c1"># 屏蔽 cand2</span>
                 <span class="k">break</span>
             <span class="n">parent_of</span><span class="p">[</span><span class="n">v</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="n">edges_masked_idx</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
 
         <span class="n">dsu</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">n</span> <span class="o">+</span> <span class="mi">1</span><span class="p">))</span>
+        <span class="n">size</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="n">n</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>           <span class="c1"># 按大小合并，保证 α(n) 摊销</span>
         <span class="k">def</span><span class="w"> </span><span class="nf">find</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
             <span class="k">while</span> <span class="n">dsu</span><span class="p">[</span><span class="n">x</span><span class="p">]</span> <span class="o">!=</span> <span class="n">x</span><span class="p">:</span>
-                <span class="n">dsu</span><span class="p">[</span><span class="n">x</span><span class="p">]</span> <span class="o">=</span> <span class="n">dsu</span><span class="p">[</span><span class="n">dsu</span><span class="p">[</span><span class="n">x</span><span class="p">]]</span>
+                <span class="n">dsu</span><span class="p">[</span><span class="n">x</span><span class="p">]</span> <span class="o">=</span> <span class="n">dsu</span><span class="p">[</span><span class="n">dsu</span><span class="p">[</span><span class="n">x</span><span class="p">]]</span>   <span class="c1"># 路径减半</span>
                 <span class="n">x</span> <span class="o">=</span> <span class="n">dsu</span><span class="p">[</span><span class="n">x</span><span class="p">]</span>
             <span class="k">return</span> <span class="n">x</span>
 
@@ -22512,40 +22557,42 @@
             <span class="k">if</span> <span class="n">i</span> <span class="o">==</span> <span class="n">edges_masked_idx</span><span class="p">:</span>
                 <span class="k">continue</span>
             <span class="n">ru</span><span class="p">,</span> <span class="n">rv</span> <span class="o">=</span> <span class="n">find</span><span class="p">(</span><span class="n">u</span><span class="p">),</span> <span class="n">find</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
-            <span class="k">if</span> <span class="n">ru</span> <span class="o">==</span> <span class="n">rv</span><span class="p">:</span>
-                <span class="c1"># 成环</span>
+            <span class="k">if</span> <span class="n">ru</span> <span class="o">==</span> <span class="n">rv</span><span class="p">:</span>               <span class="c1"># 成环</span>
                 <span class="k">if</span> <span class="n">cand1</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-                    <span class="k">return</span> <span class="p">[</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">]</span>   <span class="c1"># 情形 B</span>
-                <span class="k">else</span><span class="p">:</span>
-                    <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="n">cand1</span><span class="p">)</span>  <span class="c1"># 情形 C：删较早的那条</span>
-            <span class="n">dsu</span><span class="p">[</span><span class="n">ru</span><span class="p">]</span> <span class="o">=</span> <span class="n">rv</span>
+                    <span class="k">return</span> <span class="p">[</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">]</span>      <span class="c1"># 情形 B：第一条闭环边</span>
+                <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="n">cand1</span><span class="p">)</span>     <span class="c1"># 情形 C：删较早的入边</span>
+            <span class="k">if</span> <span class="n">size</span><span class="p">[</span><span class="n">ru</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">size</span><span class="p">[</span><span class="n">rv</span><span class="p">]:</span>
+                <span class="n">ru</span><span class="p">,</span> <span class="n">rv</span> <span class="o">=</span> <span class="n">rv</span><span class="p">,</span> <span class="n">ru</span>
+            <span class="n">dsu</span><span class="p">[</span><span class="n">rv</span><span class="p">]</span> <span class="o">=</span> <span class="n">ru</span>
+            <span class="n">size</span><span class="p">[</span><span class="n">ru</span><span class="p">]</span> <span class="o">+=</span> <span class="n">size</span><span class="p">[</span><span class="n">rv</span><span class="p">]</span>
 
-        <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="n">cand2</span><span class="p">)</span>  <span class="c1"># 情形 A：屏蔽的就是答案</span>
+        <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="n">cand2</span><span class="p">)</span>             <span class="c1"># 情形 A：屏蔽的 e2 即答案</span>
 </code></pre></div>
-<p>样例 1 trace：<code>edges = [[1,2],[1,3],[2,3]]</code>。节点 3 入度 2，cand1=(1,3)（i=1），cand2=(2,3)（i=2），mask=2。DSU 扫描 i=0 (1,2)：union 成功。i=1 (1,3)：union 成功（1,3 不同集合）。i=2 跳过。无环 → 返回 cand2 = <code>[2,3]</code>。✓</p>
-<p>样例 2 trace：<code>edges = [[1,2],[2,3],[3,4],[4,1],[1,5]]</code>。没有节点入度 2 → 情形 B。DSU 扫描：(1,2),(2,3),(3,4) union 成功。(4,1)：find(4)=find(1)（已在同一连通块）→ 成环，返回 <code>[4,1]</code>。✓</p>
+<p>样例 1 trace：<code>edges = [[1,2],[1,3],[2,3]]</code>。节点 3 入度 2，cand1=(1,3)（i=1），cand2=(2,3)（i=2），mask=2。DSU 扫描 i=0 (1,2)：union 成功。i=1 (1,3)：union 成功（1、3 不同集合）。i=2 跳过。全程无环 → 情形 A，返回 cand2 = <code>[2,3]</code>。✓</p>
+<p>样例 2 trace：<code>edges = [[1,2],[2,3],[3,4],[4,1],[1,5]]</code>。无节点入度 2 → 情形 B。DSU 扫描：(1,2),(2,3),(3,4) union 成功。(4,1)：find(4)=find(1)（已同连通块）→ 成环，返回 <code>[4,1]</code>。✓</p>
 <h2 id="complexity">复杂度 (Complexity)<a class="headerlink" href="#complexity" title="Permanent link">#</a></h2>
 <ul>
-<li>Time: <span class="arithmatex">\(O(n \cdot \alpha(n))\)</span>，DSU 路径压缩 + 按秩合并近似线性。</li>
-<li>Space: <span class="arithmatex">\(O(n)\)</span>。</li>
-<li>朴素"枚举删每条边后检查是否为有根树"也对，但 <span class="arithmatex">\(O(n^2)\)</span>。</li>
+<li>Time: <span class="arithmatex">\(O(n \cdot \alpha(n))\)</span>。DSU 同时用了<strong>路径减半</strong>（<code>find</code> 中的 <code>dsu[x] = dsu[dsu[x]]</code>）与<strong>按大小合并</strong>（<code>size</code> 数组），二者结合才给出 Tarjan 1975 的反阿克曼摊销界。</li>
+<li>Space: <span class="arithmatex">\(O(n)\)</span>，<code>dsu</code>、<code>size</code> 数组与 <code>parent_of</code> 字典。</li>
+<li>朴素"枚举删每条边再验有根树"也正确，但 <span class="arithmatex">\(O(n^2)\)</span>，未利用三分结构。</li>
 </ul>
+<p>注：若只做路径压缩而用任意方向合并，已证的最坏摊销界仅为 <span class="arithmatex">\(O(\log n)\)</span> 每次操作。故代码显式维护 <code>size</code> 并按大小合并，<span class="arithmatex">\(\alpha(n)\)</span> 的界才站得住。</p>
 <h2 id="pitfalls">陷阱 (Pitfalls)<a class="headerlink" href="#pitfalls" title="Permanent link">#</a></h2>
 <ul>
-<li>"若有多解返回最后出现的那条"——情形 A 时<strong>必须返回较晚的 cand2</strong>；情形 C 时<strong>必须返回较早的 cand1</strong>（因为屏蔽 cand2 后仍成环说明环包含 cand1）。</li>
-<li>单源根有向图需用 <strong>有向边的 union</strong>：union 时方向是 <code>child -&gt; parent</code>，但 DSU 检测"两端是否已连通"的逻辑与无向版相同；切勿用"是否已有相同的父指针"来检测环，那只能检测情形 A 而漏判情形 B。</li>
-<li>自环 <code>[u, u]</code> 被约束 <span class="arithmatex">\(u \ne v\)</span> 排除，无需特判。</li>
-<li>DSU 大小要开 <code>n+1</code>（节点编号 1..n）。</li>
+<li><strong>删哪条候选边由情形决定</strong>：情形 A 返回较晚的 cand2，情形 C 返回较早的 cand1。判据是"屏蔽 cand2 后是否仍成环"——仍成环说明环必经 cand1，故删 cand1。</li>
+<li><strong>环检测必须基于连通性，不能基于父指针</strong>：用 DSU 的"两端是否同集合"判环。若改用"该节点是否已有父亲"检测，只能发现双父（情形 A），会漏判没有双父的纯环（情形 B）。</li>
+<li>自环 <code>[u, u]</code> 被 <span class="arithmatex">\(u \ne v\)</span> 约束排除，无需特判。</li>
+<li>DSU 数组要开 <code>n+1</code>（节点编号 1..n），否则越界。</li>
 </ul>
 <h2 id="related">相关题目 (Related)<a class="headerlink" href="#related" title="Permanent link">#</a></h2>
 <ul>
-<li><a href="../0684_redundant-connection/">#684 Redundant Connection</a> — 无向版前置；同 DSU 框架，但无需情形分类。</li>
+<li><a href="../0684_redundant-connection/">#684 Redundant Connection</a> — 无向版前置；同 DSU 框架，但只有"成环"一种坏情况，无需情形分类。</li>
 <li><a href="../0839_similar-string-groups/">#839 Similar String Groups</a> — DSU 应用。</li>
 <li><a href="../2858_minimum-edge-reversals-so-every-node-is-reachable/">#2858 Minimum Edge Reversals So Every Node Is Reachable</a> — 有向树相关。</li>
 </ul>
 <h2 id="further-reading">Further Reading<a class="headerlink" href="#further-reading" title="Permanent link">#</a></h2>
 <ul>
-<li>Tarjan (1975). <em>Efficiency of a Good But Not Linear Set Union Algorithm</em>. JACM. ⭐ — 路径压缩 + 按秩合并的 <span class="arithmatex">\(\alpha(n)\)</span> 摊销证明。</li>
+<li>Tarjan (1975). <em>Efficiency of a Good But Not Linear Set Union Algorithm</em>. JACM. ⭐ — 路径压缩 + 按秩/大小合并的 <span class="arithmatex">\(\alpha(n)\)</span> 摊销证明。</li>
 <li>cp-algorithms: <a href="https://cp-algorithms.com/data_structures/disjoint_set_union.html">Disjoint Set Union</a> — DSU 模板。</li>
 <li>CLRS, §21 Data Structures for Disjoint Sets。</li>
 </ul>
@@ -22654,6 +22701,8 @@
         <script src="../../../js/mathjax/tex-mml-chtml.js"></script>
       
         <script src="../../../js/mermaid.min.js"></script>
+      
+        <script src="../../../js/featured.js"></script>
       
     
   </body>

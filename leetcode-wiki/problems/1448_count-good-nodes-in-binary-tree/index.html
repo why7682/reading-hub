@@ -1466,6 +1466,8 @@
       
         
       
+        
+      
     
     
     
@@ -1521,6 +1523,34 @@
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../featured/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ⭐ Featured（已验证）
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
               
             
               
@@ -1610,10 +1640,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_4" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
         
           
-          <label class="md-nav__link" for="__nav_4_4" id="__nav_4_4_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_5" id="__nav_4_5_label" tabindex="">
             
   
   
@@ -1631,8 +1661,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_4_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_4">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_5">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1915,7 +1945,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -1937,14 +1967,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_4_5" id="__nav_4_5_label" tabindex="">
+              <label class="md-nav__link " for="__nav_4_6" id="__nav_4_6_label" tabindex="">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_5">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_6">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -5321,10 +5351,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_7" checked>
         
           
-          <label class="md-nav__link" for="__nav_4_6" id="__nav_4_6_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_7" id="__nav_4_7_label" tabindex="">
             
   
   
@@ -5342,8 +5372,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_4_6">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_7_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4_7">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -22467,11 +22497,17 @@
 <h2 id="problem">Problem<a class="headerlink" href="#problem" title="Permanent link">#</a></h2>
 <p>二叉树中，节点 <span class="arithmatex">\(X\)</span> 是<strong>好节点</strong> ↔ 从根到 <span class="arithmatex">\(X\)</span> 的路径上无任何节点值 <span class="arithmatex">\(&gt; X\)</span>。统计好节点数。</p>
 <h2 id="_1">背景<a class="headerlink" href="#_1" title="Permanent link">#</a></h2>
-<p><strong>DFS 携带状态 (carry-context DFS)</strong> 范式：递归时把"从根到当前路径的某个聚合量"作为参数传给子树。常见聚合：最大、最小、和、xor、深度、奇偶。这是 <em>#129 Sum Root to Leaf</em> / <em>#988 Smallest String Starting From Leaf</em> 等问题的统一框架。</p>
-<p>把每条根-叶路径视为一个"流"，问"流上的局部极值"，则本题即每个节点是否"打破历史最高"。这种"running max" 思想在 algorithmic finance（运行高水位线）、信号处理（envelope detection）中也常见。</p>
+<p>先问一个最朴素的问题：能否写一个只接收节点、不带任何额外参数的递归 <code>dfs(node)</code>，在它内部判断 <code>node</code> 是否为好节点？</p>
+<p>判定 <code>node</code> 是否为好，需要知道从根到 <code>node</code> 路径上的最大值。但 <code>node</code> 自身只持有它的子树；根到它的那条祖先链不在子树里。一个只看子树的 <code>dfs(node)</code> 无法回答"我的祖先里有没有比我大的"——这个信息既不在 <code>node</code>，也不在它的返回值里。要补出来，唯一的办法是每次都从根重新走一遍到 <code>node</code>，对每个节点都这样做就是 <span class="arithmatex">\(O(n^2)\)</span>，且把本应一次遍历的事拆成了重复遍历。</p>
+<p>失败点是明确的：缺的不是算力，而是<strong>祖先链的信息没有沿遍历方向传递</strong>。DFS 本就自顶向下、先访问祖先再访问后代，于是修复也很自然——把"已访问祖先的最大值"作为参数一路带下去。这就是 <strong>DFS 携带状态 (carry-context DFS)</strong> 的最小形态：递归参数里放一个"从根到当前路径的聚合量"。本题的聚合量是最大值；换成和、xor、路径串，同一框架就覆盖了 <em>#129 Sum Root to Leaf</em>、<em>#988 Smallest String Starting From Leaf</em> 等问题，区别仅在携带哪个量、如何更新。</p>
 <h2 id="_2">形式化<a class="headerlink" href="#_2" title="Permanent link">#</a></h2>
-<p>定义 <span class="arithmatex">\(\text{good}(v) = \mathbf{1}[v.\text{val} \ge \max\{u.\text{val} : u \in \text{path}(\text{root}, v)\}]\)</span>。返回 <span class="arithmatex">\(\sum_v \text{good}(v)\)</span>。</p>
+<p>直观先行：一个节点是好节点，当且仅当它的值不小于其每个祖先的值；等价地，它在根到该节点这条路径上取到了"沿途最大值"。把这句话写成判据：</p>
+<p>定义 <span class="arithmatex">\(\text{good}(v) = \mathbf{1}[v.\text{val} \ge \max\{u.\text{val} : u \in \text{path}(\text{root}, v)\}]\)</span>，返回 <span class="arithmatex">\(\sum_v \text{good}(v)\)</span>。这里 <span class="arithmatex">\(v\)</span> 是待判定节点，<span class="arithmatex">\(\text{path}(\text{root}, v)\)</span> 是从根到 <span class="arithmatex">\(v\)</span>（含两端）的节点集，<span class="arithmatex">\(u\)</span> 取遍这条路径上的节点。</p>
+<p>根节点的路径只含它自己，<span class="arithmatex">\(\max\)</span> 退化为 <span class="arithmatex">\(v.\text{val}\)</span>，故 <span class="arithmatex">\(\text{good}(\text{root}) = 1\)</span> 恒成立——这不是特例，而是定义在空祖先集上的直接结果（空集上取 <span class="arithmatex">\(\max\)</span> 约定为 <span class="arithmatex">\(-\infty\)</span>，任何有限值都 <span class="arithmatex">\(\ge -\infty\)</span>）。</p>
 <h2 id="_3">数据结构 / 想法<a class="headerlink" href="#_3" title="Permanent link">#</a></h2>
+<p>把上面的判据当作脊柱来推导算法。判定 <span class="arithmatex">\(v\)</span> 时需要的量是 <span class="arithmatex">\(M(v) = \max\{u.\text{val} : u \in \text{path}(\text{root}, v)\}\)</span>。关键在于 <span class="arithmatex">\(M\)</span> 沿路径可增量维护：设 <span class="arithmatex">\(p = \text{parent}(v)\)</span>，则</p>
+<div class="arithmatex">\[M(v) = \max\big(M(p),\ v.\text{val}\big).\]</div>
+<p>于是不必每次重算路径最大值。令 DFS 携带 <span class="arithmatex">\(\text{mx} = \max\{u.\text{val} : u \in \text{path}(\text{root}, p)\}\)</span>，即<strong>不含 <code>node</code> 自身</strong>的祖先链最大值。判定 <code>node</code> 是否好只需一次比较 <code>node.val &gt;= mx</code>；判完再用 <code>node.val</code> 扩展 <span class="arithmatex">\(\text{mx}\)</span> 传给孩子。次序是：<strong>先判，再扩，后下降</strong>——把当前节点纳入最大值之前先判定它，正是"祖先不含自身"这一不变量的来源。</p>
 <p><strong>DFS + max 参数</strong>：
 <div class="language-python highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">goodNodes</span><span class="p">(</span><span class="n">root</span><span class="p">):</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">dfs</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">mx</span><span class="p">):</span>
@@ -22481,23 +22517,23 @@
         <span class="k">return</span> <span class="n">good</span> <span class="o">+</span> <span class="n">dfs</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">left</span><span class="p">,</span> <span class="n">new_mx</span><span class="p">)</span> <span class="o">+</span> <span class="n">dfs</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">right</span><span class="p">,</span> <span class="n">new_mx</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">dfs</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="nb">float</span><span class="p">(</span><span class="s1">&#39;-inf&#39;</span><span class="p">))</span>
 </code></pre></div></p>
-<p><strong>不变量</strong>：调用 <code>dfs(node, mx)</code> 时，<code>mx</code> 是从根到 <code>node</code> 路径上<strong>不含 <code>node</code></strong> 的最大节点值（初始为 <span class="arithmatex">\(-\infty\)</span> 保证根总是好）。<strong>正确性</strong>：结构归纳；每节点贡献按定义判定。</p>
-<p><strong>BFS 等价</strong>：用队列存 (node, max_so_far) 也可，空间 <span class="arithmatex">\(O(w)\)</span> 而非 <span class="arithmatex">\(O(h)\)</span>。</p>
+<p><strong>不变量</strong>：调用 <code>dfs(node, mx)</code> 时，<code>mx</code> 恰为从根到 <code>node</code> 路径上<strong>不含 <code>node</code></strong> 的最大节点值，根处初值取 <span class="arithmatex">\(-\infty\)</span>（空祖先集）。<strong>正确性（结构归纳）</strong>：根处 <code>mx = -inf</code> 满足不变量；若 <code>mx</code> 对 <code>node</code> 成立，则由 <span class="arithmatex">\(M(v) = \max(M(p), v.\text{val})\)</span>，<code>new_mx = max(mx, node.val)</code> 对 <code>node</code> 的两个孩子也成立。每个节点据此做的单次比较 <code>node.val &gt;= mx</code> 即按定义判定 <span class="arithmatex">\(\text{good}(\text{node})\)</span>，求和即得答案。</p>
+<p><strong>BFS 等价</strong>：把递归参数换成队列里的二元组 <code>(node, max_so_far)</code>，逐层处理同样维护该不变量，空间 <span class="arithmatex">\(O(w)\)</span>（最大层宽）而非 <span class="arithmatex">\(O(h)\)</span>。</p>
 <h2 id="_4">复杂度<a class="headerlink" href="#_4" title="Permanent link">#</a></h2>
 <ul>
-<li>Time: <span class="arithmatex">\(O(n)\)</span></li>
-<li>Space: <span class="arithmatex">\(O(h)\)</span> 递归栈</li>
+<li>Time: <span class="arithmatex">\(O(n)\)</span>——每节点一次比较、一次 <code>max</code> 更新。</li>
+<li>Space: <span class="arithmatex">\(O(h)\)</span> 递归栈（退化成链时 <span class="arithmatex">\(O(n)\)</span>）；BFS 变体为 <span class="arithmatex">\(O(w)\)</span>。</li>
 </ul>
 <h2 id="_5">陷阱<a class="headerlink" href="#_5" title="Permanent link">#</a></h2>
 <ul>
-<li>"无大于"：题目用 "no nodes with a value greater than X" → 等号视为 good。</li>
-<li>根节点恒为 good（路径只含自己）；初始 <code>mx = -inf</code> 自动处理。</li>
+<li>"无大于"：题目用 "no nodes with a value greater than X"，故等号（<code>node.val == mx</code>）也算 good，比较须用 <code>&gt;=</code> 而非 <code>&gt;</code>。</li>
+<li>根节点恒为 good 不是要单独处理的边界，而是定义在空祖先集上的结果；初始 <code>mx = -inf</code> 让它自动成立。</li>
 <li>大树（深度 <span class="arithmatex">\(10^5\)</span>）注意 Python 递归栈，用迭代 BFS 或 <code>sys.setrecursionlimit</code>。</li>
 </ul>
 <h2 id="_6">相关题目<a class="headerlink" href="#_6" title="Permanent link">#</a></h2>
 <ul>
 <li><a href="../0226_invert-binary-tree/">#0226. Invert Binary Tree</a> — 树上递归基础。</li>
-<li><code>#129. Sum Root to Leaf Numbers (off-wiki)</code> — 同款"DFS + 携带状态"。</li>
+<li><code>#129. Sum Root to Leaf Numbers (off-wiki)</code> — 同款"DFS + 携带状态"：携带量从最大值换成"已积累的数字"。</li>
 <li><code>#988. Smallest String Starting From Leaf (off-wiki)</code> — 携带"路径串" 的极值变体。</li>
 </ul>
 <h2 id="further-reading">Further Reading<a class="headerlink" href="#further-reading" title="Permanent link">#</a></h2>
@@ -22609,6 +22645,8 @@
         <script src="../../../js/mathjax/tex-mml-chtml.js"></script>
       
         <script src="../../../js/mermaid.min.js"></script>
+      
+        <script src="../../../js/featured.js"></script>
       
     
   </body>

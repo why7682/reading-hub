@@ -1466,6 +1466,8 @@
       
         
       
+        
+      
     
     
     
@@ -1521,6 +1523,34 @@
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../featured/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ⭐ Featured（已验证）
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
               
             
               
@@ -1610,10 +1640,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_4" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
         
           
-          <label class="md-nav__link" for="__nav_4_4" id="__nav_4_4_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_5" id="__nav_4_5_label" tabindex="">
             
   
   
@@ -1631,8 +1661,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_4_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_4">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_5">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1915,7 +1945,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -1937,14 +1967,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_4_5" id="__nav_4_5_label" tabindex="">
+              <label class="md-nav__link " for="__nav_4_6" id="__nav_4_6_label" tabindex="">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_5">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_6">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -5321,10 +5351,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_7" checked>
         
           
-          <label class="md-nav__link" for="__nav_4_6" id="__nav_4_6_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_7" id="__nav_4_7_label" tabindex="">
             
   
   
@@ -5342,8 +5372,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_4_6">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_7_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4_7">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -22467,27 +22497,66 @@
 <h2 id="problem">Problem<a class="headerlink" href="#problem" title="Permanent link">#</a></h2>
 <p>无向图上 Mouse（起点 1）与 Cat（起点 2）交替走，Mouse 先。Cat 不能进 0 号洞。三种结局：Cat 撞到 Mouse → Cat 胜（返回 2）；Mouse 到 0 → Mouse 胜（返回 1）；某状态重复（同位置同当前玩家轮次）→ 平局（返回 0）。双方最优，返回最终结局。<span class="arithmatex">\(3 \le |V| \le 50\)</span>。</p>
 <h2 id="background">背景 (Background)<a class="headerlink" href="#background" title="Permanent link">#</a></h2>
-<p><strong>博弈论 / 状态图回溯标号（retrograde analysis）</strong>。pursuit-evasion 游戏的简化版（cf. Parsons 1976，Aigner &amp; Fromme 1984 的"cops and robbers"）。状态空间是有限有向图（顶点 = (mouse, cat, turn)），三种终态 + 平局。无法用纯 minimax 因为存在循环（导致平局）。标准解法：<strong>反向 BFS（retrograde analysis）</strong>，先把终态标号，再"向后"传播，类似 endgame tablebase（国际象棋残局库）。</p>
+<p>这是一道双人零和、轮流行动、完全信息的博弈。这类问题的标准武器是 minimax：把每个局面标成"当前玩家能强迫的最好结果"，从终局往回递推。先把这个标准做法写出来，看它在本题的什么地方崩掉——崩掉的位置正好指向需要的技术。</p>
+<p>把一个局面定义为三元组 <span class="arithmatex">\(s = (m, c, t)\)</span>：老鼠在 <span class="arithmatex">\(m\)</span>、猫在 <span class="arithmatex">\(c\)</span>、轮到 <span class="arithmatex">\(t\)</span> 行动（<span class="arithmatex">\(t \in \{M, C\}\)</span>）。三种终局直接可判：<span class="arithmatex">\(m = 0\)</span> 是 MOUSE，<span class="arithmatex">\(m = c\)</span> 是 CAT。对非终局，minimax 递归写成</p>
+<div class="arithmatex">\[
+\text{value}(s) = \begin{cases}
+\text{MOUSE} &amp; \text{若 } t=M \text{ 且存在一步走到 MOUSE 的子局面} \\
+\text{CAT} &amp; \text{若 } t=M \text{ 且所有子局面都是 CAT} \\
+\cdots
+\end{cases}
+\]</div>
+<p>即行动方挑对自己最有利的后继。这个递归在无环博弈（如 #877 Stone Game）上直接可解：每个子局面比父局面"更接近终局"，记忆化 DFS 自底向上一遍即可。</p>
+<p><strong>它在本题崩在哪里。</strong> 老鼠和猫可以在图上来回走，所以局面图有环。取最小反例：老鼠和猫各自原地兜圈，状态序列 <span class="arithmatex">\((m_0, c_0, t_0) \to \cdots \to (m_0, c_0, t_0)\)</span> 回到自身。记忆化 DFS 求 <span class="arithmatex">\(\text{value}(m_0,c_0,t_0)\)</span> 时，递归到它的某个后继，沿环又递归回 <span class="arithmatex">\((m_0,c_0,t_0)\)</span>——此时它的值尚未算出。两种常见补救都错：</p>
+<ul>
+<li>标"正在计算中的状态 = 平局"，会过早地把本可分出胜负的局面判成平局，向上传染；</li>
+<li>不标、直接深入，则无限递归。</li>
+</ul>
+<p>根因是：minimax 假设"子局面先于父局面确定"，环破坏了这个偏序，于是没有一个能让自底向上递推启动的求值顺序。</p>
+<p><strong>绕过环的出发点：从确定的局面倒着推。</strong> 终局的值无条件已知，不依赖任何后继。一个非终局 <span class="arithmatex">\(s\)</span> 的值，只要它的某些后继已经确定，就可能随之确定：若轮到行动的一方有一个后继是它的胜局，则 <span class="arithmatex">\(s\)</span> 就是该方的胜局；若 <span class="arithmatex">\(s\)</span> 的全部后继都已确定为对手的胜局，则 <span class="arithmatex">\(s\)</span> 是对手的胜局。这两种判定都不要求 <span class="arithmatex">\(s\)</span> 在某个全局顺序里"更浅"，只要求若干后继已定。于是不再正向从 <span class="arithmatex">\(s\)</span> 求后继，而是反向：每确定一个局面，就把这个确定性回传给它的所有前驱，看是否触发上面两条判定。这正是 retrograde analysis（回溯标号），下面用形式化把它推出来。</p>
 <h2 id="formulation">形式化 (Formulation)<a class="headerlink" href="#formulation" title="Permanent link">#</a></h2>
-<p>状态 <span class="arithmatex">\((m, c, t) \in [0, n) \times [0, n) \times \{M, C\}\)</span>，约 <span class="arithmatex">\(2n^2 \le 5000\)</span> 个。终态：
-- <span class="arithmatex">\(m = 0\)</span> → MOUSE
-- <span class="arithmatex">\(m = c\)</span> → CAT
-- "重复" → DRAW（其它未确定状态默认 DRAW）</p>
-<p>转移（minimax）：
-- 当前 Mouse 行动 (<span class="arithmatex">\(t=M\)</span>)：从 <span class="arithmatex">\((m, c, M)\)</span> 可走到 <span class="arithmatex">\((m', c, C)\)</span> 对 <span class="arithmatex">\(m' \in \text{adj}(m)\)</span>。Mouse 想最大化胜率：若某 child = MOUSE → 本状态 MOUSE；否则若所有 children = CAT → 本状态 CAT；否则 DRAW。
-- Cat 行动 (<span class="arithmatex">\(t=C\)</span>)：类似但 Cat 不能选 <span class="arithmatex">\(c' = 0\)</span>，且立场反转。</p>
+<p>状态空间</p>
+<div class="arithmatex">\[
+s = (m, c, t) \in [0, n) \times [0, n) \times \{M, C\}, \qquad |S| = 2n^2 \le 5000.
+\]</div>
+<p>每个状态的最终标号 <span class="arithmatex">\(\text{val}(s) \in \{\text{MOUSE}, \text{CAT}, \text{DRAW}\}\)</span>。终局条件（优先级：<span class="arithmatex">\(m=0\)</span> 先于 <span class="arithmatex">\(m=c\)</span>）：</p>
+<div class="arithmatex">\[
+m = 0 \;\Rightarrow\; \text{MOUSE}, \qquad m = c &gt; 0 \;\Rightarrow\; \text{CAT}. \tag{1}
+\]</div>
+<p>后继关系。轮到 Mouse（<span class="arithmatex">\(t=M\)</span>）时，<span class="arithmatex">\((m,c,M)\)</span> 走到 <span class="arithmatex">\((m', c, C)\)</span>，<span class="arithmatex">\(m' \in \text{adj}(m)\)</span>；轮到 Cat（<span class="arithmatex">\(t=C\)</span>）时走到 <span class="arithmatex">\((m, c', M)\)</span>，<span class="arithmatex">\(c' \in \text{adj}(c)\)</span> 且 <span class="arithmatex">\(c' \neq 0\)</span>（猫不能进洞）。</p>
+<p>最优标号的递推。设当前行动方为 <span class="arithmatex">\(p \in \{M, C\}\)</span>，其对手为 <span class="arithmatex">\(\bar p\)</span>。则</p>
+<div class="arithmatex">\[
+\text{val}(s) =
+\begin{cases}
+p &amp; \exists\, s' \in \text{succ}(s):\ \text{val}(s') = p, \\[2pt]
+\bar p &amp; \forall\, s' \in \text{succ}(s):\ \text{val}(s') = \bar p, \\[2pt]
+\text{DRAW} &amp; \text{其余情况}. \tag{2}
+\end{cases}
+\]</div>
+<p>第一行是"我有一手直接赢"；第二行是"我每一手都把局面交给对手赢，无路可逃"；第三行——既无必胜手、又非步步必败——恰对应至少有一个后继永远停在 DRAW，双方在最优下都能避开对方取胜，局面无限循环，按规则即平局。</p>
+<p>求 <span class="arithmatex">\(\text{val}(1, 2, M)\)</span>。</p>
+<blockquote>
+<p>式 (2) 与无环 minimax 形式相同，差别只在求值顺序。无环时存在拓扑序让正向递推启动；有环时不存在，必须改为从已定状态反向触发判定。这一段就是 retrograde analysis 取代正向 DP 的全部理由。</p>
+</blockquote>
 <h2 id="approach">数据结构 / 想法 (Approach)<a class="headerlink" href="#approach" title="Permanent link">#</a></h2>
-<p><strong>反向 BFS（拓扑式标号）</strong>。</p>
+<p>把式 (2) 改成反向触发，需要解决一个计数问题：第二行的条件"所有后继都是 <span class="arithmatex">\(\bar p\)</span>"无法在确定单个后继时直接检查。先讲清这个核心不变量，算法步骤随之而出。</p>
+<p><strong>核心不变量。</strong> 给每个状态维护一个计数 <span class="arithmatex">\(\deg(s)\)</span>，初值是 <span class="arithmatex">\(s\)</span> 的合法后继数。每当 <span class="arithmatex">\(s\)</span> 的一个后继被确定为对手 <span class="arithmatex">\(\bar p\)</span> 的胜局、且这一手不能让 <span class="arithmatex">\(p\)</span> 直接获胜时，就令 <span class="arithmatex">\(\deg(s) \mathrel{-}= 1\)</span>。于是任意时刻</p>
+<div class="arithmatex">\[
+\deg(s) = \#\{\text{尚未确定、或尚未被记为对手必胜的后继}\}.
+\]</div>
+<p>当 <span class="arithmatex">\(\deg(s)\)</span> 降到 <span class="arithmatex">\(0\)</span>，意味着 <span class="arithmatex">\(s\)</span> 的每一个后继都已确定为对手胜局——这正是式 (2) 第二行的前提，于是 <span class="arithmatex">\(s\)</span> 被判为对手胜局。这把"检查全部后继"摊还成了"每确定一个后继做一次减法"，且判定时机精确：第一行（有一手直接赢）一旦满足立即触发，第二行靠计数归零触发。两条判定覆盖了式 (2) 的前两种结果，凡不被任何一条触发的状态，留在初始的 DRAW，正是第三行。</p>
+<p>由此得到算法：</p>
 <ol>
-<li>初始化：所有终态 <span class="arithmatex">\((0, c, *)\)</span> 标 MOUSE，<span class="arithmatex">\((x, x, *), x &gt; 0\)</span> 标 CAT（注意 <span class="arithmatex">\(x=0\)</span> 已被 MOUSE 覆盖）。其它 UNKNOWN。</li>
-<li>维护 <code>degree[m][c][t] =</code> 当前玩家在该状态下的可行 child 数（Cat 排除 0 邻居）。</li>
-<li>把所有已标终态入队。从已确定状态 <span class="arithmatex">\(s\)</span>（结果为 <span class="arithmatex">\(R\)</span>）<strong>反向</strong>扩展：找其 parent <span class="arithmatex">\(p\)</span>（即上一玩家行动到 <span class="arithmatex">\(s\)</span> 的状态）。</li>
-<li>若 <span class="arithmatex">\(p\)</span> 的当前玩家就是 <span class="arithmatex">\(R\)</span> 的赢家 → <span class="arithmatex">\(p\)</span> 标 <span class="arithmatex">\(R\)</span>（"我有一手可达赢"）。</li>
-<li>否则 <code>degree[p]--</code>，若降到 0 → 所有 child 都是对手赢，<span class="arithmatex">\(p\)</span> 标对手赢。</li>
-<li>队列处理完后，未标的状态默认 DRAW。</li>
-<li>返回状态 <span class="arithmatex">\((1, 2, M)\)</span> 的标号。</li>
+<li><strong>初始化终局</strong>（式 (1)）。所有 <span class="arithmatex">\((0, c, *)\)</span> 标 MOUSE，所有 <span class="arithmatex">\((x, x, *),\, x&gt;0\)</span> 标 CAT（<span class="arithmatex">\(x=0\)</span> 已被 MOUSE 覆盖，体现 <span class="arithmatex">\(m=0\)</span> 的优先级）。其余状态留 DRAW（待定）。</li>
+<li><strong>初始化计数</strong>。Mouse 轮：<span class="arithmatex">\(\deg(m,c,M) = |\text{adj}(m)|\)</span>；Cat 轮：<span class="arithmatex">\(\deg(m,c,C) = |\text{adj}(c)| - [\,0 \in \text{adj}(c)\,]\)</span>，减去那条非法的进洞边。</li>
+<li><strong>反向传播</strong>。把所有终局入队。取出已确定状态 <span class="arithmatex">\(s\)</span>（值为 <span class="arithmatex">\(R\)</span>），枚举其每个前驱 <span class="arithmatex">\(p\)</span>（上一手行动到 <span class="arithmatex">\(s\)</span> 的状态，行动方为 <span class="arithmatex">\(\bar t\)</span>）：</li>
+<li>若 <span class="arithmatex">\(p\)</span> 的行动方恰是 <span class="arithmatex">\(R\)</span> 的赢家——<span class="arithmatex">\(p\)</span> 这一手能走到一个 <span class="arithmatex">\(R\)</span> 胜局——则按式 (2) 第一行 <span class="arithmatex">\(p\)</span> 标 <span class="arithmatex">\(R\)</span>，入队；</li>
+<li>否则 <span class="arithmatex">\(\deg(p) \mathrel{-}= 1\)</span>；若归零，则按式 (2) 第二行 <span class="arithmatex">\(p\)</span> 标 <span class="arithmatex">\(R\)</span>（此时 <span class="arithmatex">\(R\)</span> 是 <span class="arithmatex">\(p\)</span> 的对手），入队。</li>
+<li>队列空后，未标的状态保持 DRAW（式 (2) 第三行）。</li>
+<li>返回 <span class="arithmatex">\(\text{val}(1, 2, M)\)</span>。</li>
 </ol>
-<p><strong>关键不变量</strong>：标号顺序保证"较深"（更接近终态）状态先确定；degree 计数等价于"还有多少未决定的 child"，归零即必败传播。</p>
+<p>每个状态至多入队一次（标号后不再改动），保证传播终止；BFS 的完备性保证所有可达的胜/负局面都被标到，剩下的才默认 DRAW。</p>
+<p><strong>实现对应。</strong> 代码里 <code>color[m][c][t]</code> 实现标号函数 <span class="arithmatex">\(\text{val}\)</span>，<code>degree[m][c][t]</code> 实现计数 <span class="arithmatex">\(\deg\)</span>，<code>parents()</code> 生成前驱集合——注意它枚举的前驱方向与后继相反：状态 <span class="arithmatex">\((m,c,t)\)</span> 的前驱是 <span class="arithmatex">\((\cdot, \cdot, 1-t)\)</span>，若 <span class="arithmatex">\(t=M\)</span> 则上一手是 Cat 走、需枚举 <span class="arithmatex">\(c\)</span> 的邻居，反之枚举 <span class="arithmatex">\(m\)</span> 的邻居。turn 在形式化里写 <span class="arithmatex">\(\{M, C\}\)</span>，代码用整数常量 <code>MOUSE_TURN=0</code>、<code>CAT_TURN=1</code> 实现同一变量。</p>
 <div class="language-python highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">collections</span><span class="w"> </span><span class="kn">import</span> <span class="n">deque</span>
 <span class="k">class</span><span class="w"> </span><span class="nc">Solution</span><span class="p">:</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">catMouseGame</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">graph</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]])</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
@@ -22535,18 +22604,18 @@
                         <span class="n">q</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">pm</span><span class="p">,</span> <span class="n">pc</span><span class="p">,</span> <span class="n">pt</span><span class="p">,</span> <span class="n">res</span><span class="p">))</span>
         <span class="k">return</span> <span class="n">color</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">2</span><span class="p">][</span><span class="n">MOUSE_TURN</span><span class="p">]</span>
 </code></pre></div>
-<p>样例 2：<code>graph=[[1,3],[0],[3],[0,2]]</code>（节点 2 只与 3 相邻；Mouse=1 与 0,3 相邻）。BFS 反向标号后返回 <code>color[1][2][0]=1</code>（Mouse 胜）。这是经典分析：Mouse 从 1 可去 0 直接赢。✓</p>
+<p>以 <code>graph=[[1,3],[0],[3],[0,2]]</code> 为例：<code>graph[1]=[0]</code>，故 Mouse 在节点 1 时唯一可走到节点 0。<span class="arithmatex">\((0, c, *)\)</span> 是 MOUSE 终局，所以 <span class="arithmatex">\((1, 2, M)\)</span> 在第一行判定下一步直接取胜，反向标号给出 <code>color[1][2][0] = 1</code>（Mouse 胜），与算法的式 (2) 第一行一致。</p>
 <h2 id="complexity">复杂度 (Complexity)<a class="headerlink" href="#complexity" title="Permanent link">#</a></h2>
 <ul>
-<li>状态数 <span class="arithmatex">\(O(n^2)\)</span>，每状态被扩展 <span class="arithmatex">\(O(\deg)\)</span> 次。整体 <span class="arithmatex">\(O(n^3)\)</span>（边总数 <span class="arithmatex">\(\le n^2\)</span>）。</li>
-<li>Space: <span class="arithmatex">\(O(n^2)\)</span> for color + degree。</li>
+<li>状态数 <span class="arithmatex">\(|S| = O(n^2)\)</span>，每个状态被确定一次、其后向所有前驱传播一次，前驱数 <span class="arithmatex">\(O(\deg)\)</span>。总边数 <span class="arithmatex">\(\le n^2\)</span>，整体时间 <span class="arithmatex">\(O(n^3)\)</span>。</li>
+<li>空间 <span class="arithmatex">\(O(n^2)\)</span>：<code>color</code> 与 <code>degree</code> 两个 <span class="arithmatex">\(n \times n \times 2\)</span> 数组。</li>
 </ul>
 <h2 id="pitfalls">陷阱 (Pitfalls)<a class="headerlink" href="#pitfalls" title="Permanent link">#</a></h2>
 <ul>
-<li><strong>不能用 minimax 记忆化递归</strong>直接做：存在循环路径（同状态再次出现 = 平局），递归会陷入无限或错误地标记"已访问 = 平局"，结果不准。必须用反向 BFS 标号。</li>
-<li><strong>Cat 不能进 0</strong>：度数初始化与父节点枚举两处都要排除。</li>
-<li><span class="arithmatex">\((m, c, t)\)</span> 的 parent 是 <span class="arithmatex">\((pm, pc, 1-t)\)</span>；若 <span class="arithmatex">\(t=M\)</span> 则上一手是 Cat，所以 parent 的 <span class="arithmatex">\(c\)</span> 邻居（Cat 走）；反之亦然。容易方向写反。</li>
-<li>默认 DRAW 是关键：未被反向 BFS 标的状态意味双方都可避开对方赢，是平局。</li>
+<li><strong>不能直接用 minimax 记忆化递归</strong>：局面图有环（同状态重复 = 平局），正向递归没有可启动的求值顺序——标"计算中 = 平局"会过早传染、不标则无限递归。这正是改用反向标号的原因（见背景）。</li>
+<li><strong>Cat 不能进 0</strong>：度数初始化（<code>degree[...][CAT_TURN]</code> 减边）与前驱枚举（<code>parents</code> 里 <code>pc != 0</code>）两处都要排除，漏一处计数与传播就不自洽。</li>
+<li><strong>前驱方向易写反</strong>：<span class="arithmatex">\((m, c, t)\)</span> 的前驱是 <span class="arithmatex">\((pm, pc, 1-t)\)</span>；<span class="arithmatex">\(t=M\)</span> 时上一手是 Cat（枚举 <span class="arithmatex">\(c\)</span> 邻居），<span class="arithmatex">\(t=C\)</span> 时上一手是 Mouse（枚举 <span class="arithmatex">\(m\)</span> 邻居）。</li>
+<li><strong>默认 DRAW 是承重的</strong>：未被反向 BFS 标到的状态，意味双方在最优下都能避开对方取胜、局面无限循环，按规则即平局（式 (2) 第三行）。</li>
 </ul>
 <h2 id="related">相关题目 (Related)<a class="headerlink" href="#related" title="Permanent link">#</a></h2>
 <ul>
@@ -22664,6 +22733,8 @@
         <script src="../../../js/mathjax/tex-mml-chtml.js"></script>
       
         <script src="../../../js/mermaid.min.js"></script>
+      
+        <script src="../../../js/featured.js"></script>
       
     
   </body>

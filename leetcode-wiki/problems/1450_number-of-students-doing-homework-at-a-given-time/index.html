@@ -1466,6 +1466,8 @@
       
         
       
+        
+      
     
     
     
@@ -1521,6 +1523,34 @@
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../featured/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ⭐ Featured（已验证）
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
               
             
               
@@ -1610,10 +1640,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_4" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
         
           
-          <label class="md-nav__link" for="__nav_4_4" id="__nav_4_4_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_5" id="__nav_4_5_label" tabindex="">
             
   
   
@@ -1631,8 +1661,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_4_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_4">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_5">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1915,7 +1945,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -1937,14 +1967,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_4_5" id="__nav_4_5_label" tabindex="">
+              <label class="md-nav__link " for="__nav_4_6" id="__nav_4_6_label" tabindex="">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_5">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_6">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -5321,10 +5351,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_7" checked>
         
           
-          <label class="md-nav__link" for="__nav_4_6" id="__nav_4_6_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_7" id="__nav_4_7_label" tabindex="">
             
   
   
@@ -5342,8 +5372,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_4_6">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_7_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4_7">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -22467,25 +22497,49 @@
 <h2 id="problem">Problem<a class="headerlink" href="#problem" title="Permanent link">#</a></h2>
 <p>给两个等长数组 <code>startTime</code>, <code>endTime</code>，与查询时刻 <code>queryTime</code>。返回有多少学生满足 <span class="arithmatex">\(\text{start}_i \leq \text{queryTime} \leq \text{end}_i\)</span>。<span class="arithmatex">\(n \leq 100\)</span>，时间 <span class="arithmatex">\(\leq 1000\)</span>。</p>
 <h2 id="background">背景 (Background)<a class="headerlink" href="#background" title="Permanent link">#</a></h2>
-<p>本题是基础区间包含计数，无特殊学科背景。若 <span class="arithmatex">\(n\)</span> 极大且查询频繁，可用差分数组在 <span class="arithmatex">\(O(\max T)\)</span> 预处理后 <span class="arithmatex">\(O(1)\)</span> 查询。</p>
+<p>每个学生 <span class="arithmatex">\(i\)</span> 在时间段 <span class="arithmatex">\([\text{start}_i, \text{end}_i]\)</span> 内做作业。问"时刻 <span class="arithmatex">\(q\)</span> 有多少学生在做作业"，就是问：在固定的时刻 <span class="arithmatex">\(q\)</span> 上，有多少个区间把它盖住。</p>
+<p>先把"学生 <span class="arithmatex">\(i\)</span> 在 <span class="arithmatex">\(q\)</span> 时刻在做作业"这件事拆开。它在做，当且仅当 <span class="arithmatex">\(q\)</span> 不早于他的开始时间，<strong>并且</strong> <span class="arithmatex">\(q\)</span> 不晚于他的结束时间——两个条件同时成立。任何一边越界（<span class="arithmatex">\(q &lt; \text{start}_i\)</span> 还没开始，或 <span class="arithmatex">\(q &gt; \text{end}_i\)</span> 已经结束）都不算。这两个边各管一侧，缺一不可；这正是后面那个双侧不等式的全部内容。</p>
+<p>各个学生之间互不影响：学生 <span class="arithmatex">\(i\)</span> 是否在做作业只取决于他自己的区间和 <span class="arithmatex">\(q\)</span>，与别人的区间无关，也与区间之间的任何顺序无关。于是任务就是：独立地检查每个学生，把通过的数出来。</p>
 <h2 id="formulation">形式化 (Formulation)<a class="headerlink" href="#formulation" title="Permanent link">#</a></h2>
-<p>求 <span class="arithmatex">\(|\{ i : s_i \leq q \leq e_i \}|\)</span>。</p>
+<p>记开始、结束、查询时刻为 <span class="arithmatex">\(s_i = \text{start}_i\)</span>、<span class="arithmatex">\(e_i = \text{end}_i\)</span>、<span class="arithmatex">\(q = \text{queryTime}\)</span>。"学生 <span class="arithmatex">\(i\)</span> 在 <span class="arithmatex">\(q\)</span> 时刻在做作业"形式化为谓词</p>
+<div class="arithmatex">\[
+P_i \;:\; (s_i \leq q) \wedge (q \leq e_i),
+\]</div>
+<p>即闭区间包含 <span class="arithmatex">\(q \in [s_i, e_i]\)</span>，链式写作 <span class="arithmatex">\(s_i \leq q \leq e_i\)</span>。所求即满足该谓词的学生个数</p>
+<div class="arithmatex">\[
+\bigl|\{\, i : s_i \leq q \leq e_i \,\}\bigr|.
+\]</div>
+<p>谓词里两侧的 <span class="arithmatex">\(\leq\)</span> 不是装饰：左侧 <span class="arithmatex">\(\leq\)</span> 把"恰好在 <span class="arithmatex">\(q\)</span> 开始"算作在做，右侧 <span class="arithmatex">\(\leq\)</span> 把"恰好在 <span class="arithmatex">\(q\)</span> 结束"也算作在做。</p>
 <h2 id="approach">数据结构 / 想法 (Approach)<a class="headerlink" href="#approach" title="Permanent link">#</a></h2>
-<p>直接线性扫描：</p>
+<p>集合基数 <span class="arithmatex">\(|\{ i : P_i \}|\)</span> 直接告诉我们怎么算：遍历所有下标 <span class="arithmatex">\(i\)</span>，对每个 <span class="arithmatex">\(i\)</span> 判定谓词 <span class="arithmatex">\(P_i\)</span>，把为真的累加起来。这就是一遍线性扫描。</p>
+<p>是否需要排序或更复杂的结构？不需要。上面已经说明各学生相互独立、区间之间没有可利用的顺序关系，而查询点 <span class="arithmatex">\(q\)</span> 只有一个、固定不变。没有跨区间的结构可被预处理利用，逐个判定就是该形式化最直接的实现：</p>
 <div class="language-python highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">Solution</span><span class="p">:</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">busyStudent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">startTime</span><span class="p">,</span> <span class="n">endTime</span><span class="p">,</span> <span class="n">queryTime</span><span class="p">):</span>
-        <span class="k">return</span> <span class="nb">sum</span><span class="p">(</span><span class="mi">1</span> <span class="k">for</span> <span class="n">s</span><span class="p">,</span> <span class="n">e</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">startTime</span><span class="p">,</span> <span class="n">endTime</span><span class="p">)</span> <span class="k">if</span> <span class="n">s</span> <span class="o">&lt;=</span> <span class="n">queryTime</span> <span class="o">&lt;=</span> <span class="n">e</span><span class="p">)</span>
+        <span class="n">count</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="n">s</span><span class="p">,</span> <span class="n">e</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">startTime</span><span class="p">,</span> <span class="n">endTime</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">s</span> <span class="o">&lt;=</span> <span class="n">queryTime</span> <span class="o">&lt;=</span> <span class="n">e</span><span class="p">:</span>   <span class="c1"># 谓词 P_i：q 落在闭区间 [s, e] 内</span>
+                <span class="n">count</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="k">return</span> <span class="n">count</span>
 
 <span class="c1"># Trace 样例 1: s=[1,2,3], e=[3,2,7], q=4</span>
 <span class="c1"># i=0: 1&lt;=4&lt;=3? False; i=1: 2&lt;=4&lt;=2? False; i=2: 3&lt;=4&lt;=7? True. → 1 ✓</span>
 </code></pre></div>
+<p>Python 习惯写法把这段循环压成一行，与上面逐个累加完全等价：</p>
+<div class="language-python highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">Solution</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">busyStudent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">startTime</span><span class="p">,</span> <span class="n">endTime</span><span class="p">,</span> <span class="n">queryTime</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">sum</span><span class="p">(</span><span class="mi">1</span> <span class="k">for</span> <span class="n">s</span><span class="p">,</span> <span class="n">e</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">startTime</span><span class="p">,</span> <span class="n">endTime</span><span class="p">)</span> <span class="k">if</span> <span class="n">s</span> <span class="o">&lt;=</span> <span class="n">queryTime</span> <span class="o">&lt;=</span> <span class="n">e</span><span class="p">)</span>
+</code></pre></div>
+<p>到这里基本解法已经完整。剩下一个值得追问的方向：如果不是单次查询，而是对很多个不同的 <span class="arithmatex">\(q\)</span> 反复查询，逐次扫描会怎样？</p>
 <h2 id="complexity">复杂度 (Complexity)<a class="headerlink" href="#complexity" title="Permanent link">#</a></h2>
 <ul>
-<li>Time <span class="arithmatex">\(O(n)\)</span>，Space <span class="arithmatex">\(O(1)\)</span>。</li>
+<li>Time <span class="arithmatex">\(O(n)\)</span>：对 <span class="arithmatex">\(n\)</span> 个学生各做一次常数时间的谓词判定，始终是完整的一遍扫描，故最好/平均/最坏一致，无需分情况讨论。</li>
+<li>Space <span class="arithmatex">\(O(1)\)</span>：只维护一个计数器，生成器求和不额外占用与 <span class="arithmatex">\(n\)</span> 成正比的空间。</li>
 </ul>
+<p>承接上一节的追问：单次查询线性扫描已是最优，因为答案至少要看每个学生一眼。但若需对 <span class="arithmatex">\(K\)</span> 个不同的 <span class="arithmatex">\(q\)</span> 各查一次，逐次扫描是 <span class="arithmatex">\(O(nK)\)</span>。此时朴素线性扫描在 <span class="arithmatex">\(K\)</span> 很大时变得不划算——每次查询都从头重数，浪费在重复劳动上。</p>
+<p>要消掉重复，注意每个学生只在自己区间的边界处改变"是否在做"的状态：在 <span class="arithmatex">\(s_i\)</span> 处计数 <span class="arithmatex">\(+1\)</span>（开始做），在 <span class="arithmatex">\(e_i+1\)</span> 处计数 <span class="arithmatex">\(-1\)</span>（做完了）。把这些增量按时间轴累加（前缀和），就得到每个时刻的在做人数。这是把"每次重新数"替换成"一次性记录所有边界变化，再累加"，即差分数组：<span class="arithmatex">\(O(\max T)\)</span> 预处理后每次查询 <span class="arithmatex">\(O(1)\)</span>，对 <span class="arithmatex">\(K\)</span> 次查询总计 <span class="arithmatex">\(O(n + \max T + K)\)</span>。本题 <span class="arithmatex">\(K=1\)</span>，无需如此;但当查询频繁时，它正是从上面这个形式化里长出来的优化。</p>
 <h2 id="pitfalls">陷阱 (Pitfalls)<a class="headerlink" href="#pitfalls" title="Permanent link">#</a></h2>
 <ul>
-<li>边界闭区间：<code>&lt;=</code> 两侧都要 ≤，否则单点学生（<code>s == e == q</code>）会漏。</li>
+<li>闭区间两侧都要 <span class="arithmatex">\(\leq\)</span>。这一点直接来自形式化里的谓词 <span class="arithmatex">\(s_i \leq q \leq e_i\)</span>：左右两侧的等号分别负责"恰好开始"和"恰好结束"两种边界情形。若把任一侧写成严格 <span class="arithmatex">\(&lt;\)</span>，单点学生（<span class="arithmatex">\(s_i = e_i = q\)</span>，区间退化成一个时刻且恰好被查询命中）就会被漏掉。</li>
 </ul>
 <h2 id="related">相关题目 (Related)<a class="headerlink" href="#related" title="Permanent link">#</a></h2>
 <ul>
@@ -22493,7 +22547,7 @@
 </ul>
 <h2 id="further-reading">Further Reading<a class="headerlink" href="#further-reading" title="Permanent link">#</a></h2>
 <ul>
-<li>无推荐外部资源（题目难度不足以需要专题文献）。</li>
+<li>Cormen et al., <em>Introduction to Algorithms</em>, 前缀和与差分数组：在固定数组上将"区间更新 + 单点查询"摊销到常数时间，是上文频繁查询优化的标准技术。</li>
 </ul>
 
 
@@ -22600,6 +22654,8 @@
         <script src="../../../js/mathjax/tex-mml-chtml.js"></script>
       
         <script src="../../../js/mermaid.min.js"></script>
+      
+        <script src="../../../js/featured.js"></script>
       
     
   </body>

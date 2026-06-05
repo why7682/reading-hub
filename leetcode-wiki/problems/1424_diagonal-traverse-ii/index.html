@@ -1466,6 +1466,8 @@
       
         
       
+        
+      
     
     
     
@@ -1521,6 +1523,34 @@
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../featured/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ⭐ Featured（已验证）
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
               
             
               
@@ -1610,10 +1640,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_4" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
         
           
-          <label class="md-nav__link" for="__nav_4_4" id="__nav_4_4_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_5" id="__nav_4_5_label" tabindex="">
             
   
   
@@ -1631,8 +1661,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_4_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_4">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_5">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1915,7 +1945,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -1937,14 +1967,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_4_5" id="__nav_4_5_label" tabindex="">
+              <label class="md-nav__link " for="__nav_4_6" id="__nav_4_6_label" tabindex="">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_5">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_6">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -5321,10 +5351,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_7" checked>
         
           
-          <label class="md-nav__link" for="__nav_4_6" id="__nav_4_6_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_7" id="__nav_4_7_label" tabindex="">
             
   
   
@@ -5342,8 +5372,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_4_6">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_7_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4_7">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -22467,13 +22497,35 @@
 <h2 id="problem">Problem<a class="headerlink" href="#problem" title="Permanent link">#</a></h2>
 <p>给定一个不规则二维数组 <code>nums</code>（每行长度可能不同），按反对角线方向遍历输出所有元素。约束：行数与每行长度 <span class="arithmatex">\(\leq 10^5\)</span>，元素总数 <span class="arithmatex">\(\leq 10^5\)</span>。</p>
 <h2 id="background">背景 (Background)<a class="headerlink" href="#background" title="Permanent link">#</a></h2>
-<p>矩阵的反对角线遍历是 lattice path 的经典视角：所有满足 <span class="arithmatex">\(i + j = d\)</span> 的格点 <span class="arithmatex">\((i, j)\)</span> 位于同一条反对角线 <span class="arithmatex">\(d\)</span> 上。不规则数组打破了正方形矩阵的结构，于是不能用 <span class="arithmatex">\(i + j \in [0, m+n-2]\)</span> 直接枚举每条对角线（会大量越界判断），转而用 grouping by key 的范式。</p>
+<p>先尝试最直接的做法。在一个 <span class="arithmatex">\(m \times n\)</span> 的规则矩阵里，一条反对角线就是所有满足 <span class="arithmatex">\(i + j = d\)</span> 的格点。于是可以让 <span class="arithmatex">\(d\)</span> 从 <span class="arithmatex">\(0\)</span> 跑到 <span class="arithmatex">\(m + n - 2\)</span>，每条对角线上枚举行号 <span class="arithmatex">\(i\)</span>，取出 <span class="arithmatex">\((i, d - i)\)</span>：</p>
+<div class="language-python highlight"><pre><span></span><code><span class="c1"># 规则矩阵的朴素枚举</span>
+<span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">m</span> <span class="o">+</span> <span class="n">n</span> <span class="o">-</span> <span class="mi">1</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">max</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">d</span> <span class="o">-</span> <span class="n">n</span> <span class="o">+</span> <span class="mi">1</span><span class="p">),</span> <span class="nb">min</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="n">m</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+        <span class="k">yield</span> <span class="n">nums</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">d</span> <span class="o">-</span> <span class="n">i</span><span class="p">]</span>      <span class="c1"># j = d - i，保证 0 &lt;= j &lt; n</span>
+</code></pre></div>
+<p>这个写法依赖一个事实：<strong>每行长度相同</strong>，所以 <span class="arithmatex">\(j = d - i\)</span> 是否合法只取决于全局的 <span class="arithmatex">\(n\)</span>，可以用一对固定的边界算出 <span class="arithmatex">\(i\)</span> 的范围。</p>
+<p>不规则数组破坏了这个事实。第 <span class="arithmatex">\(i\)</span> 行的合法列号上界变成 <span class="arithmatex">\(\text{len}(\texttt{nums}[i])\)</span>，而它逐行不同。同一条对角线 <span class="arithmatex">\(d\)</span> 上，<span class="arithmatex">\((i, d-i)\)</span> 是否存在，要对<strong>每个</strong> <span class="arithmatex">\(i\)</span> 单独检查 <span class="arithmatex">\(d - i &lt; \text{len}(\texttt{nums}[i])\)</span>。朴素枚举退化成：</p>
+<div class="language-python highlight"><pre><span></span><code><span class="c1"># 不规则数组：被迫逐格判断</span>
+<span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="o">...</span><span class="p">):</span>                 <span class="c1"># d 的上界本身就不好定</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="o">...</span><span class="p">):</span>             <span class="c1"># i 的范围也不再是闭式</span>
+        <span class="n">j</span> <span class="o">=</span> <span class="n">d</span> <span class="o">-</span> <span class="n">i</span>
+        <span class="k">if</span> <span class="mi">0</span> <span class="o">&lt;=</span> <span class="n">j</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">nums</span><span class="p">[</span><span class="n">i</span><span class="p">]):</span>    <span class="c1"># 每格一次越界检查</span>
+            <span class="k">yield</span> <span class="n">nums</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span>
+</code></pre></div>
+<p>问题暴露出来了。<span class="arithmatex">\(d\)</span> 的上界要先扫一遍才知道；<span class="arithmatex">\(i\)</span> 的范围没有闭式，只能从 <span class="arithmatex">\(0\)</span> 试到 <span class="arithmatex">\(d\)</span>；绝大多数 <span class="arithmatex">\((i, d-i)\)</span> 在稀疏的不规则行下根本不存在，却都要付一次越界检查。<strong>枚举量正比于"尝试的格点数"而非"存在的格点数"</strong>——这正是朴素做法在不规则形状上失效的地方。</p>
+<p>要修复它，应当反过来：不去问"对角线 <span class="arithmatex">\(d\)</span> 上有哪些格点"，而是只遍历真实存在的格点，问每个格点"它属于哪条对角线"。这把枚举量钉死在元素总数 <span class="arithmatex">\(N\)</span> 上。下一节把这个想法形式化。</p>
 <h2 id="formulation">形式化 (Formulation)<a class="headerlink" href="#formulation" title="Permanent link">#</a></h2>
-<p>设 <span class="arithmatex">\(a_{i,j}\)</span> 为 <code>nums[i][j]</code>，定义对角线编号 <span class="arithmatex">\(d(i, j) = i + j\)</span>。需输出按 <span class="arithmatex">\(d\)</span> 递增、组内按 <span class="arithmatex">\(i\)</span> 递增的元素序列：</p>
-<div class="arithmatex">\[\bigl[\, a_{i,j} \;\bigm|\; (d, i) \text{ in lex order} \,\bigr].\]</div>
-<p>注意每条反对角线内的"自然顺序"是行号 <span class="arithmatex">\(i\)</span> 递增（对应列号 <span class="arithmatex">\(j = d - i\)</span> 递减）。</p>
+<p><strong>先看直觉。</strong> 哪些格点必须在输出里连续出现？是同一条反对角线上的格点。所以核心问题是：两个格点 <span class="arithmatex">\((i_1, j_1)\)</span> 与 <span class="arithmatex">\((i_2, j_2)\)</span> 同处一条反对角线，当且仅当满足什么关系？沿一条反对角线移动，行号增加多少，列号就减少多少，即 <span class="arithmatex">\(i_2 - i_1 = -(j_2 - j_1)\)</span>，整理得</p>
+<div class="arithmatex">\[i_1 + j_1 = i_2 + j_2.\]</div>
+<p>于是 <span class="arithmatex">\(i + j\)</span> 是这条约束下唯一的不变量。它不是一个需要背下来的定义，而是"同对角线"这一几何条件的直接代数解。</p>
+<p><strong>形式化。</strong> 设 <span class="arithmatex">\(a_{i,j}\)</span> 为 <code>nums[i][j]</code>，定义对角线编号</p>
+<div class="arithmatex">\[d(i, j) = i + j.\]</div>
+<p>需要的输出顺序是：对角线之间按 <span class="arithmatex">\(d\)</span> 递增，同一条对角线内部按某个待定的次序排列。先确定这个内部次序。题面要求沿每条反对角线从左下走到右上，即从最大的 <span class="arithmatex">\(i\)</span>（最小的 <span class="arithmatex">\(j\)</span>）走向最小的 <span class="arithmatex">\(i\)</span>（最大的 <span class="arithmatex">\(j\)</span>）——<strong>组内按 <span class="arithmatex">\(i\)</span> 递减</strong>。把两层次序合起来，输出即</p>
+<div class="arithmatex">\[\bigl[\, a_{i,j} \;\bigm|\; (d, -i) \text{ in lex order} \,\bigr],\]</div>
+<p>也就是按 <span class="arithmatex">\(d\)</span> 升序、<span class="arithmatex">\(d\)</span> 相同时按 <span class="arithmatex">\(i\)</span> 降序。这个二元组就是整个解法的脊柱，下面的算法只是它的直接实现。</p>
 <h2 id="approach">数据结构 / 想法 (Approach)<a class="headerlink" href="#approach" title="Permanent link">#</a></h2>
-<p><strong>法 1：分组哈希表（推荐）</strong>。按 <span class="arithmatex">\(d = i + j\)</span> 分桶：</p>
+<p><strong>法 1：分组哈希表（推荐）</strong>。形式化已经指明做法：只遍历存在的格点，把每个元素按它的对角线编号 <span class="arithmatex">\(d = i + j\)</span> 投进对应的桶。</p>
+<p>要把代码写对，关键是先把扫描顺序和要求的输出顺序对齐。按行优先扫描时，行号 <span class="arithmatex">\(i\)</span> 天然<strong>递增</strong>，所以每个桶里元素的插入顺序是 <span class="arithmatex">\(i\)</span> 递增。但上一节定下的输出要求组内 <span class="arithmatex">\(i\)</span> <strong>递减</strong>。两者方向相反，因此每个桶在输出前必须 <code>reversed</code>——这是从形式化直接推出的结论，不是事后从样例发现的修正。</p>
 <div class="language-python highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">collections</span><span class="w"> </span><span class="kn">import</span> <span class="n">defaultdict</span>
 
 <span class="k">class</span><span class="w"> </span><span class="nc">Solution</span><span class="p">:</span>
@@ -22481,31 +22533,72 @@
         <span class="n">buckets</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="nb">list</span><span class="p">)</span>
         <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">row</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">nums</span><span class="p">):</span>
             <span class="k">for</span> <span class="n">j</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">row</span><span class="p">):</span>
-                <span class="n">buckets</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="n">j</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
+                <span class="n">buckets</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="n">j</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>   <span class="c1"># 插入顺序: i 递增</span>
         <span class="n">out</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">buckets</span><span class="p">):</span>
-            <span class="c1"># same diagonal: i increasing =&gt; j decreasing =&gt; reverse insertion order</span>
-            <span class="n">out</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="nb">reversed</span><span class="p">(</span><span class="n">buckets</span><span class="p">[</span><span class="n">d</span><span class="p">]))</span>
+            <span class="n">out</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="nb">reversed</span><span class="p">(</span><span class="n">buckets</span><span class="p">[</span><span class="n">d</span><span class="p">]))</span>  <span class="c1"># 输出要求: i 递减</span>
         <span class="k">return</span> <span class="n">out</span>
-
-<span class="c1"># 心算 trace 样例 1: [[1,2,3],[4,5,6],[7,8,9]]</span>
-<span class="c1"># d=0: [1]; d=1: [2,4]; d=2: [3,5,7]; d=3: [6,8]; d=4: [9]</span>
-<span class="c1"># reversed each =&gt; [1, 4,2, 7,5,3, 8,6, 9] ✓</span>
 </code></pre></div>
-<p><strong>关键不变量</strong>：对固定 <span class="arithmatex">\(d\)</span>，按行号 <span class="arithmatex">\(i\)</span> <strong>递增</strong>枚举 → 反对角线题面要求的输出顺序是 <span class="arithmatex">\(i\)</span> <strong>递增</strong>（图示中从左下到右上）。我们按行扫描时 <span class="arithmatex">\(i\)</span> 天然递增，<strong>但</strong> "diagonal order" 在该题语义中要求按 <span class="arithmatex">\(j\)</span> 递增、<span class="arithmatex">\(i\)</span> 递减（从右上到左下）……实际看样例 1 输出 <code>[1,4,2,7,5,3,...]</code>：<span class="arithmatex">\(d=1\)</span> 时输出 <code>4,2</code>（即 <span class="arithmatex">\(i=1\)</span> 然后 <span class="arithmatex">\(i=0\)</span>），所以确实要 reverse。</p>
-<p><strong>法 2：(d, i, v) 元组排序</strong>。把每个元素打成 <code>(i+j, -i, v)</code> 三元组，按字典序排序后取 <code>v</code>。时间 <span class="arithmatex">\(O(N \log N)\)</span>，比法 1 慢但思路通用。</p>
-<p><strong>法 3：BFS-like 多指针</strong>。维护每行的列指针；不规则形状会让正向 BFS 实现复杂、易错，不推荐。</p>
+<p><strong>示例验证</strong>（样例 1：<code>[[1,2,3],[4,5,6],[7,8,9]]</code>）。分桶结果与逐桶反转：</p>
+<table>
+<thead>
+<tr>
+<th><span class="arithmatex">\(d\)</span></th>
+<th>桶（<span class="arithmatex">\(i\)</span> 递增）</th>
+<th>反转后（<span class="arithmatex">\(i\)</span> 递减）</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td><code>[1]</code></td>
+<td><code>1</code></td>
+</tr>
+<tr>
+<td>1</td>
+<td><code>[2, 4]</code></td>
+<td><code>4, 2</code></td>
+</tr>
+<tr>
+<td>2</td>
+<td><code>[3, 5, 7]</code></td>
+<td><code>7, 5, 3</code></td>
+</tr>
+<tr>
+<td>3</td>
+<td><code>[6, 8]</code></td>
+<td><code>8, 6</code></td>
+</tr>
+<tr>
+<td>4</td>
+<td><code>[9]</code></td>
+<td><code>9</code></td>
+</tr>
+</tbody>
+</table>
+<p>拼接得 <code>[1, 4, 2, 7, 5, 3, 8, 6, 9]</code>，与官方输出一致。<span class="arithmatex">\(d = 1\)</span> 这条对角线输出 <code>4, 2</code>（先 <span class="arithmatex">\(i=1\)</span> 再 <span class="arithmatex">\(i=0\)</span>），正是反转生效的最小见证。</p>
+<p><strong>法 2：<span class="arithmatex">\((d, -i, v)\)</span> 元组排序</strong>。形式化里的脊柱 <span class="arithmatex">\((d, -i)\)</span> 也可以直接交给排序：把每个元素打成三元组 <code>(i + j, -i, v)</code>，按字典序排序后取出 <code>v</code>。这里 <code>-i</code> 不是凭空来的——它让排序在 <span class="arithmatex">\(d\)</span> 相同时按 <span class="arithmatex">\(i\)</span> 降序，正好实现组内次序，省去手动反转。时间 <span class="arithmatex">\(O(N \log N)\)</span>，比法 1 慢一档，但写法最直白、最贴近形式化。</p>
+<div class="language-python highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">Solution</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">findDiagonalOrder</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">nums</span><span class="p">):</span>
+        <span class="n">items</span> <span class="o">=</span> <span class="p">[(</span><span class="n">i</span> <span class="o">+</span> <span class="n">j</span><span class="p">,</span> <span class="o">-</span><span class="n">i</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span>
+                 <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">row</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">nums</span><span class="p">)</span>
+                 <span class="k">for</span> <span class="n">j</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">row</span><span class="p">)]</span>
+        <span class="n">items</span><span class="o">.</span><span class="n">sort</span><span class="p">()</span>
+        <span class="k">return</span> <span class="p">[</span><span class="n">v</span> <span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">items</span><span class="p">]</span>
+</code></pre></div>
+<p><strong>法 3：BFS 式多指针</strong>。维护每行的列指针逐层推进。不规则形状会让指针推进的边界判断变得复杂、易错，相比法 1 没有渐进优势，不推荐。</p>
 <h2 id="complexity">复杂度 (Complexity)<a class="headerlink" href="#complexity" title="Permanent link">#</a></h2>
+<p>设 <span class="arithmatex">\(N\)</span> 为元素总数（<span class="arithmatex">\(\leq 10^5\)</span>），<span class="arithmatex">\(D\)</span> 为不同对角线数（不同 <span class="arithmatex">\(i+j\)</span> 键的个数）。每个元素至多贡献一个新键，故 <span class="arithmatex">\(D \leq N\)</span>，且单行或单列时 <span class="arithmatex">\(D = N\)</span>。</p>
 <ul>
-<li>法 1: Time <span class="arithmatex">\(O(N + D \log D)\)</span>，<span class="arithmatex">\(N\)</span> = 元素总数 <span class="arithmatex">\(\leq 10^5\)</span>，<span class="arithmatex">\(D \leq 2N - 1\)</span> 是对角线数。<code>sorted(buckets)</code> 是瓶颈。Space <span class="arithmatex">\(O(N)\)</span>。</li>
-<li>法 2: Time <span class="arithmatex">\(O(N \log N)\)</span>；Space <span class="arithmatex">\(O(N)\)</span>。</li>
-<li>法 1 比法 2 快约 <span class="arithmatex">\(\log\)</span> 倍常数。</li>
+<li>法 1：分桶 <span class="arithmatex">\(O(N)\)</span>，对键排序 <span class="arithmatex">\(O(D \log D)\)</span>，合计 <span class="arithmatex">\(O(N + D \log D)\)</span>。Space <span class="arithmatex">\(O(N)\)</span>。</li>
+<li>法 2：<span class="arithmatex">\(O(N \log N)\)</span>；Space <span class="arithmatex">\(O(N)\)</span>。</li>
+<li>两者比较：仅当 <span class="arithmatex">\(D \ll N\)</span>（对角线少、每条很长）时，法 1 的 <span class="arithmatex">\(O(N + D \log D)\)</span> 才明显快于法 2。当 <span class="arithmatex">\(D = \Theta(N)\)</span>（如单行、单列，正是本题的边界情形）时两者同为 <span class="arithmatex">\(\Theta(N \log N)\)</span>，没有渐进优势，只差常数。</li>
 </ul>
 <h2 id="pitfalls">陷阱 (Pitfalls)<a class="headerlink" href="#pitfalls" title="Permanent link">#</a></h2>
 <ul>
-<li><strong>顺序方向</strong>：直觉是 <span class="arithmatex">\(i\)</span> 递增，但样例要求 reverse；不读样例就写会 WA。</li>
-<li><strong>不规则行</strong>：不要假设矩阵宽度为 <code>max(len(row))</code>；否则越界。</li>
-<li><strong>分桶不能用 <code>range(max_d+1)</code></strong>：稀疏对角线会插入空 list 浪费时间，应只遍历存在的 key。</li>
+<li><strong>顺序方向</strong>：扫描得到的是 <span class="arithmatex">\(i\)</span> 递增，输出要求 <span class="arithmatex">\(i\)</span> 递减，二者相反必须反转。这一点已由形式化推出（见法 1），不依赖读样例才发现。</li>
+<li><strong>不规则行</strong>：每行合法列号上界是 <code>len(nums[i])</code>，逐行不同；不要假设统一宽度为 <code>max(len(row))</code>，否则越界（这正是朴素枚举失效的根源）。</li>
+<li><strong>分桶不能用 <code>range(max_d+1)</code></strong>：稀疏对角线会插入空 list 浪费时间，应只遍历真实存在的 key（即 <code>sorted(buckets)</code>）。</li>
 </ul>
 <h2 id="related">相关题目 (Related)<a class="headerlink" href="#related" title="Permanent link">#</a></h2>
 <ul>
@@ -22621,6 +22714,8 @@
         <script src="../../../js/mathjax/tex-mml-chtml.js"></script>
       
         <script src="../../../js/mermaid.min.js"></script>
+      
+        <script src="../../../js/featured.js"></script>
       
     
   </body>

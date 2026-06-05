@@ -1466,6 +1466,8 @@
       
         
       
+        
+      
     
     
     
@@ -1521,6 +1523,34 @@
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../featured/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ⭐ Featured（已验证）
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
               
             
               
@@ -1610,10 +1640,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_4" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
         
           
-          <label class="md-nav__link" for="__nav_4_4" id="__nav_4_4_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_5" id="__nav_4_5_label" tabindex="">
             
   
   
@@ -1631,8 +1661,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_4_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_4">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_5">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1915,7 +1945,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -1937,14 +1967,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_4_5" id="__nav_4_5_label" tabindex="">
+              <label class="md-nav__link " for="__nav_4_6" id="__nav_4_6_label" tabindex="">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_5">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_6">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -5321,10 +5351,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_7" checked>
         
           
-          <label class="md-nav__link" for="__nav_4_6" id="__nav_4_6_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_7" id="__nav_4_7_label" tabindex="">
             
   
   
@@ -5342,8 +5372,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_4_6">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_7_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4_7">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -22466,12 +22496,30 @@
 <p><strong>Tags</strong>: Array, Greedy</p>
 <h2 id="problem">Problem<a class="headerlink" href="#problem" title="Permanent link">#</a></h2>
 <p><code>flowerbed</code> 是 0/1 数组（1 已种、0 空），不可相邻种花。判定是否能再种 <span class="arithmatex">\(n\)</span> 朵。<span class="arithmatex">\(|\text{fb}| \leq 2 \times 10^4\)</span>，<span class="arithmatex">\(0 \leq n \leq |\text{fb}|\)</span>，输入合法（已有花不相邻）。</p>
+<p>下文用 <span class="arithmatex">\(\text{fb}\)</span> 记 <code>flowerbed</code>，<span class="arithmatex">\(L = |\text{fb}|\)</span> 记其长度。每个位置只有"空 / 已种"两态，约束只发生在相邻两格之间。</p>
 <h2 id="background">背景 (Background)<a class="headerlink" href="#background" title="Permanent link">#</a></h2>
-<p><strong>贪心</strong>：从左到右扫，若当前位置为 0 且左右邻（含哨兵边界）皆 0，就种下并跳过下一格。这种"局部最优 = 全局最优"在独立集类问题（在路径图上找最大独立集）有严谨证明：路径图上的独立集 DP 取最优时，贪心从左到右尽早种是最优。</p>
+<p>真正要回答的不是"能否再种 <span class="arithmatex">\(n\)</span> 朵"，而是一个更基本的量：在保持已有花不动、任意两花不相邻的前提下，这块地<strong>最多还能种几朵</strong>。一旦能算出这个最大值 <span class="arithmatex">\(k^\*\)</span>，原问题就是一次比较 <span class="arithmatex">\(k^\* \ge n\)</span>。</p>
+<p>这个最大化问题之所以非平凡，在于种花决策互相牵制：在位置 <span class="arithmatex">\(i\)</span> 种一朵，会同时封死 <span class="arithmatex">\(i-1\)</span> 和 <span class="arithmatex">\(i+1\)</span>。先在哪里种，会改变后面还能种在哪里。要敢于逐格、不回头地做局部决策，就需要一个全局保证——早做的选择不会断送更好的方案。</p>
+<p>把约束写成图，能看清结构。令每个位置为一个顶点，在每对相邻位置之间连一条边。则"一组合法的种花位置"恰好就是这张图上的<strong>独立集</strong>（任意两个被选顶点之间无边，即不相邻）；已种的花是被强制选入的顶点。这张图是一条<strong>路径图</strong> <span class="arithmatex">\(P_L\)</span>。于是原问题化为：在路径图上、固定若干顶点的前提下，求最大独立集的大小 <span class="arithmatex">\(k^\*\)</span>，再判断 <span class="arithmatex">\(k^\* \ge n\)</span>。约束的"纯局部性"——一朵花只影响左右各一格——正是使从左到右单次扫描足够的根源。</p>
 <h2 id="formulation">形式化 (Formulation)<a class="headerlink" href="#formulation" title="Permanent link">#</a></h2>
-<p>求最大 <span class="arithmatex">\(k\)</span> 使得存在 <span class="arithmatex">\(k\)</span> 个位置可种花，保持原已种花不动且任何两花不相邻。判断 <span class="arithmatex">\(k \geq n\)</span>。</p>
+<p>设位置集合 <span class="arithmatex">\(V = \{0, 1, \dots, L-1\}\)</span>，边集 <span class="arithmatex">\(E = \{(i, i+1) : 0 \le i &lt; L-1\}\)</span>，构成路径图 <span class="arithmatex">\(P_L = (V, E)\)</span>。已种位置 <span class="arithmatex">\(S_0 = \{i : \text{fb}[i] = 1\}\)</span>（题目保证 <span class="arithmatex">\(S_0\)</span> 本身是独立集）。</p>
+<blockquote>
+<p>一个合法的最终种花方案是满足 <span class="arithmatex">\(S_0 \subseteq S\)</span> 的独立集 <span class="arithmatex">\(S \subseteq V\)</span>；新种的花数为 <span class="arithmatex">\(|S| - |S_0|\)</span>。</p>
+</blockquote>
+<p>定义</p>
+<div class="arithmatex">\[
+k^\* \;=\; \max_{\substack{S \supseteq S_0 \\ S \text{ 是 } P_L \text{ 上的独立集}}} \bigl(|S| - |S_0|\bigr).
+\]</div>
+<p>原问题即返回布尔值 <span class="arithmatex">\(k^\* \ge n\)</span>。下面要做的，是把 <span class="arithmatex">\(k^\*\)</span> 算出来——而非估计或近似。</p>
 <h2 id="approach">数据结构 / 想法 (Approach)<a class="headerlink" href="#approach" title="Permanent link">#</a></h2>
-<p><strong>线性贪心</strong>：</p>
+<p><strong>先看朴素做法，再看它在哪里断。</strong> 既然约束只限制相邻，最直接的想法是：从左扫到右，遇到 0 就种。但这会破坏可行性——<code>fb=[0,0,0]</code> 时，若在位置 0、1 连种，两花相邻，非法。可见"遇空就种"过度乐观，必须在种下后<strong>跳过下一格</strong>：种在 0 之后，位置 1 已挨着新花，不可能合法，连判都不用判，直接落到位置 2。修正后 <code>fb=[0,0,0]</code> 得到 0、2 两朵，正是最大值。</p>
+<p><strong>修正后的策略与它为何最优。</strong> 策略是：从左到右扫，当前格为 0 且左右邻（边界视作空地）皆 0 就种下，并跳过下一格。它最优的理由来自约束的局部性——一朵花只封死左右各一格，因此把花尽量左移永远不会在右侧制造新冲突。</p>
+<blockquote>
+<p><strong>直觉（紧接形式陈述之前）</strong>：若某个最优方案放过了可种的位置 <span class="arithmatex">\(i\)</span>，而把首朵花种在更靠右的 <span class="arithmatex">\(j &gt; i\)</span>，那么把这朵花搬到 <span class="arithmatex">\(i\)</span> 仍然合法——<span class="arithmatex">\(i\)</span> 的左邻要么是边界、要么是已知为空（否则 <span class="arithmatex">\(i\)</span> 本不可种），<span class="arithmatex">\(i\)</span> 的右邻不晚于 <span class="arithmatex">\(j\)</span> 仍为空。搬动不减花数。</p>
+</blockquote>
+<p><strong>命题（贪心最优）.</strong> 从左到右、能种即种的策略产出的方案 <span class="arithmatex">\(S_g\)</span> 满足 <span class="arithmatex">\(|S_g| - |S_0| = k^\*\)</span>。</p>
+<p><em>证明（交换论证 + 归纳）.</em> 对位置下标做归纳，断言：存在一个最大方案 <span class="arithmatex">\(S^\*\)</span>，它在最左侧的若干位置上的取舍与 <span class="arithmatex">\(S_g\)</span> 完全一致。归纳基：在第一个可种位置 <span class="arithmatex">\(i\)</span> 处，若 <span class="arithmatex">\(S^\*\)</span> 未在 <span class="arithmatex">\(i\)</span> 种而在某 <span class="arithmatex">\(j &gt; i\)</span> 首次种，由上述直觉将该花左移到 <span class="arithmatex">\(i\)</span>，得到的方案仍是独立集且大小不变，故仍最大，且现在与 <span class="arithmatex">\(S_g\)</span> 在 <span class="arithmatex">\(i\)</span> 处一致。归纳步：假定前 <span class="arithmatex">\(i\)</span> 格已对齐，对第 <span class="arithmatex">\(i+1\)</span> 个决策重复同样的左移交换。逐格推进直到扫完整条路径，得到一个与 <span class="arithmatex">\(S_g\)</span> 完全一致的最大方案，故 <span class="arithmatex">\(|S_g| - |S_0| = k^\*\)</span>。<span class="arithmatex">\(\qquad\blacksquare\)</span></p>
+<p>证明确立了正确性，算法只是它的直接实现：</p>
 <div class="language-python highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">Solution</span><span class="p">:</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">canPlaceFlowers</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">flowerbed</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">],</span> <span class="n">n</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
         <span class="n">L</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">flowerbed</span><span class="p">)</span>
@@ -22484,12 +22532,12 @@
                     <span class="n">flowerbed</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
                     <span class="n">n</span> <span class="o">-=</span> <span class="mi">1</span>
                     <span class="k">if</span> <span class="n">n</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span> <span class="k">return</span> <span class="kc">True</span>
-                    <span class="n">i</span> <span class="o">+=</span> <span class="mi">2</span>   <span class="c1"># 种了花，下一格必为 0，跳两步</span>
+                    <span class="n">i</span> <span class="o">+=</span> <span class="mi">2</span>   <span class="c1"># 刚种花，下一格紧邻新花必非法，跳过</span>
                     <span class="k">continue</span>
             <span class="n">i</span> <span class="o">+=</span> <span class="mi">1</span>
         <span class="k">return</span> <span class="n">n</span> <span class="o">&lt;=</span> <span class="mi">0</span>
 </code></pre></div>
-<p><strong>为什么贪心正确</strong>：路径图独立集问题中，"尽早种 + 不破坏可行性"等价于线性 DP 最优解。证明草图：若最优方案在位置 <span class="arithmatex">\(j &gt; i\)</span> 才首次种，而位置 <span class="arithmatex">\(i\)</span> 也可种（左右皆 0），可把那朵花前移到 <span class="arithmatex">\(i\)</span>，独立集大小不变；归纳。</p>
+<p><code>i += 2</code> 的安全性直接来自上面的修正：种花只发生在 <code>flowerbed[i+1] == 0</code>（或 <span class="arithmatex">\(i = L-1\)</span>，此时循环本就结束）时，故种后 <span class="arithmatex">\(i+1\)</span> 必为空地且紧邻新花，永远不合格，无需再判。</p>
 <p><strong>Trace <code>fb=[1,0,0,0,1], n=1</code></strong>：
 - i=0: fb[0]=1, skip
 - i=1: 0; left=fb[0]=1 → False, skip
@@ -22497,17 +22545,18 @@
 <p><strong>Trace <code>fb=[1,0,0,0,1], n=2</code></strong>：
 - 同上 i=2 种；n=1。i=4: fb[4]=1，skip。结束 n=1&gt;0，return False ✓</p>
 <p><strong>Trace 边界 <code>fb=[0], n=1</code></strong>：i=0, left=True(边界), right=True(边界), 种，n=0, return True。</p>
+<p>三个 trace 分别验证了"够种""不够种""单格边界"三种结局；它们也表明算法对每格只做常数工作、<span class="arithmatex">\(i\)</span> 单调推进不回头，复杂度因此立即可读。</p>
 <h2 id="complexity">复杂度 (Complexity)<a class="headerlink" href="#complexity" title="Permanent link">#</a></h2>
 <ul>
-<li>Time: <span class="arithmatex">\(O(L)\)</span></li>
-<li>Space: <span class="arithmatex">\(O(1)\)</span>（就地修改）</li>
+<li>Time: <span class="arithmatex">\(O(L)\)</span>——单次从左到右扫描，每个下标至多访问一次，<span class="arithmatex">\(i\)</span> 每步前进 1 或 2，从不回退。</li>
+<li>Space: <span class="arithmatex">\(O(1)\)</span>——算法就地修改输入数组，除循环下标外不需额外存储。</li>
 </ul>
 <h2 id="pitfalls">陷阱 (Pitfalls)<a class="headerlink" href="#pitfalls" title="Permanent link">#</a></h2>
 <ul>
 <li><strong>边界 left/right</strong>：<span class="arithmatex">\(i=0\)</span> 时无左邻、<span class="arithmatex">\(i=L-1\)</span> 时无右邻——视作"空地"。漏掉会少种。</li>
 <li><strong>不允许修改输入</strong>：若题目限制，复制一份或维护"上一种花位置"变量。</li>
 <li><strong>n=0</strong>：直接 return True；上方代码 <code>n &lt;= 0</code> 在循环外兜底。</li>
-<li><strong>i += 2 还是 i += 1</strong>：种了花后下一格必为 0（保护），所以跳 2 步；未种则 1 步。</li>
+<li><strong>i += 2 还是 i += 1</strong>：种花后下一格紧邻新花、必非法（如种在 i=2 后，i=3 挨着 fb[2]=1，永不合格，无需再判），故跳 2 步；未种则 1 步。</li>
 </ul>
 <h2 id="related">相关题目 (Related)<a class="headerlink" href="#related" title="Permanent link">#</a></h2>
 <ul>
@@ -22622,6 +22671,8 @@
         <script src="../../../js/mathjax/tex-mml-chtml.js"></script>
       
         <script src="../../../js/mermaid.min.js"></script>
+      
+        <script src="../../../js/featured.js"></script>
       
     
   </body>

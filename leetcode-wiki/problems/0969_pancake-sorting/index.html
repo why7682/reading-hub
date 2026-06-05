@@ -1466,6 +1466,8 @@
       
         
       
+        
+      
     
     
     
@@ -1521,6 +1523,34 @@
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../featured/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ⭐ Featured（已验证）
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
               
             
               
@@ -1610,10 +1640,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_4" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
         
           
-          <label class="md-nav__link" for="__nav_4_4" id="__nav_4_4_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_5" id="__nav_4_5_label" tabindex="">
             
   
   
@@ -1631,8 +1661,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_4_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_4">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_5">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1915,7 +1945,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -1937,14 +1967,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_4_5" id="__nav_4_5_label" tabindex="">
+              <label class="md-nav__link " for="__nav_4_6" id="__nav_4_6_label" tabindex="">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_5">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_6">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -5321,10 +5351,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_7" checked>
         
           
-          <label class="md-nav__link" for="__nav_4_6" id="__nav_4_6_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_7" id="__nav_4_7_label" tabindex="">
             
   
   
@@ -5342,8 +5372,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_4_6">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_7_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4_7">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -22467,15 +22497,28 @@
 <h2 id="problem">Problem<a class="headerlink" href="#problem" title="Permanent link">#</a></h2>
 <p>对 <span class="arithmatex">\(\text{arr}\)</span>（<span class="arithmatex">\([1, n]\)</span> 排列）执行<strong>煎饼翻转</strong>：选 <span class="arithmatex">\(k\)</span>，反转 <span class="arithmatex">\(\text{arr}[0..k-1]\)</span>。返回任意一组 <span class="arithmatex">\(k\)</span> 序列将 arr 升序排序，长度 <span class="arithmatex">\(\le 10n\)</span>。<span class="arithmatex">\(1 \le n \le 100\)</span>。</p>
 <h2 id="background">背景 (Background)<a class="headerlink" href="#background" title="Permanent link">#</a></h2>
-<p><strong>煎饼排序</strong>是组合优化经典问题（Goodman 1975；Gates &amp; Papadimitriou 1979 给出 <span class="arithmatex">\(\le (5n+5)/3\)</span> 上界——Bill Gates 本科论文！）。它的极小翻转数（pancake number <span class="arithmatex">\(f(n)\)</span>）至今未知封闭形式，是 Frontiers in Combinatorics 的开放问题之一。本题不要求最优，只要 <span class="arithmatex">\(\le 10n\)</span>，故简单贪心可行。</p>
+<p>唯一可用的操作是反转一个<strong>前缀</strong>——长度任意，但左端必须固定在下标 <span class="arithmatex">\(0\)</span>。这条限制塑造了整个解法：要触碰某个元素，先得把它送到下标 <span class="arithmatex">\(0\)</span>，因为前缀反转只对下标 <span class="arithmatex">\(0\)</span> 处的元素有完全控制权。下文的两次翻转模式正是这条几何约束的直接产物。</p>
+<p>煎饼排序是组合优化中的经典问题，由 Goodman（1975，以 "Harry Dweighter" 笔名发表于 <em>Amer. Math. Monthly</em>）提出。Gates 与 Papadimitriou（1979，<em>Bounds for sorting by prefix reversal</em>）给出最坏情况 <span class="arithmatex">\(\le (5n+5)/3\)</span> 次翻转的上界。其极小翻转数——煎饼数 <span class="arithmatex">\(f(n)\)</span>——至今没有已知的封闭形式，仅对小的 <span class="arithmatex">\(n\)</span> 有精确值。本题不追求最优翻转数，只要求一组长度 <span class="arithmatex">\(\le 10n\)</span> 的合法序列；因此可以放弃对最优性的追求，转而寻找一个易于验证、翻转数线性的构造。下面就从操作本身的结构推导出这样一个构造。</p>
 <h2 id="formulation">形式化 (Formulation)<a class="headerlink" href="#formulation" title="Permanent link">#</a></h2>
-<p>求翻转序列 <span class="arithmatex">\(k_1, \dots, k_m\)</span>（<span class="arithmatex">\(1 \le k_i \le n\)</span>）使应用后 arr 等于 <span class="arithmatex">\([1, 2, \dots, n]\)</span>，<span class="arithmatex">\(m \le 10n\)</span>。</p>
+<p>设 <span class="arithmatex">\(\rho_k\)</span> 表示前缀反转算子：<span class="arithmatex">\(\rho_k(\text{arr})\)</span> 把 <span class="arithmatex">\(\text{arr}[0..k-1]\)</span> 反转，其余不动。求一个翻转序列 <span class="arithmatex">\(k_1, \dots, k_m\)</span>（<span class="arithmatex">\(1 \le k_i \le n\)</span>）使得</p>
+<div class="arithmatex">\[\rho_{k_m} \circ \cdots \circ \rho_{k_1}(\text{arr}) = [1, 2, \dots, n], \qquad m \le 10n.\]</div>
+<p>解法即是对这个存在性命题的一个构造性证明：我们会显式地造出一个满足上式且 <span class="arithmatex">\(m \le 2(n-1)\)</span> 的序列。</p>
 <h2 id="approach">数据结构 / 想法 (Approach)<a class="headerlink" href="#approach" title="Permanent link">#</a></h2>
-<p><strong>贪心 2-翻转策略</strong>：从大到小依次安置 <span class="arithmatex">\(v = n, n-1, \dots, 2\)</span>。
-1. 找 <span class="arithmatex">\(v\)</span> 的位置 <span class="arithmatex">\(p\)</span>。
-2. 翻转前 <span class="arithmatex">\(p+1\)</span> 个 → <span class="arithmatex">\(v\)</span> 到首位。
-3. 翻转前 <span class="arithmatex">\(v\)</span> 个 → <span class="arithmatex">\(v\)</span> 到位置 <span class="arithmatex">\(v-1\)</span>（其"最终"位置）。
-之后 <span class="arithmatex">\(v\)</span> 不再被触碰。每个 <span class="arithmatex">\(v\)</span> 最多 2 次翻转 → 总 <span class="arithmatex">\(\le 2(n-1) \le 10n\)</span>。</p>
+<p><strong>先看一个最朴素的尝试，并看它在哪里崩。</strong> 排序最直接的想法是逐个把值放到位。取值 <span class="arithmatex">\(v\)</span>，它应当落在下标 <span class="arithmatex">\(v-1\)</span>。用前缀反转，能直接把 <span class="arithmatex">\(v\)</span> 送到下标 <span class="arithmatex">\(v-1\)</span> 吗？设 <span class="arithmatex">\(v\)</span> 当前在下标 <span class="arithmatex">\(p\)</span>。一次 <span class="arithmatex">\(\rho_{p+1}\)</span> 把 <span class="arithmatex">\(v\)</span> 翻到下标 <span class="arithmatex">\(0\)</span>；但这只是把它放到了首位，不是目标位置。若直接试图用一次翻转就把 <span class="arithmatex">\(v\)</span> 放到 <span class="arithmatex">\(v-1\)</span>，做不到——前缀反转能精确控制的位置只有下标 <span class="arithmatex">\(0\)</span>。</p>
+<p><strong>这暴露了真正的困难。</strong> 前缀反转只能把"下标 <span class="arithmatex">\(0\)</span> 的元素"送到任意指定位置：<span class="arithmatex">\(\rho_j\)</span> 把下标 <span class="arithmatex">\(0\)</span> 处的元素送到下标 <span class="arithmatex">\(j-1\)</span>。于是移动一个特定元素到特定位置，几何上恰好需要两步：</p>
+<ol>
+<li><span class="arithmatex">\(\rho_{p+1}\)</span> 把处于下标 <span class="arithmatex">\(p\)</span> 的 <span class="arithmatex">\(v\)</span> 送到下标 <span class="arithmatex">\(0\)</span>；</li>
+<li><span class="arithmatex">\(\rho_{j}\)</span> 把下标 <span class="arithmatex">\(0\)</span> 处的 <span class="arithmatex">\(v\)</span> 送到下标 <span class="arithmatex">\(j-1\)</span>。</li>
+</ol>
+<p>两步不是一个可省的巧合，而是操作本身的几何强加的下界：你无法绕过下标 <span class="arithmatex">\(0\)</span> 这个唯一的支点。</p>
+<p><strong>还剩一个隐患：放好一个元素后，后续翻转会不会把它弄乱？</strong> 假设已经把 <span class="arithmatex">\(v\)</span> 放到了下标 <span class="arithmatex">\(v-1\)</span>。任何之后触及下标 <span class="arithmatex">\(v-1\)</span> 的前缀反转都会移动它。要让放好的元素不再被打扰，就只能保证后续所有翻转的长度都 <span class="arithmatex">\(\le v-1\)</span>，即所有操作都局限在下标 <span class="arithmatex">\([0, v-2]\)</span> 的活动区间内。这给出一个不变量：<strong>一旦 <span class="arithmatex">\(v\)</span> 落到 <span class="arithmatex">\(v-1\)</span>，就把活动区间缩小到不再包含它。</strong> 由此自然得到放置顺序——从大到小：先放 <span class="arithmatex">\(n\)</span> 到末位，活动区间缩到 <span class="arithmatex">\([0, n-2]\)</span>；再放 <span class="arithmatex">\(n-1\)</span>，区间缩到 <span class="arithmatex">\([0, n-3]\)</span>；如此递减。从小到大则做不到，因为放好的小值会被后续放大值的翻转反复扰动。</p>
+<p><strong>至此策略不是被宣布，而是被推导出来的：</strong> 从大到小放置，每个值用上面的两次翻转，第二步取 <span class="arithmatex">\(j = v\)</span>（即把 <span class="arithmatex">\(v\)</span> 送到下标 <span class="arithmatex">\(v-1\)</span>），之后活动区间收缩到 <span class="arithmatex">\([0, v-2]\)</span>，<span class="arithmatex">\(v\)</span> 永不再被触碰。</p>
+<p>形式化地，对 <span class="arithmatex">\(v = n, n-1, \dots, 2\)</span> 依次执行：</p>
+<ol>
+<li>令 <span class="arithmatex">\(p\)</span> 为 <span class="arithmatex">\(v\)</span> 在当前数组中的下标。若 <span class="arithmatex">\(p = v-1\)</span>，<span class="arithmatex">\(v\)</span> 已就位，跳过。</li>
+<li>若 <span class="arithmatex">\(p &gt; 0\)</span>，执行 <span class="arithmatex">\(\rho_{p+1}\)</span>，把 <span class="arithmatex">\(v\)</span> 送到下标 <span class="arithmatex">\(0\)</span>。</li>
+<li>执行 <span class="arithmatex">\(\rho_{v}\)</span>，把 <span class="arithmatex">\(v\)</span> 从下标 <span class="arithmatex">\(0\)</span> 送到下标 <span class="arithmatex">\(v-1\)</span>。</li>
+</ol>
 <div class="language-python highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">Solution</span><span class="p">:</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">pancakeSort</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">arr</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]:</span>
         <span class="n">ans</span> <span class="o">=</span> <span class="p">[]</span>
@@ -22491,22 +22534,27 @@
             <span class="n">ans</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">ans</span>
 </code></pre></div>
-<p>样例：<code>arr=[3,2,4,1]</code>。
-- v=4: p=2，翻 3 → [4,2,3,1]，ans=[3]；翻 4 → [1,3,2,4]，ans=[3,4]。
-- v=3: p=1，翻 2 → [3,1,2,4]，ans=[3,4,2]；翻 3 → [2,1,3,4]，ans=[3,4,2,3]。
-- v=2: p=0；跳过 <code>p &gt; 0</code> 块；翻 2 → [1,2,3,4]，ans=[3,4,2,3,2]。
-- 已排序。题面给的样例输出 <code>[4,2,4,3]</code>（长度 4），但题目允许"任意有效答案"——我的 5 步也 <span class="arithmatex">\(\le 10 \cdot 4 = 40\)</span> 合法。✓</p>
-<p><strong>复杂度证明</strong>：每个 <span class="arithmatex">\(v\)</span> 至多 2 次翻转（若已位则 0 次）；总 <span class="arithmatex">\(\le 2(n-1)\)</span>，远小于 <span class="arithmatex">\(10n\)</span>。</p>
+<p><strong>构造满足形式化的存在性命题。</strong> 每个 <span class="arithmatex">\(v\)</span> 最多触发步骤 2 与步骤 3 两次翻转（若 <span class="arithmatex">\(p = v-1\)</span> 则 <span class="arithmatex">\(0\)</span> 次，若 <span class="arithmatex">\(p = 0\)</span> 则 <span class="arithmatex">\(1\)</span> 次）。<span class="arithmatex">\(v\)</span> 从 <span class="arithmatex">\(n\)</span> 取到 <span class="arithmatex">\(2\)</span>，共 <span class="arithmatex">\(n-1\)</span> 个值，故</p>
+<div class="arithmatex">\[m \le 2(n-1).\]</div>
+<p>又对所有 <span class="arithmatex">\(n \ge 1\)</span> 有 <span class="arithmatex">\(2(n-1) = 2n - 2 \le 10n\)</span>，故构造出的序列满足形式化的长度约束 <span class="arithmatex">\(m \le 10n\)</span>。不变量保证每个 <span class="arithmatex">\(v\)</span> 放好后落在 <span class="arithmatex">\([1, n]\)</span> 排列的唯一正确位置且不再移动，故最终数组为 <span class="arithmatex">\([1, 2, \dots, n]\)</span>。</p>
+<p><strong>追踪一个样例验证机制</strong>：<code>arr = [3,2,4,1]</code>。</p>
+<ul>
+<li><span class="arithmatex">\(v=4\)</span>：<span class="arithmatex">\(p=2\)</span>。<span class="arithmatex">\(\rho_3\)</span> → <code>[4,2,3,1]</code>，ans=<code>[3]</code>；<span class="arithmatex">\(\rho_4\)</span> → <code>[1,3,2,4]</code>，ans=<code>[3,4]</code>。<span class="arithmatex">\(4\)</span> 落到末位，活动区间缩到 <span class="arithmatex">\([0,2]\)</span>。</li>
+<li><span class="arithmatex">\(v=3\)</span>：<span class="arithmatex">\(p=1\)</span>。<span class="arithmatex">\(\rho_2\)</span> → <code>[3,1,2,4]</code>，ans=<code>[3,4,2]</code>；<span class="arithmatex">\(\rho_3\)</span> → <code>[2,1,3,4]</code>，ans=<code>[3,4,2,3]</code>。</li>
+<li><span class="arithmatex">\(v=2\)</span>：<span class="arithmatex">\(p=0\)</span>。跳过步骤 2（<span class="arithmatex">\(\rho_1\)</span> 是恒等）；<span class="arithmatex">\(\rho_2\)</span> → <code>[1,2,3,4]</code>，ans=<code>[3,4,2,3,2]</code>。</li>
+<li>数组已排序。</li>
+</ul>
+<p>输出 <code>[3,4,2,3,2]</code> 长度为 <span class="arithmatex">\(5\)</span>。题面示例给出 <code>[4,2,4,3]</code>（长度 <span class="arithmatex">\(4\)</span>），但形式化只要求任意一组满足约束的序列；<span class="arithmatex">\(5 \le 10 \cdot 4 = 40\)</span>，故上述输出同样合法。</p>
 <h2 id="complexity">复杂度 (Complexity)<a class="headerlink" href="#complexity" title="Permanent link">#</a></h2>
 <ul>
-<li>Time: <span class="arithmatex">\(O(n^2)\)</span>，每次 <code>index</code> 与切片反转 <span class="arithmatex">\(O(n)\)</span>，外层 <span class="arithmatex">\(n\)</span> 次。</li>
-<li>Space: <span class="arithmatex">\(O(n)\)</span> 答案输出。</li>
+<li>Time: <span class="arithmatex">\(O(n^2)\)</span>。外层对 <span class="arithmatex">\(v\)</span> 循环 <span class="arithmatex">\(n-1\)</span> 次，每次 <code>arr.index</code>（<span class="arithmatex">\(O(n)\)</span>）加至多两次 <span class="arithmatex">\(O(n)\)</span> 的切片反转，故总计 <span class="arithmatex">\(O(n^2)\)</span>。即便输入已排序、不产生翻转，每次 <code>index</code> 仍是 <span class="arithmatex">\(O(n)\)</span>，故 <span class="arithmatex">\(O(n^2)\)</span> 是各种输入下一致的上界。</li>
+<li>Space: <span class="arithmatex">\(O(n)\)</span>。答案列表长度 <span class="arithmatex">\(\le 2(n-1)\)</span>。</li>
 </ul>
 <h2 id="pitfalls">陷阱 (Pitfalls)<a class="headerlink" href="#pitfalls" title="Permanent link">#</a></h2>
 <ul>
-<li>当 <span class="arithmatex">\(v\)</span> 已在正确位置 <span class="arithmatex">\(v-1\)</span>，跳过避免输出"翻转 1"这种无意义操作（虽然合法但浪费）。</li>
-<li>当 <span class="arithmatex">\(p = 0\)</span>（<span class="arithmatex">\(v\)</span> 在首位）时，跳过第一步（翻转 1 等于不变），直接翻 <span class="arithmatex">\(v\)</span> 即可。</li>
-<li>切片赋值 <code>arr[:k] = arr[:k][::-1]</code> 必须右侧先求值再赋——Python 语义保证如此，但 C++ 用 <code>reverse(begin, begin+k)</code>。</li>
+<li>当 <span class="arithmatex">\(p = v - 1\)</span> 时 <span class="arithmatex">\(v\)</span> 已就位，跳过两次翻转。这不是优化技巧，而是不变量的推论：已落到正确位置的元素不应再被触碰，输出 <span class="arithmatex">\(\rho_1\)</span> 这类无意义操作虽合法但破坏构造的简洁性。</li>
+<li>当 <span class="arithmatex">\(p = 0\)</span> 时 <span class="arithmatex">\(v\)</span> 已在首位，步骤 2 的 <span class="arithmatex">\(\rho_1\)</span> 是恒等操作，应跳过，直接执行步骤 3。这同样是两次翻转结构的边界情形，而非独立的特例。</li>
+<li>切片赋值 <code>arr[:k] = arr[:k][::-1]</code> 依赖右侧先完整求值再赋值；Python 语义保证如此。C++ 中对应 <code>reverse(begin, begin+k)</code>。</li>
 </ul>
 <h2 id="related">相关题目 (Related)<a class="headerlink" href="#related" title="Permanent link">#</a></h2>
 <ul>
@@ -22622,6 +22670,8 @@
         <script src="../../../js/mathjax/tex-mml-chtml.js"></script>
       
         <script src="../../../js/mermaid.min.js"></script>
+      
+        <script src="../../../js/featured.js"></script>
       
     
   </body>

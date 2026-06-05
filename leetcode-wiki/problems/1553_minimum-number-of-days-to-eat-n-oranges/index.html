@@ -1466,6 +1466,8 @@
       
         
       
+        
+      
     
     
     
@@ -1521,6 +1523,34 @@
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../featured/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ⭐ Featured（已验证）
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
               
             
               
@@ -1610,10 +1640,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_4" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
         
           
-          <label class="md-nav__link" for="__nav_4_4" id="__nav_4_4_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_5" id="__nav_4_5_label" tabindex="">
             
   
   
@@ -1631,8 +1661,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_4_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_4">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_5">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1915,7 +1945,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -1937,14 +1967,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_4_5" id="__nav_4_5_label" tabindex="">
+              <label class="md-nav__link " for="__nav_4_6" id="__nav_4_6_label" tabindex="">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_5">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_6">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -5321,10 +5351,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_7" checked>
         
           
-          <label class="md-nav__link" for="__nav_4_6" id="__nav_4_6_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_7" id="__nav_4_7_label" tabindex="">
             
   
   
@@ -5342,8 +5372,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_4_6">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_7_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4_7">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -22467,13 +22497,18 @@
 <h2 id="problem">Problem<a class="headerlink" href="#problem" title="Permanent link">#</a></h2>
 <p><span class="arithmatex">\(n\)</span> 个橘子，每天可执行三选一：(a) 吃 1 个；(b) 若 <span class="arithmatex">\(n\)</span> 是 2 的倍数，吃 <span class="arithmatex">\(n/2\)</span>；(c) 若 <span class="arithmatex">\(n\)</span> 是 3 的倍数，吃 <span class="arithmatex">\(2n/3\)</span>。求吃完最少天数。<span class="arithmatex">\(n \leq 2 \times 10^9\)</span>。</p>
 <h2 id="background">背景 (Background)<a class="headerlink" href="#background" title="Permanent link">#</a></h2>
-<p>值域 <span class="arithmatex">\(2 \times 10^9\)</span> 排除 <span class="arithmatex">\(O(n)\)</span> DP；正解是观察到最优策略中"吃 1 个"只用来对齐 <span class="arithmatex">\(n\)</span> 到 2 或 3 的倍数 ⇒ 状态空间被高度压缩到 <span class="arithmatex">\(O(\log^2 n)\)</span> 量级（与 Euclidean-like 递归相似），用 memoized BFS / DP 实现。属于 number-theoretic DP 范式。</p>
+<p>三种操作里只有 (a) 在任何状态都可用，(b) 与 (c) 各有整除前提。把它们直接翻译成递推，是任何人都会先写出的那一版：设 <span class="arithmatex">\(f(n)\)</span> 为吃完 <span class="arithmatex">\(n\)</span> 个的最少天数，则</p>
+<div class="arithmatex">\[f(n) = 1 + \min\bigl(f(n-1),\ [2\mid n]\cdot f(n/2),\ [3\mid n]\cdot f(2n/3)\bigr),\]</div>
+<p>其中不满足整除条件的分支不参与 <span class="arithmatex">\(\min\)</span>。这版正确，但要算 <span class="arithmatex">\(f(n)\)</span> 必须先算 <span class="arithmatex">\(f(n-1)\)</span>，于是状态从 <span class="arithmatex">\(n\)</span> 一路展开到 <span class="arithmatex">\(0\)</span>，状态数 <span class="arithmatex">\(\Theta(n)\)</span>。在 <span class="arithmatex">\(n = 2 \times 10^9\)</span> 下，<span class="arithmatex">\(\Theta(n)\)</span> 既超时又（朴素递归时）爆栈。问题不在 DP 本身，而在 <span class="arithmatex">\(f(n-1)\)</span> 这条分支：它每次只把规模减 1，是唯一不能成倍缩小问题的操作。</p>
+<p>要救它，先问一个更基本的问题：<strong>在最优策略里，操作 (a) 到底起什么作用？</strong> 如果某天的状态已经能被 2 或 3 整除，直接除显然比先吃 1 个更划算——吃 1 个之后反而破坏了整除性。所以 (a) 唯一的用途，是把当前数量"修"到下一个能整除的位置；一旦修好，立刻就该用 (b) 或 (c)。这一观察把 (a) 从一个独立分支降格为 (b)、(c) 的预处理步骤，下面的形式化正是据此把 <span class="arithmatex">\(f(n-1)\)</span> 分支消掉。</p>
 <h2 id="formulation">形式化 (Formulation)<a class="headerlink" href="#formulation" title="Permanent link">#</a></h2>
-<p>定义 <span class="arithmatex">\(f(n)\)</span> 为吃完 <span class="arithmatex">\(n\)</span> 个的最少天数。递推：</p>
-<div class="arithmatex">\[f(0) = 0, \quad f(n) = 1 + \min\bigl(\, (n \bmod 2) + f(\lfloor n/2 \rfloor), \; (n \bmod 3) + f(\lfloor n/3 \rfloor) \,\bigr).\]</div>
-<p><strong>为何不需要 <span class="arithmatex">\(f(n) = 1 + f(n-1)\)</span> 项</strong>：吃 1 个相当于"先吃 <span class="arithmatex">\(n \bmod 2\)</span> 个再走 /2"或"先吃 <span class="arithmatex">\(n \bmod 3\)</span> 个再走 /3"，已被上式覆盖。形式化证明：若最优策略连续吃 <span class="arithmatex">\(k\)</span> 个 1，那 <span class="arithmatex">\(k &lt; \min\)</span>( 到下一个 2 的倍数或 3 的倍数的距离, 实际上 <span class="arithmatex">\(k \in \{0, 1, 2\}\)</span>），上式枚举的 <span class="arithmatex">\(n \bmod 2, n \bmod 3\)</span> 已覆盖。</p>
+<p><strong>直觉</strong>：考虑最优路径上一段连续吃 1 个的操作，设它在某次"除 2"之前连吃了 <span class="arithmatex">\(k\)</span> 个 1。这段的代价是 <span class="arithmatex">\(k\)</span> 天加上之后 <span class="arithmatex">\(f(\lfloor (n-k)/2 \rfloor)\)</span>。由于 <span class="arithmatex">\(\lfloor (n-k)/2 \rfloor\)</span> 关于 <span class="arithmatex">\(k\)</span> 单调不增、而前面的 <span class="arithmatex">\(k\)</span> 天单调增，且只有当 <span class="arithmatex">\(n-k\)</span> 为偶数时才能除，最划算的 <span class="arithmatex">\(k\)</span> 就是把 <span class="arithmatex">\(n\)</span> 对齐到最近的偶数所需的步数，即 <span class="arithmatex">\(k = n \bmod 2 \in \{0,1\}\)</span>；对齐到 3 的倍数同理需 <span class="arithmatex">\(k = n \bmod 3 \in \{0,1,2\}\)</span>。因此连吃 1 个的次数永远不必超过 <span class="arithmatex">\(n \bmod 3 \le 2\)</span>，每条分支的"吃 1 预处理 + 一次整除"可以合并成一项写出。</p>
+<p>由此得到只含两条分支的递推（编号 (1)）：</p>
+<div class="arithmatex">\[f(0) = 0, \quad f(n) = 1 + \min\bigl(\, (n \bmod 2) + f(\lfloor n/2 \rfloor), \; (n \bmod 3) + f(\lfloor n/3 \rfloor) \,\bigr). \tag{1}\]</div>
+<p>读法：要吃完 <span class="arithmatex">\(n\)</span> 个，要么先吃掉 <span class="arithmatex">\(n \bmod 2\)</span> 个把它对齐成偶数、再除 2（用 <span class="arithmatex">\(\lfloor n/2 \rfloor\)</span> 记一次除法后的剩余），要么先吃掉 <span class="arithmatex">\(n \bmod 3\)</span> 个对齐成 3 的倍数、再除 3；最外层 <span class="arithmatex">\(+1\)</span> 计的是这次整除操作本身占的那一天。式 (1) 不含 <span class="arithmatex">\(f(n-1)\)</span>：上一节已论证连吃 1 个只为对齐，其代价已被 <span class="arithmatex">\(n \bmod 2\)</span>、<span class="arithmatex">\(n \bmod 3\)</span> 两项完整吸收，无需独立分支。</p>
+<p><strong>状态空间为何坍缩</strong>：式 (1) 每应用一次，参数至少除以 2 或除以 3，因此从 <span class="arithmatex">\(n\)</span> 出发可达的状态都形如 <span class="arithmatex">\(\lfloor n / (2^a 3^b) \rfloor\)</span>。其中除 2 的次数 <span class="arithmatex">\(a \le \log_2 n\)</span>，除 3 的次数 <span class="arithmatex">\(b \le \log_3 n\)</span>，故 <span class="arithmatex">\((a,b)\)</span> 下标对至多 <span class="arithmatex">\(\log_2 n \cdot \log_3 n\)</span> 个，互不相同的整数取值不会更多。于是状态数被压到 <span class="arithmatex">\(O(\log^2 n)\)</span>。这就是把 <span class="arithmatex">\(f(n-1)\)</span> 分支消掉的全部收益：递归深度从 <span class="arithmatex">\(\Theta(n)\)</span> 降到 <span class="arithmatex">\(O(\log n)\)</span>，总状态数从 <span class="arithmatex">\(\Theta(n)\)</span> 降到 <span class="arithmatex">\(O(\log^2 n)\)</span>。在 <span class="arithmatex">\(n = 2 \times 10^9\)</span> 时约 <span class="arithmatex">\(\log_2 n \cdot \log_3 n \approx 31 \cdot 20 = 620\)</span> 个状态上界，实测约 260 个，足够快。</p>
 <h2 id="approach">数据结构 / 想法 (Approach)<a class="headerlink" href="#approach" title="Permanent link">#</a></h2>
-<p><strong>法（推荐）：memoized recursion</strong>。</p>
+<p>式 (1) 是一个自顶向下的递推，每个状态的值只依赖两个更小的状态，因此最自然的实现是带记忆化的递归——把 (1) 逐字翻译，再用 <code>lru_cache</code> 让每个状态只算一次。</p>
 <div class="language-python highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">functools</span><span class="w"> </span><span class="kn">import</span> <span class="n">lru_cache</span>
 <span class="k">class</span><span class="w"> </span><span class="nc">Solution</span><span class="p">:</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">minDays</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
@@ -22496,19 +22531,20 @@
 <span class="c1"># Trace 样例 2: n=6</span>
 <span class="c1"># f(6) = 1 + min(0+f(3), 0+f(2)) = 1 + min(2, 2) = 3 ✓</span>
 </code></pre></div>
-<p><strong>状态数证明</strong>：从 <span class="arithmatex">\(n\)</span> 出发，每次 <span class="arithmatex">\(\lfloor n/2 \rfloor\)</span> 或 <span class="arithmatex">\(\lfloor n/3 \rfloor\)</span>，可达状态形如 <span class="arithmatex">\(\lfloor n / (2^a 3^b) \rfloor\)</span>，数量 <span class="arithmatex">\(O(\log^2 n)\)</span>。在 <span class="arithmatex">\(n = 2 \times 10^9\)</span> 时约 <span class="arithmatex">\(30 \cdot 20 = 600\)</span> 个状态，足够快。</p>
-<p><strong>法 2：BFS</strong>（按"层数 = 天数"）。同复杂度但实现更繁琐。</p>
+<p><code>lru_cache</code> 是这里的关键：没有它，每个状态会沿两条分支重复展开，退化成指数级；有了它，每个不同状态只计算一次，总工作量就是上一节的状态数 <span class="arithmatex">\(O(\log^2 n)\)</span>。</p>
+<p>也可以改写成 BFS，按"层数 = 天数"逐层扩展，从 <span class="arithmatex">\(n\)</span> 出发对每个状态生成 <span class="arithmatex">\(\lfloor x/2 \rfloor\)</span>（当 <span class="arithmatex">\(x \bmod 2\)</span> 步对齐后）与 <span class="arithmatex">\(\lfloor x/3 \rfloor\)</span> 两个后继，首次到达 0 的层数即答案。它与式 (1) 的记忆化递归同复杂度，但要手动维护队列和访问集，实现更繁琐，通常没有必要。</p>
 <h2 id="complexity">复杂度 (Complexity)<a class="headerlink" href="#complexity" title="Permanent link">#</a></h2>
+<p>承上节的状态空间论证：可达状态形如 <span class="arithmatex">\(\lfloor n/(2^a 3^b) \rfloor\)</span>，数量 <span class="arithmatex">\(O(\log^2 n)\)</span>，每个状态 <span class="arithmatex">\(O(1)\)</span> 转移。</p>
 <ul>
 <li>Time <span class="arithmatex">\(O(\log^2 n)\)</span>（不同状态数）。</li>
 <li>Space <span class="arithmatex">\(O(\log^2 n)\)</span> 缓存表。</li>
 </ul>
 <h2 id="pitfalls">陷阱 (Pitfalls)<a class="headerlink" href="#pitfalls" title="Permanent link">#</a></h2>
 <ul>
-<li><strong>递归深度</strong>：直接递归到 <span class="arithmatex">\(f(0)\)</span> 在 <span class="arithmatex">\(n\)</span> 大时<strong>不会</strong>爆栈（递归层数也是 <span class="arithmatex">\(O(\log n)\)</span> 因每次至少 /2 或 /3）。</li>
+<li><strong>错误想法 <span class="arithmatex">\(f(n) = 1 + f(n-1)\)</span></strong>：保留这条分支就回到背景小节那版 <span class="arithmatex">\(\Theta(n)\)</span> 状态的 DP，<span class="arithmatex">\(n = 2 \times 10^9\)</span> 直接 TLE/RE。式 (1) 已论证它可被 <span class="arithmatex">\(n \bmod 2\)</span>、<span class="arithmatex">\(n \bmod 3\)</span> 两项吸收，务必确信此分支不必要。</li>
+<li><strong>递归深度</strong>：直接递归到 <span class="arithmatex">\(f(0)\)</span> 在 <span class="arithmatex">\(n\)</span> 大时<strong>不会</strong>爆栈——每次至少除以 2 或 3，递归层数也是 <span class="arithmatex">\(O(\log n)\)</span>（<span class="arithmatex">\(n = 2 \times 10^9\)</span> 实测深度约 31）。</li>
 <li><strong>base case</strong>：<span class="arithmatex">\(f(1) = 1\)</span>（吃一天），<span class="arithmatex">\(f(0) = 0\)</span>。错把 <span class="arithmatex">\(f(1) = 0\)</span> 会少算一天。</li>
-<li><strong>错误想法 <span class="arithmatex">\(f(n) = 1 + f(n-1)\)</span></strong>：会让 <span class="arithmatex">\(n = 2 \times 10^9\)</span> 直接 TLE/RE；要确信此项不必要。</li>
-<li><strong>memoization 必须</strong>：无 cache 退化指数。</li>
+<li><strong>memoization 必须</strong>：无 cache 时两条分支重复展开，退化为指数。</li>
 </ul>
 <h2 id="related">相关题目 (Related)<a class="headerlink" href="#related" title="Permanent link">#</a></h2>
 <ul>
@@ -22626,6 +22662,8 @@
         <script src="../../../js/mathjax/tex-mml-chtml.js"></script>
       
         <script src="../../../js/mermaid.min.js"></script>
+      
+        <script src="../../../js/featured.js"></script>
       
     
   </body>

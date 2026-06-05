@@ -1466,6 +1466,8 @@
       
         
       
+        
+      
     
     
     
@@ -1521,6 +1523,34 @@
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../featured/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ⭐ Featured（已验证）
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
               
             
               
@@ -1610,10 +1640,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_4" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
         
           
-          <label class="md-nav__link" for="__nav_4_4" id="__nav_4_4_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_5" id="__nav_4_5_label" tabindex="">
             
   
   
@@ -1631,8 +1661,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_4_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_4">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_5">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1915,7 +1945,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -1937,14 +1967,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_4_5" id="__nav_4_5_label" tabindex="">
+              <label class="md-nav__link " for="__nav_4_6" id="__nav_4_6_label" tabindex="">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_5">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_6">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -5321,10 +5351,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_7" checked>
         
           
-          <label class="md-nav__link" for="__nav_4_6" id="__nav_4_6_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_7" id="__nav_4_7_label" tabindex="">
             
   
   
@@ -5342,8 +5372,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_4_6">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_7_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4_7">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -22467,17 +22497,27 @@
 <h2 id="problem">Problem<a class="headerlink" href="#problem" title="Permanent link">#</a></h2>
 <p>给 C++ 源代码（行数组），删除 <code>//</code> 行注释与 <code>/* ... */</code> 块注释，返回清理后的非空行。块注释可跨行，且块内的 <code>//</code> 应被忽略。空 quotes 不出现。</p>
 <h2 id="_1">背景<a class="headerlink" href="#_1" title="Permanent link">#</a></h2>
-<p>本题是<strong>词法分析 (lexical analysis)</strong> 的玩具：用一个简单的 <strong>有限状态自动机 (DFA)</strong> 区分"代码 / 行注释 / 块注释"三种状态，逐字符转移。真实 C/C++ 编译器前端（如 LLVM clang 的 <code>Lexer.cpp</code>）干的就是这件事，但要处理字符串字面量、字符常量、digraph/trigraph、line continuation、raw string、Unicode 等几十种 token 类型。本题刻意删去字符串字面量复杂度，专注块/行注释的状态转移。</p>
-<p>可视为 <strong>正则语言</strong> 识别问题 ("non-overlapping comment open/close"); 块注释要求第一个 <code>*/</code> 闭合而非贪婪。</p>
+<p>先把任务落到一个具体例子上。给定三行输入</p>
+<div class="language-text highlight"><pre><span></span><code>a/*comment
+line
+more_comment*/b
+</code></pre></div>
+<p>期望输出是 <code>["ab"]</code>：块注释从第一行的 <code>/*</code> 一直延续到第三行的 <code>*/</code>，注释覆盖的字符全部消失，而注释<strong>外面</strong>的 <code>a</code> 与 <code>b</code> 拼成同一行。这个例子已经暴露了本题的全部难点：注释的开闭可以跨行，因此输出行与输入行不是一一对应。</p>
+<p>最朴素的想法是逐行处理：扫描一行，遇到 <code>//</code> 就丢弃本行剩余部分，遇到 <code>/*</code> 就找同一行内的 <code>*/</code> 删掉中间，剩下的字符作为一条输出行。对单行注释，这套做法没问题。问题出在跨行块注释——上例第一行的 <code>/*</code> 在本行内根本找不到配对的 <code>*/</code>，逐行处理无从判断第二、三行是否还在注释里。失败点很精确：<strong>逐行扫描在行边界丢失了"当前是否处于一段未闭合块注释中"这一信息</strong>。要修复它，扫描必须把这一位信息带过行边界。这一观察就是下文状态机的全部来源。</p>
 <h2 id="_2">形式化<a class="headerlink" href="#_2" title="Permanent link">#</a></h2>
-<p>状态机 <span class="arithmatex">\(S \in \{\text{CODE}, \text{IN\_BLOCK}\}\)</span>，初值 CODE。逐字符读取（含换行符）：
-- CODE 看到 <code>//</code> → 当前行剩余字符丢弃，跳到下一行（继续 CODE）。
-- CODE 看到 <code>/*</code> → 切换到 IN_BLOCK，跳过 2 字符。
-- IN_BLOCK 看到 <code>*/</code> → 切换到 CODE，跳过 2 字符。
-- 其它字符在 CODE 状态下累积到当前输出行；IN_BLOCK 状态下丢弃。
-- 换行：CODE 状态下若当前累积行非空，输出；切到下一输入行重置累积。IN_BLOCK 状态下<strong>不输出</strong>也<strong>不重置</strong>——块注释把多行隐式拼接。</p>
+<p>承接上面的失败分析：在任意一个字符位置，决定该字符去留所需的全部信息，就是"此刻是否身处一段已开启、尚未闭合的块注释中"。这是<strong>一个布尔位</strong>——要么在块注释内，要么不在。<code>//</code> 不需要单独记一种状态，因为它在代码区一旦出现，效果只是"本行剩余字符全部丢弃"，处理完立刻跳到下一行，不留任何跨字符的记忆。于是最小充分的记忆恰好是一位，对应一个两状态机。</p>
+<p>形式化为确定有限自动机 (DFA)。状态集 <span class="arithmatex">\(S = \{\text{CODE}, \text{IN\_BLOCK}\}\)</span>，初始状态 CODE。输入按行给出，记源为 <span class="arithmatex">\(s_1, s_2, \dots\)</span>，逐字符读取并维护一个输出缓冲 <span class="arithmatex">\(\text{buf}\)</span>。转移与动作如下：</p>
+<ul>
+<li><span class="arithmatex">\(\text{CODE}\)</span>，当前位置两字符为 <code>//</code>：丢弃本行剩余字符，转入下一行（仍在 CODE）。</li>
+<li><span class="arithmatex">\(\text{CODE}\)</span>，当前位置两字符为 <code>/*</code>：转 <span class="arithmatex">\(\text{IN\_BLOCK}\)</span>，指针前进 2。</li>
+<li><span class="arithmatex">\(\text{IN\_BLOCK}\)</span>，当前位置两字符为 <code>*/</code>：转 <span class="arithmatex">\(\text{CODE}\)</span>，指针前进 2。</li>
+<li>其它字符：CODE 下追加到 <span class="arithmatex">\(\text{buf}\)</span>；IN_BLOCK 下丢弃。</li>
+<li>行尾（一行字符读完）：若状态为 CODE 且 <span class="arithmatex">\(\text{buf}\)</span> 非空，输出 <span class="arithmatex">\(\text{buf}\)</span> 并清空；若状态为 IN_BLOCK，则<strong>不输出、不清空</strong>——块注释把它前后两行的代码部分隐式拼接为同一输出行。</li>
+</ul>
+<p>最后这条行尾规则正是修复跨行失败的关键：CODE 下行尾提交并清空 <span class="arithmatex">\(\text{buf}\)</span>，使每行各成一条输出；IN_BLOCK 下行尾保持 <span class="arithmatex">\(\text{buf}\)</span>，让注释前的残片等到注释闭合后与注释后的字符续上。上例中第一行的 <code>a</code> 进入 <span class="arithmatex">\(\text{buf}\)</span> 后，因行尾仍在 IN_BLOCK 而保留，直到第三行 <code>*/</code> 闭合、<code>b</code> 追加，行尾在 CODE 下才输出 <code>ab</code>。</p>
 <h2 id="_3">数据结构 / 想法<a class="headerlink" href="#_3" title="Permanent link">#</a></h2>
-<p><strong>双指针扫描</strong>：
+<p>代码是上述 DFA 的逐条直译。外层遍历输入行，内层用指针 <span class="arithmatex">\(i\)</span> 逐字符扫描；布尔 <code>in_block</code> 即状态位，列表 <code>buf</code> 即输出缓冲。在写代码前先固定其正确性依据——</p>
+<p><strong>不变量</strong>：在内层循环每次迭代开始时，<code>buf</code> 恰好是"自上次输出（或自进入 IN_BLOCK）以来、在 CODE 状态下累积的全部代码字符"。这条不变量在唯一一个非平凡处需要核验：行尾且 <code>in_block</code> 为真时——此时不提交、不清空 <code>buf</code>，于是注释前的残片被保留，跨行延续到下一行，正是隐式拼接成立的原因。其余位置的维护都是显然的。</p>
 <div class="language-python highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">removeComments</span><span class="p">(</span><span class="n">source</span><span class="p">):</span>
     <span class="n">res</span><span class="p">,</span> <span class="n">buf</span><span class="p">,</span> <span class="n">in_block</span> <span class="o">=</span> <span class="p">[],</span> <span class="p">[],</span> <span class="kc">False</span>
     <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">source</span><span class="p">:</span>
@@ -22499,22 +22539,20 @@
             <span class="n">res</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">buf</span><span class="p">))</span>
             <span class="n">buf</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="k">return</span> <span class="n">res</span>
-</code></pre></div></p>
-<p><strong>关键</strong>：
-- 块注释跨行 → <code>buf</code> 不在外层 reset；只在退出 IN_BLOCK 且行尾时输出。
-- <code>/*/</code> 不算闭合（题目明确）—— 因双字符匹配后 <code>i += 2</code> 一并跳过开头的 <code>/*</code>，自然不会立刻把 <code>/</code> 当成闭合的一部分。</p>
-<p><strong>不变量</strong>：任意时刻，<code>buf</code> 是"自上次输出 / 进入 IN_BLOCK 起，CODE 状态下累积的代码字符"。<strong>正确性</strong>：DFA 状态转移完全对应题面规则。</p>
+</code></pre></div>
+<p>代码各分支与 DFA 转移逐一对应：外层 <code>if in_block</code> 分支实现 IN_BLOCK 下对 <code>*/</code> 的检测与丢弃；<code>else</code> 分支实现 CODE 下对 <code>/*</code>（转 IN_BLOCK）、<code>//</code>（<code>break</code> 跳过本行剩余）、普通字符（累积）的处理。<code>//</code> 用 <code>break</code> 而非状态切换，正对应"它不留跨字符记忆"。循环末尾的 <code>if not in_block and buf</code> 实现行尾提交规则——<code>in_block</code> 为真时既不提交也不清空 <code>buf</code>，跨行延续由此成立。</p>
+<p>一个容易误判的边界是 <code>/*/</code>：开启 <code>/*</code> 之后，紧接的 <code>/</code> 会不会与前一个 <code>*</code> 凑成 <code>*/</code> 而立即闭合？不会。匹配到开启 <code>/*</code> 后指针 <code>i += 2</code> 一并跳过了这两个字符，开头那个 <code>/</code> 已被消费，不能被复用为闭合 <code>*/</code> 的一部分。因此 <code>['/*/']</code> 的结果是 <code>[]</code>（注释开启后再无字符，行尾仍在 IN_BLOCK，不输出），与题面"<code>/*/</code> 不算闭合"一致。</p>
 <h2 id="_4">复杂度<a class="headerlink" href="#_4" title="Permanent link">#</a></h2>
 <ul>
-<li>Time: <span class="arithmatex">\(O\!\left(\sum |\text{line}|\right)\)</span> — 每字符 <span class="arithmatex">\(O(1)\)</span> 处理。</li>
-<li>Space: <span class="arithmatex">\(O\!\left(\sum |\text{line}|\right)\)</span> — 输出。</li>
+<li>Time: <span class="arithmatex">\(O\left(\sum_i |s_i|\right)\)</span> — 每字符 <span class="arithmatex">\(O(1)\)</span> 处理，末尾 <code>''.join(buf)</code> 跨整轮累计也是线性。</li>
+<li>Space: <span class="arithmatex">\(O\left(\sum_i |s_i|\right)\)</span> — 输出与缓冲均被总输入长度界定。</li>
 </ul>
 <h2 id="_5">陷阱<a class="headerlink" href="#_5" title="Permanent link">#</a></h2>
 <ul>
-<li>块注释跨行时<strong>不要</strong>把当前 buf 输出 → 这是最大的坑（多行注释里夹着代码该被吞合并）。</li>
-<li><code>//</code> 在 IN_BLOCK 状态下被无视，要在判断顺序里把 IN_BLOCK 检测<strong>优先于</strong> <code>//</code> 检测。</li>
-<li>行内 <code>/*</code> 后跟 <code>*/</code> 同行 (<code>/**/</code>) → 立即出 IN_BLOCK。</li>
-<li>不输出空行（题面要求）：仅在 buf 非空时 append。</li>
+<li><strong>行尾在 IN_BLOCK 时不要提交 <code>buf</code></strong>：这是最常见的失败模式。若错误地逐行重置 <code>buf</code>，跨行块注释前后的代码残片就无法拼接——上例会丢掉 <code>ab</code> 而不是正确合并。这正是不变量需要核验的那一处。</li>
+<li><strong>IN_BLOCK 优先于 <code>//</code> 判定</strong>：块注释内的 <code>//</code> 不是行注释。外层 <code>if in_block</code> 分支整体短路掉 CODE 分支，自然保证了这一点，无需在 CODE 分支内再调整判断顺序。</li>
+<li><strong>同行 <code>/**/</code></strong>：<code>/*</code> 后紧跟 <code>*/</code>，同一行内开启又闭合，行尾回到 CODE，按常规提交。</li>
+<li><strong>不输出空行</strong>：仅在 <code>buf</code> 非空时 append（题面要求）。</li>
 </ul>
 <h2 id="_6">相关题目<a class="headerlink" href="#_6" title="Permanent link">#</a></h2>
 <ul>
@@ -22633,6 +22671,8 @@
         <script src="../../../js/mathjax/tex-mml-chtml.js"></script>
       
         <script src="../../../js/mermaid.min.js"></script>
+      
+        <script src="../../../js/featured.js"></script>
       
     
   </body>

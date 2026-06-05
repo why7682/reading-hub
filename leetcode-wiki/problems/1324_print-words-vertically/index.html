@@ -1466,6 +1466,8 @@
       
         
       
+        
+      
     
     
     
@@ -1521,6 +1523,34 @@
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../featured/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ⭐ Featured（已验证）
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
               
             
               
@@ -1610,10 +1640,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_4" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
         
           
-          <label class="md-nav__link" for="__nav_4_4" id="__nav_4_4_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_5" id="__nav_4_5_label" tabindex="">
             
   
   
@@ -1631,8 +1661,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_4_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_4">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_5">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1915,7 +1945,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -1937,14 +1967,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_4_5" id="__nav_4_5_label" tabindex="">
+              <label class="md-nav__link " for="__nav_4_6" id="__nav_4_6_label" tabindex="">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_5">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_6">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -5321,10 +5351,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_7" checked>
         
           
-          <label class="md-nav__link" for="__nav_4_6" id="__nav_4_6_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_7" id="__nav_4_7_label" tabindex="">
             
   
   
@@ -5342,8 +5372,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_4_6">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_7_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4_7">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -22467,13 +22497,34 @@
 <h2 id="problem">Problem<a class="headerlink" href="#problem" title="Permanent link">#</a></h2>
 <p>给定由单个空格分隔单词组成的字符串 <span class="arithmatex">\(s\)</span>（仅大写字母，<span class="arithmatex">\(|s| \leq 200\)</span>）。"竖排"输出：返回字符串数组，第 <span class="arithmatex">\(i\)</span> 个串由所有单词的第 <span class="arithmatex">\(i\)</span> 个字符按原顺序拼成；若某单词长度 <span class="arithmatex">\(\leq i\)</span> 则用空格占位。<strong>尾部空格须去掉</strong>。</p>
 <h2 id="background">背景 (Background)<a class="headerlink" href="#background" title="Permanent link">#</a></h2>
-<p>字符矩阵的"转置"问题，本质是把 ragged 2D 数组 transpose 后修剪。这种结构在文本格式化（report 列对齐）、ASCII art、表格渲染中常见。要点是用空格 pad 出齐整的"矩形"，转置，再 rstrip。</p>
+<p>输入是水平排列的单词，输出要求"竖着读"：第 <span class="arithmatex">\(0\)</span> 行收集每个单词的第 <span class="arithmatex">\(0\)</span> 个字符，第 <span class="arithmatex">\(1\)</span> 行收集每个单词的第 <span class="arithmatex">\(1\)</span> 个字符，依此类推。先把这件事直接做一遍，看会撞到什么。</p>
+<p>对 <code>"HOW ARE YOU"</code>，三个单词等长，逐列读取毫无障碍：</p>
+<ul>
+<li>列 <span class="arithmatex">\(0\)</span>：<code>H A Y</code> → <code>"HAY"</code></li>
+<li>列 <span class="arithmatex">\(1\)</span>：<code>O R O</code> → <code>"ORO"</code></li>
+<li>列 <span class="arithmatex">\(2\)</span>：<code>W E U</code> → <code>"WEU"</code></li>
+</ul>
+<p>困难只在单词不等长时出现。看 <code>"TO BE OR NOT TO BE"</code>，单词长度分别是 <span class="arithmatex">\(2,2,2,3,2,2\)</span>。读到列 <span class="arithmatex">\(2\)</span> 时，只有 <code>"NOT"</code> 还有第 <span class="arithmatex">\(2\)</span> 个字符 <code>'T'</code>，其余五个单词都已耗尽。</p>
+<p>朴素做法的第一反应是跳过耗尽的单词，只拼接仍有字符的那些。那样列 <span class="arithmatex">\(2\)</span> 会得到 <code>"T"</code>——但这丢掉了 <code>'T'</code> 来自第 <span class="arithmatex">\(4\)</span> 个单词这一信息。竖排输出的每个字符必须停在它所属单词的那一列上，否则下方的字符与上方的列对不齐。所以耗尽的单词不能跳过，而要补一个空格占位，把它在该列的位置留出来。列 <span class="arithmatex">\(2\)</span> 因此是 <code>' ' ' ' ' ' 'T' ' ' ' '</code>，即三个前导空格后跟 <code>'T'</code>。</p>
+<p>补空格之后还剩一个问题：<code>"NOT"</code> 是第 <span class="arithmatex">\(4\)</span> 个单词，它右边的两个单词在列 <span class="arithmatex">\(2\)</span> 也补了空格，于是这一行尾部带着两个无意义的空格。题面要求去掉尾部空格——但前导空格不能动，它们承载着"<code>'T'</code> 属于第 <span class="arithmatex">\(4\)</span> 列"这一位置信息。因此修剪只能作用于行尾，用 <code>rstrip</code> 而非 <code>strip</code>。</p>
+<p>至此朴素做法已经成形：<strong>逐列读取，单词耗尽时补空格保位，最后对每行 <code>rstrip</code> 去掉尾部填充</strong>。下一节把"补空格保位"这件事写成精确的矩阵构造。</p>
 <h2 id="formulation">形式化 (Formulation)<a class="headerlink" href="#formulation" title="Permanent link">#</a></h2>
-<p>设 <span class="arithmatex">\(s\)</span> 拆分为单词 <span class="arithmatex">\(w_1, \dots, w_k\)</span>，<span class="arithmatex">\(L = \max |w_j|\)</span>。定义 <span class="arithmatex">\(L \times k\)</span> 字符矩阵 <span class="arithmatex">\(M\)</span>，<span class="arithmatex">\(M_{i,j} = w_j[i]\)</span> 若 <span class="arithmatex">\(i &lt; |w_j|\)</span> 否则 <code>' '</code>。输出为 <span class="arithmatex">\(L\)</span> 个字符串 <span class="arithmatex">\(r_i = \operatorname{rstrip}(M_{i,1} M_{i,2} \cdots M_{i,k})\)</span>，<span class="arithmatex">\(i = 0, \dots, L-1\)</span>。</p>
+<p>把上面"补空格"的动作显式化：每个单词在每一列都占一个格子，要么是它的真实字符，要么是占位空格。这恰好定义一个矩形字符矩阵，行数由最长单词决定——因为最后一个含有非空格字符的列，正是最长单词的末列。</p>
+<p>设 <span class="arithmatex">\(s\)</span> 拆分为单词 <span class="arithmatex">\(w_1, \dots, w_k\)</span>，记最长长度 <span class="arithmatex">\(L = \max_j |w_j|\)</span>。定义 <span class="arithmatex">\(L \times k\)</span> 字符矩阵 <span class="arithmatex">\(M\)</span>：</p>
+<div class="arithmatex">\[
+M_{i,j} = \begin{cases} w_j[i], &amp; i &lt; |w_j| \\ \text{`' '`}, &amp; i \geq |w_j| \end{cases}
+\qquad (0 \le i &lt; L,\ 1 \le j \le k). \tag{1}
+\]</div>
+<p>输出的第 <span class="arithmatex">\(i\)</span> 行取 <span class="arithmatex">\(M\)</span> 的第 <span class="arithmatex">\(i\)</span> 行（即原单词数组的第 <span class="arithmatex">\(i\)</span> 列），拼接后去尾部空格：</p>
+<div class="arithmatex">\[
+r_i = \operatorname{rstrip}\!\big(M_{i,1}\, M_{i,2}\, \cdots\, M_{i,k}\big), \qquad i = 0, \dots, L-1. \tag{2}
+\]</div>
+<p>行下标 <span class="arithmatex">\(i\)</span> 走单词内位置、列下标 <span class="arithmatex">\(j\)</span> 走单词序号；输出第 <span class="arithmatex">\(i\)</span> 行收集所有单词的第 <span class="arithmatex">\(i\)</span> 个字符，正是把 <span class="arithmatex">\((i,j)\)</span> 处的字符放到输出的 <span class="arithmatex">\((i,j)\)</span> 位置。若把单词数组本身看作"第 <span class="arithmatex">\(j\)</span> 个单词的第 <span class="arithmatex">\(i\)</span> 字符"的二维表，则式 (1)–(2) 就是先用空格补齐成矩形、再交换行列下标——这是 ragged 数组补齐后的转置，转置在这里不是借来的比喻，而是下标 <span class="arithmatex">\((i,j) \mapsto (j,i)\)</span> 的精确等价。</p>
 <h2 id="approach">数据结构 / 想法 (Approach)<a class="headerlink" href="#approach" title="Permanent link">#</a></h2>
+<p>直接照式 (1)–(2) 实现。无需把 <span class="arithmatex">\(M\)</span> 真的建成二维列表：每一行用一个生成器即时拼出该行的 <span class="arithmatex">\(k\)</span> 个字符，立刻 <code>rstrip</code>。</p>
 <div class="language-python highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">Solution</span><span class="p">:</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">printVertically</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">s</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
-        <span class="c1"># Time: O(k * L) = O(|s|), Space: O(|s|)</span>
+        <span class="c1"># Time: O(L * k), Space: O(L * k) for the output</span>
         <span class="n">words</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
         <span class="n">L</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">w</span><span class="p">)</span> <span class="k">for</span> <span class="n">w</span> <span class="ow">in</span> <span class="n">words</span><span class="p">)</span>
         <span class="n">res</span> <span class="o">=</span> <span class="p">[]</span>
@@ -22482,25 +22533,34 @@
             <span class="n">res</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">row</span><span class="o">.</span><span class="n">rstrip</span><span class="p">())</span>
         <span class="k">return</span> <span class="n">res</span>
 </code></pre></div>
-<p>样例 1 验证：<code>"HOW ARE YOU"</code> → words=["HOW","ARE","YOU"]，L=3。
-- i=0: "H"+"A"+"Y" = "HAY"
-- i=1: "O"+"R"+"O" = "ORO"
-- i=2: "W"+"E"+"U" = "WEU"
-- 全无尾空格 → ["HAY","ORO","WEU"] ✓。</p>
-<p>样例 2：<code>"TO BE OR NOT TO BE"</code> → L=3（"NOT"）。
-- i=0: "T"+"B"+"O"+"N"+"T"+"B" = "TBONTB"
-- i=1: "O"+"E"+"R"+"O"+"O"+"E" = "OEROOE"
-- i=2: " "+" "+" "+"T"+" "+" " = "   T  "，rstrip → "   T"。但样例输出是 <code>" T"</code>——三个空格 + T？让我再算。"TO" 长度 2，i=2 越界 → 空格；"BE" 长度 2 → 空格；"OR" 长度 2 → 空格；"NOT" 长度 3，i=2 → "T"；"TO" 长度 2 → 空格；"BE" 长度 2 → 空格。拼接 "   T  "，rstrip 后 "   T"。<strong>样例显示 <code>" T"</code></strong> ——这是题目格式化问题（前导空格被一些显示截断为单空格视觉显示），实际正确输出是三个空格 + T。题目描述里 <code>" T"</code> 在原始 markdown 中字符可能被压缩；按题面 example 解析的正确输出应为 <code>"   T"</code>（3 空格 + T）。</p>
+<p>代码与公式逐项对应：<code>w[i] if i &lt; len(w) else ' '</code> 就是式 (1) 的 <span class="arithmatex">\(M_{i,j}\)</span>；<code>''.join(...)</code> 是式 (2) 的行拼接；<code>row.rstrip()</code> 是 <span class="arithmatex">\(\operatorname{rstrip}\)</span>。</p>
+<p>样例 1 验证：<code>"HOW ARE YOU"</code> → words=["HOW","ARE","YOU"]，<span class="arithmatex">\(L=3\)</span>。</p>
+<ul>
+<li><span class="arithmatex">\(i=0\)</span>: <code>"H"+"A"+"Y"</code> = <code>"HAY"</code></li>
+<li><span class="arithmatex">\(i=1\)</span>: <code>"O"+"R"+"O"</code> = <code>"ORO"</code></li>
+<li><span class="arithmatex">\(i=2\)</span>: <code>"W"+"E"+"U"</code> = <code>"WEU"</code></li>
+<li>三行均无尾部空格 → <code>["HAY","ORO","WEU"]</code> ✓。</li>
+</ul>
+<p>样例 2 验证：<code>"TO BE OR NOT TO BE"</code> → <span class="arithmatex">\(L=3\)</span>（来自 <code>"NOT"</code>）。</p>
+<ul>
+<li><span class="arithmatex">\(i=0\)</span>: <code>"T"+"B"+"O"+"N"+"T"+"B"</code> = <code>"TBONTB"</code></li>
+<li><span class="arithmatex">\(i=1\)</span>: <code>"O"+"E"+"R"+"O"+"O"+"E"</code> = <code>"OEROOE"</code></li>
+<li><span class="arithmatex">\(i=2\)</span>: <code>" "+" "+" "+"T"+" "+" "</code> = <code>"   T  "</code>，<code>rstrip</code> 后为 <code>"   T"</code>（三个前导空格 + <code>'T'</code>）。</li>
+</ul>
+<p>输出 <code>["TBONTB","OEROOE","   T"]</code>，与官方期望逐字符一致。注意第三行的三个前导空格是位置信息，不可去除；这正是上一节坚持用 <code>rstrip</code> 而非 <code>strip</code> 的原因。</p>
 <h2 id="complexity">复杂度 (Complexity)<a class="headerlink" href="#complexity" title="Permanent link">#</a></h2>
 <ul>
-<li>Time: <span class="arithmatex">\(O(|s|)\)</span>（每字符访问一次）</li>
-<li>Space: <span class="arithmatex">\(O(|s|)\)</span> 输出大小</li>
+<li>Time: <span class="arithmatex">\(O(L \cdot k)\)</span>。外层遍历 <span class="arithmatex">\(L\)</span> 行，内层生成器对每行访问全部 <span class="arithmatex">\(k\)</span> 个单词（即便某单词在该列已耗尽，<code>i &lt; len(w)</code> 判断仍要触及它），故总工作量正比于矩形 <span class="arithmatex">\(M\)</span> 的格子数 <span class="arithmatex">\(L \cdot k\)</span>。</li>
+<li>Space: <span class="arithmatex">\(O(L \cdot k)\)</span>。输出共 <span class="arithmatex">\(L\)</span> 行，<code>rstrip</code> 前每行长 <span class="arithmatex">\(k\)</span>，总字符数为 <span class="arithmatex">\(L \cdot k\)</span> 量级。</li>
 </ul>
+<p>注意 <span class="arithmatex">\(L \cdot k\)</span> <strong>不</strong>被 <span class="arithmatex">\(|s| = \sum_j |w_j| + (k-1)\)</span> 线性界住。反例：一个长度 <span class="arithmatex">\(n\)</span> 的单词加上 <span class="arithmatex">\(n\)</span> 个单字符单词，<span class="arithmatex">\(|s| = O(n)\)</span> 但 <span class="arithmatex">\(L \cdot k = n(n+1) = O(n^2)\)</span>。因此最坏情形是 <span class="arithmatex">\(O(|s|^2)\)</span>，而非 <span class="arithmatex">\(O(|s|)\)</span>。在本题约束 <span class="arithmatex">\(|s| \le 200\)</span> 下，<span class="arithmatex">\(L \cdot k \le 10^4\)</span> 量级，实际运行很快，但渐进复杂度不能写成 <span class="arithmatex">\(O(|s|)\)</span>。</p>
 <h2 id="pitfalls">陷阱 (Pitfalls)<a class="headerlink" href="#pitfalls" title="Permanent link">#</a></h2>
 <ul>
-<li><strong>必须 rstrip 而非 strip</strong>——题面只禁尾随空格，前导空格是合法的占位符。</li>
-<li>用 <code>s.split()</code> 而非 <code>s.split(' ')</code>：题面保证单空格分隔，但 <code>split()</code> 在意外的多空格情形下更稳；本题二者等价。</li>
-<li>字符矩阵不需要真正存为 2D list，列生成器拼接即可省内存。</li>
+<li><strong>必须 <code>rstrip</code> 而非 <code>strip</code></strong>——只有尾部空格是无意义填充，前导空格是合法的位置占位符。样例 2 第三行 <code>"   T"</code>、样例 3 的 <code>"N M"</code> 都依赖前导/内部空格保位；<code>strip</code> 会把 <code>"   T"</code> 误删成 <code>"T"</code>，破坏列对齐。</li>
+<li><strong>耗尽的单词不能跳过，要补空格</strong>——若只拼接 <code>i &lt; len(w)</code> 的单词，会丢失字符所属的列，导致下方行错位。这正是式 (1) 用空格补齐而非删行的原因。</li>
+<li><strong>复杂度不是 <span class="arithmatex">\(O(|s|)\)</span></strong>——工作量是 <span class="arithmatex">\(L \cdot k\)</span>，最坏达 <span class="arithmatex">\(O(|s|^2)\)</span>（见上节反例），别被"每字符访问一次"的直觉误导：占位空格也要逐格生成。</li>
+<li>用 <code>s.split()</code> 而非 <code>s.split(' ')</code>：题面保证单空格分隔，二者等价；但 <code>split()</code> 对意外的多空格更稳健。</li>
+<li>字符矩阵不必真正存为二维列表，按列即时拼接即可省去显式矩阵的常数级内存。</li>
 </ul>
 <h2 id="related">相关题目 (Related)<a class="headerlink" href="#related" title="Permanent link">#</a></h2>
 <ul>
@@ -22616,6 +22676,8 @@
         <script src="../../../js/mathjax/tex-mml-chtml.js"></script>
       
         <script src="../../../js/mermaid.min.js"></script>
+      
+        <script src="../../../js/featured.js"></script>
       
     
   </body>

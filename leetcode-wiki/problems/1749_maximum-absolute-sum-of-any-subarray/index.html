@@ -1466,6 +1466,8 @@
       
         
       
+        
+      
     
     
     
@@ -1521,6 +1523,34 @@
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../featured/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ⭐ Featured（已验证）
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
               
             
               
@@ -1610,10 +1640,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_4" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
         
           
-          <label class="md-nav__link" for="__nav_4_4" id="__nav_4_4_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_5" id="__nav_4_5_label" tabindex="">
             
   
   
@@ -1631,8 +1661,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_4_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_4">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_5">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1915,7 +1945,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -1937,14 +1967,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_4_5" id="__nav_4_5_label" tabindex="">
+              <label class="md-nav__link " for="__nav_4_6" id="__nav_4_6_label" tabindex="">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_5">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_6">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -5321,10 +5351,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_7" checked>
         
           
-          <label class="md-nav__link" for="__nav_4_6" id="__nav_4_6_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_7" id="__nav_4_7_label" tabindex="">
             
   
   
@@ -5342,8 +5372,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_4_6">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_7_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4_7">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -22467,15 +22497,41 @@
 <h2 id="problem">Problem<a class="headerlink" href="#problem" title="Permanent link">#</a></h2>
 <p>整数数组 <code>nums</code>，求任意子数组（可空）和的绝对值的最大值。约束 <span class="arithmatex">\(|n| \le 10^5\)</span>，<span class="arithmatex">\(|nums[i]| \le 10^4\)</span>。</p>
 <h2 id="background">背景 (Background)<a class="headerlink" href="#background" title="Permanent link">#</a></h2>
-<p>本题是 <strong>Kadane 算法</strong> 的双向应用。<span class="arithmatex">\(|\sum| = \max(\sum, -\sum)\)</span>，所以：</p>
-<div class="arithmatex">\[\max |\text{subSum}| = \max(\text{maxSubSum}, -\text{minSubSum})\]</div>
-<p>Kadane (1984, Bentley <em>Programming Pearls</em> 第 8 章发表) 是动态规划的经典启蒙——状态 <code>f[i]</code> = 以 <span class="arithmatex">\(i\)</span> 结尾的最大子数组和，转移 <code>f[i] = max(nums[i], f[i-1] + nums[i])</code>。<span class="arithmatex">\(O(n)\)</span>。</p>
-<p><strong>前缀和视角</strong>：<span class="arithmatex">\(\sum_{l..r} = S_r - S_{l-1}\)</span>；<span class="arithmatex">\(\max |S_r - S_{l-1}|\)</span> 等价于 <span class="arithmatex">\(\max S - \min S\)</span>（在前缀和数组上）。</p>
+<p>最直接的做法是枚举所有子数组。固定左端 <span class="arithmatex">\(l\)</span> 与右端 <span class="arithmatex">\(r\)</span>，逐对计算和并取绝对值，取最大值——这是 <span class="arithmatex">\(O(n^2)\)</span>（甚至朴素求和到 <span class="arithmatex">\(O(n^3)\)</span>）。<span class="arithmatex">\(n\)</span> 可达 <span class="arithmatex">\(10^5\)</span>，<span class="arithmatex">\(O(n^2)\)</span> 约 <span class="arithmatex">\(10^{10}\)</span> 次操作，超时。</p>
+<p>问题出在哪里？我们对每个 <span class="arithmatex">\((l, r)\)</span> 重新累加 <span class="arithmatex">\(\sum_{i=l}^{r} a_i\)</span>，而这些区间和彼此高度重叠。要消除重复累加，引入前缀和</p>
+<div class="arithmatex">\[S_0 = 0, \quad S_k = \sum_{i=0}^{k-1} a_i,\]</div>
+<p>于是子数组 <span class="arithmatex">\([l, r)\)</span> 的和恰为 <span class="arithmatex">\(S_r - S_l\)</span>（<span class="arithmatex">\(0 \le l \le r \le n\)</span>）。枚举 <span class="arithmatex">\((l, r)\)</span> 的目标量变成</p>
+<div class="arithmatex">\[\big|\,\textstyle\sum_{i=l}^{r-1} a_i\,\big| = |S_r - S_l|.\]</div>
+<p>至此朴素枚举的本质暴露出来：我们要找的是<strong>前缀和序列 <span class="arithmatex">\(S_0, \dots, S_n\)</span> 中相距最远的一对值</strong>。这把"枚举子数组"换成了"在一条数轴上比较 <span class="arithmatex">\(n+1\)</span> 个点"，下一节把这个观察变成可计算的公式。</p>
 <h2 id="formulation">形式化 (Formulation)<a class="headerlink" href="#formulation" title="Permanent link">#</a></h2>
-<p><span class="arithmatex">\(S_0 = 0\)</span>, <span class="arithmatex">\(S_k = \sum_{i=0}^{k-1} a_i\)</span>。答案：</p>
-<div class="arithmatex">\[\max_{0 \le l \le r \le n} |S_r - S_l| = \max_k S_k - \min_k S_k\]</div>
+<p>直觉：<span class="arithmatex">\(|S_r - S_l|\)</span> 度量数轴上两点 <span class="arithmatex">\(S_r\)</span> 与 <span class="arithmatex">\(S_l\)</span> 的距离；<span class="arithmatex">\(n+1\)</span> 个点中距离最大的一对，必然是最大值点与最小值点。绝对值消去了 <span class="arithmatex">\(l, r\)</span> 的先后顺序，所以无需关心谁在前——只需序列的极差（range）。</p>
+<p>形式化命题：</p>
+<div class="arithmatex">\[\max_{0 \le l \le r \le n} |S_r - S_l| = \max_k S_k - \min_k S_k.\]</div>
+<p><strong>推导.</strong> 任取 <span class="arithmatex">\(0 \le l \le r \le n\)</span>。绝对值满足 <span class="arithmatex">\(|x| = \max(x, -x)\)</span>，故</p>
+<div class="arithmatex">\[|S_r - S_l| = \max(S_r - S_l,\; S_l - S_r) \le \big(\max_k S_k - \min_k S_k\big),\]</div>
+<p>两个分支分别被"最大减最小"上界（第一分支取 <span class="arithmatex">\(S_r \le \max\)</span>、<span class="arithmatex">\(S_l \ge \min\)</span>；第二分支对称）。这给出上界。</p>
+<p>取等：设 <span class="arithmatex">\(p = \arg\max_k S_k\)</span>，<span class="arithmatex">\(q = \arg\min_k S_k\)</span>。若 <span class="arithmatex">\(q \le p\)</span>，取 <span class="arithmatex">\((l, r) = (q, p)\)</span>，则 <span class="arithmatex">\(|S_r - S_l| = \max - \min\)</span>；若 <span class="arithmatex">\(p \le q\)</span>，取 <span class="arithmatex">\((l, r) = (p, q)\)</span>，则 <span class="arithmatex">\(|S_r - S_l| = \min - \max\)</span> 的绝对值同样等于 <span class="arithmatex">\(\max - \min\)</span>。无论哪种顺序，绝对值都吸收了符号，故上界可达。<span class="arithmatex">\(\square\)</span></p>
+<p>注意 <span class="arithmatex">\(S_0 = 0\)</span> 已经在序列中，所以<strong>空子数组</strong>（<span class="arithmatex">\(l = r\)</span>，和为 0）自动作为候选参与 <span class="arithmatex">\(\max\)</span> 与 <span class="arithmatex">\(\min\)</span>——若所有 <span class="arithmatex">\(S_k\)</span> 同号，0 仍是 <span class="arithmatex">\(\max\)</span> 或 <span class="arithmatex">\(\min\)</span> 的一端，答案不会为负。</p>
+<p>这个公式就是解法的脊柱：算法只需单次扫描，维护前缀和的运行最大值与最小值。</p>
 <h2 id="approach">数据结构 / 想法 (Approach)<a class="headerlink" href="#approach" title="Permanent link">#</a></h2>
-<p><strong>解法 A：双 Kadane</strong>
+<p><strong>解法 B：前缀和 + max/min（公式的直接实现）</strong></p>
+<p>形式化命题说答案 <span class="arithmatex">\(= \max_k S_k - \min_k S_k\)</span>。一遍扫描累加 <span class="arithmatex">\(S\)</span>，同时维护 <span class="arithmatex">\(\text{mx} = \max S\)</span>、<span class="arithmatex">\(\text{mn} = \min S\)</span>，最后返回差。初值 <span class="arithmatex">\(\text{mx} = \text{mn} = 0\)</span> 即是把 <span class="arithmatex">\(S_0 = 0\)</span> 预先放入序列（对应空子数组）。</p>
+<div class="language-python highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">maxAbsoluteSum</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">nums</span><span class="p">):</span>
+    <span class="n">s</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">mx</span> <span class="o">=</span> <span class="n">mn</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">nums</span><span class="p">:</span>
+        <span class="n">s</span> <span class="o">+=</span> <span class="n">v</span>
+        <span class="n">mx</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">mx</span><span class="p">,</span> <span class="n">s</span><span class="p">)</span>
+        <span class="n">mn</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">mn</span><span class="p">,</span> <span class="n">s</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">mx</span> <span class="o">-</span> <span class="n">mn</span>
+</code></pre></div>
+<p><span class="arithmatex">\(O(n)\)</span> 时间，<span class="arithmatex">\(O(1)\)</span> 空间——这正是命题逐字翻译成的代码。</p>
+<p><strong>解法 A：双 Kadane（同一算法的子数组视角）</strong></p>
+<p>不引入前缀和也能得到同一结果。由 <span class="arithmatex">\(|x| = \max(x, -x)\)</span>，</p>
+<div class="arithmatex">\[\max |\text{subSum}| = \max(\text{maxSubSum},\; -\text{minSubSum}),\]</div>
+<p>即只需分别求"最大子数组和"与"最小子数组和"。最大子数组和用 Kadane 递推：以 <span class="arithmatex">\(i\)</span> 结尾的子数组要么只含 <span class="arithmatex">\(a_i\)</span>，要么由以 <span class="arithmatex">\(i-1\)</span> 结尾的最优子数组向左延伸而来，这两支穷尽了所有以 <span class="arithmatex">\(i\)</span> 结尾的子数组，于是</p>
+<div class="arithmatex">\[f[i] = \max(\text{nums}[i],\; f[i-1] + \text{nums}[i]).\]</div>
+<p>把 <span class="arithmatex">\(\max\)</span> 换成 <span class="arithmatex">\(\min\)</span> 即得最小子数组和。两条递推并行扫描：</p>
 <div class="language-python highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">Solution</span><span class="p">:</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">maxAbsoluteSum</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">nums</span><span class="p">):</span>
         <span class="n">max_ending</span> <span class="o">=</span> <span class="n">min_ending</span> <span class="o">=</span> <span class="mi">0</span>
@@ -22486,33 +22542,24 @@
             <span class="n">max_sum</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">max_sum</span><span class="p">,</span> <span class="n">max_ending</span><span class="p">)</span>
             <span class="n">min_sum</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">min_sum</span><span class="p">,</span> <span class="n">min_ending</span><span class="p">)</span>
         <span class="k">return</span> <span class="nb">max</span><span class="p">(</span><span class="n">max_sum</span><span class="p">,</span> <span class="o">-</span><span class="n">min_sum</span><span class="p">)</span>
-</code></pre></div></p>
-<p>初值 0 处理"空子数组"——若所有数同号，空子数组和 0 自然成为基准。</p>
-<p><strong>解法 B：前缀和 + max/min</strong>
-<div class="language-python highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">maxAbsoluteSum</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">nums</span><span class="p">):</span>
-    <span class="n">s</span> <span class="o">=</span> <span class="mi">0</span>
-    <span class="n">mx</span> <span class="o">=</span> <span class="n">mn</span> <span class="o">=</span> <span class="mi">0</span>
-    <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">nums</span><span class="p">:</span>
-        <span class="n">s</span> <span class="o">+=</span> <span class="n">v</span>
-        <span class="n">mx</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">mx</span><span class="p">,</span> <span class="n">s</span><span class="p">)</span>
-        <span class="n">mn</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">mn</span><span class="p">,</span> <span class="n">s</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">mx</span> <span class="o">-</span> <span class="n">mn</span>
-</code></pre></div></p>
-<p>更简洁，<span class="arithmatex">\(O(n)\)</span> / <span class="arithmatex">\(O(1)\)</span>。</p>
-<p><strong>心算 trace 示例 2</strong>: nums=[2,-5,1,-4,3,-2]
-- 前缀 s: 2, -3, -2, -6, -3, -5
-- mx 含初值 0：max(0,2,-3,-2,-6,-3,-5)=2; mn = min(0,2,-3,-2,-6,-3,-5) = -6
-- 答案 2 - (-6) = 8 ✓</p>
+</code></pre></div>
+<p>初值全 0 同样对应空子数组：若所有数同号，空子数组和 0 自然成为基准。</p>
+<p><strong>两解法是同一件事.</strong> 最大子数组和恰为 <span class="arithmatex">\(\max_{l \le r}(S_r - S_l) = \max S - \min_{l \le r, l \le r} S_l\)</span>，展开后等于解法 B 里的 <span class="arithmatex">\(\text{mx}\)</span> 相对项；具体地，<span class="arithmatex">\(\text{max\_sum} = \max S - (\text{扫描中已见的最小 } S)\)</span>，而 <span class="arithmatex">\(-\text{min\_sum} = (\text{已见最大 } S) - \min S\)</span>，两者取 <span class="arithmatex">\(\max\)</span> 即 <span class="arithmatex">\(\max S - \min S\)</span>。Kadane 是前缀和公式的增量重写，并非另一种算法。</p>
+<p><strong>心算 trace（示例 2）</strong>: nums=[2,-5,1,-4,3,-2]
+- 前缀和 <span class="arithmatex">\(S\)</span>（含 <span class="arithmatex">\(S_0=0\)</span>）: 0, 2, -3, -2, -6, -3, -5
+- <span class="arithmatex">\(\text{mx} = \max = 2\)</span>；<span class="arithmatex">\(\text{mn} = \min = -6\)</span>
+- 答案 <span class="arithmatex">\(2 - (-6) = 8\)</span> ✓</p>
 <h2 id="complexity">复杂度 (Complexity)<a class="headerlink" href="#complexity" title="Permanent link">#</a></h2>
 <ul>
 <li>Time: <span class="arithmatex">\(O(n)\)</span></li>
 <li>Space: <span class="arithmatex">\(O(1)\)</span></li>
 </ul>
+<p>两个解法均单次扫描、常数额外状态，无依赖输入的分支改变渐近阶，故最好 = 平均 = 最坏 = <span class="arithmatex">\(\Theta(n)\)</span>。</p>
 <h2 id="pitfalls">陷阱 (Pitfalls)<a class="headerlink" href="#pitfalls" title="Permanent link">#</a></h2>
 <ul>
-<li><strong>空子数组</strong>：题目允许（绝对值 0），初值 max_ending=0 / min_ending=0 自然处理。若题目禁空，需把初值改为 <code>nums[0]</code> 并从下标 1 起。</li>
-<li><strong>取 max 时 -min_sum</strong>：是 <code>-min_sum</code>（min_sum 是负的，取负变正）。</li>
-<li><strong>不要先取绝对值再 Kadane</strong>：<span class="arithmatex">\(\max |a_i + a_j + \dots| \ne \max(|a_i| + |a_j| + \dots)\)</span>。</li>
+<li><strong>空子数组</strong>：题目允许（绝对值 0），对应 <span class="arithmatex">\(S_0 = 0\)</span> 已在前缀和序列中，初值 <span class="arithmatex">\(\text{mx} = \text{mn} = 0\)</span>（或 Kadane 的 <code>max_ending = min_ending = 0</code>）自然处理。若题目禁空，需把初值改为 <code>nums[0]</code> 并从下标 1 起。</li>
+<li><strong>取 max 时是 <span class="arithmatex">\(-\text{min\_sum}\)</span></strong>：<span class="arithmatex">\(\text{min\_sum} \le 0\)</span>，取负后得到最负子数组和的幅值，再与 <span class="arithmatex">\(\text{max\_sum}\)</span> 比较。</li>
+<li><strong>不要先取绝对值再 Kadane</strong>：<span class="arithmatex">\(\max\big|\sum a_i\big| \ne \max\big(\sum |a_i|\big)\)</span>，因为三角不等式一般不取等。反例 nums=<code>[-3, 4]</code>：正确答案 4（子数组 <code>[4]</code> 或 <code>[-3,4]</code> 和为 1，最大绝对值是 4），但对 <code>[3, 4]</code> 跑 Kadane 得 7，求解了另一个问题。</li>
 </ul>
 <h2 id="related">相关题目 (Related)<a class="headerlink" href="#related" title="Permanent link">#</a></h2>
 <ul>
@@ -22522,7 +22569,7 @@
 </ul>
 <h2 id="further-reading">Further Reading<a class="headerlink" href="#further-reading" title="Permanent link">#</a></h2>
 <ul>
-<li>Bentley, <em>Programming Pearls</em> (2e), 第 8 章 "Algorithm Design Techniques" ⭐ — Kadane 的"前 vs 入 vs 撤"四算法演进，DP 启蒙必读。</li>
+<li>Bentley, <em>Programming Pearls</em> (2e), 第 8 章 "Algorithm Design Techniques" ⭐ — Kadane 的"前 vs 入 vs 撤"四算法演进，从 <span class="arithmatex">\(O(n^2)\)</span> 枚举如何被增量递推压到 <span class="arithmatex">\(O(n)\)</span>。</li>
 <li>CLRS, 3e §4.1 "Maximum subarray problem" — 分治版 <span class="arithmatex">\(O(n \log n)\)</span> 与 DP 版 <span class="arithmatex">\(O(n)\)</span> 对比。</li>
 </ul>
 
@@ -22630,6 +22677,8 @@
         <script src="../../../js/mathjax/tex-mml-chtml.js"></script>
       
         <script src="../../../js/mermaid.min.js"></script>
+      
+        <script src="../../../js/featured.js"></script>
       
     
   </body>

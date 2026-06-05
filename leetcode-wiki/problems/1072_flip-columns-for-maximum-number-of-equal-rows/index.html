@@ -1466,6 +1466,8 @@
       
         
       
+        
+      
     
     
     
@@ -1521,6 +1523,34 @@
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../featured/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ⭐ Featured（已验证）
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
               
             
               
@@ -1610,10 +1640,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_4" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
         
           
-          <label class="md-nav__link" for="__nav_4_4" id="__nav_4_4_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_5" id="__nav_4_5_label" tabindex="">
             
   
   
@@ -1631,8 +1661,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_4_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_4">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_5">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1915,7 +1945,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -1937,14 +1967,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_4_5" id="__nav_4_5_label" tabindex="">
+              <label class="md-nav__link " for="__nav_4_6" id="__nav_4_6_label" tabindex="">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_5">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_6">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -5321,10 +5351,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_7" checked>
         
           
-          <label class="md-nav__link" for="__nav_4_6" id="__nav_4_6_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_7" id="__nav_4_7_label" tabindex="">
             
   
   
@@ -5342,8 +5372,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_4_6">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_7_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4_7">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -22467,27 +22497,48 @@
 <h2 id="problem">Problem<a class="headerlink" href="#problem" title="Permanent link">#</a></h2>
 <p><span class="arithmatex">\(m \times n\)</span> 0/1 矩阵 <code>matrix</code>。可选若干列<strong>翻转</strong>（0↔1）。求翻转后<strong>所有元素相等的行数</strong>最大值。<span class="arithmatex">\(m, n \le 300\)</span>。</p>
 <h2 id="_1">背景<a class="headerlink" href="#_1" title="Permanent link">#</a></h2>
-<p><strong>关键观察</strong>：选择一组列翻转 <span class="arithmatex">\(K \subseteq [n]\)</span> 等价于把每行<strong>异或</strong> (<code>XOR</code>) 一个 mask <span class="arithmatex">\(\chi_K \in \{0,1\}^n\)</span>。一行翻转后全等（全 0 或全 1）↔ 原行 <span class="arithmatex">\(\in \{\chi_K, \overline{\chi_K}\}\)</span>。</p>
-<p>所以问题转化为：找一个 <span class="arithmatex">\(\chi\)</span> 使最大数量的行<strong>等于 <span class="arithmatex">\(\chi\)</span> 或 <span class="arithmatex">\(\overline{\chi}\)</span></strong>。等价类：把每行与"其按位反" <strong>归一化</strong> 到字典序较小者，统计众数频次。</p>
-<p>这是 <strong>二进制等价类计数</strong> 的范例，用到 group action：群 <span class="arithmatex">\(\mathbb{Z}_2\)</span>（identity / flip-all）作用在 <span class="arithmatex">\(\{0,1\}^n\)</span> 上，问题求最大 orbit 内的行数。同款思想出现在 <em>#1722 Minimize Hamming Distance</em>、<em>#1255 Maximum Score Words</em>。</p>
+<p>我们能自由决定翻哪些列，目标是让尽可能多的行变成「全 0 或全 1」。最直接的想法：枚举所有可能的翻列方案，对每个方案数一遍有多少行变得整齐，取最大。</p>
+<p>翻列方案就是「翻哪些列」的一个子集，共 <span class="arithmatex">\(2^n\)</span> 个。对每个方案扫一遍 <span class="arithmatex">\(m\)</span> 行、每行 <span class="arithmatex">\(n\)</span> 列，总代价 <span class="arithmatex">\(O(2^n \cdot mn)\)</span>。<span class="arithmatex">\(n\)</span> 可达 300，<span class="arithmatex">\(2^{300}\)</span> 不可能枚举。暴力之所以爆炸，是因为它把「翻列方案」当成搜索空间——而方案数是指数的。</p>
+<p>要避开指数，得换一个问法：不去问「该翻哪些列」，而去问「<strong>哪些行有可能在同一个方案下同时变整齐</strong>」。如果能刻画出「能一起变整齐」的行的结构，就只需在行（至多 <span class="arithmatex">\(m\)</span> 个）上统计，与 <span class="arithmatex">\(2^n\)</span> 无关。下面把这个结构找出来。</p>
+<p><strong>先看翻列对单行的作用。</strong> 翻第 <span class="arithmatex">\(j\)</span> 列，意味着每一行的第 <span class="arithmatex">\(j\)</span> 个元素从 <span class="arithmatex">\(r_{i,j}\)</span> 变成 <span class="arithmatex">\(1 - r_{i,j}\)</span>，也就是 <span class="arithmatex">\(r_{i,j} \oplus 1\)</span>。翻一组列 <span class="arithmatex">\(K \subseteq [n]\)</span>，就是对每行在 <span class="arithmatex">\(K\)</span> 中的位置逐位取反。记 <span class="arithmatex">\(\chi_K \in \{0,1\}^n\)</span> 为 <span class="arithmatex">\(K\)</span> 的指示向量（第 <span class="arithmatex">\(j\)</span> 位为 1 当且仅当 <span class="arithmatex">\(j \in K\)</span>），则翻列方案 <span class="arithmatex">\(K\)</span> 作用在第 <span class="arithmatex">\(i\)</span> 行上恰好是按位异或：
+$$
+r_i \mapsto r_i \oplus \chi_K .
+$$
+于是「选哪些列翻」与「异或哪个 mask」一一对应——搜索空间没变小，但换了坐标，结构开始显形。</p>
+<p><strong>再看「变整齐」对一行意味着什么。</strong> 行 <span class="arithmatex">\(r_i\)</span> 在 mask <span class="arithmatex">\(\chi\)</span> 下变整齐，即 <span class="arithmatex">\(r_i \oplus \chi\)</span> 全 0 或全 1。逐项看：</p>
+<ul>
+<li><span class="arithmatex">\(r_i \oplus \chi = \mathbf{0}\)</span> 当且仅当 <span class="arithmatex">\(r_i = \chi\)</span>；</li>
+<li><span class="arithmatex">\(r_i \oplus \chi = \mathbf{1}\)</span> 当且仅当 <span class="arithmatex">\(r_i = \bar\chi\)</span>（<span class="arithmatex">\(\bar\chi\)</span> 是 <span class="arithmatex">\(\chi\)</span> 的按位取反）。</li>
+</ul>
+<p>所以行 <span class="arithmatex">\(r_i\)</span> 在 mask <span class="arithmatex">\(\chi\)</span> 下能变整齐，当且仅当 <span class="arithmatex">\(r_i \in \{\chi, \bar\chi\}\)</span>。举个 <span class="arithmatex">\(1\times 3\)</span> 的例子：<span class="arithmatex">\(r = (0,1,1)\)</span>。取 <span class="arithmatex">\(\chi = (0,1,1)\)</span> 得 <span class="arithmatex">\(r\oplus\chi = (0,0,0)\)</span>；取 <span class="arithmatex">\(\chi = (1,0,0) = \bar r\)</span> 得 <span class="arithmatex">\(r\oplus\chi = (1,1,1)\)</span>；其它任何 <span class="arithmatex">\(\chi\)</span> 都让 <span class="arithmatex">\(r\)</span> 出现 0、1 混杂，无法整齐。</p>
+<p>这就回答了上面的问法：固定一个 mask <span class="arithmatex">\(\chi\)</span>，能在它下面同时变整齐的行，恰好是满足 <span class="arithmatex">\(r_i \in \{\chi, \bar\chi\}\)</span> 的那些行。要使整齐行数最大，就是要选一个 <span class="arithmatex">\(\chi\)</span>，使等于 <span class="arithmatex">\(\chi\)</span> 或 <span class="arithmatex">\(\bar\chi\)</span> 的行数最多。搜索空间从 <span class="arithmatex">\(2^n\)</span> 个方案，收缩成了在行上做的一次计数。</p>
 <h2 id="_2">形式化<a class="headerlink" href="#_2" title="Permanent link">#</a></h2>
-<p>求 <span class="arithmatex">\(\max_{x \in \{0,1\}^n} \#\{i : r_i = x \lor r_i = \bar x\}\)</span>，<span class="arithmatex">\(r_i\)</span> 是第 <span class="arithmatex">\(i\)</span> 行。</p>
+<p>设 <span class="arithmatex">\(r_1, \dots, r_m \in \{0,1\}^n\)</span> 为矩阵的各行，<span class="arithmatex">\(\bar x\)</span> 为 <span class="arithmatex">\(x \in \{0,1\}^n\)</span> 的按位取反。由上节，答案是
+$$
+\max_{x \in {0,1}^n} #{\, i : r_i = x \ \lor\ r_i = \bar x \,},
+$$
+其中 <span class="arithmatex">\(x\)</span> 扮演的正是上一节翻列 mask <span class="arithmatex">\(\chi_K\)</span> 的角色。</p>
+<p>注意 <span class="arithmatex">\(x\)</span> 与 <span class="arithmatex">\(\bar x\)</span> 在目标里完全对称：把候选 mask 从 <span class="arithmatex">\(x\)</span> 换成 <span class="arithmatex">\(\bar x\)</span>，被计数的行集合 <span class="arithmatex">\(\{i : r_i \in \{x, \bar x\}\}\)</span> 不变。因此 <span class="arithmatex">\(\{x, \bar x\}\)</span> 应当看作一个整体。这在 <span class="arithmatex">\(\{0,1\}^n\)</span> 上定义了等价关系——<span class="arithmatex">\(x \sim \bar x\)</span>——每个等价类恰含两个互补向量（<span class="arithmatex">\(x = \bar x\)</span> 不可能，因为某位不能既是 0 又是 1）。一行 <span class="arithmatex">\(r_i\)</span> 落入由 <span class="arithmatex">\(\{x, \bar x\}\)</span> 代表的等价类，当且仅当它在 mask <span class="arithmatex">\(x\)</span> 下能变整齐。于是问题等价于：</p>
+<div class="arithmatex">\[
+\text{在这个等价关系下，求包含输入行最多的等价类的行数。}
+\]</div>
+<p>求最大的「同类行数」，这是一个众数（mode）问题，可以哈希统计。</p>
 <h2 id="_3">数据结构 / 想法<a class="headerlink" href="#_3" title="Permanent link">#</a></h2>
-<p><strong>等价类哈希</strong>：
+<p><strong>先确定怎样把同类的行映成同一个 key。</strong> 每个等价类是一对互补向量 <span class="arithmatex">\(\{x, \bar x\}\)</span>。由于 <span class="arithmatex">\(x\)</span> 与 <span class="arithmatex">\(\bar x\)</span> 的首位必然相反，这一对里恰好有一个首位为 0。因此「强制首位为 0」就从每个类里唯一地挑出一个代表：首位是 0 的行原样保留，首位是 1 的行整体取反——取反后首位变 0，且与原向量互补的那一行（它本来就首位为 0）映到同一个代表。归一化规则完全由互补关系的结构得出，不依赖任何外部约定。</p>
+<p>按此规则，互补的两行落入同一个 key，统计每个 key 的频次、取最大值即为答案：</p>
 <div class="language-python highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">maxEqualRowsAfterFlips</span><span class="p">(</span><span class="n">matrix</span><span class="p">):</span>
     <span class="kn">from</span><span class="w"> </span><span class="nn">collections</span><span class="w"> </span><span class="kn">import</span> <span class="n">Counter</span>
     <span class="n">c</span> <span class="o">=</span> <span class="n">Counter</span><span class="p">()</span>
     <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">matrix</span><span class="p">:</span>
-        <span class="c1"># 规范化: 让第一个元素为 0</span>
+        <span class="c1"># 规范化: 让第一个元素为 0（每个互补对的唯一代表）</span>
         <span class="k">if</span> <span class="n">row</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
             <span class="n">key</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">row</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">key</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">row</span><span class="p">)</span>
         <span class="n">c</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
     <span class="k">return</span> <span class="nb">max</span><span class="p">(</span><span class="n">c</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
-</code></pre></div></p>
-<p><strong>为何按首字符归一化即可</strong>：两行互补 ↔ 它们一个以 0 开头、一个以 1 开头且其余按位相反。所以把"以 1 开头"的行整体翻转再哈希，互补行落入同一 key。</p>
-<p><strong>不变量</strong>：Counter 中每个 key 是某等价类的"代表"，其值为该类中行的数量。<strong>正确性</strong>：从 <span class="arithmatex">\(x\)</span> 与 <span class="arithmatex">\(\bar x\)</span> 中任选一个不影响答案（最优 <span class="arithmatex">\(\chi\)</span> 只在意"同一类"）。</p>
+</code></pre></div>
+<p><strong>不变量</strong>：扫描过程中，<code>Counter</code> 的每个 key 是某等价类的规范代表，其值是已扫描行里属于该类的数量。循环结束后，<code>max(c.values())</code> 就是最大同类行数，即所求答案。<strong>正确性</strong>直接由形式化得出：归一化把 <span class="arithmatex">\(r_i\)</span> 与 <span class="arithmatex">\(\bar r_i\)</span> 合并到同一 key，每个 key 的频次正是 <span class="arithmatex">\(\#\{i : r_i \in \{x, \bar x\}\}\)</span>；取最大即 <span class="arithmatex">\(\max_x\)</span>。</p>
 <h2 id="_4">复杂度<a class="headerlink" href="#_4" title="Permanent link">#</a></h2>
 <ul>
 <li>Time: <span class="arithmatex">\(O(m \cdot n)\)</span> — 每行 <span class="arithmatex">\(O(n)\)</span> 归一化 + 哈希。</li>
@@ -22495,7 +22546,7 @@
 </ul>
 <h2 id="_5">陷阱<a class="headerlink" href="#_5" title="Permanent link">#</a></h2>
 <ul>
-<li>"全相等"包括全 0 和全 1 两种；归一化捕捉两者。</li>
+<li>"全相等"包括全 0 和全 1 两种；归一化捕捉两者（分别对应 <span class="arithmatex">\(r_i = x\)</span> 与 <span class="arithmatex">\(r_i = \bar x\)</span>）。</li>
 <li>哈希 key 用 tuple 而非 list（list 不可哈希）。</li>
 <li><span class="arithmatex">\(n=1\)</span> 时所有行都规范成 0，故答案 <span class="arithmatex">\(m\)</span>。</li>
 </ul>
@@ -22615,6 +22666,8 @@
         <script src="../../../js/mathjax/tex-mml-chtml.js"></script>
       
         <script src="../../../js/mermaid.min.js"></script>
+      
+        <script src="../../../js/featured.js"></script>
       
     
   </body>

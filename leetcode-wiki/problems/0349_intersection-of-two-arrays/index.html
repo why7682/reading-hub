@@ -1466,6 +1466,8 @@
       
         
       
+        
+      
     
     
     
@@ -1521,6 +1523,34 @@
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../featured/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ⭐ Featured（已验证）
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
               
             
               
@@ -1610,10 +1640,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_4" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
         
           
-          <label class="md-nav__link" for="__nav_4_4" id="__nav_4_4_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_5" id="__nav_4_5_label" tabindex="">
             
   
   
@@ -1631,8 +1661,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_4_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_4">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_5">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1915,7 +1945,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -1937,14 +1967,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_4_5" id="__nav_4_5_label" tabindex="">
+              <label class="md-nav__link " for="__nav_4_6" id="__nav_4_6_label" tabindex="">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_5">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_6">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -5321,10 +5351,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_7" checked>
         
           
-          <label class="md-nav__link" for="__nav_4_6" id="__nav_4_6_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_7" id="__nav_4_7_label" tabindex="">
             
   
   
@@ -5342,8 +5372,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_4_6">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_7_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4_7">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -22467,17 +22497,39 @@
 <h2 id="problem">Problem<a class="headerlink" href="#problem" title="Permanent link">#</a></h2>
 <p>给两整数数组 <code>nums1</code>, <code>nums2</code>，返回它们的交集；结果<strong>唯一</strong>（去重），顺序任意。<span class="arithmatex">\(1 \le |nums_i| \le 1000\)</span>，元素 <span class="arithmatex">\(\in [0, 1000]\)</span>。</p>
 <h2 id="background">背景 (Background)<a class="headerlink" href="#background" title="Permanent link">#</a></h2>
-<p>本题是 <strong>集合交 (set intersection)</strong> 的实现练习——多种方法权衡：哈希集（<span class="arithmatex">\(O(n+m)\)</span> 平均）、排序 + 双指针（<span class="arithmatex">\(O((n+m) \log)\)</span> 但缓存友好）、二分查找（一边排序后另一边二分）。在分布式数据库 / 搜索引擎倒排索引合并中，"两个有序文档 ID 列表求交"是天天用的子例程，往往配合 <strong>SIMD / galloping search</strong> 优化。</p>
+<p>先尝试最直接的读法：交集就是"既在 <code>nums1</code> 又在 <code>nums2</code> 里"的元素。照这句话直译——遍历 <code>nums1</code>，对每个元素检查它是否出现在 <code>nums2</code>：</p>
+<div class="language-python highlight"><pre><span></span><code><span class="n">res</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">nums1</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">nums2</span><span class="p">:</span>        <span class="c1"># 在未排序列表里查找，单次 O(m)</span>
+        <span class="n">res</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+</code></pre></div>
+<p>在 <code>nums1=[1,2,2,1]</code>, <code>nums2=[2,2]</code> 上，这段代码返回 <code>[2, 2]</code>。但答案是 <code>[2]</code>。错在哪？两处，而且这两处恰好划出本题的全部内容：</p>
+<ol>
+<li><strong>重复</strong>。<code>2</code> 在 <code>nums1</code> 里出现两次，于是被收了两次。题目要求结果对每个值最多出现一次。</li>
+<li><strong>效率</strong>。<code>x in nums2</code> 在未排序列表上是线性扫描，单次 <span class="arithmatex">\(O(m)\)</span>，整体 <span class="arithmatex">\(O(nm)\)</span>。</li>
+</ol>
+<p>第 1 点不是边界情况，而是问题的核心：输出只关心"某个值在不在交集里"，与它在两个数组里各出现几次无关。这把"数组求交"还原成了一个集合问题——下一节把它写成精确形式，后面三种解法都是在回答同一个问题：<strong>如何高效判定一个值是否同时属于两个集合</strong>。</p>
 <h2 id="formulation">形式化 (Formulation)<a class="headerlink" href="#formulation" title="Permanent link">#</a></h2>
-<p>返回 <span class="arithmatex">\(\text{set}(nums_1) \cap \text{set}(nums_2)\)</span>。</p>
+<p>把每个数组看作它所含值的集合，丢弃重复与顺序。所求即两集合之交：</p>
+<div class="arithmatex">\[\text{result} = \operatorname{set}(nums_1) \cap \operatorname{set}(nums_2) = \{\, v : v \in nums_1 \ \wedge\ v \in nums_2 \,\}.\]</div>
+<p>去重不是事后补丁，而是 <span class="arithmatex">\(\operatorname{set}(\cdot)\)</span> 的定义本身：集合里每个值至多一份。下面三种解法计算的是<strong>同一个</strong>集合 <span class="arithmatex">\(\operatorname{set}(nums_1) \cap \operatorname{set}(nums_2)\)</span>；它们的区别只在于用什么数据结构来做成员判定 <span class="arithmatex">\(v \in nums_2\)</span>——朴素做法慢，正是因为它用"未排序列表上的线性扫描"来做这个判定。</p>
 <h2 id="approach">数据结构 / 想法 (Approach)<a class="headerlink" href="#approach" title="Permanent link">#</a></h2>
-<p><strong>解法 A — 集合</strong>（最简）：</p>
+<p>朴素做法的瓶颈是成员判定 <span class="arithmatex">\(v \in nums_2\)</span> 太慢（单次 <span class="arithmatex">\(O(m)\)</span>），且收集时没去重。两条改进路线，各自攻克一处：把成员判定换成 <span class="arithmatex">\(O(1)\)</span>（哈希），或把它换成有序结构上的同步扫描（排序 + 双指针）。</p>
+<p><strong>解法 A — 哈希集合</strong>（直接实现形式化）：</p>
+<p>把 <code>nums2</code> 装进哈希集合，成员判定降到平均 <span class="arithmatex">\(O(1)\)</span>；把 <code>nums1</code> 也装进集合，去重自动完成。Python 的 <code>&amp;</code> 就是集合交：</p>
 <div class="language-python highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">Solution</span><span class="p">:</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">intersection</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">nums1</span><span class="p">,</span> <span class="n">nums2</span><span class="p">):</span>
         <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">nums1</span><span class="p">)</span> <span class="o">&amp;</span> <span class="nb">set</span><span class="p">(</span><span class="n">nums2</span><span class="p">))</span>
 </code></pre></div>
-<p>Time <span class="arithmatex">\(O(n + m)\)</span> 平均, Space <span class="arithmatex">\(O(n + m)\)</span>。</p>
+<p>这正是形式化的逐字翻译：<span class="arithmatex">\(\operatorname{set}(nums_1) \cap \operatorname{set}(nums_2)\)</span>。Time <span class="arithmatex">\(O(n + m)\)</span> 平均，Space <span class="arithmatex">\(O(n + m)\)</span>（两个集合）。</p>
+<p>Trace <code>nums1=[1,2,2,1]</code>, <code>nums2=[2,2]</code>：<code>set(nums1)={1,2}</code>，<code>set(nums2)={2}</code>，交集 <code>{2}</code> → <code>[2]</code>。朴素做法返回的 <code>[2,2]</code> 在这里被集合天然压成一份。✓</p>
 <p><strong>解法 B — 排序 + 双指针</strong>：</p>
+<p>哈希集合用 <span class="arithmatex">\(O(n+m)\)</span> 额外空间换 <span class="arithmatex">\(O(1)\)</span> 查找。若想省掉这块空间，可以先把两个数组排序，再用有序性免去哈希表。</p>
+<p>先看排序给了什么。两个数组都升序后，设指针 <code>i</code>, <code>j</code> 分别指向 <code>nums1</code>, <code>nums2</code> 的当前位置。关键不变式：</p>
+<blockquote>
+<p>若 <code>nums1[i] &lt; nums2[j]</code>，则 <code>nums1[i]</code> 不可能等于 <code>nums2[j]</code>，也不可能等于其后任何 <code>nums2[k]</code>（<span class="arithmatex">\(k \ge j\)</span>），因为它们都 <span class="arithmatex">\(\ge\)</span> <code>nums2[j] &gt;$</code>nums1[i]<code>。所以</code>nums1[i]<code>在</code>nums2<code>的剩余部分里再无匹配，可以安全跳过——</code>i += 1`。</p>
+</blockquote>
+<p>对称地，<code>nums2[j] &lt; nums1[i]</code> 时推进 <code>j</code>。相等时记录该值，两个指针同时前进。于是 <span class="arithmatex">\(O(nm)\)</span> 的两两比较坍缩成一次从左到右的线性合并。去重沿用解法 A 的逻辑：只在新值与上一个记录值不同时才追加。</p>
 <div class="language-python highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">Solution</span><span class="p">:</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">intersection</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">nums1</span><span class="p">,</span> <span class="n">nums2</span><span class="p">):</span>
         <span class="n">nums1</span><span class="o">.</span><span class="n">sort</span><span class="p">();</span> <span class="n">nums2</span><span class="o">.</span><span class="n">sort</span><span class="p">()</span>
@@ -22493,31 +22545,121 @@
                 <span class="n">j</span> <span class="o">+=</span> <span class="mi">1</span>
         <span class="k">return</span> <span class="n">res</span>
 </code></pre></div>
-<p>Time <span class="arithmatex">\(O(n \log n + m \log m)\)</span>, Space <span class="arithmatex">\(O(1)\)</span>（不计输出）。</p>
-<p><strong>解法 C — 二分</strong>：对短数组建 set 或排序，对长数组每元素二分。<span class="arithmatex">\(O((n+m) \log \min(n,m))\)</span>。</p>
-<p>Trace 解法 A nums1=[1,2,2,1], nums2=[2,2]: set &amp; = {2} → [2] ✓
-Trace 解法 B nums1=[4,9,5], nums2=[9,4,9,8,4]: sort → [4,5,9], [4,4,8,9,9]. 
-i=0,j=0: 4==4, res=[4], i=1,j=1. 
-i=1,j=1: 5 vs 4, 4&lt;5 → j=2. 
-i=1,j=2: 5 vs 8, j=2... 等等: 5&lt;8 → i=2. 
-i=2,j=2: 9 vs 8, 8&lt;9 → j=3. 
-i=2,j=3: 9==9, res=[4,9], i=3 退出. → [4,9] ✓</p>
+<p>Time <span class="arithmatex">\(O(n \log n + m \log m)\)</span>（排序主导，合并扫描为 <span class="arithmatex">\(O(n+m)\)</span>）。空间见复杂度一节——合并步本身 <span class="arithmatex">\(O(1)\)</span>，但 <code>.sort()</code> 自带 <span class="arithmatex">\(O(n)\)</span> 辅助空间。</p>
+<p>Trace <code>nums1=[4,9,5]</code>, <code>nums2=[9,4,9,8,4]</code>，排序后 <code>nums1=[4,5,9]</code>, <code>nums2=[4,4,8,9,9]</code>：</p>
+<table>
+<thead>
+<tr>
+<th>步</th>
+<th><code>i</code></th>
+<th><code>j</code></th>
+<th><code>nums1[i]</code></th>
+<th><code>nums2[j]</code></th>
+<th>比较</th>
+<th>动作</th>
+<th><code>res</code></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+<td>4</td>
+<td>4</td>
+<td><code>==</code></td>
+<td>记录 4，<code>i++</code>, <code>j++</code></td>
+<td><code>[4]</code></td>
+</tr>
+<tr>
+<td>2</td>
+<td>1</td>
+<td>1</td>
+<td>5</td>
+<td>4</td>
+<td><code>&gt;</code></td>
+<td><code>j++</code></td>
+<td><code>[4]</code></td>
+</tr>
+<tr>
+<td>3</td>
+<td>1</td>
+<td>2</td>
+<td>5</td>
+<td>8</td>
+<td><code>&lt;</code></td>
+<td><code>i++</code></td>
+<td><code>[4]</code></td>
+</tr>
+<tr>
+<td>4</td>
+<td>2</td>
+<td>2</td>
+<td>9</td>
+<td>8</td>
+<td><code>&gt;</code></td>
+<td><code>j++</code></td>
+<td><code>[4]</code></td>
+</tr>
+<tr>
+<td>5</td>
+<td>2</td>
+<td>3</td>
+<td>9</td>
+<td>9</td>
+<td><code>==</code></td>
+<td>记录 9，<code>i++</code>（越界退出）</td>
+<td><code>[4,9]</code></td>
+</tr>
+</tbody>
+</table>
+<p>结果 <code>[4,9]</code>。✓</p>
+<p><strong>解法 C — 排序短数组 + 二分</strong>：</p>
+<p>解法 B 对两个数组都排序。当一个数组远短于另一个时，可以只排序短的那个，再对长数组的每个元素在短数组里做二分查找。设 <span class="arithmatex">\(\min = \min(n,m)\)</span>，<span class="arithmatex">\(\max = \max(n,m)\)</span>：排序短数组 <span class="arithmatex">\(O(\min \log \min)\)</span>，对长数组每元素二分 <span class="arithmatex">\(O(\log \min)\)</span>，共 <span class="arithmatex">\(O(\max \log \min)\)</span>。因 <span class="arithmatex">\(\min + \max = n + m\)</span>，合写为 <span class="arithmatex">\(O((n+m) \log \min(n,m))\)</span>。注意：这里用的是"排序 + 二分"，与解法 A 的"哈希集合 + <span class="arithmatex">\(O(1)\)</span> 查找"是两条不同路线——若改用集合，那就退回解法 A 的 <span class="arithmatex">\(O(n+m)\)</span> 平均复杂度，不再是二分。</p>
 <h2 id="complexity">复杂度 (Complexity)<a class="headerlink" href="#complexity" title="Permanent link">#</a></h2>
+<table>
+<thead>
+<tr>
+<th>解法</th>
+<th>Time</th>
+<th>Space（辅助，不计输出）</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>A 哈希集合</td>
+<td><span class="arithmatex">\(O(n + m)\)</span> 平均</td>
+<td><span class="arithmatex">\(O(n + m)\)</span>（两个集合）</td>
+</tr>
+<tr>
+<td>B 排序双指针</td>
+<td><span class="arithmatex">\(O(n \log n + m \log m)\)</span></td>
+<td><span class="arithmatex">\(O(n)\)</span>（<code>.sort()</code> 的 Timsort 合并缓冲；合并扫描本身 <span class="arithmatex">\(O(1)\)</span>）</td>
+</tr>
+<tr>
+<td>C 排序短数组 + 二分</td>
+<td><span class="arithmatex">\(O((n+m) \log \min(n,m))\)</span></td>
+<td><span class="arithmatex">\(O(\min(n,m))\)</span>（短数组排序）</td>
+</tr>
+</tbody>
+</table>
+<p>如何选择，直接由上表的 time/space 权衡读出，而非外部经验：</p>
 <ul>
-<li>集合：Time <span class="arithmatex">\(O(n + m)\)</span>, Space <span class="arithmatex">\(O(n + m)\)</span>.</li>
-<li>排序双指针：Time <span class="arithmatex">\(O(n \log n + m \log m)\)</span>, Space <span class="arithmatex">\(O(1)\)</span>.</li>
-<li>选择取决于 <span class="arithmatex">\(n, m\)</span> 与缓存性质。</li>
+<li>追求最优平均时间、且 <span class="arithmatex">\(O(n+m)\)</span> 额外空间可接受 → 解法 A。</li>
+<li>两数组规模相近、希望避开哈希表（更好的缓存局部性，或元素不可哈希）→ 解法 B；它用一个 <span class="arithmatex">\(\log\)</span> 因子换掉哈希集合。</li>
+<li>两数组规模悬殊（<span class="arithmatex">\(\min \ll \max\)</span>）→ 解法 C；只为短数组付排序代价，长数组只做廉价的二分。</li>
 </ul>
+<p>注意解法 B 的空间常被误记为 <span class="arithmatex">\(O(1)\)</span>。合并扫描确实原地进行，但 CPython 的 <code>list.sort()</code> 是 Timsort，其归并缓冲的辅助空间最坏 <span class="arithmatex">\(O(n)\)</span>。真正 <span class="arithmatex">\(O(1)\)</span> 辅助空间需要堆排序这类原地排序，而 <code>.sort()</code> 并非如此。</p>
 <h2 id="pitfalls">陷阱 (Pitfalls)<a class="headerlink" href="#pitfalls" title="Permanent link">#</a></h2>
 <ul>
-<li><strong>必须去重</strong>：直接 <code>list(set(nums1).intersection(nums2))</code> 隐式去重；双指针法需手动检查 <code>res[-1] != x</code>。</li>
-<li><strong>顺序无关</strong>——题目允许任意顺序，无需排序输出。</li>
+<li><strong>去重源于形式化，不是额外规则</strong>。输出是集合 <span class="arithmatex">\(\operatorname{set}(nums_1) \cap \operatorname{set}(nums_2)\)</span>，每个值至多一份。解法 A 由 <code>set(...)</code> 天然去重；解法 B 在有序扫描中靠 <code>if not res or res[-1] != nums1[i]</code> 去重。删掉这道判断，<code>nums1=[1,2,2,1]</code>, <code>nums2=[2,2,2]</code> 排序后会让 <code>2</code> 被连续匹配多次而重复记录——正是开头朴素做法 <code>[2,2]</code> 那个错误的再现。</li>
+<li><strong>顺序无关</strong>。题目允许任意顺序，无需对输出排序；解法 B 输出恰好有序只是排序的副产物，不是要求。</li>
 </ul>
 <h2 id="related">相关题目 (Related)<a class="headerlink" href="#related" title="Permanent link">#</a></h2>
 <ul>
-<li><code>#350. Intersection of Two Arrays II (off-wiki)</code> — 不去重版（含多重性）。</li>
-<li><code>#1213. Intersection of Three Sorted Arrays (off-wiki)</code> — 三指针推广。</li>
-<li><a href="../0001_two-sum/">#0001. Two Sum</a> — 哈希查找同模式。</li>
+<li><code>#350. Intersection of Two Arrays II (off-wiki)</code> — 不去重版（含多重性）：输出保留每个值的出现次数，于是上面"去重源于形式化"的前提不再成立，集合视角换成多重集（multiset）/计数视角。</li>
+<li><code>#1213. Intersection of Three Sorted Arrays (off-wiki)</code> — 三指针推广：解法 B 的不变式与同步扫描扩展到三个有序序列。</li>
+<li><a href="../0001_two-sum/">#0001. Two Sum</a> — 同样靠哈希把"成员/查找"判定降到平均 <span class="arithmatex">\(O(1)\)</span>，与解法 A 同一模式。</li>
 </ul>
 <h2 id="further-reading">Further Reading<a class="headerlink" href="#further-reading" title="Permanent link">#</a></h2>
 <ul>
@@ -22628,6 +22770,8 @@ i=2,j=3: 9==9, res=[4,9], i=3 退出. → [4,9] ✓</p>
         <script src="../../../js/mathjax/tex-mml-chtml.js"></script>
       
         <script src="../../../js/mermaid.min.js"></script>
+      
+        <script src="../../../js/featured.js"></script>
       
     
   </body>

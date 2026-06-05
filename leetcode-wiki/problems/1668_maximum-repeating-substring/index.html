@@ -1466,6 +1466,8 @@
       
         
       
+        
+      
     
     
     
@@ -1521,6 +1523,34 @@
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../featured/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ⭐ Featured（已验证）
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
               
             
               
@@ -1610,10 +1640,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_4" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
         
           
-          <label class="md-nav__link" for="__nav_4_4" id="__nav_4_4_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_5" id="__nav_4_5_label" tabindex="">
             
   
   
@@ -1631,8 +1661,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_4_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_4">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_5">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1915,7 +1945,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -1937,14 +1967,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_4_5" id="__nav_4_5_label" tabindex="">
+              <label class="md-nav__link " for="__nav_4_6" id="__nav_4_6_label" tabindex="">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_5">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_6">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -5321,10 +5351,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_7" checked>
         
           
-          <label class="md-nav__link" for="__nav_4_6" id="__nav_4_6_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_7" id="__nav_4_7_label" tabindex="">
             
   
   
@@ -5342,8 +5372,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_4_6">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_7_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4_7">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -12404,6 +12434,34 @@
       
     </span>
   </a>
+  
+    <nav class="md-nav" aria-label="数据结构 / 想法 (Approach)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        从定义直接读出的线性扫描
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#dp" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        为什么会想到 DP 重写
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -22399,6 +22457,34 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="数据结构 / 想法 (Approach)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        从定义直接读出的线性扫描
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#dp" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        为什么会想到 DP 重写
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -22467,10 +22553,22 @@
 <h2 id="problem">Problem<a class="headerlink" href="#problem" title="Permanent link">#</a></h2>
 <p>给字符串 <code>sequence</code>、<code>word</code>。称 <code>word</code> 是 <span class="arithmatex">\(k\)</span>-repeating 当 <span class="arithmatex">\(\text{word} \times k\)</span>（重复 <span class="arithmatex">\(k\)</span> 次）是 <code>sequence</code> 的子串。求最大 <span class="arithmatex">\(k\)</span>（不存在则 0）。约束 <span class="arithmatex">\(|\text{sequence}|, |\text{word}| \le 100\)</span>。</p>
 <h2 id="background">背景 (Background)<a class="headerlink" href="#background" title="Permanent link">#</a></h2>
-<p>小数据范围 <span class="arithmatex">\(\le 100\)</span>，朴素 substring 检查即可（Python 的 <code>in</code> 是 <span class="arithmatex">\(O(|s| \cdot |w|)\)</span>，最坏 <span class="arithmatex">\(10^4\)</span> 量级）。原则上可用 <strong>KMP</strong> 把每次匹配降到 <span class="arithmatex">\(O(|s| + |w \cdot k|)\)</span>，但本题规模无需。</p>
+<p>问题只问一个量：把 <code>word</code> 首尾相接重复多少次，得到的串仍然整段出现在 <code>sequence</code> 里。重复次数越多，待匹配的串越长，因此存在一个临界点——超过它就再也塞不进 <code>sequence</code>。我们要找的正是这个临界点。</p>
+<p>直接读定义，最朴素的做法是逐个试验候选次数：先看 <code>word</code> 本身在不在，再看 <code>word·word</code> 在不在，依次类推，直到某一次落空。下面先把"临界点存在且有界"这件事写成精确形式，再让算法从这个形式里长出来。</p>
 <h2 id="formulation">形式化 (Formulation)<a class="headerlink" href="#formulation" title="Permanent link">#</a></h2>
-<p>求最大 <span class="arithmatex">\(k \ge 0\)</span> 使得 <span class="arithmatex">\(\text{word}^k\)</span> 是 <span class="arithmatex">\(\text{sequence}\)</span> 的子串。上界 <span class="arithmatex">\(k \le \lfloor |\text{sequence}| / |\text{word}| \rfloor\)</span>。</p>
+<p>直觉先行：<span class="arithmatex">\(\text{word}^k\)</span> 是 <code>sequence</code> 的连续子串，意味着它必须整段塞进 <code>sequence</code> 而不能溢出；既然每份占 <span class="arithmatex">\(|\text{word}|\)</span> 个字符，能塞下的份数至多是 <span class="arithmatex">\(|\text{sequence}|\)</span> 能被 <span class="arithmatex">\(|\text{word}|\)</span> 整除的次数。</p>
+<p>形式化地，求最大的 <span class="arithmatex">\(k \ge 0\)</span> 使得</p>
+<div class="arithmatex">\[
+\text{word}^k \text{ 是 } \text{sequence} \text{ 的子串.}
+\]</div>
+<p>由 <span class="arithmatex">\(|\text{word}^k| = k \cdot |\text{word}| \le |\text{sequence}|\)</span> 立得上界</p>
+<div class="arithmatex">\[
+k \le \left\lfloor \frac{|\text{sequence}|}{|\text{word}|} \right\rfloor .
+\]</div>
+<p>这个上界保证候选 <span class="arithmatex">\(k\)</span> 是有限的，朴素试验必然终止。</p>
 <h2 id="approach">数据结构 / 想法 (Approach)<a class="headerlink" href="#approach" title="Permanent link">#</a></h2>
+<h3 id="_1">从定义直接读出的线性扫描<a class="headerlink" href="#_1" title="Permanent link">#</a></h3>
+<p>形式化已经把算法写好了一半：定义说"<span class="arithmatex">\(\text{word}^k\)</span> 是子串"，那就对 <span class="arithmatex">\(k = 1, 2, 3, \dots\)</span> 逐个检验"<span class="arithmatex">\(\text{word}^k\)</span> 是否为子串"，第一次失败时停下，最后一个成功的 <span class="arithmatex">\(k\)</span> 即答案。</p>
 <div class="language-python highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">Solution</span><span class="p">:</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">maxRepeating</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sequence</span><span class="p">,</span> <span class="n">word</span><span class="p">):</span>
         <span class="n">k</span> <span class="o">=</span> <span class="mi">0</span>
@@ -22478,17 +22576,51 @@
             <span class="n">k</span> <span class="o">+=</span> <span class="mi">1</span>
         <span class="k">return</span> <span class="n">k</span>
 </code></pre></div>
-<p>每次 <code>in</code> 检查 <span class="arithmatex">\(O(|s| \cdot |w|)\)</span> ；总循环最多 <span class="arithmatex">\(\lfloor 100/1 \rfloor = 100\)</span> 次。</p>
-<p><strong>DP 替代</strong>：定义 $f(i) = $ 以 <span class="arithmatex">\(i\)</span> 结尾的最长 <span class="arithmatex">\(k\)</span>，转移 <code>f[i] = f[i-len(w)] + 1</code> 若 <code>s[i-len(w)+1..i] == w</code>，否则 0。<span class="arithmatex">\(O(|s| \cdot |w|)\)</span>。</p>
+<p>循环不变量是"当前的 <code>k</code> 已被确认有效"。首次检验测的是 <span class="arithmatex">\(k=1\)</span>（即 <code>word</code> 本身是否为子串）；若它当即失败，循环体一次都不执行，<code>k</code> 保持 0。这正好覆盖了"<code>word</code> 根本不出现"的情形，无需任何特判。</p>
+<p>每轮 <code>in</code> 检验的针（needle）是 <span class="arithmatex">\(\text{word}^{k+1}\)</span>，长度随 <span class="arithmatex">\(k\)</span> 增长；循环至多执行 <span class="arithmatex">\(\lfloor |\text{sequence}|/|\text{word}| \rfloor\)</span> 轮，由上界保证终止。</p>
+<h3 id="dp">为什么会想到 DP 重写<a class="headerlink" href="#dp" title="Permanent link">#</a></h3>
+<p>朴素扫描每轮都从头构造并搜索一个更长的串：第 <span class="arithmatex">\(k\)</span> 轮在 <code>sequence</code> 中重新查找整个 <span class="arithmatex">\(\text{word}^{k+1}\)</span>，把前几轮已经确认过的前缀又比对了一遍。自然要问：位置 <span class="arithmatex">\(i\)</span> 处的答案，能否由更早算好的答案直接推出，从而避免重复比对？</p>
+<p>观察 <code>sequence</code> 的局部结构即可回答。考虑"以位置 <span class="arithmatex">\(i\)</span> 结尾、由 <code>word</code> 连续不重叠重复构成的最长块"，记其重复次数为 <span class="arithmatex">\(f(i)\)</span>。若紧贴 <span class="arithmatex">\(i\)</span> 结尾的那 <span class="arithmatex">\(|\text{word}|\)</span> 个字符恰好等于 <code>word</code>，则这一份可以接在"以 <span class="arithmatex">\(i-|\text{word}|\)</span> 结尾的块"之后，使重复次数加一；否则在 <span class="arithmatex">\(i\)</span> 处无法形成任何完整重复，<span class="arithmatex">\(f(i)=0\)</span>。关键在于：<span class="arithmatex">\(f(i)\)</span> 只依赖 <span class="arithmatex">\(f(i-|\text{word}|)\)</span> 这一个更早的值——这种局部依赖正是 DP 适用的标志。</p>
+<p>把上述直觉写成转移：设 <span class="arithmatex">\(w = \text{word}\)</span>，<span class="arithmatex">\(m = |w|\)</span>，对每个位置 <span class="arithmatex">\(i\)</span>（<span class="arithmatex">\(0 \le i &lt; |\text{sequence}|\)</span>）</p>
+<div class="arithmatex">\[
+f(i) =
+\begin{cases}
+f(i-m) + 1, &amp; \text{若 } \text{sequence}[i-m+1 \,..\, i] = w \text{ 且 } i \ge m-1, \\
+0, &amp; \text{否则},
+\end{cases}
+\]</div>
+<p>答案为 <span class="arithmatex">\(\max_i f(i)\)</span>（其中 <span class="arithmatex">\(i &lt; m-1\)</span> 时 <span class="arithmatex">\(f(i)=0\)</span>）。</p>
+<p>举例 <code>sequence = "ababab"</code>、<code>word = "ab"</code>（<span class="arithmatex">\(m=2\)</span>）：扫描时 <span class="arithmatex">\(f(1)=1\)</span>（<code>ab</code> 匹配），<span class="arithmatex">\(f(3)=f(1)+1=2\)</span>，<span class="arithmatex">\(f(5)=f(3)+1=3\)</span>；偶数位结尾不构成 <code>ab</code>，故 <span class="arithmatex">\(f(0)=f(2)=f(4)=0\)</span>。最大值 3，与朴素扫描一致。</p>
+<div class="language-python highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">Solution</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">maxRepeating</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sequence</span><span class="p">,</span> <span class="n">word</span><span class="p">):</span>
+        <span class="n">m</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">word</span><span class="p">)</span>
+        <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">sequence</span><span class="p">)</span>
+        <span class="n">f</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">n</span>
+        <span class="n">best</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">m</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">sequence</span><span class="p">[</span><span class="n">i</span> <span class="o">-</span> <span class="n">m</span> <span class="o">+</span> <span class="mi">1</span> <span class="p">:</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="n">word</span><span class="p">:</span>
+                <span class="n">f</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">f</span><span class="p">[</span><span class="n">i</span> <span class="o">-</span> <span class="n">m</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="k">if</span> <span class="n">i</span> <span class="o">&gt;=</span> <span class="n">m</span> <span class="k">else</span> <span class="mi">1</span>
+                <span class="n">best</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">best</span><span class="p">,</span> <span class="n">f</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+        <span class="k">return</span> <span class="n">best</span>
+</code></pre></div>
+<p>两种写法给出相同答案；区别只在如何组织比对，下一节量化这一差别。</p>
 <h2 id="complexity">复杂度 (Complexity)<a class="headerlink" href="#complexity" title="Permanent link">#</a></h2>
+<p><strong>朴素扫描。</strong> 设 <span class="arithmatex">\(L = |\text{sequence}|\)</span>、<span class="arithmatex">\(m = |\text{word}|\)</span>，循环至多 <span class="arithmatex">\(k_{\max}+1 = \lfloor L/m \rfloor + 1\)</span> 轮。第 <span class="arithmatex">\(j\)</span> 轮搜索的针长 <span class="arithmatex">\(j\cdot m\)</span>。Python 的 <code>in</code> 使用 two-way（Crochemore–Perrin）匹配，单次代价为 <span class="arithmatex">\(O(\text{haystack} + \text{needle}) = O(L + j\cdot m)\)</span>。把各轮相加，针长之和 <span class="arithmatex">\(\sum_{j} j\cdot m = m\cdot O(k_{\max}^2) = O(L^2/m)\)</span>，干草堆项相加为 <span class="arithmatex">\(O(k_{\max}\cdot L)=O(L^2/m)\)</span>，故总时间 <span class="arithmatex">\(O(L^2/m)\)</span>，在 <span class="arithmatex">\(m=1\)</span> 时取最坏 <span class="arithmatex">\(O(L^2)\)</span>。</p>
 <ul>
-<li>Time: <span class="arithmatex">\(O(|s|^2 \cdot |w| / |w|) = O(|s|^2)\)</span> 朴素法上界（Python <code>in</code> 内部 Two-way / Boyer-Moore 实际更快）。</li>
-<li>Space: <span class="arithmatex">\(O(k \cdot |w|)\)</span> 临时字符串；可改 DP 降到 <span class="arithmatex">\(O(|s|)\)</span>。</li>
+<li>Time: <span class="arithmatex">\(O(L^2/m)\)</span>，最坏 <span class="arithmatex">\(O(L^2)\)</span>。</li>
+<li>Space: <span class="arithmatex">\(O(L)\)</span>。临时串 <span class="arithmatex">\(\text{word}^{k+1}\)</span> 长度至多 <span class="arithmatex">\((k_{\max}+1)\cdot m \le L + m = O(L)\)</span>。</li>
 </ul>
+<p><strong>DP 重写。</strong> 扫描 <span class="arithmatex">\(L\)</span> 个位置，每个位置一次长度 <span class="arithmatex">\(m\)</span> 的切片比对，时间 <span class="arithmatex">\(O(L\cdot m)\)</span>；表 <span class="arithmatex">\(f\)</span> 占 <span class="arithmatex">\(O(L)\)</span>。</p>
+<ul>
+<li>Time: <span class="arithmatex">\(O(L \cdot m)\)</span>。</li>
+<li>Space: <span class="arithmatex">\(O(L)\)</span>。</li>
+</ul>
+<p>两者空间同阶 <span class="arithmatex">\(O(L)\)</span>，DP 并非渐近空间优化——它的好处是避免每轮重新分配并整段搜索一个增长的针，把重复比对换成一次定长比对。在 <span class="arithmatex">\(L, m \le 100\)</span> 的约束下两者都远低于 <span class="arithmatex">\(10^4\)</span>，朴素扫描已足够。</p>
 <h2 id="pitfalls">陷阱 (Pitfalls)<a class="headerlink" href="#pitfalls" title="Permanent link">#</a></h2>
 <ul>
-<li><strong>k=0 边界</strong>：若 <code>word</code> 本身不在 <code>sequence</code> 中，答案 0。循环起手 <code>k+1=1</code> 检查即可处理。</li>
-<li><strong>重叠匹配</strong>：题目要求 <code>word * k</code> 整体是子串，自然不允许重叠。</li>
+<li><strong>k=0 边界</strong>：若 <code>word</code> 本身不在 <code>sequence</code> 中，答案为 0。由循环不变量"当前 <code>k</code> 已确认有效"可知，首检验测 <span class="arithmatex">\(k=1\)</span>，失败则循环体不执行、<code>k</code> 留在 0，边界自动成立，无需特判。</li>
+<li><strong>重叠匹配</strong>：定义要求 <span class="arithmatex">\(\text{word}^k\)</span> 作为一段连续子串出现，因此 <span class="arithmatex">\(k\)</span> 份首尾相接、互不重叠是定义本身的约束，朴素与 DP 写法都天然满足，不会把重叠的两份误计为相连的两份。</li>
+<li><strong>复杂度化简别跳步</strong>：朴素法的 <span class="arithmatex">\(O(L^2/m)\)</span> 来自"轮数 × 每轮针长"两个因子相乘后求和，不能写成 <span class="arithmatex">\(|w|\)</span> 直接约掉的形式；最坏 <span class="arithmatex">\(O(L^2)\)</span> 只在 <span class="arithmatex">\(m=1\)</span> 时取到。</li>
 </ul>
 <h2 id="related">相关题目 (Related)<a class="headerlink" href="#related" title="Permanent link">#</a></h2>
 <ul>
@@ -22604,6 +22736,8 @@
         <script src="../../../js/mathjax/tex-mml-chtml.js"></script>
       
         <script src="../../../js/mermaid.min.js"></script>
+      
+        <script src="../../../js/featured.js"></script>
       
     
   </body>

@@ -1466,6 +1466,8 @@
       
         
       
+        
+      
     
     
     
@@ -1521,6 +1523,34 @@
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../featured/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ⭐ Featured（已验证）
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
               
             
               
@@ -1610,10 +1640,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_4" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
         
           
-          <label class="md-nav__link" for="__nav_4_4" id="__nav_4_4_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_5" id="__nav_4_5_label" tabindex="">
             
   
   
@@ -1631,8 +1661,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_4_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_4">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_5">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1915,7 +1945,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -1937,14 +1967,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_4_5" id="__nav_4_5_label" tabindex="">
+              <label class="md-nav__link " for="__nav_4_6" id="__nav_4_6_label" tabindex="">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_5">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_6">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -5321,10 +5351,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_7" checked>
         
           
-          <label class="md-nav__link" for="__nav_4_6" id="__nav_4_6_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_7" id="__nav_4_7_label" tabindex="">
             
   
   
@@ -5342,8 +5372,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_4_6">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_7_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4_7">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -22467,22 +22497,27 @@
 <h2 id="problem">Problem<a class="headerlink" href="#problem" title="Permanent link">#</a></h2>
 <p>无向图 <span class="arithmatex">\(n\)</span> 节点 + 可重边数组 <code>edges</code>，多组查询 <code>queries[j]</code>。对每个 <span class="arithmatex">\(q\)</span>，求对 <span class="arithmatex">\((a, b)\)</span>，<span class="arithmatex">\(a &lt; b\)</span>，满足 <code>incident(a, b) &gt; q</code> 的数量，其中 <code>incident(a, b)</code> = 连接到 <span class="arithmatex">\(a\)</span> 或 <span class="arithmatex">\(b\)</span> 的边数（去重共享边）。约束 <span class="arithmatex">\(n \le 2 \times 10^4\)</span>，<span class="arithmatex">\(|E| \le 10^5\)</span>，<span class="arithmatex">\(|Q| \le 20\)</span>，<span class="arithmatex">\(0 \le q &lt; |E|\)</span>。</p>
 <h2 id="background">背景 (Background)<a class="headerlink" href="#background" title="Permanent link">#</a></h2>
-<p>观察：<code>incident(a, b) = deg(a) + deg(b) - shared(a, b)</code>，其中 <code>shared(a, b)</code> = <span class="arithmatex">\(a\)</span> 与 <span class="arithmatex">\(b\)</span> 之间的边数。
-- <strong>粗估</strong>：对每查询 <span class="arithmatex">\(q\)</span>，统计有多少 <span class="arithmatex">\((a, b)\)</span> 使 <span class="arithmatex">\(\deg(a) + \deg(b) &gt; q\)</span> — 排序度数后双指针 <span class="arithmatex">\(O(n \log n)\)</span>。
-- <strong>修正</strong>：对每对存在 <span class="arithmatex">\(\ge 1\)</span> 边的 <span class="arithmatex">\((a, b)\)</span>，可能 <span class="arithmatex">\(\deg(a) + \deg(b) &gt; q\)</span> 但 <span class="arithmatex">\(\deg(a) + \deg(b) - shared(a,b) \le q\)</span>，需要从粗估扣除。共享边对数 <span class="arithmatex">\(\le |E|\)</span>，可枚举。</p>
-<p>这是 <strong>两指针扫描 + 局部修正</strong> 的复合模式；分治算法书里称为 "处理边界 case 单独修正" 范式（cf. Mo's algorithm 块边界修正）。</p>
+<p>最直接的做法：对每个查询 <span class="arithmatex">\(q\)</span>，枚举所有 <span class="arithmatex">\(\binom{n}{2}\)</span> 对 <span class="arithmatex">\((a, b)\)</span>，逐对计算 <span class="arithmatex">\(\text{incident}(a, b)\)</span> 并与 <span class="arithmatex">\(q\)</span> 比较。在给定约束下 <span class="arithmatex">\(n = 2 \times 10^4\)</span> 给出约 <span class="arithmatex">\(2 \times 10^8\)</span> 对，乘以 <span class="arithmatex">\(|Q| \le 20\)</span> 个查询是 <span class="arithmatex">\(4 \times 10^9\)</span> 次比较——必然超时。问题因此变成：<strong>如何在不逐对枚举的前提下，数出满足条件的对数。</strong></p>
+<p>要避免枚举，先要把 <span class="arithmatex">\(\text{incident}(a, b)\)</span> 写成只依赖少量可预计算量的形式。考虑连到 <span class="arithmatex">\(a\)</span> 或 <span class="arithmatex">\(b\)</span> 的所有边：连到 <span class="arithmatex">\(a\)</span> 的有 <span class="arithmatex">\(\deg(a)\)</span> 条，连到 <span class="arithmatex">\(b\)</span> 的有 <span class="arithmatex">\(\deg(b)\)</span> 条。若把这两组直接相加，那些两端恰好是 <span class="arithmatex">\(a\)</span> 和 <span class="arithmatex">\(b\)</span> 的边（即 <span class="arithmatex">\(a\)</span>–<span class="arithmatex">\(b\)</span> 之间的边）会被数两次——一次记在 <span class="arithmatex">\(\deg(a)\)</span> 里，一次记在 <span class="arithmatex">\(\deg(b)\)</span> 里。设这类边有 <span class="arithmatex">\(c_{ab}\)</span> 条，扣掉重复计数即得 <span class="arithmatex">\(\text{incident}(a, b) = \deg(a) + \deg(b) - c_{ab}\)</span>。这条恒等式把每对的判定从「遍历邻接表」降为「查三个数」，是后续一切的支点。</p>
 <h2 id="formulation">形式化 (Formulation)<a class="headerlink" href="#formulation" title="Permanent link">#</a></h2>
-<p>设 <span class="arithmatex">\(d_v = \deg(v)\)</span>，<span class="arithmatex">\(c_{uv}\)</span> = <span class="arithmatex">\(u, v\)</span> 之间边数（<span class="arithmatex">\(u \ne v\)</span>）。</p>
+<p>设 <span class="arithmatex">\(d_v = \deg(v)\)</span>，<span class="arithmatex">\(c_{uv}\)</span> = <span class="arithmatex">\(u, v\)</span> 之间的边数（<span class="arithmatex">\(u \ne v\)</span>，对无序对计；不存在则为 <span class="arithmatex">\(0\)</span>）。由上面的双重计数论证：</p>
 <div class="arithmatex">\[\text{incident}(a, b) = d_a + d_b - c_{ab}\]</div>
-<p>对每个 <span class="arithmatex">\(q\)</span> 求 <span class="arithmatex">\(|\{(a, b) : a &lt; b,\; d_a + d_b - c_{ab} &gt; q\}|\)</span>。</p>
+<p>对每个 <span class="arithmatex">\(q\)</span> 求</p>
+<div class="arithmatex">\[C(q) = |\{(a, b) : a &lt; b,\; d_a + d_b - c_{ab} &gt; q\}|.\]</div>
+<p>这个形式化的关键结构在于：判据 <span class="arithmatex">\(d_a + d_b - c_{ab} &gt; q\)</span> 由两部分组成。第一部分 <span class="arithmatex">\(d_a + d_b\)</span> 只依赖两个端点各自的度数，与具体配对的「身份」无关——对任意度数相同的两点，它取值相同，因此可以排序后批量处理。第二部分 <span class="arithmatex">\(-c_{ab}\)</span> 是稀疏的：<span class="arithmatex">\(c_{ab} &gt; 0\)</span> 仅当 <span class="arithmatex">\(a\)</span> 与 <span class="arithmatex">\(b\)</span> 之间真有边，这样的无序对至多 <span class="arithmatex">\(|E|\)</span> 个。下一节正是沿这条「可排序主项 + 稀疏修正项」的分解展开算法。</p>
 <h2 id="approach">数据结构 / 想法 (Approach)<a class="headerlink" href="#approach" title="Permanent link">#</a></h2>
-<p><strong>步骤</strong>：
+<p>把判据拆成主项与修正项后，自然得到两步策略：先在忽略 <span class="arithmatex">\(c_{ab}\)</span> 的近似判据下数对，再对稀疏的差异处逐个修正。</p>
+<p><strong>第一步：粗估 <span class="arithmatex">\(d_a + d_b &gt; q\)</span> 的对数。</strong> 暂时丢弃 <span class="arithmatex">\(-c_{ab}\)</span>，数满足 <span class="arithmatex">\(d_a + d_b &gt; q\)</span> 的对 <span class="arithmatex">\((a, b)\)</span>。把度数排序为 <span class="arithmatex">\(d_{\sigma(0)} \le d_{\sigma(1)} \le \dots \le d_{\sigma(n-1)}\)</span>（记排序后数组为 <code>sd</code>），则要数的是</p>
+<div class="arithmatex">\[\bar{C}(q) = |\{(i, j) : i &lt; j,\; \mathtt{sd}[i] + \mathtt{sd}[j] &gt; q\}|.\]</div>
+<p>排序使主项满足单调性，这正是双指针能取代逐对枚举的原因。令 <span class="arithmatex">\(i\)</span> 从左、<span class="arithmatex">\(j\)</span> 从右。当 <span class="arithmatex">\(\mathtt{sd}[i] + \mathtt{sd}[j] &gt; q\)</span> 时，由 <code>sd</code> 递增，对每个 <span class="arithmatex">\(i \le k &lt; j\)</span> 也有 <span class="arithmatex">\(\mathtt{sd}[k] \ge \mathtt{sd}[i]\)</span>，故 <span class="arithmatex">\(\mathtt{sd}[k] + \mathtt{sd}[j] &gt; q\)</span>；于是下标 <span class="arithmatex">\(i, i+1, \dots, j-1\)</span> 都能与 <span class="arithmatex">\(j\)</span> 配成满足条件的对，共 <span class="arithmatex">\(j - i\)</span> 对。一次记下这 <span class="arithmatex">\(j - i\)</span> 对，令 <span class="arithmatex">\(j \mathrel{-}= 1\)</span> 转去处理次大的右端。反之若 <span class="arithmatex">\(\mathtt{sd}[i] + \mathtt{sd}[j] \le q\)</span>，由于 <span class="arithmatex">\(j\)</span> 已是最大可用右端，固定 <span class="arithmatex">\(i\)</span> 时任何更小的右端只会让和更小，故左端 <span class="arithmatex">\(i\)</span> 不可能与任何 <span class="arithmatex">\(\le j\)</span> 的右端成对，令 <span class="arithmatex">\(i \mathrel{+}= 1\)</span> 丢弃它。每步恰推进一个指针，<span class="arithmatex">\(O(n)\)</span> 完成计数。</p>
+<p><strong>第二步：对跨越边界的共享边对做修正。</strong> 粗估用 <span class="arithmatex">\(d_u + d_v &gt; q\)</span> 代替了精确判据 <span class="arithmatex">\(d_u + d_v - c_{uv} &gt; q\)</span>。两者仅在 <span class="arithmatex">\(c_{uv} &gt; 0\)</span> 的对上可能不同。对这样一对 <span class="arithmatex">\((u, v)\)</span>：粗估把它计入当且仅当 <span class="arithmatex">\(d_u + d_v &gt; q\)</span>；精确判据接受它当且仅当 <span class="arithmatex">\(d_u + d_v - c_{uv} &gt; q\)</span>。于是 <span class="arithmatex">\((u, v)\)</span> 被粗估<strong>多计</strong>，当且仅当它通过粗阈值但未过精确阈值，即</p>
+<div class="arithmatex">\[d_u + d_v &gt; q \quad\text{且}\quad d_u + d_v - c_{uv} \le q.\]</div>
+<p>每个这样的对正好让 <span class="arithmatex">\(\bar{C}(q)\)</span> 比 <span class="arithmatex">\(C(q)\)</span> 多 <span class="arithmatex">\(1\)</span>，扣除 <span class="arithmatex">\(1\)</span> 即可。由于差异只可能发生在 <span class="arithmatex">\(c_{uv} &gt; 0\)</span> 的对上，而这些对至多 <span class="arithmatex">\(|E|\)</span> 个，遍历共享边字典即可穷尽修正，无需触及其余 <span class="arithmatex">\(\binom{n}{2}\)</span> 对。</p>
+<p><strong>步骤汇总</strong>：
 1. 计算 <code>deg[1..n]</code> 与 <code>shared[(min,max)]</code> (用字典，仅记存在重边或单边的有序对)。
 2. 排序 <code>degSorted = sorted(deg[1..n])</code>。
-3. 对每查询 <span class="arithmatex">\(q\)</span>：
-   - <strong>粗估</strong> <span class="arithmatex">\(C_q\)</span> = 对 <span class="arithmatex">\((a, b)\)</span> 使 <span class="arithmatex">\(d_a + d_b &gt; q\)</span> 的数量，用双指针：<span class="arithmatex">\(i\)</span> 从左，<span class="arithmatex">\(j\)</span> 从右，若 <code>degSorted[i] + degSorted[j] &gt; q</code>，则 <span class="arithmatex">\(j\)</span> 配 <span class="arithmatex">\(i+1..j-1\)</span> 共 <span class="arithmatex">\(j - i\)</span> 个，<span class="arithmatex">\(j \mathrel{-}= 1\)</span>；否则 <span class="arithmatex">\(i \mathrel{+}= 1\)</span>。
-   - <strong>修正</strong>：遍历每对存在共享边的 <span class="arithmatex">\((u, v)\)</span>，若 <span class="arithmatex">\(d_u + d_v &gt; q\)</span> 但 <span class="arithmatex">\(d_u + d_v - c_{uv} \le q\)</span>，则 <span class="arithmatex">\(C_q \mathrel{-}= 1\)</span>。
-4. 输出 <span class="arithmatex">\(C_q\)</span>。</p>
+3. 对每查询 <span class="arithmatex">\(q\)</span>：先用双指针求粗估 <span class="arithmatex">\(\bar{C}(q)\)</span>；再遍历共享边对，对满足 <span class="arithmatex">\(d_u + d_v &gt; q\)</span> 且 <span class="arithmatex">\(d_u + d_v - c_{uv} \le q\)</span> 的对各扣 <span class="arithmatex">\(1\)</span>。
+4. 输出修正后的 <span class="arithmatex">\(C(q)\)</span>。</p>
 <div class="language-python highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">Solution</span><span class="p">:</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">countPairs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">edges</span><span class="p">,</span> <span class="n">queries</span><span class="p">):</span>
         <span class="kn">from</span><span class="w"> </span><span class="nn">collections</span><span class="w"> </span><span class="kn">import</span> <span class="n">defaultdict</span>
@@ -22513,7 +22548,7 @@
             <span class="n">ans</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">cnt</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">ans</span>
 </code></pre></div>
-<p><strong>心算 trace 示例 1</strong>: n=4, edges=[[1,2],[2,4],[1,3],[2,3],[2,1]], queries=[2,3]
+<p><strong>验证 trace 示例 1</strong>: n=4, edges=[[1,2],[2,4],[1,3],[2,3],[2,1]], queries=[2,3]
 - deg: d1=3 (含 (1,2)x2 和 (1,3)), d2=4 (含 (1,2)x2, (2,4), (2,3)), d3=2, d4=1
   - 重新：edge list: (1,2), (2,4), (1,3), (2,3), (2,1) → 五条边
   - deg[1] = 共出现 (1,2) (1,3) (2,1) = 3
@@ -22533,13 +22568,14 @@
 <li>总：<span class="arithmatex">\(O(n \log n + (n + |E|) |Q|)\)</span> ≈ <span class="arithmatex">\(2 \times 10^4 \log + 1.2 \times 10^5 \cdot 20 \approx 2.4 \times 10^6\)</span>。</li>
 </ul>
 <h2 id="pitfalls">陷阱 (Pitfalls)<a class="headerlink" href="#pitfalls" title="Permanent link">#</a></h2>
-<ul>
-<li><strong>粗估双指针逻辑</strong>：当 <code>sd[i] + sd[j] &gt; q</code> 时，<span class="arithmatex">\(j\)</span> 配的合法伙伴是 <span class="arithmatex">\(i, i+1, \dots, j-1\)</span> 共 <span class="arithmatex">\(j - i\)</span> 个；然后 <span class="arithmatex">\(j \mathrel{-}= 1\)</span>（不是 <span class="arithmatex">\(i\)</span> 加）。</li>
-<li><strong>shared 必须用规范化键</strong> <code>(min(u,v), max(u,v))</code>：否则同条边两端顺序不同导致两份计数。</li>
-<li><strong>修正条件</strong>：只在 <em>跨过 <span class="arithmatex">\(q\)</span></em> 的边对扣除（粗估认为 &gt; q，精确 ≤ q）。</li>
-<li><strong>degSorted 索引 1 起还是 0 起</strong>：用 <code>deg[1:]</code> 排序，避免 deg[0]=0 干扰。</li>
-<li><strong>不要枚举所有 <span class="arithmatex">\(\binom{n}{2}\)</span> 对</strong>：<span class="arithmatex">\(n = 2 \times 10^4\)</span> 则 <span class="arithmatex">\(2 \times 10^8\)</span>，超时。</li>
-</ul>
+<p><strong>算法正确性</strong>：
+- <strong>双指针计数方向</strong>：当 <code>sd[i] + sd[j] &gt; q</code> 时，与 <span class="arithmatex">\(j\)</span> 成对的合法左端是 <span class="arithmatex">\(i, i+1, \dots, j-1\)</span> 共 <span class="arithmatex">\(j - i\)</span> 个，随后 <span class="arithmatex">\(j \mathrel{-}= 1\)</span>；而非推进 <span class="arithmatex">\(i\)</span>。推错指针会漏计或重计。
+- <strong>修正条件的方向</strong>：只对 <em>跨过 <span class="arithmatex">\(q\)</span></em> 的共享边对扣除——即粗估认为 <span class="arithmatex">\(&gt; q\)</span>（<span class="arithmatex">\(d_u + d_v &gt; q\)</span>）但精确 <span class="arithmatex">\(\le q\)</span>（<span class="arithmatex">\(d_u + d_v - c_{uv} \le q\)</span>）。把不等号方向搞反会扣错对。
+- <strong>修正只遍历共享边对</strong>：差异仅发生在 <span class="arithmatex">\(c_{uv} &gt; 0\)</span> 处，遍历共享边字典即穷尽；切勿误以为还需扫其余对。</p>
+<p><strong>实现细节</strong>：
+- <strong>shared 必须用规范化键</strong> <code>(min(u,v), max(u,v))</code>：否则同条边两端顺序不同会被拆成两个键，修正失效。
+- <strong>degSorted 从节点 1 起</strong>：用 <code>deg[1:]</code> 排序，丢弃 <code>deg[0]</code>，否则索引 0 处的度数 0 会作为一个伪节点混入计数。
+- <strong>不要枚举所有 <span class="arithmatex">\(\binom{n}{2}\)</span> 对</strong>：<span class="arithmatex">\(n = 2 \times 10^4\)</span> 则约 <span class="arithmatex">\(2 \times 10^8\)</span> 对，乘查询数即超时——整套分解正是为绕开它。</p>
 <h2 id="related">相关题目 (Related)<a class="headerlink" href="#related" title="Permanent link">#</a></h2>
 <ul>
 <li><code>#1711. Count Good Meals (off-wiki)</code> — 度数 / 频次配对计数。</li>
@@ -22655,6 +22691,8 @@
         <script src="../../../js/mathjax/tex-mml-chtml.js"></script>
       
         <script src="../../../js/mermaid.min.js"></script>
+      
+        <script src="../../../js/featured.js"></script>
       
     
   </body>

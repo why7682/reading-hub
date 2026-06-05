@@ -1466,6 +1466,8 @@
       
         
       
+        
+      
     
     
     
@@ -1521,6 +1523,34 @@
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../featured/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ⭐ Featured（已验证）
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
               
             
               
@@ -1610,10 +1640,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_4" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
         
           
-          <label class="md-nav__link" for="__nav_4_4" id="__nav_4_4_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_5" id="__nav_4_5_label" tabindex="">
             
   
   
@@ -1631,8 +1661,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_4_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_4">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_5">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1915,7 +1945,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -1937,14 +1967,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_4_5" id="__nav_4_5_label" tabindex="">
+              <label class="md-nav__link " for="__nav_4_6" id="__nav_4_6_label" tabindex="">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_5">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_6">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -5321,10 +5351,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_7" checked>
         
           
-          <label class="md-nav__link" for="__nav_4_6" id="__nav_4_6_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_7" id="__nav_4_7_label" tabindex="">
             
   
   
@@ -5342,8 +5372,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_4_6">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_7_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4_7">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -22467,26 +22497,42 @@
 <h2 id="problem">Problem<a class="headerlink" href="#problem" title="Permanent link">#</a></h2>
 <p>给两串 <code>a, b</code>（仅小写字母，<span class="arithmatex">\(\leq 100\)</span>），返回它们<strong>最长"非公共"子序列</strong>的长度（即只是其中一者的子序列，不是另一者的）；不存在则 -1。</p>
 <h2 id="background">背景 (Background)<a class="headerlink" href="#background" title="Permanent link">#</a></h2>
-<p>题目看似涉及子序列匹配（与 LCS / LCS 反问题相关），但答案只有两种平凡情形：若 <span class="arithmatex">\(a = b\)</span>，任何 <span class="arithmatex">\(a\)</span> 的子序列也是 <span class="arithmatex">\(b\)</span> 的子序列，没有非公共子序列；若 <span class="arithmatex">\(a \neq b\)</span>，更长的那个字符串本身就是合法答案（它是自己的子序列，但不是较短/不同串的子序列）。这是"陷阱型"Easy 题——题面诱导你想 DP，其实只需一行判断。</p>
+<p>先把目标量化。任何"非公共子序列"必须是 <span class="arithmatex">\(a\)</span> 或 <span class="arithmatex">\(b\)</span> 之一的子序列，因此它的长度受限于它所在的那个串：<span class="arithmatex">\(a\)</span> 的子序列长度 <span class="arithmatex">\(\leq |a|\)</span>，<span class="arithmatex">\(b\)</span> 的子序列长度 <span class="arithmatex">\(\leq |b|\)</span>。于是无论答案是谁，它都满足
+$<span class="arithmatex">\(\text{ans} \leq \max(|a|, |b|).\)</span>$
+这给了一个上界，但上界本身不解题——我们需要知道它能否被取到。</p>
+<p>要取到这个上界，最自然的候选就是较长串自身：它是自己的一个子序列，长度恰为 <span class="arithmatex">\(\max(|a|,|b|)\)</span>。问题只剩一个——它是否"非公共"？不妨设 <span class="arithmatex">\(|a| \geq |b|\)</span>，则候选为 <span class="arithmatex">\(a\)</span>，需要判断 <span class="arithmatex">\(a\)</span> 是否同时是 <span class="arithmatex">\(b\)</span> 的子序列。</p>
+<p>这一步是全题的枢纽，关键在于一个关于等长子序列的事实：<strong>一个串是另一个等长串的子序列，当且仅当两串相等</strong>。理由是，子序列只能删字符不能换字符；若不删任何字符（等长所迫），就只能原样保留。把这个事实用到候选 <span class="arithmatex">\(a\)</span> 上：</p>
+<ul>
+<li>若 <span class="arithmatex">\(a\)</span> 是 <span class="arithmatex">\(b\)</span> 的子序列，则 <span class="arithmatex">\(|a| \leq |b|\)</span>；结合假设 <span class="arithmatex">\(|a| \geq |b|\)</span> 得 <span class="arithmatex">\(|a| = |b|\)</span>。再由上述等长事实，<span class="arithmatex">\(a\)</span> 是等长串 <span class="arithmatex">\(b\)</span> 的子序列迫使 <span class="arithmatex">\(a = b\)</span>。</li>
+<li>反过来，只要 <span class="arithmatex">\(a \neq b\)</span>，候选 <span class="arithmatex">\(a\)</span> 就不可能是 <span class="arithmatex">\(b\)</span> 的子序列，于是 <span class="arithmatex">\(a\)</span> 本身就是一个合法的非公共子序列，长度 <span class="arithmatex">\(\max(|a|,|b|)\)</span>，恰好打满上界。</li>
+</ul>
+<p>剩下的就是上界取不到的唯一情形：<span class="arithmatex">\(a = b\)</span>。此时 <span class="arithmatex">\(a\)</span> 的任何子序列都同时是 <span class="arithmatex">\(b\)</span> 的子序列（它们是同一个串），不存在非公共子序列，答案为 <span class="arithmatex">\(-1\)</span>。</p>
+<p>至此整条推理闭合：答案被夹在 <span class="arithmatex">\(\max(|a|,|b|)\)</span> 这个上界上，是否取到只取决于 <span class="arithmatex">\(a\)</span> 与 <span class="arithmatex">\(b\)</span> 是否相等。</p>
 <h2 id="formulation">形式化 (Formulation)<a class="headerlink" href="#formulation" title="Permanent link">#</a></h2>
+<p>把上面的结论写成判别式：当 <span class="arithmatex">\(a \neq b\)</span>，较长串自身即是最长非公共子序列；当 <span class="arithmatex">\(a = b\)</span>，无非公共子序列。</p>
 <div class="arithmatex">\[\text{ans} = \begin{cases} -1 &amp; a = b \\ \max(|a|, |b|) &amp; a \neq b \end{cases}\]</div>
+<p>整个问题因此坍缩为一次串相等判断，不需要任何子序列匹配或 DP。</p>
 <h2 id="approach">数据结构 / 想法 (Approach)<a class="headerlink" href="#approach" title="Permanent link">#</a></h2>
+<p>形式化直接给出实现：判一次相等，否则返回较长长度。</p>
 <div class="language-python highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">Solution</span><span class="p">:</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">findLUSlength</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">a</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">b</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
         <span class="k">return</span> <span class="o">-</span><span class="mi">1</span> <span class="k">if</span> <span class="n">a</span> <span class="o">==</span> <span class="n">b</span> <span class="k">else</span> <span class="nb">max</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">a</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">b</span><span class="p">))</span>
 </code></pre></div>
-<p><strong>为什么对</strong>：
-- 若 <span class="arithmatex">\(a = b\)</span>：任何 <span class="arithmatex">\(a\)</span> 的子序列等于 <span class="arithmatex">\(b\)</span> 的某子序列（自身），无非公共。
-- 若 <span class="arithmatex">\(a \neq b\)</span> 且不失一般性 <span class="arithmatex">\(|a| \geq |b|\)</span>：取 <span class="arithmatex">\(a\)</span> 整体作为子序列。它若同时是 <span class="arithmatex">\(b\)</span> 的子序列，则 <span class="arithmatex">\(|a| \leq |b|\)</span> 且字符匹配 → <span class="arithmatex">\(a = b\)</span>（与假设矛盾，因为 <span class="arithmatex">\(|a|=|b|\)</span> 时子序列等于全串等于 <span class="arithmatex">\(b\)</span>）。所以 <span class="arithmatex">\(a\)</span> 不是 <span class="arithmatex">\(b\)</span> 的子序列 → <span class="arithmatex">\(a\)</span> 是合法非公共子序列。
-- 长度不能更大（任何串子序列长度 <span class="arithmatex">\(\leq\)</span> 该串长 <span class="arithmatex">\(\leq \max(|a|,|b|)\)</span>）。</p>
-<h2 id="complexity">复杂度 (Complexity)<a class="headerlink" href="#complexity" title="Permanent link">#</a></h2>
+<p>逐分支对照形式化即是正确性证明：</p>
 <ul>
-<li>Time: <span class="arithmatex">\(O(\max(|a|, |b|))\)</span>（字符串比较）</li>
+<li><span class="arithmatex">\(a = b\)</span> 分支：两串相同，<span class="arithmatex">\(a\)</span> 的子序列就是 <span class="arithmatex">\(b\)</span> 的子序列，非公共集合为空 → <span class="arithmatex">\(-1\)</span>。</li>
+<li><span class="arithmatex">\(a \neq b\)</span> 分支：不妨 <span class="arithmatex">\(|a| \geq |b|\)</span>，候选 <span class="arithmatex">\(a\)</span> 是 <span class="arithmatex">\(b\)</span> 的子序列会迫使 <span class="arithmatex">\(|a| = |b|\)</span> 且 <span class="arithmatex">\(a = b\)</span>，与 <span class="arithmatex">\(a \neq b\)</span> 矛盾；故 <span class="arithmatex">\(a\)</span> 非公共，长度 <span class="arithmatex">\(\max(|a|,|b|)\)</span>。</li>
+<li>上界封顶：任何非公共子序列长度 <span class="arithmatex">\(\leq\)</span> 其所在串长 <span class="arithmatex">\(\leq \max(|a|,|b|)\)</span>，故不可能更长。</li>
+</ul>
+<h2 id="complexity">复杂度 (Complexity)<a class="headerlink" href="#complexity" title="Permanent link">#</a></h2>
+<p>主导操作是串相等比较 <code>a == b</code>，最坏情况扫完整串。</p>
+<ul>
+<li>Time: <span class="arithmatex">\(O(\max(|a|, |b|))\)</span></li>
 <li>Space: <span class="arithmatex">\(O(1)\)</span></li>
 </ul>
 <h2 id="pitfalls">陷阱 (Pitfalls)<a class="headerlink" href="#pitfalls" title="Permanent link">#</a></h2>
 <ul>
-<li><strong>被题面误导写 DP</strong>：阅读题面后先举几个小例子（如题目提示给的 <code>"aba", "cdc"</code> → 3）观察规律，再编码。</li>
+<li><strong>误以为需要子序列匹配</strong>：先把答案的上界 <span class="arithmatex">\(\max(|a|,|b|)\)</span> 写出来，再问"能否取到"，结论会自动落到一次相等判断上，不必启动 DP。可用题目示例（<code>"aba", "cdc"</code> → 3）先验证再编码。</li>
 <li><strong>大小写</strong>：题目限定小写字母，无需 case-fold。</li>
 </ul>
 <h2 id="related">相关题目 (Related)<a class="headerlink" href="#related" title="Permanent link">#</a></h2>
@@ -22601,6 +22647,8 @@
         <script src="../../../js/mathjax/tex-mml-chtml.js"></script>
       
         <script src="../../../js/mermaid.min.js"></script>
+      
+        <script src="../../../js/featured.js"></script>
       
     
   </body>

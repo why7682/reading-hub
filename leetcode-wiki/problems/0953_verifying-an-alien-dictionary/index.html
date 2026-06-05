@@ -1466,6 +1466,8 @@
       
         
       
+        
+      
     
     
     
@@ -1521,6 +1523,34 @@
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../featured/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ⭐ Featured（已验证）
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
               
             
               
@@ -1610,10 +1640,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_4" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
         
           
-          <label class="md-nav__link" for="__nav_4_4" id="__nav_4_4_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_5" id="__nav_4_5_label" tabindex="">
             
   
   
@@ -1631,8 +1661,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_4_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_4">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_5">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1915,7 +1945,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -1937,14 +1967,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_4_5" id="__nav_4_5_label" tabindex="">
+              <label class="md-nav__link " for="__nav_4_6" id="__nav_4_6_label" tabindex="">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_5">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_6">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -5321,10 +5351,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_7" checked>
         
           
-          <label class="md-nav__link" for="__nav_4_6" id="__nav_4_6_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_7" id="__nav_4_7_label" tabindex="">
             
   
   
@@ -5342,8 +5372,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_4_6">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_7_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4_7">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -22469,33 +22499,52 @@
 <h2 id="background">背景 (Background)<a class="headerlink" href="#background" title="Permanent link">#</a></h2>
 <p>本题为基础字典序判定，无特殊学科背景。它是 #269 <em>Alien Dictionary</em> 的<strong>逆向</strong>版（那题要从已排序列表恢复字母序，是拓扑排序题）。</p>
 <h2 id="formulation">形式化 (Formulation)<a class="headerlink" href="#formulation" title="Permanent link">#</a></h2>
-<p>给排列 <span class="arithmatex">\(\sigma : \{a, \dots, z\} \to \{0, \dots, 25\}\)</span>，把每个单词重映射为整数序列后判全局字典升序。</p>
+<p>先看朴素做法在哪里崩。最直接的想法是：直接拿 Python 的内置 <code>&lt;</code> 比较相邻单词。但 <code>&lt;</code> 比较字符串时用的是 Unicode 码点，也就是标准字母序，而不是外星序。取第一个样例的 <code>order = "hlabcdefgijkmnopqrstuvwxyz"</code>：外星序里 <code>h</code> 排在 <code>l</code> 前面，所以 <code>"hello" &lt; "leetcode"</code> 应当成立；但标准序里 <code>'h'</code> 的码点大于 <code>'l'</code>，内置 <code>&lt;</code> 会判定 <code>"hello" &gt; "leetcode"</code>，得出相反结论。朴素做法答错，因为它比的是错的字母序。</p>
+<p>崩溃点指明了修法：在比较前，把每个字符替换成它在外星序中的位置。一旦每个字符都换成了它的外星排名，剩下的就是对整数序列做标准字典序比较——与具体字母无关。</p>
+<p>这给出形式化。外星字典定义了一个双射，把 26 个字母映到 <span class="arithmatex">\(\{0, \dots, 25\}\)</span>：</p>
+<div class="arithmatex">\[\sigma : \{a, \dots, z\} \to \{0, \dots, 25\}, \qquad \sigma(c) = c \text{ 在 } \texttt{order} \text{ 中的下标}.\]</div>
+<p>把每个单词 <span class="arithmatex">\(w = w_0 w_1 \cdots\)</span> 沿用 <span class="arithmatex">\(\sigma\)</span> 逐字符重映射，得到整数序列</p>
+<div class="arithmatex">\[r(w) = \big(\sigma(w_0),\, \sigma(w_1),\, \dots\big).\]</div>
+<p>在外星序下 <span class="arithmatex">\(w\)</span> 不大于 <span class="arithmatex">\(w'\)</span>，当且仅当 <span class="arithmatex">\(r(w)\)</span> 在标准整数字典序下不大于 <span class="arithmatex">\(r(w')\)</span>，记作 <span class="arithmatex">\(r(w) \le_{\text{lex}} r(w')\)</span>。于是判定目标是：</p>
+<div class="arithmatex">\[r(\text{words}[i]) \;\le_{\text{lex}}\; r(\text{words}[i+1]) \qquad \text{对所有相邻对 } i.\]</div>
+<p>为什么只查相邻对就够？<span class="arithmatex">\(\le_{\text{lex}}\)</span> 是全序，因而可传递；若每个相邻对都满足，传递性即保证整张列表升序。无须比较所有 <span class="arithmatex">\(\binom{n}{2}\)</span> 对。</p>
 <h2 id="approach">数据结构 / 想法 (Approach)<a class="headerlink" href="#approach" title="Permanent link">#</a></h2>
-<p>建立 <code>rank[ch] = order.index(ch)</code>，相邻单词比较：逐字符比较 rank；首个不等处决出大小；若一短一长完全匹配前缀，长者大才合法。</p>
+<p>形式化把算法的两个零件直接交到手上：一是计算 <span class="arithmatex">\(\sigma\)</span> 的查表结构，二是 <span class="arithmatex">\(\le_{\text{lex}}\)</span> 的判定过程。</p>
+<p><span class="arithmatex">\(\sigma\)</span> 即「字符到外星排名」的映射。<code>order.index(ch)</code> 每次查询是 <span class="arithmatex">\(O(26)\)</span>；用 <code>enumerate</code> 一次扫描建成字典 <code>rank[ch] = i</code>，查询降到 <span class="arithmatex">\(O(1)\)</span>。代码中的 <code>rank</code> 就是 <span class="arithmatex">\(\sigma\)</span> 的计算实现。</p>
+<p>接着把 <span class="arithmatex">\(\le_{\text{lex}}\)</span> 写成可执行的判定。给两个单词 <span class="arithmatex">\(a, b\)</span>，从头逐位比较它们的外星排名：</p>
+<ol>
+<li>在第一个排名不等的位置 <span class="arithmatex">\(k\)</span>（即 <span class="arithmatex">\(\sigma(a_k) \ne \sigma(b_k)\)</span>）决出大小——若 <span class="arithmatex">\(\sigma(a_k) &lt; \sigma(b_k)\)</span> 则 <span class="arithmatex">\(a \le b\)</span> 成立，否则不成立。</li>
+<li>若一直比到短词末尾都相等，则两序列是前缀关系，由长度决出：短者（或等长）不大于长者，即 <span class="arithmatex">\(a \le b\)</span> 当且仅当 <span class="arithmatex">\(|a| \le |b|\)</span>。</li>
+</ol>
+<p>第 2 条正是这道题的要害，必须在写代码前看清。当一个单词是另一个的前缀时，逐位比较扫不出任何区分位，长度成为唯一的裁决依据。短者合法地排在前，因为它的任何延长在字典序下都更大；反之若长者排在前（如 <code>"apple"</code> 排在 <code>"app"</code> 之前），则非法。这条规则不是事后补丁，而是 <span class="arithmatex">\(\le_{\text{lex}}\)</span> 定义在「无区分位」边界上的取值，对应代码末行的 <code>len(a) &lt;= len(b)</code>。</p>
+<p>下面的 <code>le(a, b)</code> 是上述两条的直接翻译：<code>zip</code> 逐位比较排名，首个不等处返回大小（第 1 条）；循环走完未决出，则回退到长度比较（第 2 条）。外层 <code>all(...)</code> 遍历所有相邻对。</p>
 <div class="language-python highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">Solution</span><span class="p">:</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">isAlienSorted</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">words</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">order</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
-        <span class="n">rank</span> <span class="o">=</span> <span class="p">{</span><span class="n">ch</span><span class="p">:</span> <span class="n">i</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">ch</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">order</span><span class="p">)}</span>
-        <span class="k">def</span><span class="w"> </span><span class="nf">le</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
+        <span class="n">rank</span> <span class="o">=</span> <span class="p">{</span><span class="n">ch</span><span class="p">:</span> <span class="n">i</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">ch</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">order</span><span class="p">)}</span>   <span class="c1"># rank = σ</span>
+        <span class="k">def</span><span class="w"> </span><span class="nf">le</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>                                   <span class="c1"># a ≤_lex b ?</span>
             <span class="k">for</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
                 <span class="k">if</span> <span class="n">rank</span><span class="p">[</span><span class="n">x</span><span class="p">]</span> <span class="o">!=</span> <span class="n">rank</span><span class="p">[</span><span class="n">y</span><span class="p">]:</span>
-                    <span class="k">return</span> <span class="n">rank</span><span class="p">[</span><span class="n">x</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">rank</span><span class="p">[</span><span class="n">y</span><span class="p">]</span>
-            <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="n">a</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="nb">len</span><span class="p">(</span><span class="n">b</span><span class="p">)</span>
+                    <span class="k">return</span> <span class="n">rank</span><span class="p">[</span><span class="n">x</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">rank</span><span class="p">[</span><span class="n">y</span><span class="p">]</span>            <span class="c1"># 首个区分位决出</span>
+            <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="n">a</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="nb">len</span><span class="p">(</span><span class="n">b</span><span class="p">)</span>                     <span class="c1"># 前缀关系，长度裁决</span>
         <span class="k">return</span> <span class="nb">all</span><span class="p">(</span><span class="n">le</span><span class="p">(</span><span class="n">words</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">words</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">])</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">words</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">))</span>
 </code></pre></div>
-<p>样例：
-- <code>["hello","leetcode"], order="hlabcdefgijkmnopqrstuvwxyz"</code>: rank[h]=0, rank[l]=1，<code>h&lt;l</code> → "hello" &lt; "leetcode"。✓ True
-- <code>["word","world","row"], order="worldabcefghijkmnpqstuvxyz"</code>: word vs world：w=w,o=o,r=r,d vs l → rank[d]=4, rank[l]=3，d&gt;l，违例 → False。✓
-- <code>["apple","app"]</code>: 前缀相同，len(5)&gt;len(3) → False。✓</p>
+<p>回到形式化，逐个样例验证三种情形：</p>
+<ul>
+<li><strong>首个区分位决出（第 1 条）</strong>：<code>["hello","leetcode"]</code>，<code>order="hlabcdefgijkmnopqrstuvwxyz"</code>。首位 <code>h</code> vs <code>l</code>，<span class="arithmatex">\(\sigma(h)=0 &lt; \sigma(l)=1\)</span>，故 <code>"hello" ≤ "leetcode"</code>，列表合法，返回 <code>True</code>。这正是朴素 <code>&lt;</code> 答错的那个例子，被排名重映射纠正。</li>
+<li><strong>区分位违例（第 1 条）</strong>：<code>["word","world","row"]</code>，<code>order="worldabcefghijkmnpqstuvxyz"</code>。比 <code>word</code> 与 <code>world</code>：<code>w,o,r</code> 相等，到第 4 位 <code>d</code> vs <code>l</code>，<span class="arithmatex">\(\sigma(d)=4 &gt; \sigma(l)=3\)</span>，故 <code>word &gt; world</code>，相邻对违例，返回 <code>False</code>。</li>
+<li><strong>前缀关系裁决（第 2 条）</strong>：<code>["apple","app"]</code>。<code>zip</code> 走完 <code>app</code> 三位全等，未决出；回退长度，<span class="arithmatex">\(|apple|=5 &gt; |app|=3\)</span>，故 <code>"apple" &gt; "app"</code>，非法，返回 <code>False</code>。</li>
+</ul>
 <h2 id="complexity">复杂度 (Complexity)<a class="headerlink" href="#complexity" title="Permanent link">#</a></h2>
 <ul>
-<li>Time: <span class="arithmatex">\(O(\sum |\text{words}[i]|)\)</span></li>
+<li>Time: <span class="arithmatex">\(O(\sum |\text{words}[i]|)\)</span>——建 <code>rank</code> 是 <span class="arithmatex">\(O(26)\)</span>；每个相邻对至多比较两词的较短长度，总量受所有单词长度之和约束。首个区分位早退只省常数因子。</li>
 <li>Space: <span class="arithmatex">\(O(26) = O(1)\)</span> for rank</li>
 </ul>
 <h2 id="pitfalls">陷阱 (Pitfalls)<a class="headerlink" href="#pitfalls" title="Permanent link">#</a></h2>
 <ul>
-<li><strong>前缀关系</strong>：若一词是另一词的前缀且更长，则更长者在字典中<strong>更大</strong>；短者排在前合法，反之非法。</li>
-<li>不要直接用 Python 默认 <code>&lt;</code> 比较——那是 ASCII 序，不是外星序。</li>
-<li><code>rank</code> 必须覆盖 26 字母（由 <code>order.length == 26</code> 保证）。</li>
+<li><strong>前缀关系</strong>：若一词是另一词的前缀且更长，则更长者在字典中<strong>更大</strong>；短者排在前合法，反之非法。这是上面第 2 条裁决规则，已在推导中给出，不是额外的特例。</li>
+<li>不要直接用 Python 默认 <code>&lt;</code> 比较——那是 Unicode 码点序，不是外星序。本题的整个重映射就是为了绕开它（见 形式化 开头的反例）。</li>
+<li>建 <code>rank</code> 用 <code>enumerate</code> 而非 <code>order.index(ch)</code>：后者每查 <span class="arithmatex">\(O(26)\)</span>，会把整体退化。</li>
+<li><code>rank</code> 必须覆盖 26 字母（由 <code>order.length == 26</code> 保证）；<code>words</code> 只含小写字母，故不会 <code>KeyError</code>。</li>
 </ul>
 <h2 id="related">相关题目 (Related)<a class="headerlink" href="#related" title="Permanent link">#</a></h2>
 <ul>
@@ -22609,6 +22658,8 @@
         <script src="../../../js/mathjax/tex-mml-chtml.js"></script>
       
         <script src="../../../js/mermaid.min.js"></script>
+      
+        <script src="../../../js/featured.js"></script>
       
     
   </body>

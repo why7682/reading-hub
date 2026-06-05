@@ -1466,6 +1466,8 @@
       
         
       
+        
+      
     
     
     
@@ -1521,6 +1523,34 @@
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../featured/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ⭐ Featured（已验证）
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
               
             
               
@@ -1610,10 +1640,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_4" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
         
           
-          <label class="md-nav__link" for="__nav_4_4" id="__nav_4_4_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_5" id="__nav_4_5_label" tabindex="">
             
   
   
@@ -1631,8 +1661,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_4_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_4">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_5">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1915,7 +1945,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -1937,14 +1967,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_4_5" id="__nav_4_5_label" tabindex="">
+              <label class="md-nav__link " for="__nav_4_6" id="__nav_4_6_label" tabindex="">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_5">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_6">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -5321,10 +5351,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_7" checked>
         
           
-          <label class="md-nav__link" for="__nav_4_6" id="__nav_4_6_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_7" id="__nav_4_7_label" tabindex="">
             
   
   
@@ -5342,8 +5372,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_4_6">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_7_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4_7">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -22467,36 +22497,55 @@
 <h2 id="problem">Problem<a class="headerlink" href="#problem" title="Permanent link">#</a></h2>
 <p>给 N 叉树根 <code>root</code>，返回最大深度（根到最远叶的节点数）。</p>
 <h2 id="_1">背景<a class="headerlink" href="#_1" title="Permanent link">#</a></h2>
-<p>N 叉树是二叉树的自然推广：每节点孩子数任意。其最大深度公式与二叉树同结构 — <code>1 + max(child depths)</code> — 是树上 <strong>catamorphism</strong> 的另一典型例：把"每个节点贡献 1 + 其孩子的最大"作为聚合算子，递归一次性算完。同样思路用于：树的直径、节点数、叶子数、最大子树和。</p>
+<p>先尝试最直接的想法：深度是"根到最远叶的节点数"，那就枚举所有根到叶的路径，取最长的一条。但要枚举路径，得先知道每个节点有哪些孩子、孩子又有哪些孩子——这本身就需要把整棵树走一遍，而"走一遍并记录最长路径"恰恰又回到了同一个问题。直接按定义展开会陷入循环：我们想算的量，依赖于对子树算同一个量。</p>
+<p>这正是出路所在。与其枚举整条路径，不如只问一个局部问题：<strong>站在某个节点上，它的深度和孩子的深度是什么关系？</strong> 一条从该节点出发到叶的最长路径，必然先迈入某一个孩子，然后在那个孩子的子树里走它自己的最长路径。所以该节点的深度，就是 1（它自己这一层）加上"孩子里最深的那个子树的深度"。这个关系把整棵树的问题，降解成了对每个孩子的同一个子问题——递归由此而来，无需显式枚举任何路径。</p>
+<p>孩子数从二叉的固定两个变成 N 叉的任意 <span class="arithmatex">\(k\)</span> 个，这个关系一字未改：原来是 <span class="arithmatex">\(\max(\text{left}, \text{right})\)</span>，现在是对一个长度为 <span class="arithmatex">\(k\)</span> 的列表取 <span class="arithmatex">\(\max\)</span>。当 <span class="arithmatex">\(k=2\)</span> 时两者完全是同一个运算。所以不是"二叉公式自然推广到 N 叉"，而是同一个对孩子列表取 <span class="arithmatex">\(\max\)</span> 的运算，在 <span class="arithmatex">\(k=2\)</span> 时碰巧只有两个元素。</p>
 <h2 id="_2">形式化<a class="headerlink" href="#_2" title="Permanent link">#</a></h2>
-<div class="arithmatex">\[\text{depth}(\bot) = 0,\quad \text{depth}(\text{Node}(v, [c_1, \dots, c_k])) = 1 + \max_i \text{depth}(c_i),\]</div>
-<p>约定 <span class="arithmatex">\(\max \emptyset = 0\)</span>（叶子节点深度为 1）。</p>
+<p>把上一节的局部关系写成定义。记一个节点的深度为它子树中最长根到叶路径的节点数。叶子没有孩子，它的最长路径就是它自己，深度为 1；空树没有节点，深度为 0。对内部节点，深度是 1 加上孩子里最大的深度：</p>
+<div class="arithmatex">\[\text{depth}(\bot) = 0,\qquad \text{depth}(\text{Node}(v, [c_1, \dots, c_k])) = 1 + \max_i \text{depth}(c_i). \tag{1}\]</div>
+<p>约定 <span class="arithmatex">\(\max \emptyset = 0\)</span>。这个约定不是为方便而设，而是被叶子情形强制的：叶子的孩子列表为空，<span class="arithmatex">\((1)\)</span> 要求 <span class="arithmatex">\(\text{depth}(\text{leaf}) = 1 + \max\emptyset\)</span>，而叶子深度必须是 1，所以 <span class="arithmatex">\(\max\emptyset\)</span> 只能取 0。它和空树 <span class="arithmatex">\(\text{depth}(\bot)=0\)</span> 是两回事——一个是"对空列表取最大"，一个是"空树本身"——但两者数值上一致，使得叶子无需单独成为一条分支。</p>
+<p>定义 <span class="arithmatex">\((1)\)</span> 是后面一切实现的脊柱：每种解法都是它的一种执行方式，区别只在以什么顺序、用什么载体来兑现这个递归。</p>
 <h2 id="_3">数据结构 / 想法<a class="headerlink" href="#_3" title="Permanent link">#</a></h2>
-<p><strong>递归 DFS</strong>：
+<p><strong>递归 DFS——<span class="arithmatex">\((1)\)</span> 的逐字转写。</strong> 把定义里的三种情形直接翻译成代码：</p>
 <div class="language-python highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">maxDepth</span><span class="p">(</span><span class="n">root</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">root</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span> <span class="k">return</span> <span class="mi">0</span>                       <span class="c1"># depth(⊥) = 0</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">root</span><span class="o">.</span><span class="n">children</span><span class="p">:</span> <span class="k">return</span> <span class="mi">1</span>                   <span class="c1"># 叶子: 1 + max∅ = 1</span>
+    <span class="k">return</span> <span class="mi">1</span> <span class="o">+</span> <span class="nb">max</span><span class="p">(</span><span class="n">maxDepth</span><span class="p">(</span><span class="n">c</span><span class="p">)</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">root</span><span class="o">.</span><span class="n">children</span><span class="p">)</span>  <span class="c1"># 1 + max_i depth(c_i)</span>
+</code></pre></div>
+<p>第二行的叶子短路是<strong>必需</strong>的，不是冗余优化。Python 的 <code>max(generator)</code> 在迭代器为空且未给 <code>default=</code> 时会抛 <code>ValueError</code>，所以"叶子 = 空孩子列表"这一情形若落到第三行就会崩。它正是 <span class="arithmatex">\((1)\)</span> 中 <span class="arithmatex">\(\max\emptyset=0\)</span> 约定的代码对应物：要么显式短路返回 1，要么改写成 <code>1 + max((maxDepth(c) for c in root.children), default=0)</code>，两者等价。</p>
+<p><strong>正确性（结构归纳）。</strong> 不变量：<code>maxDepth(node)</code> 返回以 <code>node</code> 为根的子树深度，即 <span class="arithmatex">\(\text{depth}(node)\)</span>。基例：<code>None</code> 返回 0，叶子返回 1，与 <span class="arithmatex">\((1)\)</span> 一致。归纳步：假设对每个孩子 <span class="arithmatex">\(c_i\)</span>，<code>maxDepth(c_i)</code> 已正确返回 <span class="arithmatex">\(\text{depth}(c_i)\)</span>，则第三行算出 <span class="arithmatex">\(1 + \max_i \text{depth}(c_i)\)</span>，正是 <span class="arithmatex">\((1)\)</span> 对内部节点的定义。故对一切有限树成立。</p>
+<p><strong>BFS 层序——同一个 <span class="arithmatex">\((1)\)</span> 的另一种兑现顺序。</strong> 递归 DFS 自顶向下展开，最后回溯求和；但 <span class="arithmatex">\((1)\)</span> 没规定遍历顺序，只规定"深度 = 层数"。于是可以反过来按层推进，每处理完一层就把深度加 1，最深路径有几层，循环就走几轮：</p>
+<div class="language-python highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">collections</span><span class="w"> </span><span class="kn">import</span> <span class="n">deque</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">maxDepth</span><span class="p">(</span><span class="n">root</span><span class="p">):</span>
     <span class="k">if</span> <span class="n">root</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span> <span class="k">return</span> <span class="mi">0</span>
-    <span class="k">if</span> <span class="ow">not</span> <span class="n">root</span><span class="o">.</span><span class="n">children</span><span class="p">:</span> <span class="k">return</span> <span class="mi">1</span>
-    <span class="k">return</span> <span class="mi">1</span> <span class="o">+</span> <span class="nb">max</span><span class="p">(</span><span class="n">maxDepth</span><span class="p">(</span><span class="n">c</span><span class="p">)</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">root</span><span class="o">.</span><span class="n">children</span><span class="p">)</span>
-</code></pre></div></p>
-<p><strong>BFS 层序</strong>：每层 enqueue 全部孩子；层数即深度。空间 <span class="arithmatex">\(O(w)\)</span>（最大层宽）。</p>
-<p><strong>迭代 DFS + 栈</strong>：手动栈保存 <code>(node, depth)</code>，避免递归爆栈。</p>
-<p><strong>不变量</strong>（DFS）：<code>maxDepth(node)</code> 返回以 <code>node</code> 为根的最大深度。<strong>正确性</strong>：结构归纳。</p>
+    <span class="n">q</span><span class="p">,</span> <span class="n">depth</span> <span class="o">=</span> <span class="n">deque</span><span class="p">([</span><span class="n">root</span><span class="p">]),</span> <span class="mi">0</span>
+    <span class="k">while</span> <span class="n">q</span><span class="p">:</span>
+        <span class="n">depth</span> <span class="o">+=</span> <span class="mi">1</span>                       <span class="c1"># 进入新的一层</span>
+        <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">q</span><span class="p">)):</span>          <span class="c1"># 固定本层节点数，逐个出队</span>
+            <span class="n">node</span> <span class="o">=</span> <span class="n">q</span><span class="o">.</span><span class="n">popleft</span><span class="p">()</span>
+            <span class="n">q</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">children</span><span class="p">)</span>      <span class="c1"># 下一层全部入队</span>
+    <span class="k">return</span> <span class="n">depth</span>
+</code></pre></div>
+<p>每轮外层循环精确对应树的一层，<code>depth</code> 终值即层数即最大深度。它和递归版算的是同一个 <span class="arithmatex">\((1)\)</span>，差别仅在：DFS 用调用栈承载"待回溯的节点"，空间随树高 <span class="arithmatex">\(h\)</span> 增长；BFS 用队列承载"当前层"，空间随最大层宽 <span class="arithmatex">\(w\)</span> 增长。哪种更省，取决于树是瘦高（选 BFS）还是矮宽（选 DFS）。</p>
+<p><strong>迭代 DFS + 显式栈。</strong> 当树很深时递归栈会溢出（见陷阱），可把递归改写成手动栈模拟，栈中存 <code>(node, depth)</code>，每弹出一个节点就用其 <code>depth</code> 更新答案，并把孩子以 <code>depth+1</code> 压栈。它仍是 <span class="arithmatex">\((1)\)</span>，只是把语言的调用栈换成自己管理的数据结构，从而绕开递归深度限制。</p>
 <h2 id="_4">复杂度<a class="headerlink" href="#_4" title="Permanent link">#</a></h2>
+<p>三种实现都恰好访问每个节点一次，故时间同为 <span class="arithmatex">\(O(n)\)</span>。空间是它们的分水岭：</p>
 <ul>
-<li>Time: <span class="arithmatex">\(O(n)\)</span>（每节点访问一次）。</li>
-<li>Space: <span class="arithmatex">\(O(h)\)</span> 递归栈深 = 树高；BFS 用 <span class="arithmatex">\(O(w)\)</span> 队列。</li>
+<li><strong>递归 DFS</strong>：<span class="arithmatex">\(O(h)\)</span>，<span class="arithmatex">\(h\)</span> 为树高，来自同时驻留在调用栈上的祖先链。</li>
+<li><strong>迭代 DFS</strong>：<span class="arithmatex">\(O(h)\)</span>，显式栈最多容纳一条根到叶路径及其旁支。</li>
+<li><strong>BFS</strong>：<span class="arithmatex">\(O(w)\)</span>，<span class="arithmatex">\(w\)</span> 为最大层宽，队列最多同时持有相邻两层的节点。</li>
 </ul>
 <h2 id="_5">陷阱<a class="headerlink" href="#_5" title="Permanent link">#</a></h2>
 <ul>
-<li>区分"空树"（返回 0）与"叶子"（返回 1）。</li>
-<li>叶子的 <code>children</code> 在 LeetCode 序列化下可能是空列表也可能是 None，根据所给类定义。</li>
-<li>Python 递归默认深度 1000，约束 depth <span class="arithmatex">\(\le 1000\)</span> 恰可能爆，需 <code>sys.setrecursionlimit</code>。</li>
+<li>区分"空树"（返回 0）与"叶子"（返回 1）。两者都源自 <span class="arithmatex">\((1)\)</span>，但对应不同情形：空树是 <span class="arithmatex">\(\text{depth}(\bot)\)</span>，叶子是 <span class="arithmatex">\(1+\max\emptyset\)</span>。</li>
+<li>叶子的 <code>children</code> 在 LeetCode 序列化下可能是空列表也可能是 <code>None</code>，根据所给类定义；上面代码对 <code>[]</code> 处理正确，而 <code>Node</code> 默认将 <code>None</code> 归一为 <code>[]</code>，故两种形式都覆盖。</li>
+<li>Python 默认递归上限为 1000，但<strong>远在 depth 达到 1000 之前</strong>，递归 DFS 就会 <code>RecursionError</code>：每深入一层不只压入 <code>maxDepth</code> 自身的帧，<code>max(generator)</code> 消费生成器还会再叠帧，每层实际消耗 1 帧以上。实测一条深约 900 的链就已抛错。处理深链时需 <code>sys.setrecursionlimit(...)</code>，或改用上面的迭代 DFS / BFS。</li>
 </ul>
 <h2 id="_6">相关题目<a class="headerlink" href="#_6" title="Permanent link">#</a></h2>
 <ul>
-<li><a href="../0226_invert-binary-tree/">#226. Invert Binary Tree</a> — 同 catamorphism 范式。</li>
-<li><a href="../1448_count-good-nodes-in-binary-tree/">#1448. Count Good Nodes in Binary Tree</a> — DFS + 路径上下文。</li>
-<li><code>#104. Maximum Depth of Binary Tree (off-wiki)</code> — 二叉版直接对照。</li>
+<li><a href="../0226_invert-binary-tree/">#226. Invert Binary Tree</a> — 同样把整树问题降解成"对每个孩子做同一件事"的递归。</li>
+<li><a href="../1448_count-good-nodes-in-binary-tree/">#1448. Count Good Nodes in Binary Tree</a> — DFS + 路径上下文；与本题的纯子树聚合相比，聚合量额外依赖根到当前节点的路径。</li>
+<li><code>#104. Maximum Depth of Binary Tree (off-wiki)</code> — 二叉版直接对照：把 <span class="arithmatex">\((1)\)</span> 中对孩子列表的 <span class="arithmatex">\(\max\)</span> 限定为 <span class="arithmatex">\(\max(\text{left}, \text{right})\)</span>。</li>
 </ul>
 <h2 id="further-reading">Further Reading<a class="headerlink" href="#further-reading" title="Permanent link">#</a></h2>
 <ul>
@@ -22607,6 +22656,8 @@
         <script src="../../../js/mathjax/tex-mml-chtml.js"></script>
       
         <script src="../../../js/mermaid.min.js"></script>
+      
+        <script src="../../../js/featured.js"></script>
       
     
   </body>

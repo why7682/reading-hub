@@ -1466,6 +1466,8 @@
       
         
       
+        
+      
     
     
     
@@ -1521,6 +1523,34 @@
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../featured/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ⭐ Featured（已验证）
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
               
             
               
@@ -1610,10 +1640,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_4" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
         
           
-          <label class="md-nav__link" for="__nav_4_4" id="__nav_4_4_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_5" id="__nav_4_5_label" tabindex="">
             
   
   
@@ -1631,8 +1661,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_4_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_4">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_5">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1915,7 +1945,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -1937,14 +1967,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_4_5" id="__nav_4_5_label" tabindex="">
+              <label class="md-nav__link " for="__nav_4_6" id="__nav_4_6_label" tabindex="">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_5">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_6">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -5321,10 +5351,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_7" checked>
         
           
-          <label class="md-nav__link" for="__nav_4_6" id="__nav_4_6_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_7" id="__nav_4_7_label" tabindex="">
             
   
   
@@ -5342,8 +5372,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_4_6">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_7_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4_7">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -6748,6 +6778,34 @@
       
     </span>
   </a>
+  
+    <nav class="md-nav" aria-label="数据结构 / 想法 (Approach)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#a-on2-dp" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        解法 A — 从形式化直接展开的 \(O(n^2)\) DP
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#b-on-log-n" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        解法 B — 定位瓶颈，压缩状态到 \(O(n \log n)\)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -22399,6 +22457,34 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="数据结构 / 想法 (Approach)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#a-on2-dp" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        解法 A — 从形式化直接展开的 \(O(n^2)\) DP
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#b-on-log-n" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        解法 B — 定位瓶颈，压缩状态到 \(O(n \log n)\)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -22467,73 +22553,160 @@
 <h2 id="problem">Problem<a class="headerlink" href="#problem" title="Permanent link">#</a></h2>
 <p>给整数数组 <code>nums</code>，返回<strong>最长严格递增子序列 (LIS)</strong> 的长度。<span class="arithmatex">\(1 \le n \le 2500\)</span>，<span class="arithmatex">\(|nums[i]| \le 10^4\)</span>。Follow-up：<span class="arithmatex">\(O(n \log n)\)</span>。</p>
 <h2 id="background">背景 (Background)<a class="headerlink" href="#background" title="Permanent link">#</a></h2>
-<p><strong>LIS</strong> 是组合算法学最古老问题之一，背后理论极深：
-- <strong>Erdős–Szekeres 定理 (1935)</strong>：任意长度为 <span class="arithmatex">\((r-1)(s-1)+1\)</span> 的不同实数序列，必含长度 <span class="arithmatex">\(\ge r\)</span> 的递增子序列或 <span class="arithmatex">\(\ge s\)</span> 的递减子序列。
-- <strong>Patience Sorting (Hammersley 1972, Mallows 1973)</strong>：把数列像玩"耐心纸牌"一样发牌，<strong>牌堆数</strong>就等于 LIS 长度。这正是 <span class="arithmatex">\(O(n \log n)\)</span> 算法的直觉来源。
-- <strong>RSK 对应</strong> (Robinson-Schensted-Knuth)：把任意置换映为一对 Young 表，LIS 长度 = 该 Young 表第一行长度。
-- <strong>Dilworth 定理</strong>：LIS = "最小递减链覆盖"的大小（链覆盖对偶）。</p>
-<p>实践上 LIS 是 <strong>数位 DP 之外</strong> 最常被泛化的 DP（LCS、LIS-with-weights、最长非降子序列、最长公共子序列等）。</p>
+<p>一条贯穿全文的问题：<strong>扫描数组到某个位置时，我们究竟需要记住多少信息，才能判断下一个元素能否延长某个递增子序列？</strong> 朴素的回答是"记住全部"——这给出 <span class="arithmatex">\(O(n^2)\)</span> 的解法。本页将证明，必要且充分的信息其实少得多，而压缩到那个最小信息量正好把复杂度降到 <span class="arithmatex">\(O(n \log n)\)</span>。两个解法不是两件独立的发明，而是同一个状态压缩论证的两个抽象层级。</p>
+<p>子序列（subsequence）允许跳过元素但必须保持原顺序，区别于连续的子串（substring）。"严格递增"意味着相等元素不能相邻出现在同一子序列里——这个细节在后文会精确地决定二分边界的选择。</p>
 <h2 id="formulation">形式化 (Formulation)<a class="headerlink" href="#formulation" title="Permanent link">#</a></h2>
-<p>求 <span class="arithmatex">\(\max_{i_1 &lt; i_2 &lt; \dots &lt; i_k} k\)</span> 使 <span class="arithmatex">\(a_{i_1} &lt; a_{i_2} &lt; \dots &lt; a_{i_k}\)</span>。</p>
+<p>设 <span class="arithmatex">\(a = (a_1, \dots, a_n)\)</span>。LIS 的长度是</p>
+<div class="arithmatex">\[
+\text{LIS}(a) \;=\; \max_{i_1 &lt; i_2 &lt; \dots &lt; i_k}\; k
+\quad\text{s.t.}\quad a_{i_1} &lt; a_{i_2} &lt; \dots &lt; a_{i_k}. \tag{1}
+\]</div>
+<p>直接对 <span class="arithmatex">\((1)\)</span> 求解需要枚举所有递增子序列，数量可达指数级。要让它可计算，先观察 <span class="arithmatex">\((1)\)</span> 的一个结构性质：<strong>任何递增子序列都有唯一的最后一个元素</strong>。如果我们按"最后一个元素落在哪个位置"把所有递增子序列分类，那么 <span class="arithmatex">\(\text{LIS}(a)\)</span> 就是各类中最长者的最大值。这把一个全局最优化拆成 <span class="arithmatex">\(n\)</span> 个"以某位置结尾"的子问题——正是动态规划所需的最优子结构。</p>
+<p>定义</p>
+<div class="arithmatex">\[
+f(i) \;=\; \text{以 } a_i \text{ 结尾的最长严格递增子序列的长度}. \tag{2}
+\]</div>
+<p>为什么"以 <span class="arithmatex">\(a_i\)</span> 结尾"是正确的状态？因为一旦固定了子序列的最后一个元素 <span class="arithmatex">\(a_i\)</span>，能接在它前面的元素就被完全确定了：必须满足 <span class="arithmatex">\(j &lt; i\)</span>（位置在前）且 <span class="arithmatex">\(a_j &lt; a_i\)</span>（值更小）。在所有这样的 <span class="arithmatex">\(j\)</span> 中，我们只想要 <span class="arithmatex">\(f(j)\)</span> 最大的那个，因为前缀越长，接上 <span class="arithmatex">\(a_i\)</span> 后整体越长。于是 <span class="arithmatex">\((2)\)</span> 满足递推</p>
+<div class="arithmatex">\[
+f(i) \;=\; 1 + \max\bigl(\{\, f(j) : j &lt; i,\; a_j &lt; a_i \,\} \cup \{0\}\bigr), \tag{3}
+\]</div>
+<p>其中并入 <span class="arithmatex">\(\{0\}\)</span> 处理"没有合法 <span class="arithmatex">\(j\)</span>"的情形，此时 <span class="arithmatex">\(f(i) = 1\)</span>（子序列只含 <span class="arithmatex">\(a_i\)</span> 自身）。最终答案是</p>
+<div class="arithmatex">\[
+\text{LIS}(a) \;=\; \max_{1 \le i \le n} f(i). \tag{4}
+\]</div>
+<p>递推 <span class="arithmatex">\((3)\)</span> 中的严格不等号 <span class="arithmatex">\(a_j &lt; a_i\)</span> 正是"严格递增"的来源；若改为 <span class="arithmatex">\(a_j \le a_i\)</span> 就得到最长非降子序列。这一区分会贯穿到 <span class="arithmatex">\(O(n \log n)\)</span> 解法。</p>
 <h2 id="approach">数据结构 / 想法 (Approach)<a class="headerlink" href="#approach" title="Permanent link">#</a></h2>
-<p><strong>解法 A — <span class="arithmatex">\(O(n^2)\)</span> DP</strong>：<span class="arithmatex">\(f(i)\)</span> = 以 <span class="arithmatex">\(a_i\)</span> 结尾的 LIS 长度。</p>
-<div class="arithmatex">\[f(i) = 1 + \max\{f(j) : j &lt; i, a_j &lt; a_i\}\quad (\text{or }1\text{ if no such }j).\]</div>
-<p>答 = <span class="arithmatex">\(\max_i f(i)\)</span>。</p>
-<p><strong>解法 B — Patience Sorting / <span class="arithmatex">\(O(n \log n)\)</span></strong>：维护 <code>tails</code>，<code>tails[k]</code> = 长度为 <span class="arithmatex">\(k+1\)</span> 的递增子序列的<strong>最小可能末尾元素</strong>。对每个 <span class="arithmatex">\(a\)</span>：
-- 二分找 <code>tails</code> 中第一个 <span class="arithmatex">\(\ge a\)</span> 的位置（用 <code>bisect_left</code>，严格递增）。
-- 若存在，替换 <code>tails[pos] = a</code>（缩小该长度子序列的末尾，给后续更多机会）。
-- 若不存在，<code>tails.append(a)</code>（开新更长子序列）。</p>
-<p><strong>不变量</strong>：<code>tails</code> 始终严格递增；<code>len(tails)</code> 等于当前已扫描前缀的 LIS 长度。</p>
+<h3 id="a-on2-dp">解法 A — 从形式化直接展开的 <span class="arithmatex">\(O(n^2)\)</span> DP<a class="headerlink" href="#a-on2-dp" title="Permanent link">#</a></h3>
+<p>递推 <span class="arithmatex">\((3)\)</span> 已经是一个完整算法：按 <span class="arithmatex">\(i\)</span> 从小到大计算 <span class="arithmatex">\(f(i)\)</span>，每个 <span class="arithmatex">\(f(i)\)</span> 需要扫描所有 <span class="arithmatex">\(j &lt; i\)</span> 取满足 <span class="arithmatex">\(a_j &lt; a_i\)</span> 的最大 <span class="arithmatex">\(f(j)\)</span>。</p>
+<div class="language-python highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">Solution</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">lengthOfLIS</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">nums</span><span class="p">):</span>
+        <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">nums</span><span class="p">)</span>
+        <span class="n">f</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">n</span>                      <span class="c1"># 边界：f(i)=1，对应 (3) 中并入的 {0}</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">i</span><span class="p">):</span>
+                <span class="k">if</span> <span class="n">nums</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">nums</span><span class="p">[</span><span class="n">i</span><span class="p">]:</span>
+                    <span class="n">f</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">f</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">f</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="k">return</span> <span class="nb">max</span><span class="p">(</span><span class="n">f</span><span class="p">)</span> <span class="k">if</span> <span class="n">f</span> <span class="k">else</span> <span class="mi">0</span>
+</code></pre></div>
+<p>这直接实现了 <span class="arithmatex">\((3)\)</span> 与 <span class="arithmatex">\((4)\)</span>，正确性由形式化保证。代价在内层循环：计算每个 <span class="arithmatex">\(f(i)\)</span> 都要重新扫描全部 <span class="arithmatex">\(j &lt; i\)</span>，总共 <span class="arithmatex">\(O(n^2)\)</span> 次比较。</p>
+<h3 id="b-on-log-n">解法 B — 定位瓶颈，压缩状态到 <span class="arithmatex">\(O(n \log n)\)</span><a class="headerlink" href="#b-on-log-n" title="Permanent link">#</a></h3>
+<p>解法 A 的瓶颈是 <span class="arithmatex">\((3)\)</span> 里那个对所有 <span class="arithmatex">\(j &lt; i\)</span> 的 <span class="arithmatex">\(\max\)</span>。要消除它，回到背景里的问题：<strong>为了判断 <span class="arithmatex">\(a_i\)</span> 能延长出多长的子序列，我们真正需要前缀的哪些信息？</strong></p>
+<p>观察 <span class="arithmatex">\((3)\)</span> 的用法。当处理 <span class="arithmatex">\(a_i\)</span> 时，我们只关心：对每个可能的长度 <span class="arithmatex">\(\ell\)</span>，是否存在一个长度为 <span class="arithmatex">\(\ell\)</span> 的递增子序列，其末尾元素严格小于 <span class="arithmatex">\(a_i\)</span>。若存在，<span class="arithmatex">\(a_i\)</span> 就能把它延长到 <span class="arithmatex">\(\ell + 1\)</span>。在所有长度为 <span class="arithmatex">\(\ell\)</span> 的递增子序列中，末尾元素越小越容易被延长——因为任何能延长大末尾的元素也能延长小末尾，反之不然。于是对每个长度 <span class="arithmatex">\(\ell\)</span>，<strong>只有末尾最小的那一个值是有用的</strong>，其余可以全部丢弃。</p>
+<p>这就把"记住全部 <span class="arithmatex">\(f(j)\)</span>"压缩成了"对每个长度记一个最小末尾"。形式化这个压缩后的状态：</p>
+<div class="arithmatex">\[
+\texttt{tails}[\ell] \;=\; \text{当前已扫描前缀中，所有长度为 } \ell+1 \text{ 的递增子序列里最小的末尾元素}. \tag{5}
+\]</div>
+<p>（下标从 <span class="arithmatex">\(0\)</span> 起，故长度为 <span class="arithmatex">\(\ell+1\)</span>。）这个定义的两个关键性质——它使整个算法成立——可以直接从 <span class="arithmatex">\((5)\)</span> 推出，而不是凭空假设。</p>
+<p><strong>性质一：<code>tails</code> 严格递增</strong>，即 <span class="arithmatex">\(\texttt{tails}[\ell-1] &lt; \texttt{tails}[\ell]\)</span> 恒成立。反证：若某时刻 <span class="arithmatex">\(\texttt{tails}[\ell-1] \ge \texttt{tails}[\ell]\)</span>，取实现 <span class="arithmatex">\(\texttt{tails}[\ell]\)</span> 的那个长度为 <span class="arithmatex">\(\ell+1\)</span> 的子序列，它的倒数第二个元素 <span class="arithmatex">\(v\)</span> 满足 <span class="arithmatex">\(v &lt; \texttt{tails}[\ell] \le \texttt{tails}[\ell-1]\)</span>，于是 <span class="arithmatex">\(v\)</span> 是一个长度为 <span class="arithmatex">\(\ell\)</span>、末尾比 <span class="arithmatex">\(\texttt{tails}[\ell-1]\)</span> 还小的子序列的末尾，与 <span class="arithmatex">\(\texttt{tails}[\ell-1]\)</span> 的最小性矛盾。</p>
+<p><strong>性质二：<code>tails</code> 的长度等于已扫描前缀的 LIS 长度</strong>。<span class="arithmatex">\(\texttt{tails}[\ell]\)</span> 有定义当且仅当存在长度为 <span class="arithmatex">\(\ell+1\)</span> 的递增子序列；而下面的更新规则永不增加任何 <span class="arithmatex">\(\texttt{tails}[\ell]\)</span> 对应子序列的长度，也永不凭空缩短数组，所以 <code>len(tails)</code> 恰好是当前最长递增子序列的长度。</p>
+<p>性质一让我们能用<strong>二分查找</strong>取代解法 A 的内层线性扫描，这正是去掉瓶颈的地方。处理新元素 <span class="arithmatex">\(x\)</span> 时，因为 <code>tails</code> 严格递增，第一个 <span class="arithmatex">\(\ge x\)</span> 的位置可以二分定位：
+- 若该位置 <span class="arithmatex">\(\texttt{pos}\)</span> 等于 <code>len(tails)</code>，说明 <span class="arithmatex">\(x\)</span> 比所有末尾都大，能开出一个更长的子序列：<code>tails.append(x)</code>。
+- 否则 <span class="arithmatex">\(\texttt{tails}[\texttt{pos}]\)</span> 是第一个 <span class="arithmatex">\(\ge x\)</span> 的末尾，用 <span class="arithmatex">\(x\)</span> 替换它。<span class="arithmatex">\(x \le \texttt{tails}[\texttt{pos}]\)</span> 且 <span class="arithmatex">\(x\)</span> 大于前一个末尾，故 <span class="arithmatex">\(x\)</span> 是一个长度为 <span class="arithmatex">\(\texttt{pos}+1\)</span>、末尾更小的子序列的末尾——它更新了 <span class="arithmatex">\((5)\)</span> 中该长度类的最小末尾，从而放宽了后续元素延长此长度类的约束。</p>
+<p>为什么这里用"第一个 <span class="arithmatex">\(\ge x\)</span>"（<code>bisect_left</code>）而不是"第一个 <span class="arithmatex">\(&gt; x\)</span>"？因为是<strong>严格</strong>递增：当 <span class="arithmatex">\(x\)</span> 等于某个末尾时，<span class="arithmatex">\(x\)</span> 不能延长那个长度类（需要严格小于），只能替换它，所以要找第一个 <span class="arithmatex">\(\ge x\)</span> 的位置去替换。若题目改为最长非降子序列，则 <span class="arithmatex">\(x\)</span> 能延长等于它的末尾，应当找第一个 <span class="arithmatex">\(&gt; x\)</span> 的位置，即 <code>bisect_right</code>。这一行的选择直接对应 <span class="arithmatex">\((3)\)</span> 里 <span class="arithmatex">\(&lt;\)</span> 与 <span class="arithmatex">\(\le\)</span> 的差别。</p>
 <div class="language-python highlight"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">bisect</span>
 <span class="k">class</span><span class="w"> </span><span class="nc">Solution</span><span class="p">:</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">lengthOfLIS</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">nums</span><span class="p">):</span>
         <span class="n">tails</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">nums</span><span class="p">:</span>
-            <span class="n">pos</span> <span class="o">=</span> <span class="n">bisect</span><span class="o">.</span><span class="n">bisect_left</span><span class="p">(</span><span class="n">tails</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span>
+            <span class="n">pos</span> <span class="o">=</span> <span class="n">bisect</span><span class="o">.</span><span class="n">bisect_left</span><span class="p">(</span><span class="n">tails</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span>   <span class="c1"># 第一个 &gt;= x 的位置（严格递增）</span>
             <span class="k">if</span> <span class="n">pos</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">tails</span><span class="p">):</span>
-                <span class="n">tails</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+                <span class="n">tails</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>                  <span class="c1"># x 开出更长的子序列</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="n">tails</span><span class="p">[</span><span class="n">pos</span><span class="p">]</span> <span class="o">=</span> <span class="n">x</span>
+                <span class="n">tails</span><span class="p">[</span><span class="n">pos</span><span class="p">]</span> <span class="o">=</span> <span class="n">x</span>                   <span class="c1"># 更新长度 pos+1 的最小末尾</span>
         <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="n">tails</span><span class="p">)</span>
 </code></pre></div>
-<p><strong>警告</strong>：<code>tails</code> 本身<strong>不是</strong>任何真实子序列；它是"按长度分类的最小尾元素"。要恢复实际子序列需额外记录"前驱指针"。</p>
-<p>Trace <code>[10,9,2,5,3,7,101,18]</code>:
-- 10: tails=[10]
-- 9: bisect_left([10],9)=0, replace → [9]
-- 2: → [2]
-- 5: bisect_left([2],5)=1, append → [2,5]
-- 3: bisect_left([2,5],3)=1, replace → [2,3]
-- 7: append → [2,3,7]
-- 101: append → [2,3,7,101]
-- 18: bisect_left([2,3,7,101],18)=3, replace → [2,3,7,18]
-- len=4. ✓</p>
-<p>Trace <code>[7,7,7,7,7,7,7]</code>: 每次 bisect_left=0, 替换。tails 始终 [7]。len=1. ✓（"严格"递增故重复不计）</p>
-<p><strong><code>bisect_left</code> 对应严格递增</strong>；若题目要"非降"用 <code>bisect_right</code>。</p>
+<p><strong><code>tails</code> 本身不是任何真实子序列。</strong> 这是理解本算法的关键，必须在第一眼就说清：<span class="arithmatex">\((5)\)</span> 把 <code>tails</code> 定义为"按长度分类的最小末尾值"的集合，它的各个元素来自不同时刻、不同的子序列，拼在一起未必构成一个递增子序列。算法只保证 <code>len(tails)</code> 正确，不保证 <code>tails</code> 的内容是答案。要恢复实际的 LIS，需要额外记录每个元素的"前驱指针"再回溯。</p>
+<p>把定义 <span class="arithmatex">\((5)\)</span> 与上述更新代入 <code>[10,9,2,5,3,7,101,18]</code>，逐步并标注不变量：</p>
+<table>
+<thead>
+<tr>
+<th>读入</th>
+<th><code>bisect_left</code></th>
+<th>动作</th>
+<th><code>tails</code>（严格递增）</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>10</td>
+<td>0 (空数组追加)</td>
+<td>append</td>
+<td><code>[10]</code></td>
+</tr>
+<tr>
+<td>9</td>
+<td>0</td>
+<td>replace</td>
+<td><code>[9]</code></td>
+</tr>
+<tr>
+<td>2</td>
+<td>0</td>
+<td>replace</td>
+<td><code>[2]</code></td>
+</tr>
+<tr>
+<td>5</td>
+<td>1</td>
+<td>append</td>
+<td><code>[2,5]</code></td>
+</tr>
+<tr>
+<td>3</td>
+<td>1</td>
+<td>replace</td>
+<td><code>[2,3]</code></td>
+</tr>
+<tr>
+<td>7</td>
+<td>2</td>
+<td>append</td>
+<td><code>[2,3,7]</code></td>
+</tr>
+<tr>
+<td>101</td>
+<td>3</td>
+<td>append</td>
+<td><code>[2,3,7,101]</code></td>
+</tr>
+<tr>
+<td>18</td>
+<td>3</td>
+<td>replace</td>
+<td><code>[2,3,7,18]</code></td>
+</tr>
+</tbody>
+</table>
+<p>末态 <code>len(tails) = 4</code>，与真实 LIS（如 <code>2,3,7,18</code> 或 <code>2,3,7,101</code>）长度一致。注意末态 <code>[2,3,7,18]</code> 恰好是一个真实递增子序列纯属巧合——性质二只保证长度，不保证内容。</p>
+<p>退化用例 <code>[7,7,7,7,7,7,7]</code>：每次 <code>bisect_left</code> 都返回 <span class="arithmatex">\(0\)</span>（第一个 <span class="arithmatex">\(\ge 7\)</span> 的位置），于是一直在替换，<code>tails</code> 始终为 <code>[7]</code>，<code>len = 1</code>。这正确，因为严格递增不允许重复元素进入同一子序列。</p>
 <h2 id="complexity">复杂度 (Complexity)<a class="headerlink" href="#complexity" title="Permanent link">#</a></h2>
 <ul>
-<li><span class="arithmatex">\(O(n^2)\)</span> DP：Time <span class="arithmatex">\(O(n^2)\)</span>, Space <span class="arithmatex">\(O(n)\)</span>。</li>
-<li>Patience Sorting：Time <span class="arithmatex">\(O(n \log n)\)</span>, Space <span class="arithmatex">\(O(n)\)</span>。</li>
-<li>不能更快——LIS 在比较模型下有 <span class="arithmatex">\(\Omega(n \log n)\)</span> 下界（与排序同级）。</li>
+<li>解法 A（递推 <span class="arithmatex">\((3)\)</span> 直接展开）：Time <span class="arithmatex">\(O(n^2)\)</span>，Space <span class="arithmatex">\(O(n)\)</span>。</li>
+<li>解法 B（状态压缩 + 二分）：Time <span class="arithmatex">\(O(n \log n)\)</span>，Space <span class="arithmatex">\(O(n)\)</span>；外层 <span class="arithmatex">\(n\)</span> 个元素，每个一次 <span class="arithmatex">\(O(\log n)\)</span> 二分。</li>
+<li>不能更快：LIS 在比较模型下有 <span class="arithmatex">\(\Omega(n \log n)\)</span> 下界（与排序同级），故解法 B 在该模型下最优。</li>
 </ul>
 <h2 id="pitfalls">陷阱 (Pitfalls)<a class="headerlink" href="#pitfalls" title="Permanent link">#</a></h2>
 <ul>
-<li><strong><code>tails</code> 不是 LIS</strong>——常见误解。它是长度→最小尾元素映射。</li>
-<li><strong>严格 vs 非严格</strong>：本题"严格递增"用 <code>bisect_left</code>；若改"非降"必须 <code>bisect_right</code>，否则相等元素会被替换掉、长度漏算。</li>
-<li><strong>空数组</strong>：题目保证 <span class="arithmatex">\(n \ge 1\)</span>，但生产代码加 <code>if not nums: return 0</code>。</li>
-<li><strong><span class="arithmatex">\(O(n^2)\)</span> DP 的边界</strong>：<code>f(i) = 1</code> 初始（单元素自身），否则忘记会得 0。</li>
-<li><strong>要输出 LIS 本身</strong>：<span class="arithmatex">\(O(n \log n)\)</span> 法需配合"前驱"数组重构，较繁琐；<span class="arithmatex">\(O(n^2)\)</span> 法直接回溯转移指针。</li>
+<li><strong><code>tails</code> 不是 LIS</strong>——最常见的误解。它是 <span class="arithmatex">\((5)\)</span> 定义的"长度 <span class="arithmatex">\(\to\)</span> 最小末尾"映射；末态内容碰巧构成递增子序列只是巧合。要输出 LIS 本身，<span class="arithmatex">\(O(n \log n)\)</span> 法需配前驱数组重构，<span class="arithmatex">\(O(n^2)\)</span> 法可直接回溯转移指针。</li>
+<li><strong>严格 vs 非严格</strong>：本题严格递增用 <code>bisect_left</code>；若改为最长非降子序列必须 <code>bisect_right</code>，否则相等元素会去替换而非延长，长度漏算。此区分源自 <span class="arithmatex">\((3)\)</span> 中 <span class="arithmatex">\(&lt;\)</span> 与 <span class="arithmatex">\(\le\)</span>。</li>
+<li><strong>解法 A 的边界</strong>：<span class="arithmatex">\(f(i)\)</span> 必须初始化为 <span class="arithmatex">\(1\)</span>（对应 <span class="arithmatex">\((3)\)</span> 并入的 <span class="arithmatex">\(\{0\}\)</span>，即单元素子序列），初始化为 <span class="arithmatex">\(0\)</span> 会少算。</li>
+<li><strong>空数组</strong>：题目保证 <span class="arithmatex">\(n \ge 1\)</span>，但生产代码加 <code>if not nums: return 0</code> 更稳健。</li>
 </ul>
 <h2 id="related">相关题目 (Related)<a class="headerlink" href="#related" title="Permanent link">#</a></h2>
 <ul>
 <li><code>#673. Number of Longest Increasing Subsequence (off-wiki)</code> — LIS 计数版，DP 维护两个数组。</li>
 <li><code>#354. Russian Doll Envelopes (off-wiki)</code> — 二维 LIS（按一维排序后另一维做 LIS）。</li>
-<li><code>#646. Maximum Length of Pair Chain (off-wiki)</code> — 贪心或 LIS 解决。</li>
+<li><a href="../0646_maximum-length-of-pair-chain/">#646. Maximum Length of Pair Chain</a> — 贪心或 LIS 解决。</li>
 <li><code>#1143. Longest Common Subsequence (off-wiki)</code> — LCS 与 LIS 可通过映射相互归约。</li>
 <li><a href="../0376_wiggle-subsequence/">#0376. Wiggle Subsequence</a> — 子序列 DP 的另一变体。</li>
 </ul>
 <h2 id="further-reading">Further Reading<a class="headerlink" href="#further-reading" title="Permanent link">#</a></h2>
 <ul>
-<li>CLRS, 3e §15.4 — LCS DP；LIS 可由 LCS(a, sorted(a)) 求解。</li>
+<li>当解法 B 推导完毕后，可回看它的组合学渊源。解法 B 的更新过程就是 <strong>Patience Sorting</strong>（Mallows 1973 分析，Hammersley 注意到它计算 LIS）：把元素依次放到满足"放在第一个末尾 <span class="arithmatex">\(\ge x\)</span> 的堆顶"规则的堆上，堆数即 LIS 长度——这与 <span class="arithmatex">\((5)\)</span> 的 <code>tails</code> 逐位对应，是一个数学上精确的等价，而非比喻。</li>
+<li><strong>Dilworth 定理</strong>给出对偶视角：LIS 长度等于覆盖整个序列所需的最少严格递减链数目，这正是 patience sorting 堆数的另一面。</li>
+<li><strong>Erdős–Szekeres 定理 (1935)</strong>：任意长度为 <span class="arithmatex">\((r-1)(s-1)+1\)</span> 的不同实数序列，必含长度 <span class="arithmatex">\(\ge r\)</span> 的递增子序列或 <span class="arithmatex">\(\ge s\)</span> 的递减子序列——LIS 不会太小的下界保证。</li>
+<li><strong>RSK 对应</strong> (Robinson–Schensted–Knuth)：把任意置换映为一对 Young 表，LIS 长度 = 该 Young 表第一行长度。</li>
+<li>CLRS, 3e §15.4 — LCS 的 DP；LIS 可由 <span class="arithmatex">\(\text{LCS}(a,\ \text{sorted}(\text{set}(a)))\)</span> 求解，<strong>注意必须对 <span class="arithmatex">\(a\)</span> 排序并去重</strong>，否则重复值会让公共子序列变成非严格，对含重复元素的输入给出错误答案（例如 <span class="arithmatex">\(a=[1,1,1]\)</span> 的严格 LIS 为 <span class="arithmatex">\(1\)</span>，但 <span class="arithmatex">\(\text{LCS}(a,\text{sorted}(a))=3\)</span>）。</li>
 <li>Sedgewick &amp; Wayne, <em>Algorithms</em> 4e §2.5 — Patience sorting 的实现。</li>
 <li>cp-algorithms.com/dynamic_programming/longest_increasing_subsequence.html ⭐⭐ — 含 <span class="arithmatex">\(O(n^2)\)</span> 与 <span class="arithmatex">\(O(n \log n)\)</span> 完整推导 + 输出方案。</li>
 <li>Knuth, <em>TAOCP</em> Vol. 3 §5.1.4 — RSK 对应与 LIS 的代数理论。</li>
@@ -22644,6 +22817,8 @@
         <script src="../../../js/mathjax/tex-mml-chtml.js"></script>
       
         <script src="../../../js/mermaid.min.js"></script>
+      
+        <script src="../../../js/featured.js"></script>
       
     
   </body>

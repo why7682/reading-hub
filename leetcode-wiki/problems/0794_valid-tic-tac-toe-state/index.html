@@ -1466,6 +1466,8 @@
       
         
       
+        
+      
     
     
     
@@ -1521,6 +1523,34 @@
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../featured/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ⭐ Featured（已验证）
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
               
             
               
@@ -1610,10 +1640,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_4" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
         
           
-          <label class="md-nav__link" for="__nav_4_4" id="__nav_4_4_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_5" id="__nav_4_5_label" tabindex="">
             
   
   
@@ -1631,8 +1661,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_4_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_4">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_5">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1915,7 +1945,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -1937,14 +1967,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_4_5" id="__nav_4_5_label" tabindex="">
+              <label class="md-nav__link " for="__nav_4_6" id="__nav_4_6_label" tabindex="">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_5">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_6">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -5321,10 +5351,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_7" checked>
         
           
-          <label class="md-nav__link" for="__nav_4_6" id="__nav_4_6_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_7" id="__nav_4_7_label" tabindex="">
             
   
   
@@ -5342,8 +5372,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_4_6">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_7_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4_7">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -22467,59 +22497,70 @@
 <h2 id="problem">Problem<a class="headerlink" href="#problem" title="Permanent link">#</a></h2>
 <p>3x3 井字棋盘字符串数组 <code>board</code>（含 <code>'X'</code>、<code>'O'</code>、<code>' '</code>），判断该状态是否能在合法对局中达到。X 先手，每方轮流落子；某方连成三子（行/列/对角）即获胜，胜后不再落子；棋盘满也结束。</p>
 <h2 id="background">背景 (Background)<a class="headerlink" href="#background" title="Permanent link">#</a></h2>
-<p>这是一道"判断状态合法性"的题，属于<strong>组合博弈论</strong>中"reachable position"判定的最小实例。井字棋的状态空间小（约 <span class="arithmatex">\(3^9 = 19683\)</span> 个，去除非法约 5478 个合法 ply 状态），可全枚举或用规则推断。题目设计意图是训练"分情况讨论 + 不变量提取"，而非搜索。</p>
+<p>题目不要求复盘对局，只问一件事：给定的棋盘是否<strong>可达</strong>——是否存在某条合法落子序列，恰好抵达这个状态。一个棋盘可以"看起来正常"却不可达，比如它要求某方在对局已分胜负之后还继续落子，或要求某方多走了一步。</p>
+<p>可达性可以暴力判定：从空盘出发做一次 BFS，枚举全部 <span class="arithmatex">\(3^9 = 19683\)</span> 个棋盘，标记所有合法可达状态（恰好 5478 个），查表即可。但这等于把"为什么不可达"埋进了搜索里。下面换一个方向：直接从对局的两条结构性约束——<strong>轮流落子</strong>与<strong>胜后停手</strong>——推出可达状态必须满足的数值不变量，从而无需搜索。</p>
 <h2 id="formulation">形式化 (Formulation)<a class="headerlink" href="#formulation" title="Permanent link">#</a></h2>
-<p>设 $x = $ 'X' 数，$o = $ 'O' 数。一局合法状态当且仅当：</p>
+<p>记 <span class="arithmatex">\(x\)</span> 为 <code>'X'</code> 的个数，<span class="arithmatex">\(o\)</span> 为 <code>'O'</code> 的个数。我们要把"可达"翻译成关于 <span class="arithmatex">\(x\)</span>、<span class="arithmatex">\(o\)</span> 和胜负线的条件。</p>
+<p><strong>先看朴素尝试为何不够。</strong> 最自然的判据是两条：(a) 计数合法，(b) 至多一方有三连线。但它会放过一类非法盘：X 已连成三子，而 <span class="arithmatex">\(x = o\)</span>。<span class="arithmatex">\(x = o\)</span> 意味着 X 落子后 O 又落了一子——可此时 X 早已获胜、对局应当停手。所以"计数合法 + 至多一方赢"不足以排除"赢后还在走"的局面。修补它，需要把胜负与计数挂钩，而挂钩的依据正是下面这条结构事实。</p>
+<p><strong>核心结构事实。</strong> X 先手、双方交替落子，于是任意时刻要么两方步数相等（轮到 X），要么 X 多一步（轮到 O）。又因胜后停手，<strong>致胜的那一子必然是该方的最后一子</strong>：谁获胜，谁就是刚刚落子的人。由这条事实，"谁赢"直接锁定了"轮到谁前一步落子"，也就锁定了计数差。</p>
+<p>直观地说：X 赢的瞬间是 X 刚落子，此刻 X 比 O 多一子，故 <span class="arithmatex">\(x = o + 1\)</span>；O 赢的瞬间是 O 刚落子，此刻两方持平，故 <span class="arithmatex">\(x = o\)</span>。两条不变量共用同一条结构事实，只是落子方不同。把它们写成形式条件：</p>
+<p>可达状态当且仅当下列四条同时成立：</p>
 <ol>
-<li><span class="arithmatex">\(x = o\)</span> 或 <span class="arithmatex">\(x = o + 1\)</span>（X 先手，差 0 或 1）。</li>
-<li>若 X 赢（X 有三子线）→ <span class="arithmatex">\(x = o + 1\)</span>（X 落最后一子才赢）。</li>
-<li>若 O 赢 → <span class="arithmatex">\(x = o\)</span>（O 落最后一子才赢；意味着 O 赢后 X 不应再落子）。</li>
-<li>不能同时 X 赢且 O 赢（一局只能一方先赢）。</li>
+<li><strong>计数差</strong>：<span class="arithmatex">\(x = o\)</span> 或 <span class="arithmatex">\(x = o + 1\)</span>。（交替落子，从空盘起每轮 X 先 O 后，故 <span class="arithmatex">\(0 \le x - o \le 1\)</span>。）</li>
+<li><strong>X 赢蕴含</strong>：若 X 有三连线，则 <span class="arithmatex">\(x = o + 1\)</span>。（致胜子是 X 的最后一子，X 刚落子。）</li>
+<li><strong>O 赢蕴含</strong>：若 O 有三连线，则 <span class="arithmatex">\(x = o\)</span>。（致胜子是 O 的最后一子，O 刚落子，两方持平。）</li>
+<li><strong>不可双赢</strong>：X 与 O 不能同时有三连线。（先出现的三连线即终局、停手，第二条线无从形成。）</li>
 </ol>
+<p>条件 4 同样从"胜后停手"导出，而非额外假设：一旦某方先连成线，对局即止，另一方再无落子机会去凑出第二条线。条件 2 与 3 合起来恰好堵住了朴素判据漏掉的"赢后还在走"——X 赢却 <span class="arithmatex">\(x = o\)</span> 时条件 2 失败，正确判非法。</p>
+<p>这四条覆盖了"可达"的全部失败模式：落子方错（违反 1）、赢后续走（违反 2 或 3）、双方都已成线（违反 4）。对全部 19683 个棋盘逐一核对，四条不变量与 BFS 可达集完全一致，无一例外，故充分。</p>
 <h2 id="approach">数据结构 / 想法 (Approach)<a class="headerlink" href="#approach" title="Permanent link">#</a></h2>
-<p>直接计数 + 检查 8 条线（3 行 + 3 列 + 2 对角）是否构成"X 赢" / "O 赢"。</p>
+<p>代码是上述四条不变量的直接编码：先数 <span class="arithmatex">\(x\)</span>、<span class="arithmatex">\(o\)</span>，再检查 8 条线（3 行 + 3 列 + 2 对角）是否构成某方三连，最后逐条落实条件 1–4。条件与分支一一对应：条件 1 → 计数守卫 <code>if o not in (x, x-1)</code>；条件 4 → <code>if x_won and o_won</code>；条件 2 → <code>if x_won and x != o + 1</code>；条件 3 → <code>if o_won and x != o</code>。</p>
 <div class="language-python highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">Solution</span><span class="p">:</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">validTicTacToe</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">board</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
         <span class="n">x</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">row</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="s1">&#39;X&#39;</span><span class="p">)</span> <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">board</span><span class="p">)</span>
         <span class="n">o</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">row</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="s1">&#39;O&#39;</span><span class="p">)</span> <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">board</span><span class="p">)</span>
 
+        <span class="c1"># 条件 1：计数差 0 或 1（o == x 或 o == x-1）</span>
         <span class="k">if</span> <span class="n">o</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">x</span> <span class="o">-</span> <span class="mi">1</span><span class="p">):</span>
             <span class="k">return</span> <span class="kc">False</span>
 
         <span class="k">def</span><span class="w"> </span><span class="nf">wins</span><span class="p">(</span><span class="n">c</span><span class="p">):</span>
             <span class="n">lines</span> <span class="o">=</span> <span class="p">[]</span>
             <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">):</span>
-                <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">board</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
-                <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">board</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="n">i</span><span class="p">]</span> <span class="o">+</span> <span class="n">board</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="n">i</span><span class="p">]</span> <span class="o">+</span> <span class="n">board</span><span class="p">[</span><span class="mi">2</span><span class="p">][</span><span class="n">i</span><span class="p">])</span>
-            <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">board</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">board</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">board</span><span class="p">[</span><span class="mi">2</span><span class="p">][</span><span class="mi">2</span><span class="p">])</span>
-            <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">board</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span> <span class="o">+</span> <span class="n">board</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">board</span><span class="p">[</span><span class="mi">2</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span>
+                <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">board</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>                                  <span class="c1"># 行</span>
+                <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">board</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="n">i</span><span class="p">]</span> <span class="o">+</span> <span class="n">board</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="n">i</span><span class="p">]</span> <span class="o">+</span> <span class="n">board</span><span class="p">[</span><span class="mi">2</span><span class="p">][</span><span class="n">i</span><span class="p">])</span>   <span class="c1"># 列</span>
+            <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">board</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">board</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">board</span><span class="p">[</span><span class="mi">2</span><span class="p">][</span><span class="mi">2</span><span class="p">])</span>       <span class="c1"># 主对角</span>
+            <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">board</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span> <span class="o">+</span> <span class="n">board</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">board</span><span class="p">[</span><span class="mi">2</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span>       <span class="c1"># 副对角</span>
             <span class="k">return</span> <span class="nb">any</span><span class="p">(</span><span class="n">line</span> <span class="o">==</span> <span class="n">c</span> <span class="o">*</span> <span class="mi">3</span> <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">lines</span><span class="p">)</span>
 
         <span class="n">x_won</span><span class="p">,</span> <span class="n">o_won</span> <span class="o">=</span> <span class="n">wins</span><span class="p">(</span><span class="s1">&#39;X&#39;</span><span class="p">),</span> <span class="n">wins</span><span class="p">(</span><span class="s1">&#39;O&#39;</span><span class="p">)</span>
 
-        <span class="k">if</span> <span class="n">x_won</span> <span class="ow">and</span> <span class="n">o_won</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">x_won</span> <span class="ow">and</span> <span class="n">o_won</span><span class="p">:</span>        <span class="c1"># 条件 4：不可双赢</span>
             <span class="k">return</span> <span class="kc">False</span>
-        <span class="k">if</span> <span class="n">x_won</span> <span class="ow">and</span> <span class="n">x</span> <span class="o">!=</span> <span class="n">o</span> <span class="o">+</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">x_won</span> <span class="ow">and</span> <span class="n">x</span> <span class="o">!=</span> <span class="n">o</span> <span class="o">+</span> <span class="mi">1</span><span class="p">:</span>   <span class="c1"># 条件 2：X 赢 ⟹ x = o+1</span>
             <span class="k">return</span> <span class="kc">False</span>
-        <span class="k">if</span> <span class="n">o_won</span> <span class="ow">and</span> <span class="n">x</span> <span class="o">!=</span> <span class="n">o</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">o_won</span> <span class="ow">and</span> <span class="n">x</span> <span class="o">!=</span> <span class="n">o</span><span class="p">:</span>       <span class="c1"># 条件 3：O 赢 ⟹ x = o</span>
             <span class="k">return</span> <span class="kc">False</span>
         <span class="k">return</span> <span class="kc">True</span>
 </code></pre></div>
-<p>样例 1 trace：<code>["O  ","   ","   "]</code>. x=0, o=1. o ∉ {0, -1} → False。✓</p>
-<p>样例 2：<code>["XOX"," X "," "]</code>. x=3, o=1. o ∉ {3, 2} → False。✓</p>
-<p>样例 3：<code>["XOX","O O","XOX"]</code>. x=5, o=4. o ∈ {5, 4}? 4 ∈ {5, 4} ✓。检查线：行 0 "XOX"、行 1 "O O"、行 2 "XOX"、列 0 "XOX"、列 1 "O O"、列 2 "XOX"、对角 1 "X O"、对角 2 "XOX"。无任何三同 X 或三同 O → x_won=o_won=False。返回 True。✓</p>
-<p>边界例 <code>["XXX","   ","OOO"]</code>: x=3, o=3. o ∈ {3, 2}? 3∈{3,2}? 是。x_won=True (行 0)，o_won=True (行 2) → 同时赢 → False。✓</p>
+<p><code>wins</code> 恰好构造 8 条线：循环每轮取一行一列共 6 条，再补两条对角共 8 条。漏掉对角会让"沿对角的三连"判不出来，是常见缺口。</p>
+<p>样例 1 <code>["O  ","   ","   "]</code>：x=0, o=1。<code>o not in (0, -1)</code> 为真 → 条件 1 失败 → False。空盘第一手必是 X，棋盘却只有一个 O，落子方错。✓</p>
+<p>样例 2 <code>["XOX","   ","   "]</code>：x=2, o=1。<code>o in (2, 1)</code> ✓。无任何三连 → x_won=o_won=False → 三条胜负守卫均不触发 → True。X 走两步、O 走一步，轮到 O 之前的合法局面。✓</p>
+<p>样例 3 <code>["XOX","O O","XOX"]</code>：四角为 X、四边中点为 O、中心空，故 x=4, o=4。<code>o in (4, 3)</code> ✓。检查 8 条线：三行 <code>"XOX"/"O O"/"XOX"</code>、三列 <code>"XOX"/"O O"/"XOX"</code>、两对角 <code>"X X"/"X X"</code>（中心是空格，对角不可能三连）。无任何三同 → x_won=o_won=False → True。✓</p>
+<p>边界例 <code>["XXX","   ","OOO"]</code>：x=3, o=3。<code>o in (3, 2)</code> ✓。但行 0 是 X 三连、行 2 是 O 三连 → x_won 且 o_won → 条件 4 失败 → False。两方都已成线，违反"先成线即终局"。✓</p>
 <h2 id="complexity">复杂度 (Complexity)<a class="headerlink" href="#complexity" title="Permanent link">#</a></h2>
+<p>棋盘固定 9 格，计数与 8 条线检查都是常数次操作，与输入规模无关，故无最好/平均/最坏之分。</p>
 <ul>
-<li>Time: <span class="arithmatex">\(O(1)\)</span>（棋盘固定 9 格）。</li>
+<li>Time: <span class="arithmatex">\(O(1)\)</span>。</li>
 <li>Space: <span class="arithmatex">\(O(1)\)</span>。</li>
 </ul>
 <h2 id="pitfalls">陷阱 (Pitfalls)<a class="headerlink" href="#pitfalls" title="Permanent link">#</a></h2>
+<p>下列陷阱都是某条不变量被误用或漏用的直接后果，而非孤立的实现细节。</p>
 <ul>
-<li>"O 赢需 x = o"——许多人会写 x = o + 1（与 X 赢条件搞反）。直观：O 赢的瞬间 O 刚落子，X、O 数量持平。</li>
-<li>"同时赢"必须排除：井字棋一局只允许一方赢——若双方都有三连线，必定违反"赢后停手"规则。</li>
-<li>注意 <code>wins</code> 检查 8 条线，不是 6 条（漏对角是典型错误）。</li>
-<li>输入字符串中包含空格 <code>' '</code>，不要去除。</li>
+<li><strong>条件 3 写反</strong>：O 赢需 <span class="arithmatex">\(x = o\)</span>，不是 <span class="arithmatex">\(x = o + 1\)</span>。把它写成与条件 2 相同会漏判"O 赢后 X 又落子"的非法盘。根因是没有区分致胜方：致胜子是 O 的最后一子，落子后两方持平。</li>
+<li><strong>遗漏条件 4</strong>：若 X 与 O 都有三连线，必有一方在对局已终局后落子，违反停手规则，应判非法；只查"至多一方赢"中的计数而忘了排除双赢会放过这类盘。</li>
+<li><strong>只查 6 条线</strong>：胜负检查须覆盖 8 条线（3 行 + 3 列 + 2 对角），漏掉两条对角会让沿对角的三连判不出来。</li>
+<li><strong>抹掉空格</strong>：输入串以 <code>' '</code> 表示空位，是计数与胜负判断的一部分，预处理时不可 strip 或过滤。</li>
 </ul>
 <h2 id="related">相关题目 (Related)<a class="headerlink" href="#related" title="Permanent link">#</a></h2>
 <ul>
@@ -22635,6 +22676,8 @@
         <script src="../../../js/mathjax/tex-mml-chtml.js"></script>
       
         <script src="../../../js/mermaid.min.js"></script>
+      
+        <script src="../../../js/featured.js"></script>
       
     
   </body>

@@ -1466,6 +1466,8 @@
       
         
       
+        
+      
     
     
     
@@ -1521,6 +1523,34 @@
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../featured/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ⭐ Featured（已验证）
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
               
             
               
@@ -1610,10 +1640,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_4" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
         
           
-          <label class="md-nav__link" for="__nav_4_4" id="__nav_4_4_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_5" id="__nav_4_5_label" tabindex="">
             
   
   
@@ -1631,8 +1661,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_4_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_4">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_5">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1915,7 +1945,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -1937,14 +1967,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_4_5" id="__nav_4_5_label" tabindex="">
+              <label class="md-nav__link " for="__nav_4_6" id="__nav_4_6_label" tabindex="">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_5">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_6">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -5321,10 +5351,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_7" checked>
         
           
-          <label class="md-nav__link" for="__nav_4_6" id="__nav_4_6_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_7" id="__nav_4_7_label" tabindex="">
             
   
   
@@ -5342,8 +5372,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_4_6">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_7_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4_7">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -22465,17 +22495,37 @@
 <h1 id="1251-average-selling-price-easy">1251. Average Selling Price  🟢 Easy<a class="headerlink" href="#1251-average-selling-price-easy" title="Permanent link">#</a></h1>
 <p><strong>Tags</strong>: Database</p>
 <h2 id="problem">Problem<a class="headerlink" href="#problem" title="Permanent link">#</a></h2>
-<p>给定两张表：<code>Prices(product_id, start_date, end_date, price)</code> 记录每个产品在某时间段内的单价（同一 <code>product_id</code> 不会有重叠区间）；<code>UnitsSold(product_id, purchase_date, units)</code> 记录销售日及销量。求每个产品的加权平均售价 <code>average_price</code>，公式为 <span class="arithmatex">\(\frac{\sum \text{price} \times \text{units}}{\sum \text{units}}\)</span>，保留两位小数；若产品无销售则结果为 0。</p>
+<p>给定两张表：<code>Prices(product_id, start_date, end_date, price)</code> 记录每个产品在某时间段内的单价（同一 <code>product_id</code> 不会有重叠区间）；<code>UnitsSold(product_id, purchase_date, units)</code> 记录销售日及销量。对每个产品求其加权平均售价 <code>average_price</code>，保留两位小数；若产品无销售则结果为 0。</p>
 <h2 id="background">背景 (Background)<a class="headerlink" href="#background" title="Permanent link">#</a></h2>
-<p>本题为典型的 <strong>区间—事件连接 (interval–event join)</strong> 模式：销售事件落在哪段定价区间内，对应那段的单价。这种"以时间维度做范围内连接"在仓库管理、保险定价、电商促销分析中广泛出现。SQL 通过 <code>JOIN ... ON BETWEEN</code> 表达，但要小心边界（开闭区间）。</p>
+<p>每条销售记录只携带一个日期，而同一产品的单价随时间窗口变化。要给一笔销售定价，就必须把它的 <code>purchase_date</code> 落到某一段定价区间里——价格不是直接记在销售记录上的，而是由日期间接决定的。</p>
+<p>这里的关键结构来自题目的一个约束：<strong>同一产品的定价区间互不重叠</strong>。因此任意一个销售日期至多落入一段区间，落入的那段就唯一确定了这笔销售的单价。这个唯一性不是约定，而是非重叠约束的直接推论；正是它让后面的形式化和实现都能保持单一路径，无需在多个候选价格之间做仲裁。</p>
 <h2 id="formulation">形式化 (Formulation)<a class="headerlink" href="#formulation" title="Permanent link">#</a></h2>
-<p>对每个 <span class="arithmatex">\(p\)</span>，设其销售事件集为 <span class="arithmatex">\(S_p = \{(d_i, u_i)\}\)</span>，定价区间集为 <span class="arithmatex">\(R_p = \{([s_j, e_j], q_j)\}\)</span>（互不相交）。对每个 <span class="arithmatex">\((d_i, u_i)\)</span> 唯一存在 <span class="arithmatex">\(j(i)\)</span> 使 <span class="arithmatex">\(d_i \in [s_{j(i)}, e_{j(i)}]\)</span>，输出</p>
+<p>先建立直觉。平均售价不是各档单价的简单算术平均——卖得多的价格档应当占更大权重。正确的量是<strong>总收入除以总销量</strong>：一档定价区间贡献的收入是该档单价乘以落在该档的销量，把所有档相加得总收入；总销量则是各档销量之和。两者相除即为加权平均，权重恰是各档的销量。</p>
+<p>将其形式化。对每个产品 <span class="arithmatex">\(p\)</span>，设其销售事件集为 <span class="arithmatex">\(S_p = \{(d_i, u_i)\}\)</span>，定价区间集为 <span class="arithmatex">\(R_p = \{([s_j, e_j], q_j)\}\)</span>，其中各区间互不相交。由非重叠约束，对每个事件 <span class="arithmatex">\((d_i, u_i)\)</span> 唯一存在区间下标 <span class="arithmatex">\(j(i)\)</span> 使 <span class="arithmatex">\(d_i \in [s_{j(i)}, e_{j(i)}]\)</span>；这笔销售按单价 <span class="arithmatex">\(q_{j(i)}\)</span> 计价。于是</p>
 <div class="arithmatex">\[
-\text{avg}_p = \operatorname{round}\!\left(\frac{\sum_i u_i \cdot q_{j(i)}}{\sum_i u_i}, 2\right).
+\text{avg}_p = \operatorname{round}\!\left(\frac{\sum_i u_i \cdot q_{j(i)}}{\sum_i u_i},\ 2\right). \tag{1}
 \]</div>
-<p>无销售时定义为 0。</p>
+<p>分子 <span class="arithmatex">\(\sum_i u_i \cdot q_{j(i)}\)</span> 是总收入，分母 <span class="arithmatex">\(\sum_i u_i\)</span> 是总销量，与上述定义逐项对应。无销售时 <span class="arithmatex">\(S_p = \varnothing\)</span>，分母为 0，按题意定义 <span class="arithmatex">\(\text{avg}_p = 0\)</span>。</p>
 <h2 id="approach">数据结构 / 想法 (Approach)<a class="headerlink" href="#approach" title="Permanent link">#</a></h2>
-<p><strong>方法：LEFT JOIN + 条件聚合</strong>。从 <code>Prices</code> 出发左连 <code>UnitsSold</code>，匹配条件为 <code>purchase_date BETWEEN start_date AND end_date</code>。这样保证所有产品出现，且无销售的产品 <code>units = NULL</code>。再用 <code>IFNULL(round(sum(price*units)/sum(units), 2), 0)</code> 处理空销售（除以 0 时 SUM 为 NULL）。</p>
+<p><strong>先写最朴素的版本，看它在样例上哪里崩。</strong> 把价格连到销售上、再聚合，最直接的尝试是：</p>
+<div class="language-sql highlight"><pre><span></span><code><span class="c1">-- 朴素尝试（错误，仅用于暴露问题）</span>
+<span class="k">SELECT</span>
+<span class="w">    </span><span class="n">p</span><span class="p">.</span><span class="n">product_id</span><span class="p">,</span>
+<span class="w">    </span><span class="n">ROUND</span><span class="p">(</span><span class="k">SUM</span><span class="p">(</span><span class="n">p</span><span class="p">.</span><span class="n">price</span><span class="p">)</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="k">SUM</span><span class="p">(</span><span class="n">u</span><span class="p">.</span><span class="n">units</span><span class="p">),</span><span class="w"> </span><span class="mi">2</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">average_price</span>
+<span class="k">FROM</span><span class="w"> </span><span class="n">Prices</span><span class="w"> </span><span class="n">p</span>
+<span class="k">INNER</span><span class="w"> </span><span class="k">JOIN</span><span class="w"> </span><span class="n">UnitsSold</span><span class="w"> </span><span class="n">u</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">p</span><span class="p">.</span><span class="n">product_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">u</span><span class="p">.</span><span class="n">product_id</span>
+<span class="k">GROUP</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">p</span><span class="p">.</span><span class="n">product_id</span><span class="p">;</span>
+</code></pre></div>
+<p>它有两处错：</p>
+<ol>
+<li>
+<p><strong>聚合公式错。</strong> 式 (1) 的分子是 <span class="arithmatex">\(\sum_i u_i \cdot q_{j(i)}\)</span>——每笔销量乘以其单价再求和；而 <code>SUM(p.price) / SUM(u.units)</code> 算的是「单价之和 ÷ 销量之和」，根本不是加权平均。用样例看：产品 1 的两笔销售单价 5 与 20、销量 100 与 15，正确值是 <span class="arithmatex">\(\frac{100\cdot5 + 15\cdot20}{115} \approx 6.96\)</span>，而朴素式给出 <span class="arithmatex">\(\frac{5+20}{115} \approx 0.22\)</span>。差距来自漏乘销量。修正是把分子写成式 (1) 的形式：<code>SUM(p.price * u.units)</code>。</p>
+</li>
+<li>
+<p><strong>连接条件不全、连接类型错。</strong> <code>ON product_id</code> 只对齐了产品，没有把销售日期落进定价区间，于是一笔销售会匹配到该产品的<strong>所有</strong>价格档，而非唯一的 <span class="arithmatex">\(j(i)\)</span>。修正是补上 <span class="arithmatex">\(d_i \in [s_{j(i)}, e_{j(i)}]\)</span> 这一条件。此外 <code>INNER JOIN</code> 会丢掉从未出现在 <code>UnitsSold</code> 中的产品，但题面要求这些产品输出 0——所以连接必须以 <code>Prices</code> 为锚、用 <code>LEFT JOIN</code> 保留全部产品。</p>
+</li>
+</ol>
+<p>把这两处修正逐项映射回式 (1)，就得到正确解：</p>
 <div class="language-sql highlight"><pre><span></span><code><span class="k">SELECT</span>
 <span class="w">    </span><span class="n">p</span><span class="p">.</span><span class="n">product_id</span><span class="p">,</span>
 <span class="w">    </span><span class="n">IFNULL</span><span class="p">(</span><span class="n">ROUND</span><span class="p">(</span><span class="k">SUM</span><span class="p">(</span><span class="n">p</span><span class="p">.</span><span class="n">price</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">u</span><span class="p">.</span><span class="n">units</span><span class="p">)</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="k">SUM</span><span class="p">(</span><span class="n">u</span><span class="p">.</span><span class="n">units</span><span class="p">),</span><span class="w"> </span><span class="mi">2</span><span class="p">),</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">average_price</span>
@@ -22485,17 +22535,27 @@
 <span class="w">   </span><span class="k">AND</span><span class="w"> </span><span class="n">u</span><span class="p">.</span><span class="n">purchase_date</span><span class="w"> </span><span class="k">BETWEEN</span><span class="w"> </span><span class="n">p</span><span class="p">.</span><span class="n">start_date</span><span class="w"> </span><span class="k">AND</span><span class="w"> </span><span class="n">p</span><span class="p">.</span><span class="n">end_date</span>
 <span class="k">GROUP</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">p</span><span class="p">.</span><span class="n">product_id</span><span class="p">;</span>
 </code></pre></div>
-<p>样例验证：产品 1 销售 <code>(2019-02-25, 100)</code> 命中区间 <code>[02-17, 02-28]</code> 价 5；<code>(2019-03-01, 15)</code> 命中 <code>[03-01, 03-22]</code> 价 20。<span class="arithmatex">\(\frac{100\cdot 5 + 15\cdot 20}{115} = \frac{800}{115} \approx 6.96\)</span> ✓。</p>
-<h2 id="complexity">复杂度 (Complexity)<a class="headerlink" href="#complexity" title="Permanent link">#</a></h2>
+<p>逐项对应式 (1)：</p>
 <ul>
-<li>Time: <span class="arithmatex">\(O(P + U)\)</span> 索引可用时；否则 <span class="arithmatex">\(O(P \cdot U)\)</span> 嵌套循环 join。</li>
-<li>Space: <span class="arithmatex">\(O(\text{groups})\)</span> for aggregation hash。</li>
+<li>唯一性条件 <span class="arithmatex">\(d_i \in [s_{j(i)}, e_{j(i)}]\)</span> 直接翻译为 <code>purchase_date BETWEEN start_date AND end_date</code>。<code>BETWEEN</code> 在两端都闭，与闭区间 <span class="arithmatex">\([s_j, e_j]\)</span> 一致；又因区间非重叠，每笔销售至多匹配一行价格，连接结果中不会出现重复计价。</li>
+<li>分子 <span class="arithmatex">\(\sum_i u_i \cdot q_{j(i)}\)</span> 成为 <code>SUM(p.price * u.units)</code>——连接后每行恰是一笔销售配上其唯一单价，逐行相乘求和即总收入。</li>
+<li>分母 <span class="arithmatex">\(\sum_i u_i\)</span> 成为 <code>SUM(u.units)</code>，即总销量。</li>
+<li>以 <code>Prices</code> 为锚的 <code>LEFT JOIN</code> 保证所有产品出现；无销售的产品其匹配行全为 <code>NULL</code>，<code>SUM(...)</code> 在零行上返回 <code>NULL</code>，<code>IFNULL(..., 0)</code> 把这个空销售情形映回式 (1) 规定的 0。</li>
+</ul>
+<p>样例验证：产品 1 的销售 <code>(2019-02-25, 100)</code> 落入区间 <code>[02-17, 02-28]</code> 价 5，<code>(2019-03-01, 15)</code> 落入 <code>[03-01, 03-22]</code> 价 20。代入式 (1)：<span class="arithmatex">\(\frac{100\cdot 5 + 15\cdot 20}{115} = \frac{800}{115} \approx 6.96\)</span>，与判题一致。</p>
+<h2 id="complexity">复杂度 (Complexity)<a class="headerlink" href="#complexity" title="Permanent link">#</a></h2>
+<p>设 <span class="arithmatex">\(P\)</span> 为 <code>Prices</code> 行数、<span class="arithmatex">\(U\)</span> 为 <code>UnitsSold</code> 行数。</p>
+<ul>
+<li>Time: 若 <code>product_id</code> 上有可用索引，连接近似 <span class="arithmatex">\(O(P + U)\)</span>；否则退化为嵌套循环连接 <span class="arithmatex">\(O(P \cdot U)\)</span>。</li>
+<li>Space: <span class="arithmatex">\(O(\text{groups})\)</span>，即按 <code>product_id</code> 聚合所需的哈希表。</li>
 </ul>
 <h2 id="pitfalls">陷阱 (Pitfalls)<a class="headerlink" href="#pitfalls" title="Permanent link">#</a></h2>
+<p>按「会改错结果」到「极少触发」排序：</p>
 <ul>
-<li>用 <code>INNER JOIN</code> 会丢失无销售产品；题面要求那种情况下 <code>average_price = 0</code>。</li>
-<li><code>SUM(price)/SUM(units)</code> 是错的——必须是 <code>SUM(price*units)/SUM(units)</code>（加权而非分别平均）。</li>
-<li><code>ROUND(x, 2)</code> 在某些方言四舍五入策略不同，MySQL 用四舍五入到偶数 (banker's rounding) 在 5 结尾时；通常本题数据下不会被卡。</li>
+<li><strong>聚合公式（最关键）。</strong> 必须用 <code>SUM(price*units)/SUM(units)</code>，不能用 <code>SUM(price)/SUM(units)</code>。后者是单价之和除以销量之和，漏掉了「每档以其销量为权重」这一核心，结果系统性偏小（见 Approach 中样例 6.96 vs 0.22）。</li>
+<li><strong>连接类型。</strong> 用 <code>INNER JOIN</code> 会丢失无销售的产品，而题面要求这些产品输出 <code>average_price = 0</code>；以 <code>Prices</code> 为锚的 <code>LEFT JOIN</code> + <code>IFNULL(..., 0)</code> 才能覆盖。</li>
+<li><strong>取整方言。</strong> 在 MySQL 中，<code>ROUND(x, 2)</code> 对 DECIMAL/精确值操作数采用「四舍五入、半数远离零」（如 <code>ROUND(2.5)=3</code>）；半数取偶（banker's rounding）只对 FLOAT/DOUBLE 近似值生效（如 <code>ROUND(2.5e0)=2</code>）。本题 <code>SUM(price*units)/SUM(units)</code> 产生 DECIMAL，故走前者；通常本题数据不会卡在恰好 <code>.xx5</code> 的边界上。</li>
+<li><strong>可移植性。</strong> 本解针对 LeetCode 的 MySQL 判题，<code>/</code> 总产生 DECIMAL。移到 SQLite/Postgres 时，<code>price</code> 与 <code>units</code> 为整数会触发整数除法（得 6.0 而非 6.96），需对操作数加 <code>CAST(... AS REAL)</code> 或 <code>*1.0</code>。</li>
 </ul>
 <h2 id="related">相关题目 (Related)<a class="headerlink" href="#related" title="Permanent link">#</a></h2>
 <ul>
@@ -22611,6 +22671,8 @@
         <script src="../../../js/mathjax/tex-mml-chtml.js"></script>
       
         <script src="../../../js/mermaid.min.js"></script>
+      
+        <script src="../../../js/featured.js"></script>
       
     
   </body>

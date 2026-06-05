@@ -1466,6 +1466,8 @@
       
         
       
+        
+      
     
     
     
@@ -1521,6 +1523,34 @@
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../featured/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ⭐ Featured（已验证）
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
               
             
               
@@ -1610,10 +1640,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_4" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
         
           
-          <label class="md-nav__link" for="__nav_4_4" id="__nav_4_4_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_5" id="__nav_4_5_label" tabindex="">
             
   
   
@@ -1631,8 +1661,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_4_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_4">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_5">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1915,7 +1945,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -1937,14 +1967,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_4_5" id="__nav_4_5_label" tabindex="">
+              <label class="md-nav__link " for="__nav_4_6" id="__nav_4_6_label" tabindex="">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_5">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_6">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -5321,10 +5351,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_7" checked>
         
           
-          <label class="md-nav__link" for="__nav_4_6" id="__nav_4_6_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_7" id="__nav_4_7_label" tabindex="">
             
   
   
@@ -5342,8 +5372,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_4_6">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_7_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4_7">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -22466,12 +22496,19 @@
 <p><strong>Tags</strong>: Array, Enumeration</p>
 <h2 id="problem">Problem<a class="headerlink" href="#problem" title="Permanent link">#</a></h2>
 <p>数组 <code>arr</code>、整数 <span class="arithmatex">\(a, b, c\)</span>。"好三元组"<span class="arithmatex">\((i, j, k)\)</span> 满足 <span class="arithmatex">\(0 \leq i &lt; j &lt; k &lt; n\)</span> 且 <span class="arithmatex">\(|a_i - a_j| \leq a\)</span>, <span class="arithmatex">\(|a_j - a_k| \leq b\)</span>, <span class="arithmatex">\(|a_i - a_k| \leq c\)</span>。求好三元组个数。<span class="arithmatex">\(n \leq 100\)</span>，值 <span class="arithmatex">\(\leq 1000\)</span>。</p>
+<p>记 <span class="arithmatex">\(v_i\)</span> 为 <code>arr</code> 第 <span class="arithmatex">\(i\)</span> 个值。我们要数的是：有多少个<strong>位置严格递增</strong>的三元组 <span class="arithmatex">\((i, j, k)\)</span>，使得它们三个值之间的三段两两差距同时落在各自的容差内。下面统一用 <span class="arithmatex">\(v_i\)</span> 指代 <code>arr[i]</code>。</p>
 <h2 id="background">背景 (Background)<a class="headerlink" href="#background" title="Permanent link">#</a></h2>
-<p>朴素三层枚举 <span class="arithmatex">\(O(n^3)\)</span> 在 <span class="arithmatex">\(n = 100\)</span> 下 <span class="arithmatex">\(10^6\)</span>，可过。本题属于"数据规模允许暴力"，重点是清晰地写出条件。学科背景上接近度量空间中的三角约束（虽然 <span class="arithmatex">\(|\cdot|\)</span> 不是真三角不等式约束，只是三个距离上界）。</p>
+<p>先看这个"好"的定义本身的结构。一个三元组挂了三个约束：<span class="arithmatex">\(|v_i - v_j| \leq a\)</span> 管 <span class="arithmatex">\(i,j\)</span>，<span class="arithmatex">\(|v_j - v_k| \leq b\)</span> 管 <span class="arithmatex">\(j,k\)</span>，<span class="arithmatex">\(|v_i - v_k| \leq c\)</span> 管 <span class="arithmatex">\(i,k\)</span>。三个约束各自只盯住一对下标，且三个容差 <span class="arithmatex">\(a, b, c\)</span> 互不相干——知道前两段差不能推出第三段差是否合规。正因为三个约束彼此独立、无法相互推导，判定一个三元组好不好，三段差<strong>都得显式验一遍</strong>，没有哪段可以省。</p>
+<p>这一点直接决定了能不能走捷径。若想固定两个值、用算术反推第三个值的合法范围，三个独立区间约束交在一起会把"反推"退化成"在值域上做区间计数"，并不省事；若想排序后用单调性，排序会打乱下标，而 <span class="arithmatex">\(i &lt; j &lt; k\)</span> 是定义的一部分，一旦乱序就无法维持。所以这里没有显然的子立方捷径，三段差独立、下标必须有序，正是直接枚举成为正解的原因。</p>
+<p>至于规模：<span class="arithmatex">\(n \leq 100\)</span>，三元组总数 <span class="arithmatex">\(\binom{n}{3} = \binom{100}{3} = 161700 &lt; 2 \times 10^5\)</span>，逐个验证完全在时限内。约束既允许穷举，结构又拒绝捷径，于是枚举所有三元组、逐个判定，既是必要的也是充分的。</p>
 <h2 id="formulation">形式化 (Formulation)<a class="headerlink" href="#formulation" title="Permanent link">#</a></h2>
-<p>求 <span class="arithmatex">\(|\{ (i, j, k) : i &lt; j &lt; k, \; |a_i - a_j| \leq a, \; |a_j - a_k| \leq b, \; |a_i - a_k| \leq c \}|\)</span>。</p>
+<p>把上面的直觉精确化：答案是所有满足"下标严格递增、且三段两两差同时合规"的下标三元组构成的集合的基数。</p>
+<div class="arithmatex">\[
+\bigl|\{ (i, j, k) : i &lt; j &lt; k, \; |v_i - v_j| \leq a, \; |v_j - v_k| \leq b, \; |v_i - v_k| \leq c \}\bigr|.
+\]</div>
+<p>集合内的三个条件互相之间没有蕴含关系，因此它们是集合定义里三个并列的合取项，缺一不可。</p>
 <h2 id="approach">数据结构 / 想法 (Approach)<a class="headerlink" href="#approach" title="Permanent link">#</a></h2>
-<p><strong>法 1（推荐）：三层循环</strong>。</p>
+<p><strong>从形式化直接读出算法。</strong> 上面的集合定义里有三个被约束的下标 <span class="arithmatex">\(i &lt; j &lt; k\)</span>。要数出这个集合的元素个数，最直接的做法就是：让 <span class="arithmatex">\(i, j, k\)</span> 跑遍所有满足 <span class="arithmatex">\(i &lt; j &lt; k\)</span> 的取法，对每一种取法测试它是否落在集合里——三个并列的合取项就是三次显式判定。三层嵌套循环正是这句话的逐字翻译：外层 <span class="arithmatex">\(i\)</span>、中层 <span class="arithmatex">\(j &gt; i\)</span>、内层 <span class="arithmatex">\(k &gt; j\)</span>，循环边界 <code>range(i+1, n)</code>、<code>range(j+1, n)</code> 天然保证了下标严格递增，循环体内的三个 <code>abs(...) &lt;= ...</code> 正对应集合里的三个合取项。</p>
 <div class="language-python highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">Solution</span><span class="p">:</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">countGoodTriplets</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">arr</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">):</span>
         <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">arr</span><span class="p">)</span>
@@ -22486,33 +22523,37 @@
         <span class="k">return</span> <span class="n">cnt</span>
 
 <span class="c1"># Trace 样例 1: arr=[3,0,1,1,9,7], a=7, b=2, c=3</span>
-<span class="c1"># 仅看以(i=0,j=1)开头 |3-0|=3&lt;=7 → 继续 k=2: |0-1|=1&lt;=2, |3-1|=2&lt;=3 ✓</span>
-<span class="c1"># k=3: |0-1|=1&lt;=2, |3-1|=2&lt;=3 ✓</span>
-<span class="c1"># k=4: |0-9|=9&gt;2 skip</span>
-<span class="c1"># k=5: |0-7|=7&gt;2 skip</span>
-<span class="c1"># 共 2 from (0,1). 继续其他 i,j 共 4 ✓</span>
+<span class="c1"># 看以 (i=0,j=1) 开头: |3-0|=3&lt;=7 → 进入内层</span>
+<span class="c1">#   k=2: |0-1|=1&lt;=2, |3-1|=2&lt;=3 ✓</span>
+<span class="c1">#   k=3: |0-1|=1&lt;=2, |3-1|=2&lt;=3 ✓</span>
+<span class="c1">#   k=4: |0-9|=9&gt;2 skip</span>
+<span class="c1">#   k=5: |0-7|=7&gt;2 skip</span>
+<span class="c1"># (0,1) 贡献 2 个: (0,1,2),(0,1,3)</span>
+<span class="c1"># 其余 (i,j) 再贡献 2 个: (0,2,3),(1,2,3)</span>
+<span class="c1"># total = 4 ✓</span>
 </code></pre></div>
-<p><strong>剪枝</strong>：第一个条件不满足时跳过整个内层 <span class="arithmatex">\(k\)</span> 循环（已写）。</p>
-<p><strong>法 2（<span class="arithmatex">\(O(n^2)\)</span> 优化）</strong>：固定 <span class="arithmatex">\(j\)</span>，预计 <span class="arithmatex">\(f(x)\)</span> = 满足 "下标 <span class="arithmatex">\(i &lt; j\)</span> 且 <span class="arithmatex">\(|a_i - a_j| \leq a\)</span> 且 <span class="arithmatex">\(a_i \in [x-c, x+c]\)</span>" 的 <span class="arithmatex">\(i\)</span> 数量；再用 prefix count 在值域上求满足 <span class="arithmatex">\(k &gt; j\)</span> 的 <span class="arithmatex">\(a_k \in [a_j - b, a_j + b] \cap [a_i - c, a_i + c]\)</span>（复杂，本题 <span class="arithmatex">\(n \leq 100\)</span> 无需）。</p>
+<p>第一个约束 <span class="arithmatex">\(|v_i - v_j| \leq a\)</span> 只依赖 <span class="arithmatex">\(i, j\)</span>，与 <span class="arithmatex">\(k\)</span> 无关。所以一旦它在 <span class="arithmatex">\((i,j)\)</span> 层就不成立，整条内层 <span class="arithmatex">\(k\)</span> 循环都不可能产生好三元组，可直接 <code>continue</code> 跳过——代码已经在进入 <span class="arithmatex">\(k\)</span> 循环前做了这步判定。这是把"独立约束尽早判定"用在最外能判的层上，省掉的是常数倍内层迭代，不改变结果。</p>
+<p><strong>是否存在 <span class="arithmatex">\(O(n^2)\)</span> 优化。</strong> 固定 <span class="arithmatex">\(j\)</span>，左侧合法的 <span class="arithmatex">\(i\)</span> 集合（满足 <span class="arithmatex">\(i &lt; j\)</span> 且 <span class="arithmatex">\(|v_i - v_j| \leq a\)</span>）是确定的；问题变成数右侧有多少 <span class="arithmatex">\(k &gt; j\)</span> 使得 <span class="arithmatex">\(v_k\)</span> 同时落进 <span class="arithmatex">\([v_j - b, v_j + b]\)</span> 与某个 <span class="arithmatex">\(v_i\)</span> 决定的 <span class="arithmatex">\([v_i - c, v_i + c]\)</span>。在值域上用前缀计数或树状数组维护，每个 <span class="arithmatex">\(j\)</span> 可在 <span class="arithmatex">\(O(V)\)</span> 内回答，整体 <span class="arithmatex">\(O(n \cdot V)\)</span>。但区间交随 <span class="arithmatex">\(i\)</span> 变化、实现细节繁琐，在 <span class="arithmatex">\(n \leq 100\)</span> 下三层循环已是 <span class="arithmatex">\(1.6 \times 10^5\)</span> 量级，写优化得不偿失，列在此处只为指明方向。</p>
 <h2 id="complexity">复杂度 (Complexity)<a class="headerlink" href="#complexity" title="Permanent link">#</a></h2>
 <ul>
-<li>法 1: Time <span class="arithmatex">\(O(n^3) = 10^6\)</span>；Space <span class="arithmatex">\(O(1)\)</span>。</li>
-<li>法 2: Time <span class="arithmatex">\(O(n^2 \cdot V)\)</span> 或 <span class="arithmatex">\(O(n \cdot V \log V)\)</span>，复杂得不偿失。</li>
+<li>法 1（三层循环）: Time <span class="arithmatex">\(O(n^3)\)</span>，<span class="arithmatex">\(n=100\)</span> 时内层判定约 <span class="arithmatex">\(\binom{100}{3} = 1.6 \times 10^5\)</span> 次；Space <span class="arithmatex">\(O(1)\)</span>。</li>
+<li>法 2（值域计数）: Time <span class="arithmatex">\(O(n \cdot V)\)</span>，<span class="arithmatex">\(V\)</span> 为值域大小；常数与实现复杂度均高于法 1，本题不取。</li>
 </ul>
+<p>结合复杂度与约束 <span class="arithmatex">\(n \leq 100\)</span>：法 1 在时限内且实现最简，是本题的推荐解。</p>
 <h2 id="pitfalls">陷阱 (Pitfalls)<a class="headerlink" href="#pitfalls" title="Permanent link">#</a></h2>
 <ul>
-<li><strong><code>abs</code> 别忘</strong>：题面是绝对值，<code>a_i - a_j</code> 可正可负。</li>
-<li><strong>下标条件 <span class="arithmatex">\(i &lt; j &lt; k\)</span></strong>：是严格小于，不是 <span class="arithmatex">\(\leq\)</span>；用 <code>range(i+1, n)</code> 自然保证。</li>
-<li><strong>剪枝</strong>：内层之前先判 <span class="arithmatex">\(|a_i - a_j| \leq a\)</span>，否则常数翻倍。</li>
+<li><strong><code>abs</code> 别忘</strong>：题面是绝对值，<span class="arithmatex">\(v_i - v_j\)</span> 可正可负。漏掉 <code>abs</code> 会把负差误判为合规。</li>
+<li><strong>下标条件 <span class="arithmatex">\(i &lt; j &lt; k\)</span></strong>：是严格小于，不是 <span class="arithmatex">\(\leq\)</span>；用 <code>range(i+1, n)</code>、<code>range(j+1, n)</code> 自然保证，无需额外去重。</li>
+<li><strong>剪枝已在代码中</strong>：第一个约束只依赖 <span class="arithmatex">\(i, j\)</span>，代码在进入 <span class="arithmatex">\(k\)</span> 循环前已 <code>continue</code> 跳过——这是说明而非待办，不必再手动加判断；只是提醒理解为何这步省了常数倍内层迭代。</li>
 </ul>
 <h2 id="related">相关题目 (Related)<a class="headerlink" href="#related" title="Permanent link">#</a></h2>
 <ul>
 <li><code>#611 Valid Triangle Number (off-wiki)</code> — 三元组排序后双指针 <span class="arithmatex">\(O(n^2)\)</span>。</li>
-<li><code>#1995 Count Special Quadruplets (off-wiki)</code> — 四元组暴力 <span class="arithmatex">\(O(n^4)\)</span>，同等"数据小则暴力"思想。</li>
+<li><code>#1995 Count Special Quadruplets (off-wiki)</code> — 四元组暴力 <span class="arithmatex">\(O(n^4)\)</span>，同等"约束允许穷举、结构拒绝捷径则直接枚举"的思想。</li>
 </ul>
 <h2 id="further-reading">Further Reading<a class="headerlink" href="#further-reading" title="Permanent link">#</a></h2>
 <ul>
-<li>无推荐外部资源（题目难度不足以需要专题文献）。</li>
+<li>本题为直接枚举，无需专题文献；若推广到大 <span class="arithmatex">\(n\)</span> 的多约束三元组计数，可查阅值域上的偏序计数与树状数组（Fenwick tree）技巧。</li>
 </ul>
 
 
@@ -22619,6 +22660,8 @@
         <script src="../../../js/mathjax/tex-mml-chtml.js"></script>
       
         <script src="../../../js/mermaid.min.js"></script>
+      
+        <script src="../../../js/featured.js"></script>
       
     
   </body>

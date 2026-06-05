@@ -1466,6 +1466,8 @@
       
         
       
+        
+      
     
     
     
@@ -1521,6 +1523,34 @@
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../featured/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ⭐ Featured（已验证）
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
               
             
               
@@ -1610,10 +1640,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_4" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
         
           
-          <label class="md-nav__link" for="__nav_4_4" id="__nav_4_4_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_5" id="__nav_4_5_label" tabindex="">
             
   
   
@@ -1631,8 +1661,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_4_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_4">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_5">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1915,7 +1945,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -1937,14 +1967,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_4_5" id="__nav_4_5_label" tabindex="">
+              <label class="md-nav__link " for="__nav_4_6" id="__nav_4_6_label" tabindex="">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_5">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_6">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -5321,10 +5351,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_7" checked>
         
           
-          <label class="md-nav__link" for="__nav_4_6" id="__nav_4_6_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_7" id="__nav_4_7_label" tabindex="">
             
   
   
@@ -5342,8 +5372,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_4_6">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_7_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4_7">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -22467,45 +22497,113 @@
 <h2 id="problem">Problem<a class="headerlink" href="#problem" title="Permanent link">#</a></h2>
 <p>表 <code>Seat(id INT PRIMARY KEY, student VARCHAR)</code>，<code>id</code> 从 1 连续递增。写 SQL 把相邻每两行的 <code>student</code> 互换：第 1、2 行互换，第 3、4 行互换，依此类推。若总行数为奇，最后一行保持不变。结果按 <code>id</code> 升序输出。</p>
 <h2 id="background">背景 (Background)<a class="headerlink" href="#background" title="Permanent link">#</a></h2>
-<p>这是 SQL 中"基于行号的成对置换"问题，本质是在保持记录基数不变的前提下做一个<strong>对合 (involution)</strong> 映射 <span class="arithmatex">\(\sigma\)</span>：<span class="arithmatex">\(\sigma \circ \sigma = \mathrm{id}\)</span>。在关系代数下，无副作用更新通常表达为 <code>SELECT ... CASE ...</code>；位运算 <code>id XOR 1</code> 巧妙地把 <span class="arithmatex">\((1,2),(3,4),\dots\)</span> 互换成 <span class="arithmatex">\((2,1),(4,3),\dots\)</span>——这是 0-indexed 与 1-indexed 在奇偶性上的体现。</p>
+<p>最直接的想法是"原地交换"：遍历每一对相邻行，把它们的 <code>student</code> 字段对调。用 SQL 表达就是两条 <code>UPDATE</code>，或一条带条件的 <code>UPDATE</code>：</p>
+<div class="language-sql highlight"><pre><span></span><code><span class="c1">-- 朴素尝试：原地交换 id=1 与 id=2 的 student</span>
+<span class="k">UPDATE</span><span class="w"> </span><span class="n">Seat</span><span class="w"> </span><span class="k">SET</span><span class="w"> </span><span class="n">student</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="k">SELECT</span><span class="w"> </span><span class="n">student</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">Seat</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2</span><span class="p">)</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+<span class="k">UPDATE</span><span class="w"> </span><span class="n">Seat</span><span class="w"> </span><span class="k">SET</span><span class="w"> </span><span class="n">student</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="k">SELECT</span><span class="w"> </span><span class="n">student</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">Seat</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2</span><span class="p">;</span>
+</code></pre></div>
+<p>第二条已经读不到 id=1 的原值了——它在第一条里被覆盖成了 id=2 的值，于是两行最终都等于 id=2 的 <code>student</code>。这是原地交换的根本困难：交换需要同时读两个旧值、写两个新值，而逐条 <code>UPDATE</code> 把"读"和"写"交错，中间状态污染了后续的读。在单条语句里塞进临时变量来回避，既不可移植又笨重。</p>
+<p>跳出"修改表"的框架。题目只要求<strong>输出</strong>重排后的结果，并不要求真的改动表。那么不必谈"交换"，只需描述一个固定的座位重映射：输出的第 <span class="arithmatex">\(i\)</span> 行应该取原表第几行的 <code>student</code>。一旦把答案写成"行 <span class="arithmatex">\(i\)</span> 的内容来自行 <span class="arithmatex">\(f(i)\)</span>"，所有覆盖问题都消失了——<code>SELECT</code> 从不修改源数据，读到的永远是原值。剩下的全部工作就是把 <span class="arithmatex">\(f\)</span> 写清楚。</p>
 <h2 id="formulation">形式化 (Formulation)<a class="headerlink" href="#formulation" title="Permanent link">#</a></h2>
-<p>输入有序列 <span class="arithmatex">\(S = (s_1, s_2, \dots, s_n)\)</span>。定义置换：</p>
-<div class="arithmatex">\[\sigma(i) = \begin{cases} i+1 &amp; i \text{ 奇且 } i &lt; n \\ i-1 &amp; i \text{ 偶} \\ i &amp; i \text{ 奇且 } i = n \end{cases}\]</div>
-<p>输出 <span class="arithmatex">\(S' = (s_{\sigma(1)}, s_{\sigma(2)}, \dots, s_{\sigma(n)})\)</span>。</p>
+<p>先看 <span class="arithmatex">\(f\)</span> 必须满足什么。把行按 <code>id</code> 两两分组：<span class="arithmatex">\((1,2),(3,4),(5,6),\dots\)</span>。"互换"意味着每组内两行交换内容——奇数行 <span class="arithmatex">\(2k-1\)</span> 输出其右邻 <span class="arithmatex">\(2k\)</span> 的学生，偶数行 <span class="arithmatex">\(2k\)</span> 输出其左邻 <span class="arithmatex">\(2k-1\)</span> 的学生。唯一的例外是 <span class="arithmatex">\(n\)</span> 为奇时，最后一行 <span class="arithmatex">\(n\)</span> 没有配对的右邻，原样保留。</p>
+<p>设输入有序列 <span class="arithmatex">\(S = (s_1, s_2, \dots, s_n)\)</span>，其中 <span class="arithmatex">\(n\)</span> 是总行数。定义置换 <span class="arithmatex">\(\sigma:\{1,\dots,n\}\to\{1,\dots,n\}\)</span>：</p>
+<div class="arithmatex">\[\sigma(i) = \begin{cases} i+1 &amp; i \text{ 奇且 } i &lt; n \\ i-1 &amp; i \text{ 偶} \\ i &amp; i \text{ 奇且 } i = n \end{cases} \tag{1}\]</div>
+<p>输出即 <span class="arithmatex">\(S' = (s_{\sigma(1)}, s_{\sigma(2)}, \dots, s_{\sigma(n)})\)</span>。这里 <span class="arithmatex">\(\sigma(i)\)</span> 就是上一节的 <span class="arithmatex">\(f(i)\)</span>：第 <span class="arithmatex">\(i\)</span> 行取原表第 <span class="arithmatex">\(\sigma(i)\)</span> 行的学生。</p>
+<p><span class="arithmatex">\(\sigma\)</span> 是一个<strong>对合 (involution)</strong>：<span class="arithmatex">\(\sigma \circ \sigma = \mathrm{id}\)</span>。把一对交换两次就回到原位，最后一行映到自己也是不动点。这个性质解释了为何纯 <code>SELECT</code> 一遍即可——目标是一个把每行送到确定位置的静态映射，不存在需要迭代收敛的状态，因此一次扫描读出 <span class="arithmatex">\(s_{\sigma(i)}\)</span> 就够了。下面三种解法都在实现同一个 <span class="arithmatex">\(\sigma\)</span>，区别只在如何编码 <span class="arithmatex">\((1)\)</span> 的三个分支，尤其是边界分支 <span class="arithmatex">\(\sigma(n)=n\)</span>。</p>
 <h2 id="approach">数据结构 / 想法 (Approach)<a class="headerlink" href="#approach" title="Permanent link">#</a></h2>
-<p><strong>解法 1：<code>CASE WHEN</code>。</strong> 直接按规则枚举奇偶。</p>
+<p>先把 <span class="arithmatex">\(\sigma\)</span> 在样例上跑一遍，确认 <span class="arithmatex">\((1)\)</span> 没记错。5 行 <code>Abbot/Doris/Emerson/Green/Jeames</code>：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: center;">输出行 <span class="arithmatex">\(i\)</span></th>
+<th style="text-align: left;">分支</th>
+<th style="text-align: center;"><span class="arithmatex">\(\sigma(i)\)</span></th>
+<th style="text-align: left;">输出 <code>student</code></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;">1</td>
+<td style="text-align: left;">奇且 <span class="arithmatex">\(&lt;n\)</span></td>
+<td style="text-align: center;">2</td>
+<td style="text-align: left;">Doris</td>
+</tr>
+<tr>
+<td style="text-align: center;">2</td>
+<td style="text-align: left;">偶</td>
+<td style="text-align: center;">1</td>
+<td style="text-align: left;">Abbot</td>
+</tr>
+<tr>
+<td style="text-align: center;">3</td>
+<td style="text-align: left;">奇且 <span class="arithmatex">\(&lt;n\)</span></td>
+<td style="text-align: center;">4</td>
+<td style="text-align: left;">Green</td>
+</tr>
+<tr>
+<td style="text-align: center;">4</td>
+<td style="text-align: left;">偶</td>
+<td style="text-align: center;">3</td>
+<td style="text-align: left;">Emerson</td>
+</tr>
+<tr>
+<td style="text-align: center;">5</td>
+<td style="text-align: left;">奇且 <span class="arithmatex">\(=n\)</span></td>
+<td style="text-align: center;">5</td>
+<td style="text-align: left;">Jeames</td>
+</tr>
+</tbody>
+</table>
+<p>输出 <code>1=Doris, 2=Abbot, 3=Green, 4=Emerson, 5=Jeames</code>，与期望一致。注意 <span class="arithmatex">\(n=5\)</span> 为奇，行 5 命中第三分支，原样保留。三种解法都应复现这张表。</p>
+<p><strong>解法 1：<code>CASE WHEN</code> —— 直译 <span class="arithmatex">\((1)\)</span>。</strong> 把输出行的 <code>id</code> 按 <span class="arithmatex">\((1)\)</span> 改写，再按新 <code>id</code> 排序，等价于"行 <span class="arithmatex">\(i\)</span> 取行 <span class="arithmatex">\(\sigma(i)\)</span>"。三个分支逐字对应：</p>
 <div class="language-sql highlight"><pre><span></span><code><span class="k">SELECT</span>
 <span class="w">    </span><span class="k">CASE</span>
-<span class="w">        </span><span class="k">WHEN</span><span class="w"> </span><span class="n">id</span><span class="w"> </span><span class="o">%</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="k">AND</span><span class="w"> </span><span class="n">id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="k">SELECT</span><span class="w"> </span><span class="k">MAX</span><span class="p">(</span><span class="n">id</span><span class="p">)</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">Seat</span><span class="p">)</span><span class="w"> </span><span class="k">THEN</span><span class="w"> </span><span class="n">id</span>
-<span class="w">        </span><span class="k">WHEN</span><span class="w"> </span><span class="n">id</span><span class="w"> </span><span class="o">%</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="k">THEN</span><span class="w"> </span><span class="n">id</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span>
-<span class="w">        </span><span class="k">ELSE</span><span class="w"> </span><span class="n">id</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span>
+<span class="w">        </span><span class="k">WHEN</span><span class="w"> </span><span class="n">id</span><span class="w"> </span><span class="o">%</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="k">AND</span><span class="w"> </span><span class="n">id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="k">SELECT</span><span class="w"> </span><span class="k">MAX</span><span class="p">(</span><span class="n">id</span><span class="p">)</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">Seat</span><span class="p">)</span><span class="w"> </span><span class="k">THEN</span><span class="w"> </span><span class="n">id</span><span class="w">        </span><span class="c1">-- i 奇且 i=n</span>
+<span class="w">        </span><span class="k">WHEN</span><span class="w"> </span><span class="n">id</span><span class="w"> </span><span class="o">%</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="k">THEN</span><span class="w"> </span><span class="n">id</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="w">                                        </span><span class="c1">-- i 奇且 i&lt;n</span>
+<span class="w">        </span><span class="k">ELSE</span><span class="w"> </span><span class="n">id</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span><span class="w">                                                        </span><span class="c1">-- i 偶</span>
 <span class="w">    </span><span class="k">END</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">id</span><span class="p">,</span>
 <span class="w">    </span><span class="n">student</span>
 <span class="k">FROM</span><span class="w"> </span><span class="n">Seat</span>
 <span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">id</span><span class="p">;</span>
 </code></pre></div>
-<p><strong>解法 2：位运算 <code>id XOR 1</code>。</strong> 但需特殊处理奇数总数下最后一行。</p>
-<p><strong>解法 3：自连接 / <code>COALESCE</code>。</strong> 与下一/上一行 join，再用 <code>COALESCE</code> 填补末尾。</p>
+<p>判断 <span class="arithmatex">\(i=n\)</span> 用 <code>id = (SELECT MAX(id) FROM Seat)</code>，因为 <code>id</code> 连续递增，最大 <code>id</code> 即末行。分支顺序要紧：先判"奇且为末行"，否则奇数末行会落进 <code>id+1</code>，错误地指向不存在的第 <span class="arithmatex">\(n+1\)</span> 行。</p>
+<p><strong>解法 2：位运算 —— 把前两个分支合并。</strong> <span class="arithmatex">\((1)\)</span> 的前两支可以并成一支吗？奇数 <span class="arithmatex">\(+1\)</span>、偶数 <span class="arithmatex">\(-1\)</span>，本质是在 <span class="arithmatex">\((2k-1, 2k)\)</span> 这一对里互相切换。若改用 0 起点编号 <span class="arithmatex">\(j = i-1\)</span>，则配对变成 <span class="arithmatex">\((0,1),(2,3),(4,5),\dots\)</span>——同一对里两数只差在二进制最低位：<span class="arithmatex">\(0=000\leftrightarrow 1=001\)</span>，<span class="arithmatex">\(2=010\leftrightarrow 3=011\)</span>。翻转最低位正是异或 <span class="arithmatex">\(1\)</span>：<span class="arithmatex">\(j \mathbin{\oplus} 1\)</span> 在 <span class="arithmatex">\(0\leftrightarrow1\)</span>、<span class="arithmatex">\(2\leftrightarrow3\)</span> 间互换。换回 1 起点：</p>
+<div class="arithmatex">\[\sigma(i) = \big((i-1)\mathbin{\oplus}1\big)+1 \qquad (i&lt;n \text{ 或 } i \text{ 偶}) \tag{2}\]</div>
+<p>这里强调：异或要作用在 0 起点的 <span class="arithmatex">\(i-1\)</span> 上，不能直接对 1 起点的 <code>id</code> 异或。直接 <code>id XOR 1</code> 会把 <code>id</code> 当 0 起点处理，得到 <span class="arithmatex">\(1\mapsto0,\ 2\mapsto3,\ 3\mapsto2,\ 4\mapsto5\)</span>，配出的是 <span class="arithmatex">\((2,3),(4,5)\)</span> 而非 <span class="arithmatex">\((1,2),(3,4)\)</span>，且 <span class="arithmatex">\(1\)</span> 映到不存在的 <span class="arithmatex">\(0\)</span>——对<strong>所有</strong>行都错，不只是末行。<span class="arithmatex">\((2)\)</span> 用 <span class="arithmatex">\(-1/+1\)</span> 把区间搬到 <span class="arithmatex">\([0,n-1]\)</span> 再异或，才与 <span class="arithmatex">\((1)\)</span> 的前两支吻合。</p>
+<p><span class="arithmatex">\((2)\)</span> 只覆盖了 <span class="arithmatex">\((1)\)</span> 的前两支；第三支（奇数末行）异或后会得到 <span class="arithmatex">\(n+1\)</span>，越界，仍须单独挡住：</p>
+<div class="language-sql highlight"><pre><span></span><code><span class="k">SELECT</span>
+<span class="w">    </span><span class="k">CASE</span>
+<span class="w">        </span><span class="k">WHEN</span><span class="w"> </span><span class="n">id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="k">SELECT</span><span class="w"> </span><span class="k">MAX</span><span class="p">(</span><span class="n">id</span><span class="p">)</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">Seat</span><span class="p">)</span><span class="w"> </span><span class="k">AND</span><span class="w"> </span><span class="n">id</span><span class="w"> </span><span class="o">%</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="k">THEN</span><span class="w"> </span><span class="n">id</span><span class="w">        </span><span class="c1">-- i 奇且 i=n，保留</span>
+<span class="w">        </span><span class="k">ELSE</span><span class="w"> </span><span class="p">((</span><span class="n">id</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="o">^</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="w">                                           </span><span class="c1">-- 其余：(2) 式</span>
+<span class="w">    </span><span class="k">END</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">id</span><span class="p">,</span>
+<span class="w">    </span><span class="n">student</span>
+<span class="k">FROM</span><span class="w"> </span><span class="n">Seat</span>
+<span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">id</span><span class="p">;</span>
+</code></pre></div>
+<p><code>^</code> 是 MySQL 的按位异或。可见位运算并没有省掉边界判断——它只是把 <span class="arithmatex">\((1)\)</span> 的两个算术分支压成一个表达式，奇偶末行的特判照旧。相比解法 1，它更紧凑但可读性更差，且要求读者看穿 0 起点这一层移位。</p>
+<p><strong>解法 3：自连接 —— 关系式地构造 <span class="arithmatex">\(\sigma\)</span>。</strong> 前两种解法都在改写 <code>id</code> 后排序。换个角度：直接为每行找出它该显示的学生，即让行 <span class="arithmatex">\(i\)</span> 与行 <span class="arithmatex">\(\sigma(i)\)</span> 连接，取后者的 <code>student</code>。</p>
 <div class="language-sql highlight"><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="n">s1</span><span class="p">.</span><span class="n">id</span><span class="p">,</span>
 <span class="w">       </span><span class="k">COALESCE</span><span class="p">(</span><span class="n">s2</span><span class="p">.</span><span class="n">student</span><span class="p">,</span><span class="w"> </span><span class="n">s1</span><span class="p">.</span><span class="n">student</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">student</span>
 <span class="k">FROM</span><span class="w"> </span><span class="n">Seat</span><span class="w"> </span><span class="n">s1</span>
 <span class="k">LEFT</span><span class="w"> </span><span class="k">JOIN</span><span class="w"> </span><span class="n">Seat</span><span class="w"> </span><span class="n">s2</span>
-<span class="w">  </span><span class="k">ON</span><span class="w"> </span><span class="p">((</span><span class="n">s1</span><span class="p">.</span><span class="n">id</span><span class="w"> </span><span class="o">%</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="k">AND</span><span class="w"> </span><span class="n">s2</span><span class="p">.</span><span class="n">id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">s1</span><span class="p">.</span><span class="n">id</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span>
-<span class="w">   </span><span class="k">OR</span><span class="w"> </span><span class="p">(</span><span class="n">s1</span><span class="p">.</span><span class="n">id</span><span class="w"> </span><span class="o">%</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="k">AND</span><span class="w"> </span><span class="n">s2</span><span class="p">.</span><span class="n">id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">s1</span><span class="p">.</span><span class="n">id</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span><span class="p">))</span>
+<span class="w">  </span><span class="k">ON</span><span class="w"> </span><span class="p">((</span><span class="n">s1</span><span class="p">.</span><span class="n">id</span><span class="w"> </span><span class="o">%</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="k">AND</span><span class="w"> </span><span class="n">s2</span><span class="p">.</span><span class="n">id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">s1</span><span class="p">.</span><span class="n">id</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w">     </span><span class="c1">-- s1 奇：配右邻 σ(i)=i+1</span>
+<span class="w">   </span><span class="k">OR</span><span class="w"> </span><span class="p">(</span><span class="n">s1</span><span class="p">.</span><span class="n">id</span><span class="w"> </span><span class="o">%</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="k">AND</span><span class="w"> </span><span class="n">s2</span><span class="p">.</span><span class="n">id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">s1</span><span class="p">.</span><span class="n">id</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span><span class="p">))</span><span class="w">     </span><span class="c1">-- s1 偶：配左邻 σ(i)=i-1</span>
 <span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">s1</span><span class="p">.</span><span class="n">id</span><span class="p">;</span>
 </code></pre></div>
-<p>样例 trace：5 行 <code>Abbot/Doris/Emerson/Green/Jeames</code>。CASE 解：id=1 → id+1=2; id=2 → 1; id=3 → 4; id=4 → 3; id=5（奇且为 MAX）→ 5。重映射后按 id 排序：1=Doris, 2=Abbot, 3=Green, 4=Emerson, 5=Jeames。✓</p>
+<p><code>ON</code> 子句正是 <span class="arithmatex">\((1)\)</span> 前两支的关系翻译：奇数行去匹配 <code>id+1</code>，偶数行去匹配 <code>id-1</code>。第三支无需写——当 <span class="arithmatex">\(i=n\)</span> 为奇时，<code>s2.id = s1.id + 1</code> 找不到第 <span class="arithmatex">\(n+1\)</span> 行，<code>LEFT JOIN</code> 对这一行返回 <code>s2.student = NULL</code>，<code>COALESCE(s2.student, s1.student)</code> 于是回退到 <code>s1.student</code>，恰好实现 <span class="arithmatex">\(\sigma(n)=n\)</span> 的不动点。也就是说，<code>LEFT JOIN</code> 产生的 <code>NULL</code> 自动编码了边界分支，<code>COALESCE</code> 把它翻译成"保留原值"。三种解法里只有这种让边界从连接语义里自然涌现，而非靠 <code>MAX(id)</code> 显式判断，因而最具组合性。</p>
 <h2 id="complexity">复杂度 (Complexity)<a class="headerlink" href="#complexity" title="Permanent link">#</a></h2>
+<p>记 <span class="arithmatex">\(n\)</span> 为表的行数（即 <span class="arithmatex">\(S\)</span> 的长度）。</p>
 <ul>
-<li>Time: <span class="arithmatex">\(O(n)\)</span>（CASE 解一遍扫描；自连接 <span class="arithmatex">\(O(n)\)</span> 若 id 索引）。</li>
-<li>Space: <span class="arithmatex">\(O(n)\)</span> 输出。</li>
-<li>CASE 解里子查询 <code>SELECT MAX(id)</code> 在每行重新计算时可能 <span class="arithmatex">\(O(n^2)\)</span>；多数引擎会缓存或常量折叠成 <span class="arithmatex">\(O(n)\)</span>。</li>
+<li>Time：解法 1 单遍扫描 <span class="arithmatex">\(O(n)\)</span>；解法 3 自连接在 <code>id</code> 有索引（主键自带）时 <span class="arithmatex">\(O(n)\)</span>。</li>
+<li>Space：<span class="arithmatex">\(O(n)\)</span>，输出 <span class="arithmatex">\(n\)</span> 行。</li>
+<li>解法 1/2 里子查询 <code>SELECT MAX(id) FROM Seat</code> 若每行都重算，理论上 <span class="arithmatex">\(O(n^2)\)</span>；多数引擎会把它识别为常量并缓存/折叠成 <span class="arithmatex">\(O(n)\)</span>。解法 3 没有这个子查询，靠连接条件本身定位边界。</li>
 </ul>
 <h2 id="pitfalls">陷阱 (Pitfalls)<a class="headerlink" href="#pitfalls" title="Permanent link">#</a></h2>
 <ul>
-<li>总行数为奇时最后一行<strong>不交换</strong>，是最常踩的边界。</li>
-<li>直接 <code>UPDATE</code> 互换会有"中间状态被覆盖"问题——SQL 题这里只要 <code>SELECT</code> 输出，规避了这点。</li>
-<li><code>ORDER BY id</code> 必加，否则不同引擎可能给出未指定顺序。</li>
+<li><strong>奇数末行不交换</strong>是核心边界。解法 1/2 靠 <code>id = MAX(id)</code> 显式判断，解法 3 靠 <code>LEFT JOIN</code> 的 <code>NULL</code> + <code>COALESCE</code> 隐式兜底；漏掉它会让末行指向不存在的第 <span class="arithmatex">\(n+1\)</span> 行。</li>
+<li>别用原地 <code>UPDATE</code> 互换：逐条 <code>UPDATE</code> 先写后读会覆盖中间值（见背景）。本题只需 <code>SELECT</code> 输出，从根本上规避了这一点。</li>
+<li><code>id XOR 1</code> 不能直接用在 1 起点的 <code>id</code> 上，必须先移到 0 起点 <code>((id-1) ^ 1) + 1</code>（见解法 2）。</li>
+<li><code>ORDER BY id</code> 必加，否则不同引擎可能返回未指定顺序。</li>
 </ul>
 <h2 id="related">相关题目 (Related)<a class="headerlink" href="#related" title="Permanent link">#</a></h2>
 <ul>
@@ -22621,6 +22719,8 @@
         <script src="../../../js/mathjax/tex-mml-chtml.js"></script>
       
         <script src="../../../js/mermaid.min.js"></script>
+      
+        <script src="../../../js/featured.js"></script>
       
     
   </body>

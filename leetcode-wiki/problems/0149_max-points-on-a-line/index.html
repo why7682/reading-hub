@@ -1466,6 +1466,8 @@
       
         
       
+        
+      
     
     
     
@@ -1521,6 +1523,34 @@
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../featured/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ⭐ Featured（已验证）
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
               
             
               
@@ -1610,10 +1640,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_4" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
         
           
-          <label class="md-nav__link" for="__nav_4_4" id="__nav_4_4_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_5" id="__nav_4_5_label" tabindex="">
             
   
   
@@ -1631,8 +1661,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_4_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_4">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_5">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1915,7 +1945,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -1937,14 +1967,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_4_5" id="__nav_4_5_label" tabindex="">
+              <label class="md-nav__link " for="__nav_4_6" id="__nav_4_6_label" tabindex="">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_5">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_6">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -5321,10 +5351,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_7" checked>
         
           
-          <label class="md-nav__link" for="__nav_4_6" id="__nav_4_6_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_7" id="__nav_4_7_label" tabindex="">
             
   
   
@@ -5342,8 +5372,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_4_6">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_7_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4_7">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -22467,14 +22497,43 @@
 <h2 id="problem">Problem<a class="headerlink" href="#problem" title="Permanent link">#</a></h2>
 <p>给平面上 <span class="arithmatex">\(n\)</span> 个<strong>两两不同</strong>的整点 <span class="arithmatex">\((x_i, y_i)\)</span>，求<strong>最多</strong>有多少点共线。<span class="arithmatex">\(1 \le n \le 300\)</span>，<span class="arithmatex">\(|x_i|, |y_i| \le 10^4\)</span>。</p>
 <h2 id="background">背景 (Background)<a class="headerlink" href="#background" title="Permanent link">#</a></h2>
-<p>"最多共线点"是<strong>计算几何</strong>的经典入门题，引出几个重要议题：(1) 浮点斜率的<strong>数值稳定性陷阱</strong>——必须用约简整数斜率 (gcd) 而非 float 除法；(2) <strong>共线性的代数判据</strong> <span class="arithmatex">\((x_2-x_1)(y_3-y_1) = (x_3-x_1)(y_2-y_1)\)</span>（叉积 = 0）；(3) <strong>Hough 变换</strong> 在图像处理中的对应（每点投票其上"可能的直线"）。</p>
-<p>朴素求所有直线 <span class="arithmatex">\(O(n^3)\)</span>。最优为 <span class="arithmatex">\(O(n^2 \log n)\)</span> 期望（每点为锚点，剩余 <span class="arithmatex">\(n-1\)</span> 点按"相对该锚点的斜率"分组）；实际工业代码常用 <span class="arithmatex">\(O(n^2)\)</span>（gcd 约简 + 哈希）。<span class="arithmatex">\(n=300\)</span> 下 <span class="arithmatex">\(O(n^3) = 2.7 \times 10^7\)</span> 也勉强可过，但 <span class="arithmatex">\(O(n^2)\)</span> 更稳。</p>
+<p>问题只需最大化一个量：落在某条直线上的点数。困难在于"直线"是隐式的——它不在输入里，只能由点对生成。任意两个不同点确定唯一一条直线，于是 <span class="arithmatex">\(n\)</span> 个点至多生成 <span class="arithmatex">\(\binom{n}{2}\)</span> 条候选直线。</p>
+<p>最朴素的做法把这个事实直接展开成三重循环：枚举三元组 <span class="arithmatex">\((p_i, p_j, p_k)\)</span>，逐一判断是否共线，统计每条直线上的点数。共线性有精确的整数判据——三点 <span class="arithmatex">\(p_1, p_2, p_3\)</span> 共线当且仅当
+$<span class="arithmatex">\((x_2-x_1)(y_3-y_1) = (x_3-x_1)(y_2-y_1),\)</span>$
+即向量 <span class="arithmatex">\(p_2-p_1\)</span> 与 <span class="arithmatex">\(p_3-p_1\)</span> 的叉积为零。这个判据全程整数运算、没有除法，所以三重循环是完全可行且无精度问题的。代价是 <span class="arithmatex">\(O(n^3)\)</span>：在 <span class="arithmatex">\(n=300\)</span> 时为 <span class="arithmatex">\(300^3 = 2.7\times10^7\)</span> 次共线判断，落在时限内但贴着上界。</p>
+<p>更要紧的是，三重循环把"共线"当成一个三点谓词反复重算，没有利用一个结构事实：<strong>共线是按直线对点集的一种划分</strong>。同一条直线上的点彼此共线，构成一个等价类；最大类的大小就是答案。下文从这个划分视角出发，把复杂度降到 <span class="arithmatex">\(O(n^2)\)</span>。降复杂度的同时会暴露一个绕不开的实现问题——直线该用什么作哈希键——这个问题的朴素答案恰好是错的，我们会先让它坏掉，再修。</p>
 <h2 id="formulation">形式化 (Formulation)<a class="headerlink" href="#formulation" title="Permanent link">#</a></h2>
-<p>求</p>
-<div class="arithmatex">\[\max_{a, b, c : (a,b)\neq (0,0)} | \{ i : a x_i + b y_i + c = 0 \} |.\]</div>
-<p>等价地：对每锚点 <span class="arithmatex">\(p_i\)</span>，统计经过 <span class="arithmatex">\(p_i\)</span> 的直线上其它点的最大数量，再加 1（含 <span class="arithmatex">\(p_i\)</span>）。</p>
+<p><strong>直觉</strong>。一条直线被它上面任意两点确定。所以与其枚举直线，不如固定一个<strong>锚点</strong> <span class="arithmatex">\(p_i\)</span>，再观察其余 <span class="arithmatex">\(n-1\)</span> 个点：过 <span class="arithmatex">\(p_i\)</span> 的每条直线，被"从 <span class="arithmatex">\(p_i\)</span> 出发指向线上某点的方向"唯一标记。两个点 <span class="arithmatex">\(p_j, p_k\)</span> 与 <span class="arithmatex">\(p_i\)</span> 共线，当且仅当 <span class="arithmatex">\(p_j - p_i\)</span> 与 <span class="arithmatex">\(p_k - p_i\)</span> 平行。于是过 <span class="arithmatex">\(p_i\)</span> 的最大共线点数，就是把其余点按"相对 <span class="arithmatex">\(p_i\)</span> 的方向"分组后的最大组——再加上 <span class="arithmatex">\(p_i\)</span> 自己。这把一个隐式的几何对象（直线）换成了一个可计数的标签（方向）。</p>
+<p><strong>形式化</strong>。原问题是在所有非退化直线 <span class="arithmatex">\(ax+by+c=0\)</span> 上最大化点数：
+$<span class="arithmatex">\(\max_{a, b, c : (a,b)\neq (0,0)} \bigl| \{ i : a x_i + b y_i + c = 0 \} \bigr|. \tag{1}\)</span>$
+这里 <span class="arithmatex">\((a,b)\)</span> 是直线的法向，<span class="arithmatex">\((a,b)\neq(0,0)\)</span> 排除退化方程；<span class="arithmatex">\(c\)</span> 平移直线。</p>
+<p><strong>从 (1) 到锚点枚举</strong>。设达到 (1) 最大值的直线 <span class="arithmatex">\(\ell\)</span> 上有 <span class="arithmatex">\(k\ge 1\)</span> 个点，记这组点为 <span class="arithmatex">\(S=\ell\cap P\)</span>。取 <span class="arithmatex">\(S\)</span> 中任一点作锚点 <span class="arithmatex">\(p_i\)</span>。对 <span class="arithmatex">\(S\)</span> 中其余 <span class="arithmatex">\(k-1\)</span> 个点 <span class="arithmatex">\(p_j\)</span>，因 <span class="arithmatex">\(p_i, p_j\in\ell\)</span>，方向向量 <span class="arithmatex">\(p_j-p_i\)</span> 都沿 <span class="arithmatex">\(\ell\)</span>，故两两平行。反过来，固定锚点 <span class="arithmatex">\(p_i\)</span> 后，任意一组与 <span class="arithmatex">\(p_i\)</span> 构成<strong>相同方向</strong>的点，连同 <span class="arithmatex">\(p_i\)</span> 自身，恰好落在过 <span class="arithmatex">\(p_i\)</span> 的同一条直线上。这两个方向给出双射：<span class="arithmatex">\(\ell\)</span> 上的点 <span class="arithmatex">\(\leftrightarrow\)</span> 以 <span class="arithmatex">\(p_i\)</span> 为锚的同一方向类。因此
+$<span class="arithmatex">\(\max_{\ell} |\ell \cap P| \;=\; \max_{i}\Bigl(1 + \max_{\text{方向 } d}\ \bigl|\{ j\neq i : p_j - p_i \parallel d \}\bigr|\Bigr). \tag{2}\)</span>$
+外层枚举锚点是 <span class="arithmatex">\(O(n)\)</span>；内层把 <span class="arithmatex">\(n-1\)</span> 个方向向量分组、取最大组也是 <span class="arithmatex">\(O(n)\)</span>。这把三重循环里被反复验证的共线关系，压成对每个锚点一次按方向的划分，总计 <span class="arithmatex">\(O(n^2)\)</span>。</p>
+<p>公式 (2) 是后文代码的脊柱。它把全部剩余难度归结为一个表示问题：<strong>"方向"用什么编码，才能让"平行"恰好变成哈希键相等？</strong> 下一节先试最直接的编码，看它在哪里坏掉。</p>
 <h2 id="approach">数据结构 / 想法 (Approach)<a class="headerlink" href="#approach" title="Permanent link">#</a></h2>
-<p><strong><span class="arithmatex">\(O(n^2)\)</span> 解：枚举锚点 + 按"约简斜率向量"分组</strong></p>
+<p>按 (2)，对每个锚点 <span class="arithmatex">\(p_i\)</span>，我们要把其余点按方向分组并取最大组。分组的标准工具是哈希计数器 <code>Counter</code>：键是方向，值是该方向的点数。问题只剩键怎么取。</p>
+<p><strong>朴素表示：浮点斜率。</strong> 最直接的方向标识是斜率 <span class="arithmatex">\(dy/dx\)</span>。直接拿它作键：</p>
+<div class="language-python highlight"><pre><span></span><code><span class="c1"># 朴素（有缺陷）：以浮点斜率为键</span>
+<span class="n">slopes</span> <span class="o">=</span> <span class="n">Counter</span><span class="p">()</span>
+<span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">j</span> <span class="o">==</span> <span class="n">i</span><span class="p">:</span> <span class="k">continue</span>
+    <span class="n">dx</span> <span class="o">=</span> <span class="n">points</span><span class="p">[</span><span class="n">j</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">xi</span>
+    <span class="n">dy</span> <span class="o">=</span> <span class="n">points</span><span class="p">[</span><span class="n">j</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">yi</span>
+    <span class="n">slopes</span><span class="p">[</span><span class="n">dy</span> <span class="o">/</span> <span class="n">dx</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>   <span class="c1"># ← 两处会坏</span>
+</code></pre></div>
+<p>这个编码在两处坏掉，而且第一处是硬错。</p>
+<p><strong>坏点一：垂直方向无法表示。</strong> 当 <span class="arithmatex">\(dx=0\)</span>（<span class="arithmatex">\(p_j\)</span> 在 <span class="arithmatex">\(p_i\)</span> 正上/正下方），<span class="arithmatex">\(dy/dx\)</span> 触发除零。竖直线压根写不进键里，而竖直线完全可能就是答案——例如 <span class="arithmatex">\(x=0\)</span> 上的一列点。一个连合法直线都表示不了的编码，不能用。</p>
+<p><strong>坏点二：斜率相等用浮点裁决。</strong> 即使绕开除零，斜率相等是一个<strong>有理数等价关系</strong>：<span class="arithmatex">\(dy_1/dx_1 = dy_2/dx_2\)</span> 当且仅当 <span class="arithmatex">\(dy_1 dx_2 = dy_2 dx_1\)</span>，这是整数等式。把它交给 float64 的浮点除法去近似判等，是在用近似工具判定一个本该精确的关系。在本题坐标范围 <span class="arithmatex">\(|x|,|y|\le 10^4\)</span> 内，浮点恰好不会真的产生错配（穷举可验证零碰撞），所以这一处在本题不是硬错；但它在原理上是错的工具——一旦坐标量级逼近 <span class="arithmatex">\(2^{53}\approx 9\times10^{15}\)</span>（float64 尾数上界），相邻有理斜率会因尾数截断而相撞，得出错误的分组。</p>
+<p>两处的根源相同：斜率把方向有损地压成一个浮点数，丢了"垂直"这种情形，也丢了整数等价的精确性。修法是不要压成浮点，而是保留方向的<strong>精确整数表示</strong>。</p>
+<p><strong>修正：约简整数方向对。</strong> 方向本质是有理比 <span class="arithmatex">\(dy:dx\)</span>。它的精确、唯一表示是把 <span class="arithmatex">\((dx, dy)\)</span> 同除以 <span class="arithmatex">\(\gcd(dx, dy)\)</span>，得到一对互质整数。这样：</p>
+<ul>
+<li>"方向相等"还原成"约简对相等"，是精确的整数判等，不经过任何浮点；</li>
+<li>竖直方向天然容纳——<span class="arithmatex">\((0, dy)\)</span> 约简为 <span class="arithmatex">\((0, 1)\)</span>，不再除零。</li>
+</ul>
+<p>还剩一处歧义：<span class="arithmatex">\((dx,dy)\)</span> 与 <span class="arithmatex">\((-dx,-dy)\)</span> 是同一条直线的两个朝向（一个指向 <span class="arithmatex">\(p_j\)</span>，一个指向反方向），必须并成一个键，否则一条线被拆成两个方向类、低估共线数。约定一个符号规范：要求 <span class="arithmatex">\(dx&gt;0\)</span>；当 <span class="arithmatex">\(dx=0\)</span> 时要求 <span class="arithmatex">\(dy&gt;0\)</span>。任意 <span class="arithmatex">\((dx,dy)\)</span> 与其相反向量中，恰有一个满足此规范，取它作唯一代表。</p>
+<p><strong>不变量</strong>。处理锚点 <span class="arithmatex">\(p_i\)</span> 时，<code>slopes[(dx, dy)]</code> 恰等于"其余点中、相对 <span class="arithmatex">\(p_i\)</span> 的约简方向为 <span class="arithmatex">\((dx,dy)\)</span> 的点数"。由 (2) 中的双射，同键的点必与 <span class="arithmatex">\(p_i\)</span> 共线，故过 <span class="arithmatex">\(p_i\)</span> 的最大共线数为 <code>max(slopes.values()) + 1</code>。这正是公式 (2) 内层最大化的直接实现。</p>
+<p>完整实现：</p>
 <div class="language-python highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">math</span><span class="w"> </span><span class="kn">import</span> <span class="n">gcd</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">collections</span><span class="w"> </span><span class="kn">import</span> <span class="n">Counter</span>
 
@@ -22492,50 +22551,49 @@
                 <span class="n">dx</span> <span class="o">=</span> <span class="n">points</span><span class="p">[</span><span class="n">j</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">xi</span>
                 <span class="n">dy</span> <span class="o">=</span> <span class="n">points</span><span class="p">[</span><span class="n">j</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">yi</span>
                 <span class="n">g</span> <span class="o">=</span> <span class="n">gcd</span><span class="p">(</span><span class="n">dx</span><span class="p">,</span> <span class="n">dy</span><span class="p">)</span>               <span class="c1"># gcd(0, x) = |x|, gcd(0,0)=0</span>
-                <span class="c1"># 标准化方向，使 (dx, dy) 唯一表示一条过原点的直线</span>
+                <span class="c1"># 约简方向，使 (dx, dy) 唯一表示一条过原点的直线</span>
                 <span class="k">if</span> <span class="n">g</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
                     <span class="n">dx</span> <span class="o">//=</span> <span class="n">g</span><span class="p">;</span> <span class="n">dy</span> <span class="o">//=</span> <span class="n">g</span>
                 <span class="k">if</span> <span class="n">dx</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="ow">or</span> <span class="p">(</span><span class="n">dx</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">dy</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">):</span>
-                    <span class="n">dx</span><span class="p">,</span> <span class="n">dy</span> <span class="o">=</span> <span class="o">-</span><span class="n">dx</span><span class="p">,</span> <span class="o">-</span><span class="n">dy</span>
+                    <span class="n">dx</span><span class="p">,</span> <span class="n">dy</span> <span class="o">=</span> <span class="o">-</span><span class="n">dx</span><span class="p">,</span> <span class="o">-</span><span class="n">dy</span>        <span class="c1"># 符号规范：归并两个朝向</span>
                 <span class="n">slopes</span><span class="p">[(</span><span class="n">dx</span><span class="p">,</span> <span class="n">dy</span><span class="p">)]</span> <span class="o">+=</span> <span class="mi">1</span>
             <span class="n">ans</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">ans</span><span class="p">,</span> <span class="nb">max</span><span class="p">(</span><span class="n">slopes</span><span class="o">.</span><span class="n">values</span><span class="p">())</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">ans</span>
 </code></pre></div>
-<p><strong>心算 trace 例 2</strong> <code>points = [[1,1],[3,2],[5,3],[4,1],[2,3],[1,4]]</code>：
-- 取锚点 (1,1)。对其它点的 (dx, dy) 约简后的斜率向量：
+<p>下面用两个官方样例走一遍，确认不变量成立、分组确实对应共线。</p>
+<p><strong>Trace through Example 2</strong> <code>points = [[1,1],[3,2],[5,3],[4,1],[2,3],[1,4]]</code>：
+- 取锚点 (1,1)。其余点相对它的 <span class="arithmatex">\((dx, dy)\)</span> 约简方向：
   - (3,2): dx=2, dy=1, gcd=1 → (2,1)
   - (5,3): dx=4, dy=2, gcd=2 → (2,1)
   - (4,1): dx=3, dy=0, gcd=3 → (1,0)
   - (2,3): dx=1, dy=2, gcd=1 → (1,2)
   - (1,4): dx=0, dy=3, gcd=3 → (0,1)
 - 计数：(2,1) 出现 2 次，其余各 1 次 → 锚点 (1,1) 的最大共线数为 2+1=3。
-- 取锚点 (3,2)。对其它：
-  - (1,1): (-2,-1) → 标准化 → (2,1)
+- 取锚点 (3,2)。其余：
+  - (1,1): (-2,-1) → 符号规范 → (2,1)
   - (5,3): (2,1) → (2,1)
   - (4,1): (1,-1) → (1,-1)
   - (2,3): (-1,1) → (1,-1)
-  - (1,4): (-2,2) → gcd=2 → (-1,1) → 标准化 (1,-1)
+  - (1,4): (-2,2) → gcd=2 → (-1,1) → 符号规范 (1,-1)
 - (2,1) 2 次, (1,-1) 3 次 → 锚点 (3,2) 最大共线 3+1=4 ✓
 - 全局 ans=4 ✓</p>
-<p><strong>心算 trace 例 1</strong> <code>[[1,1],[2,2],[3,3]]</code>：锚点 (1,1)，(2,2): (1,1); (3,3): gcd(2,2)=2, (1,1). 两个 (1,1) → 2+1=3 ✓</p>
-<p><strong>不变量</strong>：对每锚点 <span class="arithmatex">\(p_i\)</span> 处理时，<code>slopes[(dx, dy)]</code> 等于"与 <span class="arithmatex">\(p_i\)</span> 构成约简方向 (dx, dy) 的其它点数"。同方向的点必在同一过 <span class="arithmatex">\(p_i\)</span> 的直线上。</p>
-<p><strong>约简 + 方向标准化</strong>关键：
-- <code>gcd(dx, dy)</code> 在 Python 始终非负（<code>math.gcd</code> 取绝对值）；约简后 (dx, dy) 可能为 <span class="arithmatex">\(\pm\)</span> 同方向。
-- 必须把 (dx, dy) 与 (-dx, -dy) 视作同方向 → 取<strong>字典序更大</strong>的那个（这里：dx&gt;0 或 dx==0 时 dy&gt;0）。
-- 边界 <code>gcd(0, 0)</code>：不会发生，因点两两不同。</p>
+<p><strong>Trace through Example 1</strong> <code>[[1,1],[2,2],[3,3]]</code>：锚点 (1,1)，(2,2): (1,1); (3,3): gcd(2,2)=2, (1,1)。两个 (1,1) → 2+1=3 ✓</p>
+<p>约简与符号规范化的几个边角：
+- <code>gcd(dx, dy)</code> 在 Python 始终非负（<code>math.gcd</code> 取绝对值）；约简后 <span class="arithmatex">\((dx, dy)\)</span> 仍可能整体为负，故符号规范化是必需的第二步。
+- <code>if dx &lt; 0 or (dx == 0 and dy &lt; 0)</code> 的取反，等价于在 <span class="arithmatex">\((dx,dy)\)</span> 与 <span class="arithmatex">\((-dx,-dy)\)</span> 中取字典序更大者，结果恒满足 <span class="arithmatex">\(dx&gt;0\)</span> 或 (<span class="arithmatex">\(dx=0\)</span> 且 <span class="arithmatex">\(dy&gt;0\)</span>)，把同一条直线的两个朝向并成一个键。
+- 边界 <span class="arithmatex">\(\gcd(0,0)\)</span> 对应 <span class="arithmatex">\(p_j=p_i\)</span>，因点两两不同而不会发生；<code>if g != 0</code> 仍作防御以避免除零。</p>
 <h2 id="complexity">复杂度 (Complexity)<a class="headerlink" href="#complexity" title="Permanent link">#</a></h2>
-<ul>
-<li>Time: <span class="arithmatex">\(O(n^2 \log V)\)</span> 含 gcd，$V = $ 坐标范围。<span class="arithmatex">\(n=300, V=2 \cdot 10^4\)</span> → <span class="arithmatex">\(\log V \approx 15\)</span> → <span class="arithmatex">\(1.4 \times 10^6\)</span> 操作。</li>
-<li>Space: <span class="arithmatex">\(O(n)\)</span> 每锚点的 Counter。</li>
-</ul>
+<p>算法是 (2) 的双层最大化：外层 <span class="arithmatex">\(O(n)\)</span> 个锚点，内层 <span class="arithmatex">\(O(n)\)</span> 个方向，每个方向的约简含一次 <span class="arithmatex">\(\gcd\)</span>。
+- Time: <span class="arithmatex">\(O(n^2 \log V)\)</span>，<span class="arithmatex">\(V\)</span> 为坐标范围。<span class="arithmatex">\(n=300,\ V=2 \times 10^4 \Rightarrow \log V \approx 15 \Rightarrow 1.4 \times 10^6\)</span> 次操作，远优于朴素 <span class="arithmatex">\(O(n^3)=2.7\times10^7\)</span>。
+- Space: <span class="arithmatex">\(O(n)\)</span>，每锚点一个 Counter，循环间复用，规模上界 <span class="arithmatex">\(n-1\)</span>。</p>
 <h2 id="pitfalls">陷阱 (Pitfalls)<a class="headerlink" href="#pitfalls" title="Permanent link">#</a></h2>
 <ul>
-<li><strong>浮点斜率 = bug 源</strong>：<code>dy / dx</code> 直接做 key 在 <span class="arithmatex">\((1,3)\)</span> vs <span class="arithmatex">\((2,6)\)</span> 上靠浮点精度恰好相等，但 <span class="arithmatex">\((1, 10^8)\)</span> 与 <span class="arithmatex">\((1, 10^8 + 1)\)</span> 在 float64 下可能相等——错配。<strong>必须</strong>用约简整数对。</li>
-<li><strong>垂直线 dx=0</strong>：<code>dy/dx</code> 会除零；用 <code>(dx, dy)</code> 元组自然处理（key = (0, ±1) 约简后）。</li>
-<li><strong>重合点</strong>：题面保证点两两不同，所以 <span class="arithmatex">\((0,0)\)</span> 方向向量不出现。否则要特判（重合点直接 +1）。</li>
-<li><strong>n≤2 边界</strong>：<span class="arithmatex">\(n=0\)</span> 答案 0; <span class="arithmatex">\(n=1\)</span> 答案 1; <span class="arithmatex">\(n=2\)</span> 答案 2。不进主循环。</li>
-<li><strong>gcd 符号</strong>：Python <code>math.gcd(-4, 2) = 2</code>（取绝对值），但 <code>-4 // 2 = -2</code>。约简后 (dx,dy) 仍可能负，必须用方向标准化统一。</li>
-<li><strong>斜率作 key 不可哈希 float</strong>：见首条。</li>
+<li><strong>方向键必须用约简整数对，而非浮点斜率</strong>：斜率相等是有理数等价关系 <span class="arithmatex">\(dy_1 dx_2 = dy_2 dx_1\)</span>。本题 <span class="arithmatex">\(|x|,|y|\le 10^4\)</span> 范围内浮点恰好不会错配（这是巧合，非保证）——坐标量级一旦逼近 <span class="arithmatex">\(2^{53}\)</span>，尾数截断会让相邻斜率相撞。约简整数对从原理上消除这一风险。</li>
+<li><strong>垂直线 <span class="arithmatex">\(dx=0\)</span></strong>：浮点斜率 <span class="arithmatex">\(dy/dx\)</span> 直接除零；整数对 <span class="arithmatex">\((dx,dy)\)</span> 把竖直方向约简为 <span class="arithmatex">\((0,\pm1)\)</span>，符号规范后为 <span class="arithmatex">\((0,1)\)</span>，自然处理。这是浮点编码的硬错，不是精度问题。</li>
+<li><strong>方向的双朝向</strong>：<span class="arithmatex">\((dx,dy)\)</span> 与 <span class="arithmatex">\((-dx,-dy)\)</span> 是同一条直线。漏掉符号规范化会把一条线拆成两个键，低估共线数。</li>
+<li><strong>重合点</strong>：题面保证点两两不同，故 <span class="arithmatex">\((0,0)\)</span> 方向向量不出现。若允许重合，需特判（重合点对任意过 <span class="arithmatex">\(p_i\)</span> 的直线都贡献 +1）。</li>
+<li><strong><span class="arithmatex">\(n \le 2\)</span> 边界</strong>：<span class="arithmatex">\(n=0\)</span> 答案 0；<span class="arithmatex">\(n=1\)</span> 答案 1；<span class="arithmatex">\(n=2\)</span> 答案 2。直接返回，不进主循环。</li>
+<li><strong><span class="arithmatex">\(\gcd\)</span> 符号</strong>：Python <code>math.gcd(-4, 2) = 2</code>（取绝对值），但 <code>-4 // 2 = -2</code>。约简后 <span class="arithmatex">\((dx,dy)\)</span> 仍可能为负，必须靠符号规范化统一。</li>
 </ul>
 <h2 id="related">相关题目 (Related)<a class="headerlink" href="#related" title="Permanent link">#</a></h2>
 <ul>
@@ -22657,6 +22715,8 @@
         <script src="../../../js/mathjax/tex-mml-chtml.js"></script>
       
         <script src="../../../js/mermaid.min.js"></script>
+      
+        <script src="../../../js/featured.js"></script>
       
     
   </body>

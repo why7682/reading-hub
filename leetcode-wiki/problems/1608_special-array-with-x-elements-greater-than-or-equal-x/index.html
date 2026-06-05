@@ -1466,6 +1466,8 @@
       
         
       
+        
+      
     
     
     
@@ -1521,6 +1523,34 @@
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../featured/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ⭐ Featured（已验证）
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
               
             
               
@@ -1610,10 +1640,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_4" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
         
           
-          <label class="md-nav__link" for="__nav_4_4" id="__nav_4_4_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_5" id="__nav_4_5_label" tabindex="">
             
   
   
@@ -1631,8 +1661,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_4_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_4">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_5">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1915,7 +1945,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -1937,14 +1967,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_4_5" id="__nav_4_5_label" tabindex="">
+              <label class="md-nav__link " for="__nav_4_6" id="__nav_4_6_label" tabindex="">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_5">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_6">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -5321,10 +5351,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_7" checked>
         
           
-          <label class="md-nav__link" for="__nav_4_6" id="__nav_4_6_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_7" id="__nav_4_7_label" tabindex="">
             
   
   
@@ -5342,8 +5372,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_4_6">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_7_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4_7">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -22467,19 +22497,48 @@
 <h2 id="problem">Problem<a class="headerlink" href="#problem" title="Permanent link">#</a></h2>
 <p>数组 <code>nums</code>（值非负，<span class="arithmatex">\(n \leq 100\)</span>，<span class="arithmatex">\(v \leq 1000\)</span>）。若存在 <span class="arithmatex">\(x\)</span> 使 <code>nums</code> 中恰好有 <span class="arithmatex">\(x\)</span> 个元素 <span class="arithmatex">\(\geq x\)</span>（<span class="arithmatex">\(x\)</span> 不必属于数组），返回 <span class="arithmatex">\(x\)</span>；否则返回 <span class="arithmatex">\(-1\)</span>。可证若存在则唯一。</p>
 <h2 id="background">背景 (Background)<a class="headerlink" href="#background" title="Permanent link">#</a></h2>
-<p>本题与 <strong>H-index</strong>（Hirsch 1995）等价：学者发表 <span class="arithmatex">\(n\)</span> 篇论文中 <span class="arithmatex">\(h\)</span> 篇被引 <span class="arithmatex">\(\geq h\)</span> 次的最大 <span class="arithmatex">\(h\)</span>。题面要求"恰好"而非"最大"，但因唯一性二者等价。是 informetrics / 排序双指针的小练习。</p>
+<p>这道题的特别之处在于它的自指结构：我们要找的 <span class="arithmatex">\(x\)</span> 同时是<strong>被计数的阈值</strong>和<strong>计数的结果</strong>。普通的"数有多少个元素满足某条件"问题里，阈值是外部给定的常数；这里阈值就是答案本身，两者必须相等。</p>
+<p>正因为 <span class="arithmatex">\(x\)</span> 出现在条件的两边，它不必是数组里的某个值——它是一个把"满足条件的个数"与"阈值"绑在一起的平衡点。这也立即解释了为什么暴力枚举 <span class="arithmatex">\(x\)</span> 是正确的起点：我们无法直接解出这个平衡点，但可以逐个 <span class="arithmatex">\(x\)</span> 去验证它是否平衡。下面就从这个最朴素的验证出发。</p>
 <h2 id="formulation">形式化 (Formulation)<a class="headerlink" href="#formulation" title="Permanent link">#</a></h2>
-<p>降序排序得 <span class="arithmatex">\(a_{(1)} \geq a_{(2)} \geq \dots \geq a_{(n)}\)</span>。求 <span class="arithmatex">\(x \in [1, n]\)</span> 满足 <span class="arithmatex">\(a_{(x)} \geq x\)</span> 且 <span class="arithmatex">\(a_{(x+1)} &lt; x\)</span>（约定 <span class="arithmatex">\(a_{(n+1)} = -\infty\)</span>）。若不存在返回 <span class="arithmatex">\(-1\)</span>。</p>
+<p>先把"恰好有 <span class="arithmatex">\(x\)</span> 个元素 <span class="arithmatex">\(\geq x\)</span>"翻译成一个随 <span class="arithmatex">\(x\)</span> 变化的计数函数。定义</p>
+<div class="arithmatex">\[\text{cnt}(x) = |\{\, i : nums_i \geq x \,\}|. \tag{1}\]</div>
+<p>我们要找的就是满足</p>
+<div class="arithmatex">\[\text{cnt}(x) = x \tag{2}\]</div>
+<p>的 <span class="arithmatex">\(x\)</span>，即计数函数的<strong>不动点</strong>。直接解 (2) 没有公式，但 <span class="arithmatex">\(x\)</span> 的取值范围有限：数组只有 <span class="arithmatex">\(n\)</span> 个元素，所以满足 <span class="arithmatex">\(\geq x\)</span> 的个数至多是 <span class="arithmatex">\(n\)</span>，于是任何解必有 <span class="arithmatex">\(0 \leq x \leq n\)</span>。这就是暴力枚举的依据——只需对 <span class="arithmatex">\(x = 0, 1, \dots, n\)</span> 各算一次 <span class="arithmatex">\(\text{cnt}(x)\)</span> 并检查 (2)。</p>
+<p><strong>单调性。</strong> 朴素枚举给了正确性，但要理解解的结构（唯一性、二分、排序加速），关键是 <span class="arithmatex">\(\text{cnt}\)</span> 的一个性质：</p>
+<blockquote>
+<p><span class="arithmatex">\(\text{cnt}(x)\)</span> 关于 <span class="arithmatex">\(x\)</span> <strong>单调不增</strong>。</p>
+</blockquote>
+<p>直觉是：把阈值 <span class="arithmatex">\(x\)</span> 提高，只会让原本满足 <span class="arithmatex">\(\geq x\)</span> 的元素中一部分掉队，绝不会有新元素加入。形式化地，<span class="arithmatex">\(x \leq x'\)</span> 时 <span class="arithmatex">\(\{i : nums_i \geq x'\} \subseteq \{i : nums_i \geq x\}\)</span>，故 <span class="arithmatex">\(\text{cnt}(x') \leq \text{cnt}(x)\)</span>。</p>
+<p><strong>唯一性。</strong> 单调性直接给出唯一性，无需逐情形讨论。考虑差函数 <span class="arithmatex">\(g(x) = \text{cnt}(x) - x\)</span>。<span class="arithmatex">\(\text{cnt}(x)\)</span> 不增而 <span class="arithmatex">\(x\)</span> 严格增，故 <span class="arithmatex">\(g\)</span> 严格递减；严格单调函数至多有一个零点，而 (2) 正是 <span class="arithmatex">\(g(x) = 0\)</span>。因此满足 (2) 的 <span class="arithmatex">\(x\)</span> 至多一个。</p>
+<p><strong>排序后的等价刻画。</strong> 单调性还告诉我们如何把每次 <span class="arithmatex">\(O(n)\)</span> 的计数降到 <span class="arithmatex">\(O(1)\)</span>。降序排序得序列</p>
+<div class="arithmatex">\[a_{(1)} \geq a_{(2)} \geq \dots \geq a_{(n)},\]</div>
+<p>约定哨兵 <span class="arithmatex">\(a_{(n+1)} = -\infty\)</span>。排序后，前 <span class="arithmatex">\(k\)</span> 个元素恰是数组中最大的 <span class="arithmatex">\(k\)</span> 个，于是"有多少个元素 <span class="arithmatex">\(\geq x\)</span>"可以直接从位置读出。具体地，对 <span class="arithmatex">\(x \in [1, n]\)</span>，</p>
+<div class="arithmatex">\[\text{cnt}(x) = x \quad\Longleftrightarrow\quad a_{(x)} \geq x \;\text{ 且 }\; a_{(x+1)} &lt; x. \tag{3}\]</div>
+<p>两个条件各管一边：<span class="arithmatex">\(a_{(x)} \geq x\)</span> 说明第 <span class="arithmatex">\(x\)</span> 大的元素够大，故<strong>至少</strong> <span class="arithmatex">\(x\)</span> 个元素 <span class="arithmatex">\(\geq x\)</span>；<span class="arithmatex">\(a_{(x+1)} &lt; x\)</span> 说明第 <span class="arithmatex">\(x+1\)</span> 大的元素已不够，故<strong>至多</strong> <span class="arithmatex">\(x\)</span> 个元素 <span class="arithmatex">\(\geq x\)</span>。两者合起来即"恰好 <span class="arithmatex">\(x\)</span> 个"。这把式 (2) 的全数组计数化为对排序数组两个相邻位置的常数时间检查。</p>
+<p>（<span class="arithmatex">\(x = 0\)</span> 的情形可单独排除：非空非负数组里 <span class="arithmatex">\(\text{cnt}(0) = n \geq 1 \neq 0\)</span>，故答案永远不是 <span class="arithmatex">\(0\)</span>，枚举只需覆盖 <span class="arithmatex">\(x \in [1, n]\)</span>。）</p>
 <h2 id="approach">数据结构 / 想法 (Approach)<a class="headerlink" href="#approach" title="Permanent link">#</a></h2>
-<p><strong>法 1（推荐）：排序 + 扫描</strong>。</p>
+<p>三种方法都在求式 (2) 的不动点，区别只在如何评估 <span class="arithmatex">\(\text{cnt}\)</span>。</p>
+<p><strong>法 1：暴力枚举（朴素起点）。</strong> 直接照式 (1)(2) 做：对每个 <span class="arithmatex">\(x \in [0, n]\)</span> 线性扫描数组数出 <span class="arithmatex">\(\text{cnt}(x)\)</span>，相等即返回。</p>
+<div class="language-python highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">Solution</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">specialArray_bruteforce</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">nums</span><span class="p">):</span>
+        <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">nums</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">n</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>           <span class="c1"># x 的取值范围 0..n</span>
+            <span class="n">cnt</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">v</span> <span class="o">&gt;=</span> <span class="n">x</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">nums</span><span class="p">)</span>  <span class="c1"># cnt(x)，式 (1)</span>
+            <span class="k">if</span> <span class="n">cnt</span> <span class="o">==</span> <span class="n">x</span><span class="p">:</span>                     <span class="c1"># 不动点，式 (2)</span>
+                <span class="k">return</span> <span class="n">x</span>
+        <span class="k">return</span> <span class="o">-</span><span class="mi">1</span>
+</code></pre></div>
+<p>这是正确的，但每个 <span class="arithmatex">\(x\)</span> 都重新扫一遍整个数组，总计 <span class="arithmatex">\(O(n^2)\)</span>。瓶颈在于反复计算 <span class="arithmatex">\(\text{cnt}(x)\)</span>——而式 (3) 表明排序后每个 <span class="arithmatex">\(\text{cnt}\)</span> 检查只需 <span class="arithmatex">\(O(1)\)</span>。</p>
+<p><strong>法 2：排序 + 扫描（消除重复计数）。</strong> 降序排序一次，然后按式 (3) 对每个 <span class="arithmatex">\(x\)</span> 做常数时间检查。排序的 <span class="arithmatex">\(O(n \log n)\)</span> 取代了重复扫描的 <span class="arithmatex">\(O(n^2)\)</span>。</p>
 <div class="language-python highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">Solution</span><span class="p">:</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">specialArray</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">nums</span><span class="p">):</span>
         <span class="n">a</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">nums</span><span class="p">,</span> <span class="n">reverse</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
         <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
-        <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">n</span><span class="o">+</span><span class="mi">1</span><span class="p">):</span>
-            <span class="c1"># check: exactly x elements &gt;= x</span>
-            <span class="c1"># since a is sorted desc, a[x-1] &gt;= x AND (x == n or a[x] &lt; x)</span>
-            <span class="k">if</span> <span class="n">a</span><span class="p">[</span><span class="n">x</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="n">x</span> <span class="ow">and</span> <span class="p">(</span><span class="n">x</span> <span class="o">==</span> <span class="n">n</span> <span class="ow">or</span> <span class="n">a</span><span class="p">[</span><span class="n">x</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">x</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">n</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+            <span class="c1"># 式 (3)：a[x-1] 是第 x 大元素 a_(x)，a[x] 是 a_(x+1)</span>
+            <span class="c1"># a_(x) &gt;= x（至少 x 个） 且 a_(x+1) &lt; x（至多 x 个）</span>
+            <span class="k">if</span> <span class="n">a</span><span class="p">[</span><span class="n">x</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="n">x</span> <span class="ow">and</span> <span class="p">(</span><span class="n">x</span> <span class="o">==</span> <span class="n">n</span> <span class="ow">or</span> <span class="n">a</span><span class="p">[</span><span class="n">x</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">x</span><span class="p">):</span>
                 <span class="k">return</span> <span class="n">x</span>
         <span class="k">return</span> <span class="o">-</span><span class="mi">1</span>
 
@@ -22492,23 +22551,50 @@
 <span class="c1"># x=2: a[1]=0&gt;=2? No.</span>
 <span class="c1"># → -1 ✓</span>
 </code></pre></div>
-<p><strong>法 2：值域枚举</strong>。<span class="arithmatex">\(x \in [0, n]\)</span>（最多 <span class="arithmatex">\(n\)</span> 个元素，所以 <span class="arithmatex">\(x \leq n\)</span>）。对每个 <span class="arithmatex">\(x\)</span> 数 <code>cnt = sum(v &gt;= x for v in nums)</code>，若 <code>cnt == x</code> 返回。<span class="arithmatex">\(O(n^2)\)</span>，<span class="arithmatex">\(n \leq 100\)</span> 可过。</p>
-<p><strong>法 3：二分</strong>。值域 <span class="arithmatex">\([0, n]\)</span> 上二分 <span class="arithmatex">\(x\)</span>，<code>cnt(x)</code> 单减；找"<span class="arithmatex">\(\text{cnt}(x) = x\)</span>"的不动点。但严格"等于"不便二分；正解二分"满足 <span class="arithmatex">\(\text{cnt}(x) \geq x\)</span> 的最大 <span class="arithmatex">\(x\)</span>"，再验。</p>
+<p>代码中的 <code>x == n</code> 分支正是哨兵约定 <span class="arithmatex">\(a_{(n+1)} = -\infty\)</span>：当 <span class="arithmatex">\(x = n\)</span> 时不存在 <span class="arithmatex">\(a_{(x+1)}\)</span>，"至多 <span class="arithmatex">\(x\)</span> 个"自动成立。</p>
+<p><strong>法 3：二分（利用单调性）。</strong> 式 (2) 的谓词 <span class="arithmatex">\(\text{cnt}(x) = x\)</span> 本身<strong>不单调</strong>（差 <span class="arithmatex">\(g(x)\)</span> 可正可负后再过零），不能直接二分。但单调性给了一个可二分的替代谓词：因为 <span class="arithmatex">\(\text{cnt}\)</span> 不增、<span class="arithmatex">\(x\)</span> 增，<span class="arithmatex">\(P(x): \text{cnt}(x) \geq x\)</span> 是先真后假的，存在唯一分界。在值域 <span class="arithmatex">\([0, n]\)</span> 上二分出"使 <span class="arithmatex">\(P(x)\)</span> 为真的最大 <span class="arithmatex">\(x\)</span>"，再代回式 (2) 验证该 <span class="arithmatex">\(x\)</span> 是否真的相等（分界处可能 <span class="arithmatex">\(\text{cnt}(x) &gt; x\)</span> 而非等于）。每次 <span class="arithmatex">\(\text{cnt}\)</span> 评估用计数或在排序数组上 <span class="arithmatex">\(O(\log n)\)</span>，总体 <span class="arithmatex">\(O(n \log n)\)</span>。本题 <span class="arithmatex">\(n \leq 100\)</span>，法 2 已足够。</p>
 <h2 id="complexity">复杂度 (Complexity)<a class="headerlink" href="#complexity" title="Permanent link">#</a></h2>
-<ul>
-<li>法 1: Time <span class="arithmatex">\(O(n \log n)\)</span>；Space <span class="arithmatex">\(O(n)\)</span> (sorted copy)。</li>
-<li>法 2: Time <span class="arithmatex">\(O(n^2)\)</span>。</li>
-<li>法 3: Time <span class="arithmatex">\(O(n \log n)\)</span> via 二分 + 计数。</li>
-</ul>
+<p>三种方法都在解同一式 (2)，差异在评估 <span class="arithmatex">\(\text{cnt}\)</span> 的代价。</p>
+<table>
+<thead>
+<tr>
+<th>方法</th>
+<th>思路</th>
+<th>Time</th>
+<th>Space</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>法 1 暴力枚举</td>
+<td>每个 <span class="arithmatex">\(x\)</span> 重扫数组</td>
+<td><span class="arithmatex">\(O(n^2)\)</span></td>
+<td><span class="arithmatex">\(O(1)\)</span></td>
+</tr>
+<tr>
+<td>法 2 排序 + 扫描</td>
+<td>式 (3) 常数时间检查</td>
+<td><span class="arithmatex">\(O(n \log n)\)</span>（排序主导）</td>
+<td><span class="arithmatex">\(O(n)\)</span>（排序副本）</td>
+</tr>
+<tr>
+<td>法 3 二分</td>
+<td>单调谓词 <span class="arithmatex">\(P(x)\)</span> 上二分 + 计数</td>
+<td><span class="arithmatex">\(O(n \log n)\)</span></td>
+<td><span class="arithmatex">\(O(n)\)</span></td>
+</tr>
+</tbody>
+</table>
+<p>法 2 与法 3 同阶；法 2 实现最简（一次排序加一遍线性扫描），故作为默认推荐。本题各方法在最好/平均/最坏输入下复杂度同阶，无依赖输入分布的提前退出。</p>
 <h2 id="pitfalls">陷阱 (Pitfalls)<a class="headerlink" href="#pitfalls" title="Permanent link">#</a></h2>
 <ul>
-<li><strong><span class="arithmatex">\(x\)</span> 不在 <code>nums</code> 内也可</strong>：所以遍历 <span class="arithmatex">\(x \in [1, n]\)</span> 而不仅是 <code>nums</code> 中的值。</li>
-<li><strong>唯一性</strong>：若同时有 <span class="arithmatex">\(x_1 &lt; x_2\)</span> 都满足"恰好 <span class="arithmatex">\(x_i\)</span> 个 <span class="arithmatex">\(\geq x_i\)</span>"，则前 <span class="arithmatex">\(x_1\)</span> 个 <span class="arithmatex">\(\geq x_1\)</span>，前 <span class="arithmatex">\(x_2\)</span> 个 <span class="arithmatex">\(\geq x_2 &gt; x_1\)</span>，但 <span class="arithmatex">\(x_2 &gt; x_1\)</span> 个 <span class="arithmatex">\(\geq x_2 &gt; x_1\)</span> ⇒ 至少 <span class="arithmatex">\(x_2\)</span> 个 <span class="arithmatex">\(\geq x_1\)</span>；矛盾"恰好 <span class="arithmatex">\(x_1\)</span>"。故唯一。</li>
-<li><strong><span class="arithmatex">\(x = 0\)</span> 边界</strong>：若数组全负或空（本题非负不会），需特判；本题 <span class="arithmatex">\(n \geq 1\)</span> 不需。</li>
+<li><strong><span class="arithmatex">\(x\)</span> 不必在 <code>nums</code> 内</strong>：<span class="arithmatex">\(x\)</span> 是式 (2) 的不动点，是阈值与计数的平衡点，未必等于任何元素值。故枚举 <span class="arithmatex">\(x \in [1, n]\)</span>，而非只枚举 <code>nums</code> 中出现的值。</li>
+<li><strong>二分用错谓词</strong>：直接对 <span class="arithmatex">\(\text{cnt}(x) = x\)</span> 二分会失败，因为该等式谓词不单调（见法 3）。必须改用单调谓词 <span class="arithmatex">\(\text{cnt}(x) \geq x\)</span> 定位分界，再验证等于。</li>
+<li><strong><span class="arithmatex">\(x = 0\)</span> 边界</strong>：非空非负数组里 <span class="arithmatex">\(\text{cnt}(0) = n \geq 1 \neq 0\)</span>，答案不可能是 <span class="arithmatex">\(0\)</span>，枚举从 <span class="arithmatex">\(x = 1\)</span> 起即可（见形式化末段）。若允许空数组或全负值则需另行特判，本题 <span class="arithmatex">\(n \geq 1\)</span> 且非负不需要。</li>
 </ul>
 <h2 id="related">相关题目 (Related)<a class="headerlink" href="#related" title="Permanent link">#</a></h2>
 <ul>
-<li><code>#274 H-Index (off-wiki)</code> — H-index 标准定义。</li>
+<li><code>#274 H-Index (off-wiki)</code> — H-index 标准定义：<span class="arithmatex">\(n\)</span> 篇论文中 <span class="arithmatex">\(h\)</span> 篇被引 <span class="arithmatex">\(\geq h\)</span> 次的最大 <span class="arithmatex">\(h\)</span>，与本题不动点条件 (2) 是同一结构（"恰好"因唯一性等价于"最大"）。</li>
 <li><code>#275 H-Index II (off-wiki)</code> — sorted 版本，可二分。</li>
 </ul>
 <h2 id="further-reading">Further Reading<a class="headerlink" href="#further-reading" title="Permanent link">#</a></h2>
@@ -22620,6 +22706,8 @@
         <script src="../../../js/mathjax/tex-mml-chtml.js"></script>
       
         <script src="../../../js/mermaid.min.js"></script>
+      
+        <script src="../../../js/featured.js"></script>
       
     
   </body>

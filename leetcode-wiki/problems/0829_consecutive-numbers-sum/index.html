@@ -1466,6 +1466,8 @@
       
         
       
+        
+      
     
     
     
@@ -1521,6 +1523,34 @@
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../featured/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ⭐ Featured（已验证）
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
               
             
               
@@ -1610,10 +1640,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_4" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
         
           
-          <label class="md-nav__link" for="__nav_4_4" id="__nav_4_4_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_5" id="__nav_4_5_label" tabindex="">
             
   
   
@@ -1631,8 +1661,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_4_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_4">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_5">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1915,7 +1945,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -1937,14 +1967,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_4_5" id="__nav_4_5_label" tabindex="">
+              <label class="md-nav__link " for="__nav_4_6" id="__nav_4_6_label" tabindex="">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_5">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_6">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -5321,10 +5351,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_7" checked>
         
           
-          <label class="md-nav__link" for="__nav_4_6" id="__nav_4_6_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_7" id="__nav_4_7_label" tabindex="">
             
   
   
@@ -5342,8 +5372,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_4_6">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_7_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4_7">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -8960,6 +8990,23 @@
       
     </span>
   </a>
+  
+    <nav class="md-nav" aria-label="数据结构 / 想法 (Approach)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        从整除条件到奇约数
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -22399,6 +22446,23 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="数据结构 / 想法 (Approach)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        从整除条件到奇约数
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -22467,18 +22531,25 @@
 <h2 id="problem">Problem<a class="headerlink" href="#problem" title="Permanent link">#</a></h2>
 <p>给整数 <span class="arithmatex">\(n\)</span>（<span class="arithmatex">\(1 \le n \le 10^9\)</span>），求把 <span class="arithmatex">\(n\)</span> 写成连续正整数之和的方式数。例如 <span class="arithmatex">\(9 = 9 = 2+3+4 = 4+5\)</span>，共 3 种。</p>
 <h2 id="background">背景 (Background)<a class="headerlink" href="#background" title="Permanent link">#</a></h2>
-<p>这是数论中的经典问题，与 <strong>polite numbers</strong>（可表示为 <span class="arithmatex">\(\ge 2\)</span> 个连续正整数之和的数）紧密相关：一个数是 polite 的当且仅当它<strong>不是 2 的幂</strong>。更精细的结论是：</p>
-<div class="arithmatex">\[\#\{\text{表示为连续正整数和的方式}\} = \#\{n \text{ 的奇约数}\}\]</div>
-<p>这是 18 世纪 Sylvester 给出的结果，本题等价于该恒等式的算法化。它把组合枚举转化为数论问题——巧用代数变形是关键。</p>
+<p>一种表示由它的<strong>起点</strong> <span class="arithmatex">\(a \ge 1\)</span> 和<strong>长度</strong> <span class="arithmatex">\(k \ge 1\)</span> 唯一确定：序列就是 <span class="arithmatex">\(a, a+1, \dots, a+k-1\)</span>。于是计数等价于枚举所有合法的 <span class="arithmatex">\((a, k)\)</span>。</p>
+<p>最直接的做法是双重枚举：对每个起点 <span class="arithmatex">\(a\)</span> 从 <span class="arithmatex">\(1\)</span> 到 <span class="arithmatex">\(n\)</span>，向后累加 <span class="arithmatex">\(a, a+1, \dots\)</span> 直到和达到或超过 <span class="arithmatex">\(n\)</span>，记录恰好等于 <span class="arithmatex">\(n\)</span> 的情形。问题在于序列长度可达 <span class="arithmatex">\(O(\sqrt n)\)</span>，起点又有 <span class="arithmatex">\(O(n)\)</span> 个，整体 <span class="arithmatex">\(O(n^{1.5})\)</span>；对 <span class="arithmatex">\(n = 10^9\)</span> 这是上百万亿次操作，远超时限。</p>
+<p>瓶颈在于我们把 <span class="arithmatex">\(a\)</span> 和 <span class="arithmatex">\(k\)</span> 当作两个独立的自由变量来搜。但它们并不独立——给定长度 <span class="arithmatex">\(k\)</span>，序列的和被 <span class="arithmatex">\(a\)</span> 唯一决定。下面的形式化正是要把这层依赖写成等式，从而<strong>固定 <span class="arithmatex">\(k\)</span> 后直接判定 <span class="arithmatex">\(a\)</span> 是否存在</strong>，把二维搜索压成一维。</p>
 <h2 id="formulation">形式化 (Formulation)<a class="headerlink" href="#formulation" title="Permanent link">#</a></h2>
-<p>求所有正整数对 <span class="arithmatex">\((a, k)\)</span>，<span class="arithmatex">\(a \ge 1\)</span>，<span class="arithmatex">\(k \ge 1\)</span>，使</p>
-<div class="arithmatex">\[n = a + (a+1) + \dots + (a + k - 1) = ka + \frac{k(k-1)}{2}\]</div>
-<p>整理：<span class="arithmatex">\(2n = k(2a + k - 1)\)</span>。固定 <span class="arithmatex">\(k\)</span> 后，<span class="arithmatex">\(a = \frac{2n - k(k-1)}{2k} = \frac{n}{k} - \frac{k-1}{2}\)</span>。</p>
-<p>合法条件：<span class="arithmatex">\(a \ge 1\)</span> 且 <span class="arithmatex">\(a \in \mathbb{Z}^+\)</span>。即 <span class="arithmatex">\(2n - k(k-1) &gt; 0\)</span> 且 <span class="arithmatex">\(2k \mid (2n - k(k-1))\)</span>。</p>
+<p>设起点为 <span class="arithmatex">\(a \in \mathbb{Z}^+\)</span>、长度为 <span class="arithmatex">\(k \in \mathbb{Z}^+\)</span>。等差数列求和给出</p>
+<div class="arithmatex">\[n = a + (a+1) + \dots + (a + k - 1) = ka + \frac{k(k-1)}{2}. \tag{1}\]</div>
+<p>直接解 <span class="arithmatex">\((1)\)</span> 中的 <span class="arithmatex">\(a\)</span> 会留下分母里的 <span class="arithmatex">\(2\)</span>，不便讨论整除。两边乘 <span class="arithmatex">\(2\)</span> 消去分母：</p>
+<div class="arithmatex">\[2n = 2ka + k(k-1) = k\,(2a + k - 1). \tag{2}\]</div>
+<p><span class="arithmatex">\((2)\)</span> 是整个解法的支点，值得逐项理解。它说：<strong><span class="arithmatex">\(k\)</span> 必须整除 <span class="arithmatex">\(2n\)</span></strong>，而互补因子是 <span class="arithmatex">\(2a + k - 1\)</span>。固定 <span class="arithmatex">\(k\)</span> 后，这个互补因子被完全确定为 <span class="arithmatex">\(2n / k\)</span>，于是 <span class="arithmatex">\(a\)</span> 也被确定：从 <span class="arithmatex">\((2)\)</span> 解出</p>
+<div class="arithmatex">\[2ka = 2n - k(k-1) \quad\Longrightarrow\quad a = \frac{2n - k(k-1)}{2k} = \frac{n}{k} - \frac{k-1}{2}. \tag{3}\]</div>
+<p>到这里二维搜索已经塌成一维：<strong><span class="arithmatex">\(a\)</span> 不再是自由变量，而是 <span class="arithmatex">\(k\)</span> 的函数</strong>。给定 <span class="arithmatex">\(k\)</span>，最多存在一个候选 <span class="arithmatex">\(a\)</span>；它合法当且仅当它是正整数。两个条件：</p>
+<ul>
+<li><strong>整数性</strong>：<span class="arithmatex">\(2k \mid \bigl(2n - k(k-1)\bigr)\)</span>；</li>
+<li><strong>正性</strong>：<span class="arithmatex">\(a \ge 1\)</span>，即 <span class="arithmatex">\(2n - k(k-1) \ge 2k\)</span>。</li>
+</ul>
+<p>第二个条件还能进一步简化。<span class="arithmatex">\((3)\)</span> 的分子 <span class="arithmatex">\(2n - k(k-1)\)</span> 在 <span class="arithmatex">\(k(k-1) &lt; 2n\)</span> 时为正；而一旦它为正且能被 <span class="arithmatex">\(2k\)</span> 整除，它作为 <span class="arithmatex">\(2k\)</span> 的正倍数最小就是 <span class="arithmatex">\(2k\)</span> 本身，于是 <span class="arithmatex">\(a \ge 1\)</span> 自动成立。所以正性不必单独检验，只需保证分子为正（用循环上界保证）再查整除即可。</p>
 <h2 id="approach">数据结构 / 想法 (Approach)<a class="headerlink" href="#approach" title="Permanent link">#</a></h2>
-<p><strong>枚举 <span class="arithmatex">\(k\)</span></strong>：从 <span class="arithmatex">\(k=1\)</span> 开始，直到 <span class="arithmatex">\(k(k-1) \ge 2n\)</span>。每次检查 <span class="arithmatex">\((2n - k(k-1))\)</span> 是否被 <span class="arithmatex">\(2k\)</span> 整除（且商 <span class="arithmatex">\(\ge 2\)</span> 因 <span class="arithmatex">\(a \ge 1\)</span> 等价于 <span class="arithmatex">\(2n - k(k-1) \ge 2k\)</span>）。</p>
-<p><strong>循环上界</strong>：<span class="arithmatex">\(k(k-1)/2 &lt; n\)</span> 即 <span class="arithmatex">\(k &lt; \sqrt{2n} + O(1)\)</span>。对 <span class="arithmatex">\(n = 10^9\)</span>，<span class="arithmatex">\(k &lt; 44722\)</span>，足够快。</p>
-<p><strong>奇约数解法</strong>（等价、更优雅）：直接计 <span class="arithmatex">\(n\)</span> 去除所有 2 因子后的奇部分 <span class="arithmatex">\(m\)</span>，答案 = <span class="arithmatex">\(m\)</span> 的约数个数。<span class="arithmatex">\(O(\sqrt{n})\)</span>。</p>
+<p>形式化把判定压成了"对固定 <span class="arithmatex">\(k\)</span> 做一次 <span class="arithmatex">\(O(1)\)</span> 整除测试"，于是算法就是<strong>枚举 <span class="arithmatex">\(k\)</span></strong>：从 <span class="arithmatex">\(k = 1\)</span> 开始递增，对每个 <span class="arithmatex">\(k\)</span> 检查条件 <span class="arithmatex">\((2)\)</span>、<span class="arithmatex">\((3)\)</span>，命中则计数加一。</p>
+<p><strong>循环上界</strong>：何时停？回到几何本身——长度为 <span class="arithmatex">\(k\)</span>、起点最小（<span class="arithmatex">\(a = 1\)</span>）的序列其和为 <span class="arithmatex">\(1 + 2 + \dots + k = k(k+1)/2\)</span>，这是任意 <span class="arithmatex">\(k\)</span> 长序列能取到的最小和。若连这个最小和都超过 <span class="arithmatex">\(n\)</span>，则没有合法起点。等价的判据用分子写更直接：要 <span class="arithmatex">\(a \ge 1\)</span> 必须 <span class="arithmatex">\(2n - k(k-1) \ge 2k &gt; 0\)</span>，故循环在 <span class="arithmatex">\(k(k-1) \ge 2n\)</span> 时终止。这给出 <span class="arithmatex">\(k &lt; \sqrt{2n} + O(1)\)</span>；对 <span class="arithmatex">\(n = 10^9\)</span>，<span class="arithmatex">\(k &lt; 44722\)</span>，足够快。</p>
 <div class="language-python highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">Solution</span><span class="p">:</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">consecutiveNumbersSum</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
         <span class="n">cnt</span> <span class="o">=</span> <span class="mi">0</span>
@@ -22490,6 +22561,7 @@
             <span class="n">k</span> <span class="o">+=</span> <span class="mi">1</span>
         <span class="k">return</span> <span class="n">cnt</span>
 </code></pre></div>
+<p>每次循环的 <code>num</code> 就是 <span class="arithmatex">\((3)\)</span> 的分子 <span class="arithmatex">\(2n - k(k-1)\)</span>，<code>num % (2*k) == 0</code> 就是整数性条件 <span class="arithmatex">\(2k \mid (2n - k(k-1))\)</span>。循环条件 <code>k*(k-1) &lt; 2*n</code> 保证 <code>num &gt; 0</code>，从而（如上）命中时 <span class="arithmatex">\(a \ge 1\)</span> 自动成立。</p>
 <p>样例 1 trace：n=5. 2n=10.
 - k=1: num=10, 10 % 2 == 0 → cnt=1. (a=5, "5")
 - k=2: 2·1=2&lt;10. num=10-2=8, 8%4=0 → cnt=2. (a=2, "2+3")
@@ -22511,18 +22583,26 @@
 - k=5: num=10, %10=0 → cnt=4. (a=1, "1+2+3+4+5")
 - k=6: 6·5=30 ≥30 → 停.</p>
 <p>返回 4。✓</p>
+<p>注意 n=15, k=5 命中时 <span class="arithmatex">\(a = 1\)</span>，正好踩在正性边界上——这印证了上面的论断：分子能被 <span class="arithmatex">\(2k\)</span> 整除时 <span class="arithmatex">\(a\)</span> 的最小值就是 <span class="arithmatex">\(1\)</span>，不会更小。</p>
+<h3 id="_1">从整除条件到奇约数<a class="headerlink" href="#_1" title="Permanent link">#</a></h3>
+<p>枚举法跑得动，但 <span class="arithmatex">\((2)\)</span> 还藏着一个更结构化的结论，值得挖出来——它解释了为什么答案常被表述为"<span class="arithmatex">\(n\)</span> 的奇约数个数"。</p>
+<p>关键在 <span class="arithmatex">\((2)\)</span> 的两个因子 <span class="arithmatex">\(k\)</span> 与 <span class="arithmatex">\(2a + k - 1\)</span> 的<strong>奇偶性</strong>。无论 <span class="arithmatex">\(k\)</span> 奇偶，<span class="arithmatex">\(k\)</span> 与 <span class="arithmatex">\(k-1\)</span> 一奇一偶，故 <span class="arithmatex">\(2a + k - 1 = k + (2a - 1)\)</span> 与 <span class="arithmatex">\(k\)</span> 奇偶性相反：两个因子恰好一奇一偶。把 <span class="arithmatex">\(2n\)</span> 写成 <span class="arithmatex">\(2^{v} \cdot m\)</span>，其中 <span class="arithmatex">\(m\)</span> 是 <span class="arithmatex">\(n\)</span>（也是 <span class="arithmatex">\(2n\)</span>）的奇部分。在分解 <span class="arithmatex">\(2n = k \cdot (2a+k-1)\)</span> 中，所有 <span class="arithmatex">\(2\)</span> 的幂必须整块落到那个偶因子上，奇因子则是 <span class="arithmatex">\(m\)</span> 的某个奇约数。</p>
+<p>反过来，给定 <span class="arithmatex">\(m\)</span> 的任一奇约数 <span class="arithmatex">\(d\)</span>，令奇因子为 <span class="arithmatex">\(d\)</span>、偶因子为 <span class="arithmatex">\(2n/d\)</span>，由 <span class="arithmatex">\(2a + k - 1\)</span> 与 <span class="arithmatex">\(k\)</span> 一奇一偶可唯一定出哪个是 <span class="arithmatex">\(k\)</span>、哪个是 <span class="arithmatex">\(2a+k-1\)</span>，进而解出唯一的 <span class="arithmatex">\((a, k)\)</span>，且 <span class="arithmatex">\(a \ge 1\)</span>。于是<strong>合法表示与 <span class="arithmatex">\(m\)</span> 的奇约数一一对应</strong>：</p>
+<div class="arithmatex">\[\#\{\text{表示为连续正整数和的方式}\} = \#\{m \text{ 的约数}\}, \qquad m = n / 2^{v_2(n)}.\]</div>
+<p>这正是 18 世纪 Sylvester 给出的恒等式；与之配套的是 <strong>polite number</strong> 的概念——可表示为 <span class="arithmatex">\(\ge 2\)</span> 个连续正整数之和的正整数。由上式，<span class="arithmatex">\(n\)</span> 只有"自身长度 1"这一种表示当且仅当 <span class="arithmatex">\(m = 1\)</span>，即 <span class="arithmatex">\(n\)</span> 是 <span class="arithmatex">\(2\)</span> 的幂；故一个数是 polite 的当且仅当它不是 <span class="arithmatex">\(2\)</span> 的幂。</p>
+<p>据此可写出 <span class="arithmatex">\(O(\sqrt m)\)</span> 的等价解法：剥去 <span class="arithmatex">\(n\)</span> 的所有因子 <span class="arithmatex">\(2\)</span> 得奇部分 <span class="arithmatex">\(m\)</span>，再数 <span class="arithmatex">\(m\)</span> 的约数个数。由 <span class="arithmatex">\(m \le n\)</span>，复杂度仍为 <span class="arithmatex">\(O(\sqrt n)\)</span>，与枚举 <span class="arithmatex">\(k\)</span> 同阶。</p>
 <h2 id="complexity">复杂度 (Complexity)<a class="headerlink" href="#complexity" title="Permanent link">#</a></h2>
 <ul>
 <li>枚举 <span class="arithmatex">\(k\)</span>：Time <span class="arithmatex">\(O(\sqrt{n})\)</span>（循环上限 <span class="arithmatex">\(\sqrt{2n}\)</span>）。</li>
-<li>奇约数解：Time <span class="arithmatex">\(O(\sqrt{m})\)</span> 其中 <span class="arithmatex">\(m\)</span> 为 <span class="arithmatex">\(n\)</span> 的奇部分；可证明 <span class="arithmatex">\(m \le n\)</span> 故仍 <span class="arithmatex">\(O(\sqrt{n})\)</span>。</li>
+<li>奇约数解：Time <span class="arithmatex">\(O(\sqrt{m})\)</span> 其中 <span class="arithmatex">\(m\)</span> 为 <span class="arithmatex">\(n\)</span> 的奇部分；由 <span class="arithmatex">\(m \le n\)</span> 故仍 <span class="arithmatex">\(O(\sqrt{n})\)</span>。</li>
 <li>Space: <span class="arithmatex">\(O(1)\)</span>。</li>
 </ul>
 <h2 id="pitfalls">陷阱 (Pitfalls)<a class="headerlink" href="#pitfalls" title="Permanent link">#</a></h2>
 <ul>
-<li>循环条件 <code>k*(k-1) &lt; 2*n</code>（严格 <code>&lt;</code>），等于时 <span class="arithmatex">\(a = (1-k)/2 &lt; 1\)</span>（k≥2），不再合法。</li>
-<li><code>a ≥ 1</code> 已被"<code>k(k-1) &lt; 2n</code>"加上"<code>(2n - k(k-1))/(2k) ≥ 1</code>"双重条件保证；后者来自 <code>num &gt;= 2k</code>。</li>
+<li>循环条件 <code>k*(k-1) &lt; 2*n</code> 取严格 <code>&lt;</code>。在边界 <span class="arithmatex">\(k(k-1) = 2n\)</span> 处，代入 <span class="arithmatex">\((3)\)</span> 得 <span class="arithmatex">\(a = \frac{n}{k} - \frac{k-1}{2} = \frac{k-1}{2} - \frac{k-1}{2} = 0 &lt; 1\)</span>，不再合法，故须排除。</li>
+<li>正性 <span class="arithmatex">\(a \ge 1\)</span> 无需单独检验：只要 <code>num = 2n - k(k-1) &gt; 0</code>（由循环条件保证）且 <code>num % (2k) == 0</code>，则 <code>num</code> 作为 <span class="arithmatex">\(2k\)</span> 的正倍数最小为 <span class="arithmatex">\(2k\)</span>，对应 <span class="arithmatex">\(a \ge 1\)</span>。</li>
 <li><span class="arithmatex">\(n\)</span> 自身（<span class="arithmatex">\(k=1\)</span> 的"长度 1 序列"）算一种——题面"连续正整数"含单元素子串。</li>
-<li>不要朴素三重枚举 <span class="arithmatex">\((a, k)\)</span> —— <span class="arithmatex">\(O(n^2)\)</span> TLE。</li>
+<li>不要朴素双重枚举 <span class="arithmatex">\((a, k)\)</span>：序列长 <span class="arithmatex">\(O(\sqrt n)\)</span>、起点 <span class="arithmatex">\(O(n)\)</span> 个，整体 <span class="arithmatex">\(O(n^{1.5})\)</span>，对 <span class="arithmatex">\(n = 10^9\)</span> 超时。</li>
 </ul>
 <h2 id="related">相关题目 (Related)<a class="headerlink" href="#related" title="Permanent link">#</a></h2>
 <ul>
@@ -22640,6 +22720,8 @@
         <script src="../../../js/mathjax/tex-mml-chtml.js"></script>
       
         <script src="../../../js/mermaid.min.js"></script>
+      
+        <script src="../../../js/featured.js"></script>
       
     
   </body>

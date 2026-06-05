@@ -1466,6 +1466,8 @@
       
         
       
+        
+      
     
     
     
@@ -1521,6 +1523,34 @@
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../featured/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ⭐ Featured（已验证）
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
               
             
               
@@ -1610,10 +1640,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_4" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
         
           
-          <label class="md-nav__link" for="__nav_4_4" id="__nav_4_4_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_5" id="__nav_4_5_label" tabindex="">
             
   
   
@@ -1631,8 +1661,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_4_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_4">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_5">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1915,7 +1945,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -1937,14 +1967,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_4_5" id="__nav_4_5_label" tabindex="">
+              <label class="md-nav__link " for="__nav_4_6" id="__nav_4_6_label" tabindex="">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_5">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_6">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -5321,10 +5351,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_7" checked>
         
           
-          <label class="md-nav__link" for="__nav_4_6" id="__nav_4_6_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_7" id="__nav_4_7_label" tabindex="">
             
   
   
@@ -5342,8 +5372,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_4_6">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_7_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4_7">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -22465,33 +22495,41 @@
 <h1 id="836-rectangle-overlap-easy">836. Rectangle Overlap  🟢 Easy<a class="headerlink" href="#836-rectangle-overlap-easy" title="Permanent link">#</a></h1>
 <p><strong>Tags</strong>: Math, Geometry</p>
 <h2 id="problem">Problem<a class="headerlink" href="#problem" title="Permanent link">#</a></h2>
-<p>两个轴对齐矩形 <code>rec1 = [x1, y1, x2, y2]</code>、<code>rec2 = [x1', y1', x2', y2']</code>（左下、右上角）。判断它们是否有<strong>正面积</strong>的交（仅边/角接触不算重叠）。<span class="arithmatex">\(|坐标| \le 10^9\)</span>。</p>
+<p>两个轴对齐矩形 <code>rec1 = [x1, y1, x2, y2]</code>、<code>rec2 = [x1', y1', x2', y2']</code>（左下、右上角）。判断它们是否有<strong>正面积</strong>的交（仅边/角接触不算重叠）。<span class="arithmatex">\(-10^4 \le 坐标 \le 10^4\)</span>。</p>
 <h2 id="background">背景 (Background)<a class="headerlink" href="#background" title="Permanent link">#</a></h2>
-<p>轴对齐矩形相交是计算几何最基础的判定，是 R-tree、quadtree 等空间索引的核心 primitive，也是碰撞检测的基本元件。一维区间相交 <span class="arithmatex">\(\Leftrightarrow\)</span> <span class="arithmatex">\(\max(l_1, l_2) &lt; \min(r_1, r_2)\)</span> 的二维推广：两矩形相交当且仅当 x 轴投影和 y 轴投影同时相交（separating axis theorem 的最简版）。</p>
+<p>我们想判断两个矩形是否共享内部点。先试最朴素的想法：矩形由四个角点确定，那就检查 <code>rec2</code> 的某个角是否落在 <code>rec1</code> 内部，反之亦然。</p>
+<p>这个想法在一类情形下直接失效。考虑两个矩形交成一个十字：<code>rec1</code> 又宽又矮、<code>rec2</code> 又窄又高，相交区域是中间一小块，但<strong>双方的四个角都在对方之外</strong>。角点检查会报告"无重叠"，而实际上它们有正面积的交。问题在于：重叠区域的角不必是任何输入矩形的角，所以枚举输入角点抓不住一般的相交。</p>
+<p>朴素法的失败提示我们换一个判据：不去找某个特征点，而是直接刻画"内部点存在"这件事。这把二维问题拆回一维，正是下一节的出发点。</p>
 <h2 id="formulation">形式化 (Formulation)<a class="headerlink" href="#formulation" title="Permanent link">#</a></h2>
-<p>记 <span class="arithmatex">\(r_1 = [a_1, b_1] \times [c_1, d_1]\)</span>、<span class="arithmatex">\(r_2 = [a_2, b_2] \times [c_2, d_2]\)</span>。正面积交：</p>
+<p><strong>直觉。</strong> 轴对齐是这里唯一的结构性约束，它让两个坐标轴解耦：点 <span class="arithmatex">\((x, y)\)</span> 落在矩形 <span class="arithmatex">\([a, b] \times [c, d]\)</span> 内部，当且仅当 <span class="arithmatex">\(x \in (a, b)\)</span> <strong>且</strong> <span class="arithmatex">\(y \in (c, d)\)</span> —— <span class="arithmatex">\(x\)</span> 与 <span class="arithmatex">\(y\)</span> 各自独立成立。于是"两矩形共享内部点"等价于"存在 <span class="arithmatex">\(x\)</span> 同时落在两个 <span class="arithmatex">\(x\)</span> 区间内，且存在 <span class="arithmatex">\(y\)</span> 同时落在两个 <span class="arithmatex">\(y\)</span> 区间内"，两轴互不牵连。二维相交因此分解为两个一维区间相交。</p>
+<p><strong>一维区间相交。</strong> 先解决一维：两个开区间 <span class="arithmatex">\((l_1, r_1)\)</span>、<span class="arithmatex">\((l_2, r_2)\)</span> 何时有公共点？它们的交仍是一个区间，左端取两个左端的较大者 <span class="arithmatex">\(\max(l_1, l_2)\)</span>，右端取两个右端的较小者 <span class="arithmatex">\(\min(r_1, r_2)\)</span>。这个交非空，当且仅当它的左端严格在右端左侧：</p>
+<div class="arithmatex">\[\max(l_1, l_2) &lt; \min(r_1, r_2)\]</div>
+<p>取严格不等号是因为我们要的是公共<strong>内部</strong>点；若两端相等，交退化为单点，无长度。</p>
+<p><strong>二维。</strong> 记 <span class="arithmatex">\(r_1 = [a_1, b_1] \times [c_1, d_1]\)</span>、<span class="arithmatex">\(r_2 = [a_2, b_2] \times [c_2, d_2]\)</span>。集合上 <span class="arithmatex">\(r_1 \cap r_2 = (X_1 \cap X_2) \times (Y_1 \cap Y_2)\)</span>，其中 <span class="arithmatex">\(X_i\)</span>、<span class="arithmatex">\(Y_i\)</span> 是 <span class="arithmatex">\(x\)</span>、<span class="arithmatex">\(y\)</span> 投影区间。一个矩形积非空当且仅当两个因子都非空，所以把上面的一维判据分别施于 <span class="arithmatex">\(x\)</span> 轴和 <span class="arithmatex">\(y\)</span> 轴，取合取：</p>
 <div class="arithmatex">\[\max(a_1, a_2) &lt; \min(b_1, b_2) \ \wedge\ \max(c_1, c_2) &lt; \min(d_1, d_2)\]</div>
+<p>这就是整道题的判据，由"内部点存在"经轴解耦直接导出，不依赖任何外部定理。</p>
 <h2 id="approach">数据结构 / 想法 (Approach)<a class="headerlink" href="#approach" title="Permanent link">#</a></h2>
-<p>直接套上式。</p>
+<p>代码是上式的逐字转写：解包两个矩形的角点，对 <span class="arithmatex">\(x\)</span>、<span class="arithmatex">\(y\)</span> 各做一次"<span class="arithmatex">\(\max\)</span> 左端 <span class="arithmatex">\(&lt;\)</span> <span class="arithmatex">\(\min\)</span> 右端"的判断，取合取。</p>
 <div class="language-python highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">Solution</span><span class="p">:</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">isRectangleOverlap</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rec1</span><span class="p">,</span> <span class="n">rec2</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
         <span class="n">x1</span><span class="p">,</span> <span class="n">y1</span><span class="p">,</span> <span class="n">x2</span><span class="p">,</span> <span class="n">y2</span> <span class="o">=</span> <span class="n">rec1</span>
         <span class="n">x3</span><span class="p">,</span> <span class="n">y3</span><span class="p">,</span> <span class="n">x4</span><span class="p">,</span> <span class="n">y4</span> <span class="o">=</span> <span class="n">rec2</span>
         <span class="k">return</span> <span class="nb">max</span><span class="p">(</span><span class="n">x1</span><span class="p">,</span> <span class="n">x3</span><span class="p">)</span> <span class="o">&lt;</span> <span class="nb">min</span><span class="p">(</span><span class="n">x2</span><span class="p">,</span> <span class="n">x4</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">max</span><span class="p">(</span><span class="n">y1</span><span class="p">,</span> <span class="n">y3</span><span class="p">)</span> <span class="o">&lt;</span> <span class="nb">min</span><span class="p">(</span><span class="n">y2</span><span class="p">,</span> <span class="n">y4</span><span class="p">)</span>
 </code></pre></div>
-<p>样例 1 trace：<code>[0,0,2,2]</code>, <code>[1,1,3,3]</code>. max(0,1)=1 &lt; min(2,3)=2 ✓; max(0,1)=1 &lt; min(2,3)=2 ✓. → True。✓</p>
-<p>样例 2：<code>[0,0,1,1]</code>, <code>[1,0,2,1]</code>. max(0,1)=1 &lt; min(1,2)=1 → 1&lt;1 False. → False。✓</p>
-<p>样例 3：<code>[0,0,1,1]</code>, <code>[2,2,3,3]</code>. max(0,2)=2 &lt; min(1,3)=1 → 2&lt;1 False. → False。✓</p>
+<p>下面三个样例对应三类边界行为——真重叠、边接触、完全分离——用来确认严格不等号的取舍正确：</p>
+<p>样例 1（真重叠）<code>[0,0,2,2]</code>, <code>[1,1,3,3]</code>：max(0,1)=1 &lt; min(2,3)=2 ✓；max(0,1)=1 &lt; min(2,3)=2 ✓。→ True。✓</p>
+<p>样例 2（边接触）<code>[0,0,1,1]</code>, <code>[1,0,2,1]</code>：max(0,1)=1 &lt; min(1,2)=1 → 1&lt;1 False。→ False。✓</p>
+<p>样例 3（完全分离）<code>[0,0,1,1]</code>, <code>[2,2,3,3]</code>：max(0,2)=2 &lt; min(1,3)=1 → 2&lt;1 False。→ False。✓</p>
 <h2 id="complexity">复杂度 (Complexity)<a class="headerlink" href="#complexity" title="Permanent link">#</a></h2>
 <ul>
-<li>Time: <span class="arithmatex">\(O(1)\)</span>。</li>
+<li>Time: <span class="arithmatex">\(O(1)\)</span>。固定次数的比较，无循环，最好 = 平均 = 最坏。</li>
 <li>Space: <span class="arithmatex">\(O(1)\)</span>。</li>
 </ul>
 <h2 id="pitfalls">陷阱 (Pitfalls)<a class="headerlink" href="#pitfalls" title="Permanent link">#</a></h2>
 <ul>
-<li>"仅触碰角/边不算" → 严格 <code>&lt;</code> 而非 <code>≤</code>。这是最常见错误。</li>
-<li>另一种等价写法是"判断不相交"：<span class="arithmatex">\(x_2 \le x_3\)</span> 或 <span class="arithmatex">\(x_4 \le x_1\)</span> 或 <span class="arithmatex">\(y_2 \le y_3\)</span> 或 <span class="arithmatex">\(y_4 \le y_1\)</span>。容易写反符号。</li>
-<li>坐标允许负数，不能假设 ≥ 0。</li>
+<li>严格 <code>&lt;</code> 而非 <code>≤</code>：这不是独立的"坑"，而是判据本身的读法——"正面积"要求公共内部点，区间交退化为单点时无长度，故端点相等不算重叠。写成 <code>≤</code> 会把边/角接触误判为重叠。</li>
+<li>等价的"判不相交"写法：两矩形<strong>不</strong>重叠当且仅当 <span class="arithmatex">\(x_2 \le x_3\)</span> 或 <span class="arithmatex">\(x_4 \le x_1\)</span> 或 <span class="arithmatex">\(y_2 \le y_3\)</span> 或 <span class="arithmatex">\(y_4 \le y_1\)</span>（一个被另一个完全推到左/右/下/上）。这正是朴素角点法想枚举却枚举不全的四种分离情形；投影判据把它们的否定合并成两条合取，免去逐情形讨论。取反时容易写错符号方向。</li>
+<li>坐标允许负数，不能假设 ≥ 0；判据只用比较，对负坐标同样成立。</li>
 </ul>
 <h2 id="related">相关题目 (Related)<a class="headerlink" href="#related" title="Permanent link">#</a></h2>
 <ul>
@@ -22608,6 +22646,8 @@
         <script src="../../../js/mathjax/tex-mml-chtml.js"></script>
       
         <script src="../../../js/mermaid.min.js"></script>
+      
+        <script src="../../../js/featured.js"></script>
       
     
   </body>

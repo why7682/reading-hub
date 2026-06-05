@@ -1466,6 +1466,8 @@
       
         
       
+        
+      
     
     
     
@@ -1521,6 +1523,34 @@
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../featured/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ⭐ Featured（已验证）
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
               
             
               
@@ -1610,10 +1640,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_4" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
         
           
-          <label class="md-nav__link" for="__nav_4_4" id="__nav_4_4_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_5" id="__nav_4_5_label" tabindex="">
             
   
   
@@ -1631,8 +1661,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_4_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_4">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_5">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1915,7 +1945,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -1937,14 +1967,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_4_5" id="__nav_4_5_label" tabindex="">
+              <label class="md-nav__link " for="__nav_4_6" id="__nav_4_6_label" tabindex="">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_5">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_6">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -5321,10 +5351,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_7" checked>
         
           
-          <label class="md-nav__link" for="__nav_4_6" id="__nav_4_6_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_7" id="__nav_4_7_label" tabindex="">
             
   
   
@@ -5342,8 +5372,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_4_6">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_7_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4_7">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -22467,24 +22497,46 @@
 <h2 id="problem">Problem<a class="headerlink" href="#problem" title="Permanent link">#</a></h2>
 <p>给单链表头 <code>head</code>，判定值序列是否回文。<span class="arithmatex">\(1 \le n \le 10^5\)</span>。Follow-up: <span class="arithmatex">\(O(n)\)</span> 时间 <span class="arithmatex">\(O(1)\)</span> 空间。</p>
 <h2 id="_1">背景<a class="headerlink" href="#_1" title="Permanent link">#</a></h2>
-<p>回文判定本质是检查序列与其逆是否相等。在数组上是 trivial 的 <span class="arithmatex">\(O(n)\)</span> 双指针；<strong>单链表无 random access 也无反向指针</strong>，因此需要引入：(1) 慢/快指针找中点；(2) 链表原地反转。两者都是单链表算法的基石技巧，独立看简单，组合起来恰为本题 follow-up 的"恰能在 <span class="arithmatex">\(O(1)\)</span> 空间通过"配置。</p>
+<p>回文判定的核心是一个对称条件：从前往后数第 <span class="arithmatex">\(i\)</span> 个元素，应当等于从后往前数第 <span class="arithmatex">\(i\)</span> 个元素。要验证它，必须在同一时刻拿到序列的两端。在数组上这是免费的——下标 <span class="arithmatex">\(i\)</span> 和下标 <span class="arithmatex">\(n+1-i\)</span> 都是 <span class="arithmatex">\(O(1)\)</span> 随机访问，一对双指针相向而行即可。</p>
+<p>单链表把这个免费条件拿走了。从 <code>head</code> 出发只能沿 <code>next</code> 单向前进：拿到第 <span class="arithmatex">\(i\)</span> 个元素时，第 <span class="arithmatex">\(n+1-i\)</span> 个元素在它后面某处，要够到它得从头再走一趟，每次比较 <span class="arithmatex">\(O(n)\)</span>，整体退化到 <span class="arithmatex">\(O(n^2)\)</span>；而且即便走到了，也无法"往回退一步"去取下一对。因此本题真正的障碍不是回文本身，而是<strong>单链表只支持单向访问</strong>。下面的全部技巧，都是为消除这一障碍而逐步引入的最小手段。</p>
 <h2 id="_2">形式化<a class="headerlink" href="#_2" title="Permanent link">#</a></h2>
-<p>设链表序列 <span class="arithmatex">\(a_1, \dots, a_n\)</span>。判定 <span class="arithmatex">\(\forall i \in [1, \lfloor n/2 \rfloor],\; a_i = a_{n+1-i}\)</span>。</p>
+<p>我们要比较"前数第 <span class="arithmatex">\(k\)</span> 个"与"后数第 <span class="arithmatex">\(k\)</span> 个"。设链表值序列为 <span class="arithmatex">\(a_1, \dots, a_n\)</span>，则序列回文当且仅当</p>
+<div class="arithmatex">\[
+\forall i \in \left[1,\ \lfloor n/2 \rfloor\right],\quad a_i = a_{n+1-i}.
+\]</div>
+<p>上界取 <span class="arithmatex">\(\lfloor n/2 \rfloor\)</span>：奇数长度时中央元素 <span class="arithmatex">\(a_{(n+1)/2}\)</span> 与自身配对，无需检验；偶数长度时恰好检验全部 <span class="arithmatex">\(n/2\)</span> 对。整个解法都将围绕"如何让 <span class="arithmatex">\(a_i\)</span> 与 <span class="arithmatex">\(a_{n+1-i}\)</span> 同时可达"展开。</p>
 <h2 id="_3">数据结构 / 想法<a class="headerlink" href="#_3" title="Permanent link">#</a></h2>
-<p><strong>解法 A：复制到数组</strong>
-- <span class="arithmatex">\(O(n)\)</span> 时间 <span class="arithmatex">\(O(n)\)</span> 空间。
-- 双指针扫描。简单粗暴。</p>
-<p><strong>解法 B：栈 + 慢/快指针</strong>
-- 慢指针走的同时把值压栈；快指针到尾时栈含前半段。
-- 然后继续走慢指针并 pop 比较。
-- <span class="arithmatex">\(O(n)\)</span> 时间 <span class="arithmatex">\(O(n)\)</span> 空间。</p>
-<p><strong>解法 C（follow-up，<span class="arithmatex">\(O(1)\)</span> 空间）</strong>：
-1. 慢/快指针找中点（fast 走 2 步、slow 走 1 步）。
-2. <strong>原地反转</strong>后半段链表。
-3. 双指针从头和反转后的尾向中间比较。
-4. （良好实践）将后半段还原。</p>
-<p><strong>不变量</strong>（找中点）：每次迭代后 <code>fast</code> 至 <code>slow</code> 的距离恰为 <code>slow</code> 到表头的距离。当 <code>fast</code> 触尾时，<code>slow</code> 在中位（偶数长度下指右半段头）。</p>
-<p><strong>不变量</strong>（反转）：每次循环结束后，<code>prev</code> 指向已反转部分的头。<strong>正确性</strong>：经典三指针交换，归纳显然。</p>
+<p>先确认条件本身要求什么：验证 <span class="arithmatex">\(a_i = a_{n+1-i}\)</span>，需要在访问 <span class="arithmatex">\(a_i\)</span> 的同时访问 <span class="arithmatex">\(a_{n+1-i}\)</span>。单链表无法直接做到——这正是上一节指出的障碍。三个解法，是对"如何让两端同时可达"的三种回答，空间代价依次降低。</p>
+<p><strong>解法 A：复制到数组——把随机访问买回来</strong></p>
+<p>最直接的修复：先一趟遍历把值抄进数组 <code>vals</code>，此后下标 <span class="arithmatex">\(i\)</span> 与 <span class="arithmatex">\(n+1-i\)</span> 都是 <span class="arithmatex">\(O(1)\)</span> 访问，套用数组上的相向双指针即可。</p>
+<ul>
+<li><span class="arithmatex">\(O(n)\)</span> 时间，<span class="arithmatex">\(O(n)\)</span> 空间。</li>
+<li>直接，但用 <span class="arithmatex">\(O(n)\)</span> 辅助空间换回了被拿走的随机访问能力。</li>
+</ul>
+<p>这能通过，但额外空间正比于 <span class="arithmatex">\(n\)</span>。能否不复制整条链？</p>
+<p><strong>解法 B：栈——只暂存前半段，让顺序自己反过来</strong></p>
+<p>回到形式化：检验第 <span class="arithmatex">\(k\)</span> 对时，我们需要"前数第 <span class="arithmatex">\(k\)</span> 个"<span class="arithmatex">\(a_k\)</span> 与"后数第 <span class="arithmatex">\(k\)</span> 个"<span class="arithmatex">\(a_{n+1-k}\)</span>。沿 <code>next</code> 单向遍历时，<span class="arithmatex">\(a_{n+1-k}\)</span> 是自然按 <span class="arithmatex">\(k=1,2,\dots\)</span> 顺序冒出来的（走到后半段时先遇到 <span class="arithmatex">\(a_{\lfloor n/2\rfloor+1}\)</span>，即 <span class="arithmatex">\(k\)</span> 最大的那个对端，再依次往回数）。难办的是 <span class="arithmatex">\(a_k\)</span>：它在前半段，已经走过去了。</p>
+<p>要在到达后半段时还能取到前半段的值，且取用顺序恰与遍历相反（后半段先冒出的是 <span class="arithmatex">\(k\)</span> 大的对端，需要配前半段 <span class="arithmatex">\(k\)</span> 大的、即最靠近中点的那个），我们需要一种"后进先出"的暂存。栈正是如此：遍历前半段时把每个值压栈，到达后半段时栈顶恰好是离中点最近的前半段元素，正好与此刻冒出的后半段元素配对。</p>
+<ul>
+<li>慢/快指针同步推进，慢指针每到一个节点就把值压栈；快指针每步走两格，触尾时慢指针在中点，栈中含整个前半段。</li>
+<li>此后慢指针继续单向前进遍历后半段，逐个与 <code>pop()</code> 出的栈顶比较。</li>
+<li><span class="arithmatex">\(O(n)\)</span> 时间，<span class="arithmatex">\(O(n)\)</span> 空间（栈存约 <span class="arithmatex">\(n/2\)</span> 个值）。</li>
+</ul>
+<p>栈把"前半段反序读取"这件事办成了，但代价仍是 <span class="arithmatex">\(O(n)\)</span> 空间。注意到一个事实：栈存的无非是前半段的值，按反序读出。如果我们能让链表自己以反序排列后半段，就不必再借外部容器——这把我们推向 follow-up。</p>
+<p><strong>解法 C（follow-up，<span class="arithmatex">\(O(1)\)</span> 空间）：原地反转后半段，再相向比较</strong></p>
+<p>解法 B 用栈实现"反序读取"。但"反序"也可以直接做在链表结构上：若把<strong>后半段链表原地反转</strong>，则后半段的第一个节点变成 <span class="arithmatex">\(a_n\)</span>，第二个变成 <span class="arithmatex">\(a_{n-1}\)</span>，依此类推。此时从前半段头 <span class="arithmatex">\(a_1\)</span> 与反转后的后半段头 <span class="arithmatex">\(a_n\)</span> 同时出发，各自沿 <code>next</code> 前进，第 <span class="arithmatex">\(k\)</span> 步比较的恰是 <span class="arithmatex">\(a_k\)</span> 与 <span class="arithmatex">\(a_{n+1-k}\)</span>——正是形式化要求的那一对。两个指针都只向前走，无需随机访问，也无需外部容器。</p>
+<p>由此推出四步，每步都对应上面的一个需求：</p>
+<ol>
+<li><strong>找中点</strong>：要"只反转后半段"，先得知道中点在哪。慢指针每步 1 格、快指针每步 2 格，快指针触尾时慢指针停在中点（推导见下）。</li>
+<li><strong>原地反转后半段</strong>：把中点之后的链表就地反转，使其头节点变为 <span class="arithmatex">\(a_n\)</span>。这一步消除了对栈的需求。</li>
+<li><strong>相向比较</strong>：前半段头与反转后的后半段头同步前进，逐对比较 <span class="arithmatex">\(a_k\)</span> 与 <span class="arithmatex">\(a_{n+1-k}\)</span>，任一对不等即返回 <code>False</code>。</li>
+<li><strong>（工程礼仪）还原</strong>：再次反转后半段，把链表恢复原状。题目未强制，但修改入参后还原是良好实践。</li>
+</ol>
+<p><strong>为什么找中点用 2:1 速度——直觉</strong>：快指针速度是慢指针的两倍，所以快指针走完整条链（约 <span class="arithmatex">\(n\)</span> 步）时，慢指针恰好走了一半（约 <span class="arithmatex">\(n/2\)</span> 步），落在中点。这就是"快指针触尾即慢指针到中点"的来由。</p>
+<p><strong>不变量（找中点）——直觉的精确化</strong>：两指针同时从表头出发，每轮慢指针 <span class="arithmatex">\(+1\)</span>、快指针 <span class="arithmatex">\(+2\)</span>。对此可归纳：第 <span class="arithmatex">\(k\)</span> 轮结束后慢指针在下标 <span class="arithmatex">\(k\)</span>、快指针在下标 <span class="arithmatex">\(2k\)</span>，于是"慢指针到快指针的距离"<span class="arithmatex">\(=k=\)</span>"慢指针到表头的距离"。当快指针触尾（<code>fast</code> 或 <code>fast.next</code> 为空）时，慢指针正处中位。</p>
+<p><strong>奇偶两种情形下中点定义均满足</strong>（这正是 2:1 模式被选中的原因）：以 <code>while fast and fast.next</code> 为终止条件手工模拟，奇数 <span class="arithmatex">\(n=5\)</span> 时慢指针停在正中央下标 <span class="arithmatex">\(2\)</span>（中央元素自配对，可跳过）；偶数 <span class="arithmatex">\(n=4\)</span> 时慢指针停在右半段头下标 <span class="arithmatex">\(2\)</span>。两种情形都恰好让"待反转的后半段"从慢指针处或其后开始，无需对奇偶分支特判。</p>
+<p><strong>不变量（反转）——一句归纳</strong>：经典三指针反转，循环每轮把当前节点接到 <code>prev</code> 之前。第 <span class="arithmatex">\(k\)</span> 轮开始时 <code>prev</code> 指向已反转的前 <span class="arithmatex">\(k-1\)</span> 个节点之头；本轮指针交换后，<code>prev</code> 前移到新接入的第 <span class="arithmatex">\(k\)</span> 个节点，不变量保持。循环结束时 <code>prev</code> 即反转段之头，也就是原后半段的末节点 <span class="arithmatex">\(a_n\)</span>。</p>
+<p>至此三个解法连成一条线：障碍是单链表的单向访问；解法 A 用 <span class="arithmatex">\(O(n)\)</span> 空间把随机访问买回来；解法 B 注意到只需前半段反序读取，用栈把空间需求减半量级却仍是 <span class="arithmatex">\(O(n)\)</span>；解法 C 把"反序"直接做进链表结构，连栈也省去，落到 <span class="arithmatex">\(O(1)\)</span> 空间。</p>
 <h2 id="_4">复杂度<a class="headerlink" href="#_4" title="Permanent link">#</a></h2>
 <ul>
 <li>A/B：<span class="arithmatex">\(O(n)\)</span> 时间，<span class="arithmatex">\(O(n)\)</span> 空间。</li>
@@ -22492,10 +22544,10 @@
 </ul>
 <h2 id="_5">陷阱<a class="headerlink" href="#_5" title="Permanent link">#</a></h2>
 <ul>
-<li>单节点（<span class="arithmatex">\(n=1\)</span>）应返回 True。</li>
-<li>偶数 vs 奇数长度的中点定义稍差，但 fast/slow 模式天然兼容：奇数时 <code>slow</code> 落中央可跳过；偶数时 <code>slow</code> 落右半段头。</li>
-<li>改动链表后<strong>最好恢复</strong>（题目未强制但是工程礼仪）。</li>
-<li>递归解法（每个值与"全局头指针"比较）耗 <span class="arithmatex">\(O(n)\)</span> 栈空间，长链表可能爆栈。</li>
+<li>单节点（<span class="arithmatex">\(n=1\)</span>）应返回 <code>True</code>：循环一次都不进，前后半段比较为空，天然成立。</li>
+<li>偶数 vs 奇数长度的中点落点不同，但慢/快指针的终止条件在两种情形下均满足中点定义（见上节手工模拟），故无需为奇偶分别写分支。</li>
+<li>改动链表后<strong>最好恢复</strong>（题目未强制，但修改入参属工程礼仪）。</li>
+<li>递归解法（每个值与"全局头指针"比较）耗 <span class="arithmatex">\(O(n)\)</span> 栈空间，长链表（<span class="arithmatex">\(10^5\)</span> 节点）可能爆栈——它本质上是用调用栈替代解法 B 的显式栈，并未省下空间。</li>
 </ul>
 <h2 id="_6">相关题目<a class="headerlink" href="#_6" title="Permanent link">#</a></h2>
 <ul>
@@ -22506,7 +22558,7 @@
 </ul>
 <h2 id="further-reading">Further Reading<a class="headerlink" href="#further-reading" title="Permanent link">#</a></h2>
 <ul>
-<li>Sedgewick, <em>Algorithms</em> (4e), §1.3 — 单链表基本操作，含反转和找中点的 Tortoise &amp; Hare 模式。</li>
+<li>Sedgewick, <em>Algorithms</em> (4e), §1.3 — 单链表基本操作，含反转与用两速指针（步长 2:1）定位中点的方法。</li>
 <li>Knuth, <em>TAOCP</em> Vol. 1, §2.2.3 — 单链表原地操作的经典讨论。</li>
 </ul>
 
@@ -22614,6 +22666,8 @@
         <script src="../../../js/mathjax/tex-mml-chtml.js"></script>
       
         <script src="../../../js/mermaid.min.js"></script>
+      
+        <script src="../../../js/featured.js"></script>
       
     
   </body>

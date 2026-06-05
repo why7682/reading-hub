@@ -1466,6 +1466,8 @@
       
         
       
+        
+      
     
     
     
@@ -1521,6 +1523,34 @@
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../featured/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ⭐ Featured（已验证）
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
               
             
               
@@ -1610,10 +1640,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_4" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
         
           
-          <label class="md-nav__link" for="__nav_4_4" id="__nav_4_4_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_5" id="__nav_4_5_label" tabindex="">
             
   
   
@@ -1631,8 +1661,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_4_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_4">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_5">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1915,7 +1945,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -1937,14 +1967,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_4_5" id="__nav_4_5_label" tabindex="">
+              <label class="md-nav__link " for="__nav_4_6" id="__nav_4_6_label" tabindex="">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_5">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_6">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -5321,10 +5351,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_7" checked>
         
           
-          <label class="md-nav__link" for="__nav_4_6" id="__nav_4_6_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_7" id="__nav_4_7_label" tabindex="">
             
   
   
@@ -5342,8 +5372,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_4_6">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_7_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4_7">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -22467,18 +22497,23 @@
 <h2 id="problem">Problem<a class="headerlink" href="#problem" title="Permanent link">#</a></h2>
 <p>字母串 <code>s</code> 替换 <code>'a'..'z'</code> → <code>1..26</code>，拼接成数字串，转 int；然后做 <span class="arithmatex">\(k\)</span> 次"位和"变换。返回最终值。约束 <span class="arithmatex">\(1 \le |s| \le 100\)</span>，<span class="arithmatex">\(1 \le k \le 10\)</span>。</p>
 <h2 id="background">背景 (Background)<a class="headerlink" href="#background" title="Permanent link">#</a></h2>
-<p>本题是 "<strong>digital root</strong> + 字母替换" 的复合：digital root 收敛非常快（任何 <span class="arithmatex">\(N\)</span> 在 1 次位和后 <span class="arithmatex">\(\le 9 \cdot \lceil \log_{10} N \rceil\)</span>，每次按 <span class="arithmatex">\(\log\)</span> 缩小），所以 <span class="arithmatex">\(k \le 10\)</span> 远超必要——通常 2-3 次就稳定为单位数（除非 <span class="arithmatex">\(k\)</span> 强制多做几次后停止）。</p>
-<p>数论上，<span class="arithmatex">\(N\)</span> 的位和 <span class="arithmatex">\(\equiv N \pmod 9\)</span>，所以 digital root（无限迭代位和的极限）有闭式 <span class="arithmatex">\(= 1 + ((N - 1) \bmod 9)\)</span> 对 <span class="arithmatex">\(N \ge 1\)</span>。本题 <span class="arithmatex">\(k\)</span> 有限，不能直接用闭式。</p>
+<p>题目把两件事叠在一起：先把字母翻译成数字并拼接，再反复求十进制位和。直接照字面模拟即可——但这样要先拼出一个最长 200 位的整数。值得注意的不是模拟本身，而是位和与"拼接"之间的一条结构性关系：拼接不改变位和的总量。抓住这一点，第一步的拼接就完全可以跳过。整页的主线就是把这条关系推出来，并用它把"拼接 + 求位和"折叠成逐字母直接累加。</p>
+<p>数论上还有一条相关事实：<span class="arithmatex">\(N\)</span> 的位和 <span class="arithmatex">\(\equiv N \pmod 9\)</span>，因此无限迭代位和的极限（digital root）有闭式 <span class="arithmatex">\(1 + ((N-1) \bmod 9)\)</span>（对 <span class="arithmatex">\(N \ge 1\)</span>）。但本题 <span class="arithmatex">\(k\)</span> 有限，不能直接跳到极限，所以下面用的是位和的加性，而非这条闭式——后者留作延伸阅读。</p>
 <h2 id="formulation">形式化 (Formulation)<a class="headerlink" href="#formulation" title="Permanent link">#</a></h2>
-<p>设 $T(x) = $ 十进制各位之和。$N_0 = $ 拼接替换后的整数。返回 <span class="arithmatex">\(T^k(N_0)\)</span>（<span class="arithmatex">\(T\)</span> 应用 <span class="arithmatex">\(k\)</span> 次）。</p>
+<p>设 <span class="arithmatex">\(T(x)\)</span> 为正整数 <span class="arithmatex">\(x\)</span> 的十进制各位之和，即若 <span class="arithmatex">\(x = \sum_i d_i 10^i\)</span>（<span class="arithmatex">\(d_i \in \{0,\dots,9\}\)</span>）则 <span class="arithmatex">\(T(x) = \sum_i d_i\)</span>。记号 <span class="arithmatex">\(T^k\)</span> 表示把 <span class="arithmatex">\(T\)</span> 连续作用 <span class="arithmatex">\(k\)</span> 次：<span class="arithmatex">\(T^1(x) = T(x)\)</span>，<span class="arithmatex">\(T^2(x) = T(T(x))\)</span>，依此类推（这是函数复合，不是幂）。</p>
+<p>设 <span class="arithmatex">\(N_0\)</span> 为把每个字母替换为其序号 <span class="arithmatex">\(v \in \{1,\dots,26\}\)</span> 后，将这些十进制表示拼接而成的整数。题目要求返回</p>
+<div class="arithmatex">\[T^k(N_0).\]</div>
 <h2 id="approach">数据结构 / 想法 (Approach)<a class="headerlink" href="#approach" title="Permanent link">#</a></h2>
-<p><strong>关键优化</strong>：第一步不必真拼成大整数再转——直接累加每个字母对应的两个数字（10 位 + 个位）。
-- <code>'a'..'i'</code> 是 1..9 → 单数字。
-- <code>'j'..'z'</code> 是 10..26 → 两数字（十位 1 或 2，个位 0..6）。</p>
-<p>之后做 <span class="arithmatex">\(k\)</span> 次普通位和即可。</p>
+<p><strong>朴素做法（先把它写出来）</strong>。照字面走四步：(1) 把每个字母 <code>ch</code> 映射到 <span class="arithmatex">\(v = \text{ord(ch)} - \text{ord('a')} + 1 \in \{1,\dots,26\}\)</span>；(2) 把所有 <span class="arithmatex">\(v\)</span> 当字符串拼接；(3) 转成一个大整数 <span class="arithmatex">\(N_0\)</span>；(4) 对 <span class="arithmatex">\(N_0\)</span> 做 <span class="arithmatex">\(k\)</span> 次位和。这能跑：<span class="arithmatex">\(|s| \le 100\)</span>，拼出的串最长 200 位，Python 大整数无压力。</p>
+<p><strong>它哪里多余</strong>。第 (4) 步的第一次位和 <span class="arithmatex">\(T(N_0)\)</span>，要对一个 200 位的数逐位相加。但这个数的每一位，无非来自某个 <span class="arithmatex">\(v\)</span> 的某一位——拼接只是把各个 <span class="arithmatex">\(v\)</span> 的数字排在一起，并没有产生新的数字。于是第一次位和其实是把所有 <span class="arithmatex">\(v\)</span> 的位和加起来。第 (2)(3) 步先把它们拼成大整数、再拆开求和，纯属绕路。</p>
+<p><strong>为什么拼接不改变位和</strong>。直观上，<span class="arithmatex">\(T\)</span> 只数"每一位是几"，不关心这一位站在第几位（权重 <span class="arithmatex">\(10^i\)</span>）。把 <span class="arithmatex">\(b\)</span> 接在 <span class="arithmatex">\(a\)</span> 后面，等于把 <span class="arithmatex">\(a\)</span> 的数字整体左移若干位，再叠上 <span class="arithmatex">\(b\)</span> 的数字；左移改变的是位置权重，而 <span class="arithmatex">\(T\)</span> 对权重无感，所以总位和不变。形式化即位和对拼接的加性：</p>
+<div class="arithmatex">\[T(a \cdot 10^m + b) = T(a) + T(b), \qquad 0 \le b &lt; 10^m. \tag{1}\]</div>
+<p>证明只需注意 <span class="arithmatex">\(a \cdot 10^m + b\)</span> 的低 <span class="arithmatex">\(m\)</span> 位恰好是 <span class="arithmatex">\(b\)</span>（无进位，因为 <span class="arithmatex">\(b &lt; 10^m\)</span>），高位恰好是 <span class="arithmatex">\(a\)</span> 的数字，两段数字互不重叠，逐位相加即得 (1)。把 (1) 反复用在多个字母的拼接上，第一次位和就等于各字母序号位和之和：</p>
+<div class="arithmatex">\[T(N_0) = \sum_{\text{ch} \in s} T(v_{\text{ch}}). \tag{2}\]</div>
+<p><strong>由 (2) 导出做法</strong>。第 (2)(3) 步可删去：直接对每个字母累加 <span class="arithmatex">\(T(v)\)</span>，得到的正是 <span class="arithmatex">\(T(N_0)\)</span>，也就是第 1 次变换的结果。<span class="arithmatex">\(v &lt; 10\)</span>（即 <code>'a'..'i'</code>）时 <span class="arithmatex">\(T(v) = v\)</span>；<span class="arithmatex">\(v \ge 10\)</span>（即 <code>'j'..'z'</code>）时 <span class="arithmatex">\(T(v) = v // 10 + v \% 10\)</span>。第一次变换既已并入累加，剩下只需再做 <span class="arithmatex">\(k - 1\)</span> 次普通位和。</p>
 <div class="language-python highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">Solution</span><span class="p">:</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">getLucky</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">s</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">k</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
-        <span class="c1"># 第一次转换 + 位和合并：直接对每个字母的两个数字累加</span>
+        <span class="c1"># 第一次变换：用式 (2)，对每个字母直接累加 T(v)，等于 T(N0)</span>
         <span class="n">total</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="k">for</span> <span class="n">ch</span> <span class="ow">in</span> <span class="n">s</span><span class="p">:</span>
             <span class="n">v</span> <span class="o">=</span> <span class="nb">ord</span><span class="p">(</span><span class="n">ch</span><span class="p">)</span> <span class="o">-</span> <span class="nb">ord</span><span class="p">(</span><span class="s1">&#39;a&#39;</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span>
@@ -22486,16 +22521,16 @@
                 <span class="n">total</span> <span class="o">+=</span> <span class="n">v</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">total</span> <span class="o">+=</span> <span class="n">v</span> <span class="o">//</span> <span class="mi">10</span> <span class="o">+</span> <span class="n">v</span> <span class="o">%</span> <span class="mi">10</span>
-        <span class="c1"># 已经做了 1 次 transform</span>
+        <span class="c1"># 第一次变换已完成，再做 k-1 次位和</span>
         <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">k</span> <span class="o">-</span> <span class="mi">1</span><span class="p">):</span>
             <span class="n">total</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">d</span><span class="p">)</span> <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="nb">str</span><span class="p">(</span><span class="n">total</span><span class="p">))</span>
         <span class="k">return</span> <span class="n">total</span>
 </code></pre></div>
-<p><strong>为什么把"拼字符串 + 位和"合并为直接累加</strong>：位和 <span class="arithmatex">\(T\)</span> 满足 <span class="arithmatex">\(T(a \cdot 10^k + b) = T(a) + T(b)\)</span>（位和对拼接是和加性），所以无论先拼后求和还是边拼边求和，结果一致。</p>
-<p>Trace 例 1 <code>s="iiii", k=1</code>：每个 'i' = 9 → 4 * 9 = 36。<span class="arithmatex">\(k=1\)</span> 已包含在第一步——返回 36 ✓
+<p><strong><span class="arithmatex">\(k\)</span> 为何远够用</strong>。把式 (2) 的界拆出来看收敛：每个字母序号 <span class="arithmatex">\(v \le 26\)</span>，其位和 <span class="arithmatex">\(T(v) \le 10\)</span>（最大在 <span class="arithmatex">\(v=19\)</span>，<span class="arithmatex">\(1+9=10\)</span>；两位数最多两位，不可能到 18）。故 <span class="arithmatex">\(|s| \le 100\)</span> 时第一次后 <span class="arithmatex">\(\text{total} = T(N_0) \le 100 \times 10 = 1000\)</span>。再做一次位和，<span class="arithmatex">\(\le 1000\)</span> 的数位和 <span class="arithmatex">\(\le 1 + 9 + 9 + 9 = 28\)</span>（其实四位数里 <span class="arithmatex">\(9999\)</span> 才取 36，<span class="arithmatex">\(\le 1000\)</span> 时上界更小）；第三次后必落到一位数 <span class="arithmatex">\(\le 9\)</span>，此后稳定。也就是说至多 2-3 次就到不动点，<span class="arithmatex">\(k \le 10\)</span> 绰绰有余——多出来的迭代只是在单位数上空转。</p>
+<p>Trace 例 1 <code>s="iiii", k=1</code>：每个 'i' = 9 → total = 4 × 9 = 36。<span class="arithmatex">\(k=1\)</span> 时循环执行 0 次，返回 36 ✓
 Trace 例 2 <code>s="leetcode", k=2</code>：
 - l=12→1+2=3, e=5, e=5, t=20→2, c=3, o=15→1+5=6, d=4, e=5
-- total = 3+5+5+2+3+6+4+5 = 33（这是第 1 次 transform 后的值，与原文一致）
+- total = 3+5+5+2+3+6+4+5 = 33（即 <span class="arithmatex">\(T(N_0)\)</span>，第 1 次变换后的值，与原文一致）
 - 剩 k-1=1 次：33 → 3+3 = 6 ✓
 Trace 例 3 <code>s="zbax", k=2</code>：
 - z=26→8, b=2, a=1, x=24→6
@@ -22503,21 +22538,21 @@ Trace 例 3 <code>s="zbax", k=2</code>：
 - k-1=1 次：17 → 1+7 = 8 ✓</p>
 <h2 id="complexity">复杂度 (Complexity)<a class="headerlink" href="#complexity" title="Permanent link">#</a></h2>
 <ul>
-<li>Time: <span class="arithmatex">\(O(|s| + k \log_{10} \text{total})\)</span>。<span class="arithmatex">\(|s| \le 100\)</span>，total 第一次后 <span class="arithmatex">\(\le 100 \cdot 18 = 1800\)</span>，之后每次缩为单位数级。整体 <span class="arithmatex">\(O(|s|)\)</span> 主导。</li>
-<li>Space: <span class="arithmatex">\(O(1)\)</span>。</li>
+<li>Time: <span class="arithmatex">\(O(|s| + k \log_{10} \text{total})\)</span>。<span class="arithmatex">\(|s| \le 100\)</span>，由式 (2) 的界 total 第一次后 <span class="arithmatex">\(\le 100 \times 10 = 1000\)</span>，之后每次缩为单位数级。整体 <span class="arithmatex">\(O(|s|)\)</span> 主导。</li>
+<li>Space: <span class="arithmatex">\(O(1)\)</span>（一个整数累加器，加上长度有界的临时 <code>str(total)</code>）。</li>
 </ul>
 <h2 id="pitfalls">陷阱 (Pitfalls)<a class="headerlink" href="#pitfalls" title="Permanent link">#</a></h2>
 <ul>
-<li><strong>位和与拼接的关系</strong>：<span class="arithmatex">\(T(\text{concat}(a, b)) = T(a) + T(b)\)</span>，所以可以单字母分开算。</li>
-<li><strong>不要构造大整数字符串</strong>——<span class="arithmatex">\(|s| = 100\)</span> 时长度可达 200，转 int 也行（Python 无所谓）但没必要。</li>
-<li><strong><span class="arithmatex">\(k = 1\)</span></strong>：第一次 transform 已完成，循环执行 0 次直接返回。</li>
+<li><strong>加性 (1) 是整页的支点</strong>：它让"拼接 + 位和"折叠为式 (2) 的逐字母累加。成立的前提是无进位（拼接段不重叠），这正是 <span class="arithmatex">\(b &lt; 10^m\)</span> 保证的。</li>
+<li><strong>不要构造大整数字符串</strong>——<span class="arithmatex">\(|s| = 100\)</span> 时长度可达 200。Python 转 int 也能跑，但由 (2) 完全没必要。</li>
+<li><strong><span class="arithmatex">\(k = 1\)</span></strong>：第一次变换已并入累加，循环执行 0 次，直接返回 total。</li>
 </ul>
 <h2 id="related">相关题目 (Related)<a class="headerlink" href="#related" title="Permanent link">#</a></h2>
 <ul>
 <li><a href="../1837_sum-of-digits-in-base-k/">#1837. Sum of Digits in Base K</a> — 同 batch，进制位和。</li>
 <li><a href="../3079_find-the-sum-of-encrypted-integers/">#3079. Find the Sum of Encrypted Integers</a> — 数字操作。</li>
 <li><code>#258. Add Digits (off-wiki)</code> — Digital root 经典题。</li>
-<li><code>#202. Happy Number (off-wiki)</code> — 反复位平方和收敛。</li>
+<li><a href="../0202_happy-number/">#202. Happy Number</a> — 反复位平方和收敛。</li>
 </ul>
 <h2 id="further-reading">Further Reading<a class="headerlink" href="#further-reading" title="Permanent link">#</a></h2>
 <ul>
@@ -22628,6 +22663,8 @@ Trace 例 3 <code>s="zbax", k=2</code>：
         <script src="../../../js/mathjax/tex-mml-chtml.js"></script>
       
         <script src="../../../js/mermaid.min.js"></script>
+      
+        <script src="../../../js/featured.js"></script>
       
     
   </body>

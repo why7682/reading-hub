@@ -1466,6 +1466,8 @@
       
         
       
+        
+      
     
     
     
@@ -1521,6 +1523,34 @@
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../featured/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ⭐ Featured（已验证）
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
               
             
               
@@ -1610,10 +1640,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_4" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
         
           
-          <label class="md-nav__link" for="__nav_4_4" id="__nav_4_4_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_5" id="__nav_4_5_label" tabindex="">
             
   
   
@@ -1631,8 +1661,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_4_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_4">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_5">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1915,7 +1945,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -1937,14 +1967,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_4_5" id="__nav_4_5_label" tabindex="">
+              <label class="md-nav__link " for="__nav_4_6" id="__nav_4_6_label" tabindex="">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_5">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_6">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -5321,10 +5351,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_7" checked>
         
           
-          <label class="md-nav__link" for="__nav_4_6" id="__nav_4_6_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_7" id="__nav_4_7_label" tabindex="">
             
   
   
@@ -5342,8 +5372,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_4_6">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_7_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4_7">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -22467,19 +22497,42 @@
 <h2 id="problem">Problem<a class="headerlink" href="#problem" title="Permanent link">#</a></h2>
 <p>给字符串 <code>word</code>（只含 <code>'a','e','i','o','u'</code>），求最长 <strong>beautiful 子串</strong>：每个元音至少出现一次，且字母按 <code>a &lt; e &lt; i &lt; o &lt; u</code> 字母序非严格递增。约束 <span class="arithmatex">\(1 \le |word| \le 5 \times 10^5\)</span>。</p>
 <h2 id="background">背景 (Background)<a class="headerlink" href="#background" title="Permanent link">#</a></h2>
-<p>本题可视为<strong>有限状态自动机 (DFA) 上的最长匹配段</strong>：构造一条 5 状态链 <span class="arithmatex">\(a \to e \to i \to o \to u\)</span>，每个状态自环（允许重复同一元音），状态转移只有"留在原元音"或"前进到下一个元音"两种合法动作。在线扫描过程是 DFA 接受语言 <span class="arithmatex">\(a^+ e^+ i^+ o^+ u^+\)</span> 的所有最长后缀匹配，与正则表达式直接对应。</p>
-<p>更一般地，这是"在线监控正则匹配"框架下的最小实例；同一框架可扩展到 KMP 风格的部分匹配恢复。</p>
+<p>先看这个串里 beautiful 子串长什么样。取 <code>"aeeeiiooou"</code>，它合法：元音序列从不回退，且五个元音都出现了。任意改动其中一处使序列回退，例如 <code>"aeeeaiioou"</code> 中间插了一个 <code>'a'</code>，合法性立刻被破坏——<code>'a'</code> 之前已经见过 <code>'e'</code>，回退到 <code>'a'</code> 意味着这个位置不可能属于任何以正确顺序排列的子串。</p>
+<p>这给出两个必要观察，构成后续全部推导的出发点：</p>
+<ol>
+<li><strong>任何回退都是不可修复的断裂</strong>。若 <code>word[i] &lt; word[i-1]</code>，则位置 <span class="arithmatex">\(i\)</span> 与之前的字符不能同处一个非递减段；<span class="arithmatex">\(i\)</span> 只能作为某个新段的起点。</li>
+<li><strong>段的合法起点只能是 <code>'a'</code></strong>。一个 beautiful 子串必须包含 <code>'a'</code>，而 <code>'a'</code> 是序中最小元音，它在段内不可能出现在任何其它元音之后。故一个段若想最终凑齐五元音，它的第一个字符必须是 <code>'a'</code>。</li>
+</ol>
+<p>朴素做法直接照搬定义：枚举每个起点 <span class="arithmatex">\(l\)</span>，向右扩展直到序列回退或扫到串尾，沿途检查是否集齐五元音。这是 <span class="arithmatex">\(O(n^2)\)</span>，且做了大量重复工作——相邻起点扩展出的段高度重叠，集齐五元音的判定被反复重算。下面的任务是把这份重复压成单遍扫描。</p>
 <h2 id="formulation">形式化 (Formulation)<a class="headerlink" href="#formulation" title="Permanent link">#</a></h2>
+<p>直觉先行：一个段合法，当且仅当它在元音序上<strong>只许持平或前进、绝不后退</strong>，并且<strong>走完整条 <code>a → u</code> 链</strong>。两个条件缺一不可——只满足非递减的 <code>"aei"</code> 没集齐元音；只满足覆盖却允许回退的串根本不存在非递减排列。二者的合取恰好刻画 beautiful 子串。</p>
 <p>设 <span class="arithmatex">\(\Sigma = \{a, e, i, o, u\}\)</span> 有自然序 <span class="arithmatex">\(a &lt; e &lt; i &lt; o &lt; u\)</span>。求 <span class="arithmatex">\(\max(r - l + 1)\)</span> 使得 <span class="arithmatex">\(word[l..r]\)</span> 满足
-- <span class="arithmatex">\(\forall l \le i &lt; r:\; word[i] \le word[i+1]\)</span>（非严格递增），且
-- <span class="arithmatex">\(\{word[i] : l \le i \le r\} = \Sigma\)</span>（5 个元音都出现）。</p>
+- <span class="arithmatex">\(\forall\, l \le j &lt; r:\; word[j] \le word[j+1]\)</span>（非严格递增），且
+- <span class="arithmatex">\(\{word[j] : l \le j \le r\} = \Sigma\)</span>（5 个元音都出现）。</p>
+<blockquote>
+<p>与背景中 DFA 视角的等价：这两个条件恰好定义正则语言 <span class="arithmatex">\(a^+ e^+ i^+ o^+ u^+\)</span>。已对所有长度 <span class="arithmatex">\(\le 7\)</span> 的 <span class="arithmatex">\(\Sigma\)</span> 串穷举验证，"非严格递增 ∧ 五元音齐全"与该正则语言逐串相等。本题即在线扫描中求该语言的最长后缀匹配。</p>
+</blockquote>
+<p>这两个条件是后续算法的<strong>脊柱</strong>：每一步的状态更新都从"当前字符使哪个条件满足或破坏"直接推出，而非另起一套案例分析。</p>
 <h2 id="approach">数据结构 / 想法 (Approach)<a class="headerlink" href="#approach" title="Permanent link">#</a></h2>
-<p><strong>一遍扫描 + 状态跟踪</strong>：维护 <code>length</code>（当前段长）与 <code>unique</code>（当前段已见的不同元音数）。</p>
-<p>转移规则（扫到 <code>word[i]</code>，与 <code>word[i-1]</code> 对比）：
-- 若 <code>word[i] == word[i-1]</code>：续段，<code>length += 1</code>。
-- 若 <code>word[i] &gt; word[i-1]</code>（按 a&lt;e&lt;i&lt;o&lt;u）：续段且解锁新元音，<code>length += 1; unique += 1</code>。
-- 若 <code>word[i] &lt; word[i-1]</code>：段中断，重新开段（只有当 <code>word[i] == 'a'</code> 才可能开头有效），<code>length = 1; unique = 1</code>。</p>
-<p>只有当 <code>unique == 5</code> 时段才是 beautiful，记录答案。</p>
+<p>朴素做法重复在哪？相邻起点扩展出的段是嵌套的，集齐五元音的判定被反复重算。要压成单遍，需要回答：固定以位置 <span class="arithmatex">\(i\)</span> 结尾，跟踪"以某个 <code>'a'</code> 起始、至此一直非递减的最长合法前缀"需要多少状态？</p>
+<p>答案是两个标量，且每个都直接对应一个形式化条件：</p>
+<ul>
+<li><code>length</code> —— 该前缀的长度，对应目标量 <span class="arithmatex">\(r - l + 1\)</span>（这里 <span class="arithmatex">\(r = i\)</span>，<span class="arithmatex">\(l\)</span> 是当前段的隐式起点）。</li>
+<li><code>unique</code> —— 该前缀中不同元音数，是覆盖条件 <span class="arithmatex">\(\{word[j]\} = \Sigma\)</span> 的<strong>充分统计量</strong>。因为非递减约束保证一旦见过较大元音就不会再退回较小元音，所以"集齐五元音"等价于 <code>unique == 5</code>，无需记录具体见过哪些。</li>
+</ul>
+<p>段的左端点不必显式存储：它由"回退即重置"隐式维护。每次 <code>word[i] &lt; word[i-1]</code> 触发的重置，等价于把左边界跳到当前 <code>'a'</code>。</p>
+<p><strong>从两个条件直接推出三种转移</strong>（扫到 <code>word[i]</code>，与 <code>word[i-1]</code> 对比）：</p>
+<ul>
+<li><code>word[i] == word[i-1]</code>：满足非递减，且不引入新元音 → 续段，<code>length += 1</code>，<code>unique</code> 不变。</li>
+<li><code>word[i] &gt; word[i-1]</code>：满足非递减，且解锁一个更大的新元音 → 续段，<code>length += 1; unique += 1</code>。</li>
+<li><code>word[i] &lt; word[i-1]</code>：<strong>破坏</strong>非递减条件 → 当前段无法延伸到 <span class="arithmatex">\(i\)</span>。由背景观察 1，<span class="arithmatex">\(i\)</span> 只能开新段；由观察 2，仅当 <code>word[i] == 'a'</code> 才是合法起点，否则没有活跃段。</li>
+</ul>
+<p>三种情形穷尽了 <span class="arithmatex">\(i\)</span> 处所有可能，因为元音序是全序，两字符之间只有 <code>&lt;</code>、<code>=</code>、<code>&gt;</code> 三种关系，分别对应破坏、持平、前进。</p>
+<p><strong>不变量</strong>（先于代码给出，作为代码的规格）。令 <span class="arithmatex">\(P(i)\)</span> 为谓词：扫完位置 <span class="arithmatex">\(i\)</span> 后，</p>
+<div class="arithmatex">\[
+\texttt{length} = \max\{\,r - l + 1 : l \le r = i,\ word[l] = \texttt{'a'},\ word[l..i] \text{ 非严格递增}\,\}
+\]</div>
+<p>（若不存在这样的 <span class="arithmatex">\(l\)</span> 则 <code>length = 0</code>），且 <code>unique</code> <span class="arithmatex">\(= |\{word[j] : l \le j \le i\}|\)</span> 取上述最优 <span class="arithmatex">\(l\)</span>。代码即逐字符维护 <span class="arithmatex">\(P(i)\)</span>；当 <code>unique == 5</code> 时，当前段非递减且五元音齐全，恰是 beautiful，记录长度。</p>
 <div class="language-python highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">Solution</span><span class="p">:</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">longestBeautifulSubstring</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">word</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
         <span class="n">best</span> <span class="o">=</span> <span class="n">length</span> <span class="o">=</span> <span class="n">unique</span> <span class="o">=</span> <span class="mi">0</span>
@@ -22503,30 +22556,34 @@
             <span class="n">prev</span> <span class="o">=</span> <span class="n">ch</span>
         <span class="k">return</span> <span class="n">best</span>
 </code></pre></div>
-<p><strong>不变量</strong>：循环结束于位置 <span class="arithmatex">\(i\)</span> 时，<code>length</code> 表示以 <span class="arithmatex">\(i\)</span> 结尾的、从某个 <code>'a'</code> 起始且至此一直按 a≤e≤i≤o≤u 顺序的最长有效前缀长度；<code>unique</code> 是该前缀中不同元音数。</p>
-<p>Trace 例 2 <code>"aeeeiiiioooauuuaeiou"</code>：
-- 前 14 字符 <code>"aeeeiiiioooauu"</code>: 注意 <code>'a'</code> 出现在 'o' 之后中断段，新段从那个 <code>'a'</code> 开始 → "auuu" 后续遇 'a' 又中断 → 最后 "aeiou" 长 5 → best=5。✓</p>
+<p>代码中 <code>if length &gt; 0</code> 的守卫直接落实"无活跃段时不计长度"：<code>length == 0</code> 表示当前没有以 <code>'a'</code> 起始的合法段，此时即便 <code>ch == prev</code>（如一连串 <code>"eee"</code>）也不能凭空把长度记为 1。</p>
+<p><strong>Trace 例 2</strong> <code>"aeeeiiiioooauuuaeiou"</code>，按不变量 <span class="arithmatex">\(P(i)\)</span> 逐段追踪：</p>
+<ul>
+<li><code>"aeeeiiiioooa"</code>：前 11 字符按 <code>a≤e≤i≤o</code> 一路非递减，扫到 <code>o</code> 时 <code>unique</code> 已到 4；index 11 的 <code>'a'</code> 满足 <code>'a' &lt; 'o'</code>，破坏非递减 → 重置，新段从此 <code>'a'</code> 起，<code>length = 1, unique = 1</code>。</li>
+<li><code>"auuu"</code>：随后 <code>'u' &gt; 'a'</code> 解锁第二个元音（<code>unique = 2</code>），三个 <code>'u'</code> 续段；但该段缺 <code>e,i,o</code>，<code>unique</code> 永不到 5。</li>
+<li>再次遇 <code>'a'</code>（index 15）<code>&lt; 'u'</code> → 重置；末尾 <code>"aeiou"</code> 一路前进，扫到末位 <code>'u'</code>（index 19）时 <code>unique == 5</code>，<code>length == 5</code> → <code>best = 5</code>。✓</li>
+</ul>
 <h2 id="complexity">复杂度 (Complexity)<a class="headerlink" href="#complexity" title="Permanent link">#</a></h2>
 <ul>
-<li>Time: <span class="arithmatex">\(O(|word|)\)</span>，单次扫描。</li>
-<li>Space: <span class="arithmatex">\(O(1)\)</span>。</li>
+<li>Time: <span class="arithmatex">\(O(|word|)\)</span>，单遍扫描，每字符 <span class="arithmatex">\(O(1)\)</span> 工作，无回溯无嵌套循环——这正是把朴素 <span class="arithmatex">\(O(n^2)\)</span> 中重复的覆盖判定压成增量维护后的结果。界对所有输入皆紧。</li>
+<li>Space: <span class="arithmatex">\(O(1)\)</span>，只用 <code>best, length, unique, prev</code> 几个标量。</li>
 </ul>
 <h2 id="pitfalls">陷阱 (Pitfalls)<a class="headerlink" href="#pitfalls" title="Permanent link">#</a></h2>
+<p>这些都是不变量 <span class="arithmatex">\(P(i)\)</span> 在边界处维护正确的直接推论，而非孤立技巧：</p>
 <ul>
-<li><strong>段必须从 <code>'a'</code> 开始</strong>：扫到非 <code>'a'</code> 的字符且没有有效段时，不能简单 <code>length=1</code> 开新段——这会把 <code>"e"</code> 当成长度 1 段，但它不能扩展为以 'a' 开头的 beautiful 串。</li>
-<li><strong><code>ch == prev</code> 且 length==0</strong> 时不要把 length 重置成 1（一连串 <code>"eee"</code> 不应被认为有效）。</li>
-<li><strong>空串结束</strong>：如果整个串没有完整 a→u 链，返回 0。</li>
+<li><strong>段必须从 <code>'a'</code> 开始</strong>：扫到非 <code>'a'</code> 字符且无活跃段时，须置 <code>length = 0</code> 而非 <code>1</code>。若误开长度 1 的段（如把单个 <code>"e"</code> 当段），它永远无法补回 <code>'a'</code>，会让 <span class="arithmatex">\(P(i)\)</span> 的"以 <code>'a'</code> 起始"条件失真。</li>
+<li><strong><code>ch == prev</code> 且 <code>length == 0</code></strong>：<code>if length &gt; 0</code> 守卫不可省。否则 <code>"eee"</code> 会被记为有效段，违反不变量中"该前缀以 <code>'a'</code> 起始"的约束。</li>
+<li><strong>无完整 <code>a → u</code> 链</strong>：整个串若 <code>unique</code> 从未到 5，<code>best</code> 保持初值 0，函数返回 0。</li>
 </ul>
 <h2 id="related">相关题目 (Related)<a class="headerlink" href="#related" title="Permanent link">#</a></h2>
 <ul>
 <li><a href="../2401_longest-nice-subarray/">#2401. Longest Nice Subarray</a> — 同样是"最长满足某局部约束的子串/子数组"。</li>
 <li><code>#992. Subarrays with K Different Integers (off-wiki)</code> — 通用 sliding window 模型。</li>
-<li><code>#1839</code> 的弟妹题 <code>#2062. Count Vowel Substrings of a String (off-wiki)</code> — 计数所有含全部 5 元音的子串。</li>
+<li><code>#1839</code> 的弟妹题 <a href="../2062_count-vowel-substrings-of-a-string/">#2062. Count Vowel Substrings of a String</a> — 计数所有含全部 5 元音的子串。</li>
 </ul>
 <h2 id="further-reading">Further Reading<a class="headerlink" href="#further-reading" title="Permanent link">#</a></h2>
 <ul>
-<li>Hopcroft, Motwani, Ullman. <em>Introduction to Automata Theory</em> (3e), §2 — DFA 与正则语言匹配。</li>
-<li>Wikipedia: en.wikipedia.org/wiki/Sliding_window_protocol — 滑动窗口思想（虽源自网络协议，思维模型相通）。</li>
+<li>Hopcroft, Motwani, Ullman. <em>Introduction to Automata Theory</em> (3e), §2 — DFA 与正则语言匹配；本题语言 <span class="arithmatex">\(a^+ e^+ i^+ o^+ u^+\)</span> 即一条 5 状态链加自环。</li>
 </ul>
 
 
@@ -22633,6 +22690,8 @@
         <script src="../../../js/mathjax/tex-mml-chtml.js"></script>
       
         <script src="../../../js/mermaid.min.js"></script>
+      
+        <script src="../../../js/featured.js"></script>
       
     
   </body>

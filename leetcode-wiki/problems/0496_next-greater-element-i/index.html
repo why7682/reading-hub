@@ -1466,6 +1466,8 @@
       
         
       
+        
+      
     
     
     
@@ -1521,6 +1523,34 @@
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../featured/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ⭐ Featured（已验证）
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
               
             
               
@@ -1610,10 +1640,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_4" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
         
           
-          <label class="md-nav__link" for="__nav_4_4" id="__nav_4_4_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_5" id="__nav_4_5_label" tabindex="">
             
   
   
@@ -1631,8 +1661,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_4_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_4">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_5">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1915,7 +1945,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -1937,14 +1967,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_4_5" id="__nav_4_5_label" tabindex="">
+              <label class="md-nav__link " for="__nav_4_6" id="__nav_4_6_label" tabindex="">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_5">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_6">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -5321,10 +5351,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_7" checked>
         
           
-          <label class="md-nav__link" for="__nav_4_6" id="__nav_4_6_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_7" id="__nav_4_7_label" tabindex="">
             
   
   
@@ -5342,8 +5372,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_4_6">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_7_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4_7">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -22467,11 +22497,31 @@
 <h2 id="problem">Problem<a class="headerlink" href="#problem" title="Permanent link">#</a></h2>
 <p><code>nums1</code> 是 <code>nums2</code> 的子集（元素两两不同）。对每个 <code>nums1[i]</code>，找它在 <code>nums2</code> 中<strong>右边第一个更大的元素</strong>，若无则 <code>-1</code>。<span class="arithmatex">\(|nums1| \leq |nums2| \leq 1000\)</span>，值 <span class="arithmatex">\(\in [0, 10^4]\)</span>。Follow-up: <span class="arithmatex">\(O(n+m)\)</span>。</p>
 <h2 id="background">背景 (Background)<a class="headerlink" href="#background" title="Permanent link">#</a></h2>
-<p><strong>单调栈</strong> (monotonic stack) 的入门题。NGE (Next Greater Element) 模式是单调栈最经典的应用：对每个位置维护"右侧第一个比它大的"，可在 <span class="arithmatex">\(O(n)\)</span> 摊销时间求出。这一模式衍生出 #503（循环数组）、#739 Daily Temperatures、#84 Largest Rectangle in Histogram。本质是把"对每个 i 找未来的第一个 j 使 a[j] &gt; a[i]"这种逆向依赖，通过一个待匹配栈在前向扫描中处理。</p>
+<p><code>nums1</code> 的每个值都出现在 <code>nums2</code> 中，且查询只关心"右边第一个更大"。所以问题的全部难度都集中在 <code>nums2</code> 上：一旦我们知道 <code>nums2</code> 中每个值右侧第一个更大的元素，<code>nums1</code> 的答案就是一次查表。</p>
+<p>先把这个查表问题写直白。对 <code>nums2</code> 中位置 <span class="arithmatex">\(i\)</span> 的元素，向右扫描，停在第一个比它大的位置：</p>
+<div class="language-python highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">brute</span><span class="p">(</span><span class="n">nums2</span><span class="p">):</span>
+    <span class="n">res</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">nums2</span><span class="p">):</span>
+        <span class="n">res</span><span class="p">[</span><span class="n">x</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+        <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">nums2</span><span class="p">)):</span>
+            <span class="k">if</span> <span class="n">nums2</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">x</span><span class="p">:</span>
+                <span class="n">res</span><span class="p">[</span><span class="n">x</span><span class="p">]</span> <span class="o">=</span> <span class="n">nums2</span><span class="p">[</span><span class="n">j</span><span class="p">]</span>
+                <span class="k">break</span>
+    <span class="k">return</span> <span class="n">res</span>
+</code></pre></div>
+<p>这是正确的，但它对每个 <span class="arithmatex">\(i\)</span> 都重新向右扫一遍，最坏 <span class="arithmatex">\(O(n^2)\)</span>，无法满足 follow-up 的 <span class="arithmatex">\(O(n+m)\)</span>。问题不在于扫描本身，而在于<strong>扫描的结果被丢弃了</strong>：处理 <span class="arithmatex">\(i\)</span> 时向右走过的那段元素，处理 <span class="arithmatex">\(i+1\)</span> 时又从头走一遍。要降到线性，必须让一次前向扫描同时服务于多个尚未求出答案的元素。下面整篇都在回答一个问题——一次扫描中，哪些过去的元素可以在当前这一步被"一起结清"，以及它们应以什么结构保存。</p>
 <h2 id="formulation">形式化 (Formulation)<a class="headerlink" href="#formulation" title="Permanent link">#</a></h2>
-<p>预计算 <span class="arithmatex">\(g: \text{nums2} \to \mathbb{Z} \cup \{-1\}\)</span>，<span class="arithmatex">\(g(x)\)</span> 为 nums2 中 <span class="arithmatex">\(x\)</span> 右侧第一个 <span class="arithmatex">\(&gt; x\)</span> 的元素。然后查表给出 <span class="arithmatex">\(g(\text{nums1}[i])\)</span>。</p>
+<p>定义函数 <span class="arithmatex">\(g: \text{nums2} \to \mathbb{Z} \cup \{-1\}\)</span>：</p>
+<div class="arithmatex">\[g(x) = \begin{cases} \text{nums2}[j], &amp; j = \min\{\,k &gt; \text{pos}(x) : \text{nums2}[k] &gt; x\,\} \text{ 存在} \\ -1, &amp; \text{该集合为空} \end{cases}\]</div>
+<p>其中 <span class="arithmatex">\(\text{pos}(x)\)</span> 是 <span class="arithmatex">\(x\)</span> 在 <code>nums2</code> 中的下标（元素互异，下标唯一）。最终答案为查表 <span class="arithmatex">\(g(\text{nums1}[i])\)</span>。</p>
+<p><code>brute</code> 已经正确算出了 <span class="arithmatex">\(g\)</span>，代价是 <span class="arithmatex">\(O(n^2)\)</span>。接下来要做的，就是在一次前向扫描中算出同一个 <span class="arithmatex">\(g\)</span>。</p>
 <h2 id="approach">数据结构 / 想法 (Approach)<a class="headerlink" href="#approach" title="Permanent link">#</a></h2>
-<p><strong>单调递减栈</strong>：从左到右扫 <code>nums2</code>，维护栈中元素值<strong>单调递减</strong>。遇到新元素 <span class="arithmatex">\(x\)</span>，把所有栈顶 <span class="arithmatex">\(\leq x\)</span> 的元素弹出——它们的 NGE 就是 <span class="arithmatex">\(x\)</span>。</p>
+<p><strong>问题自身的结构。</strong> 设我们从左到右扫描 <code>nums2</code>，当前到达元素 <span class="arithmatex">\(x\)</span>。考虑所有还没求出答案、且位于 <span class="arithmatex">\(x\)</span> 左边的"待结元素"。其中任意一个值 <span class="arithmatex">\(a\)</span>，若 <span class="arithmatex">\(a &lt; x\)</span>，那么 <span class="arithmatex">\(x\)</span> 就是 <span class="arithmatex">\(a\)</span> 的答案：<span class="arithmatex">\(x\)</span> 在 <span class="arithmatex">\(a\)</span> 右边，且 <span class="arithmatex">\(a\)</span> 与 <span class="arithmatex">\(x\)</span> 之间不存在比 <span class="arithmatex">\(a\)</span> 大的元素——否则那个元素早已成为 <span class="arithmatex">\(a\)</span> 的答案、<span class="arithmatex">\(a\)</span> 不会还待结。于是 <span class="arithmatex">\(g(a) = x\)</span>，<span class="arithmatex">\(a\)</span> 从此结清。</p>
+<p>这一步同时决定了待结元素该怎么存。把待结元素按出现顺序排成序列，它必然是<strong>严格递减</strong>的：若相邻两个待结元素 <span class="arithmatex">\(a\)</span>（先）和 <span class="arithmatex">\(b\)</span>（后）满足 <span class="arithmatex">\(a &lt; b\)</span>，那么 <span class="arithmatex">\(b\)</span> 就是 <span class="arithmatex">\(a\)</span> 右边一个更大的元素，<span class="arithmatex">\(a\)</span> 早该被 <span class="arithmatex">\(b\)</span> 结清、不可能仍待结。所以待结元素自左到右严格递减；新元素只会从右端比较和结清。这正是一个栈：右端进出，且栈内严格递减。</p>
+<blockquote>
+<p><strong>不变量。</strong> 扫描到第 <span class="arithmatex">\(i\)</span> 个元素之后，栈自底向顶严格递减，且恰好是所有"位于已扫描前缀中、尚未求出 <span class="arithmatex">\(g\)</span> 值"的元素。</p>
+</blockquote>
+<p>有了不变量，代码就是维持它的最小操作。到达 <span class="arithmatex">\(x\)</span> 时，反复弹出栈顶比 <span class="arithmatex">\(x\)</span> 小的元素并将其 <span class="arithmatex">\(g\)</span> 值记为 <span class="arithmatex">\(x\)</span>（这正是上面"<span class="arithmatex">\(a &lt; x \Rightarrow g(a)=x\)</span>"），直到栈顶 <span class="arithmatex">\(\geq x\)</span> 或栈空；再把 <span class="arithmatex">\(x\)</span> 压入。弹空小于 <span class="arithmatex">\(x\)</span> 的栈顶后压入 <span class="arithmatex">\(x\)</span>，栈仍严格递减，不变量保持。</p>
 <div class="language-python highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">Solution</span><span class="p">:</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">nextGreaterElement</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">nums1</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">],</span> <span class="n">nums2</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]:</span>
         <span class="n">nge</span> <span class="o">=</span> <span class="p">{}</span>            <span class="c1"># value -&gt; next greater</span>
@@ -22480,27 +22530,28 @@
             <span class="k">while</span> <span class="n">stack</span> <span class="ow">and</span> <span class="n">stack</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">x</span><span class="p">:</span>
                 <span class="n">nge</span><span class="p">[</span><span class="n">stack</span><span class="o">.</span><span class="n">pop</span><span class="p">()]</span> <span class="o">=</span> <span class="n">x</span>
             <span class="n">stack</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
-        <span class="c1"># 栈中剩余元素无 NGE</span>
+        <span class="c1"># 扫描结束时仍在栈中的元素：从未被任何更大元素结清，无 NGE</span>
         <span class="k">return</span> <span class="p">[</span><span class="n">nge</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">nums1</span><span class="p">]</span>
 </code></pre></div>
-<p><strong>Trace <code>nums2=[1,3,4,2]</code></strong>：
+<p>扫描结束后，栈里剩下的就是右侧再无更大元素的那些值，它们的答案是 <span class="arithmatex">\(-1\)</span>——这与不变量一致：它们始终待结，循环从未触发对它们的弹出，查表 <code>nge.get(v, -1)</code> 用默认值兜底。</p>
+<p><strong>Trace <code>nums2=[1,3,4,2]</code></strong>（每步给出操作与栈内容，栈底在左）：
 - x=1: 栈空，push → [1]
 - x=3: 1&lt;3 pop, nge[1]=3, push 3 → [3]
 - x=4: 3&lt;4 pop, nge[3]=4, push 4 → [4]
-- x=2: 4&gt;2, push → [4,2]
-- 最终 nge = {1:3, 3:4}；nums1=[4,1,2] → [-1, 3, -1] ✓</p>
-<p><strong>不变量</strong>：扫描第 <span class="arithmatex">\(i\)</span> 步后，栈中元素自底到顶严格递减，每个栈元素表示"尚未找到 NGE 的过去元素"。</p>
-<p><strong>摊销分析</strong>：每个元素至多入栈一次、出栈一次 → 总操作 <span class="arithmatex">\(O(n)\)</span>。</p>
+- x=2: 4&gt;2, 不弹, push → [4,2]
+- 终态 nge = {1:3, 3:4}，栈 [4,2] 残留答案为 -1；nums1=[4,1,2] → [-1, 3, -1] ✓</p>
+<p>每一步都可对照不变量验证：栈始终严格递减，且栈内值恰为尚未结清的过去元素。</p>
 <h2 id="complexity">复杂度 (Complexity)<a class="headerlink" href="#complexity" title="Permanent link">#</a></h2>
+<p>线性性直接读自不变量：每个元素恰被压入一次，并至多被弹出一次（弹出即结清，结清后不再回栈）。因此 <code>nums2</code> 上的总压栈/弹栈操作不超过 <span class="arithmatex">\(2n\)</span>，构建 <span class="arithmatex">\(g\)</span> 是摊销 <span class="arithmatex">\(O(n)\)</span>；随后 <code>nums1</code> 的查表是 <span class="arithmatex">\(O(m)\)</span>。</p>
 <ul>
 <li>Time: <span class="arithmatex">\(O(n + m)\)</span>，<span class="arithmatex">\(n = |nums2|, m = |nums1|\)</span></li>
 <li>Space: <span class="arithmatex">\(O(n)\)</span>（栈 + 哈希表）</li>
 </ul>
 <h2 id="pitfalls">陷阱 (Pitfalls)<a class="headerlink" href="#pitfalls" title="Permanent link">#</a></h2>
 <ul>
-<li><strong>元素必须互异</strong>：否则不能用值作哈希 key；本题已保证。若可重复，需存索引。</li>
-<li><strong>严格大于</strong>：是 <code>&lt;</code>（栈顶严格小于 <span class="arithmatex">\(x\)</span> 时弹）而不是 <code>&lt;=</code>；若题目改为"first <span class="arithmatex">\(\geq\)</span>"则需调整。</li>
-<li><strong>遗漏栈中残留</strong>：栈底没找到 NGE 的元素答案应 -1，用 <code>dict.get(v, -1)</code> 兜底。</li>
+<li><strong>元素必须互异</strong>：值被直接用作哈希 key，互异才使下标与 <span class="arithmatex">\(g\)</span> 唯一；本题已保证。若可重复，需改存索引。</li>
+<li><strong>严格大于</strong>：弹出条件是 <code>stack[-1] &lt; x</code>（栈顶严格小于 <span class="arithmatex">\(x\)</span>），对应"first greater"。若题目改为"first <span class="arithmatex">\(\geq\)</span>"，弹出条件需放宽为 <code>&lt;=</code>。</li>
+<li><strong>栈中残留即 <span class="arithmatex">\(-1\)</span></strong>：扫描结束仍在栈中的元素，正是不变量下"从未触发弹出"的待结元素，其 <span class="arithmatex">\(g\)</span> 值为 <span class="arithmatex">\(-1\)</span>，由 <code>dict.get(v, -1)</code> 兜底。</li>
 </ul>
 <h2 id="related">相关题目 (Related)<a class="headerlink" href="#related" title="Permanent link">#</a></h2>
 <ul>
@@ -22618,6 +22669,8 @@
         <script src="../../../js/mathjax/tex-mml-chtml.js"></script>
       
         <script src="../../../js/mermaid.min.js"></script>
+      
+        <script src="../../../js/featured.js"></script>
       
     
   </body>

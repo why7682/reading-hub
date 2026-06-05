@@ -1466,6 +1466,8 @@
       
         
       
+        
+      
     
     
     
@@ -1521,6 +1523,34 @@
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../featured/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ⭐ Featured（已验证）
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
               
             
               
@@ -1610,10 +1640,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_4" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
         
           
-          <label class="md-nav__link" for="__nav_4_4" id="__nav_4_4_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_5" id="__nav_4_5_label" tabindex="">
             
   
   
@@ -1631,8 +1661,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_4_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_4">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_5">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1915,7 +1945,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -1937,14 +1967,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_4_5" id="__nav_4_5_label" tabindex="">
+              <label class="md-nav__link " for="__nav_4_6" id="__nav_4_6_label" tabindex="">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_5">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_6">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -5321,10 +5351,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_7" checked>
         
           
-          <label class="md-nav__link" for="__nav_4_6" id="__nav_4_6_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_7" id="__nav_4_7_label" tabindex="">
             
   
   
@@ -5342,8 +5372,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_4_6">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_7_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4_7">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -22467,15 +22497,28 @@
 <h2 id="problem">Problem<a class="headerlink" href="#problem" title="Permanent link">#</a></h2>
 <p>字符串 <code>tiles</code> 表示一组带字母瓷砖，求能用这些瓷砖排出的<strong>非空序列</strong>总数（不同字母排列视为不同序列；同字母的多份是不可区分的）。<span class="arithmatex">\(1 \leq |\text{tiles}| \leq 7\)</span>。</p>
 <h2 id="background">背景 (Background)<a class="headerlink" href="#background" title="Permanent link">#</a></h2>
-<p>经典「<strong>多重集排列计数</strong>」问题。对长度 <span class="arithmatex">\(k\)</span> 的所有排列计数，公式</p>
-<div class="arithmatex">\[P(n_1, \dots, n_m; k) = \sum_{\substack{k_1+\dots+k_m = k \\ 0 \leq k_i \leq n_i}} \frac{k!}{k_1! \cdots k_m!}\]</div>
-<p>直接求和有指数项数；本题 <span class="arithmatex">\(n \leq 7\)</span> 让回溯枚举 + 字母计数即可。该公式与指数型生成函数 (EGF) <span class="arithmatex">\(\prod_i \sum_{j=0}^{n_i} x^j / j!\)</span> 的系数一一对应（Stanley EC1 §1.5），是组合学入门。</p>
+<p>先用最小的例子把困难暴露出来。取 <code>tiles = "AAB"</code>，列出所有长度为 2 的序列。如果把两个 <code>A</code> 当作可区分的瓷砖 <span class="arithmatex">\(A_1, A_2\)</span>，位置枚举给出</p>
+<div class="arithmatex">\[A_1A_2,\ A_2A_1,\ A_1B,\ A_2B,\ BA_1,\ BA_2,\]</div>
+<p>共 6 个。但题目说同字母的多份不可区分，于是 <span class="arithmatex">\(A_1A_2\)</span> 与 <span class="arithmatex">\(A_2A_1\)</span> 是同一个序列 <code>AA</code>，<span class="arithmatex">\(A_1B\)</span> 与 <span class="arithmatex">\(A_2B\)</span> 同为 <code>AB</code>，<span class="arithmatex">\(BA_1\)</span> 与 <span class="arithmatex">\(BA_2\)</span> 同为 <code>BA</code>。去重后只剩 <code>AA, AB, BA</code> 三个。</p>
+<p>这暴露了最直接的暴力法在哪里崩。<strong>枚举所有 <code>permutations(tiles, k)</code> 再用 <code>set</code> 去重</strong>：对每个长度 <span class="arithmatex">\(k\)</span> 生成 <span class="arithmatex">\(P(|\text{tiles}|, k)\)</span> 个有序串，丢进集合靠哈希消重。<span class="arithmatex">\(n = 7\)</span> 时，<span class="arithmatex">\(\sum_{k=1}^{7} P(7,k) = 13699\)</span> 个串被生成，其中大量是同字母换位产生的重复，全靠 <code>set</code> 事后剔除——既做了多余的工作，又要把长达 7 的字符串成批存进内存。</p>
+<p>关键不在于"去重慢"，而在于：<strong>重复从一开始就不该被生成</strong>。两个 <span class="arithmatex">\(A\)</span> 不可区分，意味着"第一个位置放哪个 <span class="arithmatex">\(A\)</span>"根本不是一个有意义的选择。下面的开发把这条约束直接编码进枚举顺序，让每个序列恰好被数到一次，从而完全不需要事后去重。</p>
 <h2 id="formulation">形式化 (Formulation)<a class="headerlink" href="#formulation" title="Permanent link">#</a></h2>
-<p>设字母多重集 <span class="arithmatex">\(\{(c_i, n_i)\}_{i=1}^{m}\)</span>，<span class="arithmatex">\(n = \sum n_i\)</span>。求</p>
+<p>把"不可区分"翻译成计数对象。一个长度为 <span class="arithmatex">\(k\)</span> 的序列不由"哪些瓷砖、按什么顺序"决定，而由两件事决定：</p>
+<ol>
+<li>每个字母用了多少份——即一组计数 <span class="arithmatex">\((k_1, \dots, k_m)\)</span>，满足 <span class="arithmatex">\(\sum_j k_j = k\)</span> 且 <span class="arithmatex">\(0 \leq k_j \leq n_j\)</span>；</li>
+<li>这 <span class="arithmatex">\(k\)</span> 个字母排成一行的具体顺序。</li>
+</ol>
+<p>固定第一件事，第二件事的方案数正是多重集排列数 <span class="arithmatex">\(\dfrac{k!}{\prod_j k_j!}\)</span>：<span class="arithmatex">\(k\)</span> 个位置全排列有 <span class="arithmatex">\(k!\)</span> 种，但同字母的 <span class="arithmatex">\(k_j\)</span> 份互换不产生新序列，故除以 <span class="arithmatex">\(\prod_j k_j!\)</span>。对所有合法计数与所有长度求和，即得答案。</p>
+<p>设字母多重集 <span class="arithmatex">\(\{(c_i, n_i)\}_{i=1}^{m}\)</span>，<span class="arithmatex">\(n = \sum n_i\)</span>。所求为</p>
 <div class="arithmatex">\[\sum_{k=1}^{n} \sum_{\substack{k_1+\dots+k_m=k \\ 0 \leq k_j \leq n_j}} \frac{k!}{\prod_j k_j!}.\]</div>
+<p>外层 <span class="arithmatex">\(k\)</span> 从 1 起，排除空序列。直接按这个双重和求值，要枚举所有满足约束的计数向量 <span class="arithmatex">\((k_1,\dots,k_m)\)</span>，项数随 <span class="arithmatex">\(m\)</span> 指数增长——和暴力枚举一样不划算。下一节从这个和本身导出一个递归，把它算成一棵不含重复分支的搜索树。</p>
 <h2 id="approach">数据结构 / 想法 (Approach)<a class="headerlink" href="#approach" title="Permanent link">#</a></h2>
-<p><strong>回溯 + 字母多重集</strong>。当前剩余字母频次 <code>count</code>；在每一"层"枚举下一个放哪个字母（频次 <span class="arithmatex">\(&gt;0\)</span> 的字母才能放），每放一个 <code>count[c] -= 1</code>，进入下一层并 <code>ans += 1</code>（代表"以此为结尾的序列也算一种"），回溯时 <code>count[c] += 1</code>。</p>
-<p><strong>关键不变量</strong>：在同一深度上，相同字母只枚举一次（通过遍历 <code>count.keys()</code> 而非位置），避免对相同瓷砖的重复计数。</p>
+<p><strong>先想清楚递归从哪来。</strong> 任一非空序列都有确定的<strong>第一个字母</strong>。按"第一个字母是谁"对所有序列分类：若第一个字母是 <span class="arithmatex">\(c_j\)</span>（要求 <span class="arithmatex">\(n_j &gt; 0\)</span>），去掉它之后剩下的是一个长度少 1 的序列，其字母来自把 <span class="arithmatex">\(c_j\)</span> 的可用份数减 1 后的多重集——这又是同一个子问题。于是</p>
+<div class="arithmatex">\[f(\text{count}) = \sum_{j:\ \text{count}[c_j] &gt; 0} \Big(\underbrace{1}_{\text{以 }c_j\text{ 收尾、长度 }1\text{ 的序列}} + f(\text{count} \text{ 去掉一个 } c_j)\Big),\]</div>
+<p>其中 <span class="arithmatex">\(f\)</span> 表示"用当前多重集能排出的非空序列总数"。</p>
+<p>这个递归正是上一节双重和的逐字母展开：按第一个字母条件化，等价于把外层对计数向量的求和拆成"第一格选哪个字母"的分支。每个分支贡献的 <code>1</code> 表示"到此为止已选出的字母本身就是一个合法非空序列"，对应序列长度恰好取到当前深度的情形；<code>f(...)</code> 再把它继续延长。</p>
+<p><strong>为什么这样枚举不重复。</strong> 在每一层，我们遍历的是<strong>不同字母</strong>（<code>count</code> 的键），而非具体瓷砖的位置。两份 <span class="arithmatex">\(A\)</span> 不可区分，所以"这一层放 <span class="arithmatex">\(A\)</span>"只是一个选择，不分"放第一个 <span class="arithmatex">\(A\)</span> 还是第二个 <span class="arithmatex">\(A\)</span>"。这正是形式化里第一件事（按字母计数、不按瓷砖位置）的直接编码——每个不同的计数路径对应唯一的序列，重复分支根本不会生成。</p>
+<p>落实为回溯：维护剩余频次 <code>count</code>；在每层遍历频次 <span class="arithmatex">\(&gt;0\)</span> 的字母，选中一个则 <code>count[c] -= 1</code>，累加 <code>1 + dfs()</code> 后回溯 <code>count[c] += 1</code>。</p>
 <div class="language-python highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">collections</span><span class="w"> </span><span class="kn">import</span> <span class="n">Counter</span>
 
 <span class="k">class</span><span class="w"> </span><span class="nc">Solution</span><span class="p">:</span>
@@ -22500,17 +22543,18 @@
   - 选 A: 1 + dfs({A:1}) → 选 A: 1+0=1。共 2
   - 合计 2。外加自身 1 → 3
 - 总 5+3 = 8。✓</p>
+<p>注意 trace 里只出现 <code>AA, AAB, AB, AB...</code> 这类按字母计数的分支，从未区分"哪个 A"——这就是去重发生在生成阶段、而非事后的体现。</p>
 <p><strong>样例 3</strong>：<code>"V"</code> → 一层选 V，得 1。✓</p>
 <h2 id="complexity">复杂度 (Complexity)<a class="headerlink" href="#complexity" title="Permanent link">#</a></h2>
 <ul>
-<li>Time: 上界 <span class="arithmatex">\(O(\sum_{k=1}^{n} k!) = O(n \cdot n!)\)</span>，但因相同字母剪枝实际远小。<span class="arithmatex">\(n \leq 7\)</span> 时 <span class="arithmatex">\(7! = 5040\)</span>，常数级。</li>
+<li>Time: 搜索树的节点数即枚举出的序列数。上界 <span class="arithmatex">\(O(\sum_{k=1}^{n} k!) = O(n \cdot n!)\)</span>，但相同字母在每层只展开一次，实际节点数远低于此（等于答案本身的量级）。<span class="arithmatex">\(n \leq 7\)</span> 时 <span class="arithmatex">\(7! = 5040\)</span>，对给定约束这是一个与输入无关的固定上界。</li>
 <li>Space: <span class="arithmatex">\(O(n)\)</span> 递归栈 + <span class="arithmatex">\(O(\Sigma)\)</span> 计数（<span class="arithmatex">\(\Sigma=26\)</span>）。</li>
 </ul>
 <h2 id="pitfalls">陷阱 (Pitfalls)<a class="headerlink" href="#pitfalls" title="Permanent link">#</a></h2>
 <ul>
-<li><strong>不能</strong>用 <code>permutations(tiles, k)</code> 配 <code>set</code> 去重——对 <span class="arithmatex">\(n=7\)</span> 已是 <span class="arithmatex">\(\sum k! \cdot \binom{7}{k}\)</span> 量级，且 set 存字符串内存爆。回溯 + 字母计数自然去重。</li>
-<li>遍历 <code>count.keys()</code> 时<strong>不要</strong>同时修改 dict 大小；用 <code>list(count)</code> 拷贝键集合（小写: 直接迭代字母不弹键也安全，因为 <code>count[c] -= 1</code> 不删键）。</li>
-<li>题目算「非空」，不含空序列；上述代码不会枚举空（dfs 不入栈空状态时计数）。</li>
+<li><strong>生成阶段去重 vs 事后去重</strong>：<code>permutations(tiles, k)</code> 配 <code>set</code> 对 <span class="arithmatex">\(n=7\)</span> 要生成 <span class="arithmatex">\(\sum_{k=1}^{7} P(7,k) = 13699\)</span> 个串，其中同字母换位的重复全靠集合事后剔除，且需把长达 7 的字符串成批存内存。回溯按字母计数枚举，让重复分支从不产生，无需 <code>set</code>。</li>
+<li><strong>迭代时修改 dict</strong>：遍历 <code>count</code> 时不要改变其键数量。代码用 <code>list(count)</code> 拷贝键集合保险；实际上直接 <code>for c in count</code> 也安全，因为 <code>count[c] -= 1</code> 不会删键（<code>Counter</code> 不自动清除零计数），dict 大小在迭代中不变。</li>
+<li><strong>非空边界</strong>：答案不含空序列。递归在每次放置时计 <code>1</code>，且 base case 返回 0 而不自增，故空序列永不被计入。</li>
 </ul>
 <h2 id="related">相关题目 (Related)<a class="headerlink" href="#related" title="Permanent link">#</a></h2>
 <ul>
@@ -22519,7 +22563,7 @@
 </ul>
 <h2 id="further-reading">Further Reading<a class="headerlink" href="#further-reading" title="Permanent link">#</a></h2>
 <ul>
-<li>Stanley, <em>Enumerative Combinatorics</em> Vol. 1 §1.5 — 多重集排列与 EGF。</li>
+<li>Stanley, <em>Enumerative Combinatorics</em> Vol. 1 §1.5 — 多重集排列与指数型生成函数 (EGF)：本题的双重和恰是乘积 <span class="arithmatex">\(\prod_i \sum_{j=0}^{n_i} x^j / j!\)</span> 的系数提取，即答案 <span class="arithmatex">\(= \sum_{k \geq 1} k! \, [x^k]\)</span>（对 <span class="arithmatex">\(\{A:2, B:1\}\)</span> 验证：<span class="arithmatex">\((1+x+x^2/2)(1+x)\)</span> 给出 <span class="arithmatex">\(2\cdot1 + \tfrac{3}{2}\cdot2 + \tfrac{1}{2}\cdot6 = 8\)</span>）。</li>
 <li><em>Concrete Mathematics</em> (2e) §5 — 多项式系数与组合恒等式。</li>
 </ul>
 
@@ -22627,6 +22671,8 @@
         <script src="../../../js/mathjax/tex-mml-chtml.js"></script>
       
         <script src="../../../js/mermaid.min.js"></script>
+      
+        <script src="../../../js/featured.js"></script>
       
     
   </body>

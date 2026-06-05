@@ -1466,6 +1466,8 @@
       
         
       
+        
+      
     
     
     
@@ -1521,6 +1523,34 @@
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../featured/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ⭐ Featured（已验证）
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
               
             
               
@@ -1610,10 +1640,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_4" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
         
           
-          <label class="md-nav__link" for="__nav_4_4" id="__nav_4_4_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_5" id="__nav_4_5_label" tabindex="">
             
   
   
@@ -1631,8 +1661,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_4_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_4">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_5">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1915,7 +1945,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -1937,14 +1967,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_4_5" id="__nav_4_5_label" tabindex="">
+              <label class="md-nav__link " for="__nav_4_6" id="__nav_4_6_label" tabindex="">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_5">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_6">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -5321,10 +5351,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_7" checked>
         
           
-          <label class="md-nav__link" for="__nav_4_6" id="__nav_4_6_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_7" id="__nav_4_7_label" tabindex="">
             
   
   
@@ -5342,8 +5372,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_4_6">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_7_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4_7">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -22467,11 +22497,41 @@
 <h2 id="problem">Problem<a class="headerlink" href="#problem" title="Permanent link">#</a></h2>
 <p>数组 <code>rains</code>：<code>rains[i] &gt; 0</code> 表示这天下雨灌满第 <code>rains[i]</code> 号湖（若已满则爆 ⇒ 失败）；<code>rains[i] == 0</code> 表示晴天，<strong>必须</strong>抽干恰好一个湖。返回 <code>ans</code>：晴天位置填要抽的湖号、雨天填 <span class="arithmatex">\(-1\)</span>。无解返回 <code>[]</code>。<span class="arithmatex">\(n \leq 10^5\)</span>。</p>
 <h2 id="background">背景 (Background)<a class="headerlink" href="#background" title="Permanent link">#</a></h2>
-<p><strong>Online greedy with regret + sorted set</strong>：每遇到重复降雨需求才"决策"使用过去某个晴天。本题等价于二分匹配的在线版（晴天 = 资源、连续两次同湖降雨之间 = 需求），最优策略是把每个晴天分配给"下一次会重复的最早需求"——可证贪心最优。</p>
+<p>先试最朴素的处理：从左到右扫，遇到晴天就当场决定抽哪个湖。怎么选？一个看起来合理的规则是"抽最近刚下过雨、最可能再被灌的湖"。</p>
+<p>在 <code>rains = [1, 2, 0, 0, 2, 1]</code> 上跑这个规则。前两天灌满湖 1、湖 2。第三天晴：按"抽最近的"会抽湖 2。第四天又晴：抽湖 1。于是两个晴天都用掉了，两湖都空。可这恰好是唯一能解的分配吗？第五天湖 2 再降雨——它确实空着，没爆。第六天湖 1 再降雨——也空着。侥幸过关。</p>
+<p>把顺序换成 <code>rains = [1, 2, 0, 1, 2]</code>：灌满湖 1、湖 2，第三天唯一的晴天到了，此时必须二选一。无论抽湖 1 还是湖 2，下一次对应降雨（第四天湖 1、第五天湖 2）都只能空出一个，另一个必爆。这里只有一个晴天却有两次重复降雨,本就无解,不能怪规则。</p>
+<p>真正暴露问题的是这种输入：晴天<strong>够用</strong>，但朴素规则把晴天用错了地方。当算法在晴天那一刻做决定时，它还不知道哪个湖会"先"再次降雨、从而更紧迫。任何在晴天当场写死的选择，都可能把本该留给紧迫需求的晴天，浪费在一个还很宽裕的湖上。</p>
+<p>这给出两条改造方向：</p>
+<ol>
+<li><strong>决策推迟</strong>。晴天不当场选湖，只把"我有一个可用晴天"记下来；真正需要做选择，是在某个湖<strong>第二次降雨</strong>、形成一次必须满足的需求时。那一刻我们才知道这次需求的紧迫程度，也才有信息做出正确分配。</li>
+<li><strong>分配规则</strong>。一次需求出现时，应该从哪些晴天里挑、挑哪个？这需要先把"合法的晴天"是什么精确写出来——这正是下一节的形式化要回答的。</li>
+</ol>
 <h2 id="formulation">形式化 (Formulation)<a class="headerlink" href="#formulation" title="Permanent link">#</a></h2>
-<p>设 <span class="arithmatex">\(r_1, \dots, r_n\)</span>。对每对相邻同湖降雨 <span class="arithmatex">\(i &lt; j\)</span>（<span class="arithmatex">\(r_i = r_j &gt; 0\)</span> 且 <span class="arithmatex">\((i, j)\)</span> 间无 <span class="arithmatex">\(r_k = r_i\)</span>），必须存在晴天 <span class="arithmatex">\(t \in (i, j)\)</span> 且 <span class="arithmatex">\(r_t = 0\)</span> 被分配给此湖。求一组合法分配，若不存在返回 <code>[]</code>。</p>
+<p>沿用题面记号，记 <span class="arithmatex">\(r_i = \texttt{rains}[i]\)</span>，<span class="arithmatex">\(i = 0, \dots, n-1\)</span>。晴天集合 <span class="arithmatex">\(S = \{\, i : r_i = 0 \,\}\)</span>。</p>
+<p>一个湖只要被降雨两次而中间没抽干就会爆。于是真正的约束落在<strong>相邻同湖降雨对</strong>上：若 <span class="arithmatex">\(i &lt; j\)</span>，<span class="arithmatex">\(r_i = r_j &gt; 0\)</span>，且对一切 <span class="arithmatex">\(i &lt; k &lt; j\)</span> 有 <span class="arithmatex">\(r_k \neq r_i\)</span>，则称 <span class="arithmatex">\((i, j)\)</span> 是该湖的一个<strong>冲突对</strong>。每个冲突对要求：存在一个晴天被指派去抽这个湖，且这个晴天落在两次降雨<strong>之间</strong>。</p>
+<p>形式化地，一个晴天 <span class="arithmatex">\(t \in S\)</span> 能服务冲突对 <span class="arithmatex">\((i, j)\)</span>，当且仅当
+$$
+i &lt; t &lt; j .
+$$
+左端 <span class="arithmatex">\(t &gt; i\)</span>：第一次降雨之前抽干没有意义，那时湖还没被这次灌满；右端 <span class="arithmatex">\(t &lt; j\)</span>：第二次降雨之后才抽，湖已经爆了。所以每个冲突对的合法晴天，恰好是开区间 <span class="arithmatex">\((i, j)\)</span> 里的晴天。</p>
+<p><strong>任务</strong>：给每个冲突对指派一个落在其开区间内的晴天，且不同冲突对用不同晴天（一个晴天只抽一个湖）。存在这样一组指派则有解，输出任一组；否则返回 <code>[]</code>。</p>
+<p>这把原题化成一个区间指派问题：晴天是资源，冲突对是请求，请求 <span class="arithmatex">\((i,j)\)</span> 只接受区间 <span class="arithmatex">\((i,j)\)</span> 内的资源，求一个无冲突的指派。算法要做的，就是在线地构造这组指派。</p>
 <h2 id="approach">数据结构 / 想法 (Approach)<a class="headerlink" href="#approach" title="Permanent link">#</a></h2>
-<p><strong>算法</strong>：用 <code>last[lake]</code> 记某湖上次降雨位置；用 <code>dry_days</code> 维护可用晴天的位置集合（需 <code>bisect</code> 支持 "找第一个 &gt; x"）。</p>
+<p><strong>从形式化读出需要维护什么。</strong> 在线扫描时，第 <span class="arithmatex">\(i\)</span> 天若 <span class="arithmatex">\(r_i &gt; 0\)</span> 且这个湖之前下过雨，就在此刻<strong>封闭</strong>了一个冲突对——它的左端是该湖上次降雨的位置，右端是 <span class="arithmatex">\(i\)</span>。于是需要：</p>
+<ul>
+<li><code>last[lake]</code>：湖 <code>lake</code> 上次降雨的下标，即当前冲突对的左端点。</li>
+<li><code>dry</code>：到目前为止出现过、尚未被指派的晴天下标集合，按位置升序——即可用资源池。</li>
+</ul>
+<p>一个冲突对 <span class="arithmatex">\((i, j)\)</span> 出现时（<span class="arithmatex">\(j\)</span> 是当前天，<span class="arithmatex">\(i = \texttt{last[lake]}\)</span>），其合法晴天是 <span class="arithmatex">\(dry\)</span> 中落在 <span class="arithmatex">\((i, j)\)</span> 内的元素。因为 <span class="arithmatex">\(dry\)</span> 里所有元素都 <span class="arithmatex">\(&lt; j\)</span>（晴天必先于当前天出现），约束 <span class="arithmatex">\(t &lt; j\)</span> 自动成立；真正要筛的是 <span class="arithmatex">\(t &gt; i\)</span>，即 <span class="arithmatex">\(t &gt; \texttt{last[lake]}\)</span>。</p>
+<p><strong>该挑哪个合法晴天？</strong> 直觉：挑<strong>满足 <span class="arithmatex">\(t &gt; \texttt{last[lake]}\)</span> 的最早晴天</strong>。理由来自结构本身——较晚的晴天能服务的未来冲突对，是较早晴天能服务的一个子集。把宽松的资源（晚晴天）留给以后，把紧的需求先用早晴天满足，不会堵死任何未来的指派。</p>
+<p>这条直觉可以做成一个严格的交换论证。在线扫描的关键性质是：冲突对<strong>按右端点 <span class="arithmatex">\(j\)</span> 递增的顺序被封闭</strong>——我们处理它们的次序，就是当前天 <span class="arithmatex">\(j\)</span> 的次序。考虑规则处理某个对 <span class="arithmatex">\(C = (i, j)\)</span> 的时刻，设它的最早合法晴天是 <span class="arithmatex">\(t_1\)</span>（即 <code>dry</code> 中第一个 <span class="arithmatex">\(&gt; i\)</span> 者）。设有任一可行解 <span class="arithmatex">\(A\)</span>，比较 <span class="arithmatex">\(A\)</span> 与规则到此为止的指派。</p>
+<p>若 <span class="arithmatex">\(A\)</span> 也把 <span class="arithmatex">\(t_1\)</span> 给 <span class="arithmatex">\(C\)</span>，无需调整。否则 <span class="arithmatex">\(A\)</span> 把某个 <span class="arithmatex">\(t_2 &gt; t_1\)</span> 给了 <span class="arithmatex">\(C\)</span>（<span class="arithmatex">\(A\)</span> 给 <span class="arithmatex">\(C\)</span> 的晴天必 <span class="arithmatex">\(&gt; i\)</span> 且此刻可用，而 <span class="arithmatex">\(t_1\)</span> 是最早可用者，故 <span class="arithmatex">\(A\)</span> 选的 <span class="arithmatex">\(\ge t_1\)</span>；若恰为 <span class="arithmatex">\(t_1\)</span> 即上一情形）。看 <span class="arithmatex">\(t_1\)</span> 在 <span class="arithmatex">\(A\)</span> 里的去向：</p>
+<ul>
+<li><span class="arithmatex">\(t_1\)</span> 在 <span class="arithmatex">\(A\)</span> 中未被任何对使用，则把 <span class="arithmatex">\(C\)</span> 改用 <span class="arithmatex">\(t_1\)</span>，得到一个仍可行、且与规则在 <span class="arithmatex">\(C\)</span> 上一致的解。</li>
+<li><span class="arithmatex">\(t_1\)</span> 在 <span class="arithmatex">\(A\)</span> 中被某个<strong>尚未处理</strong>的对 <span class="arithmatex">\(C' = (i', j')\)</span> 使用（<span class="arithmatex">\(j' \ge j\)</span>，因为右端 <span class="arithmatex">\(&lt; j\)</span> 的对已先于 <span class="arithmatex">\(C\)</span> 处理、不再争用）。则 <span class="arithmatex">\(i' &lt; t_1 &lt; t_2 &lt; j \le j'\)</span>，故 <span class="arithmatex">\(t_2\)</span> 也落在 <span class="arithmatex">\(C'\)</span> 的开区间内。交换 <span class="arithmatex">\(C\)</span> 与 <span class="arithmatex">\(C'\)</span> 所用晴天：<span class="arithmatex">\(C\)</span> 用 <span class="arithmatex">\(t_1\)</span>、<span class="arithmatex">\(C'\)</span> 用 <span class="arithmatex">\(t_2\)</span>，两者各自仍合法，解 <span class="arithmatex">\(A\)</span> 的可行性不变。</li>
+</ul>
+<p>无论哪种情形，都能把 <span class="arithmatex">\(A\)</span> 改造成在 <span class="arithmatex">\(C\)</span> 上与规则一致而仍可行的解。对每个对依次施加，便得到一个与规则完全一致的可行解。故规则只要在某步无合法晴天而失败，就不存在可行解；规则给出指派时，指派必合法。贪心最优。</p>
+<p><strong>形式化选取规则。</strong> 用支持"找第一个 <span class="arithmatex">\(&gt; x\)</span>"的有序结构维护 <code>dry</code>（<code>bisect_right</code> + 按下标排序）。冲突对左端为 <code>last[lake]</code> 时，取 <code>dry.bisect_right(last[lake])</code> 位置的元素：它是 <code>dry</code> 中第一个严格大于 <code>last[lake]</code> 的下标，即最早合法晴天。若该位置已越界，说明 <span class="arithmatex">\((last[lake], i)\)</span> 内没有任何可用晴天，此湖必爆，返回 <code>[]</code>。</p>
 <div class="language-python highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">sortedcontainers</span><span class="w"> </span><span class="kn">import</span> <span class="n">SortedList</span>
 <span class="k">class</span><span class="w"> </span><span class="nc">Solution</span><span class="p">:</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">avoidFlood</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rains</span><span class="p">):</span>
@@ -22501,20 +22561,19 @@
 <span class="c1"># i=5 lake=1: last[1]=0, dry.bisect_right(0)=0 → pop dry[0]=3. ans[3]=1. last[1]=5</span>
 <span class="c1"># 最终 ans=[-1,-1,2,1,-1,-1] ✓</span>
 </code></pre></div>
-<p><strong>关键不变量</strong>：<code>dry</code> 总是按位置升序排列；每次取<strong>第一个晚于 <code>last[lake]</code> 的晴天</strong>，是"最早可用的晴天"——为后续更紧迫的需求留更多余地（经典贪心 exchange argument：若用更晚的晴天，与未来某需求互换不会更差）。</p>
-<p><strong>法 2：堆 + 预扫</strong>。先扫一遍记录每个湖的所有降雨位置；遍历时遇雨用堆维护"必须在某天前抽干"的截止；晴天弹堆顶（最紧迫的）。同复杂度。</p>
-<p><strong>为何不能朴素扫描</strong>：晴天出现时不知该抽哪个湖——"最近会再降雨的"才对，但这要求看未来。</p>
+<p>注意这条 trace 和朴素规则的差别：第四天晴天没有当场指派，而是留在 <code>dry</code> 里；直到第五天湖 2 形成冲突对，规则才取走最早的合法晴天（下标 2）抽湖 2，把下标 3 留给后来的湖 1。决策推迟到冲突出现，才让"最早合法晴天"这条规则有了发挥空间。</p>
+<p><strong>法 2：堆 + 预扫。</strong> 先扫一遍记录每个湖的所有降雨位置；正向遍历时，遇到一次降雨就算出它的截止期（下一次同湖降雨的位置）并压入小根堆；遇到晴天则弹出堆顶——截止期最早、最紧迫的需求。两种方法都在每天做一次 <span class="arithmatex">\(O(\log n)\)</span> 的有序操作，复杂度相同。</p>
 <h2 id="complexity">复杂度 (Complexity)<a class="headerlink" href="#complexity" title="Permanent link">#</a></h2>
 <ul>
-<li>Time <span class="arithmatex">\(O(n \log n)\)</span>，每次 <code>bisect_right</code> + <code>pop</code> 是 <span class="arithmatex">\(O(\log n)\)</span>。</li>
-<li>Space <span class="arithmatex">\(O(n)\)</span>。</li>
+<li>Time <span class="arithmatex">\(O(n \log n)\)</span>：每个降雨日做一次 <code>bisect_right</code> 加一次 <code>pop</code>，每个晴天做一次 <code>add</code>，在 <code>SortedList</code> 上均为 <span class="arithmatex">\(O(\log n)\)</span>；<span class="arithmatex">\(n\)</span> 天累计 <span class="arithmatex">\(O(n \log n)\)</span>。提前返回 <code>[]</code> 只会更快，故 <span class="arithmatex">\(O(n \log n)\)</span> 是各情形下的紧界。</li>
+<li>Space <span class="arithmatex">\(O(n)\)</span>：<code>last</code>、<code>dry</code>、<code>ans</code> 各最多存 <span class="arithmatex">\(n\)</span> 个元素。</li>
 </ul>
 <h2 id="pitfalls">陷阱 (Pitfalls)<a class="headerlink" href="#pitfalls" title="Permanent link">#</a></h2>
 <ul>
-<li><strong>占位值</strong>：晴天 <code>ans[i]</code> 题面允许任意 <span class="arithmatex">\(\geq 1\)</span>，给个默认 <code>1</code> 即可；最终留下的占位也合法。</li>
-<li><strong>无解判定</strong>：当前湖已满且 <code>last[lake]</code> 之后无晴天 ⇒ 必爆，返回 <code>[]</code>。</li>
-<li><strong>同一晴天不能多用</strong>：<code>dry.pop(pos)</code> 移除后不可再分配（这正是 SortedList 比 Counter 强的地方）。</li>
-<li><strong>不能用 <code>bisect_left</code></strong>：若恰好有晴天等于 <code>last[lake]</code> 不可能（因 <code>last[lake]</code> 是雨天），但语义上要"&gt; last"，用 <code>bisect_right</code> 更安全。</li>
+<li><strong>占位值</strong>：晴天 <code>ans[i]</code> 题面允许任意 <span class="arithmatex">\(\geq 1\)</span>，给个默认 <code>1</code> 即可；最终未被指派的晴天保留占位也合法。</li>
+<li><strong>无解判定</strong>：当前湖形成冲突对，但 <code>last[lake]</code> 之后无可用晴天（<code>pos == len(dry)</code>）时必爆，返回 <code>[]</code>。</li>
+<li><strong>同一晴天不能多用</strong>：<code>dry.pop(pos)</code> 把晴天从资源池移除后不可再指派；这正是有序集合优于计数器之处——它区分具体下标而非只数总量。</li>
+<li><strong>用 <code>bisect_right</code> 而非 <code>bisect_left</code></strong>：<code>last[lake]</code> 是降雨下标，<code>dry</code> 只含晴天下标，二者必不相等，故此处两种 bisect 返回同一位置；但语义要求严格 "<span class="arithmatex">\(&gt; \texttt{last}\)</span>"，<code>bisect_right</code> 与该语义精确对应。</li>
 </ul>
 <h2 id="related">相关题目 (Related)<a class="headerlink" href="#related" title="Permanent link">#</a></h2>
 <ul>
@@ -22631,6 +22690,8 @@
         <script src="../../../js/mathjax/tex-mml-chtml.js"></script>
       
         <script src="../../../js/mermaid.min.js"></script>
+      
+        <script src="../../../js/featured.js"></script>
       
     
   </body>

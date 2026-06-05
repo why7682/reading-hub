@@ -1466,6 +1466,8 @@
       
         
       
+        
+      
     
     
     
@@ -1521,6 +1523,34 @@
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../featured/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ⭐ Featured（已验证）
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
               
             
               
@@ -1610,10 +1640,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_4" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
         
           
-          <label class="md-nav__link" for="__nav_4_4" id="__nav_4_4_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_5" id="__nav_4_5_label" tabindex="">
             
   
   
@@ -1631,8 +1661,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_4_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_4">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_5">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1915,7 +1945,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -1937,14 +1967,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_4_5" id="__nav_4_5_label" tabindex="">
+              <label class="md-nav__link " for="__nav_4_6" id="__nav_4_6_label" tabindex="">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_5">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_6">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -5321,10 +5351,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_7" checked>
         
           
-          <label class="md-nav__link" for="__nav_4_6" id="__nav_4_6_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_7" id="__nav_4_7_label" tabindex="">
             
   
   
@@ -5342,8 +5372,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_4_6">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_7_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4_7">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -22467,16 +22497,23 @@
 <h2 id="problem">Problem<a class="headerlink" href="#problem" title="Permanent link">#</a></h2>
 <p>给严格递增数组 <code>target</code>（值域 <span class="arithmatex">\([1, n]\)</span>）和整数 <span class="arithmatex">\(n\)</span>。流 <span class="arithmatex">\(1, 2, \dots, n\)</span> 依次读入，可执行 <code>"Push"</code>（入栈）或 <code>"Pop"</code>（出栈）。求一个操作序列使栈自底向上等于 <code>target</code>。<span class="arithmatex">\(|target| \leq 100, n \leq 100\)</span>。</p>
 <h2 id="background">背景 (Background)<a class="headerlink" href="#background" title="Permanent link">#</a></h2>
-<p>本题对应栈语言 / Dyck path 的简化版：把流元素决定保留或丢弃，等价于走 lattice path 中 "keep / skip" 决策。在编译器栈式机器代码生成中也有同构（中间结果是否暂存）。</p>
+<p>流是单向的：整数 <span class="arithmatex">\(1, 2, \dots, n\)</span> 只能按顺序读取，读到 <span class="arithmatex">\(i\)</span> 就必须当场决定它的去留，错过不能回头。栈的写端也是单向的：<code>"Push"</code> 只能压栈顶，<code>"Pop"</code> 只能弹栈顶。</p>
+<p>这两个单向约束合在一起，把"构造目标数组"这件事压缩成一串逐元素的局部决策——对每个流元素 <span class="arithmatex">\(i\)</span>，我们只有"留下"或"丢弃"两种动作可选，且都必须立刻执行。下面整篇推导都从这个逐元素决策展开：先看最朴素的尝试在哪里撞墙，再由此逼出唯一可行的动作规则。</p>
 <h2 id="formulation">形式化 (Formulation)<a class="headerlink" href="#formulation" title="Permanent link">#</a></h2>
-<p>设 <span class="arithmatex">\(T = (t_1 &lt; t_2 &lt; \dots &lt; t_k)\)</span>。需输出操作串 <span class="arithmatex">\(\sigma \in \{\text{Push}, \text{Pop}\}^*\)</span>，使其在按 <span class="arithmatex">\(1, 2, \dots, t_k\)</span> 依次喂入流的解释下，最终栈恰为 <span class="arithmatex">\(T\)</span>。</p>
+<p>设 <code>target</code> 含 <span class="arithmatex">\(k\)</span> 个元素，记为 <span class="arithmatex">\(T = (t_1 &lt; t_2 &lt; \dots &lt; t_k)\)</span>。需输出操作串 <span class="arithmatex">\(\sigma \in \{\text{Push}, \text{Pop}\}^*\)</span>，使其在按 <span class="arithmatex">\(1, 2, \dots\)</span> 依次喂入流的解释下，最终栈自底向上恰为 <span class="arithmatex">\(T\)</span>。</p>
+<p>朴素的想法是：把流里属于 <span class="arithmatex">\(T\)</span> 的元素 <code>"Push"</code> 进来，不属于的就跳过。但流没有"跳过"这个动作——读到 <span class="arithmatex">\(i\)</span> 只能 <code>"Push"</code> 或不动，而不动意味着 <span class="arithmatex">\(i\)</span> 之后的流元素也无法被处理（流是顺序的，不读 <span class="arithmatex">\(i\)</span> 就读不到 <span class="arithmatex">\(i+1\)</span>）。所以唯一能"消化掉" <span class="arithmatex">\(i\)</span> 又不留下它的方式，是 <code>"Push"</code> 紧跟一个 <code>"Pop"</code>。这一对操作把 <span class="arithmatex">\(i\)</span> 读进来又立刻弹走，栈复原。</p>
+<p>这就给出了真正的形式化主轴——一个关于栈中间状态的不变量。记处理完流元素 <span class="arithmatex">\(i\)</span> 之后的栈内容为 <span class="arithmatex">\(\text{stack}(i)\)</span>。我们希望：</p>
+<div class="arithmatex">\[\text{stack}(i) = T \cap [1, i].\]</div>
+<p>直觉是：读到 <span class="arithmatex">\(i\)</span> 时，凡是值 <span class="arithmatex">\(\le i\)</span> 且属于目标的元素都该已经在栈里就位，凡是不属于的都该已经被弹走。若这个不变量能从 <span class="arithmatex">\(i=0\)</span>（空栈）一路维持到 <span class="arithmatex">\(i = t_k\)</span>，那时 <span class="arithmatex">\(\text{stack}(t_k) = T \cap [1, t_k] = T\)</span>，正是所求。</p>
 <h2 id="approach">数据结构 / 想法 (Approach)<a class="headerlink" href="#approach" title="Permanent link">#</a></h2>
-<p><strong>关键观察</strong>：因 <code>target</code> 严格递增且元素从 <span class="arithmatex">\(\{1, \dots, n\}\)</span> 取，我们只需扫到 <span class="arithmatex">\(t_k\)</span>（更大的数与栈底匹配无关）。对每个 <span class="arithmatex">\(i = 1, 2, \dots, t_k\)</span>：</p>
+<p>整个算法由"如何把不变量从 <span class="arithmatex">\(i-1\)</span> 维持到 <span class="arithmatex">\(i\)</span>"唯一确定。假设 <span class="arithmatex">\(\text{stack}(i-1) = T \cap [1, i-1]\)</span> 成立，现在读入流元素 <span class="arithmatex">\(i\)</span>，需要让 <span class="arithmatex">\(\text{stack}(i) = T \cap [1, i]\)</span>。两种情况：</p>
 <ul>
-<li>若 <span class="arithmatex">\(i \in T\)</span>：输出 <code>"Push"</code>。</li>
-<li>否则：输出 <code>"Push"</code>, <code>"Pop"</code>（吃进流但立即弹出）。</li>
+<li><strong><span class="arithmatex">\(i \in T\)</span></strong>：目标里多了一个元素 <span class="arithmatex">\(i\)</span>，且因 <span class="arithmatex">\(T\)</span> 严格递增、<span class="arithmatex">\(i\)</span> 大于所有已入栈元素，它正该压在栈顶。一个 <code>"Push"</code> 即可，栈变为 <span class="arithmatex">\(T \cap [1, i]\)</span>。</li>
+<li><strong><span class="arithmatex">\(i \notin T\)</span></strong>：目标集合不变，<span class="arithmatex">\(T \cap [1, i] = T \cap [1, i-1]\)</span>，所以栈最终必须复原。但流逼着我们处理 <span class="arithmatex">\(i\)</span>——只能 <code>"Push"</code>，再立即 <code>"Pop"</code> 把它弹走，栈回到原样。</li>
 </ul>
-<p><strong>不变量</strong>：处理完 <span class="arithmatex">\(i\)</span> 后，栈中保留的元素恰为 <span class="arithmatex">\(T \cap [1, i]\)</span>，与 <code>target</code> 前缀对应。</p>
+<p>这正是前面朴素尝试撞墙后被逼出的规则：丢弃一个流元素的唯一手段就是 <code>"Push"</code>+<code>"Pop"</code>。两种情况都精确维持不变量，所以归纳成立。</p>
+<p><strong>扫到哪里停？</strong> 不变量在 <span class="arithmatex">\(i = t_k\)</span> 时已给出 <span class="arithmatex">\(\text{stack}(t_k) = T\)</span>。再继续读 <span class="arithmatex">\(i &gt; t_k\)</span>，因为这些 <span class="arithmatex">\(i\)</span> 都不在 <span class="arithmatex">\(T\)</span> 中，每个只会贡献一对相互抵消的 <code>"Push"</code>+<code>"Pop"</code>，栈始终是 <span class="arithmatex">\(T\)</span>。它们是纯粹的冗余操作。所以循环扫到 $t_k = $ <code>target[-1]</code> 即止，不必扫到 <span class="arithmatex">\(n\)</span>。</p>
+<p>先按样例 1 手算一遍，规则便一目了然。<code>target=[1,3]</code>，扫 <span class="arithmatex">\(i=1,2,3\)</span>：<span class="arithmatex">\(i=1\in T\)</span> 故 <code>Push</code>；<span class="arithmatex">\(i=2\notin T\)</span> 故 <code>Push,Pop</code>；<span class="arithmatex">\(i=3\in T\)</span> 故 <code>Push</code>。输出 <code>["Push","Push","Pop","Push"]</code>，replay 后栈为 <span class="arithmatex">\([1,3]\)</span>。</p>
 <div class="language-python highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">Solution</span><span class="p">:</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">buildArray</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">target</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
         <span class="n">ops</span> <span class="o">=</span> <span class="p">[]</span>
@@ -22498,15 +22535,16 @@
 <span class="c1"># Trace 样例 3: target=[1,2], n=4. 扫 i=1..2 (停在 target[-1]=2)</span>
 <span class="c1"># i=1: Push; i=2: Push. 输出 [&quot;Push&quot;,&quot;Push&quot;] ✓ (不读 3,4)</span>
 </code></pre></div>
+<p>因 <span class="arithmatex">\(T\)</span> 严格递增，单个前向指针 <code>j</code> 就能测试 <span class="arithmatex">\(i \in T\)</span>：<code>target[j]</code> 始终是下一个待匹配的目标值，匹配上则 <code>j</code> 前移。守卫 <code>j &lt; len(target)</code> 保证末次迭代不越界。</p>
 <h2 id="complexity">复杂度 (Complexity)<a class="headerlink" href="#complexity" title="Permanent link">#</a></h2>
 <ul>
 <li>Time <span class="arithmatex">\(O(t_k) \leq O(n)\)</span>。</li>
-<li>Space <span class="arithmatex">\(O(\text{output length}) = O(t_k)\)</span>。</li>
+<li>Space <span class="arithmatex">\(O(\text{output length}) = O(t_k)\)</span>。输出长度为 <span class="arithmatex">\(t_k + (\text{小于 } t_k \text{ 的非目标值个数})\)</span>，上界 <span class="arithmatex">\(2 t_k = O(t_k)\)</span>。</li>
 </ul>
 <h2 id="pitfalls">陷阱 (Pitfalls)<a class="headerlink" href="#pitfalls" title="Permanent link">#</a></h2>
 <ul>
-<li><strong>扫到 <span class="arithmatex">\(n\)</span> 而非 <span class="arithmatex">\(t_k\)</span></strong>：会多输出尾部的 <code>"Push","Pop"</code> 序列，与样例 3 描述"不应读取多余整数"冲突。</li>
-<li><strong>target 不一定到 <span class="arithmatex">\(n\)</span></strong>：误以为 <code>target[-1] == n</code> 会写出有误循环边界。</li>
+<li><strong>扫到 <span class="arithmatex">\(n\)</span> 而非 <span class="arithmatex">\(t_k\)</span> 会产生多余操作</strong>：<span class="arithmatex">\(i &gt; t_k\)</span> 的元素都不在 <span class="arithmatex">\(T\)</span> 中，各贡献一对相互抵消的 <code>"Push","Pop"</code>，与样例 3 "不应读取多余整数" 的描述冲突。例如 <code>target=[1,2], n=4</code> 误扫到 4 会得到 <code>["Push","Push","Push","Pop","Push","Pop"]</code>。</li>
+<li><strong>不能假设 <code>target[-1] == n</code></strong>：<code>target</code> 不一定取到 <span class="arithmatex">\(n\)</span>，把循环上界写成 <span class="arithmatex">\(n\)</span>（或假定二者相等）会写出错误边界。正确上界恒为 <code>target[-1]</code>。</li>
 </ul>
 <h2 id="related">相关题目 (Related)<a class="headerlink" href="#related" title="Permanent link">#</a></h2>
 <ul>
@@ -22622,6 +22660,8 @@
         <script src="../../../js/mathjax/tex-mml-chtml.js"></script>
       
         <script src="../../../js/mermaid.min.js"></script>
+      
+        <script src="../../../js/featured.js"></script>
       
     
   </body>

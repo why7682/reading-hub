@@ -1466,6 +1466,8 @@
       
         
       
+        
+      
     
     
     
@@ -1521,6 +1523,34 @@
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../featured/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ⭐ Featured（已验证）
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
               
             
               
@@ -1610,10 +1640,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_4" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
         
           
-          <label class="md-nav__link" for="__nav_4_4" id="__nav_4_4_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_5" id="__nav_4_5_label" tabindex="">
             
   
   
@@ -1631,8 +1661,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_4_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_4">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_5">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1915,7 +1945,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -1937,14 +1967,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_4_5" id="__nav_4_5_label" tabindex="">
+              <label class="md-nav__link " for="__nav_4_6" id="__nav_4_6_label" tabindex="">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_5">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_6">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -5321,10 +5351,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_7" checked>
         
           
-          <label class="md-nav__link" for="__nav_4_6" id="__nav_4_6_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_7" id="__nav_4_7_label" tabindex="">
             
   
   
@@ -5342,8 +5372,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_4_6">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_7_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4_7">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -22467,30 +22497,47 @@
 <h2 id="problem">Problem<a class="headerlink" href="#problem" title="Permanent link">#</a></h2>
 <p>有序数组 <code>nums</code>，除一个元素只出现 1 次，其它都恰好出现 2 次。求那个唯一元素。<strong>要求 <span class="arithmatex">\(O(\log n)\)</span> time, <span class="arithmatex">\(O(1)\)</span> space</strong>。<span class="arithmatex">\(1 \leq n \leq 10^5\)</span>。</p>
 <h2 id="background">背景 (Background)<a class="headerlink" href="#background" title="Permanent link">#</a></h2>
-<p>要做到 <span class="arithmatex">\(O(\log n)\)</span> 必须利用"有序 + 配对"性质做<strong>二分</strong>。这是二分搜索的非典型应用——搜索的不是"找某值"而是"判定不变量在哪侧被破坏"。关键观察：若不存在单一元素，所有 pair <span class="arithmatex">\((2k, 2k+1)\)</span> 都满足 <code>nums[2k] == nums[2k+1]</code>。单一元素出现后，它打破这个对齐，使其右侧所有 pair 向后偏移 1。</p>
+<p>先用最朴素的办法。所有重复元素成对出现，单一元素不成对，所以从左往右两两扫描：检查每个偶数下标 <span class="arithmatex">\(i\)</span> 是否满足 <code>nums[i] == nums[i+1]</code>。第一个不满足的偶数下标就是单一元素的位置。这正确，但要扫到目标位置，最坏 <span class="arithmatex">\(O(n)\)</span>——它没有用上"数组有序"这个条件，只用了"成对"。</p>
+<p>题目卡死了 <span class="arithmatex">\(O(\log n)\)</span>，于是问题变成：有序加上成对，能否不逐个扫描，而是每步排除一半？要用二分，就得先找到一个随下标<strong>单调</strong>变化的判定量。下面从成对结构把它推导出来。</p>
+<p>考察一个纯由配对组成、没有单一元素的有序数组，下标布局是
+$<span class="arithmatex">\((0,1),\ (2,3),\ (4,5),\ \dots\)</span>$
+即第 <span class="arithmatex">\(k\)</span> 对占据下标 <span class="arithmatex">\((2k, 2k+1)\)</span>，于是对所有 <span class="arithmatex">\(k\)</span> 有 <code>nums[2k] == nums[2k+1]</code>。现在在下标 <span class="arithmatex">\(p\)</span> 处插入单一元素，看它对每对的下标产生什么后果。<span class="arithmatex">\(p\)</span> 左边的元素仍然两两成对，未受影响；<span class="arithmatex">\(p\)</span> 自身不成对；<span class="arithmatex">\(p\)</span> 右边的每个元素都被这一次插入整体后移一位，于是右边的配对从 <span class="arithmatex">\((2k, 2k+1)\)</span> 变成 <span class="arithmatex">\((2k-1, 2k)\)</span>——配对所占的下标由"偶-奇"变为"奇-偶"。</p>
+<p>这给出单一元素位置 <span class="arithmatex">\(p\)</span> 必为偶数的理由：<span class="arithmatex">\(p\)</span> 左边的元素 <span class="arithmatex">\(0..p-1\)</span> 恰好构成整数对，故个数 <span class="arithmatex">\(p\)</span> 为偶数。它也给出我们要的单调判定量：在偶数下标处比较相邻两元素是否相等，下标越过 <span class="arithmatex">\(p\)</span> 后这个比较结果发生唯一一次翻转。</p>
 <h2 id="formulation">形式化 (Formulation)<a class="headerlink" href="#formulation" title="Permanent link">#</a></h2>
-<p>设单一元素位于 index <span class="arithmatex">\(p\)</span>（偶数）。则：
-- <span class="arithmatex">\(i &lt; p\)</span> 时 <code>nums[2k] == nums[2k+1]</code>（pair 在偶-奇位置）
-- <span class="arithmatex">\(i &gt; p\)</span> 时 <code>nums[2k-1] == nums[2k]</code>（pair 在奇-偶位置）</p>
-<p>二分目标：找最小的偶 index <span class="arithmatex">\(m\)</span> 使 <code>nums[m] != nums[m+1]</code>。</p>
+<p>只在偶数下标上定义判定量。对偶数下标 <span class="arithmatex">\(m\)</span>（即 <span class="arithmatex">\(0 \le m \le n-2\)</span> 且 <span class="arithmatex">\(m\)</span> 偶），令
+$<span class="arithmatex">\(f(m) = [\,\texttt{nums}[m] \neq \texttt{nums}[m+1]\,] \in \{0, 1\}.\)</span>$</p>
+<p>设单一元素位于偶数下标 <span class="arithmatex">\(p\)</span>。由背景的配对分析：</p>
+<ul>
+<li><span class="arithmatex">\(m &lt; p\)</span>：下标 <span class="arithmatex">\(m\)</span> 处于左半，配对占 <span class="arithmatex">\((m, m+1)\)</span>，故 <code>nums[m] == nums[m+1]</code>，即 <span class="arithmatex">\(f(m) = 0\)</span>。</li>
+<li><span class="arithmatex">\(m \ge p\)</span>：下标 <span class="arithmatex">\(m\)</span> 处于 <span class="arithmatex">\(p\)</span> 或其右侧。<span class="arithmatex">\(m = p\)</span> 时 <code>nums[p]</code> 是单一元素，与 <code>nums[p+1]</code> 不等；<span class="arithmatex">\(m &gt; p\)</span> 时配对占 <span class="arithmatex">\((m-1, m)\)</span>，于是 <code>nums[m]</code> 与右邻 <code>nums[m+1]</code> 分属不同对，不等。两种情况都有 <span class="arithmatex">\(f(m) = 1\)</span>。</li>
+</ul>
+<p>因此 <span class="arithmatex">\(f\)</span> 在偶数下标上单调：前段全 <span class="arithmatex">\(0\)</span>，从 <span class="arithmatex">\(p\)</span> 起全 <span class="arithmatex">\(1\)</span>，恰好翻转一次。求 <span class="arithmatex">\(p\)</span> 等价于求第一个 <span class="arithmatex">\(1\)</span>：
+$<span class="arithmatex">\(p = \min\{\, m \text{ 偶} : f(m) = 1 \,\} = \min\{\, m \text{ 偶} : \texttt{nums}[m] \neq \texttt{nums}[m+1] \,\}.\)</span>$</p>
+<p>单调性正是二分的前提：检验某个偶 <span class="arithmatex">\(m\)</span> 的 <span class="arithmatex">\(f(m)\)</span> 即可判断 <span class="arithmatex">\(p\)</span> 在哪一侧，从而每步排除一半偶数下标。</p>
 <h2 id="approach">数据结构 / 想法 (Approach)<a class="headerlink" href="#approach" title="Permanent link">#</a></h2>
-<p><strong>二分</strong>只在偶数 index 上：搜索区间 <span class="arithmatex">\([l, r]\)</span>（两端皆偶），mid 取偶。</p>
+<p>把二分限制在偶数下标上。维护区间 <span class="arithmatex">\([l, r]\)</span>，<span class="arithmatex">\(l, r\)</span> 始终为偶，并保持<strong>循环不变量</strong>：单一元素位置 <span class="arithmatex">\(p\)</span> 落在 <span class="arithmatex">\([l, r]\)</span> 内，且 <span class="arithmatex">\(l \le p \le r\)</span>。初始 <span class="arithmatex">\(l = 0\)</span>、<span class="arithmatex">\(r = n - 1\)</span>；因 <span class="arithmatex">\(n\)</span> 为奇数，<span class="arithmatex">\(n - 1\)</span> 为偶，区间端点合法，且 <span class="arithmatex">\(p\)</span> 显然在其中。</p>
+<p>每步取中点 <span class="arithmatex">\(m\)</span> 并强制其为偶（若 <span class="arithmatex">\(m\)</span> 奇则减一），然后检验 <span class="arithmatex">\(f(m)\)</span>，由形式化直接得到收缩规则：</p>
+<ul>
+<li><span class="arithmatex">\(f(m) = 0\)</span>（<code>nums[m] == nums[m+1]</code>）：由单调性 <span class="arithmatex">\(m &lt; p\)</span>。已知 <span class="arithmatex">\(m, m+1\)</span> 配成一对，故下一个候选偶下标是 <span class="arithmatex">\(m + 2\)</span>，令 <span class="arithmatex">\(l = m + 2\)</span>。</li>
+<li><span class="arithmatex">\(f(m) = 1\)</span>（<code>nums[m] != nums[m+1]</code>）：由单调性 <span class="arithmatex">\(m \ge p\)</span>，故 <span class="arithmatex">\(p\)</span> 在 <span class="arithmatex">\(m\)</span> 或其左侧，令 <span class="arithmatex">\(r = m\)</span>。</li>
+</ul>
+<p>两支都把 <span class="arithmatex">\(l, r\)</span> 保持为偶并保持 <span class="arithmatex">\(p \in [l, r]\)</span>，不变量成立。区间每步至少减半，终止于 <span class="arithmatex">\(l = r\)</span>，此即第一个 <span class="arithmatex">\(f = 1\)</span> 的偶下标 <span class="arithmatex">\(p\)</span>，<code>nums[l]</code> 为答案。</p>
 <div class="language-python highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">Solution</span><span class="p">:</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">singleNonDuplicate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">nums</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
         <span class="n">l</span><span class="p">,</span> <span class="n">r</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">nums</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span>
         <span class="k">while</span> <span class="n">l</span> <span class="o">&lt;</span> <span class="n">r</span><span class="p">:</span>
             <span class="n">mid</span> <span class="o">=</span> <span class="p">(</span><span class="n">l</span> <span class="o">+</span> <span class="n">r</span><span class="p">)</span> <span class="o">//</span> <span class="mi">2</span>
             <span class="k">if</span> <span class="n">mid</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
-                <span class="n">mid</span> <span class="o">-=</span> <span class="mi">1</span>   <span class="c1"># 确保 mid 偶</span>
+                <span class="n">mid</span> <span class="o">-=</span> <span class="mi">1</span>   <span class="c1"># 强制 mid 为偶，f 只在偶下标上有定义</span>
             <span class="k">if</span> <span class="n">nums</span><span class="p">[</span><span class="n">mid</span><span class="p">]</span> <span class="o">==</span> <span class="n">nums</span><span class="p">[</span><span class="n">mid</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]:</span>
-                <span class="c1"># 左半完美配对，单一元素在右</span>
+                <span class="c1"># f(mid)=0，故 mid&lt;p；mid, mid+1 成对，下一候选是 mid+2</span>
                 <span class="n">l</span> <span class="o">=</span> <span class="n">mid</span> <span class="o">+</span> <span class="mi">2</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="c1"># 配对被破坏，单一元素在 mid 或左</span>
+                <span class="c1"># f(mid)=1，故 p&lt;=mid</span>
                 <span class="n">r</span> <span class="o">=</span> <span class="n">mid</span>
         <span class="k">return</span> <span class="n">nums</span><span class="p">[</span><span class="n">l</span><span class="p">]</span>
 </code></pre></div>
-<p><strong>不变量</strong>：循环开始时，<code>nums[l..r]</code> 内一定包含答案，且 <span class="arithmatex">\(l, r\)</span> 均偶。终止时 <span class="arithmatex">\(l = r\)</span> 即为答案 index。</p>
+<p>为何必须把 <span class="arithmatex">\(m\)</span> 取偶：<span class="arithmatex">\(f\)</span> 只在偶下标上有"左对偶-奇、右对奇-偶"的整齐结构。若 <span class="arithmatex">\(m\)</span> 为奇，则 <code>nums[m]</code> 在左半本属于配对 <span class="arithmatex">\((m-1, m)\)</span>，比较 <code>nums[m] == nums[m+1]</code> 问的是错对，其结果不再单调，收缩规则失效。强制 <span class="arithmatex">\(m\)</span> 偶就是让每次检验都落在 <span class="arithmatex">\(f\)</span> 有定义的下标上。</p>
 <p><strong>Trace <code>[1,1,2,3,3,4,4,8,8]</code></strong> (n=9, 答案在 idx 2)：
 - l=0, r=8, mid=4 (偶)。nums[4]=3, nums[5]=4，不等 → r=4
 - l=0, r=4, mid=2 (偶)。nums[2]=2, nums[3]=3，不等 → r=2
@@ -22500,7 +22547,7 @@
 - l=0,r=6,mid=2(偶)。nums[2]=7=nums[3] → l=4
 - l=4,r=6,mid=5→4。nums[4]=10, nums[5]=11，不等 → r=4
 - l=r=4，返回 10 ✓</p>
-<p><strong>对称解法</strong>：用异或 trick <code>mid ^ 1</code> 找配对位置（若 mid 偶则 mid+1，若奇则 mid-1）。等价但更紧凑。</p>
+<p><strong>对称写法</strong>：用 <code>mid ^ 1</code> 取配对伙伴的下标。异或末位把 <span class="arithmatex">\(m\)</span> 映到它的同对位置（偶 <span class="arithmatex">\(m \to m+1\)</span>，奇 <span class="arithmatex">\(m \to m-1\)</span>），这正是成对结构本身。于是无论 <span class="arithmatex">\(m\)</span> 奇偶，<code>nums[mid] == nums[mid ^ 1]</code> 都在问"<code>nums[mid]</code> 与同对伙伴是否相等"，省去强制取偶的分支，等价但更紧凑。</p>
 <h2 id="complexity">复杂度 (Complexity)<a class="headerlink" href="#complexity" title="Permanent link">#</a></h2>
 <ul>
 <li>Time: <span class="arithmatex">\(O(\log n)\)</span></li>
@@ -22508,14 +22555,14 @@
 </ul>
 <h2 id="pitfalls">陷阱 (Pitfalls)<a class="headerlink" href="#pitfalls" title="Permanent link">#</a></h2>
 <ul>
-<li><strong>mid 必须偶</strong>：否则配对方向乱套。<code>if mid % 2: mid -= 1</code> 或用 <code>mid &amp;= ~1</code>。</li>
-<li><strong><code>l = mid + 2</code></strong>：偶数推进；写 <code>mid + 1</code> 会让 l 变奇导致下一轮 mid 必须再调。</li>
-<li><strong>n 是奇数</strong>：题目天然保证（n 个元素，1 个单 + 偶数对），所以 n 总是奇数；<code>len - 1</code> 是偶。</li>
-<li><strong>不能用 XOR 全数组求解</strong>：那是 <span class="arithmatex">\(O(n)\)</span>，违反 <span class="arithmatex">\(O(\log n)\)</span> 要求。</li>
+<li><strong>mid 必须偶</strong>：<span class="arithmatex">\(f\)</span> 只在偶下标上单调，奇下标比较的是错对。<code>if mid % 2: mid -= 1</code> 或 <code>mid &amp;= ~1</code>。</li>
+<li><strong><code>l = mid + 2</code></strong>：<span class="arithmatex">\(f(\text{mid})=0\)</span> 时 mid、mid+1 已配成一对，下一候选偶下标是 mid+2；写 <code>mid + 1</code> 会让 l 变奇，破坏"l 偶"这一不变量。</li>
+<li><strong>n 是奇数</strong>：<span class="arithmatex">\(n\)</span> 个元素由 1 个单一元素与 <span class="arithmatex">\((n-1)/2\)</span> 对组成，故 <span class="arithmatex">\(n = 2k+1\)</span> 必为奇，<code>len - 1</code> 必为偶，初始 <span class="arithmatex">\(r\)</span> 合法。</li>
+<li><strong>不能用 XOR 全数组求解</strong>：全数组异或得单一元素是 <span class="arithmatex">\(O(n)\)</span>，未利用有序，违反 <span class="arithmatex">\(O(\log n)\)</span> 要求。</li>
 </ul>
 <h2 id="related">相关题目 (Related)<a class="headerlink" href="#related" title="Permanent link">#</a></h2>
 <ul>
-<li><code>#136. Single Number (off-wiki)</code> — 无序版本，<span class="arithmatex">\(O(n)\)</span> XOR</li>
+<li><a href="../0136_single-number/">#136. Single Number</a> — 无序版本，<span class="arithmatex">\(O(n)\)</span> XOR</li>
 <li><code>#33. Search in Rotated Sorted Array (off-wiki)</code> — 二分判定 invariant 在哪侧的另一典型</li>
 </ul>
 <h2 id="further-reading">Further Reading<a class="headerlink" href="#further-reading" title="Permanent link">#</a></h2>
@@ -22628,6 +22675,8 @@
         <script src="../../../js/mathjax/tex-mml-chtml.js"></script>
       
         <script src="../../../js/mermaid.min.js"></script>
+      
+        <script src="../../../js/featured.js"></script>
       
     
   </body>

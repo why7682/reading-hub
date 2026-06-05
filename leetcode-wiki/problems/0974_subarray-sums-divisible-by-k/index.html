@@ -1466,6 +1466,8 @@
       
         
       
+        
+      
     
     
     
@@ -1521,6 +1523,34 @@
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../featured/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ⭐ Featured（已验证）
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
               
             
               
@@ -1610,10 +1640,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_4" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
         
           
-          <label class="md-nav__link" for="__nav_4_4" id="__nav_4_4_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_5" id="__nav_4_5_label" tabindex="">
             
   
   
@@ -1631,8 +1661,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_4_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_4">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_5">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1915,7 +1945,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -1937,14 +1967,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_4_5" id="__nav_4_5_label" tabindex="">
+              <label class="md-nav__link " for="__nav_4_6" id="__nav_4_6_label" tabindex="">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_5">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_6">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -5321,10 +5351,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_7" checked>
         
           
-          <label class="md-nav__link" for="__nav_4_6" id="__nav_4_6_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_7" id="__nav_4_7_label" tabindex="">
             
   
   
@@ -5342,8 +5372,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_4_6">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_7_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4_7">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -22467,40 +22497,53 @@
 <h2 id="problem">Problem<a class="headerlink" href="#problem" title="Permanent link">#</a></h2>
 <p>给定整数数组 <code>nums</code> 与正整数 <code>k</code>，统计连续子数组中和能被 <code>k</code> 整除的个数。<span class="arithmatex">\(1 \leq n \leq 3 \times 10^4\)</span>，<span class="arithmatex">\(-10^4 \leq \text{nums}[i] \leq 10^4\)</span>，<span class="arithmatex">\(2 \leq k \leq 10^4\)</span>。</p>
 <h2 id="background">背景 (Background)<a class="headerlink" href="#background" title="Permanent link">#</a></h2>
-<p>本题是「前缀和 + 同余类计数」的范式：把"和能被 <span class="arithmatex">\(k\)</span> 整除"翻译成"两端前缀和在 <span class="arithmatex">\(\mathbb{Z}/k\mathbb{Z}\)</span> 中属于同一陪集"。这与生日攻击 / Hashing 经典问题"在 <span class="arithmatex">\(n\)</span> 个数里找两个同余"同源——一个加法群里的计数问题，复杂度被 <span class="arithmatex">\(\Theta(n)\)</span> 的 bucket scan 锁死。同类技巧在 #523 Continuous Subarray Sum、#560 Subarray Sum Equals K、Codeforces 上"和被 <span class="arithmatex">\(p\)</span> 整除"题中反复出现。</p>
+<p>最直接的做法是枚举每一对端点 <span class="arithmatex">\((i, j)\)</span>，算出子数组 <span class="arithmatex">\(\text{nums}[i+1..j]\)</span> 的和，再检查它是否被 <span class="arithmatex">\(k\)</span> 整除。端点对有 <span class="arithmatex">\(\Theta(n^2)\)</span> 个，即使把"求子数组和"优化到 <span class="arithmatex">\(O(1)\)</span>，枚举本身已经是 <span class="arithmatex">\(O(n^2)\)</span>。当 <span class="arithmatex">\(n = 3 \times 10^4\)</span> 时这接近 <span class="arithmatex">\(10^9\)</span> 次检查，太慢。</p>
+<p>要突破 <span class="arithmatex">\(O(n^2)\)</span>，不能再逐对枚举，必须找到一个量，使得"这一对端点合法"可以在不看另一端点的情况下被识别出来。下面先把子数组和写成前缀和之差，再观察整除条件落在这个差上意味着什么——这一步把"配对"问题转成"同类计数"问题，从而摆脱逐对枚举。</p>
 <h2 id="formulation">形式化 (Formulation)<a class="headerlink" href="#formulation" title="Permanent link">#</a></h2>
-<p>设 <span class="arithmatex">\(S_0 = 0\)</span>，<span class="arithmatex">\(S_i = \sum_{t=1}^{i} \text{nums}[t]\)</span>。求满足</p>
-<div class="arithmatex">\[\#\{(i, j) : 0 \leq i &lt; j \leq n,\ (S_j - S_i) \equiv 0 \pmod{k}\}\]</div>
-<p>的对数，等价于求满足 <span class="arithmatex">\(S_j \equiv S_i \pmod{k}\)</span> 的对数。</p>
+<p>设 <span class="arithmatex">\(S_0 = 0\)</span>，<span class="arithmatex">\(S_i = \sum_{t=1}^{i} \text{nums}[t]\)</span>。子数组 <span class="arithmatex">\(\text{nums}[i+1..j]\)</span> 的和恰好是两端前缀和之差：</p>
+<div class="arithmatex">\[\sum_{t=i+1}^{j} \text{nums}[t] = S_j - S_i.\]</div>
+<p>于是问题变成：在 <span class="arithmatex">\(n+1\)</span> 个前缀和 <span class="arithmatex">\(S_0, S_1, \dots, S_n\)</span> 中，数出满足 <span class="arithmatex">\(0 \le i &lt; j \le n\)</span> 且 <span class="arithmatex">\((S_j - S_i) \equiv 0 \pmod{k}\)</span> 的端点对个数。记某集合 <span class="arithmatex">\(A\)</span> 的元素个数为 <span class="arithmatex">\(|A|\)</span>，要求的是</p>
+<div class="arithmatex">\[\bigl|\,\{(i, j) : 0 \le i &lt; j \le n,\ (S_j - S_i) \equiv 0 \pmod{k}\}\,\bigr|.\]</div>
+<p><strong>直觉</strong>：<span class="arithmatex">\((S_j - S_i) \equiv 0 \pmod{k}\)</span> 这个条件耦合了 <span class="arithmatex">\(i\)</span> 和 <span class="arithmatex">\(j\)</span>，所以才需要逐对检查。但取模运算允许我们把这个差拆开——一个差能被 <span class="arithmatex">\(k\)</span> 整除，当且仅当它的两个分量除以 <span class="arithmatex">\(k\)</span> 留下相同的余数。这样配对条件就退化成"两个前缀和的余数相等"，而余数是每个前缀和自己的属性，与另一端无关。</p>
+<p>形式化地，对任意整数 <span class="arithmatex">\(a, b\)</span>，</p>
+<div class="arithmatex">\[(b - a) \equiv 0 \pmod{k} \iff b \equiv a \pmod{k} \iff (b \bmod k) = (a \bmod k).\]</div>
+<p>把 <span class="arithmatex">\(a = S_i,\ b = S_j\)</span> 代入，合法端点对的条件等价于</p>
+<div class="arithmatex">\[S_j \equiv S_i \pmod{k}.\]</div>
+<p>至此整除这个跨端点的耦合条件被替换成了一个纯粹的"同余"条件：只要两个前缀和落在同一个余数类里，它们之间的子数组就被 <span class="arithmatex">\(k\)</span> 整除。</p>
 <h2 id="approach">数据结构 / 想法 (Approach)<a class="headerlink" href="#approach" title="Permanent link">#</a></h2>
-<p><strong>关键不变量</strong>：子数组 <span class="arithmatex">\(\text{nums}[i+1..j]\)</span> 的和被 <span class="arithmatex">\(k\)</span> 整除当且仅当 <span class="arithmatex">\(S_i \bmod k = S_j \bmod k\)</span>。因此把所有前缀和按模 <span class="arithmatex">\(k\)</span> 的余数分桶，桶 <span class="arithmatex">\(r\)</span> 中若有 <span class="arithmatex">\(c_r\)</span> 个前缀和，则贡献 <span class="arithmatex">\(\binom{c_r}{2}\)</span> 对子数组。</p>
-<p><strong>陷阱</strong>：Python <code>%</code> 对负数已返回非负结果（<code>-1 % 5 == 4</code>），但 C++/Java 的 <code>%</code> 保符号，需 <code>((x % k) + k) % k</code>。</p>
-<p><strong>实现（边遍历边计数，省一遍 pass）</strong>：</p>
+<p><strong>从同余条件导出计数公式。</strong> 把 <span class="arithmatex">\(n+1\)</span> 个前缀和按其模 <span class="arithmatex">\(k\)</span> 的余数分类。固定一个余数 <span class="arithmatex">\(r \in \{0, 1, \dots, k-1\}\)</span>，设余数恰为 <span class="arithmatex">\(r\)</span> 的前缀和下标共有 <span class="arithmatex">\(c_r\)</span> 个。由上面的等价关系，合法端点对 <span class="arithmatex">\((i, j)\)</span> 恰好对应"两个下标余数相同"。因此每一对来自同一类的下标 <span class="arithmatex">\(\{i, j\}\)</span>（<span class="arithmatex">\(i \ne j\)</span>）都给出一个合法子数组，而 <span class="arithmatex">\(c_r\)</span> 个下标中的无序对共有 <span class="arithmatex">\(\binom{c_r}{2}\)</span> 个。不同余数类互不重叠，故答案为</p>
+<div class="arithmatex">\[\sum_{r=0}^{k-1} \binom{c_r}{2}.\]</div>
+<p>这一步把原来 <span class="arithmatex">\(\Theta(n^2)\)</span> 的逐对枚举，换成了对每个余数类只算一次的组合计数。</p>
+<p><strong>从两遍化为一遍。</strong> 上式需要先扫一遍得到所有 <span class="arithmatex">\(c_r\)</span>，再求和。但 <span class="arithmatex">\(\binom{c_r}{2}\)</span> 可以在线累加：按下标从小到大处理前缀和，当遇到第 <span class="arithmatex">\(m\)</span> 个余数为 <span class="arithmatex">\(r\)</span> 的前缀和时，它能与之前已出现的 <span class="arithmatex">\(m-1\)</span> 个同余前缀和各配成一对，正好新增 <span class="arithmatex">\(m-1\)</span> 对。把每个新前缀和"先与已有同余者配对、再计入桶"，累加的增量之和就是 <span class="arithmatex">\(\sum_r \binom{c_r}{2}\)</span>。这就把两遍并成了一遍。</p>
+<p><strong>起点 <span class="arithmatex">\(S_0 = 0\)</span> 必须先入桶。</strong> <span class="arithmatex">\(S_0 = 0\)</span> 是一个合法前缀和（余数为 <span class="arithmatex">\(0\)</span>）。若某个 <span class="arithmatex">\(S_j \equiv 0 \pmod k\)</span>，则子数组 <span class="arithmatex">\(\text{nums}[1..j]\)</span> 自身被 <span class="arithmatex">\(k\)</span> 整除，这一对正是 <span class="arithmatex">\((0, j)\)</span>。因此余数 <span class="arithmatex">\(0\)</span> 的桶必须以计数 <span class="arithmatex">\(1\)</span> 起始，否则会漏掉所有"前缀本身被 <span class="arithmatex">\(k\)</span> 整除"的子数组。</p>
+<p><strong>实现（边遍历边计数，一遍 pass）</strong>：</p>
 <div class="language-python highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">collections</span><span class="w"> </span><span class="kn">import</span> <span class="n">Counter</span>
 
 <span class="k">class</span><span class="w"> </span><span class="nc">Solution</span><span class="p">:</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">subarraysDivByK</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">nums</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">],</span> <span class="n">k</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
-        <span class="n">count</span> <span class="o">=</span> <span class="n">Counter</span><span class="p">({</span><span class="mi">0</span><span class="p">:</span> <span class="mi">1</span><span class="p">})</span>   <span class="c1"># S_0 = 0 占一桶</span>
+        <span class="n">count</span> <span class="o">=</span> <span class="n">Counter</span><span class="p">({</span><span class="mi">0</span><span class="p">:</span> <span class="mi">1</span><span class="p">})</span>   <span class="c1"># S_0 = 0 先占余数 0 的桶</span>
         <span class="n">prefix</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="n">ans</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">nums</span><span class="p">:</span>
             <span class="n">prefix</span> <span class="o">+=</span> <span class="n">x</span>
             <span class="n">r</span> <span class="o">=</span> <span class="n">prefix</span> <span class="o">%</span> <span class="n">k</span>        <span class="c1"># Python 的 % 已保证 r ∈ [0, k)</span>
-            <span class="n">ans</span> <span class="o">+=</span> <span class="n">count</span><span class="p">[</span><span class="n">r</span><span class="p">]</span>       <span class="c1"># 与之前同余的所有前缀和配对</span>
+            <span class="n">ans</span> <span class="o">+=</span> <span class="n">count</span><span class="p">[</span><span class="n">r</span><span class="p">]</span>       <span class="c1"># 与之前所有同余前缀和各配一对</span>
             <span class="n">count</span><span class="p">[</span><span class="n">r</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
         <span class="k">return</span> <span class="n">ans</span>
 </code></pre></div>
-<p><strong>手动 trace 样例 1</strong>：<code>nums=[4,5,0,-2,-3,1]</code>, <code>k=5</code>。前缀和 <span class="arithmatex">\(S = [0,4,9,9,7,4,5]\)</span>，<span class="arithmatex">\(S \bmod 5 = [0,4,4,4,2,4,0]\)</span>。桶计数：<code>0→2, 2→1, 4→4</code>，贡献 <span class="arithmatex">\(\binom{2}{2}+\binom{4}{2}=1+6=7\)</span>。✅</p>
+<p><code>ans += count[r]</code> 在 <code>count[r] += 1</code> 之前执行：先用"当前桶里已有的数量"作为本次新增的配对数，再把自己计入。两行交换会重复计入自身或漏配，顺序是不变量的关键。</p>
+<p><strong>手动 trace 样例 1</strong>：<code>nums=[4,5,0,-2,-3,1]</code>, <code>k=5</code>。前缀和 <span class="arithmatex">\(S = [0,4,9,9,7,4,5]\)</span>，<span class="arithmatex">\(S \bmod 5 = [0,4,4,4,2,4,0]\)</span>。各余数类的大小：<span class="arithmatex">\(c_0 = 2,\ c_2 = 1,\ c_4 = 4\)</span>。代入公式 <span class="arithmatex">\(\binom{2}{2}+\binom{4}{2}=1+6=7\)</span>。在线累加给出同一结果。✅</p>
 <h2 id="complexity">复杂度 (Complexity)<a class="headerlink" href="#complexity" title="Permanent link">#</a></h2>
 <ul>
-<li>Time: <span class="arithmatex">\(O(n)\)</span>，一遍遍历 + 哈希表 <span class="arithmatex">\(O(1)\)</span> 摊销。</li>
-<li>Space: <span class="arithmatex">\(O(\min(n, k))\)</span>，桶至多 <span class="arithmatex">\(k\)</span> 个或 <span class="arithmatex">\(n+1\)</span> 个不同前缀和。</li>
+<li>Time: <span class="arithmatex">\(O(n)\)</span>，一遍遍历 + 哈希表 <span class="arithmatex">\(O(1)\)</span> 摊销。复杂度由这一次 <span class="arithmatex">\(\Theta(n)\)</span> 的扫描所决定，不再有逐对枚举。</li>
+<li>Space: <span class="arithmatex">\(O(\min(n, k))\)</span>，桶至多 <span class="arithmatex">\(k\)</span> 个（余数类数），或至多 <span class="arithmatex">\(n+1\)</span> 个不同前缀和。</li>
 </ul>
 <h2 id="pitfalls">陷阱 (Pitfalls)<a class="headerlink" href="#pitfalls" title="Permanent link">#</a></h2>
 <ul>
-<li>C++/Java 中负数取模要补正：<code>((prefix % k) + k) % k</code>。</li>
-<li>必须把 <code>count[0] = 1</code> 作为初始值（对应 <span class="arithmatex">\(S_0 = 0\)</span>），否则会漏掉"前缀本身被 <span class="arithmatex">\(k\)</span> 整除"的子数组。</li>
-<li><span class="arithmatex">\(k\)</span> 可能等于 <span class="arithmatex">\(2\)</span>，桶很少时 hashmap 与数组都行；用数组 <code>[0]*k</code> 比 <code>Counter</code> 更快。</li>
+<li>C++/Java 中负数取模向零截断（<code>(-1) % 5 == -1</code>），余数可能为负，要补正：<code>((prefix % k) + k) % k</code>。Python 的 <code>%</code> 已返回 <span class="arithmatex">\([0, k)\)</span> 内的非负余数（<code>-1 % 5 == 4</code>），无需补正。</li>
+<li>必须把 <code>count[0] = 1</code> 作为初始值（对应 <span class="arithmatex">\(S_0 = 0\)</span>），否则会漏掉"前缀本身被 <span class="arithmatex">\(k\)</span> 整除"的子数组；用 <code>nums=[5], k=5</code> 可验证：缺了 <span class="arithmatex">\(S_0\)</span> 桶就会错算成 <span class="arithmatex">\(0\)</span>。</li>
+<li><code>ans += count[r]</code> 与 <code>count[r] += 1</code> 的先后顺序不可交换，前者依赖"自己尚未入桶"这个状态。</li>
+<li><span class="arithmatex">\(k\)</span> 可能很小（如 <span class="arithmatex">\(k = 2\)</span>），桶很少时数组与 hashmap 都行；用数组 <code>[0]*k</code> 替代 <code>Counter</code> 常数更小。</li>
 </ul>
 <h2 id="related">相关题目 (Related)<a class="headerlink" href="#related" title="Permanent link">#</a></h2>
 <ul>
@@ -22618,6 +22661,8 @@
         <script src="../../../js/mathjax/tex-mml-chtml.js"></script>
       
         <script src="../../../js/mermaid.min.js"></script>
+      
+        <script src="../../../js/featured.js"></script>
       
     
   </body>

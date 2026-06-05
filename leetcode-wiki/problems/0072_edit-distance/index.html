@@ -1466,6 +1466,8 @@
       
         
       
+        
+      
     
     
     
@@ -1521,6 +1523,34 @@
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../featured/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ⭐ Featured（已验证）
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
               
             
               
@@ -1610,10 +1640,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_4" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
         
           
-          <label class="md-nav__link" for="__nav_4_4" id="__nav_4_4_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_5" id="__nav_4_5_label" tabindex="">
             
   
   
@@ -1631,8 +1661,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_4_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_4">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_5">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1915,7 +1945,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -1937,14 +1967,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_4_5" id="__nav_4_5_label" tabindex="">
+              <label class="md-nav__link " for="__nav_4_6" id="__nav_4_6_label" tabindex="">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_5">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_6">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -5321,10 +5351,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_7" checked>
         
           
-          <label class="md-nav__link" for="__nav_4_6" id="__nav_4_6_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_7" id="__nav_4_7_label" tabindex="">
             
   
   
@@ -5342,8 +5372,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_4_6">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_7_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4_7">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -22467,23 +22497,35 @@
 <h2 id="problem">Problem<a class="headerlink" href="#problem" title="Permanent link">#</a></h2>
 <p>给字符串 <code>word1</code>, <code>word2</code>，每步可执行 (插入 / 删除 / 替换) 一个字符。求把 <code>word1</code> 转成 <code>word2</code> 的最少操作数。<span class="arithmatex">\(0 \le |w| \le 500\)</span>。</p>
 <h2 id="_1">背景<a class="headerlink" href="#_1" title="Permanent link">#</a></h2>
-<p><strong>Levenshtein 距离</strong> (Levenshtein 1965, 苏联数学家)，是字符串度量空间最经典的距离之一，源于编码理论中的<strong>单符号噪声信道</strong>模型。其 DP 解 (Wagner &amp; Fischer 1974) 是 DP 教学的标准例题，与 LCS（最长公共子序列）、序列对齐 (Needleman–Wunsch 1970) 互为变体——后者在生物信息学中用于 DNA / 蛋白序列比对。Edit distance 还是 fuzzy matching、拼写纠错 (Norvig 2007)、DNA assembly 的底层度量。</p>
-<p>理论上 <span class="arithmatex">\(O(n^2)\)</span> 的复杂度被认为<strong>几乎最优</strong>：Backurs &amp; Indyk (2015, STOC) 证明若编辑距离能在 <span class="arithmatex">\(O(n^{2-\epsilon})\)</span> 解决，则 SETH 假设崩塌。</p>
+<p>先固定记号。记 $w_1 = $ <code>word1</code>，$w_2 = $ <code>word2</code>，并约定半开区间 <span class="arithmatex">\(w_1[0..i)\)</span> 表示 <span class="arithmatex">\(w_1\)</span> 的前 <span class="arithmatex">\(i\)</span> 个字符，其末位是 <span class="arithmatex">\(w_1[i-1]\)</span>；<span class="arithmatex">\(w_2[0..j)\)</span> 同理。整页要回答的就是一个量：把整串 <span class="arithmatex">\(w_1\)</span> 改写成整串 <span class="arithmatex">\(w_2\)</span> 的最少操作数。</p>
+<p>最朴素的尝试是直接枚举操作序列。一个把 <span class="arithmatex">\(w_1\)</span> 改写成 <span class="arithmatex">\(w_2\)</span> 的合法序列，每步在某个位置插入、删除或替换一个字符；位置与操作的组合数随串长指数增长，逐一枚举立刻失效。</p>
+<p>退一步，能否贪心？例如逐位比对，遇到不同就替换。但这忽略了插入与删除会改变后续对齐：若 <span class="arithmatex">\(w_1\)</span> 比 <span class="arithmatex">\(w_2\)</span> 少一个字符，最优解可能在中间插入一次，使后面整段恰好对上，而逐位替换会把后面全部判为不同。贪心只看局部，看不到这种全局错位，于是失败。</p>
+<p>枚举太多、贪心太短视，但两次失败都指向同一处结构：把 <span class="arithmatex">\(w_1\)</span> 改写到 <span class="arithmatex">\(w_2\)</span>，每一步真正要决定的，只是两串各自当前的末位字符如何处理。一旦末位的处理方式定下，剩下的就是把两个更短的前缀对齐——一个形状完全相同、规模更小的问题。这正是动态规划成立的信号：最优解在末尾分解为更小子问题的最优解。下面把它精确化，并让这条递推成为后续一切的脊柱。</p>
 <h2 id="_2">形式化<a class="headerlink" href="#_2" title="Permanent link">#</a></h2>
-<p>设 <span class="arithmatex">\(f(i, j)\)</span> = 把 <span class="arithmatex">\(w_1[0..i)\)</span> 转成 <span class="arithmatex">\(w_2[0..j)\)</span> 的最少操作数。</p>
+<p><strong>直觉。</strong> 要从 <span class="arithmatex">\(w_1\)</span> 改写到 <span class="arithmatex">\(w_2\)</span>，只需盯住两串当前的末位字符 <span class="arithmatex">\(w_1[i-1]\)</span> 与 <span class="arithmatex">\(w_2[j-1]\)</span>，问"消除这一对末位、最便宜的最后一步是什么"。无论这一步怎么选，它都把问题约简为一个"把更短的前缀对齐"的同类问题。于是一个二维下标 <span class="arithmatex">\((i, j)\)</span> 就记下了"还剩哪两段前缀要对齐"——而这恰好是确定后续最优代价所需的全部信息，多一分则冗余，少一分则不足。</p>
+<p><strong>状态。</strong> 设 <span class="arithmatex">\(f(i, j)\)</span> 为把 <span class="arithmatex">\(w_1[0..i)\)</span> 转成 <span class="arithmatex">\(w_2[0..j)\)</span> 的最少操作数。最终答案是 <span class="arithmatex">\(f(|w_1|, |w_2|)\)</span>。</p>
+<p><strong>末步分类。</strong> 取任一作用到状态 <span class="arithmatex">\((i, j)\)</span> 的最优序列，看它的最后一步。针对末位字符对 <span class="arithmatex">\((w_1[i-1], w_2[j-1])\)</span>，能采取的动作只有三类，三类互斥且穷尽，每类对应唯一一个更小的子问题：</p>
+<ul>
+<li><strong>对齐（保留 / 替换）</strong>：处理掉 <span class="arithmatex">\(w_1[i-1]\)</span> 与 <span class="arithmatex">\(w_2[j-1]\)</span> 的对齐。若两字符已相等，无需操作，代价归约到 <span class="arithmatex">\(f(i-1, j-1)\)</span>；若不等，用一次替换，代价 <span class="arithmatex">\(1 + f(i-1, j-1)\)</span>。</li>
+<li><strong>删除</strong>：把 <span class="arithmatex">\(w_1[i-1]\)</span> 删掉，剩下 <span class="arithmatex">\(w_1[0..i-1)\)</span> 仍要对齐到 <span class="arithmatex">\(w_2[0..j)\)</span>，代价 <span class="arithmatex">\(1 + f(i-1, j)\)</span>。</li>
+<li><strong>插入</strong>：在 <span class="arithmatex">\(w_1\)</span> 末尾补上 <span class="arithmatex">\(w_2[j-1]\)</span>，剩下 <span class="arithmatex">\(w_1[0..i)\)</span> 要对齐到 <span class="arithmatex">\(w_2[0..j-1)\)</span>，代价 <span class="arithmatex">\(1 + f(i, j-1)\)</span>。</li>
+</ul>
+<p>为何这三类穷尽了一切？末位对 <span class="arithmatex">\((w_1[i-1], w_2[j-1])\)</span> 在最优序列里只有三种归宿：两者被对齐到一起（对齐），<span class="arithmatex">\(w_1[i-1]\)</span> 不进入 <span class="arithmatex">\(w_2\)</span>（删除），或 <span class="arithmatex">\(w_2[j-1]\)</span> 不来自 <span class="arithmatex">\(w_1\)</span>（插入）。没有第四种。故对这三类取最小值即得 <span class="arithmatex">\(f(i, j)\)</span>。当 <span class="arithmatex">\(w_1[i-1] = w_2[j-1]\)</span> 时，对齐类降为零代价的 <span class="arithmatex">\(f(i-1, j-1)\)</span>，它不大于其余两支，可单列出来：</p>
 <div class="arithmatex">\[
 f(i, j) = \begin{cases}
-\max(i, j) &amp; \text{if } i = 0 \text{ or } j = 0\\
-f(i-1, j-1) &amp; \text{if } w_1[i-1] = w_2[j-1]\\
+\max(i, j) &amp; \text{if } i = 0 \text{ or } j = 0 \\
+f(i-1, j-1) &amp; \text{if } w_1[i-1] = w_2[j-1] \\
 1 + \min\{f(i-1, j),\, f(i, j-1),\, f(i-1, j-1)\} &amp; \text{otherwise}
-\end{cases}
+\end{cases} \tag{1}
 \]</div>
-<p>答案为 <span class="arithmatex">\(f(|w_1|, |w_2|)\)</span>。</p>
+<p><strong>边界。</strong> 当 <span class="arithmatex">\(i = 0\)</span> 时 <span class="arithmatex">\(w_1\)</span> 的前缀为空，只能靠 <span class="arithmatex">\(j\)</span> 次插入补出 <span class="arithmatex">\(w_2[0..j)\)</span>；当 <span class="arithmatex">\(j = 0\)</span> 时对称地需 <span class="arithmatex">\(i\)</span> 次删除。基础情形只在某个下标为 <span class="arithmatex">\(0\)</span> 时触发，此时另一个下标本身就是答案，而 <span class="arithmatex">\(\max(i, j)\)</span> 恰好取出那个非零下标，与逐一写 <span class="arithmatex">\(i = 0 \Rightarrow j\)</span>、<span class="arithmatex">\(j = 0 \Rightarrow i\)</span> 完全等价。记住这一点：边界值不是 <span class="arithmatex">\(0\)</span>，这是后面最常见的错误来源。</p>
 <h2 id="_3">数据结构 / 想法<a class="headerlink" href="#_3" title="Permanent link">#</a></h2>
-<p><strong>二维 DP</strong>：<span class="arithmatex">\(O(nm)\)</span> 时间空间。按 <span class="arithmatex">\(i\)</span> 行扫描即可。</p>
-<p><strong>滚动数组</strong>：只用两行（前一行 + 当前行），空间降到 <span class="arithmatex">\(O(\min(n,m))\)</span>。<strong>关键</strong>：内层循环更新 <code>dp[j]</code> 时，旧的 <code>dp[j-1]</code> 已被覆盖，需先用临时变量保存（代表对角线 <span class="arithmatex">\(f(i-1, j-1)\)</span>）。</p>
-<p><strong>进阶</strong>：Hirschberg 算法可在 <span class="arithmatex">\(O(\min(n, m))\)</span> 空间内<strong>重建编辑路径</strong>（不止距离），关键是分治 + 中点对齐。Masek &amp; Paterson (1980) 用 Four Russians 法把常数加速到 <span class="arithmatex">\(O(n^2 / \log n)\)</span>。</p>
-<p><strong>不变量</strong>：处理完第 <span class="arithmatex">\(i\)</span> 行时，<code>dp[j]</code> 准确等于 <span class="arithmatex">\(f(i, j)\)</span>。<strong>正确性</strong>：状态转移覆盖了所有最优解的最后一步操作（保留 / 删 / 插 / 改），由 Bellman 最优性原理保证。</p>
+<p>递推式 (1) 自己规定了一切实现细节。把每个状态 <span class="arithmatex">\((i, j)\)</span> 看作一个节点，(1) 给出三条入边——<span class="arithmatex">\((i, j)\)</span> 依赖 <span class="arithmatex">\((i-1, j)\)</span>、<span class="arithmatex">\((i, j-1)\)</span>、<span class="arithmatex">\((i-1, j-1)\)</span>。这是一张无环图，每条边都指向行号或列号更小的节点，故按 <span class="arithmatex">\((i, j)\)</span> 的行优先（自底向上）顺序填表，每个状态被求值时它的三个前驱都已就绪。这就是二维 DP：开 <span class="arithmatex">\((n+1)\times(m+1)\)</span> 的表，第一行第一列按边界 <span class="arithmatex">\(\max(i, j)\)</span> 初始化，其余按 (1) 逐格填，读出 <span class="arithmatex">\(f(n, m)\)</span>。时间空间均 <span class="arithmatex">\(\Theta(nm)\)</span>。</p>
+<p><strong>空间优化由依赖结构强制得出。</strong> (1) 的三个前驱全部落在第 <span class="arithmatex">\(i\)</span> 行或第 <span class="arithmatex">\(i-1\)</span> 行——没有任何状态需要回看更早的行。于是只保留前一行就够：用一维数组 <code>dp</code>，扫描第 <span class="arithmatex">\(i\)</span> 行前先令 <code>dp[j]</code> 持有 <span class="arithmatex">\(f(i-1, j)\)</span>，逐格把它就地更新成 <span class="arithmatex">\(f(i, j)\)</span>。空间降到 <span class="arithmatex">\(\Theta(\min(n, m))\)</span>（让较短串当列即可）。</p>
+<p>就地更新有一处必须从依赖结构推出来的细节。从左向右扫到列 <span class="arithmatex">\(j\)</span> 时，(1) 要用三个前驱：<span class="arithmatex">\(f(i, j-1)\)</span> 是同一行已经算好的新 <code>dp[j-1]</code>，<span class="arithmatex">\(f(i-1, j)\)</span> 是尚未覆盖的旧 <code>dp[j]</code>，而 <span class="arithmatex">\(f(i-1, j-1)\)</span> 是上一轮迭代刚刚被新值覆盖掉的旧 <code>dp[j-1]</code>。第三个前驱已经丢失——这正是必须在覆盖前把旧 <code>dp[j-1]</code> 存进临时变量的原因，临时变量代表的就是对角线 <span class="arithmatex">\(f(i-1, j-1)\)</span>。这不是技巧，而是"行优先就地更新"与"递推需要对角线前驱"两个事实的直接后果。</p>
+<p>由此得到循环不变量：扫完第 <span class="arithmatex">\(i\)</span> 行后，<code>dp[j]</code> 恰好等于 <span class="arithmatex">\(f(i, j)\)</span>。它的维持无需另证——填 <code>dp[j]</code> 时三个前驱都按上段持有正确值，(1) 又穷尽了最后一步的全部三类动作，故所填即最优。</p>
+<p><strong>为何 <span class="arithmatex">\(\Theta(nm)\)</span> 几乎不可超越。</strong> 自然会问能否更快。Backurs &amp; Indyk (2015, STOC) 证明：若编辑距离能在 <span class="arithmatex">\(O(n^{2-\epsilon})\)</span> 内算出，则 SETH 假设崩塌。换言之，二次时间在条件下界意义上几乎最优。在它之前，Masek &amp; Paterson (1980) 用 Four Russians 法把常数因子加速到 <span class="arithmatex">\(O(n^2/\log n)\)</span>，仍是二次量级。</p>
+<p><strong>若还要重建编辑路径。</strong> 上面的滚动数组只剩距离，丢了路径。Hirschberg (1975) 用分治 + 中点对齐，在 <span class="arithmatex">\(\Theta(\min(n, m))\)</span> 空间内连最优编辑序列一并重建，递归深度带来额外 <span class="arithmatex">\(O(\log)\)</span> 栈空间。</p>
 <h2 id="_4">复杂度<a class="headerlink" href="#_4" title="Permanent link">#</a></h2>
 <ul>
 <li>Time: <span class="arithmatex">\(\Theta(nm)\)</span></li>
@@ -22491,9 +22533,9 @@ f(i-1, j-1) &amp; \text{if } w_1[i-1] = w_2[j-1]\\
 </ul>
 <h2 id="_5">陷阱<a class="headerlink" href="#_5" title="Permanent link">#</a></h2>
 <ul>
-<li>边界 <span class="arithmatex">\(i = 0\)</span> 或 <span class="arithmatex">\(j = 0\)</span> 不是 <span class="arithmatex">\(0\)</span> 而是 <span class="arithmatex">\(\max(i, j)\)</span>（需要 <span class="arithmatex">\(j\)</span> 次插入或 <span class="arithmatex">\(i\)</span> 次删除）。</li>
-<li>滚动数组覆盖顺序：左→右扫，需要先保存"左上角"。</li>
-<li>用 <code>min</code> 时若有同代价路径，不影响答案但影响<strong>回溯路径选择</strong>。</li>
+<li>边界 <span class="arithmatex">\(i = 0\)</span> 或 <span class="arithmatex">\(j = 0\)</span> 的值不是 <span class="arithmatex">\(0\)</span> 而是 <span class="arithmatex">\(\max(i, j)\)</span>：空前缀要靠 <span class="arithmatex">\(j\)</span> 次插入或 <span class="arithmatex">\(i\)</span> 次删除补齐。</li>
+<li>滚动数组左→右扫描时，先把旧 <code>dp[j-1]</code>（即对角线 <span class="arithmatex">\(f(i-1, j-1)\)</span>）存入临时变量再覆盖，否则读到的是本行已更新的新值。</li>
+<li>当 (1) 的 <code>min</code> 有多条同代价路径时，距离不受影响，但回溯重建的编辑路径会随取舍而不同。</li>
 </ul>
 <h2 id="_6">相关题目<a class="headerlink" href="#_6" title="Permanent link">#</a></h2>
 <ul>
@@ -22505,7 +22547,7 @@ f(i-1, j-1) &amp; \text{if } w_1[i-1] = w_2[j-1]\\
 <h2 id="further-reading">Further Reading<a class="headerlink" href="#further-reading" title="Permanent link">#</a></h2>
 <ul>
 <li>Wagner &amp; Fischer (1974). <em>The String-to-String Correction Problem</em>. JACM 21(1). ⭐ — 原始 <span class="arithmatex">\(O(nm)\)</span> DP 论文。</li>
-<li>Levenshtein (1965). <em>Binary codes capable of correcting deletions, insertions, and reversals</em>. Soviet Physics Doklady. — 距离定义的源头。</li>
+<li>Levenshtein (1966). <em>Binary codes capable of correcting deletions, insertions, and reversals</em>. Soviet Physics Doklady 10(8). — 距离定义的源头（俄文原文 1965，此英译本 1966）。</li>
 <li>CLRS, 3e §15.5 "Optimal binary search trees" 后的练习 15-5 — Edit distance 是标准 DP 习题。</li>
 <li>Hirschberg, D. (1975). <em>A linear space algorithm for computing maximal common subsequences</em>. CACM 18(6). — <span class="arithmatex">\(O(\min(n,m))\)</span> 空间 + 路径重建的原论文。</li>
 <li>Wikipedia: <em>Levenshtein distance</em> — en.wikipedia.org/wiki/Levenshtein_distance — 距离的形式化、变体、应用清单。</li>
@@ -22617,6 +22659,8 @@ f(i-1, j-1) &amp; \text{if } w_1[i-1] = w_2[j-1]\\
         <script src="../../../js/mathjax/tex-mml-chtml.js"></script>
       
         <script src="../../../js/mermaid.min.js"></script>
+      
+        <script src="../../../js/featured.js"></script>
       
     
   </body>

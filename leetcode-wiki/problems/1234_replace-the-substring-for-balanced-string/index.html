@@ -1466,6 +1466,8 @@
       
         
       
+        
+      
     
     
     
@@ -1521,6 +1523,34 @@
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../featured/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ⭐ Featured（已验证）
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
               
             
               
@@ -1610,10 +1640,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_4" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
         
           
-          <label class="md-nav__link" for="__nav_4_4" id="__nav_4_4_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_5" id="__nav_4_5_label" tabindex="">
             
   
   
@@ -1631,8 +1661,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_4_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_4">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_5">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1915,7 +1945,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -1937,14 +1967,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_4_5" id="__nav_4_5_label" tabindex="">
+              <label class="md-nav__link " for="__nav_4_6" id="__nav_4_6_label" tabindex="">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_5">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_6">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -5321,10 +5351,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_7" checked>
         
           
-          <label class="md-nav__link" for="__nav_4_6" id="__nav_4_6_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_7" id="__nav_4_7_label" tabindex="">
             
   
   
@@ -5342,8 +5372,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_4_6">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_7_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4_7">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -22467,14 +22497,41 @@
 <h2 id="problem">Problem<a class="headerlink" href="#problem" title="Permanent link">#</a></h2>
 <p>字符串 <span class="arithmatex">\(s\)</span> 长 <span class="arithmatex">\(n\)</span>（<span class="arithmatex">\(n\)</span> 是 4 的倍数），只含 <code>Q W E R</code>。"平衡"即每字符恰出现 <span class="arithmatex">\(n/4\)</span> 次。求最短子串使得<strong>替换</strong>它为任意串后 <span class="arithmatex">\(s\)</span> 平衡。若已平衡返回 0。<span class="arithmatex">\(4 \leq n \leq 10^5\)</span>。</p>
 <h2 id="background">背景 (Background)<a class="headerlink" href="#background" title="Permanent link">#</a></h2>
-<p>经典「<strong>滑窗 + 补集判定</strong>」。重点重述：被替换的窗口内可任填，剩下的"窗口外"部分<strong>必须</strong>每字符出现次数 <span class="arithmatex">\(\leq n/4\)</span>（这样能在窗口里补够）。把问题转成"找最短窗口，使窗口外每字符 <span class="arithmatex">\(\leq n/4\)</span>"——单调结构，双指针 <span class="arithmatex">\(O(n)\)</span>。</p>
+<p>先按定义直接试。我们要选一个子串 <span class="arithmatex">\(s[l..r]\)</span>，把它整段换成某个等长的新串，使整个 <span class="arithmatex">\(s\)</span> 平衡。最朴素的做法是枚举所有子串：对每个 <span class="arithmatex">\((l, r)\)</span>，判断"能否通过替换这段使 <span class="arithmatex">\(s\)</span> 平衡"，在所有可行的 <span class="arithmatex">\((l, r)\)</span> 里取最短。</p>
+<p>枚举 <span class="arithmatex">\((l, r)\)</span> 本身是 <span class="arithmatex">\(O(n^2)\)</span>。问题在那句"能否通过替换使 <span class="arithmatex">\(s\)</span> 平衡"——它该怎么判？这正是要想清楚的地方，而想清楚之后，可行性判定会反过来把枚举也压掉。</p>
+<p>关键在于：<strong>窗口里的内容是自由变量</strong>。替换是无约束的，我们可以往 <span class="arithmatex">\(s[l..r]\)</span> 里填任意 <span class="arithmatex">\(r-l+1\)</span> 个字符。所以窗口内部从来不是障碍，唯一被钉死的是<strong>窗口外</strong>那部分——它由 <span class="arithmatex">\(s\)</span> 在 <span class="arithmatex">\([l, r]\)</span> 之外的字符决定，我们动不了。</p>
+<p>于是判定"能否替换成平衡"只取决于窗口外。设字符 <span class="arithmatex">\(c\)</span> 在窗口外出现 <span class="arithmatex">\(\text{out}(c)\)</span> 次。平衡要求最终每个字符恰好 <span class="arithmatex">\(T = n/4\)</span> 个。窗口外这 <span class="arithmatex">\(\text{out}(c)\)</span> 个无法删改，窗口内的填充只会<strong>增加</strong>某字符的数量、不会减少。所以若某个 <span class="arithmatex">\(\text{out}(c) &gt; T\)</span>，无论窗口里怎么填都超标，不可行。反过来，若所有 <span class="arithmatex">\(\text{out}(c) \leq T\)</span>，每个字符还差 <span class="arithmatex">\(T - \text{out}(c) \geq 0\)</span> 个，这些缺口之和</p>
+<div class="arithmatex">\[\sum_c \big(T - \text{out}(c)\big) = 4T - \sum_c \text{out}(c) = n - (\text{窗口外总长}) = r - l + 1\]</div>
+<p>恰好等于窗口长度，正好用窗口里的格子按缺口补齐即可。判定因此塌缩成一句话：</p>
+<blockquote>
+<p>窗口 <span class="arithmatex">\([l, r]\)</span> 可行 <span class="arithmatex">\(\iff\)</span> 对每个字符 <span class="arithmatex">\(c\)</span>，窗口外计数 <span class="arithmatex">\(\text{out}(c) \leq T\)</span>。</p>
+</blockquote>
+<p>这就是把约束从"窗口内"翻到"窗口外"的来由——不是套路名词，而是因为约束本来就只钉在窗口外。下一节把它写成精确的最小化问题，后面所有推导都以它为轴。</p>
 <h2 id="formulation">形式化 (Formulation)<a class="headerlink" href="#formulation" title="Permanent link">#</a></h2>
-<p>设 <span class="arithmatex">\(s\)</span> 中四字符全局出现数 <span class="arithmatex">\(c_Q, c_W, c_E, c_R\)</span>，目标 <span class="arithmatex">\(T = n/4\)</span>。需找区间 <span class="arithmatex">\([l, r]\)</span> 使得<strong>窗口外</strong>满足</p>
-<div class="arithmatex">\[\forall c \in \{Q,W,E,R\}: \text{count}(s[0..n) \setminus s[l..r], c) \leq T.\]</div>
-<p>即窗口里至少包含每字符的"超出量" <span class="arithmatex">\(\max(0, c_x - T)\)</span>。求 <span class="arithmatex">\(\min(r - l + 1)\)</span>。</p>
+<p>设 <span class="arithmatex">\(s\)</span> 中四字符全局出现数 <span class="arithmatex">\(c_Q, c_W, c_E, c_R\)</span>，目标 <span class="arithmatex">\(T = n/4\)</span>。窗口外某字符 <span class="arithmatex">\(c\)</span> 的计数等于全局计数减去窗口内计数。求最短可行窗口：</p>
+<div class="arithmatex">\[
+\min_{0 \le l \le r &lt; n} (r - l + 1)
+\quad \text{s.t.} \quad
+\forall c \in \{Q,W,E,R\}: \ c_x - \text{cnt}_{[l,r]}(c) \leq T,
+\tag{1}
+\]</div>
+<p>其中 <span class="arithmatex">\(\text{cnt}_{[l,r]}(c)\)</span> 是字符 <span class="arithmatex">\(c\)</span> 在窗口 <span class="arithmatex">\(s[l..r]\)</span> 内的出现次数，<span class="arithmatex">\(c_x\)</span> 是其全局计数。约束左边 <span class="arithmatex">\(c_x - \text{cnt}_{[l,r]}(c)\)</span> 就是上一节的 <span class="arithmatex">\(\text{out}(c)\)</span>。若 <span class="arithmatex">\(s\)</span> 已平衡（空窗口即满足约束），最小值为 0。</p>
+<p>等价地，约束说窗口至少要包含每个字符的"超出量" <span class="arithmatex">\(\max(0, c_x - T)\)</span>。这给出了一个直观下界：窗口必须长到能同时容纳所有超出量，且这些被包含的位置要落在同一段连续区间内。</p>
 <h2 id="approach">数据结构 / 想法 (Approach)<a class="headerlink" href="#approach" title="Permanent link">#</a></h2>
-<p><strong>双指针</strong>。维护 <code>cnt</code> 为<strong>窗口外</strong>计数（初始 = 全局计数，窗口为空）。窗口扩张时把窗口内字符从 <code>cnt</code> 减；收缩时加回。条件 "可替换" ↔ <code>max(cnt[c]) ≤ T</code>。</p>
-<p>不变量：在外循环每次 <code>r</code> 推进后，区间 <span class="arithmatex">\([l, r]\)</span> 满足"窗口外计数均 <span class="arithmatex">\(\leq T\)</span>"，记录最短窗口。</p>
+<p>直接对 (1) 暴力枚举所有 <span class="arithmatex">\([l, r]\)</span> 仍是 <span class="arithmatex">\(O(n^2)\)</span> 个窗口，逐个判定。要更快，得利用约束 (1) 的<strong>单调性</strong>。</p>
+<p><strong>单调性。</strong> 固定左端 <span class="arithmatex">\(l\)</span>，看约束随右端 <span class="arithmatex">\(r\)</span> 增大如何变化。<span class="arithmatex">\(r\)</span> 增大一格，窗口变大，窗口内计数 <span class="arithmatex">\(\text{cnt}_{[l,r]}(c)\)</span> 单调不减，故 <span class="arithmatex">\(\text{out}(c) = c_x - \text{cnt}_{[l,r]}(c)\)</span> 单调不增。约束 <span class="arithmatex">\(\text{out}(c) \leq T\)</span> 一旦满足，继续增大 <span class="arithmatex">\(r\)</span> 就一直满足。也就是：</p>
+<blockquote>
+<p>若 <span class="arithmatex">\([l, r]\)</span> 可行，则任何更大的窗口 <span class="arithmatex">\([l, r']\)</span>（<span class="arithmatex">\(r' \geq r\)</span>）也可行。</p>
+</blockquote>
+<p>这条单调性正是双指针成立的结构原因。它意味着：对每个固定的 <span class="arithmatex">\(l\)</span>，存在一个临界右端 <span class="arithmatex">\(r_l\)</span>，使 <span class="arithmatex">\([l, r]\)</span> 可行当且仅当 <span class="arithmatex">\(r \geq r_l\)</span>；而且 <span class="arithmatex">\(l\)</span> 增大时 <span class="arithmatex">\(r_l\)</span> 不会左移（窗口外变多，更难满足约束），所以 <span class="arithmatex">\(l\)</span> 和 <span class="arithmatex">\(r\)</span> 都只需单向扫一遍。</p>
+<p><strong>从单调性导出算法。</strong> 我们要为每个 <span class="arithmatex">\(l\)</span> 找最短可行窗口，即最小的 <span class="arithmatex">\(r\)</span>。等价地：把 <span class="arithmatex">\(r\)</span> 从左到右推进，每到一个 <span class="arithmatex">\(r\)</span>，就在保持可行的前提下尽量收缩左端 <span class="arithmatex">\(l\)</span>，收缩到再缩一格就不可行为止。此时的 <span class="arithmatex">\([l, r]\)</span> 是"以该 <span class="arithmatex">\(r\)</span> 结尾的最短可行窗口"，记录其长度。<span class="arithmatex">\(r\)</span> 扫完，全局最短即答案。这就是约束 (1) 加单调性的直接产物，不是外来的模板。</p>
+<p><strong>维护量。</strong> 算法只需随时知道窗口外计数 <span class="arithmatex">\(\text{out}(c)\)</span>，以判定约束。令 <code>cnt[c]</code> 表示 <span class="arithmatex">\(\text{out}(c)\)</span>：初始窗口为空，窗口外即全串，故 <code>cnt</code> 初始化为全局计数。每次操作改动恰好一个计数 1 个单位：</p>
+<ul>
+<li><span class="arithmatex">\(r\)</span> 推进，<span class="arithmatex">\(s[r]\)</span> 进入窗口 <span class="arithmatex">\(\Rightarrow\)</span> 它离开窗口外 <span class="arithmatex">\(\Rightarrow\)</span> <code>cnt[s[r]] -= 1</code>；</li>
+<li><span class="arithmatex">\(l\)</span> 推进，<span class="arithmatex">\(s[l]\)</span> 退出窗口 <span class="arithmatex">\(\Rightarrow\)</span> 它回到窗口外 <span class="arithmatex">\(\Rightarrow\)</span> <code>cnt[s[l]] += 1</code>。</li>
+</ul>
+<p>可行判定即 <code>all(cnt[c] &lt;= T)</code>。</p>
+<p><strong>循环不变量。</strong> 在外层每次 <span class="arithmatex">\(r\)</span> 推进、内层收缩结束后，<span class="arithmatex">\([l, r]\)</span> 是以 <span class="arithmatex">\(r\)</span> 结尾的最短可行窗口——这不是额外假设，而是收缩逻辑的直接结果：内层 <code>while</code> 在仍可行时不断右移 <span class="arithmatex">\(l\)</span>，停下时要么 <span class="arithmatex">\(l &gt; r\)</span>（窗口已空仍可行，即 <span class="arithmatex">\(s\)</span> 已平衡那段），要么再缩一格就破坏约束。两种情形下当前 <span class="arithmatex">\([l, r]\)</span> 都是该 <span class="arithmatex">\(r\)</span> 下的最短可行窗口。对所有 <span class="arithmatex">\(r\)</span> 取最小，由单调性保证不漏解。</p>
 <div class="language-python highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">collections</span><span class="w"> </span><span class="kn">import</span> <span class="n">Counter</span>
 
 <span class="k">class</span><span class="w"> </span><span class="nc">Solution</span><span class="p">:</span>
@@ -22495,11 +22552,12 @@
         <span class="k">return</span> <span class="n">best</span>
 </code></pre></div>
 <p><strong>手动 trace 样例 2</strong>：s=<code>QQWE</code>, n=4, T=1. cnt={Q:2, W:1, E:1, R:0}. 已平衡？Q=2&gt;1, 否. best=4.
-- r=0: cnt[Q]=1. 检查: Q=1, W=1, E=1, R=0, 全 ≤ 1. 进入 while: best=min(4, 0-0+1)=1. cnt[Q]+=1=2. l=1. 检查: Q=2&gt;1, 退出。
+- r=0: cnt[Q]=1. 检查: Q=1, W=1, E=1, R=0, 全 ≤ 1（窗口外可行）。进入 while: best=min(4, 0-0+1)=1. cnt[Q]+=1=2. l=1. 检查: Q=2&gt;1, 退出。
 - r=1: cnt[Q]=1. 同上：best=min(1, 1-1+1)=1. cnt[Q]+=1=2. l=2. Q=2 退出。
 - r=2: cnt[W]=0. 检查: Q=2&gt;1, 退出 while。
 - r=3: cnt[E]=0. 检查: Q=2&gt;1, 退出。
 返回 1. ✓</p>
+<p>注意 trace 里窗口外计数随 <span class="arithmatex">\(r\)</span> 推进单调下降，<code>while</code> 恰在它降到全 <span class="arithmatex">\(\leq T\)</span> 的那一刻触发——这正是单调性与不变量在数值上的体现。</p>
 <p><strong>样例 3</strong>：s=<code>QQQW</code>, n=4, T=1. cnt={Q:3, W:1, E:0, R:0}. 不平衡 (Q=3).
 - r=0: cnt[Q]=2. Q&gt;1 不平衡，不进 while.
 - r=1: cnt[Q]=1. 检查全 ≤ 1. while: best=2, cnt[Q]+=1=2, l=1, Q=2 退出.
@@ -22508,14 +22566,14 @@
 返回 2. ✓</p>
 <h2 id="complexity">复杂度 (Complexity)<a class="headerlink" href="#complexity" title="Permanent link">#</a></h2>
 <ul>
-<li>Time: <span class="arithmatex">\(O(n)\)</span>，每次 <code>all(...)</code> 检查只 4 项 <span class="arithmatex">\(O(1)\)</span>，左右指针各 O(n) 步。</li>
-<li>Space: <span class="arithmatex">\(O(1)\)</span>，常数大小计数表。</li>
+<li>Time: <span class="arithmatex">\(O(n)\)</span>。摊还论证：<span class="arithmatex">\(l\)</span> 与 <span class="arithmatex">\(r\)</span> 各自只单向推进，每个下标进入窗口一次、离开一次，故指针总移动量 <span class="arithmatex">\(\leq 2n\)</span>。每步的 <code>all(...)</code> 只扫固定 4 个字符 <code>QWER</code>，是 <span class="arithmatex">\(O(1)\)</span>。</li>
+<li>Space: <span class="arithmatex">\(O(1)\)</span>，计数表至多 5 个键，与 <span class="arithmatex">\(n\)</span> 无关。</li>
 </ul>
 <h2 id="pitfalls">陷阱 (Pitfalls)<a class="headerlink" href="#pitfalls" title="Permanent link">#</a></h2>
 <ul>
-<li><strong>窗口外</strong>计数 vs 窗口内：本算法以窗口外为视角，因为约束写在窗口外（窗口内可任填）。</li>
-<li>"已平衡" 时直接返回 0；否则进入主循环。</li>
-<li>收缩条件用 <code>while</code>，不能用 <code>if</code>——收缩可能多次都满足。</li>
+<li><strong>窗口外</strong>计数 vs 窗口内：本算法以窗口外为视角，因为约束 (1) 写在窗口外（窗口内可任填）。把 <code>cnt</code> 误当成窗口内计数会让判定整个反掉。</li>
+<li>"已平衡" 时直接返回 0；否则进入主循环。空窗口可行对应 <span class="arithmatex">\(s\)</span> 本身平衡。</li>
+<li>收缩条件用 <code>while</code>，不能用 <code>if</code>——由单调性，收缩一格后约束可能仍满足，需要一直缩到临界点。</li>
 </ul>
 <h2 id="related">相关题目 (Related)<a class="headerlink" href="#related" title="Permanent link">#</a></h2>
 <ul>
@@ -22631,6 +22689,8 @@
         <script src="../../../js/mathjax/tex-mml-chtml.js"></script>
       
         <script src="../../../js/mermaid.min.js"></script>
+      
+        <script src="../../../js/featured.js"></script>
       
     
   </body>

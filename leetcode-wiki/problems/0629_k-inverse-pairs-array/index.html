@@ -1466,6 +1466,8 @@
       
         
       
+        
+      
     
     
     
@@ -1521,6 +1523,34 @@
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../featured/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ⭐ Featured（已验证）
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
               
             
               
@@ -1610,10 +1640,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_4" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
         
           
-          <label class="md-nav__link" for="__nav_4_4" id="__nav_4_4_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_5" id="__nav_4_5_label" tabindex="">
             
   
   
@@ -1631,8 +1661,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_4_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_4">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_5">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1915,7 +1945,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -1937,14 +1967,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_4_5" id="__nav_4_5_label" tabindex="">
+              <label class="md-nav__link " for="__nav_4_6" id="__nav_4_6_label" tabindex="">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_5">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_6">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -5321,10 +5351,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_7" checked>
         
           
-          <label class="md-nav__link" for="__nav_4_6" id="__nav_4_6_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_7" id="__nav_4_7_label" tabindex="">
             
   
   
@@ -5342,8 +5372,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_4_6">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_7_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4_7">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -22467,51 +22497,97 @@
 <h2 id="problem">Problem<a class="headerlink" href="#problem" title="Permanent link">#</a></h2>
 <p>给定 <span class="arithmatex">\(n, k\)</span>，求 <span class="arithmatex">\(\{1, 2, \dots, n\}\)</span> 的排列中<strong>恰好</strong>有 <span class="arithmatex">\(k\)</span> 个逆序对的排列个数。逆序对定义：<span class="arithmatex">\(0 \le i &lt; j &lt; n\)</span> 且 <span class="arithmatex">\(a_i &gt; a_j\)</span>。结果对 <span class="arithmatex">\(10^9 + 7\)</span> 取模。<span class="arithmatex">\(1 \le n \le 1000\)</span>，<span class="arithmatex">\(0 \le k \le 1000\)</span>。</p>
 <h2 id="background">背景 (Background)<a class="headerlink" href="#background" title="Permanent link">#</a></h2>
-<p>这是组合数学中关于<strong>逆序数 (inversion number)</strong> 的经典计数问题。<span class="arithmatex">\(n\)</span> 元排列按逆序数分类，其生成函数为高斯二项的退化形式：</p>
-<div class="arithmatex">\[\sum_{\pi \in S_n} q^{\mathrm{inv}(\pi)} = \prod_{i=1}^{n} \frac{1 - q^i}{1 - q} = [n]_q!\]</div>
-<p>即 <strong>q-阶乘</strong>。这个多项式的系数 <span class="arithmatex">\(T(n, k)\)</span> 就是题目要求的答案，称为 <strong>Mahonian number</strong>（OEIS A008302）。它与 Major index 同分布是排列统计学的经典结果（MacMahon 1913）。</p>
+<p><span class="arithmatex">\(\{1, \dots, n\}\)</span> 共有 <span class="arithmatex">\(n!\)</span> 个排列。如果只按逆序对的总数分类，难点在于逆序对是<strong>全局耦合</strong>的：移动一个元素会同时改变它与左右两侧所有元素的大小关系，逆序数随之在整个数组上波动。直接枚举 <span class="arithmatex">\(n!\)</span> 个排列在 <span class="arithmatex">\(n \le 1000\)</span> 下显然不可行，所以我们要找的不是枚举，而是一个<strong>递推结构</strong>。</p>
+<p>于是问题变成一个具体的提问：<span class="arithmatex">\(n\)</span> 个元素恰有 <span class="arithmatex">\(k\)</span> 个逆序对的排列数，能否用 <span class="arithmatex">\(n-1\)</span> 个元素的同类计数表示出来？下面的整节内容就是在回答这个问题。本题的答案在组合数学里另有名字（Mahonian number），但那套生成函数语言对求解并非必需，故放到 Further Reading 之后再谈，先把递推本身建起来。</p>
 <h2 id="formulation">形式化 (Formulation)<a class="headerlink" href="#formulation" title="Permanent link">#</a></h2>
-<p>记 <span class="arithmatex">\(f(n, k)\)</span> 为 <span class="arithmatex">\([1, n]\)</span> 的排列中恰有 <span class="arithmatex">\(k\)</span> 个逆序对的个数。把元素 <span class="arithmatex">\(n\)</span> 插入 <span class="arithmatex">\([1, n-1]\)</span> 的某排列：若插入到位置 <span class="arithmatex">\(j\)</span>（<span class="arithmatex">\(0 \le j \le n-1\)</span>，从右数），则恰新增 <span class="arithmatex">\(j\)</span> 个逆序对（因为 <span class="arithmatex">\(n\)</span> 大于其后所有元素）。于是：</p>
-<div class="arithmatex">\[f(n, k) = \sum_{j=0}^{\min(k, n-1)} f(n-1, k - j)\]</div>
-<p>边界 <span class="arithmatex">\(f(0, 0) = 1\)</span>，<span class="arithmatex">\(f(0, k &gt; 0) = 0\)</span>。</p>
+<p><strong>直觉。</strong> 要把 <span class="arithmatex">\(n\)</span> 个元素的计数归约到 <span class="arithmatex">\(n-1\)</span> 个，最干净的拆法是固定一个元素、对其余元素做归纳。选哪个元素？选最大的 <span class="arithmatex">\(n\)</span>，因为它有一个独占的好性质：<span class="arithmatex">\(n\)</span> 比其余所有元素都大，所以它参与的逆序对<strong>只取决于它自己的位置</strong>，与剩下 <span class="arithmatex">\(n-1\)</span> 个元素如何排列无关。这条"位置独立性"是整个递推的承重点。</p>
+<p>具体地，取 <span class="arithmatex">\([1, n-1]\)</span> 的任一排列，把 <span class="arithmatex">\(n\)</span> 插进去。若 <span class="arithmatex">\(n\)</span> 落在<strong>从右数第 <span class="arithmatex">\(j\)</span> 个</strong>位置（即其右侧有 <span class="arithmatex">\(j\)</span> 个元素，<span class="arithmatex">\(0 \le j \le n-1\)</span>），那么 <span class="arithmatex">\(n\)</span> 与右侧那 <span class="arithmatex">\(j\)</span> 个元素各构成一个逆序对，而与左侧元素一个逆序对都不构成。于是这次插入<strong>恰好</strong>新增 <span class="arithmatex">\(j\)</span> 个逆序对，且原排列内部的逆序对数一个不变。</p>
+<p>先在小例上确认这条规则。把 <span class="arithmatex">\(3\)</span> 插入排列 <span class="arithmatex">\([1,2]\)</span>：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: center;">插入位置（从右数 <span class="arithmatex">\(j\)</span>）</th>
+<th style="text-align: center;">结果排列</th>
+<th style="text-align: center;">新增逆序对</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;"><span class="arithmatex">\(j=0\)</span>（最右）</td>
+<td style="text-align: center;"><span class="arithmatex">\([1,2,3]\)</span></td>
+<td style="text-align: center;"><span class="arithmatex">\(0\)</span></td>
+</tr>
+<tr>
+<td style="text-align: center;"><span class="arithmatex">\(j=1\)</span></td>
+<td style="text-align: center;"><span class="arithmatex">\([1,3,2]\)</span></td>
+<td style="text-align: center;"><span class="arithmatex">\(1\)</span>（<span class="arithmatex">\(3&gt;2\)</span>）</td>
+</tr>
+<tr>
+<td style="text-align: center;"><span class="arithmatex">\(j=2\)</span>（最左）</td>
+<td style="text-align: center;"><span class="arithmatex">\([3,1,2]\)</span></td>
+<td style="text-align: center;"><span class="arithmatex">\(2\)</span>（<span class="arithmatex">\(3&gt;1,\ 3&gt;2\)</span>）</td>
+</tr>
+</tbody>
+</table>
+<p>新增逆序对数恰等于 <span class="arithmatex">\(j\)</span>，与读定义所得一致。</p>
+<p><strong>结论（递推）。</strong> 设 <span class="arithmatex">\(f(n, k)\)</span> 为 <span class="arithmatex">\([1, n]\)</span> 的排列中恰有 <span class="arithmatex">\(k\)</span> 个逆序对的个数。一个有 <span class="arithmatex">\(k\)</span> 个逆序对的 <span class="arithmatex">\(n\)</span> 元排列，唯一对应于"某个有 <span class="arithmatex">\(k-j\)</span> 个逆序对的 <span class="arithmatex">\(n-1\)</span> 元排列" 加上 "把 <span class="arithmatex">\(n\)</span> 插在从右数第 <span class="arithmatex">\(j\)</span> 位"。对所有合法的 <span class="arithmatex">\(j\)</span> 求和：</p>
+<div class="arithmatex">\[f(n, k) = \sum_{j=0}^{\min(k,\, n-1)} f(n-1,\, k - j)\]</div>
+<p>求和上界 <span class="arithmatex">\(\min(k, n-1)\)</span> 来自两条独立约束：一是新增逆序对不能超过尚需补足的 <span class="arithmatex">\(k\)</span>，给出 <span class="arithmatex">\(j \le k\)</span>；二是插入位置最远只能到最左端，给出 <span class="arithmatex">\(j \le n-1\)</span>。边界 <span class="arithmatex">\(f(0, 0) = 1\)</span>，<span class="arithmatex">\(f(0, k &gt; 0) = 0\)</span>。</p>
+<p>这个递推就是后续所有计算的脊柱；下面要做的全部工作，是把它算快。</p>
 <h2 id="approach">数据结构 / 想法 (Approach)<a class="headerlink" href="#approach" title="Permanent link">#</a></h2>
-<p><strong>朴素 DP</strong>：直接按上式递推，<span class="arithmatex">\(O(n \cdot k \cdot n) = O(n^2 k)\)</span>，<span class="arithmatex">\(n = k = 1000\)</span> 时 <span class="arithmatex">\(10^9\)</span> 太慢。</p>
-<p><strong>前缀和优化</strong>：注意求和是连续区间 <span class="arithmatex">\(f(n-1, k-\min(k,n-1)), \dots, f(n-1, k)\)</span>，用前缀和把每个状态算到 <span class="arithmatex">\(O(1)\)</span>：</p>
-<div class="arithmatex">\[f(n, k) = S(n-1, k) - S(n-1, k - n)\]</div>
-<p>其中 <span class="arithmatex">\(S(n, k) = \sum_{j=0}^{k} f(n, j)\)</span>，越界视为 <span class="arithmatex">\(0\)</span>。复杂度降到 <span class="arithmatex">\(O(nk)\)</span>。</p>
-<p><strong>滚动数组</strong>：只需 <span class="arithmatex">\(f\)</span> 的前一行，空间 <span class="arithmatex">\(O(k)\)</span>。</p>
+<p><strong>先写出直接递推，看它在哪里卡住。</strong> 按上式逐格填表：外层枚举 <span class="arithmatex">\(n\)</span>，中层枚举 <span class="arithmatex">\(k\)</span>，内层枚举插入位置 <span class="arithmatex">\(j\)</span> 做求和。</p>
+<div class="language-python highlight"><pre><span></span><code><span class="c1"># 未优化版本：直接照递推三重循环</span>
+<span class="n">f</span> <span class="o">=</span> <span class="p">[[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="n">k</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)]</span>
+<span class="n">f</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">n</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">kk</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">k</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">min</span><span class="p">(</span><span class="n">kk</span><span class="p">,</span> <span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>   <span class="c1"># 内层求和</span>
+            <span class="n">f</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">kk</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">f</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">kk</span><span class="p">]</span> <span class="o">+</span> <span class="n">f</span><span class="p">[</span><span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">][</span><span class="n">kk</span> <span class="o">-</span> <span class="n">j</span><span class="p">])</span> <span class="o">%</span> <span class="n">MOD</span>
+</code></pre></div>
+<p>外两层共 <span class="arithmatex">\(O(nk)\)</span> 个状态，每个状态的内层求和最多 <span class="arithmatex">\(\min(k, n-1) \approx n\)</span> 项，总计 <span class="arithmatex">\(O(n^2 k)\)</span>。在 <span class="arithmatex">\(n = k = 1000\)</span> 时约 <span class="arithmatex">\(10^9\)</span> 次运算，超出可接受的时间上界。瓶颈一目了然：内层那个求和被反复重算。</p>
+<p><strong>瓶颈的结构：定宽滑动窗口。</strong> 把递推改写成对前一行下标 <span class="arithmatex">\(i\)</span> 求和的形式（令 <span class="arithmatex">\(i = k - j\)</span>）：</p>
+<div class="arithmatex">\[f(n, k) = \sum_{i = \max(0,\, k-(n-1))}^{k} f(n-1,\, i)\]</div>
+<p>它是前一行 <span class="arithmatex">\(f(n-1, \cdot)\)</span> 上一段<strong>连续区间</strong>的和，区间宽度至多为 <span class="arithmatex">\(n\)</span>（受下界 <span class="arithmatex">\(\max(0, k-(n-1))\)</span> 截断）。关键在于：当 <span class="arithmatex">\(k\)</span> 增大 <span class="arithmatex">\(1\)</span>，这段区间 <span class="arithmatex">\([\,k-(n-1),\ k\,]\)</span> 整体右移一格——右端进来一个新项，左端（在未触底时）出去一个旧项，<strong>窗口宽度恒定</strong>。同一行内相邻状态的求和高度重叠，正是上面 <span class="arithmatex">\(O(n^2 k)\)</span> 浪费的来源。</p>
+<p><strong>从结构推出前缀和。</strong> 既然每个状态都是前一行的一段区间和，就用前缀和把"区间和"变成 <span class="arithmatex">\(O(1)\)</span> 的两点之差。定义前一行的前缀和</p>
+<div class="arithmatex">\[S(n, k) \triangleq \sum_{j=0}^{k} f(n, j), \qquad S(n, -1) \triangleq 0.\]</div>
+<p>代入上面的区间表达式，区间 <span class="arithmatex">\([\max(0, k-(n-1)),\ k]\)</span> 的和即</p>
+<div class="arithmatex">\[f(n, k) = S(n-1,\, k) - S(n-1,\, k - n).\]</div>
+<p>这里下标 <span class="arithmatex">\(k - n\)</span> 是因为窗口左端为 <span class="arithmatex">\(\max(0, k-(n-1))\)</span>，对应要扣掉的前缀止于 <span class="arithmatex">\(k - (n-1) - 1 = k - n\)</span>；越界（下标为负）的 <span class="arithmatex">\(S\)</span> 一律视为 <span class="arithmatex">\(0\)</span>。这一步不是套用技巧，而是"定宽窗口"结构的直接代数后果——窗口宽度固定，故每个窗口和都能由两个前缀值相减得到。复杂度降到 <span class="arithmatex">\(O(nk)\)</span>。</p>
+<p><strong>滚动数组。</strong> 递推只依赖前一行 <span class="arithmatex">\(f(n-1, \cdot)\)</span>，故只需保存一行，空间 <span class="arithmatex">\(O(k)\)</span>。</p>
 <div class="language-python highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">Solution</span><span class="p">:</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">kInversePairs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">k</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
         <span class="n">MOD</span> <span class="o">=</span> <span class="mi">10</span><span class="o">**</span><span class="mi">9</span> <span class="o">+</span> <span class="mi">7</span>
         <span class="n">prev</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="n">k</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
         <span class="n">prev</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>  <span class="c1"># f(1, 0) = 1, f(1, j&gt;0) = 0</span>
         <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">n</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
-            <span class="c1"># 用前缀和重写 prev</span>
+            <span class="c1"># 由 prev 构造前缀和 S(i-1, ·)：ps[j+1] = S(i-1, j)</span>
             <span class="n">ps</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="n">k</span> <span class="o">+</span> <span class="mi">2</span><span class="p">)</span>
             <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">k</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
                 <span class="n">ps</span><span class="p">[</span><span class="n">j</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">ps</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">+</span> <span class="n">prev</span><span class="p">[</span><span class="n">j</span><span class="p">])</span> <span class="o">%</span> <span class="n">MOD</span>
             <span class="n">cur</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="n">k</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
             <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">k</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
-                <span class="n">lo</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">j</span> <span class="o">-</span> <span class="p">(</span><span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">))</span>
-                <span class="c1"># sum prev[lo..j]</span>
+                <span class="n">lo</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">j</span> <span class="o">-</span> <span class="p">(</span><span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">))</span>   <span class="c1"># 窗口左端</span>
+                <span class="c1"># f(i, j) = 区间 [lo, j] 之和 = ps[j+1] - ps[lo]</span>
                 <span class="n">cur</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">ps</span><span class="p">[</span><span class="n">j</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">ps</span><span class="p">[</span><span class="n">lo</span><span class="p">])</span> <span class="o">%</span> <span class="n">MOD</span>
             <span class="n">prev</span> <span class="o">=</span> <span class="n">cur</span>
         <span class="k">return</span> <span class="n">prev</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">%</span> <span class="n">MOD</span>
 </code></pre></div>
-<p>样例 1 trace：<code>n=3, k=0</code>。<code>i=2</code>：<code>prev=[1,0,...]</code>，<code>ps=[0,1,1,...]</code>；<code>cur[0] = ps[1]-ps[0] = 1</code>。<code>i=3</code>：<code>prev=[1,1,...]</code>（只看 j≤k=0），实际 <code>cur[0] = ps[1]-ps[0] = 1</code>。返回 <code>1</code>。✓</p>
-<p>样例 2：<code>n=3, k=1</code>。<code>i=2</code> 后 <code>prev=[1,1,0]</code>（j 范围至 1）；<code>i=3</code>：<code>ps=[0,1,2,2]</code>；<code>cur[1] = ps[2] - ps[max(0,1-2)] = ps[2] - ps[0] = 2</code>。返回 <code>2</code>。✓</p>
+<p>代码里 <code>ps[j+1] = ps[j] + prev[j]</code> 正是在按定义 <span class="arithmatex">\(S(i-1, j) = \sum_{t=0}^{j} f(i-1, t)\)</span> 逐项累加；窗口左端写成 <code>max(0, j-(i-1))</code> 与上文的下界 <span class="arithmatex">\(\max(0, k-(n-1))\)</span> 完全一致。</p>
+<p><strong>样例验证。</strong> 取 <span class="arithmatex">\(n=3, k=0\)</span>。<span class="arithmatex">\(i=2\)</span> 时 <span class="arithmatex">\(\texttt{prev}=[1]\)</span>（只保留下标 <span class="arithmatex">\(\le k=0\)</span>），<span class="arithmatex">\(\texttt{ps}=[0,1]\)</span>，<span class="arithmatex">\(\texttt{cur}[0]=\texttt{ps}[1]-\texttt{ps}[0]=1\)</span>。<span class="arithmatex">\(i=3\)</span> 时同样 <span class="arithmatex">\(\texttt{prev}=[1]\)</span>，<span class="arithmatex">\(\texttt{cur}[0]=1\)</span>，返回 <span class="arithmatex">\(1\)</span>。✓（注意 <span class="arithmatex">\(k=0\)</span> 时数组长度仅为 <span class="arithmatex">\(1\)</span>，这里 <span class="arithmatex">\(\texttt{prev}=[1]\)</span> 是代码实际持有的截断状态，而非完整行。）</p>
+<p>取 <span class="arithmatex">\(n=3, k=1\)</span>。<span class="arithmatex">\(i=2\)</span> 后 <span class="arithmatex">\(\texttt{prev}=[1,1]\)</span>（下标 <span class="arithmatex">\(0,1\)</span>，对应 <span class="arithmatex">\(f(2,0)=f(2,1)=1\)</span>）；<span class="arithmatex">\(i=3\)</span> 时 <span class="arithmatex">\(\texttt{ps}=[0,1,2]\)</span>，<span class="arithmatex">\(\texttt{cur}[1]=\texttt{ps}[2]-\texttt{ps}[\max(0,\,1-2)]=\texttt{ps}[2]-\texttt{ps}[0]=2\)</span>，返回 <span class="arithmatex">\(2\)</span>。✓</p>
+<p>至此递推被压到 <span class="arithmatex">\(O(nk)\)</span> 时间、<span class="arithmatex">\(O(k)\)</span> 空间。回头看背景里提的那个名字：表 <span class="arithmatex">\(f(n, k)\)</span> 正是 <strong>Mahonian number</strong>（OEIS A008302），它也是 <span class="arithmatex">\(n\)</span> 元排列按逆序数分类的计数；其生成函数为 q-阶乘 <span class="arithmatex">\([n]_q! = \prod_{i=1}^{n}\frac{1-q^i}{1-q}\)</span>，第 <span class="arithmatex">\(k\)</span> 次项系数恰为 <span class="arithmatex">\(f(n, k)\)</span>。这套生成函数视角对解题不是必需的，但若想把递推背后的组合恒等式看透，可循 Further Reading。</p>
 <h2 id="complexity">复杂度 (Complexity)<a class="headerlink" href="#complexity" title="Permanent link">#</a></h2>
 <ul>
-<li>Time: <span class="arithmatex">\(O(nk)\)</span>，前缀和 + 滚动 DP。</li>
-<li>Space: <span class="arithmatex">\(O(k)\)</span> 滚动两行。</li>
-<li>不优化为 <span class="arithmatex">\(O(n^2 k)\)</span>，原始三层循环。</li>
+<li>Time: <span class="arithmatex">\(O(nk)\)</span>，前缀和将每个状态的区间求和降为 <span class="arithmatex">\(O(1)\)</span>。</li>
+<li>Space: <span class="arithmatex">\(O(k)\)</span>，滚动保存一行加一个前缀和数组。</li>
+<li>对照：未优化的三重循环为 <span class="arithmatex">\(O(n^2 k)\)</span>，<span class="arithmatex">\(n=k=1000\)</span> 时约 <span class="arithmatex">\(10^9\)</span> 运算，不可接受。</li>
 </ul>
 <h2 id="pitfalls">陷阱 (Pitfalls)<a class="headerlink" href="#pitfalls" title="Permanent link">#</a></h2>
 <ul>
-<li>模运算下减法 <code>ps[j+1] - ps[lo]</code> 可能为负，必须 <code>% MOD</code> 后再加 <code>MOD</code> 或直接 <code>(x % MOD + MOD) % MOD</code>。</li>
-<li>区间下界 <code>max(0, j - (i-1))</code> 来自"插入位置 <span class="arithmatex">\(\le i-1\)</span>"——别误写成 <code>j - i</code>。</li>
-<li><span class="arithmatex">\(k &gt; \binom{n}{2}\)</span> 时答案恒为 0，可早返；不加也对，但可加速。</li>
-<li>初值：把 <code>f(1, 0) = 1</code> 当作起点，循环从 <code>i=2</code> 起；若从 <code>i=1</code> 起必须特判 <span class="arithmatex">\(k &gt; 0 \Rightarrow 0\)</span>。</li>
+<li><strong>模减法的符号（跨语言差异）</strong>：<span class="arithmatex">\(\texttt{ps}\)</span> 中各项已对 <span class="arithmatex">\(\texttt{MOD}\)</span> 取模，累加会回绕，故前缀数组并非单调，<span class="arithmatex">\(\texttt{ps}[j+1]-\texttt{ps}[\texttt{lo}]\)</span> 在数值上可能为负。在 Python 中 <code>%</code> 对正模数总返回非负结果，故上面的 <code>(ps[j+1]-ps[lo]) % MOD</code> <strong>已经正确</strong>，无需额外 <code>+ MOD</code>。但在 C/C++/Java 等"向零截断"取模的语言里，负的被除数会得到负余数，必须写成 <code>((x % MOD) + MOD) % MOD</code>。</li>
+<li><strong>区间下界的 off-by-one</strong>：窗口左端应为 <span class="arithmatex">\(\max(0,\, j-(i-1))\)</span>，对应"插入位置 <span class="arithmatex">\(\le i-1\)</span>"。误用 <span class="arithmatex">\(j-i\)</span> 会把窗口左端少算一格，导致状态重叠、计数偏大（例如 <span class="arithmatex">\(n=5, k=4\)</span> 错误变体给出 <span class="arithmatex">\(30\)</span>，正确值为 <span class="arithmatex">\(20\)</span>）。</li>
+<li><strong>超出最大逆序数</strong>：<span class="arithmatex">\(n\)</span> 元排列最多有 <span class="arithmatex">\(\binom{n}{2}\)</span> 个逆序对，故 <span class="arithmatex">\(k &gt; \binom{n}{2}\)</span> 时答案恒为 <span class="arithmatex">\(0\)</span>。可据此提前返回；不加也正确，仅作加速。</li>
+<li><strong>初值与起点</strong>：以 <span class="arithmatex">\(f(1, 0)=1\)</span>（即 <span class="arithmatex">\(\texttt{prev}[0]=1\)</span>，其余为 <span class="arithmatex">\(0\)</span>）为起点，循环从 <span class="arithmatex">\(i=2\)</span> 起。若从 <span class="arithmatex">\(i=1\)</span> 起，需特判 <span class="arithmatex">\(k &gt; 0 \Rightarrow 0\)</span>。</li>
 </ul>
 <h2 id="related">相关题目 (Related)<a class="headerlink" href="#related" title="Permanent link">#</a></h2>
 <ul>
@@ -22630,6 +22706,8 @@
         <script src="../../../js/mathjax/tex-mml-chtml.js"></script>
       
         <script src="../../../js/mermaid.min.js"></script>
+      
+        <script src="../../../js/featured.js"></script>
       
     
   </body>

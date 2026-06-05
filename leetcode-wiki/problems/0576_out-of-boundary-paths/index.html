@@ -1466,6 +1466,8 @@
       
         
       
+        
+      
     
     
     
@@ -1521,6 +1523,34 @@
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../featured/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ⭐ Featured（已验证）
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
               
             
               
@@ -1610,10 +1640,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_4" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
         
           
-          <label class="md-nav__link" for="__nav_4_4" id="__nav_4_4_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_5" id="__nav_4_5_label" tabindex="">
             
   
   
@@ -1631,8 +1661,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_4_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_4">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_5">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1915,7 +1945,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -1937,14 +1967,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_4_5" id="__nav_4_5_label" tabindex="">
+              <label class="md-nav__link " for="__nav_4_6" id="__nav_4_6_label" tabindex="">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_5">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_6">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -5321,10 +5351,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_7" checked>
         
           
-          <label class="md-nav__link" for="__nav_4_6" id="__nav_4_6_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_7" id="__nav_4_7_label" tabindex="">
             
   
   
@@ -5342,8 +5372,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_4_6">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_7_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4_7">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -22467,15 +22497,25 @@
 <h2 id="problem">Problem<a class="headerlink" href="#problem" title="Permanent link">#</a></h2>
 <p><code>m×n</code> 网格，球初始位于 <span class="arithmatex">\((\text{startRow}, \text{startCol})\)</span>。最多走 <code>maxMove</code> 步，每步上下左右一格（可走出网格）。求走出网格的路径总数模 <span class="arithmatex">\(10^9 + 7\)</span>。<span class="arithmatex">\(m, n, \text{maxMove} \leq 50\)</span>。</p>
 <h2 id="background">背景 (Background)<a class="headerlink" href="#background" title="Permanent link">#</a></h2>
-<p>经典<strong>带步数限制的格点游走计数</strong>——可视作马尔可夫链的有限步转移分析。状态为 <code>(剩余步数, 行, 列)</code>，本质 lattice path / random walk 模型在有限网格上的吸收态计数。也是 #688 Knight Probability in Chessboard 的兄弟题（用概率而非计数）。物理类比：扩散方程的离散化数值解。</p>
+<p>题目数的是<strong>路径</strong>，不是<strong>终点</strong>。两条路径即便走了同样步数、停在同一格，只要中途方向序列不同，就算两条。所以一个起点出发可以反复经过同一格而各自成路——这正是为什么不能用 BFS 去重，也不能用"最短路"的取 min/max 思路：我们要<strong>累加</strong>所有合法走法，而不是择优。</p>
+<p>最直接的想法是枚举：从起点 DFS，每步分叉 4 个方向，一旦走出网格就记一条路径，走满 <code>maxMove</code> 步还没出界就放弃这条分支。这能给出正确答案，但分叉数是 <span class="arithmatex">\(4^{\text{maxMove}}\)</span>，<span class="arithmatex">\(\text{maxMove}=50\)</span> 时约 <span class="arithmatex">\(4^{50}\)</span>，不可能跑完。</p>
+<p>枚举为什么浪费？观察一条 DFS 路径走到中途的状态：当前在格 <span class="arithmatex">\((i,j)\)</span>，手里还剩 <span class="arithmatex">\(k\)</span> 步可走。<strong>从这一刻起能走出网格的路径条数，只取决于 <span class="arithmatex">\((k,i,j)\)</span> 这三个量，与之前怎么走到这里无关。</strong> 不同的前缀走到同一个 <span class="arithmatex">\((k,i,j)\)</span>，后续展开的子树完全相同，却被枚举重复计算了无数次。把"从状态 <span class="arithmatex">\((k,i,j)\)</span> 出发的出界路径数"算一次并缓存，重复就消失了——这就引出下面的状态与递推。</p>
 <h2 id="formulation">形式化 (Formulation)<a class="headerlink" href="#formulation" title="Permanent link">#</a></h2>
-<p>定义 <span class="arithmatex">\(f(k, i, j)\)</span> = 从 <span class="arithmatex">\((i, j)\)</span> 出发、最多走 <span class="arithmatex">\(k\)</span> 步、走出网格的方案数。边界：</p>
-<div class="arithmatex">\[f(0, i, j) = 0 \text{ for } (i, j) \in \text{grid}\]</div>
-<p>转移：对每个方向 <span class="arithmatex">\((\Delta i, \Delta j) \in \{(\pm 1, 0), (0, \pm 1)\}\)</span>，若 <span class="arithmatex">\((i+\Delta i, j+\Delta j)\)</span> <strong>出界</strong>，贡献 +1；否则贡献 <span class="arithmatex">\(f(k-1, i+\Delta i, j+\Delta j)\)</span>。即</p>
-<div class="arithmatex">\[f(k, i, j) = \sum_{\text{dir}} \begin{cases} 1 &amp; \text{step exits grid} \\ f(k-1, i', j') &amp; \text{otherwise} \end{cases}\]</div>
-<p>答案 <span class="arithmatex">\(f(\text{maxMove}, \text{startRow}, \text{startCol})\)</span>，全程取模。</p>
+<p>直觉先行：固定一个状态 <span class="arithmatex">\((k,i,j)\)</span>，一条从 <span class="arithmatex">\((i,j)\)</span> 出发、<span class="arithmatex">\(k\)</span> 步内出界的路径，必然有确定的第一步。把这一步剥掉，剩下的就是一条从某个邻格出发、<span class="arithmatex">\(k-1\)</span> 步内出界的路径。反过来，邻格的任一这样的路径，前面接上对应的第一步，又还原成 <span class="arithmatex">\((i,j)\)</span> 的一条路径。于是 <span class="arithmatex">\((i,j)\)</span> 的路径与"四个邻格的 <span class="arithmatex">\((k-1)\)</span> 步路径"之间一一对应，<strong>按第一步分类，求和即可</strong>。</p>
+<p>据此定义 <span class="arithmatex">\(f(k, i, j)\)</span> = 从 <span class="arithmatex">\((i, j)\)</span> 出发、最多走 <span class="arithmatex">\(k\)</span> 步、走出网格的路径数。选"从 <span class="arithmatex">\((i,j)\)</span> 出发"而非"到达 <span class="arithmatex">\((i,j)\)</span>"这个方向，是因为答案恰是单点查询 <span class="arithmatex">\(f(\text{maxMove}, \text{startRow}, \text{startCol})\)</span>，从已知起点向外递归最自然。</p>
+<p>边界有两种，必须分清：</p>
+<div class="arithmatex">\[f(k, i, j) = 1 \quad \text{当 } (i,j) \text{ 出界（任意 } k \geq 0\text{）} \tag{1}\]</div>
+<p>球已经在网格外，这条路径已经成立，无论手里还剩几步，都只算这一条。</p>
+<div class="arithmatex">\[f(0, i, j) = 0 \quad \text{当 } (i,j) \in \text{grid} \tag{2}\]</div>
+<p>还在网格内却没有步数可走，无法再出界，零条路径。</p>
+<p>转移按第一步求和。对每个方向 <span class="arithmatex">\((\Delta i, \Delta j) \in \{(\pm 1, 0), (0, \pm 1)\}\)</span>，记 <span class="arithmatex">\(i' = i + \Delta i\)</span>、<span class="arithmatex">\(j' = j + \Delta j\)</span>：</p>
+<div class="arithmatex">\[f(k, i, j) = \sum_{(\Delta i,\Delta j)} f(k-1,\, i',\, j'), \qquad (i,j)\in\text{grid},\ k&gt;0 \tag{3}\]</div>
+<p>其中越界邻格由 <span class="arithmatex">\((1)\)</span> 直接贡献 <span class="arithmatex">\(1\)</span>，界内邻格贡献 <span class="arithmatex">\(f(k-1,i',j')\)</span>。注意 <span class="arithmatex">\((1)\)</span> 让"出界检查在被调用方"成立：递归先看自己是否出界（命中 <span class="arithmatex">\((1)\)</span> 返回 <span class="arithmatex">\(1\)</span>），再看步数是否耗尽（命中 <span class="arithmatex">\((2)\)</span>）。这个顺序是有意为之，下文还会用到。</p>
+<p>答案为 <span class="arithmatex">\(f(\text{maxMove}, \text{startRow}, \text{startCol})\)</span>，全程取模。</p>
 <h2 id="approach">数据结构 / 想法 (Approach)<a class="headerlink" href="#approach" title="Permanent link">#</a></h2>
-<p><strong>记忆化 DP 或自底向上</strong>：</p>
+<p>递推 <span class="arithmatex">\((3)\)</span> 的状态空间是 <span class="arithmatex">\((k,i,j)\)</span>，共 <span class="arithmatex">\(O(\text{maxMove}\cdot m\cdot n)\)</span> 个，每个只算一次、缓存复用，枚举的指数爆炸就被压成多项式。先验证递推的正确性，再落实成代码。</p>
+<p><strong>出界检查放在被调用方，是正确性的关键。</strong> 一个常见的错误写法是把出界检查放在调用方：走一步后先判断邻格是否出界，出界就 <code>+1</code>，否则递归。这等价于 <span class="arithmatex">\((1)\)</span>，本身不错；但若把它和"步数耗尽返回 <span class="arithmatex">\(0\)</span>"的顺序写反——先判 <span class="arithmatex">\(k=0\)</span> 再判出界——就会漏掉那些"还剩步数时就已出界"的路径。按 <span class="arithmatex">\((1)\)</span> 让出界成为一个返回 <span class="arithmatex">\(1\)</span> 的合法状态，并且<strong>先于</strong> <span class="arithmatex">\(k=0\)</span> 判断，两类边界就干净分开了。</p>
+<p>记忆化（top-down）直接照搬 <span class="arithmatex">\((1)(2)(3)\)</span>：</p>
 <div class="language-python highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">Solution</span><span class="p">:</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">findPaths</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">m</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">n</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">maxMove</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">startRow</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">startCol</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
         <span class="n">MOD</span> <span class="o">=</span> <span class="mi">10</span><span class="o">**</span><span class="mi">9</span> <span class="o">+</span> <span class="mi">7</span>
@@ -22483,57 +22523,60 @@
         <span class="nd">@lru_cache</span><span class="p">(</span><span class="n">maxsize</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
         <span class="k">def</span><span class="w"> </span><span class="nf">dp</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">):</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="mi">0</span> <span class="o">&lt;=</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">m</span> <span class="ow">and</span> <span class="mi">0</span> <span class="o">&lt;=</span> <span class="n">j</span> <span class="o">&lt;</span> <span class="n">n</span><span class="p">):</span>
-                <span class="k">return</span> <span class="mi">1</span>   <span class="c1"># 已出界（且消耗任意步数都算）</span>
+                <span class="k">return</span> <span class="mi">1</span>   <span class="c1"># 式(1)：已出界，先于 k==0 判断</span>
             <span class="k">if</span> <span class="n">k</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-                <span class="k">return</span> <span class="mi">0</span>
+                <span class="k">return</span> <span class="mi">0</span>   <span class="c1"># 式(2)：界内且无步可走</span>
             <span class="n">ans</span> <span class="o">=</span> <span class="mi">0</span>
             <span class="k">for</span> <span class="n">di</span><span class="p">,</span> <span class="n">dj</span> <span class="ow">in</span> <span class="p">((</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">),(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">),(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">),(</span><span class="mi">0</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">)):</span>
                 <span class="n">ans</span> <span class="o">=</span> <span class="p">(</span><span class="n">ans</span> <span class="o">+</span> <span class="n">dp</span><span class="p">(</span><span class="n">k</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">i</span><span class="o">+</span><span class="n">di</span><span class="p">,</span> <span class="n">j</span><span class="o">+</span><span class="n">dj</span><span class="p">))</span> <span class="o">%</span> <span class="n">MOD</span>
             <span class="k">return</span> <span class="n">ans</span>
         <span class="k">return</span> <span class="n">dp</span><span class="p">(</span><span class="n">maxMove</span><span class="p">,</span> <span class="n">startRow</span><span class="p">,</span> <span class="n">startCol</span><span class="p">)</span>
 </code></pre></div>
-<p><strong>关键设计</strong>：把"出界"作为递归 base case 返回 1——把每个出界 step 视作一条独立路径（满足"走出网格"的定义）。"消耗步数后到达出界"和"消耗 0 步出界"都计 1，但 dp 入口在网格内，所以不会出现 <span class="arithmatex">\(k &gt; 0\)</span> 时已出界的情况（除非递归层内）。</p>
-<p><strong>Trace <code>m=n=2, maxMove=2, start=(0,0)</code></strong>：
-- 4 个方向：(-1,0), (1,0), (0,-1), (0,1)
-- dp(2,0,0) = dp(1,-1,0) + dp(1,1,0) + dp(1,0,-1) + dp(1,0,1)
-  - dp(1,-1,0) = 1（已出界）
-  - dp(1,0,-1) = 1
-  - dp(1,1,0) = dp(0,0,0)+dp(0,2,0)+dp(0,1,-1)+dp(0,1,1) = 0+1+1+0 = 2
-  - dp(1,0,1) = dp(0,-1,1)+dp(0,1,1)+dp(0,0,0)+dp(0,0,2) = 1+0+0+1 = 2
-- 总 = 1 + 2 + 1 + 2 = 6 ✓</p>
-<p><strong>迭代版</strong>：滚动数组 <code>prev[i][j], cur[i][j]</code> 节省内存：</p>
+<p><strong>Trace <code>m=n=2, maxMove=2, start=(0,0)</code></strong>，逐层套用 <span class="arithmatex">\((3)\)</span>：</p>
+<ul>
+<li>dp(2,0,0) = dp(1,-1,0) + dp(1,1,0) + dp(1,0,-1) + dp(1,0,1)</li>
+<li>dp(1,-1,0) = 1（出界，命中式(1)，剩 1 步也只算一条）</li>
+<li>dp(1,0,-1) = 1（同理）</li>
+<li>dp(1,1,0) = dp(0,0,0)+dp(0,2,0)+dp(0,1,-1)+dp(0,1,1) = 0+1+1+0 = 2</li>
+<li>dp(1,0,1) = dp(0,-1,1)+dp(0,1,1)+dp(0,0,0)+dp(0,0,2) = 1+0+0+1 = 2</li>
+<li>总 = 1 + 2 + 1 + 2 = 6 ✓</li>
+</ul>
+<p>dp(1,-1,0) 正是"剩步数时已出界"的情形：球带着 1 步余量出了界，仍只记一条——这就是把出界检查放在被调用方、且先于 <span class="arithmatex">\(k=0\)</span> 的直接好处。</p>
+<p><strong>迭代版（bottom-up）</strong>：递推 <span class="arithmatex">\((3)\)</span> 把 <span class="arithmatex">\(f(k,\cdot)\)</span> 表达为 <span class="arithmatex">\(f(k-1,\cdot)\)</span>，所以按 <span class="arithmatex">\(k\)</span> 从 <span class="arithmatex">\(1\)</span> 到 <code>maxMove</code> 推进，只需保留相邻两层。令 <code>prev</code> 表示 <span class="arithmatex">\(f(k-1,\cdot)\)</span>、<code>cur</code> 表示 <span class="arithmatex">\(f(k,\cdot)\)</span>，初始 <code>prev</code> 全 0 即 <span class="arithmatex">\(f(0,\cdot)\)</span>（式 <span class="arithmatex">\((2)\)</span>），每格累加四个邻格的 <code>prev</code> 值、越界邻格按式 <span class="arithmatex">\((1)\)</span> 加 1：</p>
 <div class="language-python highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">findPaths</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">m</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">K</span><span class="p">,</span> <span class="n">sr</span><span class="p">,</span> <span class="n">sc</span><span class="p">):</span>
     <span class="n">MOD</span> <span class="o">=</span> <span class="mi">10</span><span class="o">**</span><span class="mi">9</span> <span class="o">+</span> <span class="mi">7</span>
-    <span class="n">prev</span> <span class="o">=</span> <span class="p">[[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="n">n</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">m</span><span class="p">)]</span>
+    <span class="n">prev</span> <span class="o">=</span> <span class="p">[[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="n">n</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">m</span><span class="p">)]</span>          <span class="c1"># f(0, ·) = 0</span>
     <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">K</span><span class="p">):</span>
-        <span class="n">cur</span> <span class="o">=</span> <span class="p">[[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="n">n</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">m</span><span class="p">)]</span>
+        <span class="n">cur</span> <span class="o">=</span> <span class="p">[[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="n">n</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">m</span><span class="p">)]</span>        <span class="c1"># f(k, ·)</span>
         <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">m</span><span class="p">):</span>
             <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
                 <span class="k">for</span> <span class="n">di</span><span class="p">,</span> <span class="n">dj</span> <span class="ow">in</span> <span class="p">((</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">),(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">),(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">),(</span><span class="mi">0</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">)):</span>
                     <span class="n">ni</span><span class="p">,</span> <span class="n">nj</span> <span class="o">=</span> <span class="n">i</span><span class="o">+</span><span class="n">di</span><span class="p">,</span> <span class="n">j</span><span class="o">+</span><span class="n">dj</span>
                     <span class="k">if</span> <span class="mi">0</span> <span class="o">&lt;=</span> <span class="n">ni</span> <span class="o">&lt;</span> <span class="n">m</span> <span class="ow">and</span> <span class="mi">0</span> <span class="o">&lt;=</span> <span class="n">nj</span> <span class="o">&lt;</span> <span class="n">n</span><span class="p">:</span>
-                        <span class="n">cur</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">cur</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span> <span class="o">+</span> <span class="n">prev</span><span class="p">[</span><span class="n">ni</span><span class="p">][</span><span class="n">nj</span><span class="p">])</span> <span class="o">%</span> <span class="n">MOD</span>
+                        <span class="n">cur</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">cur</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span> <span class="o">+</span> <span class="n">prev</span><span class="p">[</span><span class="n">ni</span><span class="p">][</span><span class="n">nj</span><span class="p">])</span> <span class="o">%</span> <span class="n">MOD</span>   <span class="c1"># 界内：f(k-1, i&#39;, j&#39;)</span>
                     <span class="k">else</span><span class="p">:</span>
-                        <span class="n">cur</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">cur</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">%</span> <span class="n">MOD</span>
+                        <span class="n">cur</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">cur</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">%</span> <span class="n">MOD</span>              <span class="c1"># 越界：式(1)</span>
         <span class="n">prev</span> <span class="o">=</span> <span class="n">cur</span>
     <span class="k">return</span> <span class="n">prev</span><span class="p">[</span><span class="n">sr</span><span class="p">][</span><span class="n">sc</span><span class="p">]</span>
 </code></pre></div>
+<p>两份代码同构于同一组递推，只是求值顺序相反；记忆化全表占 <span class="arithmatex">\(O(\text{maxMove}\cdot mn)\)</span>，滚动数组压到两层 <span class="arithmatex">\(O(mn)\)</span>。</p>
 <h2 id="complexity">复杂度 (Complexity)<a class="headerlink" href="#complexity" title="Permanent link">#</a></h2>
 <ul>
-<li>Time: <span class="arithmatex">\(O(\text{maxMove} \cdot m \cdot n)\)</span></li>
+<li>Time: <span class="arithmatex">\(O(\text{maxMove} \cdot m \cdot n)\)</span>（<code>maxMove</code> 层 × <span class="arithmatex">\(m\cdot n\)</span> 个格 × 4 个方向常数）</li>
 <li>Space: <span class="arithmatex">\(O(m \cdot n)\)</span>（滚动数组）或 <span class="arithmatex">\(O(\text{maxMove} \cdot mn)\)</span>（记忆化全表）</li>
 </ul>
+<p>DP 填表与输入数值无关，无 best/avg/worst 之分。</p>
 <h2 id="pitfalls">陷阱 (Pitfalls)<a class="headerlink" href="#pitfalls" title="Permanent link">#</a></h2>
 <ul>
-<li><strong>每步取模</strong>：累加后立刻 <code>% MOD</code>，否则虽然 Python 不溢但矩阵规模乘开后变慢。</li>
-<li><strong>base case 设计</strong>：base 是"出界返回 1"+ "<span class="arithmatex">\(k=0\)</span> 且在网格内返回 0"。颠倒会错。</li>
-<li><strong>maxMove = 0</strong>：合法输入；递归立刻命中 <code>k=0</code>，返回 0。</li>
-<li><strong>方向数组</strong>：常见 bug 写 5 个方向或漏 1 个。</li>
+<li><strong>base case 顺序</strong>：出界返回 1（式 <span class="arithmatex">\((1)\)</span>）必须<strong>先于</strong> <span class="arithmatex">\(k=0\)</span> 返回 0（式 <span class="arithmatex">\((2)\)</span>）。颠倒会漏算"剩步数时已出界"的路径——2×2 例子会得 2 而非 6。</li>
+<li><strong>每步取模</strong>：累加后立刻 <code>% MOD</code>。Python 不溢出，但大整数运算会拖慢矩阵规模放大后的常数。</li>
+<li><strong>maxMove = 0</strong>：合法输入。递归立刻命中 <span class="arithmatex">\(k=0\)</span>（球在界内），返回 0。</li>
+<li><strong>方向数组</strong>：常见 bug 是写成 5 个方向或漏掉 1 个。</li>
 </ul>
 <h2 id="related">相关题目 (Related)<a class="headerlink" href="#related" title="Permanent link">#</a></h2>
 <ul>
 <li><a href="../3147_taking-maximum-energy-from-the-mystic-dungeon/">#3147. Taking Maximum Energy From the Mystic Dungeon</a> — DP 步数推进的另一例</li>
-<li><code>#688. Knight Probability in Chessboard (off-wiki)</code> — 几乎相同模板，求概率</li>
+<li><code>#688. Knight Probability in Chessboard (off-wiki)</code> — 结构相同，把出界路径计数换成出界概率</li>
 <li><a href="../0322_coin-change/">#322. Coin Change</a> — DP 计数模板</li>
 </ul>
 <h2 id="further-reading">Further Reading<a class="headerlink" href="#further-reading" title="Permanent link">#</a></h2>
@@ -22647,6 +22690,8 @@
         <script src="../../../js/mathjax/tex-mml-chtml.js"></script>
       
         <script src="../../../js/mermaid.min.js"></script>
+      
+        <script src="../../../js/featured.js"></script>
       
     
   </body>

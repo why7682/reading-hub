@@ -1466,6 +1466,8 @@
       
         
       
+        
+      
     
     
     
@@ -1521,6 +1523,34 @@
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../featured/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ⭐ Featured（已验证）
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
               
             
               
@@ -1610,10 +1640,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_4" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
         
           
-          <label class="md-nav__link" for="__nav_4_4" id="__nav_4_4_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_5" id="__nav_4_5_label" tabindex="">
             
   
   
@@ -1631,8 +1661,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_4_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_4">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_5">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1915,7 +1945,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -1937,14 +1967,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_4_5" id="__nav_4_5_label" tabindex="">
+              <label class="md-nav__link " for="__nav_4_6" id="__nav_4_6_label" tabindex="">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_5">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_6">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -5321,10 +5351,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_7" checked>
         
           
-          <label class="md-nav__link" for="__nav_4_6" id="__nav_4_6_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_7" id="__nav_4_7_label" tabindex="">
             
   
   
@@ -5342,8 +5372,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_4_6">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_7_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4_7">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -22467,13 +22497,22 @@
 <h2 id="problem">Problem<a class="headerlink" href="#problem" title="Permanent link">#</a></h2>
 <p>非负整数数组 <code>nums</code>。其"度"= 任意元素的最大频次。求"度"相同的最短连续子数组长度。<span class="arithmatex">\(n \le 5 \times 10^4\)</span>。</p>
 <h2 id="_1">背景<a class="headerlink" href="#_1" title="Permanent link">#</a></h2>
-<p>这是<strong>频次驱动的子数组最值</strong>问题：先找全局的"瓶颈元素"（频次最高），再在它身上做"首尾跨度最小"判定。属于"两遍扫描 + 索引记录"范式 — 不需要复杂数据结构，但对边界 case（多元素并列最高频次）的处理是考察点。</p>
-<p>类似思路也用于：找"最频繁元素的影响范围"在用户行为分析、最长单词等场景。</p>
+<p>问题把两个量绑在一起：子数组的"度"必须等于整个数组的度，而我们要在这个约束下让长度最短。第一反应是直接枚举：取遍所有连续子数组，算出每个的度，留下度达标的里最短的那个。但一个子数组的度本身要扫一遍才能算出，子数组有 <span class="arithmatex">\(O(n^2)\)</span> 个，于是总开销到 <span class="arithmatex">\(O(n^3)\)</span>（前缀频次优化后也仍是 <span class="arithmatex">\(O(n^2)\)</span>）。在 <span class="arithmatex">\(n \le 5 \times 10^4\)</span> 下这条路走不通。</p>
+<p>枚举之所以浪费，是因为它把"度达标"当成需要逐个验证的性质，反复重算频次。但这个约束其实极强：一个度为 <span class="arithmatex">\(D\)</span> 的子数组，必然存在某个值 <span class="arithmatex">\(v\)</span> 在其中出现了 <span class="arithmatex">\(D\)</span> 次。而 <span class="arithmatex">\(v\)</span> 在<strong>整个数组</strong>里总共也只出现 <span class="arithmatex">\(D\)</span> 次（否则全局度就超过 <span class="arithmatex">\(D\)</span> 了），所以这 <span class="arithmatex">\(D\)</span> 次必须<strong>全部</strong>落在子数组内。一旦某个 <span class="arithmatex">\(v\)</span> 被选定，子数组的两端就被钉死了：它必须从 <span class="arithmatex">\(v\)</span> 的首次出现开始，到 <span class="arithmatex">\(v\)</span> 的末次出现结束——再短就漏掉 <span class="arithmatex">\(v\)</span> 的某次出现，再长则毫无必要。换句话说，答案不是从所有子数组里挑，而是从所有"度达标的值"里挑，每个值只对应一个候选区间。这把搜索空间从 <span class="arithmatex">\(O(n^2)\)</span> 个子数组压到 <span class="arithmatex">\(O(\text{种类数})\)</span> 个值。</p>
 <h2 id="_2">形式化<a class="headerlink" href="#_2" title="Permanent link">#</a></h2>
-<p>设 <span class="arithmatex">\(\text{freq}(v) = \#\{i : \text{nums}[i] = v\}\)</span>，<span class="arithmatex">\(D = \max_v \text{freq}(v)\)</span>。
-对每个达到 <span class="arithmatex">\(D\)</span> 的 <span class="arithmatex">\(v\)</span>，定义其"跨度" <span class="arithmatex">\(\text{span}(v) = \text{last}(v) - \text{first}(v) + 1\)</span>，其中 first/last 是 <span class="arithmatex">\(v\)</span> 在数组中首尾出现下标。答案 <span class="arithmatex">\(= \min_v \text{span}(v)\)</span> 其中 <span class="arithmatex">\(\text{freq}(v) = D\)</span>。</p>
+<p>直觉是：最短的达标子数组，一定以某个度达标元素的首次出现为左端、末次出现为右端，因为任何缩短都会漏掉它的一次出现，任何延长都属多余。把这个直觉精确化。</p>
+<p>设值 <span class="arithmatex">\(v\)</span> 的频次
+$<span class="arithmatex">\(\text{freq}(v) = \#\{i : \text{nums}[i] = v\},\)</span>$
+全局度
+$<span class="arithmatex">\(D = \max_v \text{freq}(v).\)</span>$
+设 <span class="arithmatex">\(\text{first}(v)\)</span>、<span class="arithmatex">\(\text{last}(v)\)</span> 分别是 <span class="arithmatex">\(v\)</span> 在数组中首次、末次出现的下标，定义其<strong>跨度</strong>
+$<span class="arithmatex">\(\text{span}(v) = \text{last}(v) - \text{first}(v) + 1. \tag{1}\)</span>$</p>
+<p><strong>为何 <span class="arithmatex">\(\text{span}(v)\)</span> 恰是包含 <span class="arithmatex">\(v\)</span> 全部出现的最短连续段长度。</strong> 任何包含 <span class="arithmatex">\(v\)</span> 所有出现的子数组，其左端不能晚于 <span class="arithmatex">\(\text{first}(v)\)</span>、右端不能早于 <span class="arithmatex">\(\text{last}(v)\)</span>，故长度至少为 <span class="arithmatex">\(\text{last}(v) - \text{first}(v) + 1\)</span>；而区间 <span class="arithmatex">\([\text{first}(v), \text{last}(v)]\)</span> 本身就包含了 <span class="arithmatex">\(v\)</span> 的每一次出现，长度恰为此值。所以式 (1) 既是下界又可达。</p>
+<p>任何度为 <span class="arithmatex">\(D\)</span> 的子数组都对应某个 <span class="arithmatex">\(\text{freq}(v) = D\)</span> 的值并包含其全部出现，故长度 <span class="arithmatex">\(\ge \text{span}(v)\)</span>；反之每个这样的 <span class="arithmatex">\(v\)</span> 的区间 <span class="arithmatex">\([\text{first}(v), \text{last}(v)]\)</span> 都是一个合法解。于是答案是对所有度达标元素取最小跨度：
+$<span class="arithmatex">\(\text{ans} = \min_{v\,:\,\text{freq}(v) = D} \text{span}(v). \tag{2}\)</span>$</p>
+<p><strong>为何要取最小、而非任取一个。</strong> 多个值可能并列最高频，它们的跨度通常不同。以 <span class="arithmatex">\(\text{nums} = [1,1,2,2]\)</span> 为例：度为 <span class="arithmatex">\(2\)</span>，值 <span class="arithmatex">\(1\)</span> 的跨度是 <span class="arithmatex">\(1 - 0 + 1 = 2\)</span>，值 <span class="arithmatex">\(2\)</span> 的跨度是 <span class="arithmatex">\(3 - 2 + 1 = 2\)</span>，恰好相等，答案 <span class="arithmatex">\(2\)</span>；但若 <span class="arithmatex">\(\text{nums} = [1,2,2,1]\)</span>，则值 <span class="arithmatex">\(1\)</span> 的跨度是 <span class="arithmatex">\(3 - 0 + 1 = 4\)</span>，值 <span class="arithmatex">\(2\)</span> 的跨度是 <span class="arithmatex">\(2 - 1 + 1 = 2\)</span>，必须取较小者得 <span class="arithmatex">\(2\)</span>。式 (2) 中的 <span class="arithmatex">\(\min\)</span> 正是为此。</p>
 <h2 id="_3">数据结构 / 想法<a class="headerlink" href="#_3" title="Permanent link">#</a></h2>
-<p><strong>一遍扫描 + 三个字典</strong>：
+<p>式 (2) 直接给出了算法：要算出它，对每个值只需三样东西——频次 <span class="arithmatex">\(\text{freq}(v)\)</span>、首次下标 <span class="arithmatex">\(\text{first}(v)\)</span>、末次下标 <span class="arithmatex">\(\text{last}(v)\)</span>。三者都能在一次从左到右的扫描中增量维护，无须任何子数组枚举。</p>
 <div class="language-python highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">findShortestSubArray</span><span class="p">(</span><span class="n">nums</span><span class="p">):</span>
     <span class="n">first</span><span class="p">,</span> <span class="n">last</span><span class="p">,</span> <span class="n">cnt</span> <span class="o">=</span> <span class="p">{},</span> <span class="p">{},</span> <span class="p">{}</span>
     <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">nums</span><span class="p">):</span>
@@ -22482,8 +22521,8 @@
         <span class="n">cnt</span><span class="p">[</span><span class="n">v</span><span class="p">]</span> <span class="o">=</span> <span class="n">cnt</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span>
     <span class="n">D</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">cnt</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
     <span class="k">return</span> <span class="nb">min</span><span class="p">(</span><span class="n">last</span><span class="p">[</span><span class="n">v</span><span class="p">]</span> <span class="o">-</span> <span class="n">first</span><span class="p">[</span><span class="n">v</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">cnt</span> <span class="k">if</span> <span class="n">cnt</span><span class="p">[</span><span class="n">v</span><span class="p">]</span> <span class="o">==</span> <span class="n">D</span><span class="p">)</span>
-</code></pre></div></p>
-<p><strong>不变量</strong>：扫到下标 <span class="arithmatex">\(i\)</span> 时，<code>first[v]</code> 是 <span class="arithmatex">\(v\)</span> 在 <span class="arithmatex">\(0..i\)</span> 中首次出现位置，<code>last[v]</code> 是末次，<code>cnt[v]</code> 是出现次数。<strong>正确性</strong>：跨度 <span class="arithmatex">\(\text{last}-\text{first}+1\)</span> 是包含所有 <span class="arithmatex">\(v\)</span> 出现的<strong>最短连续段</strong>长度的下界且可达。</p>
+</code></pre></div>
+<p><strong>不变量</strong>：扫到下标 <span class="arithmatex">\(i\)</span> 后，对已出现过的每个 <span class="arithmatex">\(v\)</span>，<code>first[v]</code> 是 <span class="arithmatex">\(v\)</span> 在 <span class="arithmatex">\(0..i\)</span> 中首次出现的位置，<code>last[v]</code> 是末次出现的位置，<code>cnt[v]</code> 是出现次数。每行循环体恰好维持它：<code>first[v]</code> 仅在 <span class="arithmatex">\(v\)</span> 第一次出现时写入（<code>if v not in first</code> 守卫），此后不再改动，故始终是最早下标；<code>last[v] = i</code> 每次无条件覆盖，故始终是当前最晚下标；<code>cnt[v]</code> 每次自增，故始终是计数。扫描结束时这三个字典对全数组成立，于是 <code>D = max(cnt.values())</code> 即式中的 <span class="arithmatex">\(D\)</span>，最后一行按式 (2) 在度达标的值上取最小跨度。</p>
 <h2 id="_4">复杂度<a class="headerlink" href="#_4" title="Permanent link">#</a></h2>
 <ul>
 <li>Time: <span class="arithmatex">\(O(n)\)</span></li>
@@ -22491,7 +22530,7 @@
 </ul>
 <h2 id="_5">陷阱<a class="headerlink" href="#_5" title="Permanent link">#</a></h2>
 <ul>
-<li>多个元素并列最大频次 → 必须取最短跨度，不是任一即可。</li>
+<li>多个元素并列最大频次 → 必须取最短跨度，不是任一即可（见形式化中 <span class="arithmatex">\([1,2,2,1]\)</span> 的例子）。</li>
 <li><code>nums</code> 中可能全相同元素 → 答案是 <span class="arithmatex">\(n\)</span>（整数组）。</li>
 <li>单元素数组 → 答案是 1。</li>
 <li>注意"度"定义是<strong>值</strong>的频次，不是"种类数"。</li>
@@ -22499,7 +22538,7 @@
 <h2 id="_6">相关题目<a class="headerlink" href="#_6" title="Permanent link">#</a></h2>
 <ul>
 <li><a href="../0387_first-unique-character-in-a-string/">#0387. First Unique Character in a String</a> — 同款"频次表 + 首次出现位置"。</li>
-<li><code>#451. Sort Characters By Frequency (off-wiki)</code> — 频次桶排序入门。</li>
+<li><a href="../0451_sort-characters-by-frequency/">#451. Sort Characters By Frequency</a> — 频次桶排序入门。</li>
 <li><code>#594. Longest Harmonious Subsequence (off-wiki)</code> — 频次差为 1 的子序列长度。</li>
 </ul>
 <h2 id="further-reading">Further Reading<a class="headerlink" href="#further-reading" title="Permanent link">#</a></h2>
@@ -22611,6 +22650,8 @@
         <script src="../../../js/mathjax/tex-mml-chtml.js"></script>
       
         <script src="../../../js/mermaid.min.js"></script>
+      
+        <script src="../../../js/featured.js"></script>
       
     
   </body>

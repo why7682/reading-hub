@@ -1466,6 +1466,8 @@
       
         
       
+        
+      
     
     
     
@@ -1521,6 +1523,34 @@
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../featured/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ⭐ Featured（已验证）
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
               
             
               
@@ -1610,10 +1640,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_4" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
         
           
-          <label class="md-nav__link" for="__nav_4_4" id="__nav_4_4_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_5" id="__nav_4_5_label" tabindex="">
             
   
   
@@ -1631,8 +1661,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_4_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_4">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_5">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1915,7 +1945,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -1937,14 +1967,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_4_5" id="__nav_4_5_label" tabindex="">
+              <label class="md-nav__link " for="__nav_4_6" id="__nav_4_6_label" tabindex="">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_5">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_6">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -5321,10 +5351,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_7" checked>
         
           
-          <label class="md-nav__link" for="__nav_4_6" id="__nav_4_6_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_7" id="__nav_4_7_label" tabindex="">
             
   
   
@@ -5342,8 +5372,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_4_6">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_7_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4_7">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -22467,43 +22497,90 @@
 <h2 id="problem">Problem<a class="headerlink" href="#problem" title="Permanent link">#</a></h2>
 <p><span class="arithmatex">\(n\)</span> 个人的年龄 <code>ages[i]</code>。<span class="arithmatex">\(x\)</span> 发请求给 <span class="arithmatex">\(y\)</span> 当且仅当不满足：(1) <span class="arithmatex">\(\text{age}[y] \le 0.5 \cdot \text{age}[x] + 7\)</span>；(2) <span class="arithmatex">\(\text{age}[y] &gt; \text{age}[x]\)</span>；(3) <span class="arithmatex">\(\text{age}[y] &gt; 100 \land \text{age}[x] &lt; 100\)</span>。求总请求数。<span class="arithmatex">\(n \le 2 \times 10^4\)</span>，<span class="arithmatex">\(\text{age} \in [1, 120]\)</span>。</p>
 <h2 id="_1">背景<a class="headerlink" href="#_1" title="Permanent link">#</a></h2>
-<p>本题表面"按怪规则数对"，<strong>关键观察</strong>：年龄上界仅 120，可把人按年龄<strong>桶计数</strong>，问题降为 <span class="arithmatex">\(120 \times 120\)</span> 的桶对枚举，复杂度 <span class="arithmatex">\(O(120^2) = O(1)\)</span>（独立于 <span class="arithmatex">\(n\)</span>）。这是<strong>"小值域 + 计数巧用"</strong> 模式的代表，与 <em>#1010 Pairs of Songs Divisible by 60</em>、<em>#1512 Number of Good Pairs</em> 等同源。</p>
-<p>化简条件：(3) <span class="arithmatex">\(\text{age}[y] &gt; 100 \land \text{age}[x] &lt; 100\)</span> 实际上隐含在 (2) 中（若 <span class="arithmatex">\(\text{age}[y] &gt; 100 &gt; \text{age}[x]\)</span> 则 <span class="arithmatex">\(\text{age}[y] &gt; \text{age}[x]\)</span>），可忽略。<strong>最终规则</strong>：<span class="arithmatex">\(x\)</span> 发给 <span class="arithmatex">\(y\)</span> ↔ <span class="arithmatex">\(0.5 \cdot \text{age}[x] + 7 &lt; \text{age}[y] \le \text{age}[x]\)</span>。</p>
+<p>最直接的做法是枚举每一个有序对 <span class="arithmatex">\((x, y)\)</span>，逐一检验三条禁止条件，未被禁止的计入答案：</p>
+<div class="language-python highlight"><pre><span></span><code><span class="n">res</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">y</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">x</span> <span class="o">!=</span> <span class="n">y</span> <span class="ow">and</span> <span class="n">allowed</span><span class="p">(</span><span class="n">ages</span><span class="p">[</span><span class="n">x</span><span class="p">],</span> <span class="n">ages</span><span class="p">[</span><span class="n">y</span><span class="p">]):</span>
+            <span class="n">res</span> <span class="o">+=</span> <span class="mi">1</span>
+</code></pre></div>
+<p>这是 <span class="arithmatex">\(O(n^2)\)</span>。在 <span class="arithmatex">\(n = 2 \times 10^4\)</span> 时约 <span class="arithmatex">\(4 \times 10^8\)</span> 次检验，超出时限。要加速，必须找到这个二重循环里的冗余。</p>
+<p>冗余来自一个观察：<code>allowed(ages[x], ages[y])</code> 的取值<strong>只依赖两个年龄值，不依赖是哪两个人</strong>。换句话说，任意两个年龄都是 <span class="arithmatex">\(a_x\)</span>、年龄都是 <span class="arithmatex">\(a_y\)</span> 的人，发请求的判定完全相同。于是同年龄的人可以合并：设 <span class="arithmatex">\(\text{cnt}[a]\)</span> 为年龄恰为 <span class="arithmatex">\(a\)</span> 的人数，枚举的对象就从 <span class="arithmatex">\(n^2\)</span> 个<strong>人对</strong>坍缩为年龄值对。而年龄是 <span class="arithmatex">\([1, 120]\)</span> 内的整数，至多 <span class="arithmatex">\(120\)</span> 个不同值，人对的状态空间因此压成 <span class="arithmatex">\(120^2 \approx 1.4 \times 10^4\)</span> 个<strong>年龄对</strong>——与 <span class="arithmatex">\(n\)</span> 无关。这个坍缩就是本题的全部。</p>
+<p>在落实到计数之前，先把三条禁止条件化简成一个区间。条件 (1)(2) 是 <span class="arithmatex">\(a_y\)</span> 关于 <span class="arithmatex">\(a_x\)</span> 的上下界；条件 (3) 看似独立，但其实多余：</p>
+<blockquote>
+<p><strong>断言</strong>：在条件 (2) 不触发（即 <span class="arithmatex">\(a_y \le a_x\)</span>）的前提下，条件 (3) 永远不触发。</p>
+</blockquote>
+<p>要看出这一点，假设条件 (3) 触发，即 <span class="arithmatex">\(a_y &gt; 100\)</span> 且 <span class="arithmatex">\(a_x &lt; 100\)</span>。那么 <span class="arithmatex">\(a_y &gt; 100 &gt; a_x\)</span>，于是 <span class="arithmatex">\(a_y &gt; a_x\)</span>，条件 (2) 已经触发。所以条件 (3) 能禁止的对，条件 (2) 早已禁止；删去 (3) 不改变任何判定。</p>
+<p>去掉 (3) 后，"未被禁止"等价于同时违反 (1) 和 (2)：</p>
+<div class="arithmatex">\[
+a_y &gt; 0.5 \cdot a_x + 7 \quad\land\quad a_y \le a_x .
+\]</div>
+<p>即合法的 <span class="arithmatex">\(a_y\)</span> 落在半开区间 <span class="arithmatex">\((0.5\,a_x + 7,\; a_x]\)</span> 内。给定 <span class="arithmatex">\(a_x\)</span>，三条规则收缩为 <span class="arithmatex">\(a_y\)</span> 上的单一区间约束；数请求对，等价于在 <span class="arithmatex">\((a_x, a_y)\)</span> 平面上数一个矩形区域内的整数格点（按人数加权）。这把问题完全转化成一个计数问题。</p>
 <h2 id="_2">形式化<a class="headerlink" href="#_2" title="Permanent link">#</a></h2>
-<p>计数 <span class="arithmatex">\(\#\{(x, y) : x \neq y \land 0.5 \cdot a_x + 7 &lt; a_y \le a_x\}\)</span>。</p>
+<p>按上面的化简，总请求数是满足该区间约束的有序人对之数：</p>
+<div class="arithmatex">\[
+N \;=\; \#\bigl\{(x, y) : x \neq y \;\land\; 0.5\,a_x + 7 &lt; a_y \le a_x \bigr\},
+\tag{1}
+\]</div>
+<p>其中 <span class="arithmatex">\(a_i := \text{age}[i]\)</span>。约束只涉及年龄值 <span class="arithmatex">\(a_x, a_y\)</span>，不涉及下标 <span class="arithmatex">\(x, y\)</span>，这正是上一节"人对坍缩为年龄对"成立的条件。</p>
 <h2 id="_3">数据结构 / 想法<a class="headerlink" href="#_3" title="Permanent link">#</a></h2>
-<p><strong>计数 + 桶对枚举</strong>：
+<p><strong>从公式 (1) 推出桶计数。</strong> 按年龄分组，把对 <span class="arithmatex">\((x, y)\)</span> 的求和拆成"先选年龄值，再选该年龄的人"：</p>
+<div class="arithmatex">\[
+N \;=\; \sum_{a_x = 1}^{120}\;\sum_{a_y = 1}^{120}
+\mathbf{1}\!\left[\,0.5\,a_x + 7 &lt; a_y \le a_x\,\right]\cdot W(a_x, a_y),
+\tag{2}
+\]</div>
+<p>其中 <span class="arithmatex">\(W(a_x, a_y)\)</span> 是 "<span class="arithmatex">\(x\)</span> 的年龄为 <span class="arithmatex">\(a_x\)</span>、<span class="arithmatex">\(y\)</span> 的年龄为 <span class="arithmatex">\(a_y\)</span>、且 <span class="arithmatex">\(x \neq y\)</span>" 的有序对数目。当 <span class="arithmatex">\(a_x \neq a_y\)</span> 时，<span class="arithmatex">\(x\)</span> 与 <span class="arithmatex">\(y\)</span> 取自不同的桶，互不相同，故 <span class="arithmatex">\(W = \text{cnt}[a_x]\cdot\text{cnt}[a_y]\)</span>。当 <span class="arithmatex">\(a_x = a_y\)</span> 时，<span class="arithmatex">\(x\)</span> 与 <span class="arithmatex">\(y\)</span> 同取自一个大小为 <span class="arithmatex">\(\text{cnt}[a_x]\)</span> 的桶，<span class="arithmatex">\(\text{cnt}[a_x]^2\)</span> 个有序对中含 <span class="arithmatex">\(\text{cnt}[a_x]\)</span> 个 <span class="arithmatex">\(x = y\)</span> 的非法对，须扣去：</p>
+<div class="arithmatex">\[
+W(a, a) \;=\; \text{cnt}[a]^2 - \text{cnt}[a].
+\tag{3}
+\]</div>
+<p>公式 (2)(3) 逐字翻译成代码——每一行都是公式的一个因子：</p>
 <div class="language-python highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">numFriendRequests</span><span class="p">(</span><span class="n">ages</span><span class="p">):</span>
     <span class="n">cnt</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="mi">121</span>
     <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">ages</span><span class="p">:</span> <span class="n">cnt</span><span class="p">[</span><span class="n">a</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
     <span class="n">res</span> <span class="o">=</span> <span class="mi">0</span>
     <span class="k">for</span> <span class="n">ax</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">121</span><span class="p">):</span>
         <span class="k">for</span> <span class="n">ay</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">121</span><span class="p">):</span>
-            <span class="k">if</span> <span class="n">ay</span> <span class="o">&lt;=</span> <span class="mf">0.5</span><span class="o">*</span><span class="n">ax</span> <span class="o">+</span> <span class="mi">7</span><span class="p">:</span> <span class="k">continue</span>
-            <span class="k">if</span> <span class="n">ay</span> <span class="o">&gt;</span> <span class="n">ax</span><span class="p">:</span> <span class="k">continue</span>
-            <span class="n">res</span> <span class="o">+=</span> <span class="n">cnt</span><span class="p">[</span><span class="n">ax</span><span class="p">]</span> <span class="o">*</span> <span class="n">cnt</span><span class="p">[</span><span class="n">ay</span><span class="p">]</span>
-            <span class="k">if</span> <span class="n">ax</span> <span class="o">==</span> <span class="n">ay</span><span class="p">:</span> <span class="n">res</span> <span class="o">-=</span> <span class="n">cnt</span><span class="p">[</span><span class="n">ax</span><span class="p">]</span>   <span class="c1"># 减去 self pair</span>
+            <span class="k">if</span> <span class="n">ay</span> <span class="o">&lt;=</span> <span class="mf">0.5</span><span class="o">*</span><span class="n">ax</span> <span class="o">+</span> <span class="mi">7</span><span class="p">:</span> <span class="k">continue</span>   <span class="c1"># 违反 (1) 的对应：a_y 须严格大于</span>
+            <span class="k">if</span> <span class="n">ay</span> <span class="o">&gt;</span> <span class="n">ax</span><span class="p">:</span> <span class="k">continue</span>            <span class="c1"># 违反 (2) 的对应：a_y &lt;= a_x</span>
+            <span class="n">res</span> <span class="o">+=</span> <span class="n">cnt</span><span class="p">[</span><span class="n">ax</span><span class="p">]</span> <span class="o">*</span> <span class="n">cnt</span><span class="p">[</span><span class="n">ay</span><span class="p">]</span>        <span class="c1"># W 的主项</span>
+            <span class="k">if</span> <span class="n">ax</span> <span class="o">==</span> <span class="n">ay</span><span class="p">:</span> <span class="n">res</span> <span class="o">-=</span> <span class="n">cnt</span><span class="p">[</span><span class="n">ax</span><span class="p">]</span>     <span class="c1"># 公式 (3) 的自配对修正</span>
     <span class="k">return</span> <span class="n">res</span>
-</code></pre></div></p>
-<p><strong>双指针 / 二分</strong>：排序 ages 后对每个 <span class="arithmatex">\(x\)</span> 二分找合法 <span class="arithmatex">\(y\)</span> 区间。<span class="arithmatex">\(O(n \log n)\)</span>。</p>
-<p><strong>前缀和</strong>：<code>prefix[a]</code> = 年龄 <span class="arithmatex">\(\le a\)</span> 的人数。对每个 <span class="arithmatex">\(a_x\)</span>，合法 <span class="arithmatex">\(a_y \in (a_x/2 + 7, a_x]\)</span>，区间内人数 <span class="arithmatex">\(= \text{prefix}[a_x] - \text{prefix}[\lfloor a_x/2 + 7 \rfloor]\)</span>。然后减去本人。<span class="arithmatex">\(O(n + 120)\)</span>。</p>
-<p><strong>正确性</strong>：合并 (1)(2) 条件后剩余两条上下界即可；自配对要减 <code>cnt[ax]</code>（每人都"自动满足条件"的话需扣去）。</p>
+</code></pre></div>
+<p>外层两重循环各跑 <span class="arithmatex">\(120\)</span> 次，与 <span class="arithmatex">\(n\)</span> 无关，整体 <span class="arithmatex">\(O(120^2) = O(1)\)</span>。</p>
+<p><strong>前缀和：把内层 120 次替换成两次查表。</strong> 公式 (2) 中固定 <span class="arithmatex">\(a_x\)</span> 时，内层对 <span class="arithmatex">\(a_y\)</span> 求和的就是落在 <span class="arithmatex">\((0.5\,a_x + 7,\; a_x]\)</span> 内所有桶的总人数。一段连续年龄区间的人数，可由累积计数之差得到：令 <span class="arithmatex">\(\text{prefix}[a] = \sum_{k \le a}\text{cnt}[k]\)</span>，则年龄在 <span class="arithmatex">\((\ell, a_x]\)</span> 内的人数为 <span class="arithmatex">\(\text{prefix}[a_x] - \text{prefix}[\ell]\)</span>，其中 <span class="arithmatex">\(\ell = \lfloor 0.5\,a_x + 7\rfloor\)</span>（严格大于 <span class="arithmatex">\(0.5\,a_x+7\)</span> 的最小整数下界）。注意当 <span class="arithmatex">\(a_x \le 13\)</span> 时 <span class="arithmatex">\(\ell\)</span> 可能超过 <span class="arithmatex">\(a_x\)</span>（如 <span class="arithmatex">\(a_x = 7\)</span> 时 <span class="arithmatex">\(\ell = 10 &gt; 7\)</span>），区间为空，差值须截到 <span class="arithmatex">\(0\)</span> 再扣自身：</p>
+<div class="language-python highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">numFriendRequests</span><span class="p">(</span><span class="n">ages</span><span class="p">):</span>
+    <span class="n">cnt</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="mi">121</span>
+    <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">ages</span><span class="p">:</span> <span class="n">cnt</span><span class="p">[</span><span class="n">a</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
+    <span class="n">prefix</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="mi">121</span>
+    <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">121</span><span class="p">):</span> <span class="n">prefix</span><span class="p">[</span><span class="n">a</span><span class="p">]</span> <span class="o">=</span> <span class="n">prefix</span><span class="p">[</span><span class="n">a</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">cnt</span><span class="p">[</span><span class="n">a</span><span class="p">]</span>
+    <span class="n">res</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">for</span> <span class="n">ax</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="mi">121</span><span class="p">):</span>              <span class="c1"># ax &lt; 15 时区间必空，可跳过</span>
+        <span class="n">lo</span> <span class="o">=</span> <span class="n">ax</span> <span class="o">//</span> <span class="mi">2</span> <span class="o">+</span> <span class="mi">7</span>                    <span class="c1"># = floor(0.5*ax + 7)</span>
+        <span class="n">window</span> <span class="o">=</span> <span class="n">prefix</span><span class="p">[</span><span class="n">ax</span><span class="p">]</span> <span class="o">-</span> <span class="n">prefix</span><span class="p">[</span><span class="n">lo</span><span class="p">]</span>    <span class="c1"># (lo, ax] 内人数；ax&gt;=15 保证 lo&lt;ax</span>
+        <span class="n">res</span> <span class="o">+=</span> <span class="n">cnt</span><span class="p">[</span><span class="n">ax</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="n">window</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>       <span class="c1"># 扣去 x 自己（x 落在该窗口内）</span>
+    <span class="k">return</span> <span class="n">res</span>
+</code></pre></div>
+<p>这里把每个 <span class="arithmatex">\(a_x\)</span> 的内层求和压成一次区间查询，复杂度 <span class="arithmatex">\(O(n + V)\)</span>，<span class="arithmatex">\(V = 120\)</span>。<span class="arithmatex">\(\text{window} - 1\)</span> 一次性完成自配对修正：<span class="arithmatex">\(x\)</span> 自身满足 <span class="arithmatex">\(0.5\,a_x + 7 &lt; a_x \le a_x\)</span> 当且仅当 <span class="arithmatex">\(a_x &gt; 14\)</span>，故只在 <span class="arithmatex">\(a_x \ge 15\)</span> 时枚举，此区间内 <span class="arithmatex">\(x\)</span> 必在窗口中，恰好多算一次。</p>
+<p><strong>排序 + 二分（备选）。</strong> 不开桶也行：把 <code>ages</code> 排序，对每个 <span class="arithmatex">\(x\)</span> 在数组里二分定位合法 <span class="arithmatex">\(a_y\)</span> 区间 <span class="arithmatex">\((0.5\,a_x+7,\; a_x]\)</span> 的左右端点，区间长度减去 <span class="arithmatex">\(x\)</span> 自身即为 <span class="arithmatex">\(x\)</span> 发出的请求数。<span class="arithmatex">\(O(n \log n)\)</span>。当年龄值域不再是小常数（本题恰好是）时，这是退路；桶计数因值域有界而更优，是本题的主线。</p>
 <h2 id="_4">复杂度<a class="headerlink" href="#_4" title="Permanent link">#</a></h2>
 <ul>
 <li>桶对枚举：<span class="arithmatex">\(O(120^2) = O(1)\)</span>。</li>
-<li>排序 + 双指针：<span class="arithmatex">\(O(n \log n)\)</span>。</li>
 <li>前缀和：<span class="arithmatex">\(O(n + V)\)</span>，<span class="arithmatex">\(V = 120\)</span>。</li>
+<li>排序 + 二分：<span class="arithmatex">\(O(n \log n)\)</span>。</li>
 </ul>
 <h2 id="_5">陷阱<a class="headerlink" href="#_5" title="Permanent link">#</a></h2>
 <ul>
-<li>自配对：当 <span class="arithmatex">\(a_x = a_y\)</span> 时同一人同年龄不能 self-friend，需 <span class="arithmatex">\(\text{cnt}[a_x]^2 - \text{cnt}[a_x]\)</span> 而非 <span class="arithmatex">\(\text{cnt}[a_x] (\text{cnt}[a_x] - 1)\)</span> —— 等价但写法易错。</li>
-<li>严格不等 vs 非严格：<span class="arithmatex">\(\text{age}[y] \le 0.5 \cdot \text{age}[x] + 7\)</span> 不发请求，所以合法 <span class="arithmatex">\(y\)</span> 是<strong>严格大于</strong>。</li>
-<li>浮点：<code>0.5 * a + 7</code> 在 a 偶数时可能引入浮点；可改写为整数比较 <code>2*ay &gt; ax + 14</code> 安全。</li>
+<li>自配对修正来自公式 (3)。桶枚举默认按 <span class="arithmatex">\(\text{cnt}[a_x]\cdot\text{cnt}[a_y]\)</span> 计有序对，<span class="arithmatex">\(a_x = a_y\)</span> 时把 <span class="arithmatex">\((x, x)\)</span> 也算了进去，这样的非法对恰有 <span class="arithmatex">\(\text{cnt}[a_x]\)</span> 个，故减 <span class="arithmatex">\(\text{cnt}[a_x]\)</span>。等价写法 <span class="arithmatex">\(\text{cnt}[a]^2 - \text{cnt}[a] = \text{cnt}[a](\text{cnt}[a]-1)\)</span> 在数学上相同，但分两处（代码注释与此处）描述时容易写错符号，宜统一回归公式 (3)。</li>
+<li>严格 vs 非严格：条件 (1) <span class="arithmatex">\(a_y \le 0.5\,a_x + 7\)</span> 禁止请求，故合法 <span class="arithmatex">\(a_y\)</span> 须<strong>严格大于</strong> <span class="arithmatex">\(0.5\,a_x + 7\)</span>；区间左端开、右端闭。</li>
+<li>浮点：<code>0.5 * ax + 7</code> 在 <span class="arithmatex">\(a_x\)</span> 为<strong>奇数</strong>时引入半整数（如 <span class="arithmatex">\(0.5 \times 17 = 8.5\)</span>；偶数则恰为整数，<span class="arithmatex">\(0.5 \times 16 = 8.0\)</span>）。为彻底避免浮点比较，把 <span class="arithmatex">\(a_y &gt; 0.5\,a_x + 7\)</span> 整数化为 <span class="arithmatex">\(2\,a_y &gt; a_x + 14\)</span>，在 <span class="arithmatex">\([1,120]\)</span> 全域与原式等价。</li>
+<li>前缀和的窗口下界 <span class="arithmatex">\(\ell\)</span> 在小年龄时会超过 <span class="arithmatex">\(a_x\)</span> 使区间为空；不截到 <span class="arithmatex">\(0\)</span>（或不跳过 <span class="arithmatex">\(a_x &lt; 15\)</span>）会让 <span class="arithmatex">\(\text{prefix}[a_x] - \text{prefix}[\ell]\)</span> 变负，进而把答案算错。</li>
 </ul>
 <h2 id="_6">相关题目<a class="headerlink" href="#_6" title="Permanent link">#</a></h2>
 <ul>
-<li><a href="../1010_pairs-of-songs-with-total-durations-divisible-by-60/">#1010. Pairs of Songs With Total Durations Divisible by 60</a> — 同款"小值域 + 桶计数对"。</li>
-<li><code>#1512. Number of Good Pairs (off-wiki)</code> — 计数对入门。</li>
+<li><a href="../1010_pairs-of-songs-with-total-durations-divisible-by-60/">#1010. Pairs of Songs With Total Durations Divisible by 60</a> — 同样把"数对"按一个有界的值（时长 mod 60）分桶，判定只依赖值不依赖下标。</li>
+<li><code>#1512. Number of Good Pairs (off-wiki)</code> — 计数对入门：判定 <span class="arithmatex">\(a_x = a_y\)</span> 仅依赖值，自然用桶。</li>
 <li><code>#1.  Two Sum</code> — 计数对的最基础原型。</li>
 </ul>
 <h2 id="further-reading">Further Reading<a class="headerlink" href="#further-reading" title="Permanent link">#</a></h2>
@@ -22615,6 +22692,8 @@
         <script src="../../../js/mathjax/tex-mml-chtml.js"></script>
       
         <script src="../../../js/mermaid.min.js"></script>
+      
+        <script src="../../../js/featured.js"></script>
       
     
   </body>

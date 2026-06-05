@@ -1466,6 +1466,8 @@
       
         
       
+        
+      
     
     
     
@@ -1521,6 +1523,34 @@
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../featured/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ⭐ Featured（已验证）
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
               
             
               
@@ -1610,10 +1640,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_4" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
         
           
-          <label class="md-nav__link" for="__nav_4_4" id="__nav_4_4_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_5" id="__nav_4_5_label" tabindex="">
             
   
   
@@ -1631,8 +1661,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_4_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_4">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_5">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1915,7 +1945,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -1937,14 +1967,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_4_5" id="__nav_4_5_label" tabindex="">
+              <label class="md-nav__link " for="__nav_4_6" id="__nav_4_6_label" tabindex="">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_5">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_6">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -5321,10 +5351,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_7" checked>
         
           
-          <label class="md-nav__link" for="__nav_4_6" id="__nav_4_6_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_7" id="__nav_4_7_label" tabindex="">
             
   
   
@@ -5342,8 +5372,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_4_6">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_7_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4_7">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -22465,19 +22495,29 @@
 <h1 id="1752-check-if-array-is-sorted-and-rotated-easy">1752. Check if Array Is Sorted and Rotated  🟢 Easy<a class="headerlink" href="#1752-check-if-array-is-sorted-and-rotated-easy" title="Permanent link">#</a></h1>
 <p><strong>Tags</strong>: Array</p>
 <h2 id="problem">Problem<a class="headerlink" href="#problem" title="Permanent link">#</a></h2>
-<p>判断数组是否由"非降序数组旋转若干位"得到。允许重复。约束 <span class="arithmatex">\(1 \le n \le 100\)</span>，<span class="arithmatex">\(1 \le v \le 100\)</span>。</p>
+<p>判断数组是否由"非降序数组旋转若干位"得到。允许重复。约束 <span class="arithmatex">\(1 \le n \le 100\)</span>，<span class="arithmatex">\(1 \le v \le 100\)</span>（<span class="arithmatex">\(v\)</span> 为元素值）。</p>
 <h2 id="background">背景 (Background)<a class="headerlink" href="#background" title="Permanent link">#</a></h2>
-<p>一个排好序后旋转的数组在循环意义下至多有一个"下降点"（<span class="arithmatex">\(a_i &gt; a_{i+1 \mod n}\)</span>）。计数下降点 <span class="arithmatex">\(\le 1\)</span> 即为答案。无特殊学科背景。</p>
+<p>先看最朴素的想法：既然要判断"是否排好序后旋转得到"，能否直接定义出旋转、然后枚举验证？</p>
+<p>把数组 <span class="arithmatex">\(a\)</span> 与一个非降序数组 <span class="arithmatex">\(s\)</span> 关联。<span class="arithmatex">\(a\)</span> 由 <span class="arithmatex">\(s\)</span> 旋转 <span class="arithmatex">\(k\)</span> 位得到，意思是
+$<span class="arithmatex">\(a = s[k:] + s[:k], \quad 0 \le k &lt; n.\)</span>$
+于是一个直接的判定算法是：枚举所有 <span class="arithmatex">\(n\)</span> 个旋转量 <span class="arithmatex">\(k\)</span>，每个旋转都把 <span class="arithmatex">\(a\)</span> 反推回去检查是否非降序。这是 <span class="arithmatex">\(O(n^2)\)</span>，正确但没有利用旋转的结构。</p>
+<p>要做得更好，得问一个更尖锐的问题：<strong>不去枚举旋转量，<span class="arithmatex">\(a\)</span> 自身有什么可直接观测的不变量，能区分"可旋转得到"与"随机数组"？</strong> 下一节从旋转的定义把这个不变量推出来。</p>
 <h2 id="formulation">形式化 (Formulation)<a class="headerlink" href="#formulation" title="Permanent link">#</a></h2>
-<p>设 <span class="arithmatex">\(D = |\{i : a_i &gt; a_{(i+1) \bmod n}\}|\)</span>。答案 = <span class="arithmatex">\((D \le 1)\)</span>。</p>
+<p>直觉先行。一个非降序数组 <span class="arithmatex">\(s\)</span> 内部任意相邻对都满足 <span class="arithmatex">\(s_i \le s_{i+1}\)</span>，没有任何"下降"。旋转 <span class="arithmatex">\(k\)</span> 位（<span class="arithmatex">\(k&gt;0\)</span>）把 <span class="arithmatex">\(s\)</span> 切成两段后交换次序：后缀 <span class="arithmatex">\(s[k:]\)</span> 接到前缀 <span class="arithmatex">\(s[:k]\)</span> 前面。两段各自仍非降序，唯一可能出问题的位置，是后缀末尾 <span class="arithmatex">\(s_{n-1}\)</span> 接到前缀开头 <span class="arithmatex">\(s_0\)</span> 的那个拼接点——而 <span class="arithmatex">\(s_{n-1} \ge s_0\)</span>，所以这里恰好出现一个下降。除此之外哪里都不会下降。于是"可旋转得到"等价于"至多一个下降"。</p>
+<p>把"下降"放到循环意义下计数，就把拼接点和数组内部统一了。定义<strong>循环下降数</strong></p>
+<div class="arithmatex">\[D = \bigl|\{\, i : a_i &gt; a_{(i+1) \bmod n} \,\}\bigr|. \tag{1}\]</div>
+<p>这里下标 <span class="arithmatex">\((i+1)\bmod n\)</span> 让 <span class="arithmatex">\(i=n-1\)</span> 时比较的是 <span class="arithmatex">\(a_{n-1}\)</span> 与 <span class="arithmatex">\(a_0\)</span>，正好覆盖那个拼接点。</p>
+<p><strong>命题.</strong> <span class="arithmatex">\(a\)</span> 是某个非降序数组的旋转 <span class="arithmatex">\(\iff D \le 1\)</span>。</p>
+<p>证明思路与上面的直觉同构：若 <span class="arithmatex">\(a = s[k:]+s[:k]\)</span>，<span class="arithmatex">\(k=0\)</span> 时无下降 <span class="arithmatex">\(D=0\)</span>；<span class="arithmatex">\(k&gt;0\)</span> 时仅拼接点 <span class="arithmatex">\(a_{k-1}=s_{n-1} \ge s_0 = a_k\)</span> 处取等或下降，其余相邻对继承自 <span class="arithmatex">\(s\)</span> 的非降序，故 <span class="arithmatex">\(D=1\)</span>。反向，若 <span class="arithmatex">\(D=0\)</span> 则 <span class="arithmatex">\(a\)</span> 本身非降序（取 <span class="arithmatex">\(k=0\)</span>）；若 <span class="arithmatex">\(D=1\)</span>，设唯一下降在 <span class="arithmatex">\(a_{k-1}&gt;a_k\)</span>，则 <span class="arithmatex">\(a_k,\dots,a_{n-1},a_0,\dots,a_{k-1}\)</span> 全程非降序，即 <span class="arithmatex">\(a\)</span> 是 <span class="arithmatex">\(s\)</span> 旋转 <span class="arithmatex">\(k\)</span> 位的结果。</p>
 <h2 id="approach">数据结构 / 想法 (Approach)<a class="headerlink" href="#approach" title="Permanent link">#</a></h2>
+<p>判据 (1) 直接给出算法：<span class="arithmatex">\(D\)</span> 是对 <span class="arithmatex">\(n\)</span> 个相邻对（含循环那一对）的一次线性扫描计数，<span class="arithmatex">\(O(n)\)</span> 即可算出，无需枚举旋转。模下标 <span class="arithmatex">\((i+1)\bmod n\)</span> 自动把边界比较 <span class="arithmatex">\(a_{n-1}\)</span> vs <span class="arithmatex">\(a_0\)</span> 纳入循环，不必单独特判。答案就是 <span class="arithmatex">\(D \le 1\)</span>。</p>
 <div class="language-python highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">Solution</span><span class="p">:</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">check</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">nums</span><span class="p">):</span>
         <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">nums</span><span class="p">)</span>
         <span class="n">drops</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="mi">1</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">)</span> <span class="k">if</span> <span class="n">nums</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">nums</span><span class="p">[(</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">%</span> <span class="n">n</span><span class="p">])</span>
         <span class="k">return</span> <span class="n">drops</span> <span class="o">&lt;=</span> <span class="mi">1</span>
 </code></pre></div>
-<p><strong>直觉</strong>：完全有序数组首尾相接形成"环上单调"，下降点 0；旋转后的数组在环上仍单调，只是"切点" 跨过下降点 1 次。</p>
+<p><code>drops</code> 即 (1) 中的 <span class="arithmatex">\(D\)</span>；<code>range(n)</code> 含 <span class="arithmatex">\(i=n-1\)</span>，故拼接点被计入；用严格 <code>&gt;</code> 对应 (1) 中的严格不等号。</p>
 <h2 id="complexity">复杂度 (Complexity)<a class="headerlink" href="#complexity" title="Permanent link">#</a></h2>
 <ul>
 <li>Time: <span class="arithmatex">\(O(n)\)</span></li>
@@ -22485,8 +22525,8 @@
 </ul>
 <h2 id="pitfalls">陷阱 (Pitfalls)<a class="headerlink" href="#pitfalls" title="Permanent link">#</a></h2>
 <ul>
-<li><strong>必须检环上 <span class="arithmatex">\(a_{n-1}\)</span> vs <span class="arithmatex">\(a_0\)</span></strong>：若漏掉则 <code>[2,1,3,4]</code> 也会被误判（drops=1 在 (2,1)，但 (4,2) 也是下降，total=2 才对）。</li>
-<li><strong>重复元素</strong>：用严格 <code>&gt;</code> 不要 <code>&gt;=</code>，相等不算下降。</li>
+<li><strong>必须检环上 <span class="arithmatex">\(a_{n-1}\)</span> vs <span class="arithmatex">\(a_0\)</span></strong>：若漏掉则 <code>[2,1,3,4]</code> 也会被误判（drops=1 在 (2,1)，但 (4,2) 也是下降，total=2 才对）。这正是 (1) 中 <span class="arithmatex">\(i=n-1\)</span> 那一项的作用——拼接点是旋转唯一可能引入下降的地方，漏掉它就漏掉了判据的一半。</li>
+<li><strong>重复元素</strong>：用严格 <code>&gt;</code> 不要 <code>&gt;=</code>，相等不算下降。命题证明里拼接点取的是 <span class="arithmatex">\(s_{n-1} \ge s_0\)</span>，允许相等；若改成 <code>&gt;=</code> 会把 <code>[1,1,1]</code> 这类全等数组误判为有下降。</li>
 </ul>
 <h2 id="related">相关题目 (Related)<a class="headerlink" href="#related" title="Permanent link">#</a></h2>
 <ul>
@@ -22602,6 +22642,8 @@
         <script src="../../../js/mathjax/tex-mml-chtml.js"></script>
       
         <script src="../../../js/mermaid.min.js"></script>
+      
+        <script src="../../../js/featured.js"></script>
       
     
   </body>

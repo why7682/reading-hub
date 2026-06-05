@@ -1466,6 +1466,8 @@
       
         
       
+        
+      
     
     
     
@@ -1521,6 +1523,34 @@
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../featured/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ⭐ Featured（已验证）
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
               
             
               
@@ -1610,10 +1640,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_4" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
         
           
-          <label class="md-nav__link" for="__nav_4_4" id="__nav_4_4_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_5" id="__nav_4_5_label" tabindex="">
             
   
   
@@ -1631,8 +1661,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_4_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_4">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_5">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1915,7 +1945,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -1937,14 +1967,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_4_5" id="__nav_4_5_label" tabindex="">
+              <label class="md-nav__link " for="__nav_4_6" id="__nav_4_6_label" tabindex="">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_5">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_6">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -5321,10 +5351,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_7" checked>
         
           
-          <label class="md-nav__link" for="__nav_4_6" id="__nav_4_6_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_7" id="__nav_4_7_label" tabindex="">
             
   
   
@@ -5342,8 +5372,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_4_6">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_7_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4_7">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -22467,38 +22497,89 @@
 <h2 id="problem">Problem<a class="headerlink" href="#problem" title="Permanent link">#</a></h2>
 <p>给唯一字符串数组 <code>words</code>，求所有 <span class="arithmatex">\((i, j),\, i \neq j\)</span> 使 <code>words[i] + words[j]</code> 为回文。要求 <span class="arithmatex">\(O\!\left(\sum |words[i]|\right)\)</span>。</p>
 <h2 id="_1">背景<a class="headerlink" href="#_1" title="Permanent link">#</a></h2>
-<p>本题坐在 <strong>string algorithms</strong> 与 <strong>hashing</strong> 的交汇点。<span class="arithmatex">\(O(\sum |w|)\)</span> 的要求隐含信息：算法<strong>不能</strong>为每对 <span class="arithmatex">\((i,j)\)</span> 单独验证（那是 <span class="arithmatex">\(O(n^2 k)\)</span>）。<strong>关键洞察</strong>：对每个串切两半 <span class="arithmatex">\(w = A \cdot B\)</span>，若 <span class="arithmatex">\(A\)</span> 是回文 → 反转 <span class="arithmatex">\(B\)</span> 在词表中即可补全；若 <span class="arithmatex">\(B\)</span> 是回文 → 反转 <span class="arithmatex">\(A\)</span> 在词表中即可。这是<strong>回文中心的局部性</strong>与<strong>反向查找的全局性</strong>的协同。</p>
-<p>回文检测本身的高效算法（Manacher's algorithm <span class="arithmatex">\(O(n)\)</span>，1975）是更深一层背景；本题各前缀/后缀的回文判定可用 Manacher 一次预处理，或更简单的 hash 比较。</p>
+<p>先把问题看清楚。取 <code>words = ["abcd", "dcba", "lls", "s", "sssll"]</code>，逐字符检查哪些有序对拼起来是回文：</p>
+<ul>
+<li><code>"abcd" + "dcba" = "abcddcba"</code>：前半 <code>abcd</code> 与后半反过来 <code>abcd</code> 逐位相等，是回文。</li>
+<li><code>"lls" + "s" = "llss"</code>？不是。但 <code>"s" + "lls" = "slls"</code>：首尾 <code>s…s</code> 对称，中间 <code>ll</code> 自身对称，是回文。</li>
+<li><code>"lls" + "sssll" = "llssssll"</code>：首尾 <code>ll…ll</code> 对称，剩下 <code>ssss</code> 自身对称，是回文。</li>
+</ul>
+<p>注意这三例的结构各不相同，但都满足同一件事：拼接串从两端向内逐位对照时处处相等。这正是回文的定义，下一节据此推导。</p>
+<p>最朴素的算法直接照搬定义：枚举所有有序对 <span class="arithmatex">\((i,j)\)</span>，把 <code>words[i] + words[j]</code> 拼出来再 <span class="arithmatex">\(O(k)\)</span> 验证是否回文（<span class="arithmatex">\(k\)</span> 为串长）。<span class="arithmatex">\(n\)</span> 个词就是 <span class="arithmatex">\(O(n^2)\)</span> 对，每对 <span class="arithmatex">\(O(k)\)</span>，共 <span class="arithmatex">\(O(n^2 k)\)</span>。题目要求 <span class="arithmatex">\(O(\sum|w|)\)</span>，即总长度的线性级别；当词数 <span class="arithmatex">\(n\)</span> 远大于平均词长时 <span class="arithmatex">\(O(n^2 k)\)</span> 远超此限。瓶颈在 <span class="arithmatex">\(n^2\)</span> 这个对数——我们枚举了所有配对，却只有极少数能拼成回文。问题因此变成:<strong>给定一个词 <span class="arithmatex">\(w\)</span>，不枚举另一半，如何直接定位所有能与它拼成回文的词?</strong> 答案要从回文条件本身解出来。</p>
 <h2 id="_2">形式化<a class="headerlink" href="#_2" title="Permanent link">#</a></h2>
-<p>求 <span class="arithmatex">\(\{(i, j) : i \neq j,\; w_i w_j \in \mathcal{P}\}\)</span>，<span class="arithmatex">\(\mathcal{P}\)</span> = 所有回文串集合。</p>
+<p>记反转为 <span class="arithmatex">\(w^R\)</span>，回文串集合为 <span class="arithmatex">\(\mathcal{P} = \{s : s = s^R\}\)</span>。所求为</p>
+<div class="arithmatex">\[
+\mathcal{A} = \{(i, j) : i \neq j,\; w_i w_j \in \mathcal{P}\}. \tag{1}
+\]</div>
+<p>把回文条件 <span class="arithmatex">\(w_i w_j = (w_i w_j)^R = w_j^R w_i^R\)</span> 展开，看它对两个词的字符施加了什么约束。设 <span class="arithmatex">\(|w_i| = m,\ |w_j| = n\)</span>，拼接串长 <span class="arithmatex">\(m+n\)</span>。不失一般性先设 <span class="arithmatex">\(m \ge n\)</span>。</p>
+<p><strong>直觉。</strong> 拼接串的最左 <span class="arithmatex">\(n\)</span> 个字符来自 <span class="arithmatex">\(w_i\)</span> 的前缀，最右 <span class="arithmatex">\(n\)</span> 个字符来自 <span class="arithmatex">\(w_j\)</span>。回文要求这两端互为镜像，于是 <span class="arithmatex">\(w_j\)</span> 被 <span class="arithmatex">\(w_i\)</span> 的前 <span class="arithmatex">\(n\)</span> 位反转后完全确定：<span class="arithmatex">\(w_j = (w_i[0{:}n])^R\)</span>。剩下 <span class="arithmatex">\(w_i\)</span> 中间多出来的那段 <span class="arithmatex">\(m-n\)</span> 个字符，落在拼接串正中央——回文对中央段的唯一要求是它自身对称。换言之,<strong>两端互相锁定，中央段自由但必须自回文</strong>。这就是上一节三个例子共有的结构。</p>
+<p><strong>形式化命题。</strong> <span class="arithmatex">\(w_i w_j \in \mathcal{P}\)</span> 当且仅当存在切分</p>
+<div class="arithmatex">\[
+w_i w_j = A \cdot M \cdot B,\qquad A = B^R,\ \ M \in \mathcal{P}, \tag{2}
+\]</div>
+<p>其中 <span class="arithmatex">\(A\)</span> 取拼接串前 <span class="arithmatex">\(\min(m,n)\)</span> 位、<span class="arithmatex">\(B\)</span> 取后 <span class="arithmatex">\(\min(m,n)\)</span> 位、<span class="arithmatex">\(M\)</span> 为中间剩余段。</p>
+<p><strong>推导。</strong> 由回文定义，<span class="arithmatex">\(w_i w_j\)</span> 是回文 <span class="arithmatex">\(\iff\)</span> 对所有 <span class="arithmatex">\(t\)</span>，第 <span class="arithmatex">\(t\)</span> 位等于倒数第 <span class="arithmatex">\(t\)</span> 位。把下标 <span class="arithmatex">\(t\)</span> 从 <span class="arithmatex">\(1\)</span> 走到 <span class="arithmatex">\(\lfloor (m+n)/2 \rfloor\)</span>：当 <span class="arithmatex">\(t \le \min(m,n)\)</span> 时，第 <span class="arithmatex">\(t\)</span> 位在 <span class="arithmatex">\(A=w_i[0{:}\min]\)</span> 内、倒数第 <span class="arithmatex">\(t\)</span> 位在 <span class="arithmatex">\(B\)</span> 内，配对相等即 <span class="arithmatex">\(A = B^R\)</span>；当 <span class="arithmatex">\(t &gt; \min(m,n)\)</span> 时，两个下标都落在中间段 <span class="arithmatex">\(M\)</span> 内，配对相等即 <span class="arithmatex">\(M = M^R\)</span>。两组约束相互独立且并起来等价于整体回文，命题得证。<span class="arithmatex">\(\square\)</span></p>
+<p><strong>三种情形由 (2) 直接落地。</strong> <span class="arithmatex">\(M\)</span> 的位置取决于 <span class="arithmatex">\(m,n\)</span> 谁长——多出来的字符属于较长的那个词:</p>
+<ol>
+<li><span class="arithmatex">\(m = n\)</span>：无中央段，<span class="arithmatex">\(M\)</span> 为空（空串自回文）。(2) 退化为 <span class="arithmatex">\(w_i = w_j^R\)</span>。</li>
+<li><span class="arithmatex">\(m &gt; n\)</span>：多出的 <span class="arithmatex">\(m-n\)</span> 位是 <span class="arithmatex">\(w_i\)</span> 的一段后缀，<span class="arithmatex">\(M\)</span> 落在 <span class="arithmatex">\(w_i\)</span> 内部。<span class="arithmatex">\(w_j = (w_i[0{:}n])^R\)</span>，且 <span class="arithmatex">\(w_i = w_j^R \cdot M\)</span> 中 <span class="arithmatex">\(M = w_i[n{:}]\)</span> 必须自回文。</li>
+<li><span class="arithmatex">\(m &lt; n\)</span>：对称地，<span class="arithmatex">\(M\)</span> 落在 <span class="arithmatex">\(w_j\)</span> 内部。<span class="arithmatex">\(w_i = (w_j[n-m{:}])^R\)</span>，且 <span class="arithmatex">\(w_j = M \cdot w_i^R\)</span> 中 <span class="arithmatex">\(M = w_j[0{:}n-m]\)</span> 必须自回文。</li>
+</ol>
+<p>三种情形按 <span class="arithmatex">\(m\)</span> 与 <span class="arithmatex">\(n\)</span> 的三种大小关系穷尽，互不重叠。这个分类就是把 (2) 中"自由的中央段"按它属于哪个词重新表述，是下一节算法的全部依据。</p>
 <h2 id="_3">数据结构 / 想法<a class="headerlink" href="#_3" title="Permanent link">#</a></h2>
-<p><strong>核心分解</strong>：<span class="arithmatex">\(w_i \cdot w_j\)</span> 是回文 iff 存在切分 <span class="arithmatex">\(w_i w_j = A \cdot M \cdot B\)</span> 满足 <span class="arithmatex">\(A = B^{R}\)</span> 且 <span class="arithmatex">\(M\)</span> 自身回文。设 <span class="arithmatex">\(|w_i| = m, |w_j| = n\)</span>，分三种情况：
-1. <span class="arithmatex">\(|w_i| = |w_j|\)</span>：<span class="arithmatex">\(w_i = w_j^R\)</span>。
-2. <span class="arithmatex">\(|w_i| &gt; |w_j|\)</span>：<span class="arithmatex">\(w_i = w_j^R \cdot M\)</span>，其中 <span class="arithmatex">\(M\)</span> 是回文。
-3. <span class="arithmatex">\(|w_i| &lt; |w_j|\)</span>：<span class="arithmatex">\(w_j = M \cdot w_i^R\)</span>，其中 <span class="arithmatex">\(M\)</span> 是回文。</p>
-<p><strong>哈希法</strong>：建 <code>word -&gt; index</code> 哈希表。对每个 <span class="arithmatex">\(w\)</span> 枚举每个切分位置 <span class="arithmatex">\(k \in [0, |w|]\)</span>：
-- 若 <span class="arithmatex">\(w[:k]\)</span> 回文 → 查 <span class="arithmatex">\(w[k:]^R\)</span> 是否存在且不等于自己 → <span class="arithmatex">\((j, i)\)</span> 是答案对。
-- 若 <span class="arithmatex">\(w[k:]\)</span> 回文 → 查 <span class="arithmatex">\(w[:k]^R\)</span> 是否存在 → <span class="arithmatex">\((i, j)\)</span> 是答案对。
-- 用 <span class="arithmatex">\(k = 0\)</span> 和 <span class="arithmatex">\(k = |w|\)</span> 之一就够（处理空串边界）；通常约定避免重复枚举。</p>
-<p><strong>Trie 法</strong>：把每个 <span class="arithmatex">\(w^R\)</span> 插入 Trie，沿途在每个节点 <span class="arithmatex">\(u\)</span> 标记"从此向下的剩余子树包含的所有词中，哪些自身回文 (<code>palindromeBelow</code>)、本节点是否对应完整词"。查询 <span class="arithmatex">\(w\)</span> 时逐字符在 Trie 中走，每步检查匹配状态。</p>
-<p><strong>不变量</strong>：每对答案对应一种合法切分；正确性源于"两串拼接为回文 ⇔ 存在前面三段分解"的充要条件。</p>
+<p>(2) 把"<span class="arithmatex">\(w_i\)</span> 能配哪些 <span class="arithmatex">\(w_j\)</span>"这个搜索问题，化简成对单个词的局部检查。固定 <span class="arithmatex">\(w = w_i\)</span>，需要找的 <span class="arithmatex">\(w_j\)</span> 由 <span class="arithmatex">\(w\)</span> 的某个回文段唯一决定，于是只剩两件事要查。</p>
+<p><strong>从 (2) 推出枚举循环。</strong> 在 <span class="arithmatex">\(w\)</span> 上枚举切分点 <span class="arithmatex">\(k \in [0, |w|]\)</span>，把 <span class="arithmatex">\(w\)</span> 写成前缀 <span class="arithmatex">\(w[:k]\)</span> 加后缀 <span class="arithmatex">\(w[k:]\)</span>。对照情形 2 与 3：</p>
+<ul>
+<li>若 <span class="arithmatex">\(w[k:]\)</span> 自回文（它充当中央段 <span class="arithmatex">\(M\)</span>），则把它当 <span class="arithmatex">\(w_i\)</span>、令 <span class="arithmatex">\(w_j = (w[:k])^R\)</span> 即满足 (2)。查哈希表里有没有 <span class="arithmatex">\((w[:k])^R\)</span>；若有且非自身，<span class="arithmatex">\((i, j)\)</span> 入答案。</li>
+<li>若 <span class="arithmatex">\(w[:k]\)</span> 自回文（它充当 <span class="arithmatex">\(M\)</span>），则把 <span class="arithmatex">\(w\)</span> 当 <span class="arithmatex">\(w_j\)</span>、令 <span class="arithmatex">\(w_i = (w[k:])^R\)</span> 即满足 (2)。查哈希表里有没有 <span class="arithmatex">\((w[k:])^R\)</span>；若有，<span class="arithmatex">\((j, i)\)</span> 入答案。</li>
+</ul>
+<p>切分点取遍 <span class="arithmatex">\([0, |w|]\)</span>（含两端）的原因正是要覆盖所有可能的中央段位置:<span class="arithmatex">\(k=0\)</span> 让整个 <span class="arithmatex">\(w\)</span> 当后缀、<span class="arithmatex">\(k=|w|\)</span> 让整个 <span class="arithmatex">\(w\)</span> 当前缀,这两端恰好处理空串与情形 1。因此先建 <code>word -&gt; index</code> 哈希表，再对每个词跑一遍上述枚举，即得全部答案。</p>
+<p><strong>哈希法。</strong> 落到代码:</p>
+<div class="language-python highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">palindromePairs</span><span class="p">(</span><span class="n">words</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">is_pal</span><span class="p">(</span><span class="n">s</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">s</span> <span class="o">==</span> <span class="n">s</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">index</span> <span class="o">=</span> <span class="p">{</span><span class="n">w</span><span class="p">:</span> <span class="n">i</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">w</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">words</span><span class="p">)}</span>
+    <span class="n">res</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">w</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">words</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">w</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+            <span class="n">prefix</span><span class="p">,</span> <span class="n">suffix</span> <span class="o">=</span> <span class="n">w</span><span class="p">[:</span><span class="n">k</span><span class="p">],</span> <span class="n">w</span><span class="p">[</span><span class="n">k</span><span class="p">:]</span>
+            <span class="c1"># suffix 自回文 → 找 prefix 的反转作为 w_j</span>
+            <span class="k">if</span> <span class="n">is_pal</span><span class="p">(</span><span class="n">suffix</span><span class="p">):</span>
+                <span class="n">cand</span> <span class="o">=</span> <span class="n">prefix</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+                <span class="k">if</span> <span class="n">cand</span> <span class="ow">in</span> <span class="n">index</span> <span class="ow">and</span> <span class="n">index</span><span class="p">[</span><span class="n">cand</span><span class="p">]</span> <span class="o">!=</span> <span class="n">i</span><span class="p">:</span>
+                    <span class="n">res</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="n">i</span><span class="p">,</span> <span class="n">index</span><span class="p">[</span><span class="n">cand</span><span class="p">]])</span>
+            <span class="c1"># prefix 自回文 → 找 suffix 的反转作为 w_i（k&gt;0 避免与上一分支重复空串）</span>
+            <span class="k">if</span> <span class="n">k</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">is_pal</span><span class="p">(</span><span class="n">prefix</span><span class="p">):</span>
+                <span class="n">cand</span> <span class="o">=</span> <span class="n">suffix</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+                <span class="k">if</span> <span class="n">cand</span> <span class="ow">in</span> <span class="n">index</span> <span class="ow">and</span> <span class="n">index</span><span class="p">[</span><span class="n">cand</span><span class="p">]</span> <span class="o">!=</span> <span class="n">i</span><span class="p">:</span>
+                    <span class="n">res</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="n">index</span><span class="p">[</span><span class="n">cand</span><span class="p">],</span> <span class="n">i</span><span class="p">])</span>
+    <span class="k">return</span> <span class="n">res</span>
+</code></pre></div>
+<p>两个分支分别对应"<span class="arithmatex">\(w\)</span> 当左词"与"<span class="arithmatex">\(w\)</span> 当右词"。<code>k &gt; 0</code> 的守卫挡掉 <span class="arithmatex">\(k=0\)</span> 时两分支同时命中空前缀/空后缀造成的重复（见陷阱）。</p>
+<p><strong>Trie 法的来由。</strong> 哈希法每次查 <code>cand in index</code> 都要先花 <span class="arithmatex">\(O(|w|)\)</span> 反转和构造子串，这是它达不到严格线性的根源。把这步在所有词之间摊销:查询本质是"某个反转子串是否是某个词"。若把每个词反转后插入 Trie,则沿 <span class="arithmatex">\(w\)</span> 的字符在 Trie 中下行,就是同时拿 <span class="arithmatex">\(w\)</span> 的前缀去比对所有词的反转——一次下行覆盖原本对每个候选的独立查找。于是 Trie 的设计直接由"摊销哈希查询"推出:</p>
+<ul>
+<li>把每个 <span class="arithmatex">\(w_j^R\)</span> 插入 Trie，在词尾节点记 <code>wordIdx</code>（该节点对应哪个完整词）。</li>
+<li>在每个节点 <span class="arithmatex">\(u\)</span> 记 <code>palindromeBelow</code>：从 <span class="arithmatex">\(u\)</span> 继续下行能到达的词中，哪些<strong>剩余后缀</strong>自回文——这对应情形 2/3 里"中央段必须自回文"的检查。</li>
+</ul>
+<p>查询 <span class="arithmatex">\(w\)</span> 时逐字符下行，每步用 <code>wordIdx</code> 和 <code>palindromeBelow</code> 判断当前是否凑成 (2) 的一种合法切分。Trie 把哈希法里反复的子串反转换成一次树上遍历，从而把每词成本从 <span class="arithmatex">\(O(|w|^2)\)</span> 压到 <span class="arithmatex">\(O(|w|)\)</span>。</p>
+<p><strong>不变量。</strong> 每个答案对恰对应 (2) 的一种合法切分；算法的正确性即"<span class="arithmatex">\(w_i w_j\)</span> 回文 <span class="arithmatex">\(\iff\)</span> 存在 (2) 式三段分解"这一充要条件，已在形式化一节证明。</p>
 <h2 id="_4">复杂度<a class="headerlink" href="#_4" title="Permanent link">#</a></h2>
 <ul>
-<li>Time: <span class="arithmatex">\(O\!\left(\sum |w| \cdot \bar{k}\right)\)</span> 其中 <span class="arithmatex">\(\bar k\)</span> 为平均长度。常被简记为 <span class="arithmatex">\(O\!\left(\sum |w|^2\right)\)</span>，仍优于 <span class="arithmatex">\(O(n^2 k)\)</span> 当 <span class="arithmatex">\(n \gg k\)</span>。</li>
-<li>严格 <span class="arithmatex">\(O\!\left(\sum |w|\right)\)</span> 需要 Trie + 预处理所有前缀/后缀的回文 (Manacher) → 写起来繁琐但是面试加分。</li>
-<li>Space: <span class="arithmatex">\(O\!\left(\sum |w|\right)\)</span> 存哈希 / Trie。</li>
+<li>Time（哈希法）：每个词 <span class="arithmatex">\(w\)</span> 枚举 <span class="arithmatex">\(|w|+1\)</span> 个切分点，每点做 <span class="arithmatex">\(O(|w|)\)</span> 的回文判定与 <span class="arithmatex">\(O(|w|)\)</span> 的反转，故每词 <span class="arithmatex">\(O(|w|^2)\)</span>，总计 <span class="arithmatex">\(O\!\left(\sum |w|^2\right)\)</span>。这是诚实的上界，<strong>不可</strong>简写成 <span class="arithmatex">\(O(\sum|w|\cdot \bar k)\)</span>（<span class="arithmatex">\(\bar k\)</span> 为平均词长）:后者等于 <span class="arithmatex">\(n\bar k^2\)</span>，由 Cauchy–Schwarz 有 <span class="arithmatex">\(\sum|w|^2 \ge (\sum|w|)^2/n = n\bar k^2\)</span>，仅当所有词等长才取等，所以 <span class="arithmatex">\(O(\sum|w|\cdot\bar k)\)</span> 是真实最坏情形的下界而非上界。</li>
+<li>当 <span class="arithmatex">\(n \gg k\)</span>（词多而短）时，<span class="arithmatex">\(\sum|w|^2 = n\bar k^2\)</span> 仍远优于暴力的 <span class="arithmatex">\(O(n^2 k)\)</span>，因为前者对 <span class="arithmatex">\(n\)</span> 是线性、后者是平方。</li>
+<li>严格 <span class="arithmatex">\(O\!\left(\sum |w|\right)\)</span> 需 Trie + 用 Manacher 预处理所有前缀/后缀的回文性，从而消去每个切分点 <span class="arithmatex">\(O(|w|)\)</span> 的重复回文检查。</li>
+<li>Space: <span class="arithmatex">\(O\!\left(\sum |w|\right)\)</span>，存哈希表 / Trie。</li>
 </ul>
 <h2 id="_5">陷阱<a class="headerlink" href="#_5" title="Permanent link">#</a></h2>
 <ul>
-<li><strong>空串 <code>""</code></strong>：与任何回文 <span class="arithmatex">\(w\)</span> 拼都得到回文对 <span class="arithmatex">\((\text{empty}, w)\)</span> 与 <span class="arithmatex">\((w, \text{empty})\)</span>。哈希法中常因切分约定漏掉。</li>
-<li>切分循环用 <code>range(len(w) + 1)</code>（含两端）。</li>
-<li>检查 <span class="arithmatex">\(i \neq j\)</span>；不要把 <span class="arithmatex">\(w\)</span> 与自己配对（除非自身回文 + 空串场景）。</li>
-<li>反转用 <code>w[::-1]</code>；Python <code>str.reverse()</code> 不存在。</li>
-<li>Trie 实现中<strong>整词节点</strong>的判定需特别记录 <code>wordIdx</code>，否则会和"经过此节点的所有词"混淆。</li>
+<li><strong>空串 <code>""</code></strong>：与任何回文 <span class="arithmatex">\(w\)</span> 拼接，<span class="arithmatex">\((\text{""}, w)\)</span> 与 <span class="arithmatex">\((w, \text{""})\)</span> 都是回文对。哈希法中若切分约定不当极易漏掉——空串令两个分支在 <span class="arithmatex">\(k=0\)</span> 处同时命中，需用 <code>k &gt; 0</code> 守卫去重。</li>
+<li>切分循环必须 <code>range(len(w) + 1)</code>（含两端），否则漏掉整词当中央段的情形。</li>
+<li>检查 <span class="arithmatex">\(i \neq j\)</span>；不要把 <span class="arithmatex">\(w\)</span> 与自己配对。</li>
+<li>反转用 <code>w[::-1]</code>；Python <code>str.reverse()</code> 不存在（<code>list.reverse()</code> 才有）。</li>
+<li>Trie 实现中<strong>整词节点</strong>须用 <code>wordIdx</code> 单独标记，否则会与"路径经过此节点的所有词"混淆。</li>
 </ul>
 <h2 id="_6">相关题目<a class="headerlink" href="#_6" title="Permanent link">#</a></h2>
 <ul>
-<li><code>#5. Longest Palindromic Substring (off-wiki)</code> — Manacher / 中心扩展，本题的子例程。</li>
+<li><code>#5. Longest Palindromic Substring (off-wiki)</code> — Manacher / 中心扩展，本题判定前缀/后缀回文的子例程。</li>
 <li><code>#214. Shortest Palindrome (off-wiki)</code> — 头部加最少字符使回文，KMP failure function 的应用。</li>
 <li><a href="../0639_decode-ways-ii/">#0639. Decode Ways II</a> — 另一道 String × DP 的 Hard，对照见"分解配方 vs 状态转移"两种 String 题型。</li>
 </ul>
@@ -22614,6 +22695,8 @@
         <script src="../../../js/mathjax/tex-mml-chtml.js"></script>
       
         <script src="../../../js/mermaid.min.js"></script>
+      
+        <script src="../../../js/featured.js"></script>
       
     
   </body>

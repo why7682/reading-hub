@@ -1466,6 +1466,8 @@
       
         
       
+        
+      
     
     
     
@@ -1521,6 +1523,34 @@
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../featured/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ⭐ Featured（已验证）
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
               
             
               
@@ -1610,10 +1640,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_4" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
         
           
-          <label class="md-nav__link" for="__nav_4_4" id="__nav_4_4_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_5" id="__nav_4_5_label" tabindex="">
             
   
   
@@ -1631,8 +1661,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_4_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_4">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_5">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1915,7 +1945,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -1937,14 +1967,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_4_5" id="__nav_4_5_label" tabindex="">
+              <label class="md-nav__link " for="__nav_4_6" id="__nav_4_6_label" tabindex="">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_5">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_6">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -5321,10 +5351,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_7" checked>
         
           
-          <label class="md-nav__link" for="__nav_4_6" id="__nav_4_6_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_7" id="__nav_4_7_label" tabindex="">
             
   
   
@@ -5342,8 +5372,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_4_6">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_7_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4_7">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -22467,16 +22497,32 @@
 <h2 id="problem">Problem<a class="headerlink" href="#problem" title="Permanent link">#</a></h2>
 <p>0-index 数组 <code>candiesCount</code>，第 <span class="arithmatex">\(i\)</span> 类糖有 <code>candiesCount[i]</code> 颗。规则：从第 0 天起每天必吃 <span class="arithmatex">\(\ge 1\)</span> 颗，每天 <span class="arithmatex">\(\le\)</span> <code>dailyCap</code>；只能在前面类全部吃完后才吃下一类。每个 query <code>(t, d, cap)</code> 问"能否在第 <span class="arithmatex">\(d\)</span> 天吃到第 <span class="arithmatex">\(t\)</span> 类糖"。<span class="arithmatex">\(n, |Q| \le 10^5\)</span>，<span class="arithmatex">\(\text{count}, d, cap \le 10^9 \sim 10^5\)</span>。</p>
 <h2 id="background">背景 (Background)<a class="headerlink" href="#background" title="Permanent link">#</a></h2>
-<p>经典<strong>区间相交存在性</strong>问题：算出"最早可吃日"和"最晚可吃日"，看 <span class="arithmatex">\(d\)</span> 是否在该闭区间内。前缀和提供"在第 <span class="arithmatex">\(t\)</span> 类前共有多少糖"，即 <span class="arithmatex">\(P_t = \sum_{i &lt; t} c_i\)</span>。</p>
+<p>先看每个 query 在问什么。一个 query 固定了类别 <span class="arithmatex">\(t\)</span>、目标天 <span class="arithmatex">\(d\)</span> 和当天上限 <span class="arithmatex">\(cap\)</span>，问的不是"恰好第 <span class="arithmatex">\(d\)</span> 天吃到第 <span class="arithmatex">\(t\)</span> 类"，而是"存在某种合法吃法，使得第 <span class="arithmatex">\(d\)</span> 天正好在吃第 <span class="arithmatex">\(t\)</span> 类"。所以这是一个<strong>存在性</strong>问题：在所有满足规则的吃糖序列里，能否挑出一种让第 <span class="arithmatex">\(d\)</span> 天落在第 <span class="arithmatex">\(t\)</span> 类上。</p>
+<p>最直接的想法是模拟：枚举吃法，逐天记录正在吃哪一类，看第 <span class="arithmatex">\(d\)</span> 天能否是 <span class="arithmatex">\(t\)</span>。但每天吃几颗（<span class="arithmatex">\(1\)</span> 到 <span class="arithmatex">\(cap\)</span> 之间）是自由的，吃法呈指数级，<span class="arithmatex">\(d\)</span> 还能到 <span class="arithmatex">\(10^9\)</span>，逐天模拟也走不完。模拟在这个规模上没有出路，必须把"是否存在合法吃法"压成一个能 <span class="arithmatex">\(O(1)\)</span> 判定的条件。</p>
+<p>转机在于：第 <span class="arithmatex">\(t\)</span> 类糖能在哪些天被吃到，并不是任意一个集合，而是一段<strong>连续的天区间</strong>。直觉来自吃法的单调性——我们能控制的只有每天的进度快慢，而进度快慢是连续可调的：</p>
 <ul>
-<li><strong>最晚吃到第 <span class="arithmatex">\(t\)</span> 类</strong>：每天只吃 1 颗（最慢消耗），吃完 <span class="arithmatex">\(P_t\)</span> 颗才到第 <span class="arithmatex">\(t\)</span> 类，再吃 1 颗 = 第 <span class="arithmatex">\(P_t\)</span> 天（0-index）。所以最晚日 <span class="arithmatex">\(= P_t + c_t - 1\)</span>。</li>
-<li><strong>最早吃到第 <span class="arithmatex">\(t\)</span> 类</strong>：每天 <span class="arithmatex">\(cap\)</span> 颗（最快），第 <span class="arithmatex">\(\lceil (P_t + 1) / cap \rceil - 1\)</span> 天才能首次吃到 → 即 <span class="arithmatex">\(\lfloor P_t / cap \rfloor\)</span> 天（0-index）。</li>
+<li>想尽早碰到第 <span class="arithmatex">\(t\)</span> 类，就每天吃满 <span class="arithmatex">\(cap\)</span> 颗，推进最快；这给出能碰到第 <span class="arithmatex">\(t\)</span> 类的<strong>最早一天</strong>。</li>
+<li>想尽晚还在吃第 <span class="arithmatex">\(t\)</span> 类，就每天只吃 <span class="arithmatex">\(1\)</span> 颗，推进最慢；这给出第 <span class="arithmatex">\(t\)</span> 类<strong>最晚仍在被吃的那一天</strong>。</li>
+<li>介于两者之间的任意一天，都能通过"前面几天快吃、后面几天慢吃"调出来：把吃的总颗数从最快档逐颗减到最慢档，每减一颗最多让到达第 <span class="arithmatex">\(t\)</span> 类的日子推后一天，于是中间每一天都可达。</li>
 </ul>
-<p>要求 <span class="arithmatex">\(d \in [\lfloor P_t / cap \rfloor,\; P_t + c_t - 1]\)</span>。</p>
+<p>因此第 <span class="arithmatex">\(t\)</span> 类的可吃日构成一个闭区间 <span class="arithmatex">\([\text{earliest},\ \text{latest}]\)</span>，query 的答案就是 <span class="arithmatex">\(d\)</span> 是否落在其中。剩下的工作是把这两个端点用问题给的量写出来。两个端点都只依赖"第 <span class="arithmatex">\(t\)</span> 类之前一共有多少颗糖"，记</p>
+<div class="arithmatex">\[P_t = \sum_{i&lt;t} c_i,\]</div>
+<p>即第 <span class="arithmatex">\(0\)</span> 到 <span class="arithmatex">\(t-1\)</span> 类的糖数之和（第 <span class="arithmatex">\(t\)</span> 类自身不算）。下面分别推 latest 和 earliest。</p>
+<p><strong>最晚仍在吃第 <span class="arithmatex">\(t\)</span> 类（latest）。</strong> 推进最慢时每天吃 <span class="arithmatex">\(1\)</span> 颗。要吃到第 <span class="arithmatex">\(t\)</span> 类，必须先把前面 <span class="arithmatex">\(P_t\)</span> 颗吃完，每天 <span class="arithmatex">\(1\)</span> 颗就用掉第 <span class="arithmatex">\(0\)</span> 到第 <span class="arithmatex">\(P_t-1\)</span> 共 <span class="arithmatex">\(P_t\)</span> 天，第 <span class="arithmatex">\(P_t\)</span> 天吃下第 <span class="arithmatex">\(t\)</span> 类的第一颗。第 <span class="arithmatex">\(t\)</span> 类共 <span class="arithmatex">\(c_t\)</span> 颗，每天 <span class="arithmatex">\(1\)</span> 颗，从第 <span class="arithmatex">\(P_t\)</span> 天吃到第 <span class="arithmatex">\(P_t + c_t - 1\)</span> 天才吃完。再往后第 <span class="arithmatex">\(t\)</span> 类已尽，不可能还在吃它。所以</p>
+<div class="arithmatex">\[\text{latest} = P_t + c_t - 1.\]</div>
+<p><strong>最早能碰到第 <span class="arithmatex">\(t\)</span> 类（earliest）。</strong> 推进最快时每天吃满 <span class="arithmatex">\(cap\)</span> 颗。到第 <span class="arithmatex">\(k\)</span> 天（0-index）结束时，第 <span class="arithmatex">\(0\)</span> 到 <span class="arithmatex">\(k\)</span> 天共 <span class="arithmatex">\(k+1\)</span> 天，最多吃了 <span class="arithmatex">\((k+1)\cdot cap\)</span> 颗。能在第 <span class="arithmatex">\(k\)</span> 天碰到第 <span class="arithmatex">\(t\)</span> 类，当且仅当这 <span class="arithmatex">\(k+1\)</span> 天吃的糖数足以越过前 <span class="arithmatex">\(P_t\)</span> 颗、摸到第 <span class="arithmatex">\(t\)</span> 类的第一颗，即</p>
+<div class="arithmatex">\[(k+1)\cdot cap &gt; P_t.\]</div>
+<p>这里用严格 <span class="arithmatex">\(&gt;\)</span> 而非 <span class="arithmatex">\(\ge\)</span>，是因为题目允许<strong>同一天吃完旧类后立刻接着吃新类</strong>：吃满 <span class="arithmatex">\(P_t\)</span> 颗那一刻就已经把前面清空，下一颗就是第 <span class="arithmatex">\(t\)</span> 类，无需再等一天。把不等式解出来：</p>
+<div class="arithmatex">\[k+1 &gt; \frac{P_t}{cap} \iff k &gt; \frac{P_t}{cap} - 1.\]</div>
+<p>满足该式的最小整数 <span class="arithmatex">\(k\)</span> 就是 earliest。对任意非负整数 <span class="arithmatex">\(P_t\)</span> 与正整数 <span class="arithmatex">\(cap\)</span>，使 <span class="arithmatex">\(k &gt; P_t/cap - 1\)</span> 的最小整数恰是 <span class="arithmatex">\(\lfloor P_t/cap \rfloor\)</span>：因为 <span class="arithmatex">\(\lfloor P_t/cap\rfloor \ge P_t/cap - 1 + 1/cap &gt; P_t/cap - 1\)</span> 满足该式，而再小一个的 <span class="arithmatex">\(\lfloor P_t/cap\rfloor - 1 \le P_t/cap - 1\)</span> 不满足。于是</p>
+<div class="arithmatex">\[\text{earliest} = \left\lfloor \frac{P_t}{cap} \right\rfloor.\]</div>
+<p>边界自检：<span class="arithmatex">\(P_t = 0\)</span>（第 <span class="arithmatex">\(t\)</span> 类就是第 <span class="arithmatex">\(0\)</span> 类）时 <span class="arithmatex">\(\lfloor 0/cap\rfloor = 0\)</span>，第 <span class="arithmatex">\(0\)</span> 天就能吃，符合"第 <span class="arithmatex">\(0\)</span> 天起步"；<span class="arithmatex">\(P_t = cap\)</span> 时 <span class="arithmatex">\(\lfloor cap/cap\rfloor = 1\)</span>，第 <span class="arithmatex">\(0\)</span> 天恰好吃满 <span class="arithmatex">\(cap\)</span> 颗清空前面，第 <span class="arithmatex">\(1\)</span> 天才首次碰到第 <span class="arithmatex">\(t\)</span> 类，也对。</p>
 <h2 id="formulation">形式化 (Formulation)<a class="headerlink" href="#formulation" title="Permanent link">#</a></h2>
-<p>设 <span class="arithmatex">\(P_t = \sum_{i=0}^{t-1} c_i\)</span>。条件：</p>
-<div class="arithmatex">\[\left\lfloor \frac{P_t}{cap} \right\rfloor \le d \le P_t + c_t - 1\]</div>
+<p>设 <span class="arithmatex">\(P_t = \sum_{i=0}^{t-1} c_i\)</span>。由上一节推出的两个端点，query <code>(t, d, cap)</code> 为真当且仅当 <span class="arithmatex">\(d\)</span> 落在可吃日闭区间内：</p>
+<div class="arithmatex">\[\left\lfloor \frac{P_t}{cap} \right\rfloor \;\le\; d \;\le\; P_t + c_t - 1 \tag{1}\]</div>
+<p>左端 earliest 来自"每天最多 <span class="arithmatex">\(cap\)</span> 颗"的最快推进，右端 latest 来自"每天至少 <span class="arithmatex">\(1\)</span> 颗"的最慢推进。算法只需对每个 query 评估 (1)。</p>
 <h2 id="approach">数据结构 / 想法 (Approach)<a class="headerlink" href="#approach" title="Permanent link">#</a></h2>
+<p>公式 (1) 中除 <span class="arithmatex">\(P_t\)</span> 外都是 query 自带的常数，<span class="arithmatex">\(c_t\)</span> 也是直接索引。唯一需要预备的是任意 <span class="arithmatex">\(t\)</span> 的前缀和 <span class="arithmatex">\(P_t = \sum_{i&lt;t} c_i\)</span>。前缀和数组让每个 <span class="arithmatex">\(P_t\)</span> 变成一次数组取值：一遍扫描建好 <code>prefix</code>（<code>prefix[t]</code> 即 <span class="arithmatex">\(P_t\)</span>），之后每个 query 都是 <span class="arithmatex">\(O(1)\)</span> 的算术与比较，直接照搬 (1)。</p>
 <div class="language-python highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">Solution</span><span class="p">:</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">canEat</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">candiesCount</span><span class="p">,</span> <span class="n">queries</span><span class="p">):</span>
         <span class="n">prefix</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span>
@@ -22489,11 +22535,13 @@
             <span class="n">ans</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">earliest</span> <span class="o">&lt;=</span> <span class="n">d</span> <span class="o">&lt;=</span> <span class="n">latest</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">ans</span>
 </code></pre></div>
-<p><strong>心算 trace 示例 1</strong>: candiesCount=[7,4,5,3,8]
+<p><code>prefix[t] // cap</code> 正是 (1) 的左端 <span class="arithmatex">\(\lfloor P_t/cap\rfloor\)</span>，<code>prefix[t] + candiesCount[t] - 1</code> 是右端 <span class="arithmatex">\(P_t + c_t - 1\)</span>，整段实现就是公式逐字翻译。</p>
+<p><strong>验证示例 1</strong>: candiesCount=[7,4,5,3,8]
 - prefix = [0, 7, 11, 16, 19, 27]
 - q=(0,2,2): t=0, prefix[0]=0; earliest=0//2=0, latest=0+7-1=6; 0≤2≤6 → True ✓
 - q=(4,2,4): t=4, prefix[4]=19; earliest=19//4=4, latest=19+8-1=26; 4≤2 不成立 → False ✓
 - q=(2,13,1e9): t=2, prefix[2]=11; earliest=11//1e9=0, latest=11+5-1=15; 0≤13≤15 → True ✓</p>
+<p>三个 query 分别命中区间下界附近、低于下界、区间内部，验证了 (1) 两端的判定。</p>
 <h2 id="complexity">复杂度 (Complexity)<a class="headerlink" href="#complexity" title="Permanent link">#</a></h2>
 <ul>
 <li>预处理：<span class="arithmatex">\(O(n)\)</span></li>
@@ -22503,9 +22551,9 @@
 <h2 id="pitfalls">陷阱 (Pitfalls)<a class="headerlink" href="#pitfalls" title="Permanent link">#</a></h2>
 <ul>
 <li><strong>整数溢出</strong>：<span class="arithmatex">\(P_t\)</span> 可达 <span class="arithmatex">\(n \cdot 10^5 = 10^{10}\)</span>，超 32-bit；Python 无虞，C++ 用 int64。</li>
-<li><strong>0-index vs 1-index 天</strong>：题面"day 0" → 最早 = 0 (吃 1 颗 cap, <span class="arithmatex">\(P_t = 0\)</span> 时即第 0 天可吃)。<code>prefix[t] // cap</code> 自然得 0-index。</li>
-<li><strong><code>earliest</code> 边界</strong>：<span class="arithmatex">\(P_t = 0\)</span> 时 <span class="arithmatex">\(\lfloor 0/cap \rfloor = 0\)</span>，正确。<span class="arithmatex">\(P_t = cap\)</span> 时 <span class="arithmatex">\(\lfloor cap/cap \rfloor = 1\)</span>，正确（第 0 天吃满 <span class="arithmatex">\(cap\)</span> 颗前置，第 1 天首次能碰当前类）。</li>
-<li><strong>不能"前面类必须吃完再开始当前类"误解</strong>：题面"can eat different types on same day"——同一天内可吃完旧类后立刻吃新类。所以最早日由 <span class="arithmatex">\(P_t\)</span> 而非 <span class="arithmatex">\(P_t + 1\)</span> 决定。</li>
+<li><strong>0-index vs 1-index 天</strong>：题面"day 0" → 最早 = 0（<span class="arithmatex">\(P_t = 0\)</span> 时第 0 天即可吃）。<code>prefix[t] // cap</code> 自然得 0-index，无需额外偏移。</li>
+<li><strong>同一天接吃新类决定用 floor 而非 ceil</strong>：earliest 推导中的不等式取严格 <span class="arithmatex">\(&gt;\)</span>，正是因为"同一天吃完旧类后可立刻吃新类"——吃满 <span class="arithmatex">\(P_t\)</span> 颗的当天就能摸到第 <span class="arithmatex">\(t\)</span> 类。若误以为必须隔天，会得到 <span class="arithmatex">\(\lceil (P_t+1)/cap\rceil - 1\)</span> 之类多算一天的下界。这条规则在 (1) 的左端是载荷性的，不是事后补丁。</li>
+<li><strong><code>cap = 0</code> 不会发生</strong>：代码用 <code>prefix[t] // cap</code> 做除法，依赖 <span class="arithmatex">\(cap \ge 1\)</span>；LeetCode 约束保证 <code>dailyCap &gt;= 1</code>，无除零风险。</li>
 </ul>
 <h2 id="related">相关题目 (Related)<a class="headerlink" href="#related" title="Permanent link">#</a></h2>
 <ul>
@@ -22622,6 +22670,8 @@
         <script src="../../../js/mathjax/tex-mml-chtml.js"></script>
       
         <script src="../../../js/mermaid.min.js"></script>
+      
+        <script src="../../../js/featured.js"></script>
       
     
   </body>

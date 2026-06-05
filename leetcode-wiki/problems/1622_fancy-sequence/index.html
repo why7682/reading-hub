@@ -1466,6 +1466,8 @@
       
         
       
+        
+      
     
     
     
@@ -1521,6 +1523,34 @@
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../featured/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ⭐ Featured（已验证）
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
               
             
               
@@ -1610,10 +1640,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_4" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
         
           
-          <label class="md-nav__link" for="__nav_4_4" id="__nav_4_4_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_5" id="__nav_4_5_label" tabindex="">
             
   
   
@@ -1631,8 +1661,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_4_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_4">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_5">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1915,7 +1945,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -1937,14 +1967,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_4_5" id="__nav_4_5_label" tabindex="">
+              <label class="md-nav__link " for="__nav_4_6" id="__nav_4_6_label" tabindex="">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_5">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_6">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -5321,10 +5351,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_7" checked>
         
           
-          <label class="md-nav__link" for="__nav_4_6" id="__nav_4_6_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_7" id="__nav_4_7_label" tabindex="">
             
   
   
@@ -5342,8 +5372,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_4_6">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_7_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4_7">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -22472,30 +22502,65 @@
 - <code>getIndex(idx)</code>：取第 <code>idx</code> 位当前值 mod <span class="arithmatex">\(10^9 + 7\)</span>；越界返 <span class="arithmatex">\(-1\)</span>。</p>
 <p>最多 <span class="arithmatex">\(10^5\)</span> 次调用，参数 <span class="arithmatex">\(\leq 100\)</span>。</p>
 <h2 id="background">背景 (Background)<a class="headerlink" href="#background" title="Permanent link">#</a></h2>
-<p>经典<strong>惰性全局变换 (lazy global affine)</strong> 设计：所有元素当前 = 初始 <span class="arithmatex">\(a_k\)</span> 经过其后所有 add/mul 的复合作用。把 add/mul 的复合记为单一仿射 <span class="arithmatex">\(x \mapsto Ax + B\)</span>（关于模 <span class="arithmatex">\(p\)</span> 的环 <span class="arithmatex">\(\mathbb{Z}/p\mathbb{Z}\)</span>），就把每次 op <span class="arithmatex">\(O(n)\)</span> 降到 <span class="arithmatex">\(O(1)\)</span>。<code>getIndex</code> 需要求"自第 <span class="arithmatex">\(k\)</span> 位 append 之时到现在"的 net 仿射，用差分 + <strong>模逆元</strong>实现。</p>
+<p>先把朴素实现写出来，看它在哪里失效。</p>
+<p>维护一个显式数组 <code>vals</code>。<code>append</code> 是 <span class="arithmatex">\(O(1)\)</span> 的尾插；但 <code>addAll(inc)</code> 要给每个元素加 <code>inc</code>，<code>multAll(m)</code> 要给每个元素乘 <code>m</code>，两者都需遍历整个数组，单次 <span class="arithmatex">\(O(n)\)</span>。最坏情形：先 append <span class="arithmatex">\(10^5\)</span> 个元素，再做 <span class="arithmatex">\(10^5\)</span> 次 <code>addAll</code>，总代价约 <span class="arithmatex">\(10^5 \times 10^5 = 10^{10}\)</span> 次运算——远超时限。</p>
+<p>瓶颈很具体：<code>addAll</code> 与 <code>multAll</code> 对<strong>每个元素施加同一个操作</strong>，却被迫逐个改写。要降到 <span class="arithmatex">\(O(1)\)</span>，必须把"对全体施加的操作"记成一个<strong>与元素个数无关</strong>的对象，把每个元素的真实值推迟到 <code>getIndex</code> 时再算。</p>
+<p>关键的结构性观察是：<code>addAll</code> 与 <code>multAll</code> 都是仿射变换。<code>addAll(c)</code> 是 <span class="arithmatex">\(x \mapsto x + c\)</span>，<code>multAll(m)</code> 是 <span class="arithmatex">\(x \mapsto m x\)</span>。而仿射变换在复合下封闭——</p>
+<div class="arithmatex">\[
+(x \mapsto A x + B) \text{ 之后再 } (x \mapsto m x + c)
+\;=\; (x \mapsto (mA)x + (mB + c)),
+\]</div>
+<p>仍是仿射。于是任意一串 <code>addAll</code>/<code>multAll</code> 的累积效果，无论多长，都坍缩成单一仿射映射 <span class="arithmatex">\(x \mapsto A x + B\)</span>，只需两个标量 <span class="arithmatex">\((A, B)\)</span> 描述。每次 <code>addAll</code>/<code>multAll</code> 更新 <span class="arithmatex">\((A, B)\)</span> 是 <span class="arithmatex">\(O(1)\)</span>，与 <span class="arithmatex">\(n\)</span> 无关；瓶颈消除。</p>
+<p>剩下的问题：每个元素 append 进来的时刻不同，承受的后续操作也不同，如何用同一对 <span class="arithmatex">\((A, B)\)</span> 恢复各元素的当前值。这把我们引向下面的形式化。所有算术在模 <span class="arithmatex">\(p = 10^9 + 7\)</span> 的环 <span class="arithmatex">\(\mathbb{Z}/p\mathbb{Z}\)</span> 上进行，恢复操作会用到模逆元，其存在性在 §陷阱 中论证。</p>
 <h2 id="formulation">形式化 (Formulation)<a class="headerlink" href="#formulation" title="Permanent link">#</a></h2>
-<p>设元素 <span class="arithmatex">\(a_0, a_1, \dots\)</span> 依次 append；定义全局变换序列 <span class="arithmatex">\(\phi_t : x \mapsto A_t x + B_t\)</span>（从开局到第 <span class="arithmatex">\(t\)</span> 次 op）。当 append 在第 <span class="arithmatex">\(t_k\)</span> 次 op 完成时，元素 <span class="arithmatex">\(k\)</span> 当前值 = <span class="arithmatex">\(\phi_{\text{now}} \circ \phi_{t_k}^{-1}(a_k)\)</span>。</p>
-<p><strong>复合规则</strong>：
-- <code>addAll(c)</code>: <span class="arithmatex">\(A_{t+1} = A_t, B_{t+1} = B_t + c\)</span>。
-- <code>multAll(m)</code>: <span class="arithmatex">\(A_{t+1} = m A_t, B_{t+1} = m B_t\)</span>。</p>
-<p><code>getIndex(k)</code>: 设 append 时记 <span class="arithmatex">\((A_k, B_k)\)</span>，要求 <span class="arithmatex">\(\frac{A_\text{now}}{A_k}(a_k) + (B_\text{now} - \frac{A_\text{now}}{A_k} B_k)\)</span>，模 <span class="arithmatex">\(p\)</span> 下除法 = 乘 <span class="arithmatex">\(A_k\)</span> 的逆元。</p>
+<p>直觉先行：把从开局到当前的所有 <code>addAll</code>/<code>multAll</code> 累积成一个仿射映射 <span class="arithmatex">\(\phi\)</span>。一个元素若从未离开过这串操作（即开局就在），它的当前值就是 <span class="arithmatex">\(\phi\)</span> 作用在它的初始值上。难点在于元素 <span class="arithmatex">\(k\)</span> 是在中途第 <span class="arithmatex">\(t_k\)</span> 次操作后才 append 的，它只承受了 <span class="arithmatex">\(t_k\)</span> 之后的那段操作。但"<span class="arithmatex">\(t_k\)</span> 之后的那段"本身也是一个仿射映射，等于"整段 <span class="arithmatex">\(\phi\)</span>"去掉"前 <span class="arithmatex">\(t_k\)</span> 段"——而仿射映射可逆，去掉前缀就是复合其逆。这就是恢复每个元素当前值的全部机制。</p>
+<p>下面把它写精确。</p>
+<p>设元素 <span class="arithmatex">\(a_0, a_1, \dots\)</span> 依次 append。定义累积仿射映射 <span class="arithmatex">\(\phi_t\)</span> 为前 <span class="arithmatex">\(t\)</span> 次操作（仅计 <code>addAll</code>/<code>multAll</code>）复合后的效果：</p>
+<div class="arithmatex">\[
+\phi_t : x \mapsto A_t\, x + B_t, \qquad \phi_0 = \mathrm{id}\ (A_0 = 1,\ B_0 = 0).
+\]</div>
+<p><strong>复合规则（从定义推导，非给定）</strong>。第 <span class="arithmatex">\(t+1\)</span> 次操作作用在 <span class="arithmatex">\(\phi_t\)</span> 之后，即 <span class="arithmatex">\(\phi_{t+1} = (\text{第 } t{+}1 \text{ 次操作}) \circ \phi_t\)</span>：</p>
+<ul>
+<li><code>addAll(c)</code>：<span class="arithmatex">\(\phi_{t+1}(x) = \phi_t(x) + c = A_t x + (B_t + c)\)</span>，故 <span class="arithmatex">\(A_{t+1} = A_t,\ B_{t+1} = B_t + c\)</span>。</li>
+<li><code>multAll(m)</code>：<span class="arithmatex">\(\phi_{t+1}(x) = m\,\phi_t(x) = (m A_t) x + (m B_t)\)</span>，故 <span class="arithmatex">\(A_{t+1} = m A_t,\ B_{t+1} = m B_t\)</span>。</li>
+</ul>
+<p>这正是 §背景 中的复合公式，现在它从定义落出，而非凭空给出。</p>
+<p><strong>仿射映射成群</strong>。每个 <span class="arithmatex">\(\phi_t\)</span> 的 <span class="arithmatex">\(A_t\)</span> 是若干 <span class="arithmatex">\(m \in [1, 100]\)</span> 之积，在 <span class="arithmatex">\(\mathbb{Z}/p\mathbb{Z}\)</span> 中非零（论证见 §陷阱），故 <span class="arithmatex">\(\phi_t\)</span> 可逆，其逆仍是仿射：</p>
+<div class="arithmatex">\[
+\phi_t^{-1} : y \mapsto A_t^{-1}\,(y - B_t),
+\]</div>
+<p>其中 <span class="arithmatex">\(A_t^{-1}\)</span> 是 <span class="arithmatex">\(A_t\)</span> 模 <span class="arithmatex">\(p\)</span> 的逆元。可逆性是下一步取逆的前提。</p>
+<p><strong>当前值公式</strong>。元素 <span class="arithmatex">\(k\)</span> 在第 <span class="arithmatex">\(t_k\)</span> 次操作后以值 <span class="arithmatex">\(\mathrm{val}_k\)</span> append。设 <code>now</code> 为当前操作数，记 <span class="arithmatex">\((A, B) = (A_{\text{now}}, B_{\text{now}})\)</span>，<span class="arithmatex">\((A_k, B_k) = (A_{t_k}, B_{t_k})\)</span>。元素 <span class="arithmatex">\(k\)</span> 承受的净操作是"开局到 now 的整段"去掉"开局到 <span class="arithmatex">\(t_k\)</span> 的前缀"，即 <span class="arithmatex">\(\phi_{\text{now}} \circ \phi_{t_k}^{-1}\)</span>，作用在 <span class="arithmatex">\(\mathrm{val}_k\)</span> 上：</p>
+<div class="arithmatex">\[
+\mathrm{cur}_k
+= \phi_{\text{now}}\!\left(\phi_{t_k}^{-1}(\mathrm{val}_k)\right)
+= A\cdot A_k^{-1}\,\mathrm{val}_k + \Bigl(B - A\cdot A_k^{-1} B_k\Bigr) \pmod p.
+\tag{1}
+\]</div>
+<p>式 (1) 是全文的中心结果：它把"任意时刻查询任意元素"化为关于 <span class="arithmatex">\((A, B)\)</span> 和 append 时快照 <span class="arithmatex">\((A_k, B_k)\)</span> 的闭式表达。模 <span class="arithmatex">\(p\)</span> 下的除法 <span class="arithmatex">\(A / A_k\)</span> 即乘以 <span class="arithmatex">\(A_k^{-1}\)</span>。<code>getIndex(k)</code> 就是计算式 (1)。</p>
 <h2 id="approach">数据结构 / 想法 (Approach)<a class="headerlink" href="#approach" title="Permanent link">#</a></h2>
-<p><strong>记录"append 那一刻的 <span class="arithmatex">\((A_k, B_k)\)</span>"</strong>，外加全局当前 <span class="arithmatex">\((A, B)\)</span>。<code>getIndex(k)</code> 时还原 <span class="arithmatex">\(a_k\)</span> 的当前值：</p>
-<div class="arithmatex">\[\text{cur}_k \equiv A \cdot A_k^{-1} \cdot a_k + B - A \cdot A_k^{-1} \cdot B_k \pmod{p}.\]</div>
+<p>式 (1) 暗示每个元素要存快照 <span class="arithmatex">\((A_k, B_k)\)</span> 与 <span class="arithmatex">\(\mathrm{val}_k\)</span>。但可以更省：注意 (1) 总是先用 <span class="arithmatex">\(\phi_{t_k}^{-1}\)</span> 把 <span class="arithmatex">\(\mathrm{val}_k\)</span> 拉回到"开局坐标系"，再用 <span class="arithmatex">\(\phi_{\text{now}}\)</span> 推到当前。若在 append 当下就把元素拉回开局坐标系，存这个<strong>归一化值</strong></p>
+<div class="arithmatex">\[
+v_k := \phi_{t_k}^{-1}(\mathrm{val}_k) = A_k^{-1}\,(\mathrm{val}_k - B_k),
+\]</div>
+<p>则每个元素只需一个标量 <span class="arithmatex">\(v_k\)</span>，且当前值退化为只依赖全局 <span class="arithmatex">\((A, B)\)</span>：</p>
+<div class="arithmatex">\[
+\boxed{\ \mathrm{cur}_k = A\, v_k + B \pmod p.\ }
+\tag{2}
+\]</div>
+<p><strong>不变量（先于代码陈述）</strong>：对每个 <span class="arithmatex">\(k\)</span>，在任意时刻都有 <span class="arithmatex">\(A\, v_k + B \equiv \mathrm{cur}_k \pmod p\)</span>。理由：append 时 <span class="arithmatex">\((A, B) = (A_k, B_k)\)</span>，由 <span class="arithmatex">\(v_k\)</span> 的定义直接验证 <span class="arithmatex">\(A_k v_k + B_k = \mathrm{val}_k\)</span> 成立；此后每次 <code>addAll</code>/<code>multAll</code> 对 <span class="arithmatex">\((A, B)\)</span> 的更新，恰是对<strong>所有元素</strong>同步施加同一仿射，故式 (2) 在更新前后同时对所有 <span class="arithmatex">\(k\)</span> 保持。换言之，<span class="arithmatex">\(v_k\)</span> 一次写定，全局 <span class="arithmatex">\((A, B)\)</span> 替所有元素记账。</p>
+<p>代码即式 (2) 与归一化定义的逐行誊写：<code>append</code> 解出 <span class="arithmatex">\(v_k\)</span>，<code>addAll</code>/<code>multAll</code> 更新 <span class="arithmatex">\((A, B)\)</span>，<code>getIndex</code> 套用式 (2)。</p>
 <div class="language-python highlight"><pre><span></span><code><span class="n">MOD</span> <span class="o">=</span> <span class="mi">10</span><span class="o">**</span><span class="mi">9</span> <span class="o">+</span> <span class="mi">7</span>
 
 <span class="k">class</span><span class="w"> </span><span class="nc">Fancy</span><span class="p">:</span>
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">A</span> <span class="o">=</span> <span class="mi">1</span>   <span class="c1"># global multiplier</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">B</span> <span class="o">=</span> <span class="mi">0</span>   <span class="c1"># global addend, semantics: real value = A * stored + B</span>
-        <span class="c1"># We store, for each appended element, the &quot;raw&quot; value v_k such that current value = A_now * v_k + B_now... </span>
-        <span class="c1"># but A,B keep changing. Trick: when appending val, we compute v such that A * v + B == val (mod p)</span>
-        <span class="c1"># i.e. v = (val - B) * A^{-1}.</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">vals</span> <span class="o">=</span> <span class="p">[]</span>  <span class="c1"># raw v_k</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">A</span> <span class="o">=</span> <span class="mi">1</span>   <span class="c1"># 全局乘子</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">B</span> <span class="o">=</span> <span class="mi">0</span>   <span class="c1"># 全局加项；语义：当前值 = A * v_k + B（不变量，式 (2)）</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">vals</span> <span class="o">=</span> <span class="p">[]</span>  <span class="c1"># 归一化值 v_k = A_k^{-1} (val_k - B_k)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">append</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">val</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="c1"># we want A * v + B == val (mod p) so future A,B updates auto-apply</span>
-        <span class="n">inv_A</span> <span class="o">=</span> <span class="nb">pow</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">A</span><span class="p">,</span> <span class="n">MOD</span> <span class="o">-</span> <span class="mi">2</span><span class="p">,</span> <span class="n">MOD</span><span class="p">)</span>
+        <span class="c1"># 解 A * v + B == val (mod p)，使未来对 (A,B) 的更新自动作用于该元素</span>
+        <span class="n">inv_A</span> <span class="o">=</span> <span class="nb">pow</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">A</span><span class="p">,</span> <span class="n">MOD</span> <span class="o">-</span> <span class="mi">2</span><span class="p">,</span> <span class="n">MOD</span><span class="p">)</span>        <span class="c1"># 费马小定理：A^{-1} = A^{p-2}</span>
         <span class="n">v</span> <span class="o">=</span> <span class="p">(</span><span class="n">val</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">B</span><span class="p">)</span> <span class="o">*</span> <span class="n">inv_A</span> <span class="o">%</span> <span class="n">MOD</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">vals</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
 
@@ -22511,36 +22576,37 @@
             <span class="k">return</span> <span class="o">-</span><span class="mi">1</span>
         <span class="k">return</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">A</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">vals</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">B</span><span class="p">)</span> <span class="o">%</span> <span class="n">MOD</span>
 
-<span class="c1"># Trace 样例: 操作序列</span>
-<span class="c1"># append(2): A=1,B=0. inv_A=1. v=(2-0)*1=2. vals=[2]</span>
-<span class="c1"># addAll(3): B=3. (现读 idx=0 应得 1*2+3=5 ✓)</span>
-<span class="c1"># append(7): A=1,B=3. v=(7-3)*1=4. vals=[2,4]. (idx=1 → 1*4+3=7 ✓)</span>
-<span class="c1"># multAll(2): A=2,B=6. (idx=0 → 2*2+6=10 ✓; idx=1 → 2*4+6=14 ✓)</span>
-<span class="c1"># getIndex(0) → 10 ✓</span>
-<span class="c1"># addAll(3): B=9. (idx=0 → 2*2+9=13 ✓; idx=1 → 2*4+9=17 ✓)</span>
-<span class="c1"># append(10): A=2,B=9. inv_2 = pow(2, MOD-2, MOD). v=(10-9)*inv_2 = inv_2. </span>
-<span class="c1">#   验证: 2 * inv_2 + 9 = 1 + 9 = 10 ✓</span>
+<span class="c1"># 逐步走样例，观察不变量 A*v_k + B = cur_k 被建立并维持：</span>
+<span class="c1"># append(2):  A=1,B=0. inv_A=1. v=(2-0)*1=2. vals=[2]</span>
+<span class="c1"># addAll(3):  B=3.  (查 idx=0: 1*2+3=5 ✓)</span>
+<span class="c1"># append(7):  A=1,B=3. v=(7-3)*1=4. vals=[2,4]. (idx=1: 1*4+3=7 ✓)</span>
+<span class="c1"># multAll(2): A=2,B=6. (idx=0: 2*2+6=10 ✓; idx=1: 2*4+6=14 ✓)</span>
+<span class="c1"># getIndex(0) -&gt; 10 ✓</span>
+<span class="c1"># addAll(3):  B=9.  (idx=0: 2*2+9=13 ✓; idx=1: 2*4+9=17 ✓)</span>
+<span class="c1"># append(10): A=2,B=9. inv_2 = pow(2, MOD-2, MOD). v=(10-9)*inv_2 = inv_2.</span>
+<span class="c1">#   验证: 2*inv_2 + 9 = 1 + 9 = 10 ✓</span>
 <span class="c1"># multAll(2): A=4,B=18.</span>
-<span class="c1"># getIndex(0) → 4*2+18 = 26 ✓</span>
-<span class="c1"># getIndex(1) → 4*4+18 = 34 ✓</span>
-<span class="c1"># getIndex(2) → 4*inv_2 + 18 = 2 + 18 = 20 ✓</span>
+<span class="c1"># getIndex(0) -&gt; 4*2 + 18 = 26 ✓</span>
+<span class="c1"># getIndex(1) -&gt; 4*4 + 18 = 34 ✓</span>
+<span class="c1"># getIndex(2) -&gt; 4*inv_2 + 18 = 2 + 18 = 20 ✓</span>
 </code></pre></div>
-<p><strong>关键不变量</strong>：存储 <span class="arithmatex">\(v_k\)</span> 满足 <span class="arithmatex">\(A \cdot v_k + B \equiv \text{val}_k \pmod p\)</span> <strong>在 append 那一刻</strong>。之后所有 add/mul 同步更新 <span class="arithmatex">\((A, B)\)</span>，对所有元素同等作用 ⇒ <span class="arithmatex">\(\text{currentValue}_k = A_\text{now} \cdot v_k + B_\text{now}\)</span> 永远成立。</p>
-<p><strong>模逆元前提</strong>：<span class="arithmatex">\(p = 10^9 + 7\)</span> 是质数，所以非零数都有逆元（费马小定理：<span class="arithmatex">\(x^{-1} \equiv x^{p-2}\)</span>）。<span class="arithmatex">\(A\)</span> 一旦变 0 ⇒ 永远 0，但题面 <span class="arithmatex">\(m \geq 1\)</span>，所以 <span class="arithmatex">\(A\)</span> 始终非零（mod p）。<strong>严格</strong>：<span class="arithmatex">\(A\)</span> 是若干 <span class="arithmatex">\(m \in [1, 100]\)</span> 之积 mod p，可能恰为 0 吗？<span class="arithmatex">\(m \geq 1\)</span> 故每个因子非零；<span class="arithmatex">\(\mathbb{Z}/p\mathbb{Z}\)</span> 是 field 无零除——所以 <span class="arithmatex">\(A\)</span> 始终非零 mod p。</p>
+<p>把式 (1) 拆成 append 时的 <span class="arithmatex">\(\phi_{t_k}^{-1}\)</span> 与查询时的 <span class="arithmatex">\(\phi_{\text{now}}\)</span>，正是这套单标量编码省下 per-element 快照的根据：归一化把"逆"提前到 append 完成，留给 <code>getIndex</code> 的只剩一次乘加。下一节量化这笔开销。</p>
 <h2 id="complexity">复杂度 (Complexity)<a class="headerlink" href="#complexity" title="Permanent link">#</a></h2>
 <ul>
-<li><code>append/getIndex</code>: <span class="arithmatex">\(O(\log p)\)</span>（每次 <code>pow</code> 算逆元）。<code>addAll/multAll</code>: <span class="arithmatex">\(O(1)\)</span>。</li>
-<li>总 <span class="arithmatex">\(O(Q \log p)\)</span>。<span class="arithmatex">\(Q = 10^5, \log p \approx 30\)</span> ⇒ <span class="arithmatex">\(3 \times 10^6\)</span> 操作。</li>
-<li>Space <span class="arithmatex">\(O(n)\)</span>。</li>
-<li><strong>优化</strong>：可批量缓存逆元（在 <code>getIndex</code> 时算）或维护 <span class="arithmatex">\(A^{-1}\)</span> 同步——但费马 <span class="arithmatex">\(O(\log p)\)</span> 已够快。</li>
+<li><code>append</code>/<code>getIndex</code>：<span class="arithmatex">\(O(\log p)\)</span>。<code>append</code> 每次用费马小定理算一次逆元 <span class="arithmatex">\(A^{-1} = A^{p-2}\)</span>，快速幂 <span class="arithmatex">\(O(\log p)\)</span>；<code>getIndex</code> 是 <span class="arithmatex">\(O(1)\)</span> 乘加（逆元已在 append 时摊掉）。</li>
+<li><code>addAll</code>/<code>multAll</code>：<span class="arithmatex">\(O(1)\)</span>。</li>
+<li>总计 <span class="arithmatex">\(O(Q \log p)\)</span>。<span class="arithmatex">\(Q = 10^5,\ \log p \approx 30 \Rightarrow\)</span> 约 <span class="arithmatex">\(3 \times 10^6\)</span> 次运算。</li>
+<li>空间 <span class="arithmatex">\(O(n)\)</span>，存归一化值 <span class="arithmatex">\(v_k\)</span>。</li>
+<li><strong>可选优化</strong>：同步维护 <span class="arithmatex">\(A^{-1}\)</span>（<code>multAll</code> 时乘 <span class="arithmatex">\(m^{-1}\)</span>）可把 <code>append</code> 也降到 <span class="arithmatex">\(O(1)\)</span>，但费马 <span class="arithmatex">\(O(\log p)\)</span> 在本题规模下已足够快。</li>
 </ul>
 <h2 id="pitfalls">陷阱 (Pitfalls)<a class="headerlink" href="#pitfalls" title="Permanent link">#</a></h2>
 <ul>
-<li><strong>逆元的存在性</strong>：<span class="arithmatex">\(p\)</span> 质 + <span class="arithmatex">\(A \not\equiv 0 \pmod p\)</span>。后者由 <span class="arithmatex">\(m \geq 1\)</span> 保证。</li>
-<li><strong>负数 mod</strong>：<code>(val - B) % MOD</code> 在 Python 自动归正，C++ 需 <code>((val - B) % MOD + MOD) % MOD</code>。</li>
-<li><strong>越界返回 <span class="arithmatex">\(-1\)</span></strong>：注意"<span class="arithmatex">\(-1\)</span>"是字面值，不是 mod 后的某负。</li>
-<li><strong>不要"维护每个元素的 lazy tag"</strong>：那是 segment tree 写法 <span class="arithmatex">\(O(\log n)\)</span> 但常数大；本题用全局 <span class="arithmatex">\((A, B)\)</span> + 模逆元更简洁。</li>
-<li><strong><code>pow(A, MOD-2, MOD)</code> 每次 <span class="arithmatex">\(O(\log p)\)</span></strong>：若 <span class="arithmatex">\(Q\)</span> 极大可缓存上次的逆元，但题面规模下无需。</li>
+<li><strong>逆元的存在性（核心，载荷性）</strong>：<span class="arithmatex">\(A^{-1}\)</span> 存在当且仅当 <span class="arithmatex">\(p\)</span> 为质数且 <span class="arithmatex">\(A \not\equiv 0 \pmod p\)</span>。<span class="arithmatex">\(p = 10^9 + 7\)</span> 是质数。<span class="arithmatex">\(A\)</span> 是若干 <span class="arithmatex">\(m\)</span> 之积，题面约束 <span class="arithmatex">\(1 \leq m \leq 100\)</span> 故每个因子非零；<span class="arithmatex">\(\mathbb{Z}/p\mathbb{Z}\)</span> 是域、无零因子，非零之积仍非零，故 <span class="arithmatex">\(A\)</span> 始终非零 mod <span class="arithmatex">\(p\)</span>。<strong>注意 <span class="arithmatex">\(m \geq 1\)</span> 是正确性前提</strong>：若允许 <span class="arithmatex">\(m = 0\)</span>，则 <span class="arithmatex">\(A = 0\)</span>，<code>pow(0, MOD-2, MOD) = 0</code>，归一化值被算错，后续 <code>getIndex</code> 失效。</li>
+<li><strong>费马小定理</strong>：<span class="arithmatex">\(A^{-1} \equiv A^{p-2} \pmod p\)</span>，仅在 <span class="arithmatex">\(p\)</span> 质、<span class="arithmatex">\(A \not\equiv 0\)</span> 时成立——与上一条同源。</li>
+<li><strong>负数取模</strong>：<code>(val - B) % MOD</code> 在 Python 自动归正（如 <code>(-5) % MOD = 1000000002</code>）；C++ 需写 <code>((val - B) % MOD + MOD) % MOD</code>。</li>
+<li><strong>越界返回 <span class="arithmatex">\(-1\)</span></strong>：这是字面值 <span class="arithmatex">\(-1\)</span>，不是某个 mod 后的负数。</li>
+<li><strong>不要退化成 segment tree 的 per-element lazy tag</strong>：那是 <span class="arithmatex">\(O(\log n)\)</span> 但常数大；本题全体操作是全局仿射，单对 <span class="arithmatex">\((A, B)\)</span> + 模逆元已足，无需区间结构。</li>
+<li><strong>逆元开销</strong>：<code>pow(A, MOD-2, MOD)</code> 每次 <span class="arithmatex">\(O(\log p)\)</span>。若 <span class="arithmatex">\(Q\)</span> 大可缓存上次逆元或同步维护 <span class="arithmatex">\(A^{-1}\)</span>（见 §复杂度），本题规模下不必。</li>
 </ul>
 <h2 id="related">相关题目 (Related)<a class="headerlink" href="#related" title="Permanent link">#</a></h2>
 <ul>
@@ -22659,6 +22725,8 @@
         <script src="../../../js/mathjax/tex-mml-chtml.js"></script>
       
         <script src="../../../js/mermaid.min.js"></script>
+      
+        <script src="../../../js/featured.js"></script>
       
     
   </body>

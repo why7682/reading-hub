@@ -1466,6 +1466,8 @@
       
         
       
+        
+      
     
     
     
@@ -1521,6 +1523,34 @@
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../featured/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ⭐ Featured（已验证）
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
               
             
               
@@ -1610,10 +1640,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_4" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
         
           
-          <label class="md-nav__link" for="__nav_4_4" id="__nav_4_4_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_5" id="__nav_4_5_label" tabindex="">
             
   
   
@@ -1631,8 +1661,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_4_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_4">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_5">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1915,7 +1945,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -1937,14 +1967,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_4_5" id="__nav_4_5_label" tabindex="">
+              <label class="md-nav__link " for="__nav_4_6" id="__nav_4_6_label" tabindex="">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_5">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_6">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -5321,10 +5351,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_7" checked>
         
           
-          <label class="md-nav__link" for="__nav_4_6" id="__nav_4_6_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_7" id="__nav_4_7_label" tabindex="">
             
   
   
@@ -5342,8 +5372,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_4_6">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_7_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4_7">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -22467,37 +22497,48 @@
 <h2 id="problem">Problem<a class="headerlink" href="#problem" title="Permanent link">#</a></h2>
 <p><code>Patients</code> 表含 <code>patient_id, patient_name, conditions</code>（conditions 是空格分隔的代码串）。查询所有患 Type I Diabetes 的患者（其 conditions 中至少有一项以 <code>DIAB1</code> 开头）。</p>
 <h2 id="background">背景 (Background)<a class="headerlink" href="#background" title="Permanent link">#</a></h2>
-<p>经典 SQL 模式匹配陷阱：单词作为子串需要"空格 + 前缀"配合"开头 + 前缀"两种情况联合。否则 <code>LIKE 'DIAB1%'</code> 会漏掉首词，<code>LIKE '%DIAB1%'</code> 又会误匹配 <code>XDIAB100</code>。</p>
+<p>先看两条会被选中的样例行：Bob 的 conditions 是 <code>"DIAB100 MYOP"</code>，George 的是 <code>"ACNE DIAB100"</code>。两者共享什么字符串性质？在两行里，<code>DIAB1</code> 都出现在某个空格分隔的代码项的<strong>开头</strong>——Bob 里是首项，George 里是第二项。这是题目数据格式直接给出的结构，也是整道题的全部依据。</p>
+<p>最朴素的尝试是检测 <code>DIAB1</code> 是否作为子串出现：</p>
+<div class="language-sql highlight"><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="n">patient_id</span><span class="p">,</span><span class="w"> </span><span class="n">patient_name</span><span class="p">,</span><span class="w"> </span><span class="n">conditions</span>
+<span class="k">FROM</span><span class="w"> </span><span class="n">Patients</span>
+<span class="k">WHERE</span><span class="w"> </span><span class="n">conditions</span><span class="w"> </span><span class="k">LIKE</span><span class="w"> </span><span class="s1">&#39;%DIAB1%&#39;</span><span class="p">;</span>
+</code></pre></div>
+<p>它在 Bob 和 George 上都返回真，看起来对。问题在于它对<strong>出现位置</strong>毫无约束。考虑 conditions = <code>"XDIAB100"</code>：<code>DIAB1</code> 是它的子串，于是这一行被选中——但 <code>XDIAB100</code> 不是 <code>DIAB1</code> 开头的代码，它是另一种代码。子串匹配会把 <code>XDIAB1Y</code> 这类内嵌出现误判为命中。</p>
+<p>退一步，把模式锚到字符串开头：</p>
+<div class="language-sql highlight"><pre><span></span><code><span class="k">WHERE</span><span class="w"> </span><span class="n">conditions</span><span class="w"> </span><span class="k">LIKE</span><span class="w"> </span><span class="s1">&#39;DIAB1%&#39;</span><span class="p">;</span>
+</code></pre></div>
+<p>这下 <code>XDIAB100</code> 被正确排除了。但它在 George 上失败：<code>"ACNE DIAB100"</code> 不以 <code>DIAB1</code> 开头，于是 George 被漏掉。问题对称地翻了过来——锚到开头只覆盖首项，漏掉所有非首项。</p>
+<p>两次失败暴露出一个精确的条件：<code>DIAB1</code> 不能出现在任意位置（否则误收内嵌出现），也不能只出现在字符串开头（否则漏掉非首项）。下一节把这个条件形式化，再从中读出解法。</p>
 <h2 id="formulation">形式化 (Formulation)<a class="headerlink" href="#formulation" title="Permanent link">#</a></h2>
-<p>返回满足以下正则的行：</p>
-<div class="arithmatex">\[\text{conditions} \in \Sigma^* \cdot (\epsilon + \text{" "}) \cdot \text{"DIAB1"} \cdot \Sigma^*.\]</div>
-<p>即 <code>DIAB1</code> 出现在字符串开头或前面是空格。</p>
+<p>直觉来自数据格式本身：代码项以空格分隔，因此一个代码项要么是整个串的起点（位置 0），要么紧跟在一个空格之后。这两处是 <code>DIAB1</code> 能作为合法代码项前缀出现的<strong>仅有</strong>两个位置。把它写成 conditions 必须匹配的正则（<span class="arithmatex">\(\Sigma^*\)</span> 表示任意串，<span class="arithmatex">\(\epsilon\)</span> 表示空串）：</p>
+<div class="arithmatex">\[\text{conditions} \in (\epsilon + \Sigma^* \cdot \text{" "}) \cdot \text{"DIAB1"} \cdot \Sigma^*. \tag{1}\]</div>
+<p>式 (1) 的核心是左括号里的并集 <span class="arithmatex">\((\epsilon + \Sigma^* \cdot \text{" "})\)</span>，它枚举 <code>DIAB1</code> 之前允许的两种前缀：<span class="arithmatex">\(\epsilon\)</span>（什么都没有，即开头），或任意串后接一个空格（即紧跟空格之后）。注意这里<strong>不能</strong>写成 <span class="arithmatex">\(\Sigma^* \cdot (\epsilon + \text{" "})\)</span>：那样 <span class="arithmatex">\(\epsilon\)</span> 分支会退化成 <span class="arithmatex">\(\Sigma^* \cdot \text{"DIAB1"} \cdot \Sigma^*\)</span>，即任意位置的子串匹配，正是上一节 <code>XDIAB100</code> 误收的那个错误。前缀必须为空或以空格结尾，二者缺一不可。</p>
 <h2 id="approach">数据结构 / 想法 (Approach)<a class="headerlink" href="#approach" title="Permanent link">#</a></h2>
-<p><strong>MySQL 标准解</strong>：</p>
+<p>式 (1) 的两个分支直接对应两个 <code>LIKE</code> 谓词。<span class="arithmatex">\(\epsilon\)</span> 分支是 <code>DIAB1</code> 在开头，即 <code>LIKE 'DIAB1%'</code>；空格分支是 <code>DIAB1</code> 紧跟空格，即 <code>LIKE '% DIAB1%'</code>。把并集翻译成 <code>OR</code>：</p>
 <div class="language-sql highlight"><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="n">patient_id</span><span class="p">,</span><span class="w"> </span><span class="n">patient_name</span><span class="p">,</span><span class="w"> </span><span class="n">conditions</span>
 <span class="k">FROM</span><span class="w"> </span><span class="n">Patients</span>
 <span class="k">WHERE</span><span class="w"> </span><span class="n">conditions</span><span class="w"> </span><span class="k">LIKE</span><span class="w"> </span><span class="s1">&#39;DIAB1%&#39;</span>
 <span class="w">   </span><span class="k">OR</span><span class="w"> </span><span class="n">conditions</span><span class="w"> </span><span class="k">LIKE</span><span class="w"> </span><span class="s1">&#39;% DIAB1%&#39;</span><span class="p">;</span>
 </code></pre></div>
-<p><strong>关键不变量</strong>：第一条 <code>LIKE 'DIAB1%'</code> 覆盖首词；第二条 <code>LIKE '% DIAB1%'</code> 覆盖非首词（前面有空格）。两者并集 = 所有"单词级前缀匹配"。</p>
-<p><strong>法 2：REGEXP</strong>（MySQL）：</p>
+<p><strong>关键不变量</strong>：第一条 <code>LIKE 'DIAB1%'</code> 覆盖首项；第二条 <code>LIKE '% DIAB1%'</code> 覆盖非首项（其前必有空格）。两者并集恰好是式 (1) 的两个分支，即所有"代码项级前缀匹配"。两条之前 <code>XDIAB100</code> 不以 <code>DIAB1</code> 开头、也无 <code>空格+DIAB1</code>，故被排除——正是第二次朴素尝试想要却未能两边兼顾的效果。</p>
+<p><strong>法 2：REGEXP</strong>（MySQL）。把式 (1) 的前缀并集写成锚定的正则，得到一条等价语句：</p>
 <div class="language-sql highlight"><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">Patients</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">conditions</span><span class="w"> </span><span class="n">REGEXP</span><span class="w"> </span><span class="s1">&#39;(^|\\s)DIAB1&#39;</span><span class="p">;</span>
 </code></pre></div>
-<p>更紧凑但跨方言可移植性差（SQL Server 用 <code>LIKE</code> + escape 即可）。</p>
-<p><strong>Trace 样例</strong>：
+<p><code>(^|\s)</code> 直接编码了"开头或空格之后"这个前缀约束，比两条 <code>LIKE</code> 紧凑。代价是可移植性：<code>REGEXP</code> 是 MySQL 方言，SQL Server 等没有此语法，需退回 <code>LIKE</code> + escape。</p>
+<p><strong>Trace 样例</strong>（验证两条 <code>LIKE</code> 与式 (1) 一致）：
 - Daniel: <code>"YFEV COUGH"</code> — 不含 → 跳过。
 - Alice: <code>""</code> — 空串 → 跳过。
-- Bob: <code>"DIAB100 MYOP"</code> — 匹配 <code>LIKE 'DIAB1%'</code> → 选中 ✓
-- George: <code>"ACNE DIAB100"</code> — 匹配 <code>LIKE '% DIAB1%'</code> → 选中 ✓
+- Bob: <code>"DIAB100 MYOP"</code> — 匹配 <code>LIKE 'DIAB1%'</code>（<span class="arithmatex">\(\epsilon\)</span> 分支）→ 选中 ✓
+- George: <code>"ACNE DIAB100"</code> — 匹配 <code>LIKE '% DIAB1%'</code>（空格分支）→ 选中 ✓
 - Alain: <code>"DIAB201"</code> — 都不匹配 → 跳过。</p>
 <h2 id="complexity">复杂度 (Complexity)<a class="headerlink" href="#complexity" title="Permanent link">#</a></h2>
 <ul>
-<li>Time: <span class="arithmatex">\(O(n \cdot L)\)</span>，<span class="arithmatex">\(L\)</span> 为 conditions 平均长度。无索引下全表扫描；<code>LIKE 'prefix%'</code> 可走 B-tree 索引前缀，<code>LIKE '%pattern%'</code> 不能 → 必要时考虑 full-text index。</li>
+<li>Time: <span class="arithmatex">\(O(n \cdot L)\)</span>，<span class="arithmatex">\(L\)</span> 为 conditions 平均长度。无索引下全表扫描；<code>LIKE 'prefix%'</code>（<span class="arithmatex">\(\epsilon\)</span> 分支）可走 B-tree 索引前缀，<code>LIKE '%pattern%'</code>（空格分支）不能 → 必要时考虑 full-text index。</li>
 </ul>
 <h2 id="pitfalls">陷阱 (Pitfalls)<a class="headerlink" href="#pitfalls" title="Permanent link">#</a></h2>
 <ul>
-<li><strong><code>LIKE '%DIAB1%'</code> 错</strong>：会匹配 <code>XDIAB1Y</code> 等子串。</li>
-<li><strong>首词 vs 非首词</strong>：必须两个条件 <code>OR</code> 或用正则锚定单词边界。</li>
+<li><strong><code>LIKE '%DIAB1%'</code> 错</strong>：等价于式 (1) 误写成 <span class="arithmatex">\(\Sigma^* \cdot \text{"DIAB1"} \cdot \Sigma^*\)</span>，会匹配 <code>XDIAB1Y</code> 等内嵌子串。</li>
+<li><strong>首项 vs 非首项</strong>：<code>LIKE 'DIAB1%'</code> 单独只覆盖 <span class="arithmatex">\(\epsilon\)</span> 分支，漏掉非首项；必须 <code>OR</code> 上空格分支，或用正则锚定项边界。</li>
 <li><strong>大小写</strong>：默认 SQL <code>LIKE</code> 大小写敏感性依赖 collation；本题用大写代码假设一致。</li>
 </ul>
 <h2 id="related">相关题目 (Related)<a class="headerlink" href="#related" title="Permanent link">#</a></h2>
@@ -22614,6 +22655,8 @@
         <script src="../../../js/mathjax/tex-mml-chtml.js"></script>
       
         <script src="../../../js/mermaid.min.js"></script>
+      
+        <script src="../../../js/featured.js"></script>
       
     
   </body>

@@ -1466,6 +1466,8 @@
       
         
       
+        
+      
     
     
     
@@ -1521,6 +1523,34 @@
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../featured/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ⭐ Featured（已验证）
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
               
             
               
@@ -1610,10 +1640,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_4" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
         
           
-          <label class="md-nav__link" for="__nav_4_4" id="__nav_4_4_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_5" id="__nav_4_5_label" tabindex="">
             
   
   
@@ -1631,8 +1661,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_4_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_4">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_5">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1915,7 +1945,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -1937,14 +1967,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_4_5" id="__nav_4_5_label" tabindex="">
+              <label class="md-nav__link " for="__nav_4_6" id="__nav_4_6_label" tabindex="">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_5">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_6">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -5321,10 +5351,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_7" checked>
         
           
-          <label class="md-nav__link" for="__nav_4_6" id="__nav_4_6_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_7" id="__nav_4_7_label" tabindex="">
             
   
   
@@ -5342,8 +5372,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_4_6">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_7_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4_7">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -22467,23 +22497,59 @@
 <h2 id="problem">Problem<a class="headerlink" href="#problem" title="Permanent link">#</a></h2>
 <p>给 <span class="arithmatex">\(n\)</span> 节点的无向图（<span class="arithmatex">\(n\)</span> 条边，原本是树后多加一条），返回<strong>最后</strong>出现的那条造成环的边。</p>
 <h2 id="_1">背景<a class="headerlink" href="#_1" title="Permanent link">#</a></h2>
-<p>本题是 <strong>Union-Find (并查集 / DSU)</strong> 的入门标杆。核心：在动态添加边的过程中检测<strong>首次出现的环</strong>。这正是 <strong>Kruskal 最小生成树算法</strong> 中"用 DSU 判定加边是否成环"的子例程。Tarjan 用此结构证明 inverse-Ackermann 级别 (<span class="arithmatex">\(O(\alpha(n))\)</span>) 的均摊复杂度（Tarjan 1975）。</p>
-<p>更广视角：DSU 是 <strong>online connectivity</strong> 数据结构家族最简单的成员；其复杂的兄弟包括 link-cut tree、Euler tour tree、layered structure（对带删除）。</p>
+<p>一棵 <span class="arithmatex">\(n\)</span> 节点的树恰有 <span class="arithmatex">\(n-1\)</span> 条边且无环。本题的输入是在这样一棵树上<strong>再加一条边</strong>得到的，因此有 <span class="arithmatex">\(n\)</span> 条边。多出的那一条边把它的两个端点用第二条路径连了起来，于是产生了<strong>唯一一个环</strong>。任务就是把这条多余的边找出来。</p>
+<p>按输入顺序逐条加入边，自然得到一个增量问题：每加入一条边 <span class="arithmatex">\((u, v)\)</span>，需要回答"在此之前 <span class="arithmatex">\(u\)</span> 和 <span class="arithmatex">\(v\)</span> 是否已经连通"。若已连通，则 <span class="arithmatex">\((u, v)\)</span> 就是闭合环的那条边。问题因此归结为一个反复出现的查询——<strong>两个节点当前是否在同一连通块</strong>——并要求在边不断加入的过程中高效维护它。本节先用最朴素的办法解决这个查询，看它在哪里变慢，再由此推出 Union-Find（并查集 / DSU）。</p>
 <h2 id="_2">形式化<a class="headerlink" href="#_2" title="Permanent link">#</a></h2>
-<p>给图 <span class="arithmatex">\(G = (V, E)\)</span> 满足 <span class="arithmatex">\(|V| = |E|\)</span> 且 <span class="arithmatex">\(G\)</span> 含恰一个环。按 <span class="arithmatex">\(E\)</span> 给定顺序遍历边 <span class="arithmatex">\((u, v)\)</span>，找到最后一条满足 <span class="arithmatex">\(u, v\)</span> 在已加入边构成的森林中已属同一连通分量者。</p>
+<p><strong>直觉。</strong> 把边一条条加进来。在加入第 <span class="arithmatex">\(i\)</span> 条边之前，前 <span class="arithmatex">\(i-1\)</span> 条边构成一个无环图（森林）——只要我们每遇到成环的边就停下，前缀里就不会有环。对边 <span class="arithmatex">\((u, v)\)</span>，若 <span class="arithmatex">\(u\)</span> 与 <span class="arithmatex">\(v\)</span> 已经在同一棵树里，则它们之间已存在一条路径；再加 <span class="arithmatex">\((u, v)\)</span> 就形成第二条路径，即一个环。于是"判环"等价于"判 <span class="arithmatex">\(u, v\)</span> 此刻是否连通"。由于只多了一条边，整张图只有一个环，所以这样的边恰有一条，它既是第一条也是唯一一条成环边。</p>
+<p><strong>形式化陈述。</strong> 给图 <span class="arithmatex">\(G = (V, E)\)</span> 满足 <span class="arithmatex">\(|V| = |E|\)</span> 且 <span class="arithmatex">\(G\)</span> 含恰一个环。按 <span class="arithmatex">\(E\)</span> 给定顺序遍历边 <span class="arithmatex">\((u, v)\)</span>，找到最后一条满足 <span class="arithmatex">\(u, v\)</span> 在已加入边构成的森林中已属同一连通分量者。</p>
+<p>在唯一环的前提下，"最后一条"与"第一条满足条件者"重合：成环边只有一条，所以无论说"第一条"还是"最后一条"，指的都是同一条边。下面据此把求解过程展开。</p>
 <h2 id="_3">数据结构 / 想法<a class="headerlink" href="#_3" title="Permanent link">#</a></h2>
-<p><strong>Union-Find</strong>（首选）：
+<p><strong>形式化把问题压缩成一个反复执行的操作序列：</strong> 沿边序列前进，对每条 <span class="arithmatex">\((u, v)\)</span> 先查询 <code>connected(u, v)</code>，若否则执行一次合并把 <span class="arithmatex">\(u, v\)</span> 所在的两块并起来。我们需要的，正是一个支持这两个操作的结构。</p>
+<p><strong>朴素出发点（每边一次遍历）。</strong> 维护当前已加入边构成的邻接表。对每条新边 <span class="arithmatex">\((u, v)\)</span>，从 <span class="arithmatex">\(u\)</span> 出发做一次 BFS 或 DFS，看能否到达 <span class="arithmatex">\(v\)</span>：能到达则二者已连通，<span class="arithmatex">\((u, v)\)</span> 成环，返回它；否则把 <span class="arithmatex">\((u, v)\)</span> 加入邻接表继续。</p>
+<div class="language-python highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">findRedundant_bruteforce</span><span class="p">(</span><span class="n">edges</span><span class="p">):</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">collections</span><span class="w"> </span><span class="kn">import</span> <span class="n">defaultdict</span>
+    <span class="n">g</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="nb">list</span><span class="p">)</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">reachable</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
+        <span class="n">stack</span><span class="p">,</span> <span class="n">seen</span> <span class="o">=</span> <span class="p">[</span><span class="n">u</span><span class="p">],</span> <span class="p">{</span><span class="n">u</span><span class="p">}</span>
+        <span class="k">while</span> <span class="n">stack</span><span class="p">:</span>
+            <span class="n">x</span> <span class="o">=</span> <span class="n">stack</span><span class="o">.</span><span class="n">pop</span><span class="p">()</span>
+            <span class="k">if</span> <span class="n">x</span> <span class="o">==</span> <span class="n">v</span><span class="p">:</span> <span class="k">return</span> <span class="kc">True</span>
+            <span class="k">for</span> <span class="n">y</span> <span class="ow">in</span> <span class="n">g</span><span class="p">[</span><span class="n">x</span><span class="p">]:</span>
+                <span class="k">if</span> <span class="n">y</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">seen</span><span class="p">:</span>
+                    <span class="n">seen</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">y</span><span class="p">);</span> <span class="n">stack</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
+        <span class="k">return</span> <span class="kc">False</span>
+    <span class="k">for</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">edges</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">reachable</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span> <span class="k">return</span> <span class="p">[</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">]</span>
+        <span class="n">g</span><span class="p">[</span><span class="n">u</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">v</span><span class="p">);</span> <span class="n">g</span><span class="p">[</span><span class="n">v</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">u</span><span class="p">)</span>
+    <span class="k">return</span> <span class="p">[]</span>
+</code></pre></div>
+<p>这是正确的。<strong>瓶颈在哪？</strong> 每条边触发一次最坏 <span class="arithmatex">\(O(n)\)</span> 的遍历，共 <span class="arithmatex">\(n\)</span> 条边，故 <span class="arithmatex">\(O(n^2)\)</span>。问题出在每次查询都从零重建可达性，完全没有复用此前的连通信息——而连通关系是单调累积的（边只增不减）。我们需要一个<strong>把连通信息攒下来</strong>的结构，使每次"是否连通"的查询不必再遍历全图。</p>
+<p><strong>从查询接口推出结构。</strong> 把节点集划分成若干不相交的连通块。要支持两件事：</p>
+<ul>
+<li><code>find(x)</code>：返回 <span class="arithmatex">\(x\)</span> 所在块的一个<strong>代表元</strong>（标识）。则 <code>find(u) == find(v)</code> 当且仅当 <span class="arithmatex">\(u, v\)</span> 同块、即连通。</li>
+<li><code>union(x, y)</code>：把 <span class="arithmatex">\(x, y\)</span> 两块合并成一块。</li>
+</ul>
+<p>这恰好是 <strong>不相交集合并查集（DSU）</strong> 的接口。每个块用一棵树表示，树根即代表元；<code>find</code> 沿父指针走到根，<code>union</code> 把一棵树的根挂到另一棵树的根下。</p>
+<p><strong>核心不变量。</strong> 在任意一串 <code>union</code> / <code>find</code> 操作之后，</p>
+<div class="arithmatex">\[\text{find}(x) = \text{find}(y) \iff x, y \text{ 在当前森林中连通.}\]</div>
+<p>这把上面的判环直接落地：处理 <span class="arithmatex">\((u, v)\)</span> 时先比较 <code>find(u)</code> 与 <code>find(v)</code>，相等则成环，返回 <span class="arithmatex">\((u, v)\)</span>；否则 <code>union(u, v)</code> 把两块并起。先看一个朴素 <code>find</code>（一路走到根）下不变量如何成立，再谈两处优化。</p>
+<p><strong>朴素版为何会退化。</strong> 若 <code>union</code> 总是把第二棵树的根硬挂到第一棵根下，反复合并可以把树拉成一条长度 <span class="arithmatex">\(O(n)\)</span> 的链，<code>find</code> 退化到 <span class="arithmatex">\(O(n)\)</span>，整体又回到 <span class="arithmatex">\(O(n^2)\)</span>。两处优化各自消除一种退化：</p>
+<ul>
+<li><strong>按秩合并（union by rank）。</strong> 给每个根维护一个秩 <code>r</code>，作为子树高度的上界。合并时把<strong>秩小</strong>的根挂到<strong>秩大</strong>的根下；只有两秩相等时新根的秩才加一。这样树高被 <span class="arithmatex">\(O(\log n)\)</span> 约束，单独使用即得 <span class="arithmatex">\(O(\log n)\)</span> 的 <code>find</code>。秩只关心树的高度，挂接方向不影响连通性，故不变量不变。</li>
+<li><strong>路径减半（path halving）。</strong> <code>find</code> 沿父指针上行时，把每个节点的父指针改指向其祖父，使路径长度近似减半。下次 <code>find</code> 走得更短。<code>find</code> 用到的信息只有"根是谁"，重接中间指针不改变任何节点的根，故不变量仍然成立——这是一个<strong>安全的</strong>优化，只改快慢不改结果。</li>
+</ul>
+<p>两者叠加给出 <span class="arithmatex">\(O(\alpha(n))\)</span> 的均摊代价，<span class="arithmatex">\(\alpha\)</span> 是反 Ackermann 函数，增长极慢，在一切现实规模下不超过 4（Tarjan 1975；路径减半 + 按秩合并同样达到此界，见 Tarjan &amp; van Leeuwen 1984）。</p>
 <div class="language-python highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">DSU</span><span class="p">:</span>
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span> <span class="bp">self</span><span class="o">.</span><span class="n">p</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="o">+</span><span class="mi">1</span><span class="p">));</span> <span class="bp">self</span><span class="o">.</span><span class="n">r</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="p">(</span><span class="n">n</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">find</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
         <span class="k">while</span> <span class="bp">self</span><span class="o">.</span><span class="n">p</span><span class="p">[</span><span class="n">x</span><span class="p">]</span> <span class="o">!=</span> <span class="n">x</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">p</span><span class="p">[</span><span class="n">x</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">p</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">p</span><span class="p">[</span><span class="n">x</span><span class="p">]]</span>  <span class="c1"># path compression</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">p</span><span class="p">[</span><span class="n">x</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">p</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">p</span><span class="p">[</span><span class="n">x</span><span class="p">]]</span>  <span class="c1"># path halving: 指向祖父</span>
             <span class="n">x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">p</span><span class="p">[</span><span class="n">x</span><span class="p">]</span>
         <span class="k">return</span> <span class="n">x</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">union</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
         <span class="n">rx</span><span class="p">,</span> <span class="n">ry</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">x</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">rx</span> <span class="o">==</span> <span class="n">ry</span><span class="p">:</span> <span class="k">return</span> <span class="kc">False</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">r</span><span class="p">[</span><span class="n">rx</span><span class="p">]</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">r</span><span class="p">[</span><span class="n">ry</span><span class="p">]:</span> <span class="n">rx</span><span class="p">,</span> <span class="n">ry</span> <span class="o">=</span> <span class="n">ry</span><span class="p">,</span> <span class="n">rx</span>
+        <span class="k">if</span> <span class="n">rx</span> <span class="o">==</span> <span class="n">ry</span><span class="p">:</span> <span class="k">return</span> <span class="kc">False</span>          <span class="c1"># 已连通 → (x, y) 成环</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">r</span><span class="p">[</span><span class="n">rx</span><span class="p">]</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">r</span><span class="p">[</span><span class="n">ry</span><span class="p">]:</span> <span class="n">rx</span><span class="p">,</span> <span class="n">ry</span> <span class="o">=</span> <span class="n">ry</span><span class="p">,</span> <span class="n">rx</span>  <span class="c1"># 秩小挂秩大</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">p</span><span class="p">[</span><span class="n">ry</span><span class="p">]</span> <span class="o">=</span> <span class="n">rx</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">r</span><span class="p">[</span><span class="n">rx</span><span class="p">]</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">r</span><span class="p">[</span><span class="n">ry</span><span class="p">]:</span> <span class="bp">self</span><span class="o">.</span><span class="n">r</span><span class="p">[</span><span class="n">rx</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
         <span class="k">return</span> <span class="kc">True</span>
@@ -22492,26 +22558,26 @@
     <span class="n">dsu</span> <span class="o">=</span> <span class="n">DSU</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">edges</span><span class="p">))</span>
     <span class="k">for</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">edges</span><span class="p">:</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">dsu</span><span class="o">.</span><span class="n">union</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span> <span class="k">return</span> <span class="p">[</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">]</span>
-</code></pre></div></p>
-<p><strong>DFS / BFS</strong>（替代）：对每条新加边 <span class="arithmatex">\((u, v)\)</span>，在已构造的图上从 <span class="arithmatex">\(u\)</span> 找路径到 <span class="arithmatex">\(v\)</span>；若存在 → 该边成环。<span class="arithmatex">\(O(n^2)\)</span> 而 DSU <span class="arithmatex">\(O(n \alpha(n))\)</span>。</p>
-<p><strong>不变量</strong>（DSU）：调用 <code>union</code> / <code>find</code> 序列结束后，<code>find(x) == find(y)</code> ↔ <span class="arithmatex">\(x, y\)</span> 在当前森林中连通。<strong>两大优化</strong>：路径压缩 + 按秩合并联合带来 <span class="arithmatex">\(\alpha(n)\)</span> 均摊（参见 Tarjan &amp; van Leeuwen 1984 综述）。</p>
+</code></pre></div>
+<p><code>union</code> 同时承担查询与合并：返回 <code>False</code> 表示两端已连通（成环），返回 <code>True</code> 表示完成了一次合并。沿边序列调用，第一个返回 <code>False</code> 的边即为答案。</p>
+<p>掌握 DSU 后，再回看它在更大图景中的位置：本题"加边判环"正是 <strong>Kruskal 最小生成树算法</strong>里"判定加入一条边是否成环"的子例程。DSU 是 <strong>online connectivity（在线连通性）</strong> 这一数据结构族里最简单的成员；同族中更强的结构——link-cut tree、Euler tour tree——额外支持删边与子树查询，代价是更复杂的实现。这些只在需要时才用得上，理解 DSU 本身并不依赖它们。</p>
 <h2 id="_4">复杂度<a class="headerlink" href="#_4" title="Permanent link">#</a></h2>
 <ul>
-<li>Time: <span class="arithmatex">\(O(n \cdot \alpha(n))\)</span> —— DSU 路径压缩 + 按秩合并均摊近似 <span class="arithmatex">\(O(1)\)</span>。</li>
-<li>Space: <span class="arithmatex">\(O(n)\)</span>。</li>
+<li>Time: <span class="arithmatex">\(O(n \cdot \alpha(n))\)</span> —— <span class="arithmatex">\(n\)</span> 条边，每条触发常数次 <code>find</code> / <code>union</code>；路径减半 + 按秩合并使单次操作均摊为 <span class="arithmatex">\(O(\alpha(n))\)</span>，其中 <span class="arithmatex">\(\alpha(n)\)</span> 增长极慢、现实规模下不超过 4。对照朴素的每边遍历法为 <span class="arithmatex">\(O(n^2)\)</span>。</li>
+<li>Space: <span class="arithmatex">\(O(n)\)</span> —— 父指针数组与秩数组。</li>
 </ul>
 <h2 id="_5">陷阱<a class="headerlink" href="#_5" title="Permanent link">#</a></h2>
 <ul>
-<li>节点编号从 1 开始（题目约定），DSU 数组开 <code>n+1</code>。</li>
-<li>"最后出现"的边：按输入顺序遍历，第一个返回 False 的就是答案；这同时是最后的（因后续不再处理）。</li>
-<li>不要同时记录所有环边再选最后—— DSU 自然给出第一条造成环的边即为答案。</li>
-<li>有向版（#685 Redundant Connection II）需另加"入度=2"的特殊处理。</li>
+<li>节点编号从 1 开始（题目约定），DSU 数组开 <code>n+1</code>，下标 <span class="arithmatex">\(0\)</span> 留空不用，避免越界。</li>
+<li>"最后出现"的边在唯一环前提下与"第一条成环边"是同一条：成环边只有一条。因此遍历到第一个 <code>union</code> 返回 <code>False</code> 即可返回，不必收集所有候选再选最后——根本就只有一个候选。</li>
+<li>路径减半（<code>self.p[x] = self.p[self.p[x]]</code>）不是完整路径压缩：它只把节点重接到祖父，不会一次拍平到根。两者均摊复杂度相同，都达到反 Ackermann 界；但行为不同，调试时不要把它当成完整压缩来推断指针布局。</li>
+<li>有向版（#685 Redundant Connection II）不能直接套用：有向图里"成环"与"某节点入度为 2"是两种不同的冗余，需分情况处理。</li>
 </ul>
 <h2 id="_6">相关题目<a class="headerlink" href="#_6" title="Permanent link">#</a></h2>
 <ul>
-<li><code>#685. Redundant Connection II (off-wiki)</code> — 有向版，需分情况：单点入度 2 / 唯一环 / 两者兼有。</li>
+<li><a href="../0685_redundant-connection-ii/">#685. Redundant Connection II</a> — 有向版，需分情况：单点入度 2 / 唯一环 / 两者兼有。</li>
 <li><a href="../0839_similar-string-groups/">#0839. Similar String Groups</a> — 同样用 DSU 分组。</li>
-<li><code>#1319. Number of Operations to Make Network Connected (off-wiki)</code> — DSU 连通分量计数 + 边数判定。</li>
+<li><a href="../1319_number-of-operations-to-make-network-connected/">#1319. Number of Operations to Make Network Connected</a> — DSU 连通分量计数 + 边数判定。</li>
 <li><a href="../2858_minimum-edge-reversals-so-every-node-is-reachable/">#2858. Minimum Edge Reversals So Every Node Is Reachable</a> — 树上的边方向问题，对照"加边成环"与"翻边"两类。</li>
 </ul>
 <h2 id="further-reading">Further Reading<a class="headerlink" href="#further-reading" title="Permanent link">#</a></h2>
@@ -22627,6 +22693,8 @@
         <script src="../../../js/mathjax/tex-mml-chtml.js"></script>
       
         <script src="../../../js/mermaid.min.js"></script>
+      
+        <script src="../../../js/featured.js"></script>
       
     
   </body>

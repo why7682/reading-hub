@@ -1466,6 +1466,8 @@
       
         
       
+        
+      
     
     
     
@@ -1521,6 +1523,34 @@
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../featured/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ⭐ Featured（已验证）
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
               
             
               
@@ -1610,10 +1640,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_4" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
         
           
-          <label class="md-nav__link" for="__nav_4_4" id="__nav_4_4_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_5" id="__nav_4_5_label" tabindex="">
             
   
   
@@ -1631,8 +1661,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_4_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_4">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_5">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1915,7 +1945,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -1937,14 +1967,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_4_5" id="__nav_4_5_label" tabindex="">
+              <label class="md-nav__link " for="__nav_4_6" id="__nav_4_6_label" tabindex="">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_5">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_6">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -5321,10 +5351,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_7" checked>
         
           
-          <label class="md-nav__link" for="__nav_4_6" id="__nav_4_6_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_7" id="__nav_4_7_label" tabindex="">
             
   
   
@@ -5342,8 +5372,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_4_6">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_7_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4_7">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -22467,16 +22497,26 @@
 <h2 id="problem">Problem<a class="headerlink" href="#problem" title="Permanent link">#</a></h2>
 <p><span class="arithmatex">\(m \times n\)</span> 矩阵 (<span class="arithmatex">\(m, n \leq 15\)</span>)，从 <span class="arithmatex">\((0,0)\)</span> 走到 <span class="arithmatex">\((m-1, n-1)\)</span>，每步只能右/下。求路径所有格点之积的最大<strong>非负</strong>值（模 <span class="arithmatex">\(10^9 + 7\)</span>）；若最大积仍为负，返回 <span class="arithmatex">\(-1\)</span>。值域 <span class="arithmatex">\([-4, 4]\)</span>。</p>
 <h2 id="background">背景 (Background)<a class="headerlink" href="#background" title="Permanent link">#</a></h2>
-<p>DP on path products 的经典 "维护 (max, min)" 技巧：因负 × 负 = 正，最优可能由"最小负数"翻转得到，所以需要同时维护到 <span class="arithmatex">\((i, j)\)</span> 的最大和最小积。出现在 stock max product subarray (LC #152)、grid product 等问题。</p>
+<p>先确定这是网格 DP 的形状。每个格子只能从上方或左方进入，所以"走到 <span class="arithmatex">\((i,j)\)</span> 的最优值"应当只依赖它的两个前驱。最自然的尝试是为每个格子记一个量 <span class="arithmatex">\(\text{hi}(i,j)\)</span>，表示走到该格的最大路径积，然后照搬最短路 DP 的写法：</p>
+<div class="arithmatex">\[\text{hi}(i,j) = \max\big(\text{hi}(i-1,j),\ \text{hi}(i,j-1)\big)\cdot g_{i,j}. \tag{naive}\]</div>
+<p>在求和问题里这是对的：路径和是可加的，前缀越大、总和越大。这里把这条递推直接用在题面样例 <span class="arithmatex">\(g=[[1,-2,1],[1,-2,1],[3,-4,1]]\)</span> 上，它给出终点值 <span class="arithmatex">\(-2\)</span>，而正确答案是 <span class="arithmatex">\(8\)</span>。递推没有报错，只是悄悄返回了错的数。</p>
+<p>失败的位置很具体。考虑格子 <span class="arithmatex">\((1,1)\)</span>，<span class="arithmatex">\(g_{1,1}=-2\)</span>。它的两个前驱里，最大前缀积是 <span class="arithmatex">\(\text{hi}(0,1)=-2\)</span>，最小前缀积是 <span class="arithmatex">\(1\)</span>（来自上方 <span class="arithmatex">\(g_{0,1}=-2\)</span> 与左方 <span class="arithmatex">\(g_{1,0}=1\)</span>）。乘以 <span class="arithmatex">\(-2\)</span> 后：最大前缀 <span class="arithmatex">\(-2\)</span> 变成 <span class="arithmatex">\(4\)</span>，最小前缀 <span class="arithmatex">\(1\)</span> 变成 <span class="arithmatex">\(-2\)</span>。<strong>乘以负数把大小关系翻转了</strong>——原本最小的那条前缀，乘完反而成了最大。式 (naive) 只保留了最大前缀 <span class="arithmatex">\(-2\)</span>，于是丢掉了能翻成 <span class="arithmatex">\(4\)</span> 的那条最小前缀，错误从这里开始向终点传播。</p>
+<p>根因是乘法不是单调变换：<span class="arithmatex">\(a&lt;b\)</span> 不蕴含 <span class="arithmatex">\(av&lt;bv\)</span>，当 <span class="arithmatex">\(v&lt;0\)</span> 时不等号反向。求和 DP 能只记最大值，是因为加法保序；乘法一旦混入负数就不再保序，于是"当前最大前缀"不足以决定"下一步最大积"。要修复，必须同时记住可能在下一步翻成最大的候选——也就是<strong>最小</strong>路径积。这把单值 DP 升级成同时维护一对极值 <span class="arithmatex">\((\text{hi}, \text{lo})\)</span>。</p>
 <h2 id="formulation">形式化 (Formulation)<a class="headerlink" href="#formulation" title="Permanent link">#</a></h2>
-<p>设 <span class="arithmatex">\(\text{hi}(i, j) = \max_\pi \prod_{(r, c) \in \pi} g_{r,c}\)</span>，<span class="arithmatex">\(\text{lo}(i, j) = \min_\pi \cdots\)</span>，<span class="arithmatex">\(\pi\)</span> 为 <span class="arithmatex">\((0,0) \to (i,j)\)</span> 只右/下路径。</p>
-<p><strong>递推</strong>：</p>
-<div class="arithmatex">\[\text{cand} = \{ \text{hi}(i-1, j) \cdot g_{i,j}, \; \text{lo}(i-1, j) \cdot g_{i,j}, \; \text{hi}(i, j-1) \cdot g_{i,j}, \; \text{lo}(i, j-1) \cdot g_{i,j} \},\]</div>
-<div class="arithmatex">\[\text{hi}(i, j) = \max(\text{cand}), \quad \text{lo}(i, j) = \min(\text{cand}).\]</div>
-<p>边界：<span class="arithmatex">\(\text{hi}(0,0) = \text{lo}(0,0) = g_{0,0}\)</span>；首行/首列只能从单一方向来。</p>
-<p>最终答案：若 <span class="arithmatex">\(\text{hi}(m-1, n-1) &lt; 0\)</span> 返回 <span class="arithmatex">\(-1\)</span>，否则 <span class="arithmatex">\(\text{hi}(m-1, n-1) \bmod (10^9 + 7)\)</span>。</p>
+<p>设 <span class="arithmatex">\(\pi\)</span> 为 <span class="arithmatex">\((0,0)\to(i,j)\)</span> 的任一只右/只下路径，<span class="arithmatex">\(\prod_\pi = \prod_{(r,c)\in\pi} g_{r,c}\)</span> 为其路径积。定义到 <span class="arithmatex">\((i,j)\)</span> 的<strong>最大</strong>与<strong>最小</strong>路径积：</p>
+<div class="arithmatex">\[\text{hi}(i,j) = \max_{\pi}\ \prod_\pi, \qquad \text{lo}(i,j) = \min_{\pi}\ \prod_\pi.\]</div>
+<p>直觉（紧接递推之前）：走到 <span class="arithmatex">\((i,j)\)</span> 的任一路径积，都等于某条到前驱 <span class="arithmatex">\((i-1,j)\)</span> 或 <span class="arithmatex">\((i,j-1)\)</span> 的前缀积再乘以 <span class="arithmatex">\(g_{i,j}\)</span>。乘以一个固定数 <span class="arithmatex">\(g_{i,j}\)</span> 是单调或反单调映射，所以<strong>乘完的极值只能由乘前的极值产生</strong>：<span class="arithmatex">\(g_{i,j}&gt;0\)</span> 时最大由最大前缀来，<span class="arithmatex">\(g_{i,j}&lt;0\)</span> 时最大由最小前缀来。形式化时 <span class="arithmatex">\(g_{i,j}\)</span> 的符号未知，故两个前驱、各取 hi 与 lo，共四个候选都要纳入，再取极值：</p>
+<div class="arithmatex">\[\text{cand}(i,j) = \big\{\, \text{hi}(i-1,j)\cdot g_{i,j},\ \text{lo}(i-1,j)\cdot g_{i,j},\ \text{hi}(i,j-1)\cdot g_{i,j},\ \text{lo}(i,j-1)\cdot g_{i,j} \,\big\}, \tag{1}\]</div>
+<div class="arithmatex">\[\text{hi}(i,j) = \max\,\text{cand}(i,j), \qquad \text{lo}(i,j) = \min\,\text{cand}(i,j). \tag{2}\]</div>
+<p>为什么取两个极值就够，不会有"中间值"漏网？四个候选的集合 <span class="arithmatex">\(\text{cand}(i,j)\)</span> 完全由前驱的 hi/lo 乘 <span class="arithmatex">\(g_{i,j}\)</span> 决定，任何到 <span class="arithmatex">\((i,j)\)</span> 的路径积都落在这四个值之间，其极大极小必为这四个候选中的极大极小。所以式 (2) 取出的 <span class="arithmatex">\((\text{hi},\text{lo})\)</span> 精确地框住了到 <span class="arithmatex">\((i,j)\)</span> 的全部可达积，归纳成立。</p>
+<p>边界由"路径唯一"直接得到。到 <span class="arithmatex">\((0,0)\)</span> 只有一条空前缀，到首行/首列任一格也只有唯一一条路径，故此时 hi 与 lo 坍缩为同一个累乘值：</p>
+<div class="arithmatex">\[\text{hi}(0,0)=\text{lo}(0,0)=g_{0,0}, \tag{3}$$
+$$\text{hi}(0,j)=\text{lo}(0,j)=\text{hi}(0,j-1)\cdot g_{0,j}, \quad \text{hi}(i,0)=\text{lo}(i,0)=\text{hi}(i-1,0)\cdot g_{i,0}. \tag{4}\]</div>
+<p>唯一答案取自终点的最大积。由式 (2) 在 <span class="arithmatex">\((m-1,n-1)\)</span> 处求值：</p>
+<div class="arithmatex">\[\text{ans} = \begin{cases} -1, &amp; \text{hi}(m-1,n-1) &lt; 0,\\[2pt] \text{hi}(m-1,n-1) \bmod (10^9+7), &amp; \text{否则.} \end{cases} \tag{5}\]</div>
 <h2 id="approach">数据结构 / 想法 (Approach)<a class="headerlink" href="#approach" title="Permanent link">#</a></h2>
-<p><strong>关键技巧</strong>：<strong>不要</strong>在 DP 过程中取模——取模破坏序关系，会让"最大"变得无意义。必须用真值（Python 任意精度无忧；C++ 用 <code>__int128</code> 或 <code>long long</code> + 范围分析：<span class="arithmatex">\(15 + 15 - 1 = 29\)</span> 步，每格 <span class="arithmatex">\(|v| \leq 4\)</span>，积上界 <span class="arithmatex">\(4^{29} \approx 3 \times 10^{17}\)</span> 在 <code>long long</code> 内）。仅最终结果取模。</p>
+<p>式 (1)–(5) 直接展开为按行扫描的填表：先由式 (3)(4) 铺好首行首列，再对内部格子用式 (1)(2) 取四候选的 max/min，最后按式 (5) 读终点。</p>
+<p>实现唯一需要警惕的，是式 (2) 里的 max/min 必须作用在<strong>真值</strong>上。取模 <span class="arithmatex">\(\bmod (10^9+7)\)</span> 是不保序的映射——它把整数环绕到 <span class="arithmatex">\([0, 10^9+7)\)</span>，两个真值的大小关系在模后可能反转。一旦在 DP 中途取模，式 (2) 取出的就不再是真正的最大/最小路径积，归纳论证立刻失效（这与上一节里"乘负数破坏保序"是同一类毛病：任何不保序的运算都不能混进 max/min 的论证）。因此全程用真值计算，仅在式 (5) 输出时取一次模。Python 整数任意精度，无忧；C++ 需做范围分析：最长路径 <span class="arithmatex">\(15+15-1=29\)</span> 步，每格 <span class="arithmatex">\(|v|\le 4\)</span>，积上界 <span class="arithmatex">\(4^{29}\approx 3\times10^{17}\)</span>，在 <code>long long</code>（上限 <span class="arithmatex">\(\approx 9.2\times10^{18}\)</span>）内，亦可用 <code>__int128</code> 求稳。</p>
 <div class="language-python highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">Solution</span><span class="p">:</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">maxProductPath</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">grid</span><span class="p">):</span>
         <span class="n">MOD</span> <span class="o">=</span> <span class="mi">10</span><span class="o">**</span><span class="mi">9</span> <span class="o">+</span> <span class="mi">7</span>
@@ -22497,30 +22537,31 @@
         <span class="n">ans</span> <span class="o">=</span> <span class="n">hi</span><span class="p">[</span><span class="n">m</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="n">n</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
         <span class="k">return</span> <span class="o">-</span><span class="mi">1</span> <span class="k">if</span> <span class="n">ans</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="k">else</span> <span class="n">ans</span> <span class="o">%</span> <span class="n">MOD</span>
 
-<span class="c1"># Trace 样例 2: grid=[[1,-2,1],[1,-2,1],[3,-4,1]]</span>
+<span class="c1"># Trace 样例 2: grid=[[1,-2,1],[1,-2,1],[3,-4,1]] —— 即背景里 naive 返回 -2 的同一格子</span>
 <span class="c1"># 首行 hi=lo: [1, -2, -2]</span>
 <span class="c1"># 首列 hi=lo: [1, 1, 3]</span>
 <span class="c1"># (1,1) v=-2. cands = hi[0][1]*-2=4, lo[0][1]*-2=4, hi[1][0]*-2=-2, lo[1][0]*-2=-2</span>
-<span class="c1">#   hi=4, lo=-2</span>
+<span class="c1">#   hi=4, lo=-2   ← 这里 lo=1 翻成 hi=4，正是 naive 丢掉的那条</span>
 <span class="c1"># (1,2) v=1. cands = hi[0][2]*1=-2, lo[0][2]*1=-2, hi[1][1]*1=4, lo[1][1]*1=-2</span>
 <span class="c1">#   hi=4, lo=-2</span>
 <span class="c1"># (2,1) v=-4. cands = hi[1][1]*-4=-16, lo[1][1]*-4=8, hi[2][0]*-4=-12, lo[2][0]*-4=-12</span>
 <span class="c1">#   hi=8, lo=-16</span>
 <span class="c1"># (2,2) v=1. cands = hi[1][2]*1=4, lo[1][2]*1=-2, hi[2][1]*1=8, lo[2][1]*1=-16</span>
 <span class="c1">#   hi=8, lo=-16</span>
-<span class="c1"># ans=8 ≥ 0 → 8 ✓</span>
+<span class="c1"># ans=8 ≥ 0 → 8 ✓ （naive 给 -2，差别全在 lo 被保留了下来）</span>
 </code></pre></div>
+<p>跟着 trace 可看到，同时维护 lo 后，背景里被式 (naive) 丢掉的那条最小前缀（<span class="arithmatex">\((1,1)\)</span> 处的 <span class="arithmatex">\(\text{lo}=1\to\text{hi}=4\)</span>）被保住，并一路传到终点给出 <span class="arithmatex">\(8\)</span>。这正是 <span class="arithmatex">\((\text{hi},\text{lo})\)</span> 对相对单值 DP 的全部增量。</p>
 <h2 id="complexity">复杂度 (Complexity)<a class="headerlink" href="#complexity" title="Permanent link">#</a></h2>
 <ul>
-<li>Time <span class="arithmatex">\(O(mn)\)</span>；Space <span class="arithmatex">\(O(mn)\)</span>（可压成 <span class="arithmatex">\(O(n)\)</span> 两行）。</li>
+<li>Time <span class="arithmatex">\(O(mn)\)</span>；Space <span class="arithmatex">\(O(mn)\)</span>（可压成 <span class="arithmatex">\(O(n)\)</span> 两行）。每格做 <span class="arithmatex">\(O(1)\)</span> 次乘法与四元 max/min。</li>
 </ul>
 <h2 id="pitfalls">陷阱 (Pitfalls)<a class="headerlink" href="#pitfalls" title="Permanent link">#</a></h2>
 <ul>
-<li><strong>不要中途取模</strong>：会让 max/min 比较错乱。</li>
-<li><strong>同时维护 hi/lo</strong>：只追 hi 会漏掉"两负相乘翻正"的最优。</li>
-<li><strong>首行首列 base case</strong>：因只有单方向来源，直接累乘；不要漏。</li>
-<li><strong>零的处理</strong>：自然落在 lo 与 hi 之间，无需特判。</li>
-<li><strong>负答案返回 -1</strong>：题面明确要求"如果最大积仍为负"返回 -1，而非取模后的某个非负值。</li>
+<li><strong>只追 hi 会错</strong>（式 naive 的失败）：乘负数翻转大小关系，最优可能由最小前缀翻正得到，必须同时维护 lo（式 1–2）。</li>
+<li><strong>不要中途取模</strong>：取模不保序，会让式 (2) 的 max/min 比较错乱，归纳失效；仅在式 (5) 输出时取一次模。</li>
+<li><strong>首行首列 base case</strong>（式 3–4）：唯一路径使 hi=lo，直接累乘；不要漏。</li>
+<li><strong>零的处理</strong>：自然落在 lo 与 hi 之间（式 1 的四候选已含之），无需特判。</li>
+<li><strong>负答案返回 -1</strong>（式 5）：题面明确要求"如果最大积仍为负"返回 -1，而非取模后的某个非负值。</li>
 </ul>
 <h2 id="related">相关题目 (Related)<a class="headerlink" href="#related" title="Permanent link">#</a></h2>
 <ul>
@@ -22637,6 +22678,8 @@
         <script src="../../../js/mathjax/tex-mml-chtml.js"></script>
       
         <script src="../../../js/mermaid.min.js"></script>
+      
+        <script src="../../../js/featured.js"></script>
       
     
   </body>

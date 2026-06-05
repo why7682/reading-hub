@@ -1466,6 +1466,8 @@
       
         
       
+        
+      
     
     
     
@@ -1521,6 +1523,34 @@
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../featured/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ⭐ Featured（已验证）
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
               
             
               
@@ -1610,10 +1640,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_4" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
         
           
-          <label class="md-nav__link" for="__nav_4_4" id="__nav_4_4_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_5" id="__nav_4_5_label" tabindex="">
             
   
   
@@ -1631,8 +1661,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_4_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_4">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_5">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1915,7 +1945,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -1937,14 +1967,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_4_5" id="__nav_4_5_label" tabindex="">
+              <label class="md-nav__link " for="__nav_4_6" id="__nav_4_6_label" tabindex="">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_5">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_6">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -5321,10 +5351,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_7" checked>
         
           
-          <label class="md-nav__link" for="__nav_4_6" id="__nav_4_6_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_7" id="__nav_4_7_label" tabindex="">
             
   
   
@@ -5342,8 +5372,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_4_6">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_7_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4_7">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -10997,10 +11027,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#approach" class="md-nav__link">
+  <a href="#method" class="md-nav__link">
     <span class="md-ellipsis">
       
-        数据结构 / 想法 (Approach)
+        数据结构 / 方法 (Method)
       
     </span>
   </a>
@@ -22391,10 +22421,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#approach" class="md-nav__link">
+  <a href="#method" class="md-nav__link">
     <span class="md-ellipsis">
       
-        数据结构 / 想法 (Approach)
+        数据结构 / 方法 (Method)
       
     </span>
   </a>
@@ -22467,31 +22497,49 @@
 <h2 id="problem">Problem<a class="headerlink" href="#problem" title="Permanent link">#</a></h2>
 <p><code>Customer(customer_id, name, visited_on, amount)</code> 主键 <code>(customer_id, visited_on)</code>，至少每天有一位顾客。对每个<strong>完整</strong>的 7 天窗口（当天 + 前 6 天），按 <code>visited_on</code> 升序输出 <code>(visited_on, amount=窗口内 7 天总金额, average_amount=保留两位小数的均值)</code>。</p>
 <h2 id="background">背景 (Background)<a class="headerlink" href="#background" title="Permanent link">#</a></h2>
-<p><strong>滑动窗口聚合 / Moving Average</strong> 是时间序列分析的标准技术。SQL 中两种实现：
-1. <strong><code>WINDOW</code>+<code>RANGE BETWEEN INTERVAL</code></strong>：现代方言（MySQL 8+, PostgreSQL, BigQuery）直接支持基于日期范围的窗口框架。
-2. <strong>自连接（self-join）</strong> with <code>BETWEEN d - 6 AND d</code>：兼容老版本，但 <span class="arithmatex">\(O(n^2)\)</span> 笛卡尔积风险。</p>
-<p>注意"完整 7 天" = 自第 7 天（最早 <code>visited_on + 6</code>）开始才有完整窗口；之前的不输出。</p>
+<p>我们要算的东西，本身就一句话能说清：对每个日历日 <span class="arithmatex">\(d\)</span>，只要它前面攒够了 6 天历史，就把从 <span class="arithmatex">\(d-6\)</span> 到 <span class="arithmatex">\(d\)</span> 这 7 个日历日的全部消费金额加起来。问题不在"加起来"这件事，而在两处容易被忽略的结构。</p>
+<p>先看最朴素的尝试。既然要把若干行的 <code>amount</code> 相加，最直接的写法是对原表开一个窗口，取当前行往前的 7 行：</p>
+<div class="language-sql highlight"><pre><span></span><code><span class="c1">-- 朴素尝试（错误）</span>
+<span class="k">SELECT</span>
+<span class="w">    </span><span class="n">visited_on</span><span class="p">,</span>
+<span class="w">    </span><span class="k">SUM</span><span class="p">(</span><span class="n">amount</span><span class="p">)</span><span class="w"> </span><span class="n">OVER</span><span class="w"> </span><span class="p">(</span><span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">visited_on</span><span class="w"> </span><span class="k">ROWS</span><span class="w"> </span><span class="k">BETWEEN</span><span class="w"> </span><span class="mi">6</span><span class="w"> </span><span class="n">PRECEDING</span><span class="w"> </span><span class="k">AND</span><span class="w"> </span><span class="k">CURRENT</span><span class="w"> </span><span class="k">ROW</span><span class="p">)</span>
+<span class="k">FROM</span><span class="w"> </span><span class="n">Customer</span><span class="p">;</span>
+</code></pre></div>
+<p>这在两个地方坏掉。第一，主键是 <code>(customer_id, visited_on)</code>，<strong>同一天可以有多位顾客各自一行</strong>。<code>ROWS BETWEEN 6 PRECEDING</code> 数的是"行"，不是"天"——若 01-10 当天有两条记录，往前数 7 行根本盖不住 7 个日历日，窗口被悄悄缩短。第二，窗口的边界由日历距离定义（前 6 天），而原表里"6 行"和"6 天"在有重复日期时不再相等。</p>
+<p>两处毛病同源：原表的行粒度（每位顾客一行）与问题要求的粒度（每个日历日一个总额）不一致。修复方式直接由此读出——<strong>先把同一天的多笔金额合并成单行的"日总额"</strong>，让行粒度变成"每日一行"。合并之后，"第 <span class="arithmatex">\(k\)</span> 行"恰好就是"第 <span class="arithmatex">\(k\)</span> 个有数据的日历日"，行距离与日历距离重新对齐。</p>
+<p>这一步还用上了题目的一个约束：<strong>至少每天有一位顾客</strong>。它保证合并后的日序列没有缺日，是连续日历日。于是在"日总额"序列上，"往前 6 行"与"往前 6 天"等价——这个等价正是后面能用窗口函数的前提，也是 Method A 和 Method B 都成立的地基。</p>
 <h2 id="formulation">形式化 (Formulation)<a class="headerlink" href="#formulation" title="Permanent link">#</a></h2>
-<p>设按 <code>visited_on</code> 聚合后的"日总金额"序列 <span class="arithmatex">\(\{(d_k, A_k)\}\)</span>（同日多笔合并）。对每个有效 <span class="arithmatex">\(k\)</span>（即 <span class="arithmatex">\(d_k - d_1 \geq 6\)</span>），</p>
-<div class="arithmatex">\[
-\text{sum}_k = \sum_{j: d_j \in [d_k - 6, d_k]} A_j, \quad \text{avg}_k = \text{round}(\text{sum}_k / 7, 2).
-\]</div>
-<h2 id="approach">数据结构 / 想法 (Approach)<a class="headerlink" href="#approach" title="Permanent link">#</a></h2>
+<p>承接上一步：把同日多笔合并后，数据变成一条按日期排好的"日总额"序列。每个输出行对应一个日历日，要求的就是以该日为右端、长度固定为 7 个日历日的区间内所有日总额之和。把这件事写成定义。</p>
+<p>设按 <code>visited_on</code> 聚合后的日总额序列为 <span class="arithmatex">\(\{(d_k, A_k)\}_{k=1}^{n}\)</span>，其中 <span class="arithmatex">\(d_k\)</span> 是第 <span class="arithmatex">\(k\)</span> 个出现的日历日（升序，无缺日），<span class="arithmatex">\(A_k = \sum_{\text{同日各笔}} \text{amount}\)</span> 是该日总额，<span class="arithmatex">\(n\)</span> 为不同日期数。记最早日期 <span class="arithmatex">\(d_1 = \min_k d_k\)</span>。</p>
+<p>一个日历日 <span class="arithmatex">\(d_k\)</span> 的窗口完整，当且仅当它前面有至少 6 天历史，即
+$$
+d_k - d_1 \geq 6.
+$$
+对每个这样的有效 <span class="arithmatex">\(k\)</span>，
+$$
+\text{sum}<em -="-" 6_="6,\," _d_k="[d_k" _in="\in" d_j="d_j" d_k_="d_k]" j:_="j:\,">k = \sum</em> A_j,
+\qquad
+\text{avg}_k = \text{round}(\text{sum}_k / 7,\ 2),
+$$
+其中 <span class="arithmatex">\(\text{round}(x, 2) = \lfloor 100x + 0.5 \rfloor / 100\)</span> 表示四舍五入到两位小数。</p>
+<p>这条形式化就是整页的脊柱：合并同日 → 得到 <span class="arithmatex">\(\{(d_k, A_k)\}\)</span>；有效性条件 <span class="arithmatex">\(d_k - d_1 \geq 6\)</span> → 过滤头部；区间求和 <span class="arithmatex">\(\text{sum}_k\)</span> → 窗口聚合。下面两种实现只是把这三件事用不同 SQL 写出来。</p>
+<h2 id="method">数据结构 / 方法 (Method)<a class="headerlink" href="#method" title="Permanent link">#</a></h2>
+<p>逻辑链是固定的：唯一性约束逼出同日合并 → 合并得到序列 <span class="arithmatex">\(\{(d_k, A_k)\}\)</span> → 有效性条件 <span class="arithmatex">\(d_k - d_1 \geq 6\)</span> 决定过滤 → 区间求和给出 <span class="arithmatex">\(\text{sum}_k\)</span>。两种方法在"区间求和"这一步分道扬镳，复杂度与兼容性也由此不同。</p>
 <p><strong>方法 A：窗口函数（推荐 MySQL 8+）</strong></p>
-<p>先按日期 group 合并同日多笔，再用 <code>SUM(...) OVER (ORDER BY visited_on RANGE BETWEEN INTERVAL 6 DAY PRECEDING AND CURRENT ROW)</code>。最后过滤掉头 6 天。</p>
+<p>CTE <code>daily</code> 物化序列 <span class="arithmatex">\(\{(d_k, A_k)\}\)</span>（<code>GROUP BY visited_on</code> 完成同日合并）。窗口聚合用 <code>RANGE BETWEEN INTERVAL 6 DAY PRECEDING AND CURRENT ROW</code> 给出 <span class="arithmatex">\(\text{sum}_k\)</span>——这里 <code>RANGE</code> 按 <code>ORDER BY</code> 列的<strong>值差</strong>（日历差 6 天）取帧，而非 <code>ROWS</code> 的行数差；既然边界本就由日历距离定义，<code>RANGE INTERVAL</code> 是直接对应。最后 <code>WHERE</code> 把形式化的 <span class="arithmatex">\(d_k \geq d_1 + 6\)</span> 翻译成 <code>visited_on &gt;= DATE_ADD(first_day, INTERVAL 6 DAY)</code>，滤掉窗口不完整的头部。</p>
 <div class="language-sql highlight"><pre><span></span><code><span class="k">WITH</span><span class="w"> </span><span class="n">daily</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="p">(</span>
-<span class="w">    </span><span class="k">SELECT</span><span class="w"> </span><span class="n">visited_on</span><span class="p">,</span><span class="w"> </span><span class="k">SUM</span><span class="p">(</span><span class="n">amount</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">day_amount</span>
+<span class="w">    </span><span class="k">SELECT</span><span class="w"> </span><span class="n">visited_on</span><span class="p">,</span><span class="w"> </span><span class="k">SUM</span><span class="p">(</span><span class="n">amount</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">day_amount</span><span class="w">   </span><span class="c1">-- 同日合并，得到 (d_k, A_k)</span>
 <span class="w">    </span><span class="k">FROM</span><span class="w"> </span><span class="n">Customer</span>
 <span class="w">    </span><span class="k">GROUP</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">visited_on</span>
 <span class="p">),</span>
 <span class="n">windowed</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="p">(</span>
 <span class="w">    </span><span class="k">SELECT</span>
 <span class="w">        </span><span class="n">visited_on</span><span class="p">,</span>
-<span class="w">        </span><span class="k">SUM</span><span class="p">(</span><span class="n">day_amount</span><span class="p">)</span><span class="w"> </span><span class="n">OVER</span><span class="w"> </span><span class="p">(</span>
+<span class="w">        </span><span class="k">SUM</span><span class="p">(</span><span class="n">day_amount</span><span class="p">)</span><span class="w"> </span><span class="n">OVER</span><span class="w"> </span><span class="p">(</span><span class="w">                      </span><span class="c1">-- sum_k：日历差 6 天的区间求和</span>
 <span class="w">            </span><span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">visited_on</span>
 <span class="w">            </span><span class="n">RANGE</span><span class="w"> </span><span class="k">BETWEEN</span><span class="w"> </span><span class="nb">INTERVAL</span><span class="w"> </span><span class="mi">6</span><span class="w"> </span><span class="k">DAY</span><span class="w"> </span><span class="n">PRECEDING</span><span class="w"> </span><span class="k">AND</span><span class="w"> </span><span class="k">CURRENT</span><span class="w"> </span><span class="k">ROW</span>
 <span class="w">        </span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">amount</span><span class="p">,</span>
-<span class="w">        </span><span class="k">MIN</span><span class="p">(</span><span class="n">visited_on</span><span class="p">)</span><span class="w"> </span><span class="n">OVER</span><span class="w"> </span><span class="p">()</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">first_day</span>
+<span class="w">        </span><span class="k">MIN</span><span class="p">(</span><span class="n">visited_on</span><span class="p">)</span><span class="w"> </span><span class="n">OVER</span><span class="w"> </span><span class="p">()</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">first_day</span><span class="w">         </span><span class="c1">-- d_1</span>
 <span class="w">    </span><span class="k">FROM</span><span class="w"> </span><span class="n">daily</span>
 <span class="p">)</span>
 <span class="k">SELECT</span>
@@ -22499,32 +22547,42 @@
 <span class="w">    </span><span class="n">amount</span><span class="p">,</span>
 <span class="w">    </span><span class="n">ROUND</span><span class="p">(</span><span class="n">amount</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mi">7</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">average_amount</span>
 <span class="k">FROM</span><span class="w"> </span><span class="n">windowed</span>
-<span class="k">WHERE</span><span class="w"> </span><span class="n">visited_on</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="n">DATE_ADD</span><span class="p">(</span><span class="n">first_day</span><span class="p">,</span><span class="w"> </span><span class="nb">INTERVAL</span><span class="w"> </span><span class="mi">6</span><span class="w"> </span><span class="k">DAY</span><span class="p">)</span>
+<span class="k">WHERE</span><span class="w"> </span><span class="n">visited_on</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="n">DATE_ADD</span><span class="p">(</span><span class="n">first_day</span><span class="p">,</span><span class="w"> </span><span class="nb">INTERVAL</span><span class="w"> </span><span class="mi">6</span><span class="w"> </span><span class="k">DAY</span><span class="p">)</span><span class="w">  </span><span class="c1">-- d_k - d_1 &gt;= 6</span>
 <span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">visited_on</span><span class="p">;</span>
 </code></pre></div>
+<p>因为 <code>daily</code> 已合并到唯一 <code>visited_on</code>，且题目保证无缺日，行距离与日历距离一致，此处把 <code>RANGE BETWEEN INTERVAL 6 DAY PRECEDING</code> 换成 <code>ROWS BETWEEN 6 PRECEDING</code> 也得到同样结果。但一旦某天数据缺失，<code>ROWS</code> 就会错算——见陷阱。</p>
 <p><strong>方法 B：自连接（兼容性更好）</strong></p>
+<p>不依赖窗口函数。<code>c1</code> 取出每个不同的日历日（即各 <span class="arithmatex">\(d_k\)</span>），对每个 <span class="arithmatex">\(d_k\)</span> 连接落在 <span class="arithmatex">\([d_k - 6, d_k]\)</span> 区间内的全部原始记录并求和，直接实现 <span class="arithmatex">\(\text{sum}_k\)</span>。<code>WHERE</code> 同样施加 <span class="arithmatex">\(d_k \geq d_1 + 6\)</span>。</p>
 <div class="language-sql highlight"><pre><span></span><code><span class="k">SELECT</span>
 <span class="w">    </span><span class="n">c1</span><span class="p">.</span><span class="n">visited_on</span><span class="p">,</span>
 <span class="w">    </span><span class="k">SUM</span><span class="p">(</span><span class="n">c2</span><span class="p">.</span><span class="n">amount</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">amount</span><span class="p">,</span>
 <span class="w">    </span><span class="n">ROUND</span><span class="p">(</span><span class="k">SUM</span><span class="p">(</span><span class="n">c2</span><span class="p">.</span><span class="n">amount</span><span class="p">)</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mi">7</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">average_amount</span>
-<span class="k">FROM</span><span class="w"> </span><span class="p">(</span><span class="k">SELECT</span><span class="w"> </span><span class="k">DISTINCT</span><span class="w"> </span><span class="n">visited_on</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">Customer</span><span class="p">)</span><span class="w"> </span><span class="n">c1</span>
+<span class="k">FROM</span><span class="w"> </span><span class="p">(</span><span class="k">SELECT</span><span class="w"> </span><span class="k">DISTINCT</span><span class="w"> </span><span class="n">visited_on</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">Customer</span><span class="p">)</span><span class="w"> </span><span class="n">c1</span><span class="w">            </span><span class="c1">-- 各 d_k</span>
 <span class="k">JOIN</span><span class="w"> </span><span class="n">Customer</span><span class="w"> </span><span class="n">c2</span>
-<span class="w">  </span><span class="k">ON</span><span class="w"> </span><span class="n">c2</span><span class="p">.</span><span class="n">visited_on</span><span class="w"> </span><span class="k">BETWEEN</span><span class="w"> </span><span class="n">DATE_SUB</span><span class="p">(</span><span class="n">c1</span><span class="p">.</span><span class="n">visited_on</span><span class="p">,</span><span class="w"> </span><span class="nb">INTERVAL</span><span class="w"> </span><span class="mi">6</span><span class="w"> </span><span class="k">DAY</span><span class="p">)</span><span class="w"> </span><span class="k">AND</span><span class="w"> </span><span class="n">c1</span><span class="p">.</span><span class="n">visited_on</span>
-<span class="k">WHERE</span><span class="w"> </span><span class="n">c1</span><span class="p">.</span><span class="n">visited_on</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="n">DATE_ADD</span><span class="p">((</span><span class="k">SELECT</span><span class="w"> </span><span class="k">MIN</span><span class="p">(</span><span class="n">visited_on</span><span class="p">)</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">Customer</span><span class="p">),</span><span class="w"> </span><span class="nb">INTERVAL</span><span class="w"> </span><span class="mi">6</span><span class="w"> </span><span class="k">DAY</span><span class="p">)</span>
+<span class="w">  </span><span class="k">ON</span><span class="w"> </span><span class="n">c2</span><span class="p">.</span><span class="n">visited_on</span><span class="w"> </span><span class="k">BETWEEN</span><span class="w"> </span><span class="n">DATE_SUB</span><span class="p">(</span><span class="n">c1</span><span class="p">.</span><span class="n">visited_on</span><span class="p">,</span><span class="w"> </span><span class="nb">INTERVAL</span><span class="w"> </span><span class="mi">6</span><span class="w"> </span><span class="k">DAY</span><span class="p">)</span><span class="w"> </span><span class="k">AND</span><span class="w"> </span><span class="n">c1</span><span class="p">.</span><span class="n">visited_on</span><span class="w">  </span><span class="c1">-- [d_k-6, d_k]</span>
+<span class="k">WHERE</span><span class="w"> </span><span class="n">c1</span><span class="p">.</span><span class="n">visited_on</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="n">DATE_ADD</span><span class="p">((</span><span class="k">SELECT</span><span class="w"> </span><span class="k">MIN</span><span class="p">(</span><span class="n">visited_on</span><span class="p">)</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">Customer</span><span class="p">),</span><span class="w"> </span><span class="nb">INTERVAL</span><span class="w"> </span><span class="mi">6</span><span class="w"> </span><span class="k">DAY</span><span class="p">)</span><span class="w">  </span><span class="c1">-- d_k - d_1 &gt;= 6</span>
 <span class="k">GROUP</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">c1</span><span class="p">.</span><span class="n">visited_on</span>
 <span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">c1</span><span class="p">.</span><span class="n">visited_on</span><span class="p">;</span>
 </code></pre></div>
-<p>样例验证：样例数据从 2019-01-01 开始，第一个完整 7 天窗口为 2019-01-07（含 01-01 到 01-07）。<span class="arithmatex">\(100+110+120+130+110+140+150 = 860\)</span>，<span class="arithmatex">\(860/7 \approx 122.857 \to 122.86\)</span> ✓。2019-01-10 窗口 01-04..01-10，含两条 01-10 记录（130, 150），合计 <span class="arithmatex">\(130+110+140+150+80+110+(130+150) = 1000\)</span>，<span class="arithmatex">\(1000/7 \approx 142.857 \to 142.86\)</span> ✓。</p>
+<p>注意 Method B 在 <code>JOIN</code> 里直接对原始 <code>Customer</code> 行求和，同日多笔自然被一并加入，无需先显式 group——同日合并隐含在区间连接中。</p>
+<p><strong>样例验证</strong>（数据从 2019-01-01 起，第一个完整窗口为 2019-01-07）：</p>
+<ol>
+<li><strong>2019-01-07</strong>，窗口 01-01..01-07：<span class="arithmatex">\(100+110+120+130+110+140+150 = 860\)</span>，<span class="arithmatex">\(860/7 = 122.857\ldots \to 122.86\)</span>。</li>
+<li><strong>2019-01-10</strong>，窗口 01-04..01-10：该日有两条记录（customer 1 金额 130、customer 3 金额 150），合并为 <span class="arithmatex">\(130+150\)</span>。整窗 <span class="arithmatex">\(130+110+140+150+80+110+(130+150) = 1000\)</span>，<span class="arithmatex">\(1000/7 = 142.857\ldots \to 142.86\)</span>。第 2 例正是同日合并的实证：若不合并，01-10 只会被算一笔。</li>
+</ol>
 <h2 id="complexity">复杂度 (Complexity)<a class="headerlink" href="#complexity" title="Permanent link">#</a></h2>
+<p>此处 <span class="arithmatex">\(n\)</span> 指不同日期数（即序列 <span class="arithmatex">\(\{(d_k, A_k)\}\)</span> 的长度），而非原表行数。</p>
 <ul>
-<li>Time: 方法 A <span class="arithmatex">\(O(n \log n)\)</span>（排序 + 单次扫描），方法 B 最差 <span class="arithmatex">\(O(n^2)\)</span> join</li>
-<li>Space: <span class="arithmatex">\(O(n)\)</span></li>
+<li><strong>方法 A</strong>：按 <code>visited_on</code> 排序 <span class="arithmatex">\(O(n \log n)\)</span> + 单次帧扫描 <span class="arithmatex">\(O(n)\)</span>，合计 <span class="arithmatex">\(O(n \log n)\)</span>。</li>
+<li><strong>方法 B</strong>：自连接最差 <span class="arithmatex">\(O(n^2)\)</span>（保守上界；实际每个 <span class="arithmatex">\(d_k\)</span> 至多匹配 7 天，接近 <span class="arithmatex">\(O(n)\)</span>）。</li>
+<li><strong>Space</strong>：两者均 <span class="arithmatex">\(O(n)\)</span>。</li>
 </ul>
 <h2 id="pitfalls">陷阱 (Pitfalls)<a class="headerlink" href="#pitfalls" title="Permanent link">#</a></h2>
 <ul>
-<li>同日多条记录必须先按 <code>visited_on</code> 聚合，否则窗口大小被错算。</li>
-<li>必须过滤掉前 6 天（窗口不完整时），否则输出错误。</li>
-<li><code>RANGE BETWEEN INTERVAL ... PRECEDING</code> 是按"日历差"，不是"行数差"；用 <code>ROWS BETWEEN 6 PRECEDING</code> 会在某天数据缺失时错算（但本题保证每日至少一条，行数差也行——前提是先 group 到唯一 <code>visited_on</code>）。</li>
+<li><strong>同日多笔必须先合并到唯一 <code>visited_on</code></strong>，否则窗口按"行"取帧时会盖不满 7 个日历日，金额被算错。这是朴素 <code>ROWS BETWEEN</code> 直接套原表会失败的根因。</li>
+<li><strong>必须过滤头部</strong>：当 <span class="arithmatex">\(d_k - d_1 &lt; 6\)</span> 时窗口不完整，不应输出。对应 <code>WHERE visited_on &gt;= DATE_ADD(first_day, INTERVAL 6 DAY)</code>。</li>
+<li><strong><code>RANGE INTERVAL</code> 与 <code>ROWS</code> 不等价</strong>：<code>RANGE BETWEEN INTERVAL 6 DAY PRECEDING</code> 按日历差取帧，<code>ROWS BETWEEN 6 PRECEDING</code> 按行数差取帧。两者仅在"合并到唯一日期且无缺日"时给出相同结果。本题靠"至少每天有一位顾客"保证无缺日，故 <code>ROWS</code> 也可用。但若某天缺数据，<code>ROWS</code> 会把更早的日子误纳入窗口而出错。</li>
+<li><strong>除法语义</strong>：MySQL 的 <code>/</code> 始终做十进制除法（不截断），且 <code>SUM()</code> 返回 <code>DECIMAL</code>，故 <code>ROUND(amount / 7, 2)</code> 正确。跨引擎注意：在 SQLite/PostgreSQL 中 <code>860/7</code> 可能按整数截断为 <code>122</code>；本题 SQL 为 MySQL 方言（<code>DATE_ADD</code>/<code>DATE_SUB</code>/<code>INTERVAL</code>），如写成正确。</li>
 </ul>
 <h2 id="related">相关题目 (Related)<a class="headerlink" href="#related" title="Permanent link">#</a></h2>
 <ul>
@@ -22641,6 +22699,8 @@
         <script src="../../../js/mathjax/tex-mml-chtml.js"></script>
       
         <script src="../../../js/mermaid.min.js"></script>
+      
+        <script src="../../../js/featured.js"></script>
       
     
   </body>

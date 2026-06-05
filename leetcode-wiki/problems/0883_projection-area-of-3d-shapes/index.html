@@ -1466,6 +1466,8 @@
       
         
       
+        
+      
     
     
     
@@ -1521,6 +1523,34 @@
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../featured/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ⭐ Featured（已验证）
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
               
             
               
@@ -1610,10 +1640,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_4" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
         
           
-          <label class="md-nav__link" for="__nav_4_4" id="__nav_4_4_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_5" id="__nav_4_5_label" tabindex="">
             
   
   
@@ -1631,8 +1661,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_4_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_4">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_5">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1915,7 +1945,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -1937,14 +1967,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_4_5" id="__nav_4_5_label" tabindex="">
+              <label class="md-nav__link " for="__nav_4_6" id="__nav_4_6_label" tabindex="">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_5">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_6">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -5321,10 +5351,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_7" checked>
         
           
-          <label class="md-nav__link" for="__nav_4_6" id="__nav_4_6_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_7" id="__nav_4_7_label" tabindex="">
             
   
   
@@ -5342,8 +5372,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_4_6">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_7_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4_7">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -22467,29 +22497,36 @@
 <h2 id="problem">Problem<a class="headerlink" href="#problem" title="Permanent link">#</a></h2>
 <p><span class="arithmatex">\(n \times n\)</span> 网格，<span class="arithmatex">\(\text{grid}[i][j] = v\)</span> 表示在格 <span class="arithmatex">\((i,j)\)</span> 上方堆 <span class="arithmatex">\(v\)</span> 个单位立方体。求三视图（俯视 xy、正视 zx、侧视 yz）投影总面积。<span class="arithmatex">\(1 \le n \le 50\)</span>，<span class="arithmatex">\(0 \le \text{grid}[i][j] \le 50\)</span>。</p>
 <h2 id="background">背景 (Background)<a class="headerlink" href="#background" title="Permanent link">#</a></h2>
-<p>本题是离散三视图（orthographic projection）的最小例：俯视看占地、正/侧视看每列/每行的最高高度。属于计算几何中"投影 = 沿某轴最大值"的离散化。和 image processing 的 max pooling 同型。</p>
+<p>先固定坐标，否则后面每一句话都会有歧义。约定 <span class="arithmatex">\(i \leftrightarrow x\)</span> 轴、<span class="arithmatex">\(j \leftrightarrow y\)</span> 轴，<span class="arithmatex">\(\text{grid}[i][j]\)</span> 是格 <span class="arithmatex">\((i,j)\)</span> 处沿 <span class="arithmatex">\(z\)</span> 轴堆起的立方体高度。三视图分别是把这堆立方体沿三条坐标轴压扁后得到的影子面积：俯视沿 <span class="arithmatex">\(z\)</span> 看、正视沿 <span class="arithmatex">\(y\)</span> 看、侧视沿 <span class="arithmatex">\(x\)</span> 看。</p>
+<p>最直接的想法是逐个立方体处理：每个立方体有六个面，把每个面往三个方向投影，再去重叠加。这能算对，但它把简单的事做复杂了——总立方体数最多 <span class="arithmatex">\(50 \times 50 \times 50\)</span>，而且"去重"本身就要回答"哪些面被挡住"，绕了一圈又回到投影问题。退一步问一个更小的问题：<strong>单独一列</strong>立方体投出来是什么？只要把单列说清楚，整张网格只是把若干列叠在一起。</p>
+<p>考虑位置 <span class="arithmatex">\((i,j)\)</span> 上高度为 <span class="arithmatex">\(v\)</span> 的一列。沿 <span class="arithmatex">\(z\)</span> 轴往下看，这一列无论多高都只占地面上一个 <span class="arithmatex">\(1 \times 1\)</span> 的方格，高度信息在这个方向被完全压掉，所以它对俯视的贡献是：<span class="arithmatex">\(v&gt;0\)</span> 记 <span class="arithmatex">\(1\)</span>，<span class="arithmatex">\(v=0\)</span> 记 <span class="arithmatex">\(0\)</span>。沿 <span class="arithmatex">\(y\)</span>（或 <span class="arithmatex">\(x\)</span>）轴水平看，这一列立方体上下相邻、彼此不透明，从侧面看到的是一条高为 <span class="arithmatex">\(v\)</span>、宽为 <span class="arithmatex">\(1\)</span> 的竖条，面积就是 <span class="arithmatex">\(v\)</span>。一列的三视图贡献由此完全确定，不需要逐面去重。</p>
+<p>把多列合起来时，俯视方向各列占的是不同地格，互不重叠，直接相加。但水平两个方向不同：沿 <span class="arithmatex">\(y\)</span> 看时，同一列号 <span class="arithmatex">\(j\)</span>、不同行号 <span class="arithmatex">\(i\)</span> 的那些竖条会在视线方向上前后重叠，叠成一条竖条后，其高度由最高的那一列决定，矮的被完全挡住。"被挡住"正是 <span class="arithmatex">\(\max\)</span> 出现的地方——这是本题唯一的非平凡一步，且完全来自立方体不透明、投影沿轴压扁这两条问题自身的性质。</p>
 <h2 id="formulation">形式化 (Formulation)<a class="headerlink" href="#formulation" title="Permanent link">#</a></h2>
-<ul>
-<li>俯视面积：<span class="arithmatex">\(\sum_{i,j} [\text{grid}[i][j] &gt; 0]\)</span>。</li>
-<li>正视（沿 <span class="arithmatex">\(y\)</span> 方向看 <span class="arithmatex">\(xz\)</span>）：<span class="arithmatex">\(\sum_j \max_i \text{grid}[i][j]\)</span>。</li>
-<li>侧视（沿 <span class="arithmatex">\(x\)</span> 方向看 <span class="arithmatex">\(yz\)</span>）：<span class="arithmatex">\(\sum_i \max_j \text{grid}[i][j]\)</span>。
-总和即答案。</li>
-</ul>
+<p>设 <span class="arithmatex">\(i,j \in \{0,\dots,n-1\}\)</span> 分别为行、列下标。由上一节对单列的分析与列间叠加规则，三视图面积写成三个独立的和：</p>
+<p>俯视：每个非空地格贡献一个单位方格，与堆高无关，故为示性函数之和</p>
+<div class="arithmatex">\[A_{\text{top}} = \sum_{i,j} [\text{grid}[i][j] &gt; 0]. \tag{1}\]</div>
+<p>正视（沿 <span class="arithmatex">\(y\)</span> 看 <span class="arithmatex">\(xz\)</span> 平面）：固定列号 <span class="arithmatex">\(j\)</span>，沿 <span class="arithmatex">\(i\)</span> 方向的竖条重叠后取最高，再对所有列求和</p>
+<div class="arithmatex">\[A_{\text{front}} = \sum_{j} \max_{i} \text{grid}[i][j]. \tag{2}\]</div>
+<p>侧视（沿 <span class="arithmatex">\(x\)</span> 看 <span class="arithmatex">\(yz\)</span> 平面）：固定行号 <span class="arithmatex">\(i\)</span>，沿 <span class="arithmatex">\(j\)</span> 方向的竖条重叠后取最高，再对所有行求和</p>
+<div class="arithmatex">\[A_{\text{side}} = \sum_{i} \max_{j} \text{grid}[i][j]. \tag{3}\]</div>
+<p>三者各自是非负面积，互不影响，答案为 <span class="arithmatex">\(A_{\text{top}} + A_{\text{front}} + A_{\text{side}}\)</span>，与求和顺序无关。</p>
+<p>边界情形：<span class="arithmatex">\(n \ge 1\)</span> 保证每行每列非空，<span class="arithmatex">\((2)(3)\)</span> 的 <span class="arithmatex">\(\max\)</span> 不会作用在空序列上；若整张网格全为 <span class="arithmatex">\(0\)</span>，三式各自为 <span class="arithmatex">\(0\)</span>，答案为 <span class="arithmatex">\(0\)</span>，与几何一致。</p>
 <h2 id="approach">数据结构 / 想法 (Approach)<a class="headerlink" href="#approach" title="Permanent link">#</a></h2>
-<p>单次遍历：对每行求行 max（累加给侧视），对每列求列 max（累加给正视），统计非零格累加给俯视。</p>
+<p>式 <span class="arithmatex">\((1)(2)(3)\)</span> 本身就是算法。<span class="arithmatex">\((1)\)</span> 与 <span class="arithmatex">\((3)\)</span> 都按行展开，<span class="arithmatex">\((2)\)</span> 按列展开，三者各自只需扫一遍网格、只用标量累加器，无需额外结构。把每个公式直接读成一行代码：</p>
 <div class="language-python highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">Solution</span><span class="p">:</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">projectionArea</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">grid</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]])</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
         <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">grid</span><span class="p">)</span>
-        <span class="n">top</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="mi">1</span> <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">grid</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">r</span> <span class="k">if</span> <span class="n">v</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span>
-        <span class="n">side</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="nb">max</span><span class="p">(</span><span class="n">r</span><span class="p">)</span> <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">grid</span><span class="p">)</span>
-        <span class="n">front</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="nb">max</span><span class="p">(</span><span class="n">grid</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">))</span> <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">))</span>
+        <span class="n">top</span>   <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="mi">1</span> <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">grid</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">r</span> <span class="k">if</span> <span class="n">v</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span>        <span class="c1"># 式 (1)</span>
+        <span class="n">side</span>  <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="nb">max</span><span class="p">(</span><span class="n">r</span><span class="p">)</span> <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">grid</span><span class="p">)</span>                       <span class="c1"># 式 (3): 每行取 max</span>
+        <span class="n">front</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="nb">max</span><span class="p">(</span><span class="n">grid</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">))</span> <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">))</span>  <span class="c1"># 式 (2): 每列取 max</span>
         <span class="k">return</span> <span class="n">top</span> <span class="o">+</span> <span class="n">side</span> <span class="o">+</span> <span class="n">front</span>
 </code></pre></div>
+<p>变量 <code>side</code> 对应式 <span class="arithmatex">\((3)\)</span>（按行取 max，即侧视 yz），<code>front</code> 对应式 <span class="arithmatex">\((2)\)</span>（按列取 max，即正视 xz）；命名顺序与公式编号不同，但与几何含义一一对应。</p>
 <p>样例：<code>grid=[[1,2],[3,4]]</code>。
-- top = 4（全 &gt; 0）
-- side = max([1,2]) + max([3,4]) = 2 + 4 = 6
-- front = max(grid[<em>][0])=max(1,3)=3; max(grid[</em>][1])=max(2,4)=4; 共 7
-- 总 4+6+7 = 17。✓</p>
+- <code>top</code> = 4：四格全 <span class="arithmatex">\(&gt;0\)</span>，由式 <span class="arithmatex">\((1)\)</span>。
+- <code>side</code> = <span class="arithmatex">\(\max(1,2) + \max(3,4) = 2 + 4 = 6\)</span>，由式 <span class="arithmatex">\((3)\)</span>。
+- <code>front</code> = <span class="arithmatex">\(\max(\text{列}0)=\max(1,3)=3\)</span>；<span class="arithmatex">\(\max(\text{列}1)=\max(2,4)=4\)</span>；共 <span class="arithmatex">\(7\)</span>，由式 <span class="arithmatex">\((2)\)</span>。
+- 总 <span class="arithmatex">\(4+6+7 = 17\)</span>。✓</p>
 <h2 id="complexity">复杂度 (Complexity)<a class="headerlink" href="#complexity" title="Permanent link">#</a></h2>
 <ul>
 <li>Time: <span class="arithmatex">\(O(n^2)\)</span></li>
@@ -22497,8 +22534,9 @@
 </ul>
 <h2 id="pitfalls">陷阱 (Pitfalls)<a class="headerlink" href="#pitfalls" title="Permanent link">#</a></h2>
 <ul>
-<li>注意俯视用"是否 &gt; 0"而非"高度"；高度对俯视无意义。</li>
-<li>行/列方向不要弄混：xz 投影 = 沿 y 看 = 对每列取 max。</li>
+<li>俯视用"是否 <span class="arithmatex">\(&gt;0\)</span>"而非高度（式 <span class="arithmatex">\((1)\)</span>）：沿 <span class="arithmatex">\(z\)</span> 往下看时高度方向被完全压掉，无论堆多高，一列的落地脚印都是同一个 <span class="arithmatex">\(1\times1\)</span> 方格，所以高度对俯视无意义，只剩"占没占这格"。</li>
+<li>行/列方向不要弄混：正视 xz 投影 = 沿 <span class="arithmatex">\(y\)</span> 看 = 对每列取 max（式 <span class="arithmatex">\((2)\)</span>），代码里是内层固定 <span class="arithmatex">\(j\)</span>、对 <span class="arithmatex">\(i\)</span> 取 max。侧视则相反（式 <span class="arithmatex">\((3)\)</span>）。</li>
+<li>代码中 <code>front</code> 内层用 <code>range(n)</code>（<span class="arithmatex">\(n\)</span> 为行数）来遍历列下标，依赖网格为方阵；在本题 <span class="arithmatex">\(n\times n\)</span> 约束下正确，但若输入非方阵则应改用 <code>range(len(grid[0]))</code>。</li>
 </ul>
 <h2 id="related">相关题目 (Related)<a class="headerlink" href="#related" title="Permanent link">#</a></h2>
 <ul>
@@ -22611,6 +22649,8 @@
         <script src="../../../js/mathjax/tex-mml-chtml.js"></script>
       
         <script src="../../../js/mermaid.min.js"></script>
+      
+        <script src="../../../js/featured.js"></script>
       
     
   </body>

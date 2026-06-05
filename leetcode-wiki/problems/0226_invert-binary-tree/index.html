@@ -1466,6 +1466,8 @@
       
         
       
+        
+      
     
     
     
@@ -1521,6 +1523,34 @@
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../featured/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ⭐ Featured（已验证）
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
               
             
               
@@ -1610,10 +1640,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_4" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
         
           
-          <label class="md-nav__link" for="__nav_4_4" id="__nav_4_4_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_5" id="__nav_4_5_label" tabindex="">
             
   
   
@@ -1631,8 +1661,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_4_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_4">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_5">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1915,7 +1945,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -1937,14 +1967,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_4_5" id="__nav_4_5_label" tabindex="">
+              <label class="md-nav__link " for="__nav_4_6" id="__nav_4_6_label" tabindex="">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_5">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_6">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -5321,10 +5351,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_7" checked>
         
           
-          <label class="md-nav__link" for="__nav_4_6" id="__nav_4_6_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_7" id="__nav_4_7_label" tabindex="">
             
   
   
@@ -5342,8 +5372,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_4_6">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_7_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4_7">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -22467,30 +22497,47 @@
 <h2 id="problem">Problem<a class="headerlink" href="#problem" title="Permanent link">#</a></h2>
 <p>给二叉树根 <code>root</code>，对每个节点交换左右子树，返回新根。</p>
 <h2 id="_1">背景<a class="headerlink" href="#_1" title="Permanent link">#</a></h2>
-<p>本题是树结构上<strong>结构性同态映射 (structural homomorphism)</strong> 的极简范例：定义函数 <span class="arithmatex">\(\phi\)</span> 满足 <span class="arithmatex">\(\phi(\text{Node}(v, L, R)) = \text{Node}(v, \phi(R), \phi(L))\)</span>，这正是范畴论意义上的递归 catamorphism。教学上它常用来引入"树的递归即结构归纳"思想。</p>
-<blockquote>
-<p>题目因 Max Howell（Homebrew 作者）2015 年的著名推文走红：他声称在 Google 面试中因不会"在白板上反转二叉树"被拒。它已成"考察基础≠考察智力"讨论的符号。</p>
-</blockquote>
+<p>先把"反转"落到单个节点上。对根 <code>root</code>，目标是让它原来的左子树出现在右边、原来的右子树出现在左边。最直接的尝试就是交换这两个指针：</p>
+<div class="language-python highlight"><pre><span></span><code><span class="n">root</span><span class="o">.</span><span class="n">left</span><span class="p">,</span> <span class="n">root</span><span class="o">.</span><span class="n">right</span> <span class="o">=</span> <span class="n">root</span><span class="o">.</span><span class="n">right</span><span class="p">,</span> <span class="n">root</span><span class="o">.</span><span class="n">left</span>
+</code></pre></div>
+<p>这一步对根本身是对的——根的两个孩子位置确实换了。但它只换了<strong>一层</strong>。根的左孩子（现在挂在右边）内部还保持着原来的左右关系，它自己的两棵子树并没有被交换。于是结果不是"整棵树反转"，而是"只反转了顶上一层"。</p>
+<p>缺口正出在这里：反转不是对根一个节点的要求，而是对<strong>每个</strong>节点的要求——树里所有节点都必须把自己的左右孩子互换。这恰好暴露了问题的结构：反转是一个<strong>逐节点的局部条件</strong>，每个节点只关心自己这一层的左右指针，与其它节点无关。</p>
+<p>而"对每个节点成立的局部条件"在树上有一个标准的满足方式：处理完当前节点后，把同样的要求递归地交给两棵子树。当前节点交换一次指针，再让左右子树各自完成自己的反转——这就是从上面那个不完整的一行尝试中长出来的结论，而不是凭空给出的技巧。</p>
 <h2 id="_2">形式化<a class="headerlink" href="#_2" title="Permanent link">#</a></h2>
-<div class="arithmatex">\[\text{invert}(\bot) = \bot,\quad \text{invert}(\text{Node}(v, L, R)) = \text{Node}(v,\, \text{invert}(R),\, \text{invert}(L)).\]</div>
+<p>用 <span class="arithmatex">\(\bot\)</span> 记空树（<code>None</code>），<span class="arithmatex">\(\text{Node}(v, L, R)\)</span> 记一棵以值 <span class="arithmatex">\(v\)</span> 为根、左子树为 <span class="arithmatex">\(L\)</span>、右子树为 <span class="arithmatex">\(R\)</span> 的树。上一节的观察——"每个节点交换左右孩子，并对两棵子树递归施加同样要求"——直接写成：</p>
+<div class="arithmatex">\[\text{invert}(\bot) = \bot,\qquad \text{invert}(\text{Node}(v, L, R)) = \text{Node}\big(v,\ \text{invert}(R),\ \text{invert}(L)\big).\]</div>
+<p>两条等式逐字对应背景里的两种情形。空树没有可换的孩子，原样返回（基例）。非空节点保留值 <span class="arithmatex">\(v\)</span> 不变，把右子树反转后的结果放到左边、左子树反转后的结果放到右边（递归例）。注意 <span class="arithmatex">\(R\)</span> 与 <span class="arithmatex">\(L\)</span> 在右端互换了位置，这一个互换就是"交换左右孩子"的全部内容；而 <span class="arithmatex">\(\text{invert}(\cdot)\)</span> 包在外面，保证两棵子树内部也被同样处理——正是这一层把"只反转顶层"修补成"反转整棵树"。</p>
+<p>下一节把这两条等式逐行读成代码。</p>
 <h2 id="_3">数据结构 / 想法<a class="headerlink" href="#_3" title="Permanent link">#</a></h2>
-<p><strong>递归 DFS</strong>（最优雅）：
+<p><strong>递归 DFS</strong>：代码是上面递归定义的逐行转写。</p>
 <div class="language-python highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">invertTree</span><span class="p">(</span><span class="n">root</span><span class="p">):</span>
     <span class="k">if</span> <span class="n">root</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span> <span class="k">return</span> <span class="kc">None</span>
     <span class="n">root</span><span class="o">.</span><span class="n">left</span><span class="p">,</span> <span class="n">root</span><span class="o">.</span><span class="n">right</span> <span class="o">=</span> <span class="n">invertTree</span><span class="p">(</span><span class="n">root</span><span class="o">.</span><span class="n">right</span><span class="p">),</span> <span class="n">invertTree</span><span class="p">(</span><span class="n">root</span><span class="o">.</span><span class="n">left</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">root</span>
-</code></pre></div></p>
-<p><strong>显式栈 / 队列 BFS</strong>：用 stack 或 queue 迭代访问每个节点并交换其两子。空间复杂度与树宽度（BFS）或树高（DFS）成正比。</p>
-<p><strong>不变量</strong>：递归返回后，以该节点为根的子树已完成结构镜像。<strong>正确性</strong>：结构归纳直接成立。</p>
+</code></pre></div>
+<p>对照形式化：<code>if root is None: return None</code> 就是基例 <span class="arithmatex">\(\text{invert}(\bot)=\bot\)</span>；那一行同时赋值就是递归例——右端先求出 <code>invertTree(root.right)</code> 与 <code>invertTree(root.left)</code>（即 <span class="arithmatex">\(\text{invert}(R)\)</span> 与 <span class="arithmatex">\(\text{invert}(L)\)</span>），再分别赋给 <code>root.left</code> 与 <code>root.right</code>，完成左右互换。值 <span class="arithmatex">\(v\)</span> 自然保留在 <code>root</code> 上。代码没有多出定义之外的任何一步。</p>
+<p><strong>正确性</strong>：对树高做结构归纳。基例：空树直接满足。归纳步：假设两棵子树调用返回时已各自完成反转（归纳假设），则当前节点把这两棵已反转的子树互换位置后，以它为根的整棵子树就完成了反转。因此函数返回时，<strong>以该节点为根的子树已是其镜像</strong>——这一不变量正是把递归调用拼成整体正确性的关键。</p>
+<p><strong>为什么还需要迭代版本</strong>：递归 DFS 用调用栈记录"待返回"的节点，栈深等于树高 <span class="arithmatex">\(h\)</span>。当树退化成一条链（每个节点只有一个孩子）时 <span class="arithmatex">\(h = n\)</span>，深树会触发递归栈溢出。把调用栈换成显式数据结构即可绕开语言层的栈限制：</p>
+<div class="language-python highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">invertTree</span><span class="p">(</span><span class="n">root</span><span class="p">):</span>
+    <span class="n">stack</span> <span class="o">=</span> <span class="p">[</span><span class="n">root</span><span class="p">]</span>
+    <span class="k">while</span> <span class="n">stack</span><span class="p">:</span>
+        <span class="n">node</span> <span class="o">=</span> <span class="n">stack</span><span class="o">.</span><span class="n">pop</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">node</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span> <span class="k">continue</span>
+        <span class="n">node</span><span class="o">.</span><span class="n">left</span><span class="p">,</span> <span class="n">node</span><span class="o">.</span><span class="n">right</span> <span class="o">=</span> <span class="n">node</span><span class="o">.</span><span class="n">right</span><span class="p">,</span> <span class="n">node</span><span class="o">.</span><span class="n">left</span>
+        <span class="n">stack</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">left</span><span class="p">)</span>
+        <span class="n">stack</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">right</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">root</span>
+</code></pre></div>
+<p>逻辑与递归版完全一致——每弹出一个节点就交换其左右孩子，再把交换后的两个孩子压栈，等待各自被处理。把 <code>stack</code>（后进先出）换成 <code>queue</code>（先进先出）即得 BFS 层序版本，反转结果不变，只是访问顺序从深度优先变为宽度优先。</p>
 <h2 id="_4">复杂度<a class="headerlink" href="#_4" title="Permanent link">#</a></h2>
 <ul>
-<li>Time: <span class="arithmatex">\(O(n)\)</span>（每个节点 <span class="arithmatex">\(O(1)\)</span> 处理）。</li>
-<li>Space: <span class="arithmatex">\(O(h)\)</span>，递归栈高度等于树高。最坏退化为链时 <span class="arithmatex">\(O(n)\)</span>；BFS 用 <span class="arithmatex">\(O(w)\)</span> 队列。</li>
+<li>Time: <span class="arithmatex">\(O(n)\)</span>。每个节点恰好被访问一次，单次处理（一次指针交换）是 <span class="arithmatex">\(O(1)\)</span>。</li>
+<li>Space: <span class="arithmatex">\(O(h)\)</span>，递归栈深度等于树高。两类最坏情形是独立的：退化成链时 <span class="arithmatex">\(h = n\)</span>，递归/显式栈达到 <span class="arithmatex">\(O(n)\)</span>；而满树的最宽层约有 <span class="arithmatex">\(n/2\)</span> 个节点，BFS 队列达到 <span class="arithmatex">\(O(n)\)</span>。满树下 DFS 只需 <span class="arithmatex">\(O(\log n)\)</span>，比 BFS 省内存。</li>
 </ul>
 <h2 id="_5">陷阱<a class="headerlink" href="#_5" title="Permanent link">#</a></h2>
 <ul>
-<li>Python 中 <code>root.left, root.right = invertTree(root.right), invertTree(root.left)</code> 利用元组打包，<strong>不要</strong>写两行 <code>root.left = invertTree(root.right); root.right = invertTree(root.left)</code> ——第二行会用到已被改写的 <code>root.left</code>。</li>
-<li>BFS 实现时若忘记 enqueue 交换后的非空子，则只反转了根附近。</li>
+<li><strong>同时赋值不可拆成两行</strong>。<code>root.left, root.right = invertTree(root.right), invertTree(root.left)</code> 依赖元组同时打包右端、再整体赋值。若拆成 <code>root.left = invertTree(root.right)</code> 后再写 <code>root.right = invertTree(root.left)</code>，第二行读到的 <code>root.left</code> 已被第一行改写，递归对象错误。原因是 Python 顺序赋值会立即生效，而同时赋值在赋值前先求完整个右端。</li>
+<li><strong>BFS/显式栈别漏压交换后的孩子</strong>。若交换后忘记把非空子节点入队/入栈，遍历会在根附近停下，只反转了上面几层——和背景里那个"只换一层"的不完整尝试是同一个错误，只是发生在迭代实现里。</li>
 </ul>
 <h2 id="_6">相关题目<a class="headerlink" href="#_6" title="Permanent link">#</a></h2>
 <ul>
@@ -22607,6 +22654,8 @@
         <script src="../../../js/mathjax/tex-mml-chtml.js"></script>
       
         <script src="../../../js/mermaid.min.js"></script>
+      
+        <script src="../../../js/featured.js"></script>
       
     
   </body>

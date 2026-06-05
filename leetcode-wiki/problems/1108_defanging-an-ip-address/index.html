@@ -1466,6 +1466,8 @@
       
         
       
+        
+      
     
     
     
@@ -1521,6 +1523,34 @@
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../featured/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ⭐ Featured（已验证）
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
               
             
               
@@ -1610,10 +1640,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_4" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
         
           
-          <label class="md-nav__link" for="__nav_4_4" id="__nav_4_4_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_5" id="__nav_4_5_label" tabindex="">
             
   
   
@@ -1631,8 +1661,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_4_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_4">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_5">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1915,7 +1945,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -1937,14 +1967,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_4_5" id="__nav_4_5_label" tabindex="">
+              <label class="md-nav__link " for="__nav_4_6" id="__nav_4_6_label" tabindex="">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_5">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_6">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -5321,10 +5351,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_7" checked>
         
           
-          <label class="md-nav__link" for="__nav_4_6" id="__nav_4_6_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_7" id="__nav_4_7_label" tabindex="">
             
   
   
@@ -5342,8 +5372,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_4_6">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_7_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4_7">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -22467,27 +22497,43 @@
 <h2 id="problem">Problem<a class="headerlink" href="#problem" title="Permanent link">#</a></h2>
 <p>把 IPv4 地址中的每个 <code>.</code> 替换为 <code>[.]</code>，返回结果。</p>
 <h2 id="_1">背景<a class="headerlink" href="#_1" title="Permanent link">#</a></h2>
-<p>"Defang" 是网络安全语境中的术语：把恶意 URL / IP 改成不可点击形式（如 <code>example.com</code> → <code>example[.]com</code>），避免在工单 / Slack / 邮件中误点。它是工程性 boilerplate，本题给的是其最小例。</p>
-<p>唯一可论的算法点是：Python <code>str.replace</code> 是 <span class="arithmatex">\(O(n)\)</span>（线性扫描 + 拼接新串），是字符串处理的标准 utility。</p>
+<p>"Defang" 是网络安全语境中的术语：把恶意 URL / IP 改成不可点击形式，例如 <code>example.com</code> → <code>example[.]com</code>。这样在工单、Slack、邮件中转发时不会被误点。本题给出的是该操作的最小形式——只对 IPv4 地址里的 <code>.</code> 做替换。</p>
+<p>先观察这个操作本身的结构。输入是一个字符序列 <span class="arithmatex">\(s = s_0 s_1 \cdots s_{n-1}\)</span>，每个字符的命运只取决于它自己：是 <code>.</code> 就变成 <code>[.]</code>，否则原样保留。没有任何字符的替换需要看它的邻居，也不需要知道 <code>.</code> 落在第几个位置。因此一次从左到右的独立扫描就足够——这一点决定了后面所有的实现选择。</p>
+<p>唯一需要小心的地方藏在长度里：<code>.</code> 是一个字符，<code>[.]</code> 是三个字符。每替换一次，串就变长两个字符。这立刻排除了"原地改"的做法。</p>
 <h2 id="_2">形式化<a class="headerlink" href="#_2" title="Permanent link">#</a></h2>
-<p><span class="arithmatex">\(f(s) = s\)</span> 中所有 <code>.</code> → <code>[.]</code>。</p>
+<p>定义单字符替换 <span class="arithmatex">\(g\)</span>：</p>
+<div class="arithmatex">\[
+g(c) = \begin{cases} \texttt{[.]} &amp; c = \texttt{.} \\ c &amp; \text{otherwise} \end{cases}
+\]</div>
+<p>整个操作是把 <span class="arithmatex">\(g\)</span> 逐字符作用后拼接起来：</p>
+<div class="arithmatex">\[
+f(s) = g(s_0) \,\Vert\, g(s_1) \,\Vert\, \cdots \,\Vert\, g(s_{n-1})
+\]</div>
+<p>其中 <span class="arithmatex">\(\Vert\)</span> 表示字符串拼接。注意 <span class="arithmatex">\(|f(s)| \ge |s|\)</span>，且每遇到一个 <code>.</code> 输出长度就多 <span class="arithmatex">\(2\)</span>，所以 <span class="arithmatex">\(f\)</span> 不是定长映射。</p>
 <h2 id="_3">数据结构 / 想法<a class="headerlink" href="#_3" title="Permanent link">#</a></h2>
+<p>先按上面的形式化最朴素地实现一遍：从左到右扫，逐字符算 <span class="arithmatex">\(g\)</span> 并收集结果。</p>
 <div class="language-python highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">defangIPaddr</span><span class="p">(</span><span class="n">address</span><span class="p">):</span>
-    <span class="k">return</span> <span class="n">address</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">,</span> <span class="s1">&#39;[.]&#39;</span><span class="p">)</span>
+    <span class="n">out</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">address</span><span class="p">:</span>            <span class="c1"># 逐字符</span>
+        <span class="n">out</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;[.]&#39;</span> <span class="k">if</span> <span class="n">c</span> <span class="o">==</span> <span class="s1">&#39;.&#39;</span> <span class="k">else</span> <span class="n">c</span><span class="p">)</span>   <span class="c1"># 应用 g(c)</span>
+        <span class="c1"># out.append(g(c))</span>
+    <span class="k">return</span> <span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">out</span><span class="p">)</span>          <span class="c1"># 拼接 ‖</span>
 </code></pre></div>
-<p>或显式扫描：
-<div class="language-python highlight"><pre><span></span><code><span class="k">return</span> <span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s1">&#39;[.]&#39;</span> <span class="k">if</span> <span class="n">c</span> <span class="o">==</span> <span class="s1">&#39;.&#39;</span> <span class="k">else</span> <span class="n">c</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">address</span><span class="p">)</span>
-</code></pre></div></p>
-<p>二者均 <span class="arithmatex">\(O(n)\)</span>。</p>
+<p>每一行都对应形式化里的一项：循环遍历 <span class="arithmatex">\(s_0 \cdots s_{n-1}\)</span>，<code>'[.]' if c == '.' else c</code> 是 <span class="arithmatex">\(g(c)\)</span>，<code>''.join</code> 是拼接 <span class="arithmatex">\(\Vert\)</span>。</p>
+<p>为什么不直接在原串上原地替换？因为 Python 字符串不可变，而且 <code>.</code> → <code>[.]</code> 会让串变长。若硬要用索引切片去"插入"，每次切片都会复制整个串，循环下来是 <span class="arithmatex">\(O(n^2)\)</span>，且容易写错位置。朴素扫描把结果收集进一个列表，从根上绕开了这两个问题——这正是上面用 <code>out = []</code> 累积、最后一次 <code>join</code> 的原因。</p>
+<p><code>str.replace</code> 做的就是同一件事：</p>
+<div class="language-python highlight"><pre><span></span><code><span class="k">return</span> <span class="n">address</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">,</span> <span class="s1">&#39;[.]&#39;</span><span class="p">)</span>
+</code></pre></div>
+<p><code>address.replace('.', '[.]')</code> 对单字符模式从左到右扫一遍，每个 <code>.</code> 写出 <code>[.]</code>、其余字符照抄，结果写进一个新串。它和上面的生成器/列表版本是同一个单遍扫描，只是把这套模式封装进了标准库。两种写法等价，差别只在你想显式看到扫描、还是直接调用工具函数。</p>
 <h2 id="_4">复杂度<a class="headerlink" href="#_4" title="Permanent link">#</a></h2>
 <ul>
-<li>Time: <span class="arithmatex">\(O(n)\)</span></li>
-<li>Space: <span class="arithmatex">\(O(n)\)</span>（输出新串）</li>
+<li>Time: <span class="arithmatex">\(O(n)\)</span>。两种写法都必须扫完整个串，没有提前退出的可能，所以 best = avg = worst = <span class="arithmatex">\(O(n)\)</span>。</li>
+<li>Space: <span class="arithmatex">\(O(n)\)</span>。输出是一个新串，长度 <span class="arithmatex">\(|f(s)| = n + 2k\)</span>（<span class="arithmatex">\(k\)</span> 为 <code>.</code> 的个数），仍是 <span class="arithmatex">\(O(n)\)</span>。</li>
 </ul>
 <h2 id="_5">陷阱<a class="headerlink" href="#_5" title="Permanent link">#</a></h2>
 <ul>
-<li>不要用 <code>str.translate</code>，单字符 → 多字符的映射用 <code>replace</code> 更直接。</li>
-<li>IPv6 含 <code>:</code> 不在本题范围。</li>
+<li><code>str.translate</code> 也能做：用 <code>str.maketrans({'.': '[.]'})</code> 建表后，<code>address.translate(...)</code> 同样把单字符 <code>.</code> 映射到多字符 <code>[.]</code>，结果正确。它不是不可用，只是建表那一步比 <code>replace</code> 多一行、更啰嗦，所以这里首选 <code>replace</code>。</li>
+<li>IPv6 用 <code>:</code> 分段，不在本题范围；LeetCode 1108 保证输入是合法 IPv4。</li>
 </ul>
 <h2 id="_6">相关题目<a class="headerlink" href="#_6" title="Permanent link">#</a></h2>
 <ul>
@@ -22602,6 +22648,8 @@
         <script src="../../../js/mathjax/tex-mml-chtml.js"></script>
       
         <script src="../../../js/mermaid.min.js"></script>
+      
+        <script src="../../../js/featured.js"></script>
       
     
   </body>

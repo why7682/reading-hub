@@ -1466,6 +1466,8 @@
       
         
       
+        
+      
     
     
     
@@ -1521,6 +1523,34 @@
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../featured/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ⭐ Featured（已验证）
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
               
             
               
@@ -1610,10 +1640,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_4" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
         
           
-          <label class="md-nav__link" for="__nav_4_4" id="__nav_4_4_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_5" id="__nav_4_5_label" tabindex="">
             
   
   
@@ -1631,8 +1661,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_4_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_4">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_5">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1915,7 +1945,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -1937,14 +1967,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_4_5" id="__nav_4_5_label" tabindex="">
+              <label class="md-nav__link " for="__nav_4_6" id="__nav_4_6_label" tabindex="">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_5">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_6">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -5321,10 +5351,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_7" checked>
         
           
-          <label class="md-nav__link" for="__nav_4_6" id="__nav_4_6_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_7" id="__nav_4_7_label" tabindex="">
             
   
   
@@ -5342,8 +5372,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_4_6">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_7_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4_7">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -22467,12 +22497,30 @@
 <h2 id="problem">Problem<a class="headerlink" href="#problem" title="Permanent link">#</a></h2>
 <p><code>Activity</code> 表含 <code>user_id, session_id, activity_date, activity_type</code>。求 2019-06-28 至 2019-07-27 共 30 天内，每天的"活跃用户数"（即当天至少做过一次活动的不同 <code>user_id</code> 数）。结果包含 <code>day, active_users</code>，<strong>只输出有用户活跃的天</strong>。</p>
 <h2 id="background">背景 (Background)<a class="headerlink" href="#background" title="Permanent link">#</a></h2>
-<p>SQL 经典「<strong>滑动 30 天窗口 + COUNT DISTINCT</strong>」。这是 cohort / DAU 分析的最小例子，引擎对其 query plan 优化（hash agg + bitmap distinct）已成熟。<code>GROUP BY day</code> + <code>HAVING</code> 是关系代数 <span class="arithmatex">\(\pi_\text{day, count}(\sigma_\text{date range}(\text{Activity}))\)</span> 的标准实现。</p>
+<p>题目要求的输出有一个固定的形状：每一行对应窗口内的某一天，行里记的是那一天的"人数"。两个限定词决定了这道题的全部难度——<strong>人</strong>（不是事件，所以一个用户当天多次活动只算一次）和<strong>那一天</strong>（不是整段窗口，所以计数必须按天分组）。下面先把这两个限定词写成精确的集合，再让 SQL 从这个集合推导出来；常见的两种错法，恰好对应漏掉其中一个限定词。</p>
 <h2 id="formulation">形式化 (Formulation)<a class="headerlink" href="#formulation" title="Permanent link">#</a></h2>
-<p>输出关系</p>
-<div class="arithmatex">\[R = \big\{ (d, |\pi_\text{user\_id}(\sigma_\text{activity\_date} = d)(A))|) : d \in [\text{2019-06-28}, \text{2019-07-27}] \big\}\]</div>
-<p>只保留 <span class="arithmatex">\(|\cdot| &gt; 0\)</span> 的行。</p>
+<p>设 <span class="arithmatex">\(A\)</span> 为 <code>Activity</code> 关系，每条元组是一次活动记录。</p>
+<p>直觉先行：对窗口内的每一天 <span class="arithmatex">\(d\)</span>，我们要的是"当天出现过的不同用户"这个集合的大小。出现一次和出现五次没有区别——计数的对象是用户集合，不是记录数。把这句话写成集合：</p>
+<div class="arithmatex">\[R = \Big\{ \big(d,\ |\,\pi_{\text{user\_id}}(\sigma_{\text{activity\_date}=d}(A))\,|\big) \ :\ d \in [\text{2019-06-28},\ \text{2019-07-27}],\ \ |\,\pi_{\text{user\_id}}(\sigma_{\text{activity\_date}=d}(A))\,| &gt; 0 \Big\}\]</div>
+<p>其中 <span class="arithmatex">\(\sigma_{\text{activity\_date}=d}(A)\)</span> 选出当天的所有记录，<span class="arithmatex">\(\pi_{\text{user\_id}}\)</span> 投影到用户列。投影在关系代数里产出<strong>集合</strong>，自动去重——这正是"不同用户"的来源。<span class="arithmatex">\(|\cdot|\)</span> 取集合的基数，即当天活跃用户数。条件 <span class="arithmatex">\(|\cdot| &gt; 0\)</span> 直接写进集合定义：基数为零的天不进入 <span class="arithmatex">\(R\)</span>，对应题面"只输出有用户活跃的天"。</p>
+<p>这个集合就是答案的全部。SQL 的任务只是逐项实现它：<span class="arithmatex">\(\sigma\)</span> 是 <code>WHERE</code>，按 <span class="arithmatex">\(d\)</span> 分组是 <code>GROUP BY</code>，去重投影后取基数是 <code>COUNT(DISTINCT user_id)</code>。</p>
 <h2 id="approach">数据结构 / 想法 (Approach)<a class="headerlink" href="#approach" title="Permanent link">#</a></h2>
+<p>从最直接的写法出发，看它在哪一步偏离了上面的集合。</p>
+<p><strong>朴素尝试一：直接数行。</strong> 既然要"每天的活跃用户数"，先按天分组、数每组的行数：</p>
+<div class="language-sql highlight"><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="n">activity_date</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="k">day</span><span class="p">,</span><span class="w"> </span><span class="k">COUNT</span><span class="p">(</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">active_users</span>
+<span class="k">FROM</span><span class="w"> </span><span class="n">Activity</span>
+<span class="k">WHERE</span><span class="w"> </span><span class="n">activity_date</span><span class="w"> </span><span class="k">BETWEEN</span><span class="w"> </span><span class="s1">&#39;2019-06-28&#39;</span><span class="w"> </span><span class="k">AND</span><span class="w"> </span><span class="s1">&#39;2019-07-27&#39;</span>
+<span class="k">GROUP</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">activity_date</span><span class="p">;</span>
+</code></pre></div>
+<p>在样例数据上跑：2019-07-20 这天 user 1 有 3 条记录、user 2 有 1 条，<code>COUNT(*)</code> 给出 4。但当天的不同用户只有 <span class="arithmatex">\(\{1,2\}\)</span>，正确答案是 2。<code>COUNT(*)</code> 数的是 <span class="arithmatex">\(|\sigma_{\text{activity\_date}=d}(A)|\)</span>（记录数），而集合定义里取的是 <span class="arithmatex">\(|\pi_{\text{user\_id}}(\cdots)|\)</span>（投影后的集合基数）。差的正是投影这一步的去重。把 <code>COUNT(*)</code> 换成 <code>COUNT(DISTINCT user_id)</code> 即补上投影。</p>
+<p><strong>朴素尝试二：按用户和天一起分组。</strong> 想"每个用户每天的情况"时，容易写成：</p>
+<div class="language-sql highlight"><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="n">activity_date</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="k">day</span><span class="p">,</span><span class="w"> </span><span class="k">COUNT</span><span class="p">(</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">active_users</span>
+<span class="k">FROM</span><span class="w"> </span><span class="n">Activity</span>
+<span class="k">WHERE</span><span class="w"> </span><span class="n">activity_date</span><span class="w"> </span><span class="k">BETWEEN</span><span class="w"> </span><span class="s1">&#39;2019-06-28&#39;</span><span class="w"> </span><span class="k">AND</span><span class="w"> </span><span class="s1">&#39;2019-07-27&#39;</span>
+<span class="k">GROUP</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">user_id</span><span class="p">,</span><span class="w"> </span><span class="n">activity_date</span><span class="p">;</span>
+</code></pre></div>
+<p>这产出的是每 (用户, 天) 一行，而不是每天一行——分组单位是 <span class="arithmatex">\((d, \text{user})\)</span>，集合定义的分组单位却只有 <span class="arithmatex">\(d\)</span>。多出来的 <code>user_id</code> 把同一天拆成了若干行，得到的是"某用户某天活动了几次"，不是"某天有几个用户"。集合里 <span class="arithmatex">\(d\)</span> 是唯一的分组键，所以 <code>GROUP BY</code> 也只能按 <code>activity_date</code>。</p>
+<p><strong>修正后的查询。</strong> 两处偏离各补一刀——去重投影 + 只按天分组：</p>
 <div class="language-sql highlight"><pre><span></span><code><span class="k">SELECT</span>
 <span class="w">    </span><span class="n">activity_date</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="k">day</span><span class="p">,</span>
 <span class="w">    </span><span class="k">COUNT</span><span class="p">(</span><span class="k">DISTINCT</span><span class="w"> </span><span class="n">user_id</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">active_users</span>
@@ -22480,18 +22528,23 @@
 <span class="k">WHERE</span><span class="w"> </span><span class="n">activity_date</span><span class="w"> </span><span class="k">BETWEEN</span><span class="w"> </span><span class="s1">&#39;2019-06-28&#39;</span><span class="w"> </span><span class="k">AND</span><span class="w"> </span><span class="s1">&#39;2019-07-27&#39;</span>
 <span class="k">GROUP</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">activity_date</span><span class="p">;</span>
 </code></pre></div>
-<p><code>BETWEEN</code> 包含两端；30 天向前推：2019-07-27 减 29 天 = 2019-06-28（含两端共 30 天）。<code>COUNT(DISTINCT)</code> 处理同用户同天多条记录。<code>GROUP BY</code> 已隐含"无活跃即不出现"。</p>
-<p><strong>手动 trace 样例</strong>：日期满足窗口的行有 2019-07-20（user 1, 1, 1, 2）→ distinct=2；2019-07-21（user 2, 2, 2, 3, 3, 3）→ distinct=2；2019-06-25 不在窗口内被过滤。结果两行：(2019-07-20, 2), (2019-07-21, 2). ✓</p>
-<h2 id="complexity">复杂度 (Complexity)<a class="headerlink" href="#complexity" title="Permanent link">#</a></h2>
+<p>逐项对应集合定义：<code>WHERE ... BETWEEN</code> 是 <span class="arithmatex">\(\sigma\)</span>，<code>BETWEEN</code> 两端皆含，配上 30 天窗口的端点（见下）；<code>GROUP BY activity_date</code> 是按 <span class="arithmatex">\(d\)</span> 分组；<code>COUNT(DISTINCT user_id)</code> 是 <span class="arithmatex">\(|\pi_{\text{user\_id}}(\cdots)|\)</span>。<span class="arithmatex">\(|\cdot|&gt;0\)</span> 的条件无需显式写出：<code>GROUP BY</code> 只为过滤后实际出现的键产出分组，零活动的天根本不在输入里，自然不出现。</p>
+<p><strong>窗口端点。</strong> "30 天"指闭区间 <span class="arithmatex">\([\text{2019-06-28},\ \text{2019-07-27}]\)</span> 含两端共 30 天。从截止日往回推时，<span class="arithmatex">\(d_{\text{end}}-d_{\text{start}}=29\)</span> 天（端点之差），而非 30——区间长度比端点差大 1。</p>
+<p><strong>手动 trace 验证。</strong> 在样例数据上逐天核对修正后的查询：</p>
 <ul>
-<li>全表扫 + group by hash：<span class="arithmatex">\(O(n)\)</span> 行数下界，DBMS 优化器自动决定。</li>
-<li>若有 <code>activity_date</code> 索引，可走 range scan + hash agg。</li>
+<li>2019-07-20：记录来自 user 1（3 条）、user 2（1 条），<span class="arithmatex">\(\pi_{\text{user\_id}}\)</span> 去重得 <span class="arithmatex">\(\{1,2\}\)</span>，基数 2。</li>
+<li>2019-07-21：记录来自 user 2（2 条）、user 3（3 条），去重得 <span class="arithmatex">\(\{2,3\}\)</span>，基数 2。</li>
+<li>2019-06-25：不落在 <span class="arithmatex">\([\text{2019-06-28},\ \text{2019-07-27}]\)</span> 内，被 <span class="arithmatex">\(\sigma\)</span> 滤除，不产生行。</li>
 </ul>
+<p>输出两行 (2019-07-20, 2)、(2019-07-21, 2)，与期望一致。注意 2019-07-20 这一行正是朴素尝试一会数成 4 的那天——<code>COUNT(DISTINCT)</code> 把它修回 2。</p>
+<h2 id="complexity">复杂度 (Complexity)<a class="headerlink" href="#complexity" title="Permanent link">#</a></h2>
+<p>设 <span class="arithmatex">\(n\)</span> 为表中记录数。查询是一次全表扫描加按天的哈希聚合，<span class="arithmatex">\(O(n)\)</span> 时间——每条记录读一次、归入对应天的分组、在组内对 <code>user_id</code> 去重计数。空间为分组数（窗口内的天数）乘以每组维护的去重结构。若 <code>activity_date</code> 上有索引，可改走区间扫描只读窗口内的记录，再做同样的哈希聚合。</p>
 <h2 id="pitfalls">陷阱 (Pitfalls)<a class="headerlink" href="#pitfalls" title="Permanent link">#</a></h2>
+<p>下面三条都是集合定义被破坏的具体形式，对应正文里推导过的偏离：</p>
 <ul>
-<li>"30 天"易误算窗口端点：截止 2019-07-27（含），起点应为 2019-06-28（含），共 30 天。注意是 29 天差距。</li>
-<li>必须 <code>DISTINCT user_id</code>，否则把多次活动的同一用户重复计入。</li>
-<li>别 <code>GROUP BY user_id, activity_date</code> 然后再 COUNT——会得到每用户每天计数，不是每天活跃用户数。</li>
+<li><strong>漏掉投影去重</strong>（朴素尝试一）：用 <code>COUNT(*)</code> 而非 <code>COUNT(DISTINCT user_id)</code>，数的是记录数 <span class="arithmatex">\(|\sigma(\cdots)|\)</span> 而非用户集合基数 <span class="arithmatex">\(|\pi_{\text{user\_id}}(\cdots)|\)</span>，同一用户当天多条活动被重复计入。</li>
+<li><strong>分组单位多了一维</strong>（朴素尝试二）：<code>GROUP BY user_id, activity_date</code> 把分组键从 <span class="arithmatex">\(d\)</span> 变成 <span class="arithmatex">\((d, \text{user})\)</span>，产出每用户每天一行，不是每天一行。集合里 <span class="arithmatex">\(d\)</span> 是唯一分组键。</li>
+<li><strong>窗口端点算错</strong>：截止 2019-07-27（含），起点须为 2019-06-28（含），共 30 天；端点之差是 29 天。把 30 误当成端点差会少算一天。</li>
 </ul>
 <h2 id="related">相关题目 (Related)<a class="headerlink" href="#related" title="Permanent link">#</a></h2>
 <ul>
@@ -22608,6 +22661,8 @@
         <script src="../../../js/mathjax/tex-mml-chtml.js"></script>
       
         <script src="../../../js/mermaid.min.js"></script>
+      
+        <script src="../../../js/featured.js"></script>
       
     
   </body>

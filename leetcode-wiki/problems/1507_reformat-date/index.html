@@ -1466,6 +1466,8 @@
       
         
       
+        
+      
     
     
     
@@ -1521,6 +1523,34 @@
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../featured/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ⭐ Featured（已验证）
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
               
             
               
@@ -1610,10 +1640,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_4" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
         
           
-          <label class="md-nav__link" for="__nav_4_4" id="__nav_4_4_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_5" id="__nav_4_5_label" tabindex="">
             
   
   
@@ -1631,8 +1661,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_4_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_4">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_5">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1915,7 +1945,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -1937,14 +1967,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_4_5" id="__nav_4_5_label" tabindex="">
+              <label class="md-nav__link " for="__nav_4_6" id="__nav_4_6_label" tabindex="">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_5">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_6">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -5321,10 +5351,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_7" checked>
         
           
-          <label class="md-nav__link" for="__nav_4_6" id="__nav_4_6_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_7" id="__nav_4_7_label" tabindex="">
             
   
   
@@ -5342,8 +5372,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_4_6">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_7_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4_7">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -22467,33 +22497,54 @@
 <h2 id="problem">Problem<a class="headerlink" href="#problem" title="Permanent link">#</a></h2>
 <p>把形如 <code>"20th Oct 2052"</code> 的日期字符串转为 <code>"2052-10-20"</code>。日 1..31 带后缀 (<code>st/nd/rd/th</code>)，月为三字母英文缩写，年 <span class="arithmatex">\(\in [1900, 2100]\)</span>。题面保证输入合法。</p>
 <h2 id="background">背景 (Background)<a class="headerlink" href="#background" title="Permanent link">#</a></h2>
-<p>字符串解析与格式化是 ETL / 日志处理的基础操作，无特殊学科背景。生产代码通常用 <code>datetime.strptime</code> 处理，但本题要训练手工切分。</p>
+<p>本题练习的是固定 schema 下的逐字段重写：输入与输出由同一组 token（日、月、年）构成，转换是这些 token 间的一一映射，没有跨字段依赖。难点不在算法，而在三个字段中输入格式与输出格式不一致的两处：日字段带非数字后缀，无法直接解析为整数；月字段是英文缩写，不是数字。其余部分（年字段、字段顺序）都是机械的重排。下面从这两处不一致出发，推导出解法。</p>
 <h2 id="formulation">形式化 (Formulation)<a class="headerlink" href="#formulation" title="Permanent link">#</a></h2>
-<p>给输入 <code>"&lt;DD&gt;&lt;suffix&gt; &lt;MMM&gt; &lt;YYYY&gt;"</code>，输出 <code>"&lt;YYYY&gt;-&lt;MM&gt;-&lt;DD&gt;"</code>，其中 <code>&lt;DD&gt;</code> 是 2 位补零、<code>&lt;MM&gt;</code> 是月份序号补零。</p>
+<p>先建立直觉，再给精确定义。输入是三个由单空格分隔的 token，输出是把它们重排并各自规范化后用 <code>-</code> 连接。要把转换写清楚，只需对每个 token 指定一个目标形式。</p>
+<p>设输入按空格切分为 <code>(D, M, Y)</code>，其中：</p>
+<ul>
+<li><code>D</code> 形如 <code>&lt;digits&gt;&lt;suffix&gt;</code>，<code>&lt;digits&gt;</code> 是 1 或 2 位十进制数，<code>&lt;suffix&gt;</code> <span class="arithmatex">\(\in \{\)</span><code>st</code>, <code>nd</code>, <code>rd</code>, <code>th</code><span class="arithmatex">\(\}\)</span>；</li>
+<li><code>M</code> <span class="arithmatex">\(\in \{\)</span><code>Jan</code>, <code>Feb</code>, ..., <code>Dec</code><span class="arithmatex">\(\}\)</span>，共 12 个三字母缩写；</li>
+<li><code>Y</code> 是 4 位年份。</li>
+</ul>
+<p>定义三个字段映射：</p>
+<div class="arithmatex">\[
+d = \text{int}(\text{digits of } D), \qquad
+m = \text{monthIndex}(M) \in \{1, \dots, 12\}, \qquad
+y = Y.
+\]</div>
+<p>输出为
+$$
+\texttt{f"{y}-{m:02d}-{d:02d}"},
+$$
+即把 <code>m</code> 与 <code>d</code> 补零到 2 位、<code>y</code> 原样，按 年-月-日 顺序连接。<code>:02d</code> 的补零是为符合 ISO 8601 的定宽要求，不是可选的修饰。</p>
+<p>这个形式化把问题拆成三个互相独立的子问题：从 <code>D</code> 取数、把 <code>M</code> 映射为序号、把 <code>Y</code> 透传。下一节逐个解决，并指出唯一一处朴素做法会失败的地方。</p>
 <h2 id="approach">数据结构 / 想法 (Approach)<a class="headerlink" href="#approach" title="Permanent link">#</a></h2>
-<p>按空格切三段后分别处理：日去后两字符再补零、月查表、年原样。</p>
+<p>按形式化，三个 token 的转换互相独立，逐个看。</p>
+<p><strong>年字段 <code>Y</code></strong>：输出直接要 4 位年份，输入就是 4 位年份，透传即可，无需处理。</p>
+<p><strong>月字段 <code>M</code></strong>：需要把 12 个三字母缩写映射到序号 <code>1..12</code>。这是一次固定的查表，用一个 dict 即可。构造时用 <code>enumerate</code> 遍历按月份顺序排列的缩写列表，注意 <code>enumerate</code> 从 0 开始，而月份序号从 1 开始，所以取 <code>i+1</code>：</p>
+<div class="language-python highlight"><pre><span></span><code><span class="n">MONTHS</span> <span class="o">=</span> <span class="p">{</span><span class="n">m</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="si">:</span><span class="s2">02d</span><span class="si">}</span><span class="s2">&quot;</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">m</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span>
+    <span class="p">[</span><span class="s2">&quot;Jan&quot;</span><span class="p">,</span><span class="s2">&quot;Feb&quot;</span><span class="p">,</span><span class="s2">&quot;Mar&quot;</span><span class="p">,</span><span class="s2">&quot;Apr&quot;</span><span class="p">,</span><span class="s2">&quot;May&quot;</span><span class="p">,</span><span class="s2">&quot;Jun&quot;</span><span class="p">,</span><span class="s2">&quot;Jul&quot;</span><span class="p">,</span><span class="s2">&quot;Aug&quot;</span><span class="p">,</span><span class="s2">&quot;Sep&quot;</span><span class="p">,</span><span class="s2">&quot;Oct&quot;</span><span class="p">,</span><span class="s2">&quot;Nov&quot;</span><span class="p">,</span><span class="s2">&quot;Dec&quot;</span><span class="p">])}</span>
+<span class="c1"># enumerate 给出 (0, &quot;Jan&quot;), (1, &quot;Feb&quot;), ...; i+1 把 0-based 索引修正为 1-based 月份</span>
+</code></pre></div>
+<p><strong>日字段 <code>D</code></strong>：这是唯一不平凡的一步。朴素做法是直接 <code>int(day)</code>，但 <code>day</code> 是 <code>"20th"</code>，含字母后缀，<code>int("20th")</code> 直接抛 <code>ValueError</code>。所以必须先剥掉后缀再转整数。</p>
+<p>要剥后缀，得知道剥多少个字符。这里用上问题的一个结构事实：后缀只可能是 <code>st</code>、<code>nd</code>、<code>rd</code>、<code>th</code> 四者之一，逐个数都是 <strong>恰好 2 个字符</strong>。这是从题面约束直接枚举出来的有限事实，不是假设。既然长度恒为 2，剥后缀就退化为一个定长切片 <code>day[:-2]</code>，对 1 位日（<code>"6th"</code> → <code>"6"</code>）和 2 位日（<code>"20th"</code> → <code>"20"</code>）都正确，因为切片只看末尾两位，与前面有几位数字无关。</p>
+<p>三步合起来：</p>
 <div class="language-python highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">Solution</span><span class="p">:</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">reformatDate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">date</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
         <span class="n">MONTHS</span> <span class="o">=</span> <span class="p">{</span><span class="n">m</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="si">:</span><span class="s2">02d</span><span class="si">}</span><span class="s2">&quot;</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">m</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span>
             <span class="p">[</span><span class="s2">&quot;Jan&quot;</span><span class="p">,</span><span class="s2">&quot;Feb&quot;</span><span class="p">,</span><span class="s2">&quot;Mar&quot;</span><span class="p">,</span><span class="s2">&quot;Apr&quot;</span><span class="p">,</span><span class="s2">&quot;May&quot;</span><span class="p">,</span><span class="s2">&quot;Jun&quot;</span><span class="p">,</span><span class="s2">&quot;Jul&quot;</span><span class="p">,</span><span class="s2">&quot;Aug&quot;</span><span class="p">,</span><span class="s2">&quot;Sep&quot;</span><span class="p">,</span><span class="s2">&quot;Oct&quot;</span><span class="p">,</span><span class="s2">&quot;Nov&quot;</span><span class="p">,</span><span class="s2">&quot;Dec&quot;</span><span class="p">])}</span>
         <span class="n">day</span><span class="p">,</span> <span class="n">mon</span><span class="p">,</span> <span class="n">year</span> <span class="o">=</span> <span class="n">date</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
-        <span class="n">d</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">day</span><span class="p">[:</span><span class="o">-</span><span class="mi">2</span><span class="p">])</span>     <span class="c1"># strip &#39;st&#39;/&#39;nd&#39;/&#39;rd&#39;/&#39;th&#39;</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">day</span><span class="p">[:</span><span class="o">-</span><span class="mi">2</span><span class="p">])</span>     <span class="c1"># 后缀恒 2 字符，定长切片剥离</span>
         <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">year</span><span class="si">}</span><span class="s2">-</span><span class="si">{</span><span class="n">MONTHS</span><span class="p">[</span><span class="n">mon</span><span class="p">]</span><span class="si">}</span><span class="s2">-</span><span class="si">{</span><span class="n">d</span><span class="si">:</span><span class="s2">02d</span><span class="si">}</span><span class="s2">&quot;</span>
-
-<span class="c1"># Trace 样例 1: &quot;20th Oct 2052&quot;</span>
-<span class="c1"># split → [&quot;20th&quot;,&quot;Oct&quot;,&quot;2052&quot;]. d=20, MONTHS[&quot;Oct&quot;]=&quot;10&quot;</span>
-<span class="c1"># → &quot;2052-10-20&quot; ✓</span>
-<span class="c1"># Trace 样例 2: &quot;6th Jun 1933&quot; → d=6 → &quot;1933-06-06&quot; ✓</span>
 </code></pre></div>
-<p><strong>关键观察</strong>：每个后缀恰 2 字符（<code>st/nd/rd/th</code>），所以 <code>day[:-2]</code> 永远剥离正确。</p>
+<p>在样例上验证。<code>"20th Oct 2052"</code> 切分为 <code>["20th", "Oct", "2052"]</code>，<code>d = int("20") = 20</code>，<code>MONTHS["Oct"] = "10"</code>，输出 <code>"2052-10-20"</code>。<code>"6th Jun 1933"</code> 给出 <code>d = 6</code>，补零后输出 <code>"1933-06-06"</code>。两者均符合预期。</p>
 <h2 id="complexity">复杂度 (Complexity)<a class="headerlink" href="#complexity" title="Permanent link">#</a></h2>
-<ul>
-<li>Time <span class="arithmatex">\(O(1)\)</span>（输入长度上界恒定）。Space <span class="arithmatex">\(O(1)\)</span>。</li>
-</ul>
+<p>输入长度由 schema 限定为常数上界：月缩写至多 3 字符，带后缀的日至多 4 字符（<code>"21st"</code>），年恰好 4 字符，故整串长度有界。<code>split</code>、查表、切片、格式化都在这个常数长度上工作，<code>MONTHS</code> 是固定的 12 项 dict。因此时间与空间均为 <span class="arithmatex">\(O(1)\)</span>。</p>
 <h2 id="pitfalls">陷阱 (Pitfalls)<a class="headerlink" href="#pitfalls" title="Permanent link">#</a></h2>
 <ul>
-<li><strong>后缀长度</strong>：所有后缀都是 2 字符，但若题面变 <code>1ST</code> / <code>21st</code> 这种就出错。本题已保证小写后缀。</li>
-<li><strong><code>f"{d:02d}"</code></strong>：补零格式化别忘记。</li>
+<li><strong>后缀剥离对两种日长都成立</strong>：<code>day[:-2]</code> 只看末尾两位，对 1 位日（<code>"6th"</code>）和 2 位日（<code>"21st"</code>）都正确剥出 <code>"6"</code> / <code>"21"</code>。<code>"21st"</code> 是合法输入，不是失败用例——它经 <code>day[:-2]</code> 得 <code>"21"</code>，结果正常。</li>
+<li><strong>真正的脆弱点是月查表的大小写</strong>：<code>MONTHS</code> 只含首字母大写的键（如 <code>"Oct"</code>）。若输入月份大小写不同（如全大写），会在 <code>MONTHS[mon]</code> 处抛 <code>KeyError</code>，而非在日字段出错。本题题面已保证缩写为标准首字母大写形式，故无需额外处理；但若放宽约束，失败点在查表而非切片。</li>
+<li><strong>补零是格式约定的一部分</strong>：<code>d</code> 与 <code>m</code> 须补零到 2 位以符合 ISO 8601 定宽要求，<code>f"{d:02d}"</code> 中的 <code>02</code> 不可省略，否则 <code>6</code> 会输出为 <code>"6"</code> 而非 <code>"06"</code>。</li>
 </ul>
 <h2 id="related">相关题目 (Related)<a class="headerlink" href="#related" title="Permanent link">#</a></h2>
 <ul>
@@ -22608,6 +22659,8 @@
         <script src="../../../js/mathjax/tex-mml-chtml.js"></script>
       
         <script src="../../../js/mermaid.min.js"></script>
+      
+        <script src="../../../js/featured.js"></script>
       
     
   </body>

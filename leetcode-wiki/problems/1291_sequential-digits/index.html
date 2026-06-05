@@ -1466,6 +1466,8 @@
       
         
       
+        
+      
     
     
     
@@ -1521,6 +1523,34 @@
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../featured/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ⭐ Featured（已验证）
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
               
             
               
@@ -1610,10 +1640,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_4" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
         
           
-          <label class="md-nav__link" for="__nav_4_4" id="__nav_4_4_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_5" id="__nav_4_5_label" tabindex="">
             
   
   
@@ -1631,8 +1661,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_4_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_4">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_5">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1915,7 +1945,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -1937,14 +1967,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_4_5" id="__nav_4_5_label" tabindex="">
+              <label class="md-nav__link " for="__nav_4_6" id="__nav_4_6_label" tabindex="">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_5">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_6">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -5321,10 +5351,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_7" checked>
         
           
-          <label class="md-nav__link" for="__nav_4_6" id="__nav_4_6_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_7" id="__nav_4_7_label" tabindex="">
             
   
   
@@ -5342,8 +5372,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_4_6">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_7_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4_7">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -22467,11 +22497,21 @@
 <h2 id="problem">Problem<a class="headerlink" href="#problem" title="Permanent link">#</a></h2>
 <p>整数若其每个数字（按十进制）严格比前一位大 1，称为 <em>sequential digits</em>（如 1234、3456）。给定 <span class="arithmatex">\(10 \leq \text{low} \leq \text{high} \leq 10^9\)</span>，返回 <span class="arithmatex">\([\text{low}, \text{high}]\)</span> 内所有这样的整数，按升序。</p>
 <h2 id="background">背景 (Background)<a class="headerlink" href="#background" title="Permanent link">#</a></h2>
-<p>候选集极小：长度 <span class="arithmatex">\(L \in [2, 9]\)</span>（数字 1–9 中递增连续段最长 9），每个 <span class="arithmatex">\(L\)</span> 起始数字 <span class="arithmatex">\(\in [1, 10-L]\)</span>，共 <span class="arithmatex">\(\sum_{L=2}^{9} (10 - L) = 8+7+6+5+4+3+2+1 = 36\)</span> 个候选。本题本质是<strong>枚举所有 sequential digit 数 + 过滤</strong>，是 <em>bounded enumeration</em> 的典型——用窗口扫描字符串 "123456789" 即可。</p>
+<p>最直接的做法是把区间逐个数试过去：对每个 <span class="arithmatex">\(x \in [\text{low}, \text{high}]\)</span>，检查它的相邻数字是否依次递增。这能工作，但代价由上界决定——<span class="arithmatex">\(\text{high}\)</span> 可达 <span class="arithmatex">\(10^9\)</span>，所以最坏情况要检查约 <span class="arithmatex">\(10^9\)</span> 个数，每个还要拆出全部数字。这太慢。</p>
+<p>慢的根源不在判定，而在于我们扫描了一个由 <span class="arithmatex">\(\text{high}\)</span> 决定的、与答案规模无关的巨大空间。区间里绝大多数数根本不可能是 sequential digits。所以应反过来问：满足条件的数本身有多少个？如果这个集合很小，我们就该直接枚举它，再用区间过滤，完全绕开 <span class="arithmatex">\([\text{low}, \text{high}]\)</span> 的逐个扫描。</p>
+<p>要回答"有多少个"，先看 sequential-digit 数的结构。一个这样的数被两个参数完全确定：它的位数 <span class="arithmatex">\(L\)</span>，以及它的首位数字 <span class="arithmatex">\(d\)</span>——因为后续每一位都由前一位 <span class="arithmatex">\(+1\)</span> 强制决定。于是 <span class="arithmatex">\(L\)</span> 与 <span class="arithmatex">\(d\)</span> 一旦给定，整个数就唯一确定，例如 <span class="arithmatex">\(L=3, d=2\)</span> 唯一对应 <span class="arithmatex">\(234\)</span>。这把"数有多少个"化简成"合法的 <span class="arithmatex">\((L, d)\)</span> 对有多少个"。</p>
+<p>约束来自数字只能取 <span class="arithmatex">\(1\)</span> 到 <span class="arithmatex">\(9\)</span>。末位是 <span class="arithmatex">\(d + L - 1\)</span>，必须 <span class="arithmatex">\(\leq 9\)</span>，故 <span class="arithmatex">\(d \leq 10 - L\)</span>；首位不能为 <span class="arithmatex">\(0\)</span>，故 <span class="arithmatex">\(d \geq 1\)</span>。于是给定 <span class="arithmatex">\(L\)</span> 时 <span class="arithmatex">\(d \in [1, 10 - L]\)</span>，共 <span class="arithmatex">\(10 - L\)</span> 个；<span class="arithmatex">\(L\)</span> 至少为 <span class="arithmatex">\(2\)</span>（题目要求严格递增，单个数字不算），至多为 <span class="arithmatex">\(9\)</span>（<span class="arithmatex">\(1\)</span> 到 <span class="arithmatex">\(9\)</span> 是最长的连续递增段）。总数为</p>
+<div class="arithmatex">\[\sum_{L=2}^{9} (10 - L) = 8 + 7 + 6 + 5 + 4 + 3 + 2 + 1 = 36.\]</div>
+<p>候选只有 <span class="arithmatex">\(36\)</span> 个，与输入规模无关。逐个枚举这 <span class="arithmatex">\(36\)</span> 个数再过滤，远胜扫描整个区间。这正是把搜索从"输入空间"挪到"候选空间"的 <em>bounded enumeration</em>——之所以适用，正是上面这个有限计数本身，而非任何先验的题型标签。</p>
 <h2 id="formulation">形式化 (Formulation)<a class="headerlink" href="#formulation" title="Permanent link">#</a></h2>
-<p>候选集 <span class="arithmatex">\(C = \{ \overline{d, d+1, \dots, d+L-1}_{10} : L \in [2,9], d \in [1, 10-L] \}\)</span>，输出 <span class="arithmatex">\(\{ x \in C : \text{low} \leq x \leq \text{high} \}\)</span> 升序。</p>
+<p>上一节的结构观察——一个 sequential-digit 数由 <span class="arithmatex">\((L, d)\)</span> 唯一确定，且 <span class="arithmatex">\(d \in [1, 10-L]\)</span>——直接给出候选集的定义：</p>
+<div class="arithmatex">\[C = \{ \overline{d,\, d+1,\, \dots,\, d+L-1}_{10} : L \in [2, 9],\ d \in [1, 10 - L] \},\]</div>
+<p>其中 <span class="arithmatex">\(\overline{\cdots}_{10}\)</span> 表示把这串递增数字按十进制拼成的整数。所求即</p>
+<div class="arithmatex">\[\{ x \in C : \text{low} \leq x \leq \text{high} \} \quad \text{升序}.\]</div>
+<p>注意这里 <span class="arithmatex">\(d\)</span> 是<strong>首位数字本身</strong>（<span class="arithmatex">\(1\)</span>-indexed，取值 <span class="arithmatex">\(1 \dots 10-L\)</span>）。下面代码中的循环变量是字符串的<strong>位置下标</strong>（<span class="arithmatex">\(0\)</span>-indexed，取值 <span class="arithmatex">\(0 \dots 9-L\)</span>），两者相差 <span class="arithmatex">\(1\)</span>，但对每个 <span class="arithmatex">\(L\)</span> 都给出同样的 <span class="arithmatex">\(10 - L\)</span> 个候选、同样的集合 <span class="arithmatex">\(C\)</span>；这个差异是表示约定，不是错误。</p>
 <h2 id="approach">数据结构 / 想法 (Approach)<a class="headerlink" href="#approach" title="Permanent link">#</a></h2>
-<p><strong>滑窗法</strong>：取字符串 <code>S = "123456789"</code>，对每个长度 <span class="arithmatex">\(L = 2, \dots, 9\)</span>，对每个起点 <span class="arithmatex">\(d = 0, \dots, 9-L\)</span>（共 <span class="arithmatex">\(10-L\)</span> 个），构造 <code>int(S[d:d+L])</code>，过滤后排序。</p>
+<p>枚举 <span class="arithmatex">\(C\)</span> 时，剩下的只是如何由 <span class="arithmatex">\((L, d)\)</span> 构造出那个整数。逐位算术（<span class="arithmatex">\(d \cdot 10^{L-1} + (d+1)\cdot 10^{L-2} + \cdots\)</span>）能算，但易错。直接利用结构会更干净：把数字 <span class="arithmatex">\(d, d+1, \dots, d+L-1\)</span> 依次拼接，恰好就是字符串 <code>"123456789"</code> 中从位置 <span class="arithmatex">\(d-1\)</span> 起、长度为 <span class="arithmatex">\(L\)</span> 的连续子串。这不是技巧，而是 sequential digits 定义的直接复述——每个候选都是这条字符串的一段。</p>
+<p>于是枚举 <span class="arithmatex">\(C\)</span> 等价于：固定长度 <span class="arithmatex">\(L\)</span>，让长度为 <span class="arithmatex">\(L\)</span> 的窗口在 <code>S = "123456789"</code> 上从左滑到右，每个窗口位置 <code>S[d:d+L]</code> 转成整数即一个候选。窗口在长度 <span class="arithmatex">\(L\)</span> 上的可放位置数恰是 <span class="arithmatex">\(10 - L\)</span>，与形式化中 <span class="arithmatex">\(d\)</span> 的取值个数完全吻合——循环边界由集合 <span class="arithmatex">\(C\)</span> 的约束直接推出，而非另行设定。</p>
 <div class="language-python highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">Solution</span><span class="p">:</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">sequentialDigits</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">low</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">high</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]:</span>
         <span class="c1"># Time: O(1) total candidates (36), Space: O(1)</span>
@@ -22484,20 +22524,20 @@
                     <span class="n">res</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">num</span><span class="p">)</span>
         <span class="k">return</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">res</span><span class="p">)</span>
 </code></pre></div>
-<p>注：因 <span class="arithmatex">\(L\)</span> 从小到大、<span class="arithmatex">\(d\)</span> 从小到大遍历，候选已天然升序，可省略 <code>sorted</code>。但加上更稳健，且常数极小（≤36 元素）。</p>
+<p>外层 <span class="arithmatex">\(L\)</span> 由小到大、内层 <span class="arithmatex">\(d\)</span> 由小到大遍历，候选已天然升序：固定 <span class="arithmatex">\(L\)</span> 时更靠左的窗口给出更小的数，而任何 <span class="arithmatex">\(L+1\)</span> 位的候选 <span class="arithmatex">\(\geq 10^L\)</span>，严格大于全部 <span class="arithmatex">\(L\)</span> 位候选。因此 <code>sorted</code> 在逻辑上冗余，可省略；保留它常数极小（<span class="arithmatex">\(\leq 36\)</span> 个元素），换来对遍历顺序的稳健性。</p>
 <p>样例验证：
-- <code>low=100, high=300</code>：<span class="arithmatex">\(L=3\)</span> 候选 <span class="arithmatex">\(123, 234, 345, \dots\)</span>，落入区间的有 123, 234 ✓。
-- <code>low=1000, high=13000</code>：<span class="arithmatex">\(L=4\)</span>: 1234, 2345, ..., 6789 → 全在；<span class="arithmatex">\(L=5\)</span>: 12345, 23456, ... → 仅 12345 在区间内。共 7 个 ✓。</p>
+- <code>low=100, high=300</code>：<span class="arithmatex">\(L=3\)</span> 候选为 <span class="arithmatex">\(123, 234, 345, \dots\)</span>，落入区间的有 <span class="arithmatex">\(123, 234\)</span> ✓。
+- <code>low=1000, high=13000</code>：<span class="arithmatex">\(L=4\)</span> 候选 <span class="arithmatex">\(1234, 2345, \dots, 6789\)</span> 全在区间内；<span class="arithmatex">\(L=5\)</span> 候选 <span class="arithmatex">\(12345, 23456, \dots\)</span> 中仅 <span class="arithmatex">\(12345\)</span> 在区间内。共 <span class="arithmatex">\(7\)</span> 个 ✓。</p>
 <h2 id="complexity">复杂度 (Complexity)<a class="headerlink" href="#complexity" title="Permanent link">#</a></h2>
 <ul>
-<li>Time: <span class="arithmatex">\(O(1)\)</span>（候选总数固定 36，与输入无关）</li>
-<li>Space: <span class="arithmatex">\(O(1)\)</span> 输出大小最多 36</li>
+<li>Time: <span class="arithmatex">\(O(1)\)</span>——候选总数固定为 <span class="arithmatex">\(36\)</span>，与输入大小无关。</li>
+<li>Space: <span class="arithmatex">\(O(1)\)</span>——输出至多 <span class="arithmatex">\(36\)</span> 个元素。</li>
 </ul>
 <h2 id="pitfalls">陷阱 (Pitfalls)<a class="headerlink" href="#pitfalls" title="Permanent link">#</a></h2>
 <ul>
-<li>注意 <span class="arithmatex">\(L\)</span> 上限是 9（"9 之后"不存在数字 10 作为单一位），不要写到 <span class="arithmatex">\(L = 10\)</span>。</li>
-<li>不要以为 0 可以起首——数字必须以 1–9 起首（且后续 +1，每位 ≤ 9）；否则 "0123" 这种 leading zero 不是有效整数表示。</li>
-<li>用字符串 <code>"123456789"</code> 切片避免逐位算术，简洁不易错。</li>
+<li><span class="arithmatex">\(L\)</span> 的上限是 <span class="arithmatex">\(9\)</span>，不是 <span class="arithmatex">\(10\)</span>：<span class="arithmatex">\(9\)</span> 之后没有 <span class="arithmatex">\(10\)</span> 这个单一数字可接，故最长递增段是 <span class="arithmatex">\(1\)</span> 到 <span class="arithmatex">\(9\)</span>。误写 <span class="arithmatex">\(L = 10\)</span> 会越界。</li>
+<li>首位必须取 <span class="arithmatex">\(1\)</span> 到 <span class="arithmatex">\(9\)</span>，不能以 <span class="arithmatex">\(0\)</span> 起首：<span class="arithmatex">\(d \geq 1\)</span> 来自首位非零约束。否则会得到 <code>"0123"</code> 这类带前导零的串，它不是有效的整数表示。</li>
+<li>单个数字不是候选：题目要求每位严格大于前一位，长度至少为 <span class="arithmatex">\(2\)</span>，故 <span class="arithmatex">\(L\)</span> 从 <span class="arithmatex">\(2\)</span> 起。</li>
 </ul>
 <h2 id="related">相关题目 (Related)<a class="headerlink" href="#related" title="Permanent link">#</a></h2>
 <ul>
@@ -22613,6 +22653,8 @@
         <script src="../../../js/mathjax/tex-mml-chtml.js"></script>
       
         <script src="../../../js/mermaid.min.js"></script>
+      
+        <script src="../../../js/featured.js"></script>
       
     
   </body>

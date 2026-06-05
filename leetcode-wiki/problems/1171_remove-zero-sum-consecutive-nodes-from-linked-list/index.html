@@ -1466,6 +1466,8 @@
       
         
       
+        
+      
     
     
     
@@ -1521,6 +1523,34 @@
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../featured/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ⭐ Featured（已验证）
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
               
             
               
@@ -1610,10 +1640,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_4" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
         
           
-          <label class="md-nav__link" for="__nav_4_4" id="__nav_4_4_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_5" id="__nav_4_5_label" tabindex="">
             
   
   
@@ -1631,8 +1661,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_4_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_4">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_5">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1915,7 +1945,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -1937,14 +1967,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_4_5" id="__nav_4_5_label" tabindex="">
+              <label class="md-nav__link " for="__nav_4_6" id="__nav_4_6_label" tabindex="">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_5">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_6">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -5321,10 +5351,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_7" checked>
         
           
-          <label class="md-nav__link" for="__nav_4_6" id="__nav_4_6_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_7" id="__nav_4_7_label" tabindex="">
             
   
   
@@ -5342,8 +5372,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_4_6">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_7_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4_7">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -22467,15 +22497,27 @@
 <h2 id="problem">Problem<a class="headerlink" href="#problem" title="Permanent link">#</a></h2>
 <p>链表 <code>head</code>，反复删除任何<strong>连续节点和为 0</strong> 的子段直到无可删。返回最终链表。<span class="arithmatex">\(1 \leq n \leq 1000\)</span>，节点值 <span class="arithmatex">\(\in [-1000, 1000]\)</span>。</p>
 <h2 id="background">背景 (Background)<a class="headerlink" href="#background" title="Permanent link">#</a></h2>
-<p>经典「<strong>前缀和 + 哈希</strong>」+「<strong>链表跨段重链</strong>」组合。把链表想成数组，连续段和为 0 ↔ 两个前缀和相等。一旦 <span class="arithmatex">\(S_i = S_j\)</span>（<span class="arithmatex">\(i &lt; j\)</span>），<span class="arithmatex">\(\text{node}_{i+1} \dots \text{node}_j\)</span> 可整体抠掉。多次抠掉可一次性处理：只需让前缀和 → 最后出现的节点指针的 map，扫两遍即可。同思路在 #560 Subarray Sum Equals K、Codeforces 上"删除和为 K 子段"中常见。</p>
+<p>链表的节点构成一个有序的值序列 <span class="arithmatex">\(a_1, \dots, a_n\)</span>。删除操作针对的是「连续子段」，而连续子段的和有一个标准的描述工具：前缀和。这一节先把「子段和为 0」翻译成前缀和之间的关系，下一节再用这个关系驱动算法。</p>
+<p>最直接的做法是模拟题面：扫描所有连续子段，找到一个和为 0 的就删掉，然后从头再来，直到找不到为止。这能得到正确答案，但代价高昂——单轮枚举所有子段已是 <span class="arithmatex">\(O(n^2)\)</span>，而一次删除可能让新的相邻段拼到一起、产生新的零和段，于是要反复重扫，最坏到 <span class="arithmatex">\(O(n^3)\)</span>。问题不在于「删」这个动作，而在于我们每次都在重新搜索哪里可删。我们需要一个能<strong>一次性定位所有可删段</strong>的判据，而前缀和恰好提供它。</p>
+<p>定义 <span class="arithmatex">\(S_0 = 0\)</span>，<span class="arithmatex">\(S_i = \sum_{k=1}^{i} a_k\)</span>。子段 <span class="arithmatex">\(a_{i+1} \dots a_j\)</span>（<span class="arithmatex">\(i &lt; j\)</span>）的和可以直接由两端前缀和相减得到：</p>
+<div class="arithmatex">\[\sum_{k=i+1}^{j} a_k = S_j - S_i. \tag{1}\]</div>
+<p>于是「该子段和为 0」当且仅当 <span class="arithmatex">\(S_j - S_i = 0\)</span>，即</p>
+<div class="arithmatex">\[\sum_{k=i+1}^{j} a_k = 0 \iff S_i = S_j. \tag{2}\]</div>
+<p>式 (2) 是整道题的支点：<strong>两个相等的前缀和之间的整段，和必为 0，可以删除。</strong> 前缀和定义在任意有序值序列上，与底层是数组还是链表无关；链表的特殊之处只在于「删段」要靠改指针（<code>node.next</code>）而非移动下标，这一点留到数据结构一节处理。</p>
 <h2 id="formulation">形式化 (Formulation)<a class="headerlink" href="#formulation" title="Permanent link">#</a></h2>
-<p>设链表节点序列 <span class="arithmatex">\(a_1, \dots, a_n\)</span>，前缀和 <span class="arithmatex">\(S_0=0, S_i = \sum_{k=1}^{i} a_k\)</span>。最终链表 = 把所有形如 <span class="arithmatex">\(a_{i+1}..a_j\)</span>（<span class="arithmatex">\(S_i = S_j\)</span>）的段删去并合并。重复直到稳定。</p>
-<p><strong>等价不变量</strong>：在最终链表上，所有前缀和<strong>互不相同</strong>——否则还可继续删。</p>
+<p>设链表节点序列为 <span class="arithmatex">\(a_1, \dots, a_n\)</span>，前缀和 <span class="arithmatex">\(S_0 = 0\)</span>，<span class="arithmatex">\(S_i = \sum_{k=1}^{i} a_k\)</span>。最终链表是反复执行下述操作直到稳定的结果：只要存在 <span class="arithmatex">\(i &lt; j\)</span> 使 <span class="arithmatex">\(S_i = S_j\)</span>，就删去子段 <span class="arithmatex">\(a_{i+1} \dots a_j\)</span> 并把两端接上。</p>
+<p>先建立直觉再给不变量。若当前链表里两个位置的前缀和相等，由式 (2) 它们之间的整段和为 0，按题意必须删除；反过来，只要还存在相等的前缀和，就一定还有可删的段。因此「无可删」与「所有前缀和互不相同」是同一件事。这给出最终状态的精确刻画：</p>
+<p><strong>终止不变量</strong>：在最终链表上，前缀和序列 <span class="arithmatex">\(S_0, S_1, \dots\)</span> <strong>两两互不相同</strong>。</p>
+<p>这个不变量不只是停止条件，它直接指明了算法的目标——把序列改造成前缀和无重复的样子。下一节据此设计数据结构。</p>
 <h2 id="approach">数据结构 / 想法 (Approach)<a class="headerlink" href="#approach" title="Permanent link">#</a></h2>
-<p><strong>两遍扫描</strong>（核心技巧）：
-1. <strong>第一遍</strong>：在哑头 <code>dummy</code> 上跑，记录 <code>prefix_sum → 最后看到该和的节点</code> 到 dict（同 sum 多次出现时被覆盖，故 dict 始终记最右）。
-2. <strong>第二遍</strong>：再扫一次。对每个节点，查它的前缀和 <span class="arithmatex">\(S\)</span> 在 dict 中的"最后位置"是哪个节点 <code>last</code>；让当前节点的 <code>next</code> 直接指向 <code>last.next</code>——这一步等价于把中间一段（其和必为 0）全跳过。</p>
-<p><strong>正确性</strong>：若当前位置 <span class="arithmatex">\(p\)</span> 处前缀和为 <span class="arithmatex">\(S\)</span>，而 <code>dict[S]</code> 是更后位置 <span class="arithmatex">\(q\)</span>，则段 <span class="arithmatex">\(a_{p+1}..a_q\)</span> 和为 0，可删。多次替换会持续推进。</p>
+<p>目标已由不变量给定：消除所有重复的前缀和。要检测重复，自然用一张「前缀和 → 节点」的哈希表；问题只剩<strong>当同一个前缀和出现多次时，该指向哪个节点</strong>。</p>
+<p>先看为什么不能只记<strong>第一次</strong>出现。设前缀和 <span class="arithmatex">\(S\)</span> 在位置 <span class="arithmatex">\(i &lt; j &lt; k\)</span> 三处出现。只删 <span class="arithmatex">\((i, j]\)</span> 这一段后，<span class="arithmatex">\((i, k]\)</span> 仍是零和段（因为 <span class="arithmatex">\(S_i = S_k\)</span> 依旧成立），还得再处理。换言之，记第一次出现只能跨过最短的零和段，留下尾巴要靠重扫——这正是 <span class="arithmatex">\(O(n^2)\)</span> 的来源。</p>
+<p>反过来记<strong>最后一次</strong>出现：让位置 <span class="arithmatex">\(i\)</span> 直接接到 <span class="arithmatex">\(S\)</span> 最后出现处 <span class="arithmatex">\(k\)</span> 的下一个节点，一次改指针就跨过了<strong>最长</strong>的零和段 <span class="arithmatex">\((i, k]\)</span>，其中嵌套与相邻的所有零和段被一并吞掉。由此得到两遍扫描：</p>
+<ul>
+<li><strong>第一遍</strong>：在哑头 <code>dummy</code>（前缀和为 <span class="arithmatex">\(S_0 = 0\)</span>）上累加前缀和，把 <code>prefix_sum → 节点</code> 写入字典。同一前缀和后写覆盖先写，字典里留下的天然是<strong>最右</strong>那个节点。</li>
+<li><strong>第二遍</strong>：再扫一次，累加前缀和得到 <span class="arithmatex">\(s\)</span>；令 <code>node.next = last[s].next</code>，即把当前节点直接接到「<span class="arithmatex">\(s\)</span> 最后出现处」的后继，跨过中间的零和段。</li>
+</ul>
+<p><strong>为什么两遍就够</strong>，无需外层迭代：第一遍因后写覆盖，为每个前缀和值记下了它最外层的边界；第二遍把每个节点一次性接到该最外层边界，嵌套与相邻的零和段同时坍缩。改指针后前缀和的累加仍然有效——<code>last[s]</code> 本身的（以 dummy 为根的）前缀和正是 <span class="arithmatex">\(s\)</span>，所以从它的后继继续累加，得到的仍是真实前缀和序列。</p>
 <div class="language-python highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">ListNode</span><span class="p">:</span>
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">val</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="nb">next</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">val</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">next</span> <span class="o">=</span> <span class="n">val</span><span class="p">,</span> <span class="nb">next</span>
@@ -22500,6 +22542,7 @@
             <span class="n">node</span> <span class="o">=</span> <span class="n">node</span><span class="o">.</span><span class="n">next</span>
         <span class="k">return</span> <span class="n">dummy</span><span class="o">.</span><span class="n">next</span>
 </code></pre></div>
+<p>下面两个 trace 用来印证上面的推导，而非替代它。</p>
 <p><strong>手动 trace 样例 1</strong>：<code>head=[1,2,-3,3,1]</code>. 加 dummy(0).
 Pass 1 前缀和（含 dummy=0）：0, 1, 3, 0, 3, 4. last 字典:
 - 0 → dummy 然后被节点 <code>-3</code>（值 -3, 前缀和 0）覆盖。
@@ -22517,6 +22560,11 @@ Pass 2:
 - dummy, s=0 → dummy.next = last[0].next = node(1).
 - node(1), s=1 → next = last[1].next = None.
 结果 [1]. ✓</p>
+<p><strong>嵌套段样例</strong>：<code>[1,-1,2,-2,3]</code>. 前缀和（含 dummy 0）：0,1,0,2,0,3. 前缀和 0 在 dummy、节点 <code>-1</code>、节点 <code>-2</code> 三处出现，last[0] 记最右的节点 <code>-2</code>；last 还有 {1: node(1), 2: node(2), 3: 末节点(3)}.
+Pass 2:
+- dummy, s=0 → dummy.next = last[0].next = node(3). 一步跨过 <code>[1,-1,2,-2]</code> 这两层嵌套零和段。
+- node(3), s=3 → next = last[3].next = None.
+结果 [3]. ✓ 验证了「记最右 + 两遍」一次坍缩所有嵌套段。</p>
 <h2 id="complexity">复杂度 (Complexity)<a class="headerlink" href="#complexity" title="Permanent link">#</a></h2>
 <ul>
 <li>Time: <span class="arithmatex">\(O(n)\)</span>，两遍。</li>
@@ -22525,8 +22573,8 @@ Pass 2:
 <h2 id="pitfalls">陷阱 (Pitfalls)<a class="headerlink" href="#pitfalls" title="Permanent link">#</a></h2>
 <ul>
 <li>必须包含 dummy（前缀和 0 起始）才能正确删除"从头开始的 0 和段"。如 <code>[1,-1,2]</code>：dummy(0), 1, 0, 2 的前缀和均 0 出现在 dummy 和 <code>-1</code> 后，把 <code>[1,-1]</code> 删掉。</li>
-<li>同前缀和多次出现要保留<strong>最右</strong>——这样一次替换跨过最长段。</li>
-<li>不要先转数组：链表节点指针重链才是关键；要用 dummy 简化首节点删除。</li>
+<li>同前缀和多次出现要保留<strong>最右</strong>——由上一节的推导，一次替换才能跨过最长零和段并坍缩所有嵌套段；保留最左则会留下尾巴，退化到需要重扫。</li>
+<li>不要先转数组：式 (2) 的前缀和判据与存储无关，但删段要靠链表节点指针重链，要用 dummy 简化首节点删除。</li>
 </ul>
 <h2 id="related">相关题目 (Related)<a class="headerlink" href="#related" title="Permanent link">#</a></h2>
 <ul>
@@ -22644,6 +22692,8 @@ Pass 2:
         <script src="../../../js/mathjax/tex-mml-chtml.js"></script>
       
         <script src="../../../js/mermaid.min.js"></script>
+      
+        <script src="../../../js/featured.js"></script>
       
     
   </body>

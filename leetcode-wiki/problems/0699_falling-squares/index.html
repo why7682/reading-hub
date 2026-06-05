@@ -1466,6 +1466,8 @@
       
         
       
+        
+      
     
     
     
@@ -1521,6 +1523,34 @@
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../featured/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ⭐ Featured（已验证）
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
               
             
               
@@ -1610,10 +1640,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_4" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
         
           
-          <label class="md-nav__link" for="__nav_4_4" id="__nav_4_4_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_5" id="__nav_4_5_label" tabindex="">
             
   
   
@@ -1631,8 +1661,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_4_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_4">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_5">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1915,7 +1945,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -1937,14 +1967,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_4_5" id="__nav_4_5_label" tabindex="">
+              <label class="md-nav__link " for="__nav_4_6" id="__nav_4_6_label" tabindex="">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_5">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_6">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -5321,10 +5351,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_7" checked>
         
           
-          <label class="md-nav__link" for="__nav_4_6" id="__nav_4_6_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_7" id="__nav_4_7_label" tabindex="">
             
   
   
@@ -5342,8 +5372,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_4_6">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_7_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4_7">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -22467,22 +22497,54 @@
 <h2 id="problem">Problem<a class="headerlink" href="#problem" title="Permanent link">#</a></h2>
 <p>数轴上依次落下正方形 <code>[left, sideLength]</code>，每个落到下方已有方块/地面顶部。返回每次落下后<strong>当前最高栈高</strong>。<span class="arithmatex">\(n \le 1000\)</span>，坐标可达 <span class="arithmatex">\(10^8\)</span>。</p>
 <h2 id="_1">背景<a class="headerlink" href="#_1" title="Permanent link">#</a></h2>
-<p>本题是 <strong>在线区间最大值 (range max with range assign)</strong> 数据结构问题：每次操作是"先查询区间 <span class="arithmatex">\([l, r)\)</span> 当前最大高度 <span class="arithmatex">\(h\)</span>，然后把 <span class="arithmatex">\([l, r)\)</span> 整段赋值为 <span class="arithmatex">\(h + \text{side}\)</span>"。这是 <strong>segment tree with lazy propagation</strong> 中"区间赋值 + 区间最大值"的标准模板。</p>
-<p>坐标范围 <span class="arithmatex">\(10^8\)</span> 但操作仅 1000 次 → <strong>坐标离散化</strong> (coordinate compression) 是必要前处理，把坐标压成 <span class="arithmatex">\(\le 2n\)</span> 个区间端点。</p>
-<p>物理图景：与 <em>Skyline Problem</em> (LC #218) 高度相关，但 Skyline 是<strong>离线</strong>（一次性给所有矩形），本题是<strong>在线</strong>（一个个落下）。这影响算法选择：本题更适合 segment tree 而非扫描线。</p>
+<p>每当一个新方块落下，求解者必须回答两个问题：它会停在多高？落定后它覆盖的每一列又有多高？把这两个问题问清楚，整道题就清楚了。</p>
+<p>考虑方块 <span class="arithmatex">\((l, w)\)</span>（左端 <span class="arithmatex">\(l\)</span>，边长 <span class="arithmatex">\(w\)</span>，故占据水平区间 <span class="arithmatex">\([l, l+w)\)</span>）。它下落时停在它脚下<strong>当前</strong>最高的那一列上。设这个最高列高为 <span class="arithmatex">\(h\)</span>，则方块落定后，它的顶部位于 <span class="arithmatex">\(h + w\)</span>。注意这里是 <span class="arithmatex">\(h + w\)</span> 而不是 <span class="arithmatex">\(h\)</span> 加上原有高度的某种累加：方块是实心的，它把脚下整段填平后再叠上自己的边长 <span class="arithmatex">\(w\)</span>，所以它覆盖的<strong>每一列</strong>的新栈顶都恰好是 <span class="arithmatex">\(h + w\)</span>，与各列原来的高度无关。</p>
+<p>于是每次落下对应一次"先读后写"：
+1. <strong>查询</strong>：求 <span class="arithmatex">\([l, l+w)\)</span> 上当前的最大列高 <span class="arithmatex">\(h\)</span>。
+2. <strong>更新</strong>：把 <span class="arithmatex">\([l, l+w)\)</span> 上每一列的高度统一设为 <span class="arithmatex">\(h + w\)</span>。</p>
+<p>更新是一次<strong>区间赋值</strong>（把整段覆写成同一个值），而不是区间加。这是被方块的实心几何强制的，下文形式化会把它固定下来。</p>
+<p>第二个结构性事实关乎"在线"。第 <span class="arithmatex">\(i\)</span> 个方块停在哪，取决于前 <span class="arithmatex">\(i-1\)</span> 个方块<strong>已经落定后</strong>的高度状态——查询必须看到此前所有更新的累积结果。因此各次操作不能打乱次序、也不能延后批处理：每一步的查询都依赖前面所有写入已经生效。这就排除了"先收集全部矩形再一次扫描"的离线做法，要求一个支持<strong>实时查询当前状态</strong>的结构。</p>
 <h2 id="_2">形式化<a class="headerlink" href="#_2" title="Permanent link">#</a></h2>
-<p>维护函数 <span class="arithmatex">\(H: \mathbb{R} \to \mathbb{Z}_{\ge 0}\)</span>，初值 <span class="arithmatex">\(H \equiv 0\)</span>。对每次操作 <span class="arithmatex">\((l, w)\)</span>：令 <span class="arithmatex">\(h = \max_{x \in [l, l+w)} H(x)\)</span>，更新 <span class="arithmatex">\(H(x) \leftarrow h + w\)</span> 对所有 <span class="arithmatex">\(x \in [l, l+w)\)</span>，输出当前 <span class="arithmatex">\(\max H\)</span>。</p>
+<p>上面的"先读后写"提示：任意时刻，系统的全部相关状态都可以用"每个水平位置上的当前栈顶高度"来刻画——方块一旦落定就不再移动，某一列的高度只由覆盖它的最高方块决定，无需记住任何其他历史。这恰好是一个高度函数。</p>
+<p>维护 <span class="arithmatex">\(H: \mathbb{R} \to \mathbb{Z}_{\ge 0}\)</span>，其中 <span class="arithmatex">\(H(x)\)</span> 表示位置 <span class="arithmatex">\(x\)</span> 处当前栈顶高度，初值 <span class="arithmatex">\(H \equiv 0\)</span>。对每次操作 <span class="arithmatex">\((l, w)\)</span>：</p>
+<div class="arithmatex">\[
+h = \max_{x \in [l,\, l+w)} H(x), \tag{1}
+\]</div>
+<div class="arithmatex">\[
+H(x) \leftarrow h + w \quad \text{for all } x \in [l,\, l+w), \tag{2}
+\]</div>
+<p>随后输出当前全局最大值 <span class="arithmatex">\(\max_x H(x)\)</span>。式 (1) 是背景中的查询，式 (2) 是区间赋值（赋值为 <span class="arithmatex">\(h+w\)</span> 源自方块实心、新栈顶与旧高度无关）。区间取<strong>半开</strong> <span class="arithmatex">\([l, l+w)\)</span>：两个仅在端点相接的方块不算重叠（见陷阱）。</p>
+<p>这个 <span class="arithmatex">\(H\)</span> 是后续所有算法的脊柱：每种解法都只是用不同的数据结构去实现式 (1) 的区间最大查询和式 (2) 的区间赋值。</p>
 <h2 id="_3">数据结构 / 想法<a class="headerlink" href="#_3" title="Permanent link">#</a></h2>
-<p><strong>线段树 + 懒标记 (assign-max)</strong>：
-- 离散化所有 <span class="arithmatex">\(\{l_i, l_i + w_i\}\)</span> 端点，得 <span class="arithmatex">\(O(n)\)</span> 个原子区间。
-- 节点存 <code>max</code> 值；懒标记 <code>lazy</code> 存"待下推的区间赋值"。
-- 操作：<code>query_max(l, r)</code> + <code>range_assign(l, r, h + w)</code>。每操作 <span class="arithmatex">\(O(\log n)\)</span>。</p>
-<p><strong>朴素 <span class="arithmatex">\(O(n^2)\)</span></strong>（可过 <span class="arithmatex">\(n=1000\)</span>）：
-- 对每个新方块 <span class="arithmatex">\((l_i, w_i)\)</span>，遍历之前每个 <span class="arithmatex">\((l_j, w_j, \text{top}_j)\)</span>，若区间相交则 <code>base = max(base, top_j)</code>。
-- <code>top_i = base + w_i</code>；维护全局 <code>best = max(best, top_i)</code>。
-- 比赛中常优先写，<span class="arithmatex">\(10^6\)</span> 操作内可过。</p>
-<p><strong>Ordered Set / SortedList 段树代替</strong>：维护"高度变化点"集合，每次落下时 split / merge 区间。代码复杂但泛用。</p>
-<p><strong>不变量</strong>（线段树）：任意叶子的当前值 = 该原子区间正上方的栈顶高度。每次 range_assign 在该区间上覆盖 <code>h + w</code>。</p>
+<p><strong>朴素 <span class="arithmatex">\(O(n^2)\)</span>——从直接实现式 (1)(2) 开始。</strong>
+不显式维护 <span class="arithmatex">\(H\)</span>，而是记下每个已落方块的顶高。处理新方块 <span class="arithmatex">\((l_i, w_i)\)</span> 时：遍历此前每个方块 <span class="arithmatex">\((l_j, w_j, \text{top}_j)\)</span>，若两者水平区间相交（半开相交：<span class="arithmatex">\(l_i &lt; l_j + w_j\)</span> 且 <span class="arithmatex">\(l_j &lt; l_i + w_i\)</span>），则该方块构成脚下的一部分，取 <code>base = max(base, top_j)</code>，这正是式 (1) 的 <span class="arithmatex">\(h\)</span>；遍历完得到 <span class="arithmatex">\(\text{top}_i = \text{base} + w_i\)</span>，对应式 (2)。维护全局 <code>best = max(best, top_i)</code> 即为答案。</p>
+<div class="language-python highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">Solution</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">fallingSquares</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">positions</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">]])</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">]:</span>
+        <span class="c1"># Time: O(n^2), Space: O(n)</span>
+        <span class="n">tops</span> <span class="o">=</span> <span class="p">[]</span>  <span class="c1"># (l, r, top) for each landed square</span>
+        <span class="n">res</span><span class="p">,</span> <span class="n">best</span> <span class="o">=</span> <span class="p">[],</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="n">l</span><span class="p">,</span> <span class="n">w</span> <span class="ow">in</span> <span class="n">positions</span><span class="p">:</span>
+            <span class="n">r</span> <span class="o">=</span> <span class="n">l</span> <span class="o">+</span> <span class="n">w</span>
+            <span class="n">base</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="k">for</span> <span class="n">pl</span><span class="p">,</span> <span class="n">pr</span><span class="p">,</span> <span class="n">ptop</span> <span class="ow">in</span> <span class="n">tops</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">l</span> <span class="o">&lt;</span> <span class="n">pr</span> <span class="ow">and</span> <span class="n">pl</span> <span class="o">&lt;</span> <span class="n">r</span><span class="p">:</span>          <span class="c1"># 半开区间相交 (式 1)</span>
+                    <span class="n">base</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">base</span><span class="p">,</span> <span class="n">ptop</span><span class="p">)</span>
+                <span class="n">top</span> <span class="o">=</span> <span class="n">base</span> <span class="o">+</span> <span class="n">w</span>                  <span class="c1"># 式 (2)</span>
+            <span class="n">tops</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">l</span><span class="p">,</span> <span class="n">r</span><span class="p">,</span> <span class="n">top</span><span class="p">))</span>
+            <span class="n">best</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">best</span><span class="p">,</span> <span class="n">top</span><span class="p">)</span>
+            <span class="n">res</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">best</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">res</span>
+</code></pre></div>
+<p>每次落下都要扫描全部已落方块来实现式 (1) 的那一次区间最大查询，单次 <span class="arithmatex">\(O(n)\)</span>，总计 <span class="arithmatex">\(O(n^2)\)</span>。瓶颈精确地在这里：<strong>区间最大查询被实现成了对所有历史方块的线性扫描</strong>。<span class="arithmatex">\(n \le 1000\)</span> 时 <span class="arithmatex">\(10^6\)</span> 次操作可过，但它没有利用区间结构。</p>
+<p><strong>线段树 + 懒标记 (assign-max)——把式 (1)(2) 各降到 <span class="arithmatex">\(O(\log n)\)</span>。</strong>
+式 (1)(2) 要的恰是两个区间操作：区间最大查询、区间赋值。支持二者的标准结构是<strong>带懒标记的线段树</strong>，每次操作 <span class="arithmatex">\(O(\log n)\)</span>。</p>
+<p>为什么需要离散化：<span class="arithmatex">\(H\)</span> 是分段常值函数，每次操作只引入端点 <span class="arithmatex">\(l\)</span> 与 <span class="arithmatex">\(l+w\)</span>，至多 2 个新断点；<span class="arithmatex">\(n\)</span> 次操作后断点至多 <span class="arithmatex">\(2n\)</span> 个。线段树只需为相邻断点之间的每个原子区间设一个叶子，而非为 <span class="arithmatex">\(10^8\)</span> 个整数坐标各设一个。于是先离散化所有 <span class="arithmatex">\(\{l_i,\, l_i + w_i\}\)</span> 端点，得 <span class="arithmatex">\(O(n)\)</span> 个原子区间，再建树。</p>
+<ul>
+<li><strong>不变量</strong>：每个叶子的当前值 = 该原子区间正上方的栈顶高度，即该区间上的 <span class="arithmatex">\(H\)</span>。这是连接物理落方块过程与抽象函数 <span class="arithmatex">\(H\)</span> 的桥梁，也是下面两步操作正确性的依据。</li>
+<li><strong>节点</strong>存所辖区间的 <code>max</code>；<strong>懒标记</strong> <code>lazy</code> 存一条待下推的区间赋值。</li>
+<li>处理 <span class="arithmatex">\((l, w)\)</span>：<code>query_max(l, l+w)</code> 得式 (1) 的 <span class="arithmatex">\(h\)</span>；<code>range_assign(l, l+w, h + w)</code> 执行式 (2)。</li>
+</ul>
+<p><strong>Ordered Set / SortedList 维护断点</strong>：直接维护"高度变化点"集合，每次落下时在 <span class="arithmatex">\(l\)</span>、<span class="arithmatex">\(l+w\)</span> 处 split，再把覆盖区间 merge 成统一高度 <span class="arithmatex">\(h+w\)</span>。它显式操作的就是 <span class="arithmatex">\(H\)</span> 的分段常值表示，代码更繁但同样直接落实式 (1)(2)。</p>
 <h2 id="_4">复杂度<a class="headerlink" href="#_4" title="Permanent link">#</a></h2>
 <ul>
 <li>朴素 <span class="arithmatex">\(O(n^2)\)</span>：<span class="arithmatex">\(10^6\)</span>，可过。</li>
@@ -22491,9 +22553,10 @@
 </ul>
 <h2 id="_5">陷阱<a class="headerlink" href="#_5" title="Permanent link">#</a></h2>
 <ul>
-<li>"边接触不算" — <code>[100, 100], [200, 100]</code> 之间 <span class="arithmatex">\(r = 200\)</span> 与 <span class="arithmatex">\(l = 200\)</span> 相切但不重叠。区间用半开 <span class="arithmatex">\([l, l+w)\)</span> 模型即可正确。</li>
+<li><strong>边接触不算</strong>：<code>[100, 100]</code> 与 <code>[200, 100]</code> 在 <span class="arithmatex">\(r = 200\)</span> 与 <span class="arithmatex">\(l = 200\)</span> 处相切但不重叠，第二个不应叠在第一个上（答案 <code>[100, 100]</code> 而非 <code>[100, 200]</code>）。用半开区间 <span class="arithmatex">\([l, l+w)\)</span> 与严格相交判定 <span class="arithmatex">\(l_i &lt; l_j + w_j \,\wedge\, l_j &lt; l_i + w_i\)</span> 即正确；若误用闭区间 <span class="arithmatex">\(\le\)</span> 判定会错叠成 <span class="arithmatex">\(200\)</span>。</li>
 <li>坐标可达 <span class="arithmatex">\(10^8\)</span> 一定要离散化；不要开 <span class="arithmatex">\(10^8\)</span> 的数组。</li>
-<li>线段树范围赋值的"懒标记下推"顺序：先下推父的 lazy 再处理子，避免覆盖丢失。</li>
+<li><strong>区间赋值而非区间加</strong>：式 (2) 是把整段覆写为 <span class="arithmatex">\(h+w\)</span>。若惯性地写成区间加（更常被教的操作）会引入 bug——方块填满脚印后新栈顶与各列旧高度无关。</li>
+<li><strong>懒标记下推顺序</strong>：递归进子节点前先把父的待赋值 <code>lazy</code> 下推。否则会丢覆盖：设父持有待赋值 <span class="arithmatex">\(5\)</span>，子随后收到赋值 <span class="arithmatex">\(3\)</span>；若未先下推父的 lazy，子保留 <span class="arithmatex">\(3\)</span> 而其兄弟仍继承 <span class="arithmatex">\(5\)</span>，不变量被破坏。</li>
 </ul>
 <h2 id="_6">相关题目<a class="headerlink" href="#_6" title="Permanent link">#</a></h2>
 <ul>
@@ -22503,7 +22566,7 @@
 </ul>
 <h2 id="further-reading">Further Reading<a class="headerlink" href="#further-reading" title="Permanent link">#</a></h2>
 <ul>
-<li>cp-algorithms.com/data_structures/segment_tree.html ⭐⭐ — segment tree 全套模板（点更新 / 区间更新 / 持久化 / 二维）。</li>
+<li>cp-algorithms.com/data_structures/segment_tree.html — segment tree 全套模板（点更新 / 区间更新 / 持久化 / 二维）。</li>
 <li>Bentley, J. (1977). <em>Solutions to Klee's rectangle problems</em> — 扫描线 + segment tree 思想的源头。</li>
 <li>KACTL — <code>data-structures/SegmentTree.h</code>, <code>LazySegmentTree.h</code>。</li>
 <li>CLRS 3e §14.3 — Interval tree（与本题相关但更适合 range stabbing 查询）。</li>
@@ -22613,6 +22676,8 @@
         <script src="../../../js/mathjax/tex-mml-chtml.js"></script>
       
         <script src="../../../js/mermaid.min.js"></script>
+      
+        <script src="../../../js/featured.js"></script>
       
     
   </body>

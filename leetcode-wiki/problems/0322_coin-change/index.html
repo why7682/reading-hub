@@ -1466,6 +1466,8 @@
       
         
       
+        
+      
     
     
     
@@ -1521,6 +1523,34 @@
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../featured/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ⭐ Featured（已验证）
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
               
             
               
@@ -1610,10 +1640,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_4" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
         
           
-          <label class="md-nav__link" for="__nav_4_4" id="__nav_4_4_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_5" id="__nav_4_5_label" tabindex="">
             
   
   
@@ -1631,8 +1661,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_4_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_4">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_5">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1915,7 +1945,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -1937,14 +1967,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_4_5" id="__nav_4_5_label" tabindex="">
+              <label class="md-nav__link " for="__nav_4_6" id="__nav_4_6_label" tabindex="">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_5">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_6">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -5321,10 +5351,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_7" checked>
         
           
-          <label class="md-nav__link" for="__nav_4_6" id="__nav_4_6_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_7" id="__nav_4_7_label" tabindex="">
             
   
   
@@ -5342,8 +5372,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_4_6">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_7_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4_7">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -22467,30 +22497,43 @@
 <h2 id="problem">Problem<a class="headerlink" href="#problem" title="Permanent link">#</a></h2>
 <p>给硬币面额数组 <code>coins</code>（每种无限）与目标金额 <code>amount</code>，求凑成 <code>amount</code> 的最少硬币数；不可凑出返回 <span class="arithmatex">\(-1\)</span>。<span class="arithmatex">\(|\text{coins}| \le 12\)</span>, <span class="arithmatex">\(\text{amount} \le 10^4\)</span>。</p>
 <h2 id="_1">背景<a class="headerlink" href="#_1" title="Permanent link">#</a></h2>
-<p><strong>Coin Change</strong> 是教科书级 DP 题，也是 <strong>无界背包 (unbounded knapsack)</strong> 的最小化变体，与有界背包、分组背包合称"背包三件套"。一般币制下问题是 <strong>NP-hard</strong>（归约自 Subset Sum），但本题限定面额数 <span class="arithmatex">\(\le 12\)</span>、目标 <span class="arithmatex">\(\le 10^4\)</span>，标准 DP 在伪多项式时间内即可。</p>
-<p>数学上这也是 <strong>Frobenius 数 (硬币问题)</strong> 的近亲——给互素硬币 <span class="arithmatex">\(a_1, \dots, a_k\)</span>，最大不可表数 <span class="arithmatex">\(g(a_1, \dots, a_k)\)</span> 称 Frobenius 数。<span class="arithmatex">\(k=2\)</span> 时 <span class="arithmatex">\(g = a_1 a_2 - a_1 - a_2\)</span>（Sylvester 1882）；<span class="arithmatex">\(k \ge 3\)</span> 通用公式未知。本题不求"是否可表"，而求"最少多少枚"，但同源。</p>
+<p>先看最直接的做法会卡在哪里。要凑出 <code>amount</code>，我们必须选第一枚硬币 <span class="arithmatex">\(c\)</span>，然后递归凑出剩下的 <code>amount - c</code>；枚举所有可能的第一枚，取最优。这给出一个朴素的穷举递归：</p>
+<div class="language-python highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">f</span><span class="p">(</span><span class="n">v</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">v</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span> <span class="k">return</span> <span class="mi">0</span>
+    <span class="k">return</span> <span class="mi">1</span> <span class="o">+</span> <span class="nb">min</span><span class="p">(</span><span class="n">f</span><span class="p">(</span><span class="n">v</span> <span class="o">-</span> <span class="n">c</span><span class="p">)</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">coins</span> <span class="k">if</span> <span class="n">c</span> <span class="o">&lt;=</span> <span class="n">v</span><span class="p">)</span>  <span class="c1"># 无可选时 min 为空 → +inf</span>
+</code></pre></div>
+<p>它正确，但每个 <span class="arithmatex">\(f(v)\)</span> 会被不同的调用路径反复重算。例如 <code>coins=[1,2]</code>，凑 <span class="arithmatex">\(v\)</span> 时 <span class="arithmatex">\(f(v-1)\)</span> 与 <span class="arithmatex">\(f(v-2)\)</span> 都要再展开到 <span class="arithmatex">\(f(v-3)\)</span>，分支按金额指数级膨胀。问题不在于"该选哪枚硬币"——那部分我们已经写对了——而在于<strong>同一个子问题被解了无数遍</strong>。</p>
+<p>这种"子问题重叠"正是动态规划的适用信号。一旦把每个 <span class="arithmatex">\(f(v)\)</span> 只算一次并缓存，指数级穷举就塌缩成线性遍历。本题因此是教科书级 DP 题，也是<strong>无界背包 (unbounded knapsack)</strong> 的最小化变体：容量为 <code>amount</code>、每种物品（硬币）可无限取、目标是最小化取用件数。一般币制下"是否可表"已是 <strong>NP-hard</strong>（归约自 Subset Sum），但本题限定面额数 <span class="arithmatex">\(\le 12\)</span>、目标 <span class="arithmatex">\(\le 10^4\)</span>，缓存后的 DP 在伪多项式时间内即可。</p>
 <h2 id="_2">形式化<a class="headerlink" href="#_2" title="Permanent link">#</a></h2>
-<p><span class="arithmatex">\(f(v)\)</span> = 凑出 <span class="arithmatex">\(v\)</span> 的最少硬币数，无解为 <span class="arithmatex">\(+\infty\)</span>。</p>
-<div class="arithmatex">\[f(0) = 0,\quad f(v) = 1 + \min_{c \in \text{coins},\, c \le v} f(v - c).\]</div>
-<p>答：<span class="arithmatex">\(f(\text{amount})\)</span>（<span class="arithmatex">\(+\infty\)</span> → <span class="arithmatex">\(-1\)</span>）。</p>
+<p>朴素递归暴露的结构可以一句话讲清，它就是整个解法的脊柱：</p>
+<blockquote>
+<p><strong>最优子结构</strong>：凑出 <span class="arithmatex">\(v\)</span> 的任何最优方案，必定以某枚硬币 <span class="arithmatex">\(c \le v\)</span> 结尾，剩下的 <span class="arithmatex">\(v - c\)</span> 部分本身也必须是最优的。否则把那部分换成更优的凑法，总枚数会更少，与"最优"矛盾。</p>
+</blockquote>
+<p>把"枚举最后一枚 <span class="arithmatex">\(c\)</span>"写成取最小，就得到递推。设 <span class="arithmatex">\(f(v)\)</span> 为凑出 <span class="arithmatex">\(v\)</span> 的最少硬币数，无解记为 <span class="arithmatex">\(+\infty\)</span>：</p>
+<div class="arithmatex">\[f(0) = 0,\quad f(v) = 1 + \min_{c \in \text{coins},\, c \le v} f(v - c). \tag{1}\]</div>
+<p>边界与无解的传播都已内含在 <span class="arithmatex">\((1)\)</span> 里。当没有任何 <span class="arithmatex">\(c \le v\)</span> 时，<span class="arithmatex">\(\min\)</span> 取自空集，约定为 <span class="arithmatex">\(+\infty\)</span>，于是 <span class="arithmatex">\(f(v) = +\infty\)</span>；而 <span class="arithmatex">\(1 + (+\infty) = +\infty\)</span>，使不可达的金额自然保持 <span class="arithmatex">\(+\infty\)</span>，不会污染可达金额。最终答案为 <span class="arithmatex">\(f(\text{amount})\)</span>，若为 <span class="arithmatex">\(+\infty\)</span> 则映射为 <span class="arithmatex">\(-1\)</span>。</p>
+<p>注意我们求的是"最少多少枚"，而非"能否凑出"——后者是 Frobenius 数（硬币问题）的范畴，两者同源但不同问，详见 Further Reading。</p>
 <h2 id="_3">数据结构 / 想法<a class="headerlink" href="#_3" title="Permanent link">#</a></h2>
-<p><strong>自底向上 DP</strong>（标准）：一维数组 <code>dp[0..amount]</code>，按 <span class="arithmatex">\(v\)</span> 从小到大枚举，对每个 <span class="arithmatex">\(v\)</span> 试每种硬币。<span class="arithmatex">\(O(\text{amount} \cdot |\text{coins}|)\)</span>。</p>
-<p><strong>自顶向下记忆化</strong>：递归 + memo，等价但常数差。</p>
-<p><strong>BFS 视角</strong>：把状态视为图节点，<span class="arithmatex">\(v \to v - c\)</span> 为边。最少硬币数即从 <code>amount</code> 到 <span class="arithmatex">\(0\)</span> 的最短路（边权 <span class="arithmatex">\(=1\)</span>）。BFS 与 DP 等价，但 BFS 提前到达 <span class="arithmatex">\(0\)</span> 即可剪枝。</p>
-<p><strong>不变量</strong>（DP）：处理 <span class="arithmatex">\(v\)</span> 时，所有 <span class="arithmatex">\(v' &lt; v\)</span> 的 <code>dp[v']</code> 已是最优值。<strong>正确性</strong>：每次只用更小的子问题，由 Bellman 原理保证。</p>
-<p><strong>贪心不可行</strong>：与 <em>Coin Change II 计数</em> 不同，最少枚数不能直接贪心。反例：<code>coins=[1,3,4], amount=6</code> → 贪心 4+1+1=3 枚，最优 3+3=2 枚。仅在 "canonical coin systems"（如标准货币 1,5,10,25,100，参 Pearson 2005）下贪心才正确。</p>
+<p>整节都从递推 <span class="arithmatex">\((1)\)</span> 推导，不引入新机制。</p>
+<p><strong>求值顺序决定一切。</strong> <span class="arithmatex">\((1)\)</span> 中 <span class="arithmatex">\(f(v)\)</span> 只依赖严格更小的 <span class="arithmatex">\(f(v-c)\)</span>。因此只要按 <span class="arithmatex">\(v\)</span> 从小到大填表，轮到 <span class="arithmatex">\(v\)</span> 时它需要的所有 <span class="arithmatex">\(f(v-c)\)</span> 都已算定。这条<strong>不变量</strong>——"处理 <span class="arithmatex">\(v\)</span> 时，所有 <span class="arithmatex">\(v' &lt; v\)</span> 的 <code>dp[v']</code> 已是最优值"——正是上一节最优子结构在遍历顺序上的体现，也是正确性的全部依据：每个值只用更小的、已确定的子问题，无需任何外部定理背书。</p>
+<p><strong>自底向上 DP（标准实现）</strong>：一维数组 <code>dp[0..amount]</code>，<code>dp[0]=0</code>，其余初始化为 <span class="arithmatex">\(+\infty\)</span>。按 <span class="arithmatex">\(v\)</span> 递增，对每个 <span class="arithmatex">\(v\)</span> 用每种硬币松弛 <span class="arithmatex">\((1)\)</span>。每个 <span class="arithmatex">\(f(v)\)</span> 恰算一次，朴素递归的指数重算被消除，复杂度降为 <span class="arithmatex">\(O(\text{amount} \cdot |\text{coins}|)\)</span>。</p>
+<p><strong>自顶向下记忆化</strong>：直接给本节开头的朴素递归加 memo。它与自底向上<strong>等价</strong>，原因是两者计算的是同一张子问题依赖图（DAG）：节点为各个 <span class="arithmatex">\(v\)</span>，边为 <span class="arithmatex">\(v \to v-c\)</span>。自顶向下按需后序遍历该图，自底向上按拓扑序（金额递增）遍历，访问的节点集合与每节点的计算量相同，只差遍历次序与递归栈常数。</p>
+<p><strong>BFS：与 DP 的精确对应，而非另一套方法。</strong> 把上述依赖图当作无权图：节点是金额 <span class="arithmatex">\(0,1,\dots,\text{amount}\)</span>，从 <span class="arithmatex">\(v\)</span> 到 <span class="arithmatex">\(v-c\)</span> 连一条边。任何凑法 <span class="arithmatex">\(v \to v-c_1 \to \cdots \to 0\)</span> 对应一条到 <span class="arithmatex">\(0\)</span> 的路径，其<strong>长度恰等于用到的硬币枚数</strong>——因为每条边正好用一枚硬币、权为 <span class="arithmatex">\(1\)</span>。于是 <span class="arithmatex">\(f(v)\)</span> 就是该图中 <span class="arithmatex">\(v\)</span> 到 <span class="arithmatex">\(0\)</span> 的最短路。这不是类比，而是状态与节点、硬币与边的一一对应。由于边权恒为 <span class="arithmatex">\(1\)</span>，从 <code>amount</code> 出发的 BFS 按层扩展，第一次到达 <span class="arithmatex">\(0\)</span> 所在的层数即为最少枚数，可立即停止——这是 BFS 相比填满整张表的唯一附加好处。</p>
+<p><strong>为什么不能贪心。</strong> 最优子结构保证 DP 正确，却不保证"每步取最大可用面额"正确。结构原因是：一枚大面额可能<strong>过冲</strong>了局部最优的拆法，迫使后续用许多小面额来补差。反例 <code>coins=[1,3,4], amount=6</code>：贪心先取 <span class="arithmatex">\(4\)</span>，余 <span class="arithmatex">\(2\)</span> 只能 <span class="arithmatex">\(1+1\)</span>，共 <span class="arithmatex">\(3\)</span> 枚；而最优 <span class="arithmatex">\(3+3=2\)</span> 枚。仅在 "canonical coin systems"（如标准货币 <span class="arithmatex">\(1,5,10,25,100\)</span>，判定见 Pearson 2005）下贪心才与 DP 一致。</p>
 <h2 id="_4">复杂度<a class="headerlink" href="#_4" title="Permanent link">#</a></h2>
+<p>复杂度直接由 <span class="arithmatex">\((1)\)</span> 的求值规模读出：填 <span class="arithmatex">\(V = \text{amount}\)</span> 个表项，每项扫 <span class="arithmatex">\(n = |\text{coins}|\)</span> 种硬币。</p>
 <ul>
-<li>Time: <span class="arithmatex">\(O(n \cdot V)\)</span>，<span class="arithmatex">\(n = |\text{coins}|\)</span>，<span class="arithmatex">\(V = \text{amount}\)</span>。</li>
+<li>Time: <span class="arithmatex">\(O(n \cdot V)\)</span>。</li>
 <li>Space: <span class="arithmatex">\(O(V)\)</span>。</li>
-<li>由于 <span class="arithmatex">\(V\)</span> 是金额数值而非位数，称<strong>伪多项式 (pseudo-polynomial)</strong>。Subset Sum 也是 NP-hard 但有伪多项式 DP，结构相同。</li>
+<li>由于 <span class="arithmatex">\(V\)</span> 是金额的<strong>数值</strong>而非其位数，这称<strong>伪多项式 (pseudo-polynomial)</strong>。Subset Sum 同样 NP-hard 却有伪多项式 DP，与本题结构相同。</li>
 </ul>
 <h2 id="_5">陷阱<a class="headerlink" href="#_5" title="Permanent link">#</a></h2>
+<p>以下边界都从 <span class="arithmatex">\((1)\)</span> 与其实现直接落地：</p>
 <ul>
-<li>初始化：<code>dp[0] = 0</code>，其他设为 <span class="arithmatex">\(+\infty\)</span>（用 <code>amount+1</code> 当 sentinel 亦可，因 <span class="arithmatex">\(\text{amount} &lt; 10^4 + 1\)</span>）。</li>
-<li>返回 -1 的判定要在最后做。</li>
-<li>BFS 时记得 visited 标记否则爆队。</li>
-<li>极大单枚硬币（如 <span class="arithmatex">\(2^{31}-1\)</span>）：在内层先 <code>if c &lt;= v</code> 过滤，否则越界。</li>
+<li>初始化：<code>dp[0] = 0</code>，其余设为 <span class="arithmatex">\(+\infty\)</span>。用 <code>amount+1</code> 当有限 sentinel 亦可——任何真实答案至多用 <code>amount</code> 枚（含面额 <span class="arithmatex">\(1\)</span> 时的全 <span class="arithmatex">\(1\)</span> 上界），故 <code>amount+1</code> 严格大于任一可达枚数，最后再把 sentinel 映射为 <span class="arithmatex">\(-1\)</span>。</li>
+<li>返回 <span class="arithmatex">\(-1\)</span> 的判定要留到最后，对 <code>dp[amount]</code> 是否仍为 sentinel 做一次检查。</li>
+<li>BFS 实现须记 <code>visited</code>：同一金额可经多条边重复入队，不去重则队列规模爆炸。</li>
+<li>极大单枚硬币：LeetCode 322 的面额可达 <span class="arithmatex">\(2^{31}-1\)</span>（不受 <code>amount</code> 上界约束），内层须先 <code>if c &lt;= v</code> 过滤，对应 <span class="arithmatex">\((1)\)</span> 中 <span class="arithmatex">\(c \le v\)</span> 的约束，否则越界。</li>
 </ul>
 <h2 id="_6">相关题目<a class="headerlink" href="#_6" title="Permanent link">#</a></h2>
 <ul>
@@ -22505,7 +22548,7 @@
 <li>Kleinberg &amp; Tardos, <em>Algorithm Design</em>, §6.4 "RNA Secondary Structure" 之前的背包章节。</li>
 <li>cp-algorithms.com/dynamic_programming/knapsack.html ⭐ — 完整背包族 DP 模板。</li>
 <li>Pearson (2005). <em>A polynomial-time algorithm for the change-making problem</em>. Op. Research Letters. — 何时贪心 = DP 的判定。</li>
-<li>Sylvester (1882). <em>On subinvariants, i.e., semi-invariants to binary quantics of an unlimited order</em>. Amer. J. Math. — Frobenius 数最早结果。</li>
+<li>Sylvester (1882). <em>On subinvariants, i.e., semi-invariants to binary quantics of an unlimited order</em>. Amer. J. Math. — Frobenius 数（最大不可表数 <span class="arithmatex">\(g(a_1,a_2)=a_1a_2-a_1-a_2\)</span>，<span class="arithmatex">\(k\ge3\)</span> 无通用闭式）最早结果，与"是否可表"问题相关。</li>
 </ul>
 
 
@@ -22612,6 +22655,8 @@
         <script src="../../../js/mathjax/tex-mml-chtml.js"></script>
       
         <script src="../../../js/mermaid.min.js"></script>
+      
+        <script src="../../../js/featured.js"></script>
       
     
   </body>

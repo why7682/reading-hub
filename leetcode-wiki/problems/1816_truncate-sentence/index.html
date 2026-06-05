@@ -1466,6 +1466,8 @@
       
         
       
+        
+      
     
     
     
@@ -1521,6 +1523,34 @@
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../featured/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ⭐ Featured（已验证）
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
               
             
               
@@ -1610,10 +1640,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_4" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
         
           
-          <label class="md-nav__link" for="__nav_4_4" id="__nav_4_4_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_5" id="__nav_4_5_label" tabindex="">
             
   
   
@@ -1631,8 +1661,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_4_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_4">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_5">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1915,7 +1945,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -1937,14 +1967,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_4_5" id="__nav_4_5_label" tabindex="">
+              <label class="md-nav__link " for="__nav_4_6" id="__nav_4_6_label" tabindex="">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_5">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_6">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -5321,10 +5351,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_7" checked>
         
           
-          <label class="md-nav__link" for="__nav_4_6" id="__nav_4_6_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_7" id="__nav_4_7_label" tabindex="">
             
   
   
@@ -5342,8 +5372,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_4_6">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_7_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4_7">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -22467,13 +22497,25 @@
 <h2 id="problem">Problem<a class="headerlink" href="#problem" title="Permanent link">#</a></h2>
 <p>给一个单词由单空格分隔的句子 <code>s</code> 和正整数 <code>k</code>，返回 <code>s</code> 的前 <code>k</code> 个单词组成的句子。约束 <span class="arithmatex">\(1 \le |s| \le 500\)</span>，<span class="arithmatex">\(k\)</span> 不超过 <code>s</code> 中的单词数。</p>
 <h2 id="background">背景 (Background)<a class="headerlink" href="#background" title="Permanent link">#</a></h2>
-<p>本题为基础字符串切片，无特殊学科背景。</p>
+<p>本题为基础字符串切片，无特殊学科背景。值得提取的唯一结构性事实在下一节给出：题目保证「单空格分隔、无前后导空格」，这把抽象的「前 <span class="arithmatex">\(k\)</span> 个单词」与具体的字符位置精确对齐，是后面所有解法的共同支点。</p>
 <h2 id="formulation">形式化 (Formulation)<a class="headerlink" href="#formulation" title="Permanent link">#</a></h2>
 <p>设 <span class="arithmatex">\(s = w_1\,\square\,w_2\,\square\,\dots\,\square\,w_m\)</span>（<span class="arithmatex">\(\square\)</span> 表单空格），返回 <span class="arithmatex">\(w_1\,\square\,\dots\,\square\,w_k\)</span>。</p>
+<p>直觉：答案是 <span class="arithmatex">\(s\)</span> 的一个<strong>前缀</strong>——前 <span class="arithmatex">\(k\)</span> 个单词必然连续地出现在句首，我们只需要确定该前缀在哪里结束。前缀的右边界恰好落在第 <span class="arithmatex">\(k\)</span> 个单词之后、第 <span class="arithmatex">\(k\)</span> 个 <span class="arithmatex">\(\square\)</span> 之前。</p>
+<p>把这个直觉写成定位条件。由于分隔符与单词交替出现且每个分隔符正好一个空格，第 <span class="arithmatex">\(k\)</span> 个单词边界与第 <span class="arithmatex">\(k\)</span> 个空格字符<strong>位置重合</strong>。于是要返回的前缀就是 <span class="arithmatex">\(s[0:i^\*]\)</span>，其中</p>
+<div class="arithmatex">\[
+i^\* = \min\{\, i : |\{\, j \le i : s[j] = \square \,\}| = k \,\}
+\]</div>
+<p>即第 <span class="arithmatex">\(k\)</span> 个空格出现的下标。算法问题随之收窄为一句话：<strong>找到第 <span class="arithmatex">\(k\)</span> 个空格的位置</strong>。下一节从最直接的实现出发，逐步逼近这个定位条件。</p>
 <h2 id="approach">数据结构 / 想法 (Approach)<a class="headerlink" href="#approach" title="Permanent link">#</a></h2>
-<p>两种等价解法：</p>
-<p><strong>A. split / join</strong>：<code>' '.join(s.split()[:k])</code>，可读性最佳。
-<strong>B. 数空格扫描</strong>：找到第 <span class="arithmatex">\(k\)</span> 个空格之前的所有字符，时间最优常数。</p>
+<p><strong>朴素译法：把单词拆出来再拼回去。</strong> 形式化直接读作 <code>' '.join(s.split()[:k])</code>：<code>split()</code> 把句子切成单词列表，取前 <span class="arithmatex">\(k\)</span> 个，再用空格拼回。这是形式化的逐字翻译，正确且可读。</p>
+<div class="language-python highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">Solution</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">truncateSentence</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">s</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">k</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="k">return</span> <span class="s1">&#39; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">split</span><span class="p">()[:</span><span class="n">k</span><span class="p">])</span>
+</code></pre></div>
+<p>它在哪里「浪费」？<code>split()</code> 物化了全部 <span class="arithmatex">\(m\)</span> 个单词，<code>join</code> 又重建了一遍前缀字符串——即使我们只想要句首一小段，也付出了拆分整句的代价。这引出一个问题：<strong>能否不物化所有单词，直接定位前缀的右边界并一次切出？</strong></p>
+<p>上一节的定位条件给了答案：右边界就是第 <span class="arithmatex">\(k\)</span> 个空格的下标 <span class="arithmatex">\(i^\*\)</span>。于是从左扫描，维护一个计数器记录已越过的空格数；当计数达到 <span class="arithmatex">\(k\)</span> 时，当前空格下标即 <span class="arithmatex">\(i^\*\)</span>，返回 <span class="arithmatex">\(s[:i^\*]\)</span>。计数器的不变式是：<strong>扫到第 <code>cnt</code> 个空格时，恰好越过了 <code>cnt</code> 个单词边界</strong>，因此第 <span class="arithmatex">\(k\)</span> 个空格之前正是前 <span class="arithmatex">\(k\)</span> 个单词。</p>
+<p>一个边界问题随之浮现：当 <span class="arithmatex">\(k\)</span> 等于单词总数 <span class="arithmatex">\(m\)</span> 时，句子里只有 <span class="arithmatex">\(m-1\)</span> 个空格，第 <span class="arithmatex">\(k\)</span> 个空格<strong>不存在</strong>，扫描会走完全程。此时答案就是整句 <span class="arithmatex">\(s\)</span>，循环自然落到末尾的 <code>return s</code>——这一行不是兜底补丁，而是 <span class="arithmatex">\(k=m\)</span> 这一情形的正确取值。</p>
+<p>先用例 1 验证不变式，再看代码。取 <code>s = "Hello how are you Contestant", k = 4</code>：空格下标依次为 <span class="arithmatex">\(5, 9, 13, 17\)</span>；扫到第 4 个空格时下标为 <span class="arithmatex">\(17\)</span>，切片 <span class="arithmatex">\(s[:17] =\)</span> <code>"Hello how are you"</code>，正是前 4 个单词。</p>
 <div class="language-python highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">Solution</span><span class="p">:</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">truncateSentence</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">s</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">k</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
         <span class="n">cnt</span> <span class="o">=</span> <span class="mi">0</span>
@@ -22484,16 +22526,17 @@
                     <span class="k">return</span> <span class="n">s</span><span class="p">[:</span><span class="n">i</span><span class="p">]</span>
         <span class="k">return</span> <span class="n">s</span>
 </code></pre></div>
-<p>Trace 例 1：<code>s = "Hello how are you Contestant", k=4</code> → 在第 4 个空格（索引 19）前切片 → <code>"Hello how are you"</code>。</p>
+<p>两种解法实现的是同一个定位条件 <span class="arithmatex">\(i^\*\)</span>，区别只在遍历策略：朴素译法在单词层面急切拆分，扫描法在字符层面惰性定位、命中即返回。</p>
 <h2 id="complexity">复杂度 (Complexity)<a class="headerlink" href="#complexity" title="Permanent link">#</a></h2>
 <ul>
-<li>Time: <span class="arithmatex">\(O(|s|)\)</span></li>
-<li>Space: <span class="arithmatex">\(O(|s|)\)</span>（split 版本）或 <span class="arithmatex">\(O(1)\)</span> 额外（扫描版本）</li>
+<li>Time: <span class="arithmatex">\(O(|s|)\)</span>（两种解法都至多扫一遍 <span class="arithmatex">\(s\)</span>）</li>
+<li>Space：朴素译法 <span class="arithmatex">\(O(|s|)\)</span>——<code>split()</code> 把全部 <span class="arithmatex">\(m\)</span> 个单词物化进列表，<code>join</code> 再构造新串，两者都与 <span class="arithmatex">\(|s|\)</span> 同阶；上方扫描解法 <span class="arithmatex">\(O(1)\)</span> 额外空间——只维护一个计数器，切片返回不计入额外开销。</li>
 </ul>
 <h2 id="pitfalls">陷阱 (Pitfalls)<a class="headerlink" href="#pitfalls" title="Permanent link">#</a></h2>
 <ul>
-<li>题目保证 <code>k</code> 不超过单词数，且单词由<strong>单</strong>空格分隔、无前后导空格——不需要处理多空格。</li>
-<li>注意 <code>s[:i]</code> 不包含位置 <span class="arithmatex">\(i\)</span>（那是分隔空格），正好。</li>
+<li>题目保证 <code>k</code> 不超过单词数，且单词由<strong>单</strong>空格分隔、无前后导空格——正是这条保证让「第 <span class="arithmatex">\(k\)</span> 个单词边界 = 第 <span class="arithmatex">\(k\)</span> 个空格位置」成立，从而无需处理多空格或前后导空格。</li>
+<li>注意 <code>s[:i]</code> 不包含位置 <span class="arithmatex">\(i\)</span>（那是分隔空格），正好截到前 <span class="arithmatex">\(k\)</span> 个单词的末尾。</li>
+<li><span class="arithmatex">\(k = m\)</span>（取满全部单词）时第 <span class="arithmatex">\(k\)</span> 个空格不存在，必须靠循环末尾的 <code>return s</code> 返回整句；漏掉这一行会在「取满」这一情形下出错。</li>
 </ul>
 <h2 id="related">相关题目 (Related)<a class="headerlink" href="#related" title="Permanent link">#</a></h2>
 <ul>
@@ -22607,6 +22650,8 @@
         <script src="../../../js/mathjax/tex-mml-chtml.js"></script>
       
         <script src="../../../js/mermaid.min.js"></script>
+      
+        <script src="../../../js/featured.js"></script>
       
     
   </body>

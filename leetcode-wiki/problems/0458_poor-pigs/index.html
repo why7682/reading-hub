@@ -1466,6 +1466,8 @@
       
         
       
+        
+      
     
     
     
@@ -1521,6 +1523,34 @@
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../featured/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ⭐ Featured（已验证）
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
               
             
               
@@ -1610,10 +1640,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_4" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
         
           
-          <label class="md-nav__link" for="__nav_4_4" id="__nav_4_4_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_5" id="__nav_4_5_label" tabindex="">
             
   
   
@@ -1631,8 +1661,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_4_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_4">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_5">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1915,7 +1945,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -1937,14 +1967,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_4_5" id="__nav_4_5_label" tabindex="">
+              <label class="md-nav__link " for="__nav_4_6" id="__nav_4_6_label" tabindex="">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_5">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_6">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -5321,10 +5351,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_7" checked>
         
           
-          <label class="md-nav__link" for="__nav_4_6" id="__nav_4_6_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_7" id="__nav_4_7_label" tabindex="">
             
   
   
@@ -5342,8 +5372,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_4_6">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_7_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4_7">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -22467,56 +22497,68 @@
 <h2 id="problem">Problem<a class="headerlink" href="#problem" title="Permanent link">#</a></h2>
 <p><span class="arithmatex">\(\text{buckets}\)</span> 桶中恰一桶毒。可用一些猪测毒；每只猪喝水后 <span class="arithmatex">\(\text{minutesToDie}\)</span> 分钟才显示是否中毒。允许 <span class="arithmatex">\(\text{minutesToTest}\)</span> 分钟总测试时间。求最少猪数。</p>
 <h2 id="_1">背景<a class="headerlink" href="#_1" title="Permanent link">#</a></h2>
-<p>此题表面"组合谜题"，本质是<strong>信息论 (information theory)</strong> 的容量论证：每只猪是一个"测量装置"，其在 <span class="arithmatex">\(T\)</span> 轮内的"状态" (<code>die in round k for k=1..T</code>, or <code>alive</code>) 共有 <span class="arithmatex">\(T+1\)</span> 种。<span class="arithmatex">\(x\)</span> 只猪联合可生成 <span class="arithmatex">\((T+1)^x\)</span> 个可区分状态。要识别 <span class="arithmatex">\(N\)</span> 桶中的毒桶，需 <span class="arithmatex">\((T+1)^x \ge N\)</span>，即</p>
-<div class="arithmatex">\[x \ge \log_{T+1}(N).\]</div>
-<p><strong>关键 insight</strong>：单只猪可以<strong>复用</strong>——若它没在第 1 轮死，第 2 轮还能继续测。把猪看作 <span class="arithmatex">\((T+1)\)</span>-进制位 → 自然给出最优编码方案。</p>
-<blockquote>
-<p>这是经典 group testing (Dorfman 1943, 二战美军血液检测) 的极简版。Dorfman 算法把 <span class="arithmatex">\(N\)</span> 个样本压成 <span class="arithmatex">\(\sqrt{N}\)</span> 个池子并行测试，节约因子 <span class="arithmatex">\(\sqrt{N}\)</span> —— 与本题"用进制编码桶"思路同源。</p>
-</blockquote>
+<p>问题只问一件事：识别那唯一一桶毒，最少需要几只猪。先从能想到的最笨办法开始。</p>
+<p><strong>朴素策略：一桶一猪。</strong> 给前 <span class="arithmatex">\(N-1\)</span> 桶各配一只猪同时喝，等 <span class="arithmatex">\(\text{minutesToDie}\)</span> 分钟。若某只猪死，对应桶有毒；若全部存活，毒在没被喝的第 <span class="arithmatex">\(N\)</span> 桶。这需要 <span class="arithmatex">\(N-1\)</span> 只猪。</p>
+<p>这个办法在哪里浪费了？两处。其一，它只用了<strong>一轮</strong>等待，而总时间 <span class="arithmatex">\(\text{minutesToTest}\)</span> 往往够等好几轮——存活的猪在下一轮本可以继续测。其二，它让一只猪只喝一桶，于是一只猪的"死/活"只切分出两类桶，信息利用极低。要做到最优，必须把这两处浪费同时榨干：让每只猪喝<strong>多桶</strong>，并在<strong>多轮</strong>中复用。</p>
+<p>要量化"一只猪最多能区分多少桶"，先确定一只猪在整个测试期内能呈现多少种可被观测到的结局。记一轮为 <span class="arithmatex">\(\text{minutesToDie}\)</span> 分钟，则可用轮数为</p>
+<div class="arithmatex">\[T = \left\lfloor \frac{\text{minutesToTest}}{\text{minutesToDie}} \right\rfloor. \tag{0}\]</div>
+<p>一只猪若在第 <span class="arithmatex">\(k\)</span> 轮喝下毒水（<span class="arithmatex">\(1 \le k \le T\)</span>），就在该轮结束时死亡；若它喝的所有桶都无毒，则熬过全部 <span class="arithmatex">\(T\)</span> 轮存活。于是它的结局恰有 <span class="arithmatex">\(T+1\)</span> 种：在第 <span class="arithmatex">\(1, 2, \dots, T\)</span> 轮中某一轮死亡，或始终存活。<strong>正是"存活的猪可在下一轮继续喝"这一复用，把一只猪从"一个比特"升级成"一个 <span class="arithmatex">\(T+1\)</span> 元符号"</strong>——这是朴素策略丢掉的核心信息量。</p>
+<p>直观如此：<span class="arithmatex">\(x\)</span> 只猪各自独立地落入 <span class="arithmatex">\(T+1\)</span> 种结局之一，联合起来便有 <span class="arithmatex">\((T+1)^x\)</span> 种可区分的观测结果。能区分多少结果，就最多能定位多少桶。下一节把这一计数固化为求解的主轴。</p>
 <h2 id="_2">形式化<a class="headerlink" href="#_2" title="Permanent link">#</a></h2>
-<p>求最小 <span class="arithmatex">\(x\)</span> 满足 <span class="arithmatex">\((T+1)^x \ge N\)</span>，其中 <span class="arithmatex">\(T = \lfloor \text{minutesToTest} / \text{minutesToDie} \rfloor\)</span> 是测试轮数。</p>
+<p>一个测试方案为每只猪指定"每轮喝哪些桶"。方案<strong>正确</strong>，当且仅当任意两桶若分别有毒，都会导致不同的联合观测结果——否则这两桶无法被区分。</p>
+<p>设猪数为 <span class="arithmatex">\(x\)</span>，轮数 <span class="arithmatex">\(T\)</span> 由 <span class="arithmatex">\((0)\)</span> 给定。每只猪的观测结局有 <span class="arithmatex">\(T+1\)</span> 种，故 <span class="arithmatex">\(x\)</span> 只猪的联合观测结果至多 <span class="arithmatex">\((T+1)^x\)</span> 种。要区分 <span class="arithmatex">\(N = \text{buckets}\)</span> 桶，必须</p>
+<div class="arithmatex">\[(T+1)^x \;\ge\; N. \tag{1}\]</div>
+<p>于是最少猪数是满足 <span class="arithmatex">\((1)\)</span> 的最小整数 <span class="arithmatex">\(x\)</span>：</p>
+<div class="arithmatex">\[x^\* = \min\{\, x \in \mathbb{Z}_{\ge 0} : (T+1)^x \ge N \,\} = \big\lceil \log_{T+1} N \big\rceil. \tag{2}\]</div>
+<p>不等式 <span class="arithmatex">\((1)\)</span> 是全篇主轴。下一节双向锚定它：计数论证表明 <span class="arithmatex">\((1)\)</span> 是任何正确方案的<strong>必要</strong>条件（下界），构造性编码表明 <span class="arithmatex">\((1)\)</span> 一旦成立就<strong>充分</strong>（上界）。两端相遇，<span class="arithmatex">\((2)\)</span> 即为最优。</p>
 <h2 id="_3">数据结构 / 想法<a class="headerlink" href="#_3" title="Permanent link">#</a></h2>
-<p><strong>构造性证明</strong> (<span class="arithmatex">\(x\)</span> 只猪能区分 <span class="arithmatex">\((T+1)^x\)</span> 桶)：
-- 用 <span class="arithmatex">\(T+1\)</span> 进制编号桶：每桶对应一个 <span class="arithmatex">\(x\)</span> 位 <span class="arithmatex">\((T+1)\)</span>-进制串 <span class="arithmatex">\((d_1, d_2, \dots, d_x)\)</span>。
-- 猪 <span class="arithmatex">\(j\)</span> 在第 <span class="arithmatex">\(k\)</span> 轮（<span class="arithmatex">\(1 \le k \le T\)</span>）喝所有 <span class="arithmatex">\(d_j = k\)</span> 的桶。
-- 第 <span class="arithmatex">\(k\)</span> 轮过 <span class="arithmatex">\(\text{minutesToDie}\)</span> 分钟后，谁死 → <span class="arithmatex">\(d_j = k\)</span>。
-- 若猪 <span class="arithmatex">\(j\)</span> 直到第 <span class="arithmatex">\(T\)</span> 轮未死 → <span class="arithmatex">\(d_j = 0\)</span>。
-- 由此 <span class="arithmatex">\(T+1\)</span> 个状态唯一编码每桶。</p>
-<p><strong>下界证明</strong> (<span class="arithmatex">\(x\)</span> 只猪最多区分 <span class="arithmatex">\((T+1)^x\)</span> 桶)：
-- 每只猪可观测状态数 = <span class="arithmatex">\(T+1\)</span>（"第 <span class="arithmatex">\(k\)</span> 轮死" 或 "<span class="arithmatex">\(T\)</span> 轮内不死"）。
-- 全猪联合状态数 = <span class="arithmatex">\((T+1)^x\)</span>。
-- 不同毒桶必须产生不同联合状态（否则无法区分） → 桶数 <span class="arithmatex">\(\le (T+1)^x\)</span>。</p>
-<p>故 <span class="arithmatex">\(x = \lceil \log_{T+1} N \rceil\)</span> 即最优。</p>
+<p><strong>下界（<span class="arithmatex">\((1)\)</span> 必要）。</strong> 固定任一正确方案，猪数为 <span class="arithmatex">\(x\)</span>。把"哪桶有毒"看作输入，把 <span class="arithmatex">\(x\)</span> 只猪的联合结局看作输出，则方案是从 <span class="arithmatex">\(N\)</span> 个桶到联合结局集合的一个映射。由形式化中的正确性定义，不同毒桶必须映到不同结局，故该映射为单射。单射要求陪域不小于定义域，而陪域大小至多 <span class="arithmatex">\((T+1)^x\)</span>，于是 <span class="arithmatex">\(N \le (T+1)^x\)</span>。这正是 <span class="arithmatex">\((1)\)</span>。任何正确方案都逃不过它。</p>
+<p><strong>上界（<span class="arithmatex">\((1)\)</span> 充分，构造）。</strong> 设 <span class="arithmatex">\(x\)</span> 满足 <span class="arithmatex">\((1)\)</span>。先看最小情形以暴露编码结构：</p>
+<ul>
+<li><span class="arithmatex">\(T=1\)</span>、<span class="arithmatex">\(x=1\)</span>：一只猪一轮。让它喝 1 号桶。死则毒在 1 号，活则毒在 0 号。区分 <span class="arithmatex">\(2 = (T+1)^x\)</span> 桶。</li>
+<li><span class="arithmatex">\(T=1\)</span>、<span class="arithmatex">\(x=2\)</span>：两只猪一轮。给桶编 2 位二进制号 <span class="arithmatex">\(00,01,10,11\)</span>；猪 <span class="arithmatex">\(j\)</span> 喝第 <span class="arithmatex">\(j\)</span> 位为 <span class="arithmatex">\(1\)</span> 的所有桶。两猪的死活恰好读出毒桶的两位编号。区分 <span class="arithmatex">\(4 = (T+1)^x\)</span> 桶。</li>
+</ul>
+<p>把"死活"两态推广到"第几轮死或不死"的 <span class="arithmatex">\(T+1\)</span> 态，二进制即推广为 <span class="arithmatex">\((T+1)\)</span> 进制：</p>
+<ul>
+<li>用 <span class="arithmatex">\((T+1)\)</span> 进制给桶编号：每桶对应一个 <span class="arithmatex">\(x\)</span> 位串 <span class="arithmatex">\((d_1, d_2, \dots, d_x)\)</span>，其中每位 <span class="arithmatex">\(d_j \in \{0, 1, \dots, T\}\)</span>。<span class="arithmatex">\((1)\)</span> 保证 <span class="arithmatex">\((T+1)^x \ge N\)</span>，编号够用。</li>
+<li>猪 <span class="arithmatex">\(j\)</span> 在第 <span class="arithmatex">\(k\)</span> 轮（<span class="arithmatex">\(1 \le k \le T\)</span>）喝下所有满足 <span class="arithmatex">\(d_j = k\)</span> 的桶。</li>
+<li>观测：若猪 <span class="arithmatex">\(j\)</span> 在第 <span class="arithmatex">\(k\)</span> 轮后死亡，则毒桶的第 <span class="arithmatex">\(j\)</span> 位 <span class="arithmatex">\(d_j = k\)</span>；若猪 <span class="arithmatex">\(j\)</span> 熬过全部 <span class="arithmatex">\(T\)</span> 轮，则 <span class="arithmatex">\(d_j = 0\)</span>。</li>
+<li>每只猪读出毒桶编号的一位，<span class="arithmatex">\(x\)</span> 只猪合起来唯一确定毒桶。</li>
+</ul>
+<p>下界与上界在 <span class="arithmatex">\((1)\)</span> 处相遇，故 <span class="arithmatex">\((2)\)</span> 给出的 <span class="arithmatex">\(x^\*\)</span> 既必要又充分，即最优。</p>
+<p>落到代码，须避开浮点：<span class="arithmatex">\(\log_{T+1} N\)</span> 在 <span class="arithmatex">\((T+1)^x = N\)</span> 的整数幂边界上会因舍入误判（例如 <span class="arithmatex">\(5^3 = 125\)</span>，<code>math.log</code> 可能算出 <span class="arithmatex">\(x=4\)</span> 而非 <span class="arithmatex">\(3\)</span>）。直接用整数幂逐步逼近，结果精确：</p>
 <div class="language-python highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">poorPigs</span><span class="p">(</span><span class="n">buckets</span><span class="p">,</span> <span class="n">minutesToDie</span><span class="p">,</span> <span class="n">minutesToTest</span><span class="p">):</span>
-    <span class="n">T</span> <span class="o">=</span> <span class="n">minutesToTest</span> <span class="o">//</span> <span class="n">minutesToDie</span>
-    <span class="k">if</span> <span class="n">buckets</span> <span class="o">&lt;=</span> <span class="mi">1</span><span class="p">:</span> <span class="k">return</span> <span class="mi">0</span>
-    <span class="kn">import</span><span class="w"> </span><span class="nn">math</span>
-    <span class="k">return</span> <span class="n">math</span><span class="o">.</span><span class="n">ceil</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">buckets</span><span class="p">)</span> <span class="o">/</span> <span class="n">math</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">T</span> <span class="o">+</span> <span class="mi">1</span><span class="p">))</span>
+    <span class="n">T</span> <span class="o">=</span> <span class="n">minutesToTest</span> <span class="o">//</span> <span class="n">minutesToDie</span>   <span class="c1"># 可用轮数，见式 (0)</span>
+    <span class="n">base</span> <span class="o">=</span> <span class="n">T</span> <span class="o">+</span> <span class="mi">1</span>                        <span class="c1"># 一只猪的结局数</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">while</span> <span class="n">base</span> <span class="o">**</span> <span class="n">x</span> <span class="o">&lt;</span> <span class="n">buckets</span><span class="p">:</span>          <span class="c1"># 求满足式 (1) 的最小 x</span>
+        <span class="n">x</span> <span class="o">+=</span> <span class="mi">1</span>
+    <span class="k">return</span> <span class="n">x</span>
 </code></pre></div>
 <h2 id="_4">复杂度<a class="headerlink" href="#_4" title="Permanent link">#</a></h2>
 <ul>
-<li>Time: <span class="arithmatex">\(O(1)\)</span>（除浮点运算）。</li>
+<li>Time: <span class="arithmatex">\(O(\log_{T+1} N)\)</span> 次大整数乘法（循环次数即 <span class="arithmatex">\(x^\*\)</span>）；若改用 <code>math.log</code> 并妥善处理舍入则为 <span class="arithmatex">\(O(1)\)</span>。</li>
 <li>Space: <span class="arithmatex">\(O(1)\)</span>。</li>
 </ul>
 <h2 id="_5">陷阱<a class="headerlink" href="#_5" title="Permanent link">#</a></h2>
 <ul>
-<li><span class="arithmatex">\(T = 0\)</span>（不可能，约束保证 <span class="arithmatex">\(\text{minutesToDie} \le \text{minutesToTest}\)</span>）。</li>
-<li><span class="arithmatex">\(T = 1\)</span>（只测一轮）：基数 2，需要 <span class="arithmatex">\(\lceil \log_2 N \rceil\)</span> 只猪，恰如二进制编码。</li>
-<li>浮点误差：用 <code>math.log</code> 时 <span class="arithmatex">\((T+1)^x = N\)</span> 情况下结果可能略小，需 <code>round</code> 或避开浮点（用 <code>while base**x &lt; buckets: x += 1</code>）。</li>
-<li><span class="arithmatex">\(N = 1\)</span> 时答案为 0（无需测）。</li>
+<li><span class="arithmatex">\(N = 1\)</span>：无需测试，循环不执行，返回 <span class="arithmatex">\(0\)</span>。约束 <span class="arithmatex">\(\text{buckets} \ge 1\)</span> 下这是正确基例。</li>
+<li><span class="arithmatex">\(T = 0\)</span> 不会出现：约束保证 <span class="arithmatex">\(\text{minutesToDie} \le \text{minutesToTest}\)</span>，故 <span class="arithmatex">\(T \ge 1\)</span>，<span class="arithmatex">\(\text{base} \ge 2\)</span>。</li>
+<li><span class="arithmatex">\(T = 1\)</span>（只测一轮）：基数为 <span class="arithmatex">\(2\)</span>，<span class="arithmatex">\(x^\* = \lceil \log_2 N \rceil\)</span>，退化为纯二进制编码，与上界构造的最小情形一致。</li>
+<li>浮点陷阱：用 <code>math.ceil(math.log(N)/math.log(T+1))</code> 在整数幂处会偏大。例如 <span class="arithmatex">\(\text{buckets}=125,\ \text{minutesToDie}=15,\ \text{minutesToTest}=60\)</span>（<span class="arithmatex">\(T=4\)</span>，基数 <span class="arithmatex">\(5\)</span>，<span class="arithmatex">\(5^3=125\)</span>）正确答案为 <span class="arithmatex">\(3\)</span>，浮点版误得 <span class="arithmatex">\(4\)</span>。上面的整数循环规避此问题。</li>
 </ul>
 <h2 id="_6">相关题目<a class="headerlink" href="#_6" title="Permanent link">#</a></h2>
 <ul>
-<li><code>#319. Bulb Switcher (off-wiki)</code> — 数学秒杀题家族。</li>
-<li><code>#1798. Maximum Number of Consecutive Values You Can Make (off-wiki)</code> — 构造编码的另一变体。</li>
-<li>真正姊妹：经典 <em>"4 quart and 9 quart"</em> 注水问题、Mastermind 信息论下界。</li>
+<li><code>#319. Bulb Switcher (off-wiki)</code> — 同属可被计数/编码论证直接求解的数学题，松散主题关联。</li>
+<li><code>#1798. Maximum Number of Consecutive Values You Can Make (off-wiki)</code> — 另一类构造编码以覆盖目标集合的题，松散主题关联。</li>
+<li>Mastermind 的信息论下界：与本题共用同一计数骨架——正确策略须把每个隐藏配置映到不同的观测序列，故观测空间须不小于配置数。这是 <span class="arithmatex">\((1)\)</span> 式下界论证的同构推广。</li>
 </ul>
 <h2 id="further-reading">Further Reading<a class="headerlink" href="#further-reading" title="Permanent link">#</a></h2>
 <ul>
-<li>Cover &amp; Thomas. <em>Elements of Information Theory</em> (2e), Ch. 1–2 ⭐⭐ — 信息论容量与编码下界的圣经。</li>
+<li>Cover &amp; Thomas. <em>Elements of Information Theory</em> (2e), Ch. 1–2 ⭐⭐ — 信息论容量与编码下界的标准参考；本题 <span class="arithmatex">\((1)\)</span> 式即一例可区分性上界。</li>
 <li>Du &amp; Hwang. <em>Combinatorial Group Testing and Its Applications</em> (2nd ed., 2000) — group testing 的系统化教材。</li>
-<li>Dorfman, R. (1943). <em>The Detection of Defective Members of Large Populations</em>. Annals of Math. Statistics. — 原始 group testing 论文。</li>
-<li>3Blue1Brown, <em>Solving Wordle using information theory</em> (YouTube) — 信息论解谜题的优秀科普，与本题精神一致。</li>
+<li>Dorfman, R. (1943). <em>The Detection of Defective Members of Large Populations</em>. Annals of Math. Statistics — group testing 原始论文。注意其两阶段池化策略与本题的 <span class="arithmatex">\((T+1)\)</span> 进制编码是不同方案：Dorfman 自适应地先测池再测个体，本题则一次性静态编码；二者同属"用少量测试定位少数缺陷"的母题，但算法结构不同。</li>
+<li>3Blue1Brown, <em>Solving Wordle using information theory</em> (YouTube) — 信息论解谜的科普，与本题"用可区分性计数定下界"的精神一致。</li>
 </ul>
 
 
@@ -22623,6 +22665,8 @@
         <script src="../../../js/mathjax/tex-mml-chtml.js"></script>
       
         <script src="../../../js/mermaid.min.js"></script>
+      
+        <script src="../../../js/featured.js"></script>
       
     
   </body>

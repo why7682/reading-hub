@@ -1466,6 +1466,8 @@
       
         
       
+        
+      
     
     
     
@@ -1521,6 +1523,34 @@
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../featured/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ⭐ Featured（已验证）
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
               
             
               
@@ -1610,10 +1640,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_4" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
         
           
-          <label class="md-nav__link" for="__nav_4_4" id="__nav_4_4_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_5" id="__nav_4_5_label" tabindex="">
             
   
   
@@ -1631,8 +1661,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_4_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_4">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_5">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1915,7 +1945,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -1937,14 +1967,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_4_5" id="__nav_4_5_label" tabindex="">
+              <label class="md-nav__link " for="__nav_4_6" id="__nav_4_6_label" tabindex="">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_5">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_6">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -5321,10 +5351,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_7" checked>
         
           
-          <label class="md-nav__link" for="__nav_4_6" id="__nav_4_6_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_7" id="__nav_4_7_label" tabindex="">
             
   
   
@@ -5342,8 +5372,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_4_6">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_7_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4_7">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -22467,14 +22497,29 @@
 <h2 id="problem">Problem<a class="headerlink" href="#problem" title="Permanent link">#</a></h2>
 <p>给两个小写字符串 <span class="arithmatex">\(s\)</span> 和 <span class="arithmatex">\(\text{goal}\)</span>，判断能否在 <span class="arithmatex">\(s\)</span> 内<strong>恰好交换一对</strong>不同下标 <span class="arithmatex">\((i, j)\)</span>，使其等于 <span class="arithmatex">\(\text{goal}\)</span>。<span class="arithmatex">\(1 \le |s|, |\text{goal}| \le 2 \times 10^4\)</span>。</p>
 <h2 id="background">背景 (Background)<a class="headerlink" href="#background" title="Permanent link">#</a></h2>
-<p>本题为字符串相等 + 简单组合判定，无特殊学科背景。可视为"汉明距离 = 2 的特殊情况"加上对相等字符串的特例处理。</p>
+<p>本题没有特殊学科背景，约束全部来自"恰好一次交换"这一操作本身。直接的做法是枚举所有交换：选一对下标 <span class="arithmatex">\((i, j)\)</span>，在 <span class="arithmatex">\(s\)</span> 上交换 <span class="arithmatex">\(s_i, s_j\)</span>，再与 <span class="arithmatex">\(\text{goal}\)</span> 逐位比较。共有 <span class="arithmatex">\(\binom{n}{2}\)</span> 对下标，每次比较 <span class="arithmatex">\(O(n)\)</span>，总计 <span class="arithmatex">\(O(n^3)\)</span>；用差异计数可降到 <span class="arithmatex">\(O(n^2)\)</span>，但仍枚举了大量注定无关的交换。</p>
+<p>枚举之所以浪费，是因为绝大多数下标根本不该动：在 <span class="arithmatex">\(s\)</span> 与 <span class="arithmatex">\(\text{goal}\)</span> 已经相同的位置上做交换，只会把对的弄错。真正受约束的，是 <span class="arithmatex">\(s\)</span> 与 <span class="arithmatex">\(\text{goal}\)</span> <strong>不一致</strong>的位置。下面把这个观察精确化，问题就从枚举坍缩成对一个小集合的判定。</p>
 <h2 id="formulation">形式化 (Formulation)<a class="headerlink" href="#formulation" title="Permanent link">#</a></h2>
-<p>设 <span class="arithmatex">\(D = \{i : s_i \ne \text{goal}_i\}\)</span>。返回 <code>true</code> 当且仅当：
-1. <span class="arithmatex">\(|s| = |\text{goal}|\)</span>；
-2. <span class="arithmatex">\(|D| = 2\)</span> 且 <span class="arithmatex">\(D = \{i, j\}\)</span> 满足 <span class="arithmatex">\(s_i = \text{goal}_j \land s_j = \text{goal}_i\)</span>；或
-3. <span class="arithmatex">\(|D| = 0\)</span> 且 <span class="arithmatex">\(s\)</span> 中存在某字符出现 <span class="arithmatex">\(\ge 2\)</span> 次（可"原地交换"两个相同字符）。</p>
+<p><strong>直觉.</strong> 一次交换 <span class="arithmatex">\((i, j)\)</span> 只改动两个位置的字符。要让交换后的串等于 <span class="arithmatex">\(\text{goal}\)</span>，凡是 <span class="arithmatex">\(s\)</span> 与 <span class="arithmatex">\(\text{goal}\)</span> 已经一致的位置都不能被改动，凡是不一致的位置都必须被这次交换覆盖。于是"不一致的位置"集合的大小，直接决定了能否用一次交换修复。这个集合，就是要研究的对象。</p>
+<p>设差异集合
+$<span class="arithmatex">\(D = \{\, i : s_i \ne \text{goal}_i \,\}.\)</span>$
+返回 <code>true</code> 当且仅当下列条件全部成立：</p>
+<ol>
+<li><strong>长度相等</strong>：<span class="arithmatex">\(|s| = |\text{goal}|\)</span>。长度不同时连"逐位比较"都无从谈起。</li>
+<li><strong>要么差异恰为两位且可对调</strong>：<span class="arithmatex">\(|D| = 2\)</span>，记 <span class="arithmatex">\(D = \{i, j\}\)</span>，且 <span class="arithmatex">\(s_i = \text{goal}_j \,\land\, s_j = \text{goal}_i\)</span>。</li>
+<li><strong>要么完全相同且存在重复字符</strong>：<span class="arithmatex">\(|D| = 0\)</span> 且 <span class="arithmatex">\(s\)</span> 中某字符出现 <span class="arithmatex">\(\ge 2\)</span> 次。</li>
+</ol>
+<p>条件 2 与 3 是互斥的两支（按 <span class="arithmatex">\(|D|\)</span> 取值划分），二者满足其一即可。下面逐支说明它们为何是充要的，以及为何 <span class="arithmatex">\(|D|\)</span> 的其它取值一律不可能。</p>
+<p><strong>为何 <span class="arithmatex">\(|D|=2\)</span> 这一支成立.</strong> 交换 <span class="arithmatex">\((i, j)\)</span> 后，只有第 <span class="arithmatex">\(i, j\)</span> 位的字符发生变化，其余位置原样保留。若结果要等于 <span class="arithmatex">\(\text{goal}\)</span>，则除 <span class="arithmatex">\(i, j\)</span> 外的所有位置必须本就与 <span class="arithmatex">\(\text{goal}\)</span> 相同，即 <span class="arithmatex">\(D \subseteq \{i, j\}\)</span>，故 <span class="arithmatex">\(|D| \le 2\)</span>。又因交换的是两个<strong>不同</strong>下标，且只有这一次操作可用，差异不能凭空消去，所以 <span class="arithmatex">\(|D| = 2\)</span>。设 <span class="arithmatex">\(D = \{i, j\}\)</span>，交换把 <span class="arithmatex">\(s_i\)</span> 送到位置 <span class="arithmatex">\(j\)</span>、<span class="arithmatex">\(s_j\)</span> 送到位置 <span class="arithmatex">\(i\)</span>，要与 <span class="arithmatex">\(\text{goal}\)</span> 吻合就要求 <span class="arithmatex">\(s_i = \text{goal}_j\)</span> 且 <span class="arithmatex">\(s_j = \text{goal}_i\)</span>。这两个等式在 <span class="arithmatex">\(|D|=2\)</span> 下既必要又充分：其它位置已经匹配，只剩这一对需要对调成立。</p>
+<p><strong>为何 <span class="arithmatex">\(|D|=0\)</span> 这一支需要重复字符.</strong> 此时 <span class="arithmatex">\(s = \text{goal}\)</span>，看似不必交换，但题目要求<strong>必须</strong>交换一对不同下标。一次交换 <span class="arithmatex">\((i, j)\)</span>（<span class="arithmatex">\(i \ne j\)</span>）不改变字符串，当且仅当被交换的两个字符相同，即 <span class="arithmatex">\(s_i = s_j\)</span>。这样的下标对存在，当且仅当 <span class="arithmatex">\(s\)</span> 中某个字符出现至少两次。若 <span class="arithmatex">\(s\)</span> 的字符两两不同，任何交换都会破坏相等，故返回 <code>false</code>。</p>
+<p><strong>为何其它 <span class="arithmatex">\(|D|\)</span> 取值不可能.</strong> 由上面第一支的论证，<span class="arithmatex">\(|D| &gt; 2\)</span> 直接违反 <span class="arithmatex">\(D \subseteq \{i,j\}\)</span>，一次交换覆盖不了三个及以上的差异位。<span class="arithmatex">\(|D| = 1\)</span> 也不行：交换同时改动两个位置，无法只修一处而不在另一处制造新差异（除非那个被牵连的位置原本就匹配且字符恰好不变，但那需要它落在 <span class="arithmatex">\(D\)</span> 内，与 <span class="arithmatex">\(|D|=1\)</span> 矛盾）。因此可修复的差异数只能是 <span class="arithmatex">\(2\)</span>（一支）或 <span class="arithmatex">\(0\)</span>（另一支）。</p>
 <h2 id="approach">数据结构 / 想法 (Approach)<a class="headerlink" href="#approach" title="Permanent link">#</a></h2>
-<p>一遍扫描收集差异下标。若长度不等直接返回 false；若全等则需检查重复字符（用 set 大小或频次数组）。</p>
+<p>形式化给出的三个条件就是实现的骨架：代码逐条对应，不引入额外策略。</p>
+<ul>
+<li>条件 1（长度）：开头 <code>len(s) != len(goal)</code> 即返回 <code>False</code>。</li>
+<li>条件 3（<span class="arithmatex">\(|D|=0\)</span>）：当 <code>s == goal</code> 时，用 <code>len(set(s)) &lt; len(s)</code> 判断是否存在重复字符——集合去重后变短，说明有字符出现 <span class="arithmatex">\(\ge 2\)</span> 次。</li>
+<li>条件 2（<span class="arithmatex">\(|D|=2\)</span>）：否则一遍扫描收集差异下标 <code>diff</code>，要求恰好两个，且满足交叉相等 <code>s[diff[0]] == goal[diff[1]]</code> 与 <code>s[diff[1]] == goal[diff[0]]</code>。</li>
+</ul>
 <div class="language-python highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">Solution</span><span class="p">:</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">buddyStrings</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">s</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">goal</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">s</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="n">goal</span><span class="p">):</span>
@@ -22484,19 +22529,19 @@
         <span class="n">diff</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">s</span><span class="p">))</span> <span class="k">if</span> <span class="n">s</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">!=</span> <span class="n">goal</span><span class="p">[</span><span class="n">i</span><span class="p">]]</span>
         <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="n">diff</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span> <span class="ow">and</span> <span class="n">s</span><span class="p">[</span><span class="n">diff</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span> <span class="o">==</span> <span class="n">goal</span><span class="p">[</span><span class="n">diff</span><span class="p">[</span><span class="mi">1</span><span class="p">]]</span> <span class="ow">and</span> <span class="n">s</span><span class="p">[</span><span class="n">diff</span><span class="p">[</span><span class="mi">1</span><span class="p">]]</span> <span class="o">==</span> <span class="n">goal</span><span class="p">[</span><span class="n">diff</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span>
 </code></pre></div>
-<p>样例 trace：
-- <code>s="ab", goal="ba"</code>：diff=[0,1]，<code>s[0]='a'==goal[1]='a'</code>，<code>s[1]='b'==goal[0]='b'</code> → true。
-- <code>s="ab", goal="ab"</code>：相等，但 <code>set("ab")=2=len</code>，无重复 → false。
-- <code>s="aa", goal="aa"</code>：相等且有重复 → true。</p>
+<p><strong>验证.</strong> 三个样例分别落在三种逻辑分支上：
+- <code>s="ab", goal="ba"</code>：差异 <code>diff=[0,1]</code>，<code>s[0]='a'==goal[1]='a'</code>，<code>s[1]='b'==goal[0]='b'</code> → <code>true</code>（条件 2）。
+- <code>s="ab", goal="ab"</code>：相等，但 <code>set("ab")</code> 大小为 <span class="arithmatex">\(2 =\)</span> <code>len</code>，无重复字符 → <code>false</code>（条件 3 不满足）。
+- <code>s="aa", goal="aa"</code>：相等且有重复 → <code>true</code>（条件 3 满足）。</p>
 <h2 id="complexity">复杂度 (Complexity)<a class="headerlink" href="#complexity" title="Permanent link">#</a></h2>
 <ul>
-<li>Time: <span class="arithmatex">\(O(n)\)</span></li>
-<li>Space: <span class="arithmatex">\(O(n)\)</span>（diff 列表，可优化为 <span class="arithmatex">\(O(1)\)</span> 提前 break）</li>
+<li>Time: <span class="arithmatex">\(O(n)\)</span> —— 长度比较、<code>s == goal</code>、<code>set(s)</code>、差异列表推导各 <span class="arithmatex">\(O(n)\)</span>。代码未提前 break，故最好/平均/最坏均为 <span class="arithmatex">\(\Theta(n)\)</span>。</li>
+<li>Space: <span class="arithmatex">\(O(n)\)</span> —— <code>diff</code> 列表最坏可增长到 <span class="arithmatex">\(n\)</span>（如 <code>"a"*n</code> 对 <code>"b"*n</code>，全位不同）；<code>set(s)</code> 因小写字母上界为 <span class="arithmatex">\(26\)</span>，被 <code>diff</code> 主导。只需前 <span class="arithmatex">\(\le 3\)</span> 个差异即可判定，提前 break 可优化到 <span class="arithmatex">\(O(1)\)</span>。</li>
 </ul>
 <h2 id="pitfalls">陷阱 (Pitfalls)<a class="headerlink" href="#pitfalls" title="Permanent link">#</a></h2>
 <ul>
-<li><code>s == goal</code> 时不能直接返回 true：必须有可交换的重复字符；<code>"abc"</code> 与 <code>"abc"</code> 返回 false。</li>
-<li>差异个数为 1 或 <span class="arithmatex">\(\ge 3\)</span> 都不可能用一次交换修复。</li>
+<li><code>s == goal</code> 时不能直接返回 <code>true</code>：必须存在可交换的重复字符，否则强制交换反而破坏相等。<code>"abc"</code> 与 <code>"abc"</code> 返回 <code>false</code>。</li>
+<li>差异个数为 <span class="arithmatex">\(1\)</span> 或 <span class="arithmatex">\(\ge 3\)</span> 都不可能用一次交换修复——一次交换恰好改动两位，既补不齐三处差异，也无法只修一处。</li>
 </ul>
 <h2 id="related">相关题目 (Related)<a class="headerlink" href="#related" title="Permanent link">#</a></h2>
 <ul>
@@ -22610,6 +22655,8 @@
         <script src="../../../js/mathjax/tex-mml-chtml.js"></script>
       
         <script src="../../../js/mermaid.min.js"></script>
+      
+        <script src="../../../js/featured.js"></script>
       
     
   </body>

@@ -1466,6 +1466,8 @@
       
         
       
+        
+      
     
     
     
@@ -1521,6 +1523,34 @@
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../featured/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ⭐ Featured（已验证）
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
               
             
               
@@ -1610,10 +1640,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_4" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
         
           
-          <label class="md-nav__link" for="__nav_4_4" id="__nav_4_4_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_5" id="__nav_4_5_label" tabindex="">
             
   
   
@@ -1631,8 +1661,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_4_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_4">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_5">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1915,7 +1945,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -1937,14 +1967,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_4_5" id="__nav_4_5_label" tabindex="">
+              <label class="md-nav__link " for="__nav_4_6" id="__nav_4_6_label" tabindex="">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_5">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_6">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -5321,10 +5351,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_7" checked>
         
           
-          <label class="md-nav__link" for="__nav_4_6" id="__nav_4_6_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_7" id="__nav_4_7_label" tabindex="">
             
   
   
@@ -5342,8 +5372,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_4_6">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_7_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4_7">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -22467,15 +22497,19 @@
 <h2 id="problem">Problem<a class="headerlink" href="#problem" title="Permanent link">#</a></h2>
 <p>给字符串 <code>s</code> 与 <code>t</code>：<code>t</code> = <code>s</code> 打乱后随机插入一个字符。求被插入的字符。<span class="arithmatex">\(0 \le |s| \le 1000\)</span>，<span class="arithmatex">\(|t| = |s| + 1\)</span>，皆小写字母。</p>
 <h2 id="background">背景 (Background)<a class="headerlink" href="#background" title="Permanent link">#</a></h2>
-<p>本题示范 <strong>XOR 抵消</strong> 这一位运算经典技巧：<span class="arithmatex">\(x \oplus x = 0\)</span>，<span class="arithmatex">\(0 \oplus x = x\)</span>，且 XOR 满足交换 &amp; 结合律——所以把 <span class="arithmatex">\(s\)</span> 与 <span class="arithmatex">\(t\)</span> 中所有字符 XOR 起来，成对的字符两两归零，只剩"多出的一个"。</p>
-<p>该思想是 <strong>#136 Single Number</strong> 的同源问题，并延伸至：
-- #137 Single Number II（出现 3 次中找出现 1 次的）
-- #260 Single Number III（找两个）
-- <em>Hacker's Delight</em> §2 中位运算"代数"。</p>
-<p>从信息论看，XOR 是 <span class="arithmatex">\(\mathbb{F}_2\)</span> 上向量加法，整个字符串的 XOR 是该群中的和——多余字符就是和差。</p>
+<p>打乱不改变字符的多重集合，只有那次插入会改变它。所以除了被插入的那个字符，<code>s</code> 里的每个字符在 <code>t</code> 里都原封不动地再出现一次。把两个串拼在一起看，每个字符出现的总次数都是偶数——它在 <code>s</code> 里出现几次，在 <code>t</code> 里就同样出现几次——唯独被插入的字符在 <code>t</code> 里多了一份，总次数变成奇数。</p>
+<p>这把问题收束成一句话：在 <code>s</code> 和 <code>t</code> 的全部字符里，找那个出现总次数为奇数的字符。下面的整页都围绕这一个不变量展开。</p>
 <h2 id="formulation">形式化 (Formulation)<a class="headerlink" href="#formulation" title="Permanent link">#</a></h2>
-<p>设 <span class="arithmatex">\(s, t\)</span> 为字母串，<span class="arithmatex">\(\text{count}_t(c) = \text{count}_s(c) + [c = x]\)</span>（恰一字符 <span class="arithmatex">\(x\)</span> 多 1）。求 <span class="arithmatex">\(x\)</span>。</p>
+<p>记 <span class="arithmatex">\(\text{count}_s(c)\)</span>、<span class="arithmatex">\(\text{count}_t(c)\)</span> 为字符 <span class="arithmatex">\(c\)</span> 在 <span class="arithmatex">\(s\)</span>、<span class="arithmatex">\(t\)</span> 中的出现次数，<span class="arithmatex">\(x\)</span> 为被插入的字符。打乱保持多重集合不变、插入只加一份 <span class="arithmatex">\(x\)</span>，于是对所有 <span class="arithmatex">\(c\)</span>：</p>
+<div class="arithmatex">\[\text{count}_t(c) = \text{count}_s(c) + [c = x].\]</div>
+<p>把它移项，记 <span class="arithmatex">\(N(c) = \text{count}_s(c) + \text{count}_t(c)\)</span> 为 <span class="arithmatex">\(c\)</span> 在 <span class="arithmatex">\(s\,\Vert\,t\)</span> 中的总次数：</p>
+<div class="arithmatex">\[N(c) = 2\,\text{count}_s(c) + [c = x].\]</div>
+<p>于是 <span class="arithmatex">\(N(c)\)</span> 对 <span class="arithmatex">\(c \ne x\)</span> 是偶数，对 <span class="arithmatex">\(c = x\)</span> 是奇数。<strong>目标等价于：在 <span class="arithmatex">\(s\,\Vert\,t\)</span> 中找唯一出现奇数次的字符。</strong> 三种解法都是这一形式的不同读法。</p>
 <h2 id="approach">数据结构 / 想法 (Approach)<a class="headerlink" href="#approach" title="Permanent link">#</a></h2>
+<p><strong>朴素解法：数频次。</strong> 直接照搬形式化——开一个长度 26 的数组，扫 <code>t</code> 时每个字符 +1，扫 <code>s</code> 时每个字符 −1，最后非零项就是 <span class="arithmatex">\(x\)</span>（它的计数为 <span class="arithmatex">\(+1\)</span>）。这正确且 <span class="arithmatex">\(O(n)\)</span>，但要额外的计数数组。问题里只可能有一个答案，却要养一张 26 格的表，能不能不开这张表、单变量扫一遍就拿到 <span class="arithmatex">\(x\)</span>？</p>
+<p><strong>从奇偶性到 XOR。</strong> 我们真正要的不是每个字符的精确次数，而是它的次数的奇偶。需要一个运算 <span class="arithmatex">\(\circ\)</span>，把同一个字符叠加两次就互相抵消（对应偶数次贡献归零），叠加一次则原样留下（对应那唯一的奇数次）。按位异或 XOR 恰好满足：</p>
+<div class="arithmatex">\[a \oplus a = 0, \qquad 0 \oplus a = a,\]</div>
+<p>且 XOR 可交换、可结合，所以叠加顺序无关。把 <span class="arithmatex">\(s\,\Vert\,t\)</span> 中每个字符的 ASCII 码全 XOR 起来，每个 <span class="arithmatex">\(c \ne x\)</span> 出现偶数次、两两抵消为 <span class="arithmatex">\(0\)</span>；<span class="arithmatex">\(x\)</span> 出现奇数次，剩下它自己。结果就是 <span class="arithmatex">\(x\)</span> 的码点。这把 26 格的表压成一个整数累加器。</p>
 <p><strong>解法 A — XOR</strong>：</p>
 <div class="language-python highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">Solution</span><span class="p">:</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">findTheDifference</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">s</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">t</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
@@ -22484,29 +22518,35 @@
         <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">t</span><span class="p">:</span> <span class="n">x</span> <span class="o">^=</span> <span class="nb">ord</span><span class="p">(</span><span class="n">c</span><span class="p">)</span>
         <span class="k">return</span> <span class="nb">chr</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
 </code></pre></div>
-<p><strong>正确性</strong>：每个出现在 <span class="arithmatex">\(s\)</span> 也在 <span class="arithmatex">\(t\)</span> 的字符 XOR 偶数次抵消；多余字符 XOR 奇数次保留 → 结果即其 ASCII。</p>
-<p><strong>解法 B — 字符频次差</strong>：开 26 大小数组，t 加 s 减，找非零项。</p>
-<p><strong>解法 C — 求和</strong>：<code>sum(ord(c) for c in t) - sum(ord(c) for c in s)</code> → ASCII 差。</p>
-<p>三者都 <span class="arithmatex">\(O(|s|+|t|)\)</span> 时间，XOR 与求和都 <span class="arithmatex">\(O(1)\)</span> 空间。</p>
-<p>Trace s="abcd", t="abcde":
-- XOR all of "abcdabcde" = a^a^b^b^c^c^d^d^e = e. ord('e')=101, chr(101)='e' ✓</p>
-<p>Trace s="", t="y": XOR 仅 'y'. → 'y' ✓</p>
+<p><strong>正确性</strong>：由 <span class="arithmatex">\(N(c) = 2\,\text{count}_s(c) + [c = x]\)</span>，每个 <span class="arithmatex">\(c \ne x\)</span> 在 <span class="arithmatex">\(s\,\Vert\,t\)</span> 中出现偶数次，XOR 偶数次归零；<span class="arithmatex">\(x\)</span> 出现奇数次，XOR 后保留，故 <code>x</code> 即 <span class="arithmatex">\(x\)</span> 的 ASCII 码。</p>
+<p><strong>解法 B — 频次差（即上面的朴素解法）</strong>：开 26 大小数组，<code>t</code> 加 <code>s</code> 减，找非零项。它直接实现形式化，代价是 <span class="arithmatex">\(O(26)=O(1)\)</span> 的固定计数表。</p>
+<p><strong>解法 C — 求和</strong>：奇偶只是 mod 2 的视角；换成普通加法同样能抵消。<code>sum(ord(c) for c in t) - sum(ord(c) for c in s)</code> 中，每个 <span class="arithmatex">\(c \ne x\)</span> 在两个串里次数相等、相减为零，只剩 <span class="arithmatex">\(x\)</span> 的一份码点。</p>
+<div class="language-python highlight"><pre><span></span><code><span class="nb">chr</span><span class="p">(</span><span class="nb">sum</span><span class="p">(</span><span class="nb">ord</span><span class="p">(</span><span class="n">c</span><span class="p">)</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">t</span><span class="p">)</span> <span class="o">-</span> <span class="nb">sum</span><span class="p">(</span><span class="nb">ord</span><span class="p">(</span><span class="n">c</span><span class="p">)</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">s</span><span class="p">))</span>
+</code></pre></div>
+<p>三者都从同一个 <span class="arithmatex">\(N(c)\)</span> 的奇偶/差值结构出发：A 用 XOR（mod 2），B 用计数（精确），C 用求和（普通差）。时间均 <span class="arithmatex">\(O(|s|+|t|)\)</span>；A、C 仅一个累加器，<span class="arithmatex">\(O(1)\)</span> 空间，B 用固定 26 格表，同样 <span class="arithmatex">\(O(1)\)</span>。</p>
+<p>Trace s="abcd", t="abcde"（解法 A）：</p>
+<ul>
+<li>XOR all of "abcdabcde" = a^a^b^b^c^c^d^d^e = e。ord('e')=101，chr(101)='e' ✓</li>
+</ul>
+<p>Trace s="", t="y"：XOR 仅 'y' → 'y' ✓（覆盖 <span class="arithmatex">\(|s|=0\)</span> 边界。）</p>
 <h2 id="complexity">复杂度 (Complexity)<a class="headerlink" href="#complexity" title="Permanent link">#</a></h2>
 <ul>
-<li>Time: <span class="arithmatex">\(O(n)\)</span>.</li>
-<li>Space: <span class="arithmatex">\(O(1)\)</span>.</li>
+<li>Time: <span class="arithmatex">\(O(n)\)</span>，<span class="arithmatex">\(n = |s| + |t|\)</span>；因 <span class="arithmatex">\(|t| = |s| + 1\)</span> 即 <span class="arithmatex">\(O(|s|)\)</span>。</li>
+<li>Space: <span class="arithmatex">\(O(1)\)</span>（A、C 单累加器；B 固定 26 格表）。</li>
 </ul>
 <h2 id="pitfalls">陷阱 (Pitfalls)<a class="headerlink" href="#pitfalls" title="Permanent link">#</a></h2>
 <ul>
-<li><strong>XOR 法的前提是"成对抵消"</strong>——本题保证多 1 字符，故只剩一个。若多 2 字符则 XOR 给出两者异或（见 #260 用最低位 1 分组）。</li>
+<li><strong>整个推导依赖"恰好多 1 个字符"这一前提</strong>。是它保证除 <span class="arithmatex">\(x\)</span> 外所有字符总次数为偶、可两两抵消。若多 2 个字符，XOR 给出两者的异或而非单个答案，需用最低位 1 把元素分成两组（见 #260）。这一前提由约束 <span class="arithmatex">\(|t| = |s| + 1\)</span> 保证。</li>
+<li><strong>奇偶视角 ≠ 计次视角</strong>。XOR 抵消只判奇偶，无法区分"出现 1 次"与"出现 3 次"。若题目改成"其余字符各出现 3 次"，奇数次不再归零，需逐位对计数取 mod 3（即 #137），那已不是 XOR 抵消能解的问题。</li>
 <li><strong>大小写 / Unicode</strong>：本题保证小写英文；若扩展到 Unicode，XOR 仍按码点工作，结果是 <code>chr</code> 应用于码点而非字符。</li>
 </ul>
 <h2 id="related">相关题目 (Related)<a class="headerlink" href="#related" title="Permanent link">#</a></h2>
 <ul>
-<li><code>#136. Single Number (off-wiki)</code> — XOR 抵消原型。</li>
-<li><code>#268. Missing Number (off-wiki)</code> — XOR / 求和找缺失数。</li>
-<li><code>#260. Single Number III (off-wiki)</code> — 找两个不成对元素。</li>
-<li><a href="../0461_hamming-distance/">#0461. Hamming Distance</a> — XOR 的距离应用。</li>
+<li><a href="../0136_single-number/">#136. Single Number</a> — XOR 抵消原型：其余元素各出现两次，求那个出现一次的。</li>
+<li><code>#268. Missing Number (off-wiki)</code> — XOR / 求和找缺失数，同样是奇偶/差值结构。</li>
+<li><code>#260. Single Number III (off-wiki)</code> — 两个不成对元素，需按最低位 1 分组。</li>
+<li><code>#137. Single Number II (off-wiki)</code> — 其余出现 3 次，需逐位 mod 3；属位运算 single-number 家族，但<strong>不是</strong> XOR 抵消问题（见陷阱）。</li>
+<li><a href="../0461_hamming-distance/">#0461. Hamming Distance</a> — XOR 的距离应用（popcount of a^b）。</li>
 <li><a href="../0387_first-unique-character-in-a-string/">#0387. First Unique Character in a String</a> — 字符频次同类。</li>
 </ul>
 <h2 id="further-reading">Further Reading<a class="headerlink" href="#further-reading" title="Permanent link">#</a></h2>
@@ -22618,6 +22658,8 @@
         <script src="../../../js/mathjax/tex-mml-chtml.js"></script>
       
         <script src="../../../js/mermaid.min.js"></script>
+      
+        <script src="../../../js/featured.js"></script>
       
     
   </body>

@@ -1466,6 +1466,8 @@
       
         
       
+        
+      
     
     
     
@@ -1521,6 +1523,34 @@
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../featured/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ⭐ Featured（已验证）
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
               
             
               
@@ -1610,10 +1640,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_4" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
         
           
-          <label class="md-nav__link" for="__nav_4_4" id="__nav_4_4_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_5" id="__nav_4_5_label" tabindex="">
             
   
   
@@ -1631,8 +1661,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_4_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_4">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_5">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1915,7 +1945,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -1937,14 +1967,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_4_5" id="__nav_4_5_label" tabindex="">
+              <label class="md-nav__link " for="__nav_4_6" id="__nav_4_6_label" tabindex="">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_5">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_6">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -5321,10 +5351,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_7" checked>
         
           
-          <label class="md-nav__link" for="__nav_4_6" id="__nav_4_6_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_7" id="__nav_4_7_label" tabindex="">
             
   
   
@@ -5342,8 +5372,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_4_6">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_7_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4_7">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -22467,10 +22497,27 @@
 <h2 id="problem">Problem<a class="headerlink" href="#problem" title="Permanent link">#</a></h2>
 <p>给 BST root，将每节点值 <code>v</code> 替换为：<code>v + (BST 中所有 &gt; v 的节点之和)</code>。<span class="arithmatex">\(n \leq 10^4\)</span>，节点值 unique。</p>
 <h2 id="background">背景 (Background)<a class="headerlink" href="#background" title="Permanent link">#</a></h2>
-<p>BST 的<strong>反向中序遍历</strong>（Right → Root → Left）按值降序访问节点。这一性质让"每节点累加所有更大值"成为一次扫描的累计前缀和——本质是把"按值排序的后缀和"映射回 BST 结构。这是 BST 性质和有序序列等价性的优美应用。也是 LeetCode #1038 BST to Greater Sum Tree 的等价题。</p>
+<p>定义要求的是：对每个节点，把它原值加上<strong>所有比它大的节点之和</strong>。直接照定义做，对每个节点都要一次"找出所有更大值并求和"的操作。在一般树里，找出所有比 <code>v</code> 大的节点需要扫遍全树，于是 <span class="arithmatex">\(n\)</span> 个节点各扫一遍全树，代价 <span class="arithmatex">\(O(n^2)\)</span>。</p>
+<p>朴素法在哪里浪费？它对每个节点都从头重算"更大值之和"，完全没有复用上一个节点已经算过的东西。考虑两个相邻大小的值 <span class="arithmatex">\(v_i &lt; v_{i+1}\)</span>：比 <span class="arithmatex">\(v_i\)</span> 大的集合，恰好是比 <span class="arithmatex">\(v_{i+1}\)</span> 大的集合再添上 <span class="arithmatex">\(v_{i+1}\)</span> 自己。也就是说，如果按值<strong>从大到小</strong>处理节点，每往下走一个值，只需在已有的和上累加一个数，而不必重扫全树。</p>
+<p>要按值从大到小处理节点，朴素的想法是把所有值取出来排序——但这又要 <span class="arithmatex">\(O(n \log n)\)</span>，而且丢掉了树本身的结构。这里 BST 的排序不变式恰好派上用场：左子树 &lt; 节点 &lt; 右子树。这条不变式意味着树<strong>已经按值排好了序</strong>，只是这个顺序藏在遍历方式里。下面把这一点变成精确陈述，再据此推出一次扫描的算法。</p>
 <h2 id="formulation">形式化 (Formulation)<a class="headerlink" href="#formulation" title="Permanent link">#</a></h2>
-<p>设节点按值升序 <span class="arithmatex">\(v_1 &lt; v_2 &lt; \cdots &lt; v_n\)</span>。新值 <span class="arithmatex">\(v_i' = \sum_{j \geq i} v_j\)</span>。等价：反向中序遍历，维护累计和 <span class="arithmatex">\(S\)</span>，访问节点时令 <code>node.val += S</code> 然后 <code>S = node.val</code>。</p>
+<p>先看一个最小例子，把"目标值"算出来感受其结构。设 BST 含值 <span class="arithmatex">\(1, 2, 3\)</span>，则：</p>
+<ul>
+<li>节点 <span class="arithmatex">\(3\)</span>：没有更大值，新值 <span class="arithmatex">\(= 3\)</span>；</li>
+<li>节点 <span class="arithmatex">\(2\)</span>：更大值之和 <span class="arithmatex">\(= 3\)</span>，新值 <span class="arithmatex">\(= 2 + 3 = 5\)</span>；</li>
+<li>节点 <span class="arithmatex">\(1\)</span>：更大值之和 <span class="arithmatex">\(= 2 + 3 = 5\)</span>，新值 <span class="arithmatex">\(= 1 + 5 = 6\)</span>。</li>
+</ul>
+<p>可见每个新值就是"自己及所有更大值"的总和，而且从大到小处理时，每步只在前一步的和上加当前值（<span class="arithmatex">\(3 \to 3+2 \to 5+1\)</span>）。把它写成定义。</p>
+<p>设节点按值升序排列为 <span class="arithmatex">\(v_1 &lt; v_2 &lt; \cdots &lt; v_n\)</span>（值唯一）。节点 <span class="arithmatex">\(i\)</span> 的新值为它自身加上所有严格更大的值；因为值唯一，"严格更大"即 <span class="arithmatex">\(v_{i+1}, \dots, v_n\)</span>，故</p>
+<div class="arithmatex">\[v_i' = v_i + \sum_{j &gt; i} v_j = \sum_{j \geq i} v_j. \tag{1}\]</div>
+<p>这里下标 <span class="arithmatex">\(i, j\)</span> 是<strong>按值排序后的秩</strong>，不是节点在树中的位置。式 (1) 把新值刻画为按值排序后的<strong>后缀和</strong>：从最大值往最小值累加。</p>
 <h2 id="approach">数据结构 / 想法 (Approach)<a class="headerlink" href="#approach" title="Permanent link">#</a></h2>
+<p>式 (1) 直接给出计算策略。后缀和要求"从最大值往最小值"逐个累加，所以只要能<strong>按值降序访问节点</strong>，维护一个累计和 <span class="arithmatex">\(S\)</span>，访问节点时令其新值为 <span class="arithmatex">\(S\)</span> 加上原值即可。问题归结为：如何按降序访问 BST 的节点？</p>
+<p>回到 BST 不变式：对任意节点，左子树所有值 &lt; 节点值 &lt; 右子树所有值。中序遍历（左 → 根 → 右）正是利用这条不变式按升序访问全部节点——每访问一个根，左子树（更小值）已访问完，右子树（更大值）尚未访问。把访问顺序整体翻转，即<strong>反向中序</strong>（右 → 根 → 左），就按降序访问全部节点。</p>
+<p>这给出关键性质：以反向中序访问节点时，到达某节点前，其右子树（即所有比它大的值）已全部访问完毕，因此累计和 <span class="arithmatex">\(S\)</span> 恰为"所有更大值之和"。这正是式 (1) 求和项 <span class="arithmatex">\(\sum_{j &gt; i} v_j\)</span> 的全部内容——无需排序，遍历顺序本身就是那个排序。</p>
+<p>于是更新规则为：访问节点时</p>
+<div class="arithmatex">\[S \leftarrow S + \text{node.val}, \qquad \text{node.val} \leftarrow S. \tag{2}\]</div>
+<p>第一步把当前值并入累计和（此前 <span class="arithmatex">\(S\)</span> 已含全部更大值），第二步把这个后缀和写回节点，正是式 (1)。</p>
 <p><strong>反向中序 + 累加</strong>：右子树 → 当前节点 → 左子树，全程维护累计和。</p>
 <div class="language-python highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">Solution</span><span class="p">:</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">convertBST</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">root</span><span class="p">):</span>
@@ -22484,9 +22531,9 @@
         <span class="n">dfs</span><span class="p">(</span><span class="n">root</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">root</span>
 </code></pre></div>
-<p><strong>为什么对</strong>：反向中序保证访问 node 时，所有值 &gt; node.val 的节点已被访问过 → <code>self.s</code> 恰为它们的和。把 <code>s</code> 累上当前 val 后再赋回，符合定义"新值 = 原值 + 更大值之和"。</p>
-<p><strong>Trace <code>[0, null, 1]</code></strong>：node=0 的右是 1。dfs(右)：先 dfs(右.右)=空；s+=1=1；右.val=1；dfs(右.左)=空。回到 0：s+=0=1；0.val=1；dfs(左)=空。输出 <code>[1, null, 1]</code> ✓</p>
-<p><strong>迭代版（显式栈）</strong>：避免大树 stack overflow：</p>
+<p>代码是式 (2) 的逐行誊写：先递归右子树（耗尽所有更大值），再对当前节点执行 (2)，最后递归左子树。</p>
+<p><strong>Trace <code>[0, null, 1]</code></strong>：node=0 的右是 1。dfs(右)：先 dfs(右.右)=空；s+=1=1；右.val=1；dfs(右.左)=空。回到 0：s+=0=1；0.val=1；dfs(左)=空。输出 <code>[1, null, 1]</code> ✓。节点 0 的新值 1 = 0 + 1，恰为它加上唯一更大值 1，与式 (1) 一致。</p>
+<p><strong>迭代版（显式栈）</strong>：递归深度等于树高，退化（链状）BST 下 <span class="arithmatex">\(h = n = 10^4\)</span> 可能触及 Python 默认递归上限（~1000）。显式栈消去递归深度限制：</p>
 <div class="language-python highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">convertBST</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">root</span><span class="p">):</span>
     <span class="n">s</span><span class="p">,</span> <span class="n">stack</span><span class="p">,</span> <span class="n">cur</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="p">[],</span> <span class="n">root</span>
     <span class="k">while</span> <span class="n">stack</span> <span class="ow">or</span> <span class="n">cur</span><span class="p">:</span>
@@ -22497,21 +22544,24 @@
         <span class="n">cur</span> <span class="o">=</span> <span class="n">cur</span><span class="o">.</span><span class="n">left</span>
     <span class="k">return</span> <span class="n">root</span>
 </code></pre></div>
+<p>内层 <code>while cur: cur = cur.right</code> 一路压入右链，弹栈即按降序取节点，与递归版访问顺序完全相同。</p>
 <h2 id="complexity">复杂度 (Complexity)<a class="headerlink" href="#complexity" title="Permanent link">#</a></h2>
 <ul>
-<li>Time: <span class="arithmatex">\(O(n)\)</span></li>
-<li>Space: <span class="arithmatex">\(O(h)\)</span> 递归栈（平衡 <span class="arithmatex">\(O(\log n)\)</span>，最坏 <span class="arithmatex">\(O(n)\)</span>）</li>
+<li>Time: <span class="arithmatex">\(O(n)\)</span> — 每节点恰好访问一次。</li>
+<li>Space: <span class="arithmatex">\(O(h)\)</span> 递归栈（平衡 <span class="arithmatex">\(O(\log n)\)</span>，最坏 <span class="arithmatex">\(O(n)\)</span>）；迭代版的显式栈同样是 <span class="arithmatex">\(O(h)\)</span>。</li>
 </ul>
+<p>相比朴素 <span class="arithmatex">\(O(n^2)\)</span>，复用累计和把每节点的工作从"重扫全树"降为常数次操作，总代价线性。</p>
 <h2 id="pitfalls">陷阱 (Pitfalls)<a class="headerlink" href="#pitfalls" title="Permanent link">#</a></h2>
 <ul>
-<li><strong>遍历顺序</strong>：必须 R → Self → L（不是 L→R→Self）；否则累加方向错。</li>
-<li><strong>累加变量作用域</strong>：用 <code>self.s</code> 或 <code>nonlocal s</code>，不要在闭包里 <code>s = ...</code> 创建新本地变量。</li>
+<li><strong>遍历顺序</strong>：必须 R → Self → L（不是 L → R → Self）；否则到达节点时更大值尚未全部累加，累加方向错。</li>
+<li><strong>累加变量作用域</strong>：用 <code>self.s</code> 或 <code>nonlocal s</code>，不要在闭包里 <code>s = ...</code> 创建新本地变量，否则更新对外层不可见。</li>
 <li><strong>空树</strong>：根可能为 None；DFS 提前返回。</li>
 </ul>
 <h2 id="related">相关题目 (Related)<a class="headerlink" href="#related" title="Permanent link">#</a></h2>
 <ul>
 <li><a href="../0226_invert-binary-tree/">#226. Invert Binary Tree</a> — 同样的"DFS 改写节点"模式</li>
 <li><a href="../1448_count-good-nodes-in-binary-tree/">#1448. Count Good Nodes in Binary Tree</a> — DFS 沿路径传值的另一例</li>
+<li>[#1038. BST to Greater Sum Tree] — 与本题完全等价（同一问题的不同编号）</li>
 </ul>
 <h2 id="further-reading">Further Reading<a class="headerlink" href="#further-reading" title="Permanent link">#</a></h2>
 <ul>
@@ -22623,6 +22673,8 @@
         <script src="../../../js/mathjax/tex-mml-chtml.js"></script>
       
         <script src="../../../js/mermaid.min.js"></script>
+      
+        <script src="../../../js/featured.js"></script>
       
     
   </body>

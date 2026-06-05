@@ -1466,6 +1466,8 @@
       
         
       
+        
+      
     
     
     
@@ -1521,6 +1523,34 @@
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../featured/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ⭐ Featured（已验证）
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
               
             
               
@@ -1610,10 +1640,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_4" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
         
           
-          <label class="md-nav__link" for="__nav_4_4" id="__nav_4_4_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_5" id="__nav_4_5_label" tabindex="">
             
   
   
@@ -1631,8 +1661,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_4_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_4">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_5">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1915,7 +1945,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -1937,14 +1967,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_4_5" id="__nav_4_5_label" tabindex="">
+              <label class="md-nav__link " for="__nav_4_6" id="__nav_4_6_label" tabindex="">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_5">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_6">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -5321,10 +5351,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_7" checked>
         
           
-          <label class="md-nav__link" for="__nav_4_6" id="__nav_4_6_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_7" id="__nav_4_7_label" tabindex="">
             
   
   
@@ -5342,8 +5372,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_4_6">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_7_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4_7">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -22467,12 +22497,49 @@
 <h2 id="problem">Problem<a class="headerlink" href="#problem" title="Permanent link">#</a></h2>
 <p>给字符串 <code>s</code>，把所有大写字母转为对应小写字母返回。<span class="arithmatex">\(1 \le |s| \le 100\)</span>，含可打印 ASCII。</p>
 <h2 id="background">背景 (Background)<a class="headerlink" href="#background" title="Permanent link">#</a></h2>
-<p>ASCII 表设计有意把大小写差别放在第 6 位（<code>0x20 = 32</code>），即 'A' (0x41) ↔ 'a' (0x61)。这一对称性是 60 年代 ASCII 标准化的选择（参 Bemer 1960），结果是大小写转换可写成一个 OR / XOR 操作而非查表。Unicode 不享有该简化——例如 'İ' (U+0130) 的 lowercase 是 'i' (U+0069) + 隐式 dot above，需要语言相关 case folding。</p>
+<p>最直接的写法是逐字符查一张大小写对照表：维护 <code>{'A':'a', 'B':'b', …, 'Z':'z'}</code>，遇到字母就替换，否则原样保留。这能工作，但要手写 26 条映射，且把"<code>A</code> 对应 <code>a</code>"当成 26 个互不相干的事实来记。问题在于：这张表真的是 26 个独立事实吗？</p>
+<p>把字符看成它的 ASCII 码点，把前几对大小写并排列出来，规律立刻浮现：</p>
+<table>
+<thead>
+<tr>
+<th>字符</th>
+<th>码点</th>
+<th>字符</th>
+<th>码点</th>
+<th>差值</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>A</code></td>
+<td>65</td>
+<td><code>a</code></td>
+<td>97</td>
+<td>32</td>
+</tr>
+<tr>
+<td><code>B</code></td>
+<td>66</td>
+<td><code>b</code></td>
+<td>98</td>
+<td>32</td>
+</tr>
+<tr>
+<td><code>Z</code></td>
+<td>90</td>
+<td><code>z</code></td>
+<td>122</td>
+<td>32</td>
+</tr>
+</tbody>
+</table>
+<p>每一对的差值都是常数 32。这不是巧合：ASCII 把 26 个大写字母排在连续区间 <span class="arithmatex">\([65, 90]\)</span>、26 个小写字母排在连续区间 <span class="arithmatex">\([97, 122]\)</span>，两个区间整体平移 32。于是对照表压缩成一条算术规则——大写码点加 32 即得对应小写——查表退化为一次加法。</p>
 <h2 id="formulation">形式化 (Formulation)<a class="headerlink" href="#formulation" title="Permanent link">#</a></h2>
-<p>对每个字符 <span class="arithmatex">\(c\)</span>：</p>
-<div class="arithmatex">\[\mathrm{lower}(c) = \begin{cases} c + 32 &amp; \text{`A'} \le c \le \text{`Z'} \\ c &amp; \text{otherwise} \end{cases}\]</div>
+<p>设字符 <span class="arithmatex">\(c\)</span> 以其 ASCII 码点参与运算。上面观察到的常数差给出分段映射：大写区间内的字符平移 32，其余字符不动。</p>
+<div class="arithmatex">\[\mathrm{lower}(c) = \begin{cases} c + 32 &amp; 65 \le c \le 90 \\ c &amp; \text{otherwise} \end{cases}\]</div>
+<p>两点边界需要确认。其一，守卫区间 <span class="arithmatex">\([65, 90]\)</span> 恰好是 26 个大写字母，不多不少，因此判断条件等价于"<span class="arithmatex">\(c\)</span> 是大写字母"。其二，加 32 把 <span class="arithmatex">\([65, 90]\)</span> 双射到 <span class="arithmatex">\([97, 122]\)</span>，即小写字母区间，不与任何其他可打印字符碰撞。两点合起来保证：该映射只改大写字母，且改后落点正确。</p>
 <h2 id="approach">数据结构 / 想法 (Approach)<a class="headerlink" href="#approach" title="Permanent link">#</a></h2>
-<p><strong>核心</strong>：判断 ASCII 范围 [65,90]，加 32（或位运算 <code>c | 0x20</code>，对字母安全；对非字母会改变值）。</p>
+<p>形式化是骨架，代码逐项落实分段定义：守卫 <code>65 &lt;= ord(c) &lt;= 90</code>（写成 <code>'A' &lt;= c &lt;= 'Z'</code>）对应分段条件，<code>ord(c) + 32</code>（写成 <code>chr(ord(c) + 32)</code>）对应平移分支，<code>else c</code> 对应恒等分支。</p>
 <div class="language-python highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">Solution</span><span class="p">:</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">toLowerCase</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">s</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
         <span class="k">return</span> <span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
@@ -22480,16 +22547,31 @@
             <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">s</span>
         <span class="p">)</span>
 </code></pre></div>
-<p>样例：<code>"Hello"</code> → 'H'+32='h', 'e','l','l','o' → <code>"hello"</code>。✓ <code>"LOVELY"</code> → 全大写每个 +32 → <code>"lovely"</code>。✓</p>
+<p>逐字符独立处理、不依赖上下文，因此一遍线性扫描即可。</p>
+<p>样例：<code>"Hello"</code> → <code>'H'+32='h'</code>，其余 <code>'e','l','l','o'</code> 不在大写区间原样保留 → <code>"hello"</code>。✓ <code>"LOVELY"</code> → 每个字符都在 <span class="arithmatex">\([65,90]\)</span>，各 +32 → <code>"lovely"</code>。✓</p>
+<p><strong>位运算变体</strong>。常数 32 不是任意数，它是 <span class="arithmatex">\(2^5 = \texttt{0x20}\)</span>，即单独一个比特位。把一对大小写字母的二进制并排看，原因就清楚了：</p>
+<div class="language-text highlight"><pre><span></span><code>&#39;A&#39; = 0100 0001  (65)
+&#39;a&#39; = 0110 0001  (97)
+       ↑ 唯一不同的位（自 LSB 起第 5 位）
+</code></pre></div>
+<p>大写与小写字母的码点只在第 5 位（值 <span class="arithmatex">\(\texttt{0x20}\)</span>）不同：大写该位为 0，小写为 1。因此对大写字母而言，"加 32"与"把第 5 位置 1"完全等价，后者正是 <code>c | 0x20</code>。</p>
+<div class="language-python highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">Solution</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">toLowerCase</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">s</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="k">return</span> <span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
+            <span class="nb">chr</span><span class="p">(</span><span class="nb">ord</span><span class="p">(</span><span class="n">c</span><span class="p">)</span> <span class="o">|</span> <span class="mh">0x20</span><span class="p">)</span> <span class="k">if</span> <span class="s1">&#39;A&#39;</span> <span class="o">&lt;=</span> <span class="n">c</span> <span class="o">&lt;=</span> <span class="s1">&#39;Z&#39;</span> <span class="k">else</span> <span class="n">c</span>
+            <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">s</span>
+        <span class="p">)</span>
+</code></pre></div>
+<p>注意 <code>| 0x20</code> 与 <code>+ 32</code> 只在守卫区间 <span class="arithmatex">\([65, 90]\)</span> 内等价；脱离守卫，二者行为分道扬镳（见陷阱），所以这里仍保留范围判断而非无条件 OR。</p>
 <h2 id="complexity">复杂度 (Complexity)<a class="headerlink" href="#complexity" title="Permanent link">#</a></h2>
 <ul>
-<li>Time: <span class="arithmatex">\(O(n)\)</span>。</li>
-<li>Space: <span class="arithmatex">\(O(n)\)</span> 输出（Python 字符串不可变）。</li>
+<li>Time: <span class="arithmatex">\(O(n)\)</span>。每字符常数工作，无数据依赖，最好/平均/最坏同为 <span class="arithmatex">\(\Theta(n)\)</span>。</li>
+<li>Space: <span class="arithmatex">\(O(n)\)</span> 输出（Python 字符串不可变，必须新建）。</li>
 </ul>
 <h2 id="pitfalls">陷阱 (Pitfalls)<a class="headerlink" href="#pitfalls" title="Permanent link">#</a></h2>
 <ul>
-<li>位运算 <code>c | 0x20</code> 只对 ASCII 字母安全；对数字 <code>'1' (0x31) | 0x20 = 0x31</code> 不变（巧合），但对一些控制字符会变。最稳：先判范围再加。</li>
-<li>非 ASCII / Unicode 不在题目范围；真要写 production 代码用 <code>str.casefold()</code>（处理土耳其语 i/İ）。</li>
+<li>把范围判断省掉、对全串无条件 <code>c | 0x20</code>：对大写字母正确，但会误改非字母。<code>'1' (0x31) | 0x20 = 0x31</code> 恰好不变只是巧合（第 5 位本就是 1）；而控制字符会被改写，如 <code>'\r' (0x0D) | 0x20 = 0x2D ('-')</code>。最稳的做法是先判范围、再变换。</li>
+<li>本题限定可打印 ASCII，故加 32 安全。Unicode 不享有这一简化：<code>'İ' (U+0130)</code> 的默认 lowercase 是 <code>'i' (U+0069)</code> 外加一个 <code>COMBINING DOT ABOVE (U+0307)</code>，码点不再是简单平移。Production 代码应交给 <code>str.lower()</code> / <code>str.casefold()</code> 处理这类组合与折叠；注意 Python 默认 <code>casefold()</code> 不做土耳其语 locale 的 <code>İ → ı</code> 折叠，那需要显式的 locale 处理。</li>
 </ul>
 <h2 id="related">相关题目 (Related)<a class="headerlink" href="#related" title="Permanent link">#</a></h2>
 <ul>
@@ -22605,6 +22687,8 @@
         <script src="../../../js/mathjax/tex-mml-chtml.js"></script>
       
         <script src="../../../js/mermaid.min.js"></script>
+      
+        <script src="../../../js/featured.js"></script>
       
     
   </body>

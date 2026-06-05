@@ -1466,6 +1466,8 @@
       
         
       
+        
+      
     
     
     
@@ -1521,6 +1523,34 @@
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../featured/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ⭐ Featured（已验证）
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
               
             
               
@@ -1610,10 +1640,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_4" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
         
           
-          <label class="md-nav__link" for="__nav_4_4" id="__nav_4_4_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_5" id="__nav_4_5_label" tabindex="">
             
   
   
@@ -1631,8 +1661,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_4_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_4">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_5">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1915,7 +1945,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -1937,14 +1967,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_4_5" id="__nav_4_5_label" tabindex="">
+              <label class="md-nav__link " for="__nav_4_6" id="__nav_4_6_label" tabindex="">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_5">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_6">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -5321,10 +5351,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_7" checked>
         
           
-          <label class="md-nav__link" for="__nav_4_6" id="__nav_4_6_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_7" id="__nav_4_7_label" tabindex="">
             
   
   
@@ -5342,8 +5372,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_4_6">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_7_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4_7">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -22467,32 +22497,39 @@
 <h2 id="problem">Problem<a class="headerlink" href="#problem" title="Permanent link">#</a></h2>
 <p>给两非负整数 <code>low</code>, <code>high</code>（<span class="arithmatex">\(\leq 10^9\)</span>），返回闭区间 <span class="arithmatex">\([low, high]\)</span> 中奇数的个数。</p>
 <h2 id="background">背景 (Background)<a class="headerlink" href="#background" title="Permanent link">#</a></h2>
-<p>经典闭式公式：用前缀奇数计数 <span class="arithmatex">\(O(x) = \lceil x/2 \rceil\)</span>（即 <span class="arithmatex">\([1, x]\)</span> 中奇数数），答案 <span class="arithmatex">\(= O(\text{high}) - O(\text{low} - 1)\)</span>。这是 prefix-sum 思想在解析函数上的退化。</p>
+<p>最直接的做法是逐个扫描：从 <code>low</code> 到 <code>high</code> 遍历每个整数，对 <code>x % 2 == 1</code> 计数。这一定正确，但代价是 <span class="arithmatex">\(O(\text{high} - \text{low})\)</span>。题目给出 <span class="arithmatex">\(\text{high} \leq 10^9\)</span>，区间长度可达 <span class="arithmatex">\(10^9\)</span>，逐个扫描会做约十亿次取模——太慢。问题因此变成：能不能不扫描、直接算出个数？</p>
+<p>要绕开扫描，先看奇数在整数轴上的排布。从 <span class="arithmatex">\(1\)</span> 开始，把整数两两配对：<span class="arithmatex">\((1,2),(3,4),(5,6),\dots\)</span>。每一对恰含一个奇数（较小的那个）。于是 <span class="arithmatex">\([1, x]\)</span> 中奇数的个数，就等于这些配对覆盖了几个完整对，再加上末尾可能剩下的单个奇数。当 <span class="arithmatex">\(x\)</span> 偶时，区间恰好分成 <span class="arithmatex">\(x/2\)</span> 个完整对，奇数有 <span class="arithmatex">\(x/2\)</span> 个；当 <span class="arithmatex">\(x\)</span> 奇时，多出一个落单的奇数 <span class="arithmatex">\(x\)</span>，奇数有 <span class="arithmatex">\((x+1)/2\)</span> 个。两种情况统一写成 <span class="arithmatex">\(\lfloor (x+1)/2 \rfloor\)</span>。</p>
+<p>这个计数只依赖右端点。记 <span class="arithmatex">\(F(x) = \#\{\text{奇数} \in [1, x]\} = \lfloor (x+1)/2 \rfloor\)</span>。任意区间 <span class="arithmatex">\([low, high]\)</span> 的奇数个数，等于"到 high 为止的奇数"减去"到 low 之前为止的奇数"，即 <span class="arithmatex">\(F(\text{high}) - F(\text{low}-1)\)</span>。这正是用一个只含右端点的计数函数，靠两次相减切出中间一段——下文将其化简为最终公式。</p>
 <h2 id="formulation">形式化 (Formulation)<a class="headerlink" href="#formulation" title="Permanent link">#</a></h2>
-<p>求 <span class="arithmatex">\(|\{ x \in [low, high] : x \text{ odd} \}|\)</span>。利用 <span class="arithmatex">\(|[a, b] \cap \text{Odd}| = \lceil (b - a + 1) / 2 \rceil + \mathbb{1}[\text{both even, length even}]\cdots\)</span>，更简洁地：</p>
-<div class="arithmatex">\[\#\text{odd} = \lfloor (\text{high} + 1) / 2 \rfloor - \lfloor \text{low} / 2 \rfloor.\]</div>
+<p>目标是求集合的基数</p>
+<div class="arithmatex">\[\#\text{odd} = |\{ x \in [low, high] : x \text{ odd} \}|.\]</div>
+<p>依据上面的配对论证，定义前缀计数 <span class="arithmatex">\(F(x) = \lfloor (x+1)/2 \rfloor\)</span>，它给出 <span class="arithmatex">\([1, x]\)</span> 内奇数的个数。区间计数由两次前缀相减得到：</p>
+<div class="arithmatex">\[\#\text{odd} = F(\text{high}) - F(\text{low}-1) = \left\lfloor \frac{\text{high}+1}{2} \right\rfloor - \left\lfloor \frac{\text{low}}{2} \right\rfloor.\]</div>
+<p>第二项的化简用到 <span class="arithmatex">\(F(\text{low}-1) = \lfloor \text{low}/2 \rfloor\)</span>：把 <span class="arithmatex">\(x = \text{low}-1\)</span> 代入 <span class="arithmatex">\(\lfloor (x+1)/2 \rfloor\)</span> 即得 <span class="arithmatex">\(\lfloor \text{low}/2 \rfloor\)</span>。可在小例上核对——<span class="arithmatex">\(low=3\)</span>：<span class="arithmatex">\(F(2)=1=\lfloor 3/2 \rfloor\)</span>；<span class="arithmatex">\(low=4\)</span>：<span class="arithmatex">\(F(3)=2=\lfloor 4/2 \rfloor\)</span>，相符。</p>
+<p>这条相减结构站得住，靠的是单步增量恒等式</p>
+<div class="arithmatex">\[F(x) - F(x-1) = \left\lfloor \frac{x+1}{2} \right\rfloor - \left\lfloor \frac{x}{2} \right\rfloor = \begin{cases} 1 &amp; x \text{ 奇} \\ 0 &amp; x \text{ 偶} \end{cases}\]</div>
+<p>也就是说 <span class="arithmatex">\(F\)</span> 每遇到一个奇数才加 <span class="arithmatex">\(1\)</span>，遇偶数不变。把这些 <span class="arithmatex">\(0/1\)</span> 增量从 <span class="arithmatex">\(low\)</span> 累加到 <span class="arithmatex">\(high\)</span>，得到的正是区间内奇数的总数，这就保证了 <span class="arithmatex">\(F(\text{high}) - F(\text{low}-1)\)</span> 不多不少。</p>
 <h2 id="approach">数据结构 / 想法 (Approach)<a class="headerlink" href="#approach" title="Permanent link">#</a></h2>
+<p>公式已经是闭式，直接落地为常数时间的算术：</p>
 <div class="language-python highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">Solution</span><span class="p">:</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">countOdds</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">low</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">high</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
         <span class="k">return</span> <span class="p">(</span><span class="n">high</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">//</span> <span class="mi">2</span> <span class="o">-</span> <span class="n">low</span> <span class="o">//</span> <span class="mi">2</span>
-
-<span class="c1"># 推导：[1,x] 中奇数个数 = ⌈x/2⌉ = (x+1)//2。</span>
-<span class="c1"># 所以 [low, high] 中奇数 = (high+1)//2 - low//2（前缀差，low//2 = [1, low-1] 中奇数个）。</span>
-<span class="c1">#</span>
-<span class="c1"># Trace 样例 1: low=3, high=7. (7+1)//2 - 3//2 = 4 - 1 = 3 ✓</span>
-<span class="c1"># Trace 样例 2: low=8, high=10. (10+1)//2 - 8//2 = 5 - 4 = 1 ✓</span>
-<span class="c1"># 边界 low=0: (high+1)//2 - 0 = 正确（0 不是奇数，不影响）</span>
-<span class="c1"># 边界 low=high 奇数: low=5,high=5 → (5+1)//2 - 5//2 = 3 - 2 = 1 ✓</span>
 </code></pre></div>
-<p><strong>验证恒等式</strong>：<span class="arithmatex">\((x+1) // 2 - x // 2 = 1\)</span> 若 <span class="arithmatex">\(x\)</span> 奇、<span class="arithmatex">\(0\)</span> 若偶；所以两次前缀差恰为奇数计数。</p>
+<p><code>(high + 1) // 2</code> 即 <span class="arithmatex">\(F(\text{high})\)</span>，<code>low // 2</code> 即 <span class="arithmatex">\(F(\text{low}-1)\)</span>，相减即区间奇数个数。</p>
+<p>Trace 与边界（覆盖落单奇数、整对、含 0、单点四种情形）：</p>
+<div class="language-text highlight"><pre><span></span><code>样例 1: low=3, high=7  → (7+1)//2 - 3//2  = 4 - 1 = 3 ✓  ([3,5,7])
+样例 2: low=8, high=10 → (10+1)//2 - 8//2 = 5 - 4 = 1 ✓  ([9])
+边界 low=0: low//2 = 0（0 非奇数，不影响）；[0,10] → 5 ✓
+边界 low=high 且为奇: low=5,high=5 → (5+1)//2 - 5//2 = 3 - 2 = 1 ✓
+</code></pre></div>
 <h2 id="complexity">复杂度 (Complexity)<a class="headerlink" href="#complexity" title="Permanent link">#</a></h2>
 <ul>
-<li>Time <span class="arithmatex">\(O(1)\)</span>；Space <span class="arithmatex">\(O(1)\)</span>。</li>
+<li>Time <span class="arithmatex">\(O(1)\)</span>；Space <span class="arithmatex">\(O(1)\)</span>。无循环、无数据依赖分支，三种情形（最好/平均/最坏）皆为常数算术。</li>
 </ul>
 <h2 id="pitfalls">陷阱 (Pitfalls)<a class="headerlink" href="#pitfalls" title="Permanent link">#</a></h2>
 <ul>
-<li><strong>闭区间</strong>：包含两端，所以用 <code>(high+1)//2</code> 而非 <code>high//2</code>。</li>
-<li><strong>大数溢出</strong>：在 C++ 用 <code>int</code> 时 <code>high + 1</code> 不溢出（<span class="arithmatex">\(10^9 + 1\)</span>）；但若题面改 <span class="arithmatex">\(10^{18}\)</span> 需 <code>long long</code>。Python 无忧。</li>
+<li><strong>闭区间</strong>：两端都计入，所以右端用 <span class="arithmatex">\(F(\text{high}) = (\text{high}+1)//2\)</span> 而非 <span class="arithmatex">\(\text{high}//2\)</span>——后者会漏掉等于 <code>high</code> 的那个奇数。</li>
+<li><strong>大数溢出</strong>：C++ 用 <code>int</code> 时 <code>high + 1</code> 不溢出（<span class="arithmatex">\(10^9 + 1 &lt; 2^{31}-1\)</span>）；若题面把上界改到 <span class="arithmatex">\(10^{18}\)</span> 需 <code>long long</code>。Python 整数无界，无忧。</li>
 </ul>
 <h2 id="related">相关题目 (Related)<a class="headerlink" href="#related" title="Permanent link">#</a></h2>
 <ul>
@@ -22607,6 +22644,8 @@
         <script src="../../../js/mathjax/tex-mml-chtml.js"></script>
       
         <script src="../../../js/mermaid.min.js"></script>
+      
+        <script src="../../../js/featured.js"></script>
       
     
   </body>

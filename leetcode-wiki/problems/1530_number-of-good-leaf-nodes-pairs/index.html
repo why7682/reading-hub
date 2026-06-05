@@ -1466,6 +1466,8 @@
       
         
       
+        
+      
     
     
     
@@ -1521,6 +1523,34 @@
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../featured/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ⭐ Featured（已验证）
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
               
             
               
@@ -1610,10 +1640,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_4" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
         
           
-          <label class="md-nav__link" for="__nav_4_4" id="__nav_4_4_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_5" id="__nav_4_5_label" tabindex="">
             
   
   
@@ -1631,8 +1661,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_4_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_4">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_5">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1915,7 +1945,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -1937,14 +1967,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_4_5" id="__nav_4_5_label" tabindex="">
+              <label class="md-nav__link " for="__nav_4_6" id="__nav_4_6_label" tabindex="">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_5">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_6">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -5321,10 +5351,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_7" checked>
         
           
-          <label class="md-nav__link" for="__nav_4_6" id="__nav_4_6_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_7" id="__nav_4_7_label" tabindex="">
             
   
   
@@ -5342,8 +5372,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_4_6">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_7_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4_7">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -22467,14 +22497,44 @@
 <h2 id="problem">Problem<a class="headerlink" href="#problem" title="Permanent link">#</a></h2>
 <p>二叉树 <code>root</code> 与整数 <code>distance</code>。一对叶子是"好对"当且仅当它们之间最短路径长度 <span class="arithmatex">\(\leq\)</span> <code>distance</code>。返回好对数。节点数 <span class="arithmatex">\(\leq 2^{10} = 1024\)</span>，<code>distance</code> <span class="arithmatex">\(\leq 10\)</span>。</p>
 <h2 id="background">背景 (Background)<a class="headerlink" href="#background" title="Permanent link">#</a></h2>
-<p><strong>树形 DP / merging at LCA</strong>：所有路径在树上必经过其 LCA。把"叶对距离"统计的复杂双重循环转化为"在每个节点处合并左右子树叶子深度分布"，是树形 DP 的经典套路（也用于树上点对距离 <span class="arithmatex">\(\leq k\)</span> 的计数等问题）。</p>
+<p>最直接的做法是枚举所有叶子对。设树有 <span class="arithmatex">\(m\)</span> 个叶子，对每一对 <span class="arithmatex">\((u, v)\)</span> 算出它们的树上距离 <span class="arithmatex">\(d(u, v)\)</span>，再数有多少对满足 <span class="arithmatex">\(d(u, v) \leq \text{distance}\)</span>。在一棵几乎全是叶子的树里 <span class="arithmatex">\(m = \Theta(n)\)</span>，叶子对有 <span class="arithmatex">\(\Theta(n^2)\)</span> 个；每对再各跑一次 BFS/LCA 求距离，整体可达 <span class="arithmatex">\(\Theta(n^3)\)</span>。</p>
+<p>这个朴素法不仅慢，更重要的是它<strong>没有利用树的结构</strong>：它把每对叶子当成图上两个孤立的点，反复重算它们之间的路径。但树上任意两点的路径不是任意的——它被一个结构量完全决定。下一节先把这件事说清楚，再据此把双重枚举换成自底向上的一次遍历。</p>
+<p>这种"在每个节点合并子树信息以避免全局两两枚举"的做法，是树形 DP 的基本形态，也用于树上点对距离 <span class="arithmatex">\(\leq k\)</span> 的计数等问题。</p>
 <h2 id="formulation">形式化 (Formulation)<a class="headerlink" href="#formulation" title="Permanent link">#</a></h2>
-<p>设 <span class="arithmatex">\(L(T)\)</span> 是 <span class="arithmatex">\(T\)</span> 所有叶子集合，<span class="arithmatex">\(d(u, v)\)</span> 为树上距离。求：</p>
-<div class="arithmatex">\[\bigl|\{ (u, v) \in L(T)^2 : u &lt; v, \; d(u, v) \leq \text{distance} \}\bigr|.\]</div>
+<p>记输入树为 <span class="arithmatex">\(T\)</span>，<span class="arithmatex">\(L(T)\)</span> 为 <span class="arithmatex">\(T\)</span> 的叶子集合，<span class="arithmatex">\(d(u, v)\)</span> 为 <span class="arithmatex">\(u, v\)</span> 在树上的距离（路径上的<strong>边数</strong>）。要求的量是</p>
+<div class="arithmatex">\[
+N \;=\; \bigl|\{\, (u, v) \in L(T)^2 : u &lt; v,\; d(u, v) \leq \text{distance} \,\}\bigr|. \tag{1}
+\]</div>
+<p>朴素法直接照 (1) 枚举。要改进，关键是把 <span class="arithmatex">\(d(u, v)\)</span> 拆开。</p>
+<p><strong>直觉</strong>：在树里，任意两点之间有唯一一条简单路径。对叶子对 <span class="arithmatex">\((u, v)\)</span>，这条路径有一个"最高点"——离根最近的那个节点，即 <span class="arithmatex">\(u, v\)</span> 的最近公共祖先（LCA）。路径从 <span class="arithmatex">\(u\)</span> 上行到 LCA，再下行到 <span class="arithmatex">\(v\)</span>，中途不会再上行。于是距离自然劈成两段。</p>
+<p><strong>形式化</strong>：设 <span class="arithmatex">\(w = \text{LCA}(u, v)\)</span>。则</p>
+<div class="arithmatex">\[
+d(u, v) \;=\; \text{dist}(u, w) + \text{dist}(v, w), \tag{2}
+\]</div>
+<p>其中 <span class="arithmatex">\(\text{dist}(x, w)\)</span> 是 <span class="arithmatex">\(x\)</span> 到其祖先 <span class="arithmatex">\(w\)</span> 的边数，且 <span class="arithmatex">\(u\)</span> 落在 <span class="arithmatex">\(w\)</span> 的一棵子树里、<span class="arithmatex">\(v\)</span> 落在另一棵子树里（否则它们的 LCA 会更低）。</p>
+<p>(2) 把全局距离换成了两个<strong>局部</strong>量：每个叶子到 LCA 的下行距离。这正是下一节要沿树自底向上携带的信息。</p>
+<p>更进一步，LCA 给出一个划分。每对叶子有<strong>唯一</strong>的 LCA，所以</p>
+<div class="arithmatex">\[
+N \;=\; \sum_{w \in T} \bigl|\{\, (u, v) : \text{LCA}(u, v) = w,\; d(u, v) \leq \text{distance} \,\}\bigr|. \tag{3}
+\]</div>
+<p>(3) 把"数所有叶子对"无重无漏地拆成"在每个节点 <span class="arithmatex">\(w\)</span> 处，数以 <span class="arithmatex">\(w\)</span> 为 LCA 的合格叶子对"。这就是算法的脊柱：只要能在每个节点局部地完成右边的求和项，一次后序遍历就够了。</p>
 <h2 id="approach">数据结构 / 想法 (Approach)<a class="headerlink" href="#approach" title="Permanent link">#</a></h2>
-<p><strong>法（推荐）：post-order DFS，每节点返回"到本节点的叶子深度多重集"</strong>。</p>
-<p>合并左右子树深度向量 <span class="arithmatex">\(L\)</span>, <span class="arithmatex">\(R\)</span>：当左子叶距本节点 <span class="arithmatex">\(i\)</span>、右子叶距本节点 <span class="arithmatex">\(j\)</span> 时，它们经过本节点的距离 <span class="arithmatex">\(= i + j\)</span>。统计 <span class="arithmatex">\(i + j \leq \text{distance}\)</span> 对数。然后把所有深度 +1 上传给父节点（去掉过大的，剪枝）。</p>
-<p><strong>关键不变量</strong>：自底向上，每个内部节点 <span class="arithmatex">\(u\)</span> 处恰好计入"以 <span class="arithmatex">\(u\)</span> 为 LCA 的叶子对"。因每对叶子有唯一 LCA，不重不漏。</p>
+<p>要在节点 <span class="arithmatex">\(w\)</span> 处算 (3) 的求和项，由 (2)，需要的是 <span class="arithmatex">\(w\)</span> 各棵子树里每个叶子<strong>到 <span class="arithmatex">\(w\)</span> 的下行距离</strong>。注意这里要的是到 <span class="arithmatex">\(w\)</span> 的距离，不是到根、不是节点编号——因为合格条件 <span class="arithmatex">\(i + j \leq \text{distance}\)</span> 只关心两段下行距离之和。</p>
+<p><strong>DFS 的状态</strong>：设 <code>dfs(w)</code> 返回一个多重集，列出 <span class="arithmatex">\(w\)</span> 子树中每个叶子到 <span class="arithmatex">\(w\)</span> 的距离。约定叶子到自身距离为 <span class="arithmatex">\(0\)</span>，每经过一条边 <span class="arithmatex">\(+1\)</span>。于是：</p>
+<ul>
+<li>叶子节点：它到自己的父亲是 <span class="arithmatex">\(1\)</span> 条边。为了让父亲合并时不必再补偏移，约定 <code>dfs(叶子)</code> 返回 <code>[1]</code>（即"到父亲的距离"，等价于把计数锚在父节点上）。</li>
+<li>内部节点 <span class="arithmatex">\(w\)</span>（设左右子树返回多重集 <span class="arithmatex">\(A\)</span>、<span class="arithmatex">\(B\)</span>）：左子树某叶子距 <span class="arithmatex">\(w\)</span> 为 <span class="arithmatex">\(i \in A\)</span>，右子树某叶子距 <span class="arithmatex">\(w\)</span> 为 <span class="arithmatex">\(j \in B\)</span>，则这对叶子以 <span class="arithmatex">\(w\)</span> 为 LCA，其距离由 (2) 恰为 <span class="arithmatex">\(i + j\)</span>。合格当且仅当</li>
+</ul>
+<div class="arithmatex">\[
+i + j \;\leq\; \text{distance}. \tag{4}
+\]</div>
+<p><strong>节点 <span class="arithmatex">\(w\)</span> 处的工作</strong>分三步：</p>
+<ol>
+<li><strong>计数</strong>：遍历 <span class="arithmatex">\(A \times B\)</span>，对满足 (4) 的 <span class="arithmatex">\((i, j)\)</span> 累加答案。这一步正是 (3) 中以 <span class="arithmatex">\(w\)</span> 为 LCA 的那一项——左右子树各出一个叶子，保证 <span class="arithmatex">\(u, v\)</span> 落在不同子树，LCA 恰为 <span class="arithmatex">\(w\)</span>。</li>
+<li><strong>上传</strong>：把 <span class="arithmatex">\(A \cup B\)</span> 中每个距离 <span class="arithmatex">\(+1\)</span>（多走一条到 <span class="arithmatex">\(w\)</span> 父亲的边），返回给 <span class="arithmatex">\(w\)</span> 的父亲，供更高层 LCA 使用。</li>
+<li><strong>剪枝</strong>：上传时丢弃 <span class="arithmatex">\(+1\)</span> 后已 <span class="arithmatex">\(&gt; \text{distance}\)</span> 的距离。这样的叶子无论再与谁配对，距离都已超界，留着只会拖慢计数且不影响结果。</li>
+</ol>
+<p><strong>正确性</strong>来自 (3) 的 LCA 划分：每对叶子恰好在它们唯一的 LCA 处、由左右两侧各出一个叶子被计数一次，不重不漏，因此无需除以 <span class="arithmatex">\(2\)</span>。</p>
 <div class="language-python highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">Solution</span><span class="p">:</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">countPairs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">root</span><span class="p">,</span> <span class="n">distance</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">ans</span> <span class="o">=</span> <span class="mi">0</span>
@@ -22483,45 +22543,50 @@
             <span class="k">if</span> <span class="ow">not</span> <span class="n">node</span><span class="p">:</span>
                 <span class="k">return</span> <span class="p">[]</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="n">node</span><span class="o">.</span><span class="n">left</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">node</span><span class="o">.</span><span class="n">right</span><span class="p">:</span>
-                <span class="k">return</span> <span class="p">[</span><span class="mi">1</span><span class="p">]</span>  <span class="c1"># depth from this leaf to itself = 1 step to parent will become 1</span>
-            <span class="c1"># actually convention: return list of distances from THIS node to its descendant leaves</span>
-            <span class="n">L</span> <span class="o">=</span> <span class="n">dfs</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">left</span><span class="p">)</span>
-            <span class="n">R</span> <span class="o">=</span> <span class="n">dfs</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">right</span><span class="p">)</span>
-            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">L</span><span class="p">:</span>
-                <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="n">R</span><span class="p">:</span>
-                    <span class="k">if</span> <span class="n">i</span> <span class="o">+</span> <span class="n">j</span> <span class="o">&lt;=</span> <span class="n">D</span><span class="p">:</span>
+                <span class="k">return</span> <span class="p">[</span><span class="mi">1</span><span class="p">]</span>  <span class="c1"># 叶子到其父的距离 = 1</span>
+            <span class="n">A</span> <span class="o">=</span> <span class="n">dfs</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">left</span><span class="p">)</span>   <span class="c1"># 左子树各叶子到 node 的距离</span>
+            <span class="n">B</span> <span class="o">=</span> <span class="n">dfs</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">right</span><span class="p">)</span>  <span class="c1"># 右子树各叶子到 node 的距离</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">A</span><span class="p">:</span>
+                <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="n">B</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">i</span> <span class="o">+</span> <span class="n">j</span> <span class="o">&lt;=</span> <span class="n">D</span><span class="p">:</span>  <span class="c1"># (4): 以 node 为 LCA 的合格对</span>
                         <span class="bp">self</span><span class="o">.</span><span class="n">ans</span> <span class="o">+=</span> <span class="mi">1</span>
             <span class="n">merged</span> <span class="o">=</span> <span class="p">[]</span>
-            <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">L</span> <span class="o">+</span> <span class="n">R</span><span class="p">:</span>
-                <span class="k">if</span> <span class="n">x</span> <span class="o">+</span> <span class="mi">1</span> <span class="o">&lt;=</span> <span class="n">D</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">A</span> <span class="o">+</span> <span class="n">B</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">x</span> <span class="o">+</span> <span class="mi">1</span> <span class="o">&lt;=</span> <span class="n">D</span><span class="p">:</span>      <span class="c1"># 剪枝: 超界的叶子不再上传</span>
                     <span class="n">merged</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">x</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
             <span class="k">return</span> <span class="n">merged</span>
         <span class="n">dfs</span><span class="p">(</span><span class="n">root</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">ans</span>
 
-<span class="c1"># 约定：叶子返回 [1]（叶子到其父的距离=1，方便父亲合并时不需 +0）。</span>
-<span class="c1"># 在内部节点处，i+j 已是&quot;左叶→本节点→右叶&quot;的总边数。</span>
-<span class="c1">#</span>
 <span class="c1"># Trace 样例 1: root=[1,2,3,null,4], distance=3</span>
 <span class="c1"># 叶子: node 3 (root.right), node 4 (root.left.right)</span>
 <span class="c1"># dfs(3): leaf → [1]</span>
 <span class="c1"># dfs(4): leaf → [1]</span>
-<span class="c1"># dfs(2): L=dfs(None)=[], R=dfs(4)=[1]. 无 pair. merged=[2]</span>
-<span class="c1"># dfs(root): L=dfs(2)=[2], R=dfs(3)=[1]. pair 2+1=3 ≤ 3 → ans=1. merged=[3, 2] (都 +1)</span>
+<span class="c1"># dfs(2): A=dfs(None)=[], B=dfs(4)=[1]. 无 pair. merged=[2]</span>
+<span class="c1"># dfs(root): A=dfs(2)=[2], B=dfs(3)=[1]. pair 2+1=3 ≤ 3 → ans=1. merged=[3, 2] (都 +1)</span>
 <span class="c1"># 结果 1 ✓</span>
 </code></pre></div>
-<p><strong>复杂度分析</strong>：每个节点把左右子树叶子做笛卡尔积比较，最坏 <span class="arithmatex">\(O(L \cdot L)\)</span>，总 <span class="arithmatex">\(O(n \cdot L)\)</span>；但因 <code>distance ≤ 10</code>，每节点返回的列表长度 <span class="arithmatex">\(\leq \text{distance}\)</span>（更长的被剪），所以实际 <span class="arithmatex">\(O(n \cdot \text{distance}^2)\)</span>。</p>
+<p>这把 (1) 的 <span class="arithmatex">\(\Theta(n^2)\)</span> 叶子对枚举换成了一次后序遍历，每个节点只在自己的左右子树之间做局部配对。</p>
 <h2 id="complexity">复杂度 (Complexity)<a class="headerlink" href="#complexity" title="Permanent link">#</a></h2>
+<p>设节点 <span class="arithmatex">\(w\)</span> 返回的多重集长度为 <span class="arithmatex">\(\ell_w\)</span>。计数步在 <span class="arithmatex">\(w\)</span> 处做 <span class="arithmatex">\(|A| \cdot |B|\)</span> 次比较，总工作量为 <span class="arithmatex">\(\sum_w |A_w| \cdot |B_w|\)</span>。</p>
+<p>剪枝保证每个距离值落在 <span class="arithmatex">\([1, \text{distance}]\)</span>，所以多重集里<strong>不同的值</strong>至多 <span class="arithmatex">\(\text{distance}\)</span> 个——但它的<strong>长度</strong> <span class="arithmatex">\(\ell_w\)</span> 受子树叶子数约束，而非受 <span class="arithmatex">\(\text{distance}\)</span> 约束。在一棵深度大于 <span class="arithmatex">\(\text{distance}\)</span> 的满二叉树里，靠近根处 <span class="arithmatex">\(\ell_w\)</span> 可达 <span class="arithmatex">\(\Theta(\text{子树叶子数})\)</span>，即 <span class="arithmatex">\(\Theta(n)\)</span> 级。因此</p>
+<div class="arithmatex">\[
+\sum_w |A_w| \cdot |B_w| \;=\; O\!\bigl(n \cdot 2^{\text{distance}}\bigr)
+\]</div>
+<p>是最坏情形的合理上界（满树时每节点的配对量随子树规模指数增长，但被剪枝钳制在 <span class="arithmatex">\(2^{\text{distance}}\)</span> 量级）。</p>
 <ul>
-<li>Time: <span class="arithmatex">\(O(n \cdot \text{distance}^2)\)</span>。<span class="arithmatex">\(n \leq 1024\)</span>, <span class="arithmatex">\(\text{distance} \leq 10\)</span> → <span class="arithmatex">\(\approx 10^5\)</span>。</li>
-<li>Space: <span class="arithmatex">\(O(n \cdot \text{distance})\)</span> 递归栈 + 返回列表。</li>
+<li><strong>Time</strong>: <span class="arithmatex">\(O(n \cdot 2^{\text{distance}})\)</span>。在约束 <span class="arithmatex">\(n \leq 1024,\ \text{distance} \leq 10\)</span> 下，量级约 <span class="arithmatex">\(10^5\)</span>，可轻松通过。</li>
+<li><strong>Space</strong>: 列表占用 <span class="arithmatex">\(O(n)\)</span>（沿递归路径上同时存活的多重集元素总量至多 <span class="arithmatex">\(\Theta(n)\)</span>），递归栈 <span class="arithmatex">\(O(h)\)</span>，<span class="arithmatex">\(h\)</span> 为树高（退化链时可达 <span class="arithmatex">\(O(n)\)</span>）。</li>
 </ul>
+<blockquote>
+<p>注意：把界写成 <span class="arithmatex">\(O(n \cdot \text{distance}^2)\)</span> 是常见误区——它默认 <span class="arithmatex">\(\ell_w \leq \text{distance}\)</span>，但剪枝只限制了<strong>不同值的个数</strong>，没有限制多重集长度。深度超过 <span class="arithmatex">\(\text{distance}\)</span> 的满树会突破这个界。</p>
+</blockquote>
 <h2 id="pitfalls">陷阱 (Pitfalls)<a class="headerlink" href="#pitfalls" title="Permanent link">#</a></h2>
 <ul>
-<li><strong>叶子初值</strong>：返回 <code>[1]</code> 还是 <code>[0]</code> 取决于"距离从父节点还是自身算起"，约定要前后一致。我选"距父 1"，所以内节点 pair 时不需再 +1。</li>
-<li><strong>每对叶子计一次</strong>：因每对叶子有唯一 LCA，<strong>自然</strong>只计一次，无需除 2。HINT 中"divide by 2"对应另一种实现（每叶子各 DFS 一次）；本实现不需要。</li>
-<li><strong>超距离剪枝</strong>：<code>x + 1 &gt; D</code> 的叶子上传无用，需提前丢弃，否则复杂度退化。</li>
-<li><strong>None 子树</strong>：<code>dfs(None)</code> 返回空列表，否则崩。</li>
+<li><strong>叶子初值约定</strong>：返回 <code>[1]</code>（叶子到父的距离）而非 <code>[0]</code>，使得内部节点处 <span class="arithmatex">\(i + j\)</span> 直接是"左叶 → 本节点 → 右叶"的总边数，配对时不再补偏移。约定必须前后一致。</li>
+<li><strong>每对叶子只计一次</strong>：由 (3) 的 LCA 唯一性，每对叶子恰在其 LCA 处、由左右子树各出一叶被计一次，<strong>自然</strong>不重不漏，无需除 <span class="arithmatex">\(2\)</span>。LeetCode HINT 里的 "divide by 2" 对应"每个叶子各跑一次 DFS"的另一种实现；本实现不需要。</li>
+<li><strong>超距离剪枝不可省</strong>：<span class="arithmatex">\(x + 1 &gt; \text{distance}\)</span> 的叶子上传无用，须在上传前丢弃；否则多重集长度不再被钳制，计数步退化。</li>
+<li><strong>None 子树</strong>：<code>dfs(None)</code> 必须返回空列表，否则空子树会让合并崩溃。</li>
 </ul>
 <h2 id="related">相关题目 (Related)<a class="headerlink" href="#related" title="Permanent link">#</a></h2>
 <ul>
@@ -22638,6 +22703,8 @@
         <script src="../../../js/mathjax/tex-mml-chtml.js"></script>
       
         <script src="../../../js/mermaid.min.js"></script>
+      
+        <script src="../../../js/featured.js"></script>
       
     
   </body>

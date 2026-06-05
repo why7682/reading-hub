@@ -1466,6 +1466,8 @@
       
         
       
+        
+      
     
     
     
@@ -1521,6 +1523,34 @@
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../featured/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ⭐ Featured（已验证）
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
               
             
               
@@ -1610,10 +1640,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_4" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
         
           
-          <label class="md-nav__link" for="__nav_4_4" id="__nav_4_4_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_5" id="__nav_4_5_label" tabindex="">
             
   
   
@@ -1631,8 +1661,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_4_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_4">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_5">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1915,7 +1945,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -1937,14 +1967,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_4_5" id="__nav_4_5_label" tabindex="">
+              <label class="md-nav__link " for="__nav_4_6" id="__nav_4_6_label" tabindex="">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_5">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_6">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -5321,10 +5351,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_7" checked>
         
           
-          <label class="md-nav__link" for="__nav_4_6" id="__nav_4_6_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_7" id="__nav_4_7_label" tabindex="">
             
   
   
@@ -5342,8 +5372,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_4_6">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_7_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4_7">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -22471,23 +22501,47 @@
 - <code>getRandom()</code> 等概率返回当前多重集中的某元素（按出现次数加权）。</p>
 <p><strong>所有操作平均 <span class="arithmatex">\(O(1)\)</span></strong>。最多 <span class="arithmatex">\(2 \times 10^5\)</span> 次调用。</p>
 <h2 id="background">背景 (Background)<a class="headerlink" href="#background" title="Permanent link">#</a></h2>
-<p>这是 <strong>#380 Insert Delete GetRandom O(1)</strong> 的 multiset 推广。核心技巧是 <strong>"动态数组 + 哈希表"</strong>——单元素版用"数组保存值 + 哈希表保存值→下标"；本题加上重复，需把"值→<strong>下标集合</strong>"（如 set）才能在 <span class="arithmatex">\(O(1)\)</span> 删除任一副本。</p>
-<p>该数据结构是 <strong>reservoir sampling</strong> 的反向：与其在流式数据上随机抽样，这里维护静态集合并支持随机访问——本质是 <strong>uniform random access to a multiset under updates</strong>。在 Monte Carlo 模拟、负载均衡、A/B 测试等场景常用。</p>
+<p>本题维护一个<strong>多重集 (multiset)</strong> <span class="arithmatex">\(M\)</span>：与普通集合不同，同一个值可以出现多次，<code>getRandom</code> 必须让一个值被抽中的概率正比于它的出现次数。三种操作都要求平均 <span class="arithmatex">\(O(1)\)</span>，这个时间约束是全部设计的硬约束，下面的每一步都是在解决它。</p>
+<p>先看两种最朴素的单结构尝试，看清它们各自在哪个操作上突破了 <span class="arithmatex">\(O(1)\)</span>，再由此推出需要什么结构。</p>
+<p><strong>尝试一：只用一个哈希表</strong> <code>dict[val] -&gt; count</code>（或 <code>Counter</code>）。<code>insert</code> 和 <code>remove</code> 都是 <span class="arithmatex">\(O(1)\)</span>。但 <code>getRandom</code> 要按出现次数加权抽样：哈希表的键之间没有连续的整数地址，无法在 <span class="arithmatex">\(O(1)\)</span> 内"抽中第 <span class="arithmatex">\(k\)</span> 个元素"。只能遍历键、累计 count 直到落点，这是 <span class="arithmatex">\(O(\text{distinct})\)</span>。<strong><code>getRandom</code> 在这里突破了 <span class="arithmatex">\(O(1)\)</span>。</strong></p>
+<p><strong>尝试二：只用一个动态数组</strong> <code>arr</code>，把所有值（含重复）顺序存放。<code>getRandom</code> 变成 <code>random.choice(arr)</code>，<span class="arithmatex">\(O(1)\)</span> 且天然按出现次数加权——因为值 <span class="arithmatex">\(v\)</span> 在 <code>arr</code> 中恰好占据 <span class="arithmatex">\(\text{count}(v)\)</span> 个位置。<code>insert</code> 用 <code>append</code> 也是摊销 <span class="arithmatex">\(O(1)\)</span>。但 <code>remove(val)</code> 要先找到某个等于 <code>val</code> 的位置，线性扫描是 <span class="arithmatex">\(O(N)\)</span>；即使知道位置，<code>arr</code> 中间删除还要后移元素，仍是 <span class="arithmatex">\(O(N)\)</span>。<strong><code>remove</code> 在这里突破了 <span class="arithmatex">\(O(1)\)</span>。</strong></p>
+<p>两次尝试暴露出一对相互牵制的需求：</p>
+<ul>
+<li>加权随机访问要求一段<strong>连续地址</strong>（数组），这样均匀抽下标就等于均匀抽元素；</li>
+<li><span class="arithmatex">\(O(1)\)</span> 删除任一副本要求<strong>不扫描就知道某个副本在哪</strong>（哈希定位）。</li>
+</ul>
+<p>单一结构只能满足其一。解决办法是同时维护这两个结构，并用一条一致性约束把它们绑在一起：数组负责采样，哈希表负责定位。</p>
 <h2 id="formulation">形式化 (Formulation)<a class="headerlink" href="#formulation" title="Permanent link">#</a></h2>
-<p>维护多重集 <span class="arithmatex">\(M\)</span>，支持：<span class="arithmatex">\(M \cup \{v\}\)</span>, <span class="arithmatex">\(M \setminus \{v\}\)</span>（删一份），<span class="arithmatex">\(\text{sample}(M)\)</span>（按多重度均匀采样）；三操作均期望 <span class="arithmatex">\(O(1)\)</span>。</p>
+<p>维护多重集 <span class="arithmatex">\(M\)</span>，支持三种操作，每种都必须满足<strong>期望 / 摊销 <span class="arithmatex">\(O(1)\)</span></strong> 时间、<span class="arithmatex">\(O(N)\)</span> 空间（<span class="arithmatex">\(N = |M|\)</span>）：</p>
+<ul>
+<li><span class="arithmatex">\(\text{insert}(v)\)</span>：<span class="arithmatex">\(M \leftarrow M \cup \{v\}\)</span>；</li>
+<li><span class="arithmatex">\(\text{remove}(v)\)</span>：<span class="arithmatex">\(M \leftarrow M \setminus \{v\}\)</span>（删去一份）；</li>
+<li><span class="arithmatex">\(\text{sample}(M)\)</span>：返回 <span class="arithmatex">\(v\)</span> 的概率为 <span class="arithmatex">\(\dfrac{\text{count}(v)}{N}\)</span>（按多重度均匀采样）。</li>
+</ul>
+<p>把上一节的两个结构定下来：</p>
+<ul>
+<li><code>arr: list</code> — 顺序存放所有插入的 val（含重复），长度恒为 <span class="arithmatex">\(N\)</span>。</li>
+<li><code>idx: dict[int, set[int]]</code> — <code>val → arr 中所有此值的下标集合</code>。</li>
+</ul>
+<p>这里 <code>idx[v]</code> 用 <strong>set</strong> 而非 list 是被时间约束逼出来的：<code>remove</code> 时要从该值的若干下标中删掉一个，set 的 <code>discard</code> 是期望 <span class="arithmatex">\(O(1)\)</span>；若用 list，删一个下标需先线性查找，是 <span class="arithmatex">\(O(k)\)</span>（<span class="arithmatex">\(k\)</span> 为该值副本数），又会突破 <span class="arithmatex">\(O(1)\)</span>。</p>
+<p>两结构之间的一致性由以下不变量刻画，整份代码都在维持它们：</p>
+<ul>
+<li><strong>(I1)</strong> <code>arr[i] = v</code> <span class="arithmatex">\(\iff\)</span> <code>i ∈ idx[v]</code>（双向一致，每个下标恰被一个值集合持有）。</li>
+<li><strong>(I2)</strong> <code>len(arr) = Σ_v |idx[v]|</code>（无幽灵下标：每个数组位置被且仅被记录一次）。</li>
+<li><strong>(I3)</strong> <code>getRandom</code> 在 <code>arr</code> 的 <span class="arithmatex">\(N\)</span> 个位置上等概率取一个；值 <span class="arithmatex">\(v\)</span> 占据其中 <span class="arithmatex">\(\text{count}(v)\)</span> 个，故被抽中概率为 <span class="arithmatex">\(\text{count}(v)/N\)</span>，恰是 <span class="arithmatex">\(\text{sample}(M)\)</span> 要求的分布。</li>
+</ul>
+<p>(I3) 同时给出了为什么必须从 <code>arr</code> 采样：每个位置等概率 <span class="arithmatex">\(1/N\)</span>，<span class="arithmatex">\(v\)</span> 的位置有 <span class="arithmatex">\(\text{count}(v)\)</span> 个，相加即 <span class="arithmatex">\(\text{count}(v)/N\)</span>。若改从 <code>idx</code> 的键里抽，则是按<strong>不同值的个数</strong>而非<strong>出现次数</strong>加权，分布错误。</p>
 <h2 id="approach">数据结构 / 想法 (Approach)<a class="headerlink" href="#approach" title="Permanent link">#</a></h2>
-<p><strong>双结构</strong>：
-- <code>arr: list</code> — 顺序存放所有插入的 val（含重复）。
-- <code>idx: dict[int, set[int]]</code> — <code>val → arr 中所有此值的下标集合</code>。</p>
-<p><strong>insert(val)</strong>：
+<p>三种操作都是"对 <code>arr</code> 做改动，再修补 <code>idx</code> 使 (I1)(I2) 重新成立"。</p>
+<p><strong>insert(val)</strong>：在末尾追加是数组唯一的 <span class="arithmatex">\(O(1)\)</span> 写入点。
 1. 设 <code>pos = len(arr)</code>；<code>arr.append(val)</code>；<code>idx[val].add(pos)</code>。
 2. 若插入前 <code>idx[val]</code> 为空（首次出现），返回 true，否则 false。</p>
-<p><strong>remove(val)</strong>：
+<p><strong>remove(val)</strong>：尝试二里中间删除是 <span class="arithmatex">\(O(N)\)</span>，因为要后移元素维持连续。要让删除变 <span class="arithmatex">\(O(1)\)</span>，唯一能 <span class="arithmatex">\(O(1)\)</span> 缩短数组的位置是末尾（<code>pop</code>）。于是不直接删中间的 <code>remove_pos</code>，而是先把末位元素搬到 <code>remove_pos</code> 覆盖它，再 pop 掉末位——这就是 <strong>swap-pop</strong>。它是"数组只能在末尾 <span class="arithmatex">\(O(1)\)</span> 删除"这个约束的直接推论，不是凭空的技巧。
 1. 若 <code>val</code> 不存在或 <code>idx[val]</code> 为空，返回 false。
-2. 从 <code>idx[val]</code> 取出一个 <code>remove_pos</code>（任意，如 <code>next(iter(...))</code>）。
-3. <strong>末位填洞 (swap-pop)</strong>：把 <code>arr[-1]</code> 移到 <code>arr[remove_pos]</code>，更新 <code>idx[arr[-1]]</code> 中的下标（移除旧的 <code>len(arr)-1</code>，加入 <code>remove_pos</code>）。<strong>边界</strong>：若 <code>remove_pos == len(arr)-1</code>，跳过填洞，直接 pop。
-4. <code>arr.pop()</code>；从 <code>idx[val]</code> 删除 <code>remove_pos</code>。</p>
-<p><strong>getRandom()</strong>：<code>random.choice(arr)</code>。</p>
+2. 由 (I1)，从 <code>idx[val]</code> 取出任一下标 <code>remove_pos</code>（如 <code>next(iter(...))</code>），该位置的值正是 <code>val</code>。
+3. 把 <code>arr[-1]</code>（记 <code>last_val</code>）写入 <code>arr[remove_pos]</code>，并修补 <code>idx</code>：从 <code>idx[val]</code> 删去 <code>remove_pos</code>，把 <code>last_val</code> 的下标从 <code>last_pos = len(arr)-1</code> 改成 <code>remove_pos</code>。
+4. <code>arr.pop()</code>。</p>
+<p>第 3 步的修补必须满足一个边界条件。<code>remove_pos == last_pos</code> 当且仅当要删的就是末位本身——由 (I1)，此时 <code>arr[remove_pos] == val</code> 且 <code>arr[last_pos] == last_val</code>，相等只能是 <code>val == last_val</code>。这种情形下"搬运"是把末位搬到它自己，对 <code>arr</code> 是空操作；而对 <code>idx[last_val]</code> 若仍执行先 <code>discard(last_pos)</code> 再 <code>add(remove_pos)</code>，因 <code>remove_pos == last_pos</code>，等于把刚要 pop 掉的下标又加了回来，留下指向已删位置的幽灵下标，破坏 (I2)。因此当 <code>remove_pos == last_pos</code> 时跳过对 <code>idx[last_val]</code> 的改动，直接 pop。</p>
 <div class="language-python highlight"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">random</span>
 <span class="k">class</span><span class="w"> </span><span class="nc">RandomizedCollection</span><span class="p">:</span>
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -22508,10 +22562,10 @@
         <span class="n">remove_pos</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="nb">iter</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">idx</span><span class="p">[</span><span class="n">val</span><span class="p">]))</span>
         <span class="n">last_val</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">arr</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
         <span class="n">last_pos</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">arr</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span>
-        <span class="c1"># 把末位搬到 remove_pos 位置</span>
+        <span class="c1"># 把末位搬到 remove_pos 位置（swap-pop）</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">arr</span><span class="p">[</span><span class="n">remove_pos</span><span class="p">]</span> <span class="o">=</span> <span class="n">last_val</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">idx</span><span class="p">[</span><span class="n">val</span><span class="p">]</span><span class="o">.</span><span class="n">discard</span><span class="p">(</span><span class="n">remove_pos</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">remove_pos</span> <span class="o">!=</span> <span class="n">last_pos</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">remove_pos</span> <span class="o">!=</span> <span class="n">last_pos</span><span class="p">:</span>          <span class="c1"># 边界：删的就是末位时跳过，保 (I2)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">idx</span><span class="p">[</span><span class="n">last_val</span><span class="p">]</span><span class="o">.</span><span class="n">discard</span><span class="p">(</span><span class="n">last_pos</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">idx</span><span class="p">[</span><span class="n">last_val</span><span class="p">]</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">remove_pos</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">arr</span><span class="o">.</span><span class="n">pop</span><span class="p">()</span>
@@ -22520,35 +22574,34 @@
     <span class="k">def</span><span class="w"> </span><span class="nf">getRandom</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">arr</span><span class="p">)</span>
 </code></pre></div>
-<p><strong>不变量</strong>：
-1. <code>arr[i] = v</code> ⟺ <code>i ∈ idx[v]</code>（双向一致）。
-2. <code>len(arr) = sum(len(s) for s in idx.values())</code>（无幽灵下标）。
-3. <code>getRandom</code> 等概率因 <code>arr</code> 中每位置等权 → 同 val 出现次数线性影响概率。</p>
-<p><strong>Trace 样例</strong>：
+<p><strong>Trace 样例</strong>（验证不变量逐步成立）：
 - insert(1): arr=[1], idx={1:{0}}, return True.
-- insert(1): arr=[1,1], idx={1:{0,1}}, return False (已存在).
+- insert(1): arr=[1,1], idx={1:{0,1}}, return False（已存在）.
 - insert(2): arr=[1,1,2], idx={1:{0,1}, 2:{2}}, return True.
-- getRandom(): 从 [1,1,2] 等概率 → 2 with P=1/3, 1 with P=2/3. 题示样本 returned 2. ✓
-- remove(1): remove_pos=0 (任意), last_val=2, last_pos=2. arr→[2,1,2]→[2,1]; idx[1].discard(0)→{1}; remove_pos≠last_pos so idx[2].discard(2)+add(0) → {0}. arr.pop()→[2,1]. idx={1:{1}, 2:{0}}. return True. ✓
-- getRandom(): [2,1] 等概率 1/2 each. ✓</p>
-<p><strong>陷阱 last_pos = remove_pos 情况</strong>：若要删的就是末位，跳过 swap 否则 <code>idx[last_val]</code> 会被错误移除最后的下标后又重加，等价无操作——但代码已显式判断更清晰。</p>
+- getRandom(): 由 (I3)，P(2)=1/3, P(1)=2/3. 题示样本 returned 2. ✓
+- remove(1): remove_pos=0（任意）, last_val=2, last_pos=2. arr[0]←2 得 [2,1,2]; idx[1].discard(0)→{1}; remove_pos≠last_pos，故 idx[2].discard(2)+add(0)→{0}. arr.pop()→[2,1]. idx={1:{1}, 2:{0}}. return True. (I1)(I2) 仍成立. ✓
+- getRandom(): [2,1] 各 1/2. ✓</p>
 <h2 id="complexity">复杂度 (Complexity)<a class="headerlink" href="#complexity" title="Permanent link">#</a></h2>
+<p>按 (I3) 给出的结构，三种操作的开销可逐一对到底层原语：</p>
 <ul>
-<li><code>insert</code>, <code>remove</code>, <code>getRandom</code>：均<strong>期望 / 摊销 <span class="arithmatex">\(O(1)\)</span></strong>。</li>
-<li>Space: <span class="arithmatex">\(O(N)\)</span>（<span class="arithmatex">\(N\)</span> = 当前元素数）。</li>
+<li><code>getRandom</code>：<code>random.choice(arr)</code> 是一次 <span class="arithmatex">\(O(1)\)</span> 下标取值。</li>
+<li><code>insert</code>：<code>set.add</code> 期望 <span class="arithmatex">\(O(1)\)</span>（哈希），<code>list.append</code> 摊销 <span class="arithmatex">\(O(1)\)</span>（动态数组扩容均摊）。</li>
+<li><code>remove</code>：<code>next(iter(...))</code>、<code>set.add / discard</code> 期望 <span class="arithmatex">\(O(1)\)</span>；<code>list.pop()</code>（末位）<span class="arithmatex">\(O(1)\)</span>。</li>
 </ul>
-<p><code>set.add / discard / iter()</code> 都是 <span class="arithmatex">\(O(1)\)</span> 期望（哈希表）；<code>list.append / pop</code> 摊销 <span class="arithmatex">\(O(1)\)</span>。</p>
+<p>两种 <span class="arithmatex">\(O(1)\)</span> 来源不同，分开陈述：哈希操作是<strong>期望</strong> <span class="arithmatex">\(O(1)\)</span>（依赖良好散列），数组 append/pop 是<strong>摊销</strong> <span class="arithmatex">\(O(1)\)</span>（扩容代价均摊）。综合即三操作平均 <span class="arithmatex">\(O(1)\)</span>。</p>
+<ul>
+<li>Space: <span class="arithmatex">\(O(N)\)</span>——<code>arr</code> 存 <span class="arithmatex">\(N\)</span> 个值，<code>idx</code> 中所有下标集合大小之和由 (I2) 恰为 <span class="arithmatex">\(N\)</span>。</li>
+</ul>
 <h2 id="pitfalls">陷阱 (Pitfalls)<a class="headerlink" href="#pitfalls" title="Permanent link">#</a></h2>
 <ul>
-<li><strong>必须用 set 而非 list 存下标</strong>：用 list 在删除下标时 <span class="arithmatex">\(O(k)\)</span> (<span class="arithmatex">\(k\)</span> = 该值副本数)，破坏 <span class="arithmatex">\(O(1)\)</span>。set 的 <code>discard</code> 是 <span class="arithmatex">\(O(1)\)</span> 期望。</li>
-<li><strong>swap-pop 顺序</strong>：必须先把 last 移到 remove_pos，再 pop；否则 pop 后 last_pos 失效。</li>
-<li><strong>remove_pos == last_pos</strong> 时跳过 swap，避免对 <code>idx[last_val]</code> 多余操作（先 add 再 discard 会"丢失"该下标）。</li>
-<li><strong>getRandom 等概率</strong>：必须从 <code>arr</code> 直接采样；若从 <code>idx</code> 取 key 会<strong>按 val 数量</strong>而非<strong>按出现次数</strong>采样，错误。</li>
-<li>题目说"概率与出现次数<strong>线性</strong>相关"，即 <code>P(v) = count(v) / N</code>——用 <code>random.choice(arr)</code> 自然成立。</li>
+<li><strong><code>idx[val]</code> 必须用 set 而非 list</strong>：见形式化一节，list 删下标需 <span class="arithmatex">\(O(k)\)</span> 查找，破坏 <span class="arithmatex">\(O(1)\)</span>；set 的 <code>discard</code> 期望 <span class="arithmatex">\(O(1)\)</span>。</li>
+<li><strong>swap-pop 顺序</strong>：必须先把 <code>last_val</code> 写入 <code>remove_pos</code>，再 <code>arr.pop()</code>；先 pop 会使 <code>last_pos</code> 失效。</li>
+<li><strong><code>remove_pos == last_pos</code> 的边界</strong>：删的就是末位时跳过对 <code>idx[last_val]</code> 的改动，否则会留下指向已 pop 位置的幽灵下标，破坏 (I2)。该情形只在 <code>val == last_val</code> 时发生。</li>
+<li><strong><code>getRandom</code> 必须从 <code>arr</code> 采样</strong>：由 (I3)，从 <code>arr</code> 抽位置才得到 <span class="arithmatex">\(\text{count}(v)/N\)</span>；若从 <code>idx</code> 的键抽，则按不同值个数加权，分布错误。</li>
 </ul>
 <h2 id="related">相关题目 (Related)<a class="headerlink" href="#related" title="Permanent link">#</a></h2>
 <ul>
-<li><code>#380. Insert Delete GetRandom O(1) (off-wiki)</code> — 本题前置版（无重复）。</li>
+<li><code>#380. Insert Delete GetRandom O(1) (off-wiki)</code> — 本题前置版（无重复），<code>idx</code> 退化为 <code>val → 单个下标</code>。</li>
 <li><code>#710. Random Pick with Blacklist (off-wiki)</code> — 同样追求 <span class="arithmatex">\(O(1)\)</span> 随机采样 + 排除集合。</li>
 <li><a href="../0398_random-pick-index/">#0398. Random Pick Index</a> — 静态 + 流式随机采样。</li>
 <li><code>#528. Random Pick with Weight (off-wiki)</code> — 加权采样的另一构造（前缀和 + 二分）。</li>
@@ -22664,6 +22717,8 @@
         <script src="../../../js/mathjax/tex-mml-chtml.js"></script>
       
         <script src="../../../js/mermaid.min.js"></script>
+      
+        <script src="../../../js/featured.js"></script>
       
     
   </body>

@@ -1466,6 +1466,8 @@
       
         
       
+        
+      
     
     
     
@@ -1521,6 +1523,34 @@
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../featured/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ⭐ Featured（已验证）
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
               
             
               
@@ -1610,10 +1640,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_4" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
         
           
-          <label class="md-nav__link" for="__nav_4_4" id="__nav_4_4_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_5" id="__nav_4_5_label" tabindex="">
             
   
   
@@ -1631,8 +1661,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_4_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_4">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_5">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1915,7 +1945,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -1937,14 +1967,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_4_5" id="__nav_4_5_label" tabindex="">
+              <label class="md-nav__link " for="__nav_4_6" id="__nav_4_6_label" tabindex="">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_5">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_6">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -5321,10 +5351,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_7" checked>
         
           
-          <label class="md-nav__link" for="__nav_4_6" id="__nav_4_6_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_7" id="__nav_4_7_label" tabindex="">
             
   
   
@@ -5342,8 +5372,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_4_6">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_7_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4_7">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -22467,18 +22497,35 @@
 <h2 id="problem">Problem<a class="headerlink" href="#problem" title="Permanent link">#</a></h2>
 <p><code>n</code> 天的考勤记录由 <code>{A, L, P}</code> 组成。学生获奖当且仅当：(1) <code>A</code> 总数 <strong>&lt; 2</strong>（即 0 或 1 个 A）；(2) 没有连续 <strong>≥ 3</strong> 个 <code>L</code>。求长度为 <code>n</code> 的合法序列数模 <span class="arithmatex">\(10^9 + 7\)</span>。<span class="arithmatex">\(1 \leq n \leq 10^5\)</span>。</p>
 <h2 id="background">背景 (Background)<a class="headerlink" href="#background" title="Permanent link">#</a></h2>
-<p>经典<strong>状态机 DP</strong>，也可升级为<strong>矩阵快速幂</strong>做到 <span class="arithmatex">\(O(\log n)\)</span>（适用于更大 <span class="arithmatex">\(n\)</span>）。状态机的构造思想：把"近期 L 数 / A 已用数"作为有限状态压缩，转移为状态间的常数表。这类计数问题是有限自动机语言枚举（Hopcroft-Motwani-Ullman, <em>Intro to Automata</em>）的典型形式——本题状态机有 6 个状态，最终答案是从初态走 <span class="arithmatex">\(n\)</span> 步到达任意接受态的路径数。</p>
+<p>最直接的想法是枚举：长度 <span class="arithmatex">\(n\)</span> 的字符串共有 <span class="arithmatex">\(3^n\)</span> 个，逐个检查两条约束，统计合法者。这给出一个正确但无法运行的基线——<span class="arithmatex">\(n = 10^5\)</span> 时 <span class="arithmatex">\(3^n\)</span> 是天文数字。问题在于枚举把每个完整字符串都当作独立对象，而我们只需要<strong>计数</strong>，不需要列举。</p>
+<p>要把指数枚举降为可计算，就得问：在逐字符构造一个合法前缀时，<strong>前缀的哪些信息会影响后续字符能否合法接上？</strong> 如果答案是"只需要常数比特的信息"，那么不同前缀就能按这些信息归并成有限个等价类，计数随之线性化。这正是本题的入口。</p>
+<p>下面先从约束本身推出"需要记住什么"，由此得到一个有限状态的递推（解法 A，<span class="arithmatex">\(O(n)\)</span>）；再观察到该递推是线性的，可写成矩阵幂，把对 <span class="arithmatex">\(n\)</span> 的依赖压到 <span class="arithmatex">\(O(\log n)\)</span>（解法 B），供 <span class="arithmatex">\(n\)</span> 极大时使用。这两条约束所定义的合法串集合恰好是某个有限自动机接受的语言，对其计数即计数自动机中长度 <span class="arithmatex">\(n\)</span> 的接受路径——这一对应在 Hopcroft, Motwani, Ullman (<em>Intro to Automata Theory</em>, 3e, §2–3) 中是标准结论，本题是它的一个直接实例。</p>
 <h2 id="formulation">形式化 (Formulation)<a class="headerlink" href="#formulation" title="Permanent link">#</a></h2>
-<p>定义状态 <span class="arithmatex">\((a, \ell)\)</span>：<span class="arithmatex">\(a\)</span> = 已用 A 数 <span class="arithmatex">\(\in \{0, 1\}\)</span>，<span class="arithmatex">\(\ell\)</span> = 末尾连续 L 数 <span class="arithmatex">\(\in \{0, 1, 2\}\)</span>，共 6 个状态。</p>
-<p>设 <span class="arithmatex">\(f[i][a][\ell]\)</span> = 长度 <span class="arithmatex">\(i\)</span> 且当前在状态 <span class="arithmatex">\((a, \ell)\)</span> 的合法序列数。转移：</p>
-<div class="arithmatex">\[\begin{aligned}
-f[i+1][a][0] &amp;\mathrel{+}= f[i][a][\ell] \quad (\text{放 P})\\
-f[i+1][a+1][0] &amp;\mathrel{+}= f[i][a][\ell] \quad (\text{放 A, 仅 } a=0)\\
-f[i+1][a][\ell+1] &amp;\mathrel{+}= f[i][a][\ell] \quad (\text{放 L, 仅 } \ell \leq 1)
-\end{aligned}\]</div>
-<p>答案 <span class="arithmatex">\(= \sum_{a, \ell} f[n][a][\ell]\)</span>。初始 <span class="arithmatex">\(f[0][0][0] = 1\)</span>。</p>
+<p><strong>直觉（为什么两个量就够）.</strong> 设我们已构造出一个合法前缀，正考虑往后再接一个字符。约束 (1) 只关心 A 的<strong>累计</strong>个数：一旦达到 2，整串作废，与 A 出现在何处无关；既然只需区分"还没到 2"，把累计数截断在 <span class="arithmatex">\(\{0,1\}\)</span> 即可。约束 (2) 只关心<strong>末尾</strong>连续 L 的长度：第三个连续 L 一出现即作废，而这取决于当前结尾已有几个 L，更早的 L 段、A 的位置、前缀的具体内容都不再影响未来——因为一个 P 或 A 会把连续 L 计数清零。于是末尾连续 L 数截断在 <span class="arithmatex">\(\{0,1,2\}\)</span> 即可。</p>
+<p>把这两个量记作 <span class="arithmatex">\(a\)</span>（已用 A 数）和 <span class="arithmatex">\(\ell\)</span>（末尾连续 L 数）。上面的论证说明：<strong>前缀对未来合法性的全部影响，都由 <span class="arithmatex">\((a,\ell)\)</span> 决定</strong>。内容相同 <span class="arithmatex">\((a,\ell)\)</span> 的前缀在后续构造中完全可互换，因此可归为一类。状态空间只有 <span class="arithmatex">\(|\{0,1\}| \times |\{0,1,2\}| = 6\)</span> 个等价类，指数枚举就此坍缩为对 6 类的递推。</p>
+<p><strong>定义.</strong> 状态 <span class="arithmatex">\((a, \ell)\)</span>，其中 <span class="arithmatex">\(a \in \{0, 1\}\)</span>，<span class="arithmatex">\(\ell \in \{0, 1, 2\}\)</span>，共 6 个。记 <span class="arithmatex">\(f[i][a][\ell]\)</span> = 长度为 <span class="arithmatex">\(i\)</span>、当前处于状态 <span class="arithmatex">\((a, \ell)\)</span> 的合法前缀数。</p>
+<p><strong>转移.</strong> 在状态 <span class="arithmatex">\((a,\ell)\)</span> 后追加一个字符，按字符种类分三支，每支对应一条约束的可行性判定：</p>
+<div class="arithmatex">\[
+\begin{aligned}
+f[i+1][a][0]\ &amp;\mathrel{+}=\ f[i][a][\ell]
+&amp;&amp;\text{(放 P：总合法，连续 L 清零)}\\
+f[i+1][1][0]\ &amp;\mathrel{+}=\ f[i][0][\ell]
+&amp;&amp;\text{(放 A：仅当 } a=0\text{，否则第二个 A 违反约束 1)}\\
+f[i+1][a][\ell+1]\ &amp;\mathrel{+}=\ f[i][a][\ell]
+&amp;&amp;\text{(放 L：仅当 } \ell \leq 1\text{，否则第三个连续 L 违反约束 2)}
+\end{aligned}
+\tag{$\star$}
+\]</div>
+<p>每条转移对所有满足其前置条件的 <span class="arithmatex">\(\ell \in \{0,1,2\}\)</span>（放 A 一支对所有 <span class="arithmatex">\(\ell\)</span>，放 L 一支对 <span class="arithmatex">\(\ell \in \{0,1\}\)</span>）求和累加。初始 <span class="arithmatex">\(f[0][0][0] = 1\)</span>（空前缀，零个 A、末尾零个 L）。</p>
+<p><strong>答案.</strong> 长度恰为 <span class="arithmatex">\(n\)</span> 的合法串就是所有合法前缀，按当前状态分类后求和：</p>
+<div class="arithmatex">\[
+\text{answer} \;=\; \sum_{a \in \{0,1\}} \sum_{\ell \in \{0,1,2\}} f[n][a][\ell].
+\tag{$\dagger$}
+\]</div>
+<p>接下来把递推 <span class="arithmatex">\((\star)\)</span> 直接落成代码。</p>
 <h2 id="approach">数据结构 / 想法 (Approach)<a class="headerlink" href="#approach" title="Permanent link">#</a></h2>
 <p><strong>解法 A：<span class="arithmatex">\(O(n)\)</span> DP，滚动数组</strong></p>
+<p>状态只依赖前一层，故用一维数组 <span class="arithmatex">\(f\)</span> 滚动即可，<span class="arithmatex">\(O(1)\)</span> 空间。把二维状态 <span class="arithmatex">\((a,\ell)\)</span> 编码为单下标 <code>a*3 + l</code>：<span class="arithmatex">\(a\)</span> 占高位（步长 3），<span class="arithmatex">\(\ell\)</span> 占低位，下标范围正好 <span class="arithmatex">\(0..5\)</span>，与 6 个等价类一一对应。三个 <code>if</code> 分支逐字对应递推 <span class="arithmatex">\((\star)\)</span> 的三条转移及其前置条件。</p>
 <div class="language-python highlight"><pre><span></span><code><span class="n">MOD</span> <span class="o">=</span> <span class="mi">10</span><span class="o">**</span><span class="mi">9</span> <span class="o">+</span> <span class="mi">7</span>
 
 <span class="k">class</span><span class="w"> </span><span class="nc">Solution</span><span class="p">:</span>
@@ -22503,29 +22550,35 @@ f[i+1][a][\ell+1] &amp;\mathrel{+}= f[i][a][\ell] \quad (\text{放 L, 仅 } \ell
             <span class="n">f</span> <span class="o">=</span> <span class="n">g</span>
         <span class="k">return</span> <span class="nb">sum</span><span class="p">(</span><span class="n">f</span><span class="p">)</span> <span class="o">%</span> <span class="n">MOD</span>
 </code></pre></div>
+<p>两个小规模 trace 把递推 <span class="arithmatex">\((\star)\)</span> 落到具体步骤，同时校验代码：</p>
 <p><strong>Trace <code>n=1</code></strong>：初始 f=[1,0,0,0,0,0]（即 (0,0)=1）。
 - 放 P → g[(0,0)] += 1
 - 放 A → g[(1,0)] += 1
 - 放 L (l=0 &lt; 2) → g[(0,1)] += 1</p>
-<p>g = [1, 1, 0, 1, 0, 0]，sum = 3 ✓</p>
+<p>g = [1, 1, 0, 1, 0, 0]，sum = 3 ✓（合法串 P, A, L）</p>
 <p><strong>Trace <code>n=2</code></strong>：从 f=[1,1,0,1,0,0] 继续：
 - (0,0)=1: P→g[0]+=1, A→g[3]+=1, L→g[1]+=1
 - (0,1)=1: P→g[0]+=1, A→g[3]+=1, L→g[2]+=1
 - (1,0)=1: P→g[3]+=1, L→g[4]+=1</p>
 <p>g = [2, 1, 1, 3, 1, 0], sum = 8 ✓</p>
 <p><strong>解法 B：矩阵快速幂 <span class="arithmatex">\(O(6^3 \log n)\)</span></strong></p>
-<p>定义 <span class="arithmatex">\(6 \times 6\)</span> 转移矩阵 <span class="arithmatex">\(M\)</span>，答案 <span class="arithmatex">\(= \mathbf{1}^T M^n \mathbf{e}_0\)</span>。当 <span class="arithmatex">\(n\)</span> 极大（如 <span class="arithmatex">\(10^{18}\)</span>）时必备；本题 <span class="arithmatex">\(n \leq 10^5\)</span> DP 足矣。</p>
+<p>递推 <span class="arithmatex">\((\star)\)</span> 把长度 <span class="arithmatex">\(i\)</span> 的状态向量 <span class="arithmatex">\(\mathbf{f}_i \in \mathbb{Z}^6\)</span> 线性地映到 <span class="arithmatex">\(\mathbf{f}_{i+1}\)</span>：<span class="arithmatex">\(g\)</span> 的每个分量都是 <span class="arithmatex">\(f\)</span> 各分量的整数线性组合，组合系数不随 <span class="arithmatex">\(i\)</span> 变化。把这组系数收进一个 <span class="arithmatex">\(6 \times 6\)</span> 矩阵 <span class="arithmatex">\(M\)</span>，令 <span class="arithmatex">\(M_{ij}\)</span> = 从状态 <span class="arithmatex">\(j\)</span> 一步可达状态 <span class="arithmatex">\(i\)</span> 的字符数（由 <span class="arithmatex">\((\star)\)</span> 读出，取值 0 或 1），则一步转移就是</p>
+<div class="arithmatex">\[
+\mathbf{f}_{i+1} = M\,\mathbf{f}_i, \qquad\text{故}\qquad \mathbf{f}_n = M^n \mathbf{f}_0 = M^n \mathbf{e}_0,
+\]</div>
+<p>其中 <span class="arithmatex">\(\mathbf{e}_0\)</span> 是初态指示向量。按 <span class="arithmatex">\((\dagger)\)</span> 对所有状态求和即左乘全 1 行向量：<span class="arithmatex">\(\text{answer} = \mathbf{1}^T M^n \mathbf{e}_0\)</span>。<span class="arithmatex">\(M^n\)</span> 用快速幂在 <span class="arithmatex">\(O(\log n)\)</span> 次 <span class="arithmatex">\(6\times6\)</span> 矩阵乘内算出，每次矩阵乘 <span class="arithmatex">\(O(6^3)\)</span>。当 <span class="arithmatex">\(n\)</span> 极大（如 <span class="arithmatex">\(10^{18}\)</span>）时这是唯一可行解；本题 <span class="arithmatex">\(n \leq 10^5\)</span>，解法 A 已足够。</p>
 <h2 id="complexity">复杂度 (Complexity)<a class="headerlink" href="#complexity" title="Permanent link">#</a></h2>
+<p>复杂度直接源于状态空间固定：6 个状态、每个至多 3 条转移，是与 <span class="arithmatex">\(n\)</span> 无关的常数工作量。</p>
 <ul>
-<li>解法 A: Time <span class="arithmatex">\(O(n \cdot 6 \cdot 3) = O(n)\)</span>, Space <span class="arithmatex">\(O(1)\)</span>（6 元状态）</li>
-<li>解法 B: Time <span class="arithmatex">\(O(\log n)\)</span> with <span class="arithmatex">\(6^3\)</span> 矩阵乘常数, Space <span class="arithmatex">\(O(1)\)</span></li>
+<li>解法 A：外层对 <span class="arithmatex">\(n\)</span> 单趟循环，每趟做 <span class="arithmatex">\(6 \times 3\)</span> 的常数工作 → Time <span class="arithmatex">\(O(n)\)</span>；只维护两个 6 元数组 → Space <span class="arithmatex">\(O(1)\)</span>。</li>
+<li>解法 B：<span class="arithmatex">\(O(\log n)\)</span> 次矩阵乘，每次 <span class="arithmatex">\(6^3\)</span> → Time <span class="arithmatex">\(O(6^3 \log n)\)</span>；常数大小矩阵 → Space <span class="arithmatex">\(O(1)\)</span>。把 <span class="arithmatex">\(O(n)\)</span> 中的 <span class="arithmatex">\(n\)</span> 换成 <span class="arithmatex">\(\log n\)</span>，代价是 <span class="arithmatex">\(6^3\)</span> 的常数。</li>
 </ul>
 <h2 id="pitfalls">陷阱 (Pitfalls)<a class="headerlink" href="#pitfalls" title="Permanent link">#</a></h2>
 <ul>
-<li><strong>取模时机</strong>：每次加法后 <code>% MOD</code>，否则 Python 也会因大整数运算变慢。</li>
-<li><strong>L 的边界</strong>：连续 L <strong>小于</strong> 3 即 <span class="arithmatex">\(\ell \in \{0, 1, 2\}\)</span>；写 <code>if l &lt;= 2</code> 会越界。</li>
-<li><strong>A 是"总数"非"连续"</strong>：和 L 的连续约束不同，A 只统计累计——状态用计数 0/1 而非"末尾是不是 A"。</li>
-<li><strong>n=0 边界</strong>：题目 <span class="arithmatex">\(n \geq 1\)</span>，但若推广要返回 1（空串合法）。</li>
+<li><strong>取模时机</strong>：每次加法后 <code>% MOD</code>。Python 整数是任意精度，不取模时中间和会膨胀到上千位，大整数运算拖慢全程（不是溢出，是变慢）。</li>
+<li><strong>L 的边界</strong>：连续 L 须 <strong>&lt; 3</strong>，即 <span class="arithmatex">\(\ell \in \{0, 1, 2\}\)</span>，放 L 的守卫是 <code>if l &lt; 2</code>。若误写成 <code>if l &lt;= 2</code>，当 <span class="arithmatex">\(\ell=2\)</span> 时仍放 L：<span class="arithmatex">\(a=0\)</span> 支会写到 <code>g[3]</code>——一个<strong>合法下标</strong>（状态 (1,0)），于是<strong>静默给出错误计数</strong>（实测 <span class="arithmatex">\(n=3\)</span> 返回 20 而非 19）；<span class="arithmatex">\(a=1\)</span> 支才写到越界的 <code>g[6]</code>，但该越界要到 <span class="arithmatex">\(n=4\)</span> 才首次触发（状态 (1,2) 在更短长度下计数恒为 0）。故首发症状是答案错误，下标越界只是更晚的最坏情形。</li>
+<li><strong>A 是"总数"非"连续"</strong>：与 L 的连续约束不同，A 只统计累计——状态用计数 0/1 表示"已用 A 数"，而非"末尾是不是 A"。</li>
+<li><strong>n=0 边界</strong>：题目 <span class="arithmatex">\(n \geq 1\)</span>；若推广到 <span class="arithmatex">\(n=0\)</span>，代码正确返回 1（空串合法，对应初态 <span class="arithmatex">\(f[0][0][0]=1\)</span>）。</li>
 </ul>
 <h2 id="related">相关题目 (Related)<a class="headerlink" href="#related" title="Permanent link">#</a></h2>
 <ul>
@@ -22644,6 +22697,8 @@ f[i+1][a][\ell+1] &amp;\mathrel{+}= f[i][a][\ell] \quad (\text{放 L, 仅 } \ell
         <script src="../../../js/mathjax/tex-mml-chtml.js"></script>
       
         <script src="../../../js/mermaid.min.js"></script>
+      
+        <script src="../../../js/featured.js"></script>
       
     
   </body>

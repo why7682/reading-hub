@@ -1466,6 +1466,8 @@
       
         
       
+        
+      
     
     
     
@@ -1521,6 +1523,34 @@
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../featured/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ⭐ Featured（已验证）
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
               
             
               
@@ -1610,10 +1640,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_4" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
         
           
-          <label class="md-nav__link" for="__nav_4_4" id="__nav_4_4_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_5" id="__nav_4_5_label" tabindex="">
             
   
   
@@ -1631,8 +1661,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_4_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_4">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_5">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1915,7 +1945,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -1937,14 +1967,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_4_5" id="__nav_4_5_label" tabindex="">
+              <label class="md-nav__link " for="__nav_4_6" id="__nav_4_6_label" tabindex="">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_5">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_6">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -5321,10 +5351,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_7" checked>
         
           
-          <label class="md-nav__link" for="__nav_4_6" id="__nav_4_6_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_7" id="__nav_4_7_label" tabindex="">
             
   
   
@@ -5342,8 +5372,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_4_6">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_7_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4_7">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -22467,37 +22497,59 @@
 <h2 id="problem">Problem<a class="headerlink" href="#problem" title="Permanent link">#</a></h2>
 <p>无向图 <span class="arithmatex">\(n\)</span> 节点 + <code>edgeList[i] = [u, v, dis]</code>（可重边），给 <code>queries[j] = [p, q, limit]</code>，问是否存在 <span class="arithmatex">\(p\)</span> 到 <span class="arithmatex">\(q\)</span> 的路径使每条边 <span class="arithmatex">\(&lt; limit\)</span>。返回布尔数组。约束 <span class="arithmatex">\(n, |E|, |Q| \le 10^5\)</span>，<span class="arithmatex">\(dis, limit \le 10^9\)</span>。</p>
 <h2 id="background">背景 (Background)<a class="headerlink" href="#background" title="Permanent link">#</a></h2>
-<p>本题是 <strong>离线查询 + Kruskal-style 并查集</strong> 的范式题。在线最坏要 <span class="arithmatex">\(O(Q \cdot E)\)</span>，但所有查询已知 → 按 <span class="arithmatex">\(limit\)</span> 升序处理 query，按 <span class="arithmatex">\(dis\)</span> 升序处理 edge，用 DSU 增量维护"权 <span class="arithmatex">\(&lt; limit\)</span> 的连通分量"，每个 query 仅做 <span class="arithmatex">\(O(\alpha)\)</span> find。这是 <strong>Kruskal's MST</strong> 思想的副产品：MST 上的路径上最大边等于"两端最早连通时所有候选边的最大值"——即 <strong>Boruvka/Kruskal 离线</strong> 哲学。同模式也用于：<a href="../1632_rank-transform-of-a-matrix/">#1632 Rank Transform of a Matrix</a>。</p>
+<p>先把单个查询当作一道独立题来做。查询 <span class="arithmatex">\((p, q, L)\)</span> 问的是：能否从 <span class="arithmatex">\(p\)</span> 走到 <span class="arithmatex">\(q\)</span>，且全程只用权重 <span class="arithmatex">\(&lt; L\)</span> 的边。最直接的办法是丢掉所有权重 <span class="arithmatex">\(\ge L\)</span> 的边，在剩下的图上从 <span class="arithmatex">\(p\)</span> 跑一次 BFS/DFS，看是否到得了 <span class="arithmatex">\(q\)</span>。单次代价 <span class="arithmatex">\(O(n + |E|)\)</span>，对全部 <span class="arithmatex">\(Q\)</span> 个查询独立重复就是 <span class="arithmatex">\(O(Q(n + |E|))\)</span>。</p>
+<p>在本题约束下 <span class="arithmatex">\(Q, |E|\)</span> 同为 <span class="arithmatex">\(10^5\)</span>，这个乘积约 <span class="arithmatex">\(10^{10}\)</span>，明显超时。问题不在单次 BFS——它已经最优——而在于 <span class="arithmatex">\(Q\)</span> 次 BFS 之间<strong>重复了大量工作</strong>：每个查询都从零重建一张过滤后的图、重跑一次遍历，彼此完全不共享中间结果。</p>
+<p>要点因此变成：所有查询是同时给出的（<strong>离线</strong>）。如果不同查询用到的「过滤后的图」之间有结构关系，就能让它们共享构造过程，而不是各算各的。下一节先把「过滤后的图」精确写下来，这个结构关系会立刻浮现。</p>
 <h2 id="formulation">形式化 (Formulation)<a class="headerlink" href="#formulation" title="Permanent link">#</a></h2>
-<p>给图 <span class="arithmatex">\(G = (V, E)\)</span> 每边带权 <span class="arithmatex">\(w_e\)</span>。对每个 <span class="arithmatex">\((p, q, L)\)</span>，判定：</p>
-<div class="arithmatex">\[\exists \text{ path } P \subseteq E \text{ from } p \text{ to } q :\; \max_{e \in P} w_e &lt; L\]</div>
-<p>等价于 <span class="arithmatex">\(p, q\)</span> 在子图 <span class="arithmatex">\(G_L = \{e : w_e &lt; L\}\)</span> 中连通。</p>
+<p>给图 <span class="arithmatex">\(G = (V, E)\)</span>，每条边 <span class="arithmatex">\(e\)</span> 带权 <span class="arithmatex">\(w_e\)</span>。对阈值 <span class="arithmatex">\(L\)</span>，定义<strong>过滤子图</strong></p>
+<div class="arithmatex">\[G_L := (V,\; \{e \in E : w_e &lt; L\}). \tag{1}\]</div>
+<p>即只保留权重严格小于 <span class="arithmatex">\(L\)</span> 的边，顶点集不变。查询 <span class="arithmatex">\((p, q, L)\)</span> 现在可以化为 <span class="arithmatex">\(G_L\)</span> 上的一个连通性判定：</p>
+<div class="arithmatex">\[\exists\,\text{path }P\text{ from }p\text{ to }q:\ \max_{e \in P} w_e &lt; L \quad\Longleftrightarrow\quad p, q\ \text{在}\ G_L\ \text{中连通}. \tag{2}\]</div>
+<p><strong>(2) 的证明</strong>是定义的直接展开，两个方向各一句：</p>
+<ul>
+<li>(<span class="arithmatex">\(\Rightarrow\)</span>) 若存在路径 <span class="arithmatex">\(P\)</span> 满足 <span class="arithmatex">\(\max_{e \in P} w_e &lt; L\)</span>，则 <span class="arithmatex">\(P\)</span> 上每条边都满足 <span class="arithmatex">\(w_e &lt; L\)</span>，由 (1) 全部属于 <span class="arithmatex">\(G_L\)</span>，故 <span class="arithmatex">\(p, q\)</span> 在 <span class="arithmatex">\(G_L\)</span> 中连通。</li>
+<li>(<span class="arithmatex">\(\Leftarrow\)</span>) 若 <span class="arithmatex">\(p, q\)</span> 在 <span class="arithmatex">\(G_L\)</span> 中连通，取一条连接它们的路径 <span class="arithmatex">\(P\)</span>；<span class="arithmatex">\(P\)</span> 只由 <span class="arithmatex">\(G_L\)</span> 的边构成，每条都满足 <span class="arithmatex">\(w_e &lt; L\)</span>，于是 <span class="arithmatex">\(\max_{e \in P} w_e &lt; L\)</span>。</li>
+</ul>
+<p>注意「最大边 <span class="arithmatex">\(&lt; L\)</span>」与「逐条边 <span class="arithmatex">\(&lt; L\)</span>」对一条具体路径是同义的——这正是把「带权上限的路径存在性」坍缩成「子图连通性」的那一步。<span class="arithmatex">\(G_L\)</span> 中的连通性是等价关系，故每个查询本质上只是问 <span class="arithmatex">\(p, q\)</span> 是否落在同一连通分量。</p>
+<p>关键结构在 (1) 中已经显现：<span class="arithmatex">\(G_L\)</span> 是一族<strong>随 <span class="arithmatex">\(L\)</span> 单调增长</strong>的子图。</p>
+<div class="arithmatex">\[L \le L' \quad\Longrightarrow\quad G_L \subseteq G_{L'}. \tag{3}\]</div>
+<p>因为提高阈值只会让更多边通过过滤，从不删边。这就是上一节预告的「结构关系」：不同查询的过滤图不是互相独立的，而是嵌套的。下一节据此消除重复工作。</p>
 <h2 id="approach">数据结构 / 想法 (Approach)<a class="headerlink" href="#approach" title="Permanent link">#</a></h2>
+<p>由等价式 (2)，查询 <span class="arithmatex">\((p, q, L_j)\)</span> 等于判定 <span class="arithmatex">\(p, q\)</span> 在 <span class="arithmatex">\(G_{L_j}\)</span> 中是否连通。由单调性 (3)，若把查询按阈值 <span class="arithmatex">\(L\)</span> 升序处理，则 <span class="arithmatex">\(G_{L_1} \subseteq G_{L_2} \subseteq \cdots\)</span>——每个过滤图都是下一个的子图。于是我们不必为每个查询重建图，只需维护<strong>一张不断加边、从不删边的图</strong>，并在处理到查询 <span class="arithmatex">\(j\)</span> 时让它恰好等于 <span class="arithmatex">\(G_{L_j}\)</span>。</p>
+<p>支持「增量加边 + 连通性查询」的数据结构正是并查集 (DSU)：<code>union</code> 摊还 <span class="arithmatex">\(O(\alpha)\)</span>，<code>find</code> 摊还 <span class="arithmatex">\(O(\alpha)\)</span>，而 BFS/DFS 每次查询要 <span class="arithmatex">\(O(n + |E|)\)</span> 重扫整张过滤图。DSU 之所以适配，正是因为 (3) 保证边只增不减——这恰好是 DSU 唯一支持的更新方向。</p>
 <p><strong>离线策略</strong>：
 1. 给 query 加原始下标后按 <span class="arithmatex">\(L\)</span> 升序排序。
 2. 给 edge 按 <span class="arithmatex">\(dis\)</span> 升序排序，用指针 <span class="arithmatex">\(k\)</span> 指向"下一条待加入"的边。
 3. 顺序处理 query：把所有 <span class="arithmatex">\(dis &lt; L\)</span> 的边合并进 DSU，然后 find(p) == find(q)。
 4. 按原下标还原答案。</p>
-<p><strong>正确性</strong>：DSU 单调增长——加入更多边后只会让更多对联通；由于 query 按 <span class="arithmatex">\(L\)</span> 升序，先前已加的边对后续 query 也合法（<span class="arithmatex">\(dis &lt; L_j \implies dis &lt; L_{j+1}\)</span>）。</p>
+<p><strong>正确性</strong>：处理查询 <span class="arithmatex">\(j\)</span> 前，指针 <span class="arithmatex">\(k\)</span> 已把所有 <span class="arithmatex">\(dis &lt; L_j\)</span> 的边合并进 DSU，故当前 DSU 恰好编码 <span class="arithmatex">\(G_{L_j}\)</span> 的连通分量，<code>find(p) == find(q)</code> 由 (2) 给出正确答案。跨查询复用 DSU 状态是安全的：因查询按 <span class="arithmatex">\(L\)</span> 升序、DSU 只加边不删边，为查询 <span class="arithmatex">\(j\)</span>（阈值 <span class="arithmatex">\(L_j\)</span>）做的每次合并对查询 <span class="arithmatex">\(j+1\)</span>（阈值 <span class="arithmatex">\(L_{j+1} \ge L_j\)</span>）依然成立——这正是单调性 (3) 在算法层面的体现，无需任何 MST 理论即可得出。</p>
 <div class="language-python highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">Solution</span><span class="p">:</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">distanceLimitedPathsExist</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">edgeList</span><span class="p">,</span> <span class="n">queries</span><span class="p">):</span>
         <span class="n">edgeList</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">e</span><span class="p">:</span> <span class="n">e</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
         <span class="n">Q</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">queries</span><span class="p">)),</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">i</span><span class="p">:</span> <span class="n">queries</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">2</span><span class="p">])</span>
         <span class="n">parent</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">))</span>
+        <span class="n">rank</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">n</span>
         <span class="k">def</span><span class="w"> </span><span class="nf">find</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
             <span class="k">while</span> <span class="n">parent</span><span class="p">[</span><span class="n">x</span><span class="p">]</span> <span class="o">!=</span> <span class="n">x</span><span class="p">:</span>
-                <span class="n">parent</span><span class="p">[</span><span class="n">x</span><span class="p">]</span> <span class="o">=</span> <span class="n">parent</span><span class="p">[</span><span class="n">parent</span><span class="p">[</span><span class="n">x</span><span class="p">]]</span>
+                <span class="n">parent</span><span class="p">[</span><span class="n">x</span><span class="p">]</span> <span class="o">=</span> <span class="n">parent</span><span class="p">[</span><span class="n">parent</span><span class="p">[</span><span class="n">x</span><span class="p">]]</span>  <span class="c1"># path halving</span>
                 <span class="n">x</span> <span class="o">=</span> <span class="n">parent</span><span class="p">[</span><span class="n">x</span><span class="p">]</span>
             <span class="k">return</span> <span class="n">x</span>
+        <span class="k">def</span><span class="w"> </span><span class="nf">union</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
+            <span class="n">ra</span><span class="p">,</span> <span class="n">rb</span> <span class="o">=</span> <span class="n">find</span><span class="p">(</span><span class="n">a</span><span class="p">),</span> <span class="n">find</span><span class="p">(</span><span class="n">b</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">ra</span> <span class="o">==</span> <span class="n">rb</span><span class="p">:</span>
+                <span class="k">return</span>
+            <span class="k">if</span> <span class="n">rank</span><span class="p">[</span><span class="n">ra</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">rank</span><span class="p">[</span><span class="n">rb</span><span class="p">]:</span>
+                <span class="n">ra</span><span class="p">,</span> <span class="n">rb</span> <span class="o">=</span> <span class="n">rb</span><span class="p">,</span> <span class="n">ra</span>
+            <span class="n">parent</span><span class="p">[</span><span class="n">rb</span><span class="p">]</span> <span class="o">=</span> <span class="n">ra</span>
+            <span class="k">if</span> <span class="n">rank</span><span class="p">[</span><span class="n">ra</span><span class="p">]</span> <span class="o">==</span> <span class="n">rank</span><span class="p">[</span><span class="n">rb</span><span class="p">]:</span>
+                <span class="n">rank</span><span class="p">[</span><span class="n">ra</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
         <span class="n">ans</span> <span class="o">=</span> <span class="p">[</span><span class="kc">False</span><span class="p">]</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">queries</span><span class="p">)</span>
         <span class="n">k</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="k">for</span> <span class="n">qi</span> <span class="ow">in</span> <span class="n">Q</span><span class="p">:</span>
             <span class="n">p</span><span class="p">,</span> <span class="n">q</span><span class="p">,</span> <span class="n">L</span> <span class="o">=</span> <span class="n">queries</span><span class="p">[</span><span class="n">qi</span><span class="p">]</span>
             <span class="k">while</span> <span class="n">k</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">edgeList</span><span class="p">)</span> <span class="ow">and</span> <span class="n">edgeList</span><span class="p">[</span><span class="n">k</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">L</span><span class="p">:</span>
                 <span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">edgeList</span><span class="p">[</span><span class="n">k</span><span class="p">]</span>
-                <span class="n">ru</span><span class="p">,</span> <span class="n">rv</span> <span class="o">=</span> <span class="n">find</span><span class="p">(</span><span class="n">u</span><span class="p">),</span> <span class="n">find</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
-                <span class="k">if</span> <span class="n">ru</span> <span class="o">!=</span> <span class="n">rv</span><span class="p">:</span>
-                    <span class="n">parent</span><span class="p">[</span><span class="n">ru</span><span class="p">]</span> <span class="o">=</span> <span class="n">rv</span>
+                <span class="n">union</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span>
                 <span class="n">k</span> <span class="o">+=</span> <span class="mi">1</span>
             <span class="n">ans</span><span class="p">[</span><span class="n">qi</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">find</span><span class="p">(</span><span class="n">p</span><span class="p">)</span> <span class="o">==</span> <span class="n">find</span><span class="p">(</span><span class="n">q</span><span class="p">))</span>
         <span class="k">return</span> <span class="n">ans</span>
@@ -22510,15 +22562,15 @@
 - 答案 [False, True] ✓</p>
 <h2 id="complexity">复杂度 (Complexity)<a class="headerlink" href="#complexity" title="Permanent link">#</a></h2>
 <ul>
-<li>Time: <span class="arithmatex">\(O((E + Q) \log(E + Q) + (E + Q) \alpha(n))\)</span>，排序主导。</li>
-<li>Space: <span class="arithmatex">\(O(n + Q)\)</span>。</li>
+<li>Time: <span class="arithmatex">\(O((E + Q) \log(E + Q) + (E + Q)\,\alpha(n))\)</span>，排序主导。其中 <span class="arithmatex">\(\alpha\)</span> 是反阿克曼函数，对一切实际规模的 <span class="arithmatex">\(n\)</span> 都可视为常数；这要求 DSU 同时使用路径减半与按秩合并（见陷阱）。</li>
+<li>Space: <span class="arithmatex">\(O(n + Q + E)\)</span>。<span class="arithmatex">\(O(n)\)</span> 为 DSU 的 <code>parent</code>/<code>rank</code>，<span class="arithmatex">\(O(Q)\)</span> 为查询下标，<span class="arithmatex">\(O(E)\)</span> 为边数据与排序的辅助空间。</li>
 </ul>
 <h2 id="pitfalls">陷阱 (Pitfalls)<a class="headerlink" href="#pitfalls" title="Permanent link">#</a></h2>
 <ul>
-<li><strong>严格小于 <span class="arithmatex">\(L\)</span></strong>：用 <code>&lt;</code> 不是 <code>&lt;=</code>。<code>edgeList[k][2] &lt; L</code>。</li>
-<li><strong>可重边</strong>：DSU 天然处理（重复合并无副作用）。</li>
-<li><strong>保留原 query 顺序</strong>：必须用 <code>ans[qi] = ...</code> 而非顺序 append。</li>
-<li><strong>路径压缩 + rank 合并</strong>：本题 <span class="arithmatex">\(n, E \le 10^5\)</span>，需要至少路径压缩；否则最坏 <span class="arithmatex">\(O(QE)\)</span> 超时。</li>
+<li><strong>严格小于 <span class="arithmatex">\(L\)</span></strong>：用 <code>&lt;</code> 不是 <code>&lt;=</code>。<code>edgeList[k][2] &lt; L</code>，与形式化中的 <span class="arithmatex">\(\max w_e &lt; L\)</span> 一致。</li>
+<li><strong>可重边</strong>：DSU 天然处理（<code>ra == rb</code> 时合并为空操作）。</li>
+<li><strong>保留原 query 顺序</strong>：必须用 <code>ans[qi] = ...</code> 而非顺序 append——查询是按 <span class="arithmatex">\(L\)</span> 排序处理的，不是输入序。</li>
+<li><strong>路径减半 + 按秩合并缺一不可</strong>：上面的 <code>find</code> 用的是<strong>路径减半</strong>（path halving，每步把节点指向祖父），并非把整条路径一次性挂到根的标准路径压缩；二者摊还界相同。但若只做路径减半而用任意链接（<code>parent[ru] = rv</code>，无秩），已被证明摊还界退化为 <span class="arithmatex">\(\Theta(\log n)\)</span> 而非 <span class="arithmatex">\(\alpha(n)\)</span>（Tarjan &amp; van Leeuwen, 1984）。要兑现 <span class="arithmatex">\(\alpha(n)\)</span> 必须叠加按秩合并，故代码保留 <code>rank</code>。</li>
 <li><strong>离线 vs 在线</strong>：若题目允许在线 query，可用 <strong>Kruskal 重构树 + LCA</strong> 在 <span class="arithmatex">\(O((E+Q)\log n)\)</span> 处理。</li>
 </ul>
 <h2 id="related">相关题目 (Related)<a class="headerlink" href="#related" title="Permanent link">#</a></h2>
@@ -22639,6 +22691,8 @@
         <script src="../../../js/mathjax/tex-mml-chtml.js"></script>
       
         <script src="../../../js/mermaid.min.js"></script>
+      
+        <script src="../../../js/featured.js"></script>
       
     
   </body>

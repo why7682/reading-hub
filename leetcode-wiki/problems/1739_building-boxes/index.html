@@ -1466,6 +1466,8 @@
       
         
       
+        
+      
     
     
     
@@ -1521,6 +1523,34 @@
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../featured/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ⭐ Featured（已验证）
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
               
             
               
@@ -1610,10 +1640,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_4" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
         
           
-          <label class="md-nav__link" for="__nav_4_4" id="__nav_4_4_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_5" id="__nav_4_5_label" tabindex="">
             
   
   
@@ -1631,8 +1661,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_4_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_4">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_5">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1915,7 +1945,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -1937,14 +1967,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_4_5" id="__nav_4_5_label" tabindex="">
+              <label class="md-nav__link " for="__nav_4_6" id="__nav_4_6_label" tabindex="">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_5">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_6">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -5321,10 +5351,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_7" checked>
         
           
-          <label class="md-nav__link" for="__nav_4_6" id="__nav_4_6_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_7" id="__nav_4_7_label" tabindex="">
             
   
   
@@ -5342,8 +5372,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_4_6">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_7_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4_7">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -22467,56 +22497,77 @@
 <h2 id="problem">Problem<a class="headerlink" href="#problem" title="Permanent link">#</a></h2>
 <p><span class="arithmatex">\(n \times n \times n\)</span> 房间，放 <span class="arithmatex">\(n\)</span> 个单位立方体盒子。规则：盒子可放地面任何位置；若盒 <span class="arithmatex">\(x\)</span> 放在盒 <span class="arithmatex">\(y\)</span> 上，则 <span class="arithmatex">\(y\)</span> 的四个侧面必须紧邻另一盒或墙。求"接触地面"盒子的最少数。约束 <span class="arithmatex">\(1 \le n \le 10^9\)</span>。</p>
 <h2 id="background">背景 (Background)<a class="headerlink" href="#background" title="Permanent link">#</a></h2>
-<p>本题是<strong>离散几何 / 角堆 (corner staircase pile)</strong> 的最优堆叠问题。最优结构：盒子堆成"角金字塔"——从墙角开始，第 <span class="arithmatex">\(k\)</span> 层（地面起）是边长 <span class="arithmatex">\(k\)</span> 的等边直角三角形。这个结构在 <strong>Stern-Brocot 树 / triangular number</strong> 中熟悉：第 <span class="arithmatex">\(k\)</span> 层有 <span class="arithmatex">\(T_k = k(k+1)/2\)</span> 个盒子；总堆 <span class="arithmatex">\(k\)</span> 层共 <span class="arithmatex">\(\sum_{i=1}^k T_i = \binom{k+2}{3} = k(k+1)(k+2)/6\)</span> 个盒子，地面占 <span class="arithmatex">\(T_k\)</span> 个。</p>
-<p>这是 <strong>tetrahedral number</strong> (四面体数, OEIS A000292) 的应用。</p>
+<p>问题问的不是"如何摆 <span class="arithmatex">\(n\)</span> 个盒子"，而是"摆 <span class="arithmatex">\(n\)</span> 个盒子时，触地的盒子最少能有多少个"。触地盒子是稀缺资源：每个触地盒子贡献一个地面占位，我们想用尽量少的地面占位托起全部 <span class="arithmatex">\(n\)</span> 个盒子。于是真正的问题是：<strong>一个触地盒子，最多能在它头顶撑起多少个盒子？</strong></p>
+<p>先看两个朴素摆法，看它们在哪里失败，失败处恰好暴露出正确结构。</p>
+<p><strong>朴素摆法一：全部平铺。</strong> 把 <span class="arithmatex">\(n\)</span> 个盒子全放地面，一个不叠。约束被空洞地满足（没有任何盒子在别的盒子上面），但触地数 <span class="arithmatex">\(= n\)</span>。当 <span class="arithmatex">\(n\)</span> 大时这显然不是最少——我们一个盒子都没往上撑。</p>
+<p><strong>朴素摆法二：墙角单柱。</strong> 既然平铺浪费，就往上叠：在墙角竖一根高柱，只有最底盒触地。但高度 <span class="arithmatex">\(\ge 2\)</span> 的盒子 <span class="arithmatex">\(y\)</span> 头上还压着盒 <span class="arithmatex">\(x\)</span>，约束要求 <span class="arithmatex">\(y\)</span> 的四个侧面紧邻盒或墙。墙角的柱子只有两面靠墙，另两面悬空——约束被违反。单柱非法。</p>
+<p>两次失败划出了张力：平铺触地太多，单柱触地太少但非法。合法地往上叠，<strong>每个被压住的盒子都必须四侧有支撑</strong>。这个约束本身决定了能叠成什么形状——下一节从约束直接推出该形状，不预先假设它。</p>
 <h2 id="formulation">形式化 (Formulation)<a class="headerlink" href="#formulation" title="Permanent link">#</a></h2>
-<p>设完整 <span class="arithmatex">\(k\)</span> 层金字塔总盒数 <span class="arithmatex">\(S(k) = k(k+1)(k+2)/6\)</span>。找最大 <span class="arithmatex">\(k\)</span> 使 <span class="arithmatex">\(S(k) \le n\)</span>。若 <span class="arithmatex">\(S(k) = n\)</span>，答案 <span class="arithmatex">\(T_k = k(k+1)/2\)</span>；否则剩余 <span class="arithmatex">\(r = n - S(k)\)</span> 个盒子需放在第 <span class="arithmatex">\(k+1\)</span> 层的"前 <span class="arithmatex">\(j\)</span> 个柱"上，其中 <span class="arithmatex">\(j\)</span> 为最小整数使 <span class="arithmatex">\(1 + 2 + \dots + j \ge r\)</span>，即 <span class="arithmatex">\(T_j \ge r\)</span>，答案 <span class="arithmatex">\(T_k + j\)</span>。</p>
+<p>把墙角设为原点，两面墙沿 <span class="arithmatex">\(x = 0\)</span> 与 <span class="arithmatex">\(y = 0\)</span>。盒子占据整数格点 <span class="arithmatex">\((x, y, h)\)</span>，<span class="arithmatex">\(x, y \ge 0\)</span>，高度 <span class="arithmatex">\(h \ge 1\)</span>（<span class="arithmatex">\(h = 1\)</span> 即触地层）。</p>
+<p><strong>支撑约束的精确形式</strong>：高度 <span class="arithmatex">\(h \ge 2\)</span> 的盒子 <span class="arithmatex">\((x, y, h)\)</span> 之下必有盒子 <span class="arithmatex">\((x, y, h{-}1)\)</span>；且该下方盒子 <span class="arithmatex">\((x, y, h{-}1)\)</span> 的四个侧向位置 <span class="arithmatex">\((x{\pm}1, y, h{-}1)\)</span>、<span class="arithmatex">\((x, y{\pm}1, h{-}1)\)</span> 每一个要么是墙（坐标为 <span class="arithmatex">\(-1\)</span>），要么也被盒子占据。换言之，被压住的盒子在自己那一层四面不能临空。</p>
+<p><strong>目标</strong>：在满足约束、总盒数为 <span class="arithmatex">\(n\)</span> 的所有摆法中，最小化触地集合 <span class="arithmatex">\(F = \{(x,y) : (x,y,1) \text{ 被占据}\}\)</span> 的大小 <span class="arithmatex">\(|F|\)</span>。</p>
+<p><strong>直觉：约束如何决定每一层的形状。</strong> 取定一层 <span class="arithmatex">\(h\)</span> 上的占据集合 <span class="arithmatex">\(L_h \subseteq \{(x,y): x,y\ge 0\}\)</span>。要在它之上某点 <span class="arithmatex">\((x,y)\)</span> 放盒子（即 <span class="arithmatex">\(L_{h+1}\)</span> 含 <span class="arithmatex">\((x,y)\)</span>），需要 <span class="arithmatex">\((x,y)\in L_h\)</span> 且 <span class="arithmatex">\((x,y)\)</span> 的四个侧邻在 <span class="arithmatex">\(L_h\)</span> 中或是墙。墙补足了 <span class="arithmatex">\(x = 0\)</span> 的左邻和 <span class="arithmatex">\(y = 0\)</span> 的下邻。所以能往上撑的点，是 <span class="arithmatex">\(L_h\)</span> 中"不在自由边界上"的点。要让上层尽量大，每一层就应当是<strong>靠墙角的、没有任何缺口的三角形</strong>：</p>
+<div class="arithmatex">\[L_h \;=\; \{(x, y) : x + y \le s_h - 1,\; x, y \ge 0\},\]</div>
+<p>即一个直角边长为 <span class="arithmatex">\(s_h\)</span> 的等腰直角三角形，含 <span class="arithmatex">\(T_{s_h}\)</span> 个点，其中</p>
+<div class="arithmatex">\[T_s := \frac{s(s+1)}{2}. \tag{1}\]</div>
+<p><strong>这个三角形为什么逐层缩小且无缺口最优。</strong> 三角形 <span class="arithmatex">\(L_h\)</span> 中，点 <span class="arithmatex">\((x,y)\)</span> 能支撑上层当且仅当它的右邻 <span class="arithmatex">\((x{+}1,y)\)</span> 与上邻 <span class="arithmatex">\((x,y{+}1)\)</span> 也在 <span class="arithmatex">\(L_h\)</span> 内（左、下两邻由墙或更内层的点保证），即 <span class="arithmatex">\(x + y \le s_h - 2\)</span>。这些点恰好构成边长 <span class="arithmatex">\(s_h - 1\)</span> 的三角形。于是</p>
+<div class="arithmatex">\[L_{h+1} \subseteq \{(x,y): x+y \le s_h - 2\}, \qquad s_{h+1} \le s_h - 1. \tag{2}\]</div>
+<p>每升一层，三角形边长至少减 <span class="arithmatex">\(1\)</span>。任何缺口都会让某个本可支撑的点失去侧邻，只会缩小可用的上层——所以"满三角形、边长逐层减一"是逐层最紧的选择，给定触地三角形的边长后它撑起的总盒数最大。</p>
+<p><strong>完整金字塔的盒数。</strong> 取边长从底到顶为 <span class="arithmatex">\(k, k{-}1, \dots, 1\)</span> 的满三角形堆叠，触地层边长 <span class="arithmatex">\(k\)</span>，触地数 <span class="arithmatex">\(T_k\)</span>。总盒数是各层三角数之和，一行望远镜式求和给出</p>
+<div class="arithmatex">\[S(k) := \sum_{s=1}^{k} T_s = \sum_{s=1}^{k}\binom{s+1}{2} = \binom{k+2}{3} = \frac{k(k+1)(k+2)}{6}. \tag{3}\]</div>
+<p>(3) 是四面体数 (OEIS A000292)。它就是本题的主公式：用 <span class="arithmatex">\(T_k\)</span> 个触地盒子，能撑起的总盒数上限是 <span class="arithmatex">\(S(k)\)</span>。</p>
 <h2 id="approach">数据结构 / 想法 (Approach)<a class="headerlink" href="#approach" title="Permanent link">#</a></h2>
-<p><strong>为何"角金字塔"最优</strong>：直觉上，每多一个底盒在最优时支持尽可能多的上层；从墙角堆三角阵满足"四侧紧邻"约束最紧凑：靠两面墙 + 上层斜面共同提供支撑。严格证明需结构归纳（每层结构最紧密 ⇒ 上层最多）。</p>
-<p><strong>计算步骤</strong>：
-1. 求最大 <span class="arithmatex">\(k\)</span> 使 <span class="arithmatex">\(k(k+1)(k+2)/6 \le n\)</span>：可二分或闭式 <span class="arithmatex">\(k \approx \sqrt[3]{6n}\)</span> 再调整。
-2. 计 <span class="arithmatex">\(r = n - S(k)\)</span>。
-3. 求最小 <span class="arithmatex">\(j\)</span> 使 <span class="arithmatex">\(j(j+1)/2 \ge r\)</span>：二分或解二次。
-4. 返回 <span class="arithmatex">\(k(k+1)/2 + j\)</span>。</p>
+<p>有了 (1)(3)，求解只剩"用最少触地盒装下 <span class="arithmatex">\(n\)</span> 个盒"。分两步：先填满整数个完整层，再处理零头。</p>
+<p><strong>第一步：填满完整金字塔。</strong> 由 (3)，<span class="arithmatex">\(S(k)\)</span> 随 <span class="arithmatex">\(k\)</span> 单调增。取最大的 <span class="arithmatex">\(k\)</span> 使 <span class="arithmatex">\(S(k) \le n\)</span>。若 <span class="arithmatex">\(S(k) = n\)</span>，恰好填满 <span class="arithmatex">\(k\)</span> 层，触地数就是 <span class="arithmatex">\(T_k\)</span>，完成。</p>
+<p><strong>第二步：处理零头。</strong> 否则剩 <span class="arithmatex">\(r = n - S(k) &gt; 0\)</span> 个盒子，必须放到第 <span class="arithmatex">\(k+1\)</span> 层。这一层是个边长可达 <span class="arithmatex">\(k+1\)</span> 的空三角形，我们沿它的前沿对角线从墙角向外逐列放触地盒。放第 <span class="arithmatex">\(i\)</span> 列触地盒时，它新增 <span class="arithmatex">\(1\)</span> 个地面占位，同时这一列能向上叠起 <span class="arithmatex">\(i\)</span> 个盒子（它前面已放的列为它补足了侧邻支撑）。所以放 <span class="arithmatex">\(j\)</span> 列后，第 <span class="arithmatex">\(k+1\)</span> 层能容纳</p>
+<div class="arithmatex">\[1 + 2 + \dots + j = T_j\]</div>
+<p>个盒子。要装下 <span class="arithmatex">\(r\)</span> 个零头，取最小的 <span class="arithmatex">\(j\)</span> 使 <span class="arithmatex">\(T_j \ge r\)</span>。此时新增触地数为 <span class="arithmatex">\(j\)</span>，总答案 <span class="arithmatex">\(T_k + j\)</span>。</p>
+<p><strong>汇总。</strong> 算法即：</p>
+<ol>
+<li>求最大 <span class="arithmatex">\(k\)</span> 使 <span class="arithmatex">\(\dfrac{k(k+1)(k+2)}{6} \le n\)</span>（用 (3)）。</li>
+<li>令 <span class="arithmatex">\(r = n - S(k)\)</span>。</li>
+<li>求最小 <span class="arithmatex">\(j\)</span> 使 <span class="arithmatex">\(\dfrac{j(j+1)}{2} \ge r\)</span>（用 (1)；<span class="arithmatex">\(r = 0\)</span> 时 <span class="arithmatex">\(j = 0\)</span>）。</li>
+<li>返回 <span class="arithmatex">\(T_k + j = \dfrac{k(k+1)}{2} + j\)</span>。</li>
+</ol>
 <div class="language-python highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">Solution</span><span class="p">:</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">minimumBoxes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
-        <span class="c1"># find largest k: k(k+1)(k+2)/6 &lt;= n</span>
+        <span class="c1"># Step 1: largest k with S(k) = k(k+1)(k+2)/6 &lt;= n</span>
         <span class="n">k</span> <span class="o">=</span> <span class="mi">1</span>
         <span class="k">while</span> <span class="n">k</span> <span class="o">*</span> <span class="p">(</span><span class="n">k</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">k</span> <span class="o">+</span> <span class="mi">2</span><span class="p">)</span> <span class="o">//</span> <span class="mi">6</span> <span class="o">&lt;=</span> <span class="n">n</span><span class="p">:</span>
             <span class="n">k</span> <span class="o">+=</span> <span class="mi">1</span>
         <span class="n">k</span> <span class="o">-=</span> <span class="mi">1</span>
         <span class="n">used</span> <span class="o">=</span> <span class="n">k</span> <span class="o">*</span> <span class="p">(</span><span class="n">k</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">k</span> <span class="o">+</span> <span class="mi">2</span><span class="p">)</span> <span class="o">//</span> <span class="mi">6</span>
         <span class="n">rem</span> <span class="o">=</span> <span class="n">n</span> <span class="o">-</span> <span class="n">used</span>
-        <span class="c1"># find smallest j: j(j+1)/2 &gt;= rem</span>
+        <span class="c1"># Step 3: smallest j with T_j = j(j+1)/2 &gt;= rem</span>
         <span class="n">j</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="k">while</span> <span class="n">j</span> <span class="o">*</span> <span class="p">(</span><span class="n">j</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">//</span> <span class="mi">2</span> <span class="o">&lt;</span> <span class="n">rem</span><span class="p">:</span>
             <span class="n">j</span> <span class="o">+=</span> <span class="mi">1</span>
         <span class="k">return</span> <span class="n">k</span> <span class="o">*</span> <span class="p">(</span><span class="n">k</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">//</span> <span class="mi">2</span> <span class="o">+</span> <span class="n">j</span>
 </code></pre></div>
-<p><span class="arithmatex">\(n \le 10^9\)</span> → <span class="arithmatex">\(k \le \sqrt[3]{6 \cdot 10^9} \approx 1817\)</span>；<span class="arithmatex">\(j \le k+1\)</span>。两个循环各 ~2000 次，可过。亦可二分到 <span class="arithmatex">\(O(\log n)\)</span>。</p>
-<p><strong>心算 trace 示例 3</strong>: n=10
-- k=1: 1·2·3/6=1 ≤ 10; k=2: 2·3·4/6=4; k=3: 3·4·5/6=10; k=4: 4·5·6/6=20 &gt; 10 → k=3, used=10
-- rem=0; j=0 (0·1/2=0 ≥ 0) → ans = 3·4/2 + 0 = 6 ✓</p>
-<p><strong>心算 trace 示例 2</strong>: n=4
-- k=1: 1; k=2: 4; k=3: 10 &gt; 4 → k=2, used=4, rem=0, j=0 → ans = 2·3/2 + 0 = 3 ✓</p>
-<p><strong>心算 trace 示例 1</strong>: n=3
-- k=1: 1 ≤ 3; k=2: 4 &gt; 3 → k=1, used=1, rem=2; j=0: 0&lt;2; j=1: 1&lt;2; j=2: 3≥2 → ans = 1·2/2 + 2 = 1 + 2 = 3 ✓</p>
+<p>第一个循环增 <span class="arithmatex">\(k\)</span> 直到 <span class="arithmatex">\(S(k) &gt; n\)</span> 再退一步，所以退出条件是 <code>&gt; n</code> 而非 <code>&gt;= n</code>；第二个循环增 <span class="arithmatex">\(j\)</span> 直到 <span class="arithmatex">\(T_j \ge r\)</span>。当 <span class="arithmatex">\(r = 0\)</span> 时第二个循环的条件 <span class="arithmatex">\(0 &lt; 0\)</span> 为假，<span class="arithmatex">\(j\)</span> 保持 <span class="arithmatex">\(0\)</span>，答案即 <span class="arithmatex">\(T_k\)</span>，无多余 <span class="arithmatex">\(+1\)</span>。代码直译上面四步，正确性由 (1)(3) 与两步贪心保证。</p>
+<p><strong>零头步的可视化（<span class="arithmatex">\(r &gt; 0\)</span> 时）。</strong> 看 <span class="arithmatex">\(n = 3\)</span>：<span class="arithmatex">\(S(1) = 1 \le 3\)</span>，<span class="arithmatex">\(S(2) = 4 &gt; 3\)</span>，故 <span class="arithmatex">\(k = 1\)</span>，<span class="arithmatex">\(T_k = 1\)</span>，触地一盒撑起 <span class="arithmatex">\(S(1)=1\)</span> 盒。剩 <span class="arithmatex">\(r = 2\)</span>，要在第二层放最少列：<span class="arithmatex">\(T_1 = 1 &lt; 2\)</span>，<span class="arithmatex">\(T_2 = 3 \ge 2\)</span>，故 <span class="arithmatex">\(j = 2\)</span>。答案 <span class="arithmatex">\(1 + 2 = 3\)</span>。这正对应"三个盒全平铺、谁也撑不动"的退化情形——零头太小，叠不起来，被迫多占地面。</p>
+<p>下面两例验证完美填满（<span class="arithmatex">\(r = 0\)</span>）的边界：</p>
+<ul>
+<li><span class="arithmatex">\(n = 4\)</span>：<span class="arithmatex">\(S(2) = 4 = n\)</span>，故 <span class="arithmatex">\(k = 2\)</span>，<span class="arithmatex">\(r = 0\)</span>，<span class="arithmatex">\(j = 0\)</span>，答案 <span class="arithmatex">\(T_2 = 3\)</span>。</li>
+<li><span class="arithmatex">\(n = 10\)</span>：<span class="arithmatex">\(S(3) = 10 = n\)</span>，故 <span class="arithmatex">\(k = 3\)</span>，<span class="arithmatex">\(r = 0\)</span>，<span class="arithmatex">\(j = 0\)</span>，答案 <span class="arithmatex">\(T_3 = 6\)</span>。</li>
+</ul>
+<p>两例都恰好填满整数层，零头为零，不加 <span class="arithmatex">\(j\)</span>。</p>
 <h2 id="complexity">复杂度 (Complexity)<a class="headerlink" href="#complexity" title="Permanent link">#</a></h2>
 <ul>
-<li>朴素：<span class="arithmatex">\(O(\sqrt[3]{n})\)</span> 求 <span class="arithmatex">\(k\)</span> + <span class="arithmatex">\(O(\sqrt{n})\)</span> 求 <span class="arithmatex">\(j\)</span>。</li>
-<li>二分：<span class="arithmatex">\(O(\log n)\)</span> × 2。</li>
+<li>朴素循环：由 (3)，<span class="arithmatex">\(k = O(\sqrt[3]{n})\)</span>；又 <span class="arithmatex">\(j \le k+1\)</span> 故 <span class="arithmatex">\(j = O(\sqrt[3]{n})\)</span>。两个循环都是 <span class="arithmatex">\(O(\sqrt[3]{n})\)</span>，整体 <span class="arithmatex">\(O(\sqrt[3]{n})\)</span>。<span class="arithmatex">\(n \le 10^9\)</span> 时 <span class="arithmatex">\(k \le \sqrt[3]{6\cdot 10^9} \approx 1817\)</span>，约两千次迭代，可过。</li>
+<li>二分：两步都可对单调函数 (1)(3) 二分，降到 <span class="arithmatex">\(O(\log n)\)</span>。</li>
 </ul>
 <h2 id="pitfalls">陷阱 (Pitfalls)<a class="headerlink" href="#pitfalls" title="Permanent link">#</a></h2>
 <ul>
-<li><strong>整除溢出</strong>：<span class="arithmatex">\(k(k+1)(k+2)\)</span> 在 <span class="arithmatex">\(k \approx 1800\)</span> 时约 <span class="arithmatex">\(6 \times 10^9\)</span>，超 32-bit；Python 无虞，C++ 用 int64。</li>
-<li><strong><span class="arithmatex">\(k\)</span> 的边界</strong>：循环退出条件 <code>&gt; n</code> 而非 <code>&gt;= n</code>。</li>
-<li><strong><span class="arithmatex">\(r = 0\)</span> 时 <span class="arithmatex">\(j = 0\)</span></strong>：完美填满 <span class="arithmatex">\(k\)</span> 层，不要 +1。</li>
-<li><strong>不要把答案当成 <span class="arithmatex">\(T_k\)</span></strong>：当 <span class="arithmatex">\(r &gt; 0\)</span> 时需 +<span class="arithmatex">\(j\)</span>。</li>
-<li><strong>"四侧紧邻"严格定义</strong>：是侧面，不包括上下；上层盒只算支撑作用而非"贴侧"。</li>
+<li><strong>整除溢出</strong>：<span class="arithmatex">\(k(k+1)(k+2)\)</span> 在 <span class="arithmatex">\(k \approx 1816\)</span> 时约 <span class="arithmatex">\(6 \times 10^9\)</span>，超 32-bit（<span class="arithmatex">\(2^{31} \approx 2.15\times 10^9\)</span>）；Python 无虞，C++ 用 int64。</li>
+<li><strong><span class="arithmatex">\(k\)</span> 的边界</strong>：循环退出条件 <code>&gt; n</code> 而非 <code>&gt;= n</code>，否则会少算一层。</li>
+<li><strong><span class="arithmatex">\(r = 0\)</span> 时 <span class="arithmatex">\(j = 0\)</span></strong>：恰好填满 <span class="arithmatex">\(k\)</span> 层时零头为零，不要 <span class="arithmatex">\(+1\)</span>（见 <span class="arithmatex">\(n=4, 10\)</span>）。</li>
+<li><strong>不要把答案当成 <span class="arithmatex">\(T_k\)</span></strong>：当 <span class="arithmatex">\(r &gt; 0\)</span> 时必须 <span class="arithmatex">\(+j\)</span>（见 <span class="arithmatex">\(n=3\)</span>）。</li>
+<li><strong>"四侧紧邻"是侧面</strong>：约束只管同层四个侧邻，不含上下面；上层盒只起压载作用，不算被支撑盒的"侧邻"。</li>
 </ul>
 <h2 id="related">相关题目 (Related)<a class="headerlink" href="#related" title="Permanent link">#</a></h2>
 <ul>
-<li><code>#1808. Maximize Number of Nice Divisors (off-wiki)</code> — 类似数学构造题。</li>
+<li><a href="../1808_maximize-number-of-nice-divisors/">#1808. Maximize Number of Nice Divisors</a> — 类似数学构造题。</li>
 <li><code>#1432. Max Difference You Can Get From Changing an Integer (off-wiki)</code> — 数学贪心。</li>
 </ul>
 <h2 id="further-reading">Further Reading<a class="headerlink" href="#further-reading" title="Permanent link">#</a></h2>
@@ -22630,6 +22681,8 @@
         <script src="../../../js/mathjax/tex-mml-chtml.js"></script>
       
         <script src="../../../js/mermaid.min.js"></script>
+      
+        <script src="../../../js/featured.js"></script>
       
     
   </body>

@@ -1466,6 +1466,8 @@
       
         
       
+        
+      
     
     
     
@@ -1521,6 +1523,34 @@
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../featured/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ⭐ Featured（已验证）
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
               
             
               
@@ -1610,10 +1640,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_4" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
         
           
-          <label class="md-nav__link" for="__nav_4_4" id="__nav_4_4_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_5" id="__nav_4_5_label" tabindex="">
             
   
   
@@ -1631,8 +1661,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_4_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_4">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_5">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1915,7 +1945,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -1937,14 +1967,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_4_5" id="__nav_4_5_label" tabindex="">
+              <label class="md-nav__link " for="__nav_4_6" id="__nav_4_6_label" tabindex="">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_5">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_6">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -5321,10 +5351,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_7" checked>
         
           
-          <label class="md-nav__link" for="__nav_4_6" id="__nav_4_6_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_7" id="__nav_4_7_label" tabindex="">
             
   
   
@@ -5342,8 +5372,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_4_6">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_7_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4_7">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -22467,13 +22497,28 @@
 <h2 id="problem">Problem<a class="headerlink" href="#problem" title="Permanent link">#</a></h2>
 <p>字符串 <span class="arithmatex">\(s\)</span>、整数 <span class="arithmatex">\(x, y\)</span>。可重复执行：删 <code>"ab"</code> 得 <span class="arithmatex">\(x\)</span> 分；删 <code>"ba"</code> 得 <span class="arithmatex">\(y\)</span> 分。求最大总分。约束 <span class="arithmatex">\(|s| \le 10^5\)</span>，<span class="arithmatex">\(1 \le x, y \le 10^4\)</span>。</p>
 <h2 id="background">背景 (Background)<a class="headerlink" href="#background" title="Permanent link">#</a></h2>
-<p><strong>交换论证 (exchange argument)</strong>：贪心证明的标准模板。先证"高价对优先全删"不劣于"任何混合顺序"，再用栈一次扫描实现"匹配即弹"。栈用于处理"匹配/对消" 问题是经典模式（括号匹配、表达式求值、消除游戏）。</p>
+<p>难点不在"如何删一对"，而在<strong>顺序</strong>：同一个字符可能既是某个 <code>"ab"</code> 的成员，又是某个 <code>"ba"</code> 的成员，删一对就可能让另一对无法成立。因此先要回答一个决策问题——面对一个可两用的字符，先成全高价对还是低价对——再回答一个实现问题——如何用一次扫描完成所有删除。本页从"乱删会丢分"这个观察出发，依次解决这两个问题。</p>
+<p>最小的冲突例子是三字符串 <code>"aba"</code>，设 <span class="arithmatex">\(x=5, y=1\)</span>：
+- 先删 <code>"ab"</code>（前两位），剩 <code>"a"</code>，得 <span class="arithmatex">\(5\)</span>。
+- 先删 <code>"ba"</code>（后两位），剩 <code>"a"</code>，得 <span class="arithmatex">\(1\)</span>。</p>
+<p>两条路径删的对数相同（各一对），但分数差 <span class="arithmatex">\(4\)</span>。结论很硬：<strong>删除的总对数由结构决定，能优化的只有"哪一对去占用这个共享字符"</strong>。这就是整道题的全部张力。</p>
 <h2 id="formulation">形式化 (Formulation)<a class="headerlink" href="#formulation" title="Permanent link">#</a></h2>
-<p>最优策略：不妨设 <span class="arithmatex">\(x \ge y\)</span>（否则交换 a/b）。两遍扫描：
-- 第一遍优先消所有 "ab"，每次 +<span class="arithmatex">\(x\)</span>。
-- 第二遍消剩余 "ba"，每次 +<span class="arithmatex">\(y\)</span>。</p>
-<p><strong>正确性 (交换论证)</strong>：考虑任意最优解 <span class="arithmatex">\(\pi\)</span>。若某步消 "ba" 时仍有可消的 "ab"，把这两步顺序换一下：先消 "ab" 不会破坏 "ba" 的可达性（被消的 'a' 和 'b' 位置不重叠时显然；重叠时——共享字符的情形——仔细分析也成立）。故"全部 ab 优先"不劣。</p>
+<p><strong>先把目标写清楚。</strong> 一次合法操作是从当前串中删去一个相邻的 <code>"ab"</code>（计 <span class="arithmatex">\(x\)</span>）或 <code>"ba"</code>（计 <span class="arithmatex">\(y\)</span>）。设某个完整的删除方案按顺序产生分值序列 <span class="arithmatex">\(v_1, v_2, \dots, v_k\)</span>，其中每个 <span class="arithmatex">\(v_i \in \{x, y\}\)</span>，目标是</p>
+<div class="arithmatex">\[\max \sum_{i=1}^{k} v_i.\]</div>
+<p><strong>朴素尝试与它在哪里崩。</strong> 最自然的做法是从左到右扫描，遇到任何一个可删对就立刻删。但 <code>"aba"</code> 的反例说明：贪图"先遇到的对"会让一个高价字符被低价对占用。所以朴素的"位置优先"不对，真正该优先的是<strong>价值</strong>。这给出一个候选策略：</p>
+<blockquote>
+<p>不妨设 <span class="arithmatex">\(x \ge y\)</span>（否则把 a/b 互换、<span class="arithmatex">\(x,y\)</span> 互换，问题对称）。<strong>先把所有 <code>"ab"</code> 删干净，再删剩下的 <code>"ba"</code>。</strong></p>
+</blockquote>
+<p><strong>直觉（在证明之前）。</strong> 为什么"高价对优先"能拿满分？关键观察：删一个 <code>"ab"</code> 唯一能伤害到的，是与它<strong>共享字符</strong>的 <code>"ba"</code>；不共享字符的对互不影响，先删谁都行。而共享字符只发生在 <code>"aba"</code>（共享中间的 'b'，或共享两端）与 <code>"b"</code>/<code>"a"</code> 接续的局部里——在这种竞争发生时，让 <span class="arithmatex">\(x\)</span>（更高价）那一方占用共享字符，损失的是 <span class="arithmatex">\(y\)</span>；反过来只能拿 <span class="arithmatex">\(y\)</span>、丢 <span class="arithmatex">\(x\)</span>。既然 <span class="arithmatex">\(x \ge y\)</span>，高价优先永不更差。</p>
+<p><strong>正确性（交换论证）。</strong> 取任意最优方案 <span class="arithmatex">\(\pi\)</span>。若 <span class="arithmatex">\(\pi\)</span> 在某一步删了一个 <code>"ba"</code>，而此刻盘面上仍存在一个可删的 <code>"ab"</code>，就把这两步的顺序对调：
+- 若两对不共享字符，对调显然不改变可达性，总分不变。
+- 若两对共享字符（形如 <code>"aba"</code>），原方案此处只能二选一：拿 <code>"ba"</code> 得 <span class="arithmatex">\(y\)</span>，或拿 <code>"ab"</code> 得 <span class="arithmatex">\(x\)</span>。把这一步换成先删 <code>"ab"</code>，该位置的贡献从 <span class="arithmatex">\(y\)</span> 变成 <span class="arithmatex">\(x \ge y\)</span>，其余字符的可删性不受影响（被消耗的两个字符在两种选择下相同）。故总分不减。</p>
+<p>反复施行该交换，可把所有 <code>"ab"</code> 的删除都提到 <code>"ba"</code> 之前，而总分单调不减。于是存在一个最优方案形如"先删尽 <code>"ab"</code>，再删 <code>"ba"</code>"，候选策略最优。<span class="arithmatex">\(\quad\blacksquare\)</span></p>
+<p><strong>为什么两遍就够（不需要第三遍）。</strong> 第一遍删尽 <code>"ab"</code> 后，残串里不存在任何"'a' 在 'b' 左侧且二者相邻"的情形——这正是 <code>"ab"</code> 可成立的条件，已被全部消除。在任何由 a/b 构成的连续段内，残串只可能是"先若干 'b' 后若干 'a'"，无法再生成新的 <code>"ab"</code>。因此第二遍删 <code>"ba"</code> 不会制造出第一遍漏掉的 <code>"ab"</code>，两遍扫描覆盖全部删除。（注意：非 a/b 字符如 'c'、'd' 会把串切成多段，这个结论在每一段内成立。）</p>
 <h2 id="approach">数据结构 / 想法 (Approach)<a class="headerlink" href="#approach" title="Permanent link">#</a></h2>
+<p><strong>朴素实现及其代价。</strong> 把"删尽所有 <code>"ab"</code>"直接写成循环 <code>while "ab" in s: s = s.replace("ab", "", 1)</code>：每次 <code>replace</code> 扫一遍 <span class="arithmatex">\(O(n)\)</span>，最坏要删 <span class="arithmatex">\(O(n)\)</span> 次（例如 <code>"aaa...bbb..."</code>），总计 <span class="arithmatex">\(O(n^2)\)</span>，在 <span class="arithmatex">\(|s| \le 10^5\)</span> 下会超时。问题在于每删一对都要重扫整串。</p>
+<p><strong>从依赖关系推出数据结构。</strong> 一次左到右扫描时，当前字符 <code>c</code> 能否触发一次删除，只取决于一件事：它<strong>左边最近一个尚未被消掉的字符</strong>是什么。若 <code>c == 'b'</code> 且该字符是 <code>'a'</code>，二者成对删去——而被删后，原先 <code>'a'</code> 左边那个字符就成了新的"最近未消字符"，可能与后续字符再配对。这个"删一对就回退到上一个未消字符"的访问模式，正是后进先出。维护一个栈、栈顶即"最近未消字符"，就把每次配对从 <span class="arithmatex">\(O(n)\)</span> 降到 <span class="arithmatex">\(O(1)\)</span>，整趟 <span class="arithmatex">\(O(n)\)</span>。</p>
+<p>于是算法是两趟同样的栈扫描：第一趟以 <code>'b'</code> 收尾消 <code>"ab"</code> 计 <span class="arithmatex">\(x\)</span>，第二趟在残串上以 <code>'a'</code> 收尾消 <code>"ba"</code> 计 <span class="arithmatex">\(y\)</span>。</p>
 <p><strong>栈实现</strong>：
 <div class="language-python highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">Solution</span><span class="p">:</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">maximumGain</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
@@ -22489,7 +22534,8 @@
                 <span class="n">score</span> <span class="o">+=</span> <span class="n">x</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">stack</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">c</span><span class="p">)</span>
-        <span class="c1"># second pass: remove &quot;ba&quot; from leftover (which only has b&#39;s then a&#39;s structure)</span>
+        <span class="c1"># second pass over the leftover; invariant: no &quot;ab&quot; adjacency remains,</span>
+        <span class="c1"># so within each a/b run the chars are all &#39;b&#39; then all &#39;a&#39; -&gt; only &quot;ba&quot; left</span>
         <span class="n">s2</span> <span class="o">=</span> <span class="n">stack</span>
         <span class="n">stack</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">s2</span><span class="p">:</span>
@@ -22500,42 +22546,118 @@
                 <span class="n">stack</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">c</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">score</span>
 </code></pre></div></p>
-<p><strong>心算 trace 示例 1</strong>: s="cdbcbbaaabab", x=4, y=5
-- x&lt;y → swap a/b → s="cdacaabbbabа"... 等等，更仔细：translate ab→ba 即 a↔b：原 "cdbcbbaaabab" → "cdacaabbbabа" 错；翻译每字符：c→c, d→d, b→a, c→c, b→a, b→a, a→b, a→b, a→b, b→a, a→b, b→a → "cdacaabbbabaаb" 等等，应是 12 字符："cdacaabbb_aba" 让我手动：
-  - c d b c b b a a a b a b → c d a c a a b b b a b a
-- 现在 x=5, y=4 (原 y, 原 x)。第一遍消 "ab"：栈处理 cdacaabbbaba
-  - c → [c]
-  - d → [c,d]
-  - a → [c,d,a]
-  - c → [c,d,a,c]
-  - a → [c,d,a,c,a]
-  - a → [c,d,a,c,a,a]
-  - b → 顶 a，消！+5 → [c,d,a,c,a]
-  - b → 顶 a，消！+5 → [c,d,a,c]
-  - b → 顶 c，留 → [c,d,a,c,b]
-  - a → 顶 b，留 → [c,d,a,c,b,a]
-  - b → 顶 a，消！+5 → [c,d,a,c,b]
-  - a → 顶 b，留 → [c,d,a,c,b,a]
-- 第一遍 +15。栈剩 c,d,a,c,b,a
-- 第二遍消 "ba"（即栈中先 b 再 a）：
-  - c → [c]
-  - d → [c,d]
-  - a → [c,d,a]
-  - c → [c,d,a,c]
-  - b → [c,d,a,c,b]
-  - a → 顶 b，消！+4 → [c,d,a,c]
-- 第二遍 +4。总 19 ✓</p>
+<p><strong>心算 trace 示例</strong>: s="cdbcbbaaabab", x=4, y=5</p>
+<p>因 <span class="arithmatex">\(x&lt;y\)</span>，先做 a↔b 互换（<code>translate</code>），并交换 <span class="arithmatex">\(x,y\)</span>，使后续处理满足 <span class="arithmatex">\(x \ge y\)</span>。逐字符映射 <code>c→c, d→d, b→a, c→c, b→a, b→a, a→b, a→b, a→b, b→a, a→b, b→a</code>：</p>
+<ul>
+<li><code>c d b c b b a a a b a b</code> → <code>c d a c a a b b b a b a</code></li>
+</ul>
+<p>现在 <span class="arithmatex">\(x=5,\ y=4\)</span>（来自原 <span class="arithmatex">\(y,\ x\)</span>）。第一遍消 <code>"ab"</code>（栈顶 <code>'a'</code> 遇 <code>'b'</code>）：</p>
+<table>
+<thead>
+<tr>
+<th>读入</th>
+<th>栈（动作）</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>c</td>
+<td><code>[c]</code></td>
+</tr>
+<tr>
+<td>d</td>
+<td><code>[c,d]</code></td>
+</tr>
+<tr>
+<td>a</td>
+<td><code>[c,d,a]</code></td>
+</tr>
+<tr>
+<td>c</td>
+<td><code>[c,d,a,c]</code></td>
+</tr>
+<tr>
+<td>a</td>
+<td><code>[c,d,a,c,a]</code></td>
+</tr>
+<tr>
+<td>a</td>
+<td><code>[c,d,a,c,a,a]</code></td>
+</tr>
+<tr>
+<td>b</td>
+<td>顶 a，消！+5 → <code>[c,d,a,c,a]</code></td>
+</tr>
+<tr>
+<td>b</td>
+<td>顶 a，消！+5 → <code>[c,d,a,c]</code></td>
+</tr>
+<tr>
+<td>b</td>
+<td>顶 c，留 → <code>[c,d,a,c,b]</code></td>
+</tr>
+<tr>
+<td>a</td>
+<td>顶 b，留 → <code>[c,d,a,c,b,a]</code></td>
+</tr>
+<tr>
+<td>b</td>
+<td>顶 a，消！+5 → <code>[c,d,a,c,b]</code></td>
+</tr>
+<tr>
+<td>a</td>
+<td>顶 b，留 → <code>[c,d,a,c,b,a]</code></td>
+</tr>
+</tbody>
+</table>
+<p>第一遍 +15，残串 <code>c,d,a,c,b,a</code>。注意它<strong>不是</strong>"全 b 后全 a"——<code>'c'</code>、<code>'d'</code> 把它切成几段，不变量"无 <code>"ab"</code> 相邻"只在每段内成立；这里残串中确实没有相邻的 <code>"ab"</code>。</p>
+<p>第二遍消 <code>"ba"</code>（栈顶 <code>'b'</code> 遇 <code>'a'</code>）：</p>
+<table>
+<thead>
+<tr>
+<th>读入</th>
+<th>栈（动作）</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>c</td>
+<td><code>[c]</code></td>
+</tr>
+<tr>
+<td>d</td>
+<td><code>[c,d]</code></td>
+</tr>
+<tr>
+<td>a</td>
+<td><code>[c,d,a]</code></td>
+</tr>
+<tr>
+<td>c</td>
+<td><code>[c,d,a,c]</code></td>
+</tr>
+<tr>
+<td>b</td>
+<td><code>[c,d,a,c,b]</code></td>
+</tr>
+<tr>
+<td>a</td>
+<td>顶 b，消！+4 → <code>[c,d,a,c]</code></td>
+</tr>
+</tbody>
+</table>
+<p>第二遍 +4。总 <span class="arithmatex">\(15+4 = 19\)</span> ✓</p>
 <h2 id="complexity">复杂度 (Complexity)<a class="headerlink" href="#complexity" title="Permanent link">#</a></h2>
 <ul>
-<li>Time: <span class="arithmatex">\(O(|s|)\)</span> — 每字符至多入栈出栈一次（摊销）。</li>
-<li>Space: <span class="arithmatex">\(O(|s|)\)</span> 栈。</li>
+<li>Time: <span class="arithmatex">\(O(|s|)\)</span> — 两趟扫描，每趟里每个字符至多入栈、出栈各一次（摊销 <span class="arithmatex">\(O(1)\)</span>）。</li>
+<li>Space: <span class="arithmatex">\(O(|s|)\)</span> — 栈最坏装下全部字符（例如全是 <code>'c'</code>，无任何可删对）。</li>
 </ul>
 <h2 id="pitfalls">陷阱 (Pitfalls)<a class="headerlink" href="#pitfalls" title="Permanent link">#</a></h2>
 <ul>
-<li><strong>必须高价对优先</strong>：若先消低价对，可能"破坏" 一些本可消的高价配对。例 "aabb" with x=5, y=1：先 ab(5)+ab(5)=10；先 ba 无 ba 可消 → 10。但 "aba" x=5,y=1：先 ab → "a"+5=5；先 ba → "a"+1=1。差距 4。</li>
-<li><strong>栈思路而非 string replace 循环</strong>：<code>s.replace("ab","")</code> 每次 <span class="arithmatex">\(O(n)\)</span>，最坏 <span class="arithmatex">\(O(n^2)\)</span>；栈一次 <span class="arithmatex">\(O(n)\)</span>。</li>
-<li><strong>不要忘记第二遍</strong>：剩余的非高价对仍要处理。</li>
-<li><strong>swap 用 translate 而非 replace</strong>：用 <code>replace("a","b").replace("b","a")</code> 会双向覆盖；<code>translate</code> 是原子映射。</li>
+<li><strong>必须高价对优先</strong>：这是形式化里反例的直接后果。<code>"aba"</code>、<span class="arithmatex">\(x=5,y=1\)</span>：先 <code>"ab"</code> 得 <span class="arithmatex">\(5\)</span>，先 <code>"ba"</code> 得 <span class="arithmatex">\(1\)</span>，差 <span class="arithmatex">\(4\)</span>。对照无冲突的 <code>"aabb"</code>、<span class="arithmatex">\(x=5,y=1\)</span>：两个 <code>"ab"</code> 不共享字符，顺序无所谓，恒得 <span class="arithmatex">\(10\)</span>。冲突只在共享字符处出现，那里必须让 <span class="arithmatex">\(x\)</span> 占用。</li>
+<li><strong>栈实现而非 string-replace 循环</strong>：<code>while "ab" in s: s = s.replace("ab","",1)</code> 每次 <span class="arithmatex">\(O(n)\)</span>、最坏 <span class="arithmatex">\(O(n)\)</span> 次 → <span class="arithmatex">\(O(n^2)\)</span>；栈一趟 <span class="arithmatex">\(O(n)\)</span>。</li>
+<li><strong>不要忘记第二遍</strong>：第一遍只清 <code>"ab"</code>，残串里的 <code>"ba"</code> 仍要在第二遍计 <span class="arithmatex">\(y\)</span>。漏掉它在如 <code>"baab"</code> 这类只剩 <code>"ba"</code> 的输入上直接丢分。</li>
+<li><strong>swap 用 <code>translate</code> 而非链式 <code>replace</code></strong>：<code>s.replace("a","b").replace("b","a")</code> 会把第一步产生的 <code>'b'</code> 在第二步又改回 <code>'a'</code>，使所有 a/b 坍缩成 <code>'a'</code>；<code>translate(str.maketrans('ab','ba'))</code> 是一次性原子映射，才是正确的对称互换。</li>
 </ul>
 <h2 id="related">相关题目 (Related)<a class="headerlink" href="#related" title="Permanent link">#</a></h2>
 <ul>
@@ -22653,6 +22775,8 @@
         <script src="../../../js/mathjax/tex-mml-chtml.js"></script>
       
         <script src="../../../js/mermaid.min.js"></script>
+      
+        <script src="../../../js/featured.js"></script>
       
     
   </body>

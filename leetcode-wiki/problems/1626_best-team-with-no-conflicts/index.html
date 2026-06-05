@@ -1466,6 +1466,8 @@
       
         
       
+        
+      
     
     
     
@@ -1521,6 +1523,34 @@
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../featured/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ⭐ Featured（已验证）
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
               
             
               
@@ -1610,10 +1640,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_4" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
         
           
-          <label class="md-nav__link" for="__nav_4_4" id="__nav_4_4_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_5" id="__nav_4_5_label" tabindex="">
             
   
   
@@ -1631,8 +1661,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_4_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_4">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_5">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1915,7 +1945,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -1937,14 +1967,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_4_5" id="__nav_4_5_label" tabindex="">
+              <label class="md-nav__link " for="__nav_4_6" id="__nav_4_6_label" tabindex="">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_5">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_6">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -5321,10 +5351,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_7" checked>
         
           
-          <label class="md-nav__link" for="__nav_4_6" id="__nav_4_6_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_7" id="__nav_4_7_label" tabindex="">
             
   
   
@@ -5342,8 +5372,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_4_6">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_7_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4_7">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -22467,13 +22497,32 @@
 <h2 id="problem">Problem<a class="headerlink" href="#problem" title="Permanent link">#</a></h2>
 <p>给数组 <code>scores</code>, <code>ages</code>（<span class="arithmatex">\(n \leq 1000\)</span>）。选一队员子集使得：<strong>不存在</strong>年轻队员的得分<strong>严格高于</strong>更年长队员（同龄不算冲突）。求队伍总得分最大值。</p>
 <h2 id="background">背景 (Background)<a class="headerlink" href="#background" title="Permanent link">#</a></h2>
-<p>经典<strong>最长非降子序列 (LIS) 的加权变体</strong>：按 <code>(age, score)</code> 排序后，问题变为求 <code>score</code> 上的最大权非降子序列 (weighted non-decreasing subseq) 的权和。在排序后是一维 DP；通用形式可用 BIT/线段树优化到 <span class="arithmatex">\(O(n \log n)\)</span>。</p>
+<p>冲突条件把两个维度耦合在一起：一对队员 <span class="arithmatex">\((p, q)\)</span> 冲突，当且仅当 <span class="arithmatex">\(\text{age}_p &lt; \text{age}_q\)</span> 且 <span class="arithmatex">\(\text{score}_p &gt; \text{score}_q\)</span>（年轻的那个得分更高）。一个队伍合法，要求<strong>任意一对</strong>入选队员都不冲突。</p>
+<p>先看朴素做法会卡在哪里。最直接的想法是一维 DP：把队员按某种顺序排好，令 <span class="arithmatex">\(dp[i]\)</span> 为"以队员 <span class="arithmatex">\(i\)</span> 结尾的合法队伍的最大得分"，转移时枚举之前的队员 <span class="arithmatex">\(j\)</span>，若 <span class="arithmatex">\(j\)</span> 能和 <span class="arithmatex">\(i\)</span> 共存就接上去。问题在于"共存"这个判断本身。在原始（未排序）输入上，要把 <span class="arithmatex">\(i\)</span> 接到一段已选队伍之后，必须保证 <span class="arithmatex">\(i\)</span> 与队伍里<strong>每一个</strong>成员都不冲突——而冲突要同时看 age 和 score 两个维度。没有顺序约束时，无法用单个 <span class="arithmatex">\(dp[j]\)</span> 概括"<span class="arithmatex">\(j\)</span> 之前那段队伍"的冲突信息，DP 的最优子结构不成立。</p>
+<p>真正的杠杆是：能否找到一种排序，使"无冲突"这个二维条件退化成序列上的一维单调条件？如果排序后下标顺序已经替我们处理掉 age 维度，冲突判断就只剩 score 一个维度，一维 DP 才站得住。下一节把这个排序构造出来，并证明它确实让条件降到一维。</p>
 <h2 id="formulation">形式化 (Formulation)<a class="headerlink" href="#formulation" title="Permanent link">#</a></h2>
-<p>设玩家按 <code>(age, score)</code> 双关键字升序排列，得 <span class="arithmatex">\(s_1, s_2, \dots, s_n\)</span>。求最大 <span class="arithmatex">\(\sum_{i \in I} s_i\)</span>，其中 <span class="arithmatex">\(I \subseteq [n]\)</span> 满足 <span class="arithmatex">\(i &lt; j \in I \Rightarrow s_i \leq s_j\)</span>。</p>
-<p><strong>为何排序后只需 score 非降</strong>：若两人年龄相同，无论谁前都不冲突，所以同龄内按 score 升序排能让"任取前缀子集"自动合法。若年龄不同，年长者天然不会被年轻者强压（因排序后 <span class="arithmatex">\(j &gt; i \Rightarrow \text{age}_j \geq \text{age}_i\)</span>，所以"j 是年轻者更高分"对应 age 严格大但 score &lt; ... 排序避免了此情形）。</p>
-<p><strong>正确性细节</strong>：排序后 <span class="arithmatex">\(i &lt; j\)</span> 意味着 <span class="arithmatex">\(\text{age}_i &lt; \text{age}_j\)</span>，或两者 <span class="arithmatex">\(\text{age}\)</span> 相等且 <span class="arithmatex">\(s_i \leq s_j\)</span>。子集合法 iff 选中的 <span class="arithmatex">\(i &lt; j\)</span> 满足 <span class="arithmatex">\(s_i \leq s_j\)</span>。证：若 <span class="arithmatex">\(\text{age}_i &lt; \text{age}_j\)</span>，"年轻 <span class="arithmatex">\(i\)</span> 高分"违规等价于 <span class="arithmatex">\(s_i &gt; s_j\)</span>，禁；若 <span class="arithmatex">\(\text{age}_i = \text{age}_j\)</span>，无冲突，但排序后 <span class="arithmatex">\(s_i \leq s_j\)</span> 已成立。所以子集合法 iff scores 非降。</p>
+<p><strong>直觉</strong>：按 <code>(age, score)</code> 双关键字升序排列后，下标增大意味着 age 不减。于是对排好序的 <span class="arithmatex">\(i &lt; j\)</span>，age 维度的冲突方向已被固定——只可能是"<span class="arithmatex">\(i\)</span> 更年轻"，不可能是"<span class="arithmatex">\(j\)</span> 更年轻"。冲突 <span class="arithmatex">\(\text{age}_i &lt; \text{age}_j \wedge s_i &gt; s_j\)</span> 退化为：只要 <span class="arithmatex">\(s_i &gt; s_j\)</span> 就冲突。把它取反，合法就等于 score 非降。age 维度被排序吸收，条件降到一维。</p>
+<p><strong>为什么同龄要按 score 升序</strong>：考虑同龄两人，age 都是 2，得分 6 和 4。同龄永不冲突，所以 <span class="arithmatex">\(\{6, 4\}\)</span> 是合法队伍。若把同龄者按 score 降序排，下标顺序是先 6 后 4，即 <span class="arithmatex">\(i\)</span> 对应 6、<span class="arithmatex">\(j\)</span> 对应 4，此时 <span class="arithmatex">\(s_i = 6 &gt; 4 = s_j\)</span>。后面要建的 DP 只认"<span class="arithmatex">\(s_i \leq s_j\)</span> 才能共存"，于是它会错判这对合法同龄组合为非法。按 score 升序排（先 4 后 6）则 <span class="arithmatex">\(s_i = 4 \leq 6 = s_j\)</span>，DP 自动接受。所以<strong>次关键字必须升序</strong>，它保证同龄段内"取任意前缀子集"都满足 score 非降。</p>
+<p><strong>形式化陈述</strong>。设玩家按 <code>(age, score)</code> 双关键字升序排列，记排序后得分为 <span class="arithmatex">\(s_1, s_2, \dots, s_n\)</span>。记下标集 <span class="arithmatex">\([n] = \{1, \dots, n\}\)</span>。目标是</p>
+<div class="arithmatex">\[
+\max_{I \subseteq [n]} \sum_{i \in I} s_i
+\quad\text{s.t.}\quad
+\forall\, i &lt; j \in I,\; s_i \leq s_j. \tag{1}
+\]</div>
+<p>即求 <span class="arithmatex">\(s_1, \dots, s_n\)</span> 上的<strong>最大权非降子序列</strong>（max-weight non-decreasing subsequence）的权和。</p>
+<p><strong>等价性证明</strong>（排序后子集合法 <span class="arithmatex">\(\iff\)</span> scores 非降）。取排序后的 <span class="arithmatex">\(i &lt; j\)</span>，分两种情形。若 <span class="arithmatex">\(\text{age}_i &lt; \text{age}_j\)</span>：这对队员合法的反面是"<span class="arithmatex">\(i\)</span> 年轻且 <span class="arithmatex">\(s_i &gt; s_j\)</span>"，所以合法 <span class="arithmatex">\(\iff s_i \leq s_j\)</span>。若 <span class="arithmatex">\(\text{age}_i = \text{age}_j\)</span>：同龄永不冲突，恒合法；而排序的次关键字升序已保证 <span class="arithmatex">\(s_i \leq s_j\)</span>，非降条件自动成立。两种情形都给出"这对合法 <span class="arithmatex">\(\iff s_i \leq s_j\)</span>"。一个子集合法当且仅当其中每一对都合法，故子集合法 <span class="arithmatex">\(\iff\)</span> 选中下标对应的 scores 非降。这正是 (1) 的约束，且它把本题刻画为加权非降子序列问题的<strong>精确实例</strong>，而非近似类比。<span class="arithmatex">\(\quad\blacksquare\)</span></p>
+<p>至此约束已降到一维。下一节据此建立 DP。</p>
 <h2 id="approach">数据结构 / 想法 (Approach)<a class="headerlink" href="#approach" title="Permanent link">#</a></h2>
-<p><strong>法 1（<span class="arithmatex">\(O(n^2)\)</span> DP）</strong>：</p>
+<p>(1) 具有最优子结构：若一个合法队伍以队员 <span class="arithmatex">\(i\)</span> 结尾（即 <span class="arithmatex">\(i\)</span> 是其中最大下标），去掉 <span class="arithmatex">\(i\)</span> 后剩下的仍是合法队伍，且其最大下标 <span class="arithmatex">\(j\)</span> 满足 <span class="arithmatex">\(j &lt; i\)</span> 与 <span class="arithmatex">\(s_j \leq s_i\)</span>。反过来，任取一个以 <span class="arithmatex">\(j\)</span> 结尾的合法队伍，只要 <span class="arithmatex">\(s_j \leq s_i\)</span>，把 <span class="arithmatex">\(i\)</span> 接到末尾仍合法（新加入的 <span class="arithmatex">\(i\)</span> 与原队伍每个成员 <span class="arithmatex">\(k \leq j\)</span> 都满足 <span class="arithmatex">\(s_k \leq s_j \leq s_i\)</span>，无冲突）。这两个方向说明：以 <span class="arithmatex">\(i\)</span> 结尾的最优解，只依赖于"以某个合法前驱 <span class="arithmatex">\(j\)</span> 结尾的最优解"。</p>
+<p><strong>DP 状态</strong>：<span class="arithmatex">\(dp[i]\)</span> 为以队员 <span class="arithmatex">\(i\)</span> 结尾（<span class="arithmatex">\(i\)</span> 为最大下标）的合法队伍的最大得分。由上面的子结构，得递推</p>
+<div class="arithmatex">\[
+dp[i] = s_i + \max\Big(\{0\} \cup \{\, dp[j] : j &lt; i,\; s_j \leq s_i \,\}\Big). \tag{2}
+\]</div>
+<p>集合里的 <span class="arithmatex">\(0\)</span> 处理"<span class="arithmatex">\(i\)</span> 单独成队"的情形，保证 <span class="arithmatex">\(dp[i] \geq s_i\)</span>。最终答案对所有结尾取最大：</p>
+<div class="arithmatex">\[
+\text{answer} = \max_{1 \leq i \leq n} dp[i]. \tag{3}
+\]</div>
+<p><strong>法 1（<span class="arithmatex">\(O(n^2)\)</span> DP）</strong>：直接实现 (2)(3)，外层枚举结尾 <span class="arithmatex">\(i\)</span>，内层枚举前驱 <span class="arithmatex">\(j\)</span>。</p>
 <div class="language-python highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">Solution</span><span class="p">:</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">bestTeamScore</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">scores</span><span class="p">,</span> <span class="n">ages</span><span class="p">):</span>
         <span class="n">players</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">ages</span><span class="p">,</span> <span class="n">scores</span><span class="p">))</span>  <span class="c1"># by age, then score</span>
@@ -22492,22 +22541,23 @@
 
 <span class="c1"># Trace 样例 2: scores=[4,5,6,5], ages=[2,1,2,1]</span>
 <span class="c1"># sorted by (age,score): (1,5),(1,5),(2,4),(2,6). scores=[5,5,4,6]</span>
-<span class="c1"># dp[0]=5. dp[1]: prev 5&lt;=5 → dp=5+5=10. dp[2]: 5&lt;=4? No, 5&lt;=4? No → dp=4. </span>
+<span class="c1"># dp[0]=5. dp[1]: prev 5&lt;=5 → dp=5+5=10. dp[2]: 5&lt;=4? No, 5&lt;=4? No → dp=4.</span>
 <span class="c1"># dp[3]: 5&lt;=6 → 5+6=11; 5&lt;=6 → 10+6=16; 4&lt;=6 → 4+6=10. dp[3]=16.</span>
 <span class="c1"># best=16 ✓</span>
 </code></pre></div>
-<p><strong>法 2（<span class="arithmatex">\(O(n \log n)\)</span> BIT）</strong>：值离散化后用 BIT 维护"前缀最大 dp 值"，转移 <span class="arithmatex">\(O(\log n)\)</span>。<span class="arithmatex">\(n = 1000\)</span> 无需，但思路通用。</p>
+<p>代码逐行对应 (2)：<code>dp[i] = si</code> 注入了集合里的 <span class="arithmatex">\(0\)</span>（即基底 <span class="arithmatex">\(s_i\)</span>），内层 <code>if sj &lt;= si</code> 筛出合法前驱并取 <code>dp[j] + si</code> 的最大，<code>best</code> 实现 (3)。</p>
+<p><strong>法 2（<span class="arithmatex">\(O(n \log n)\)</span> BIT）</strong>：(2) 的内层 <code>max</code> 是一次<strong>前缀（按 score 值）最大值查询</strong>——在所有 <span class="arithmatex">\(s_j \leq s_i\)</span> 的 <span class="arithmatex">\(j\)</span> 上取 <span class="arithmatex">\(dp[j]\)</span> 的最大。把 score 离散化后，用树状数组（BIT / Fenwick）维护"score 值不超过某阈值的 <span class="arithmatex">\(dp\)</span> 前缀最大"，每次转移的查询与更新都降到 <span class="arithmatex">\(O(\log n)\)</span>，总复杂度 <span class="arithmatex">\(O(n \log n)\)</span>。<span class="arithmatex">\(n = 1000\)</span> 时 <span class="arithmatex">\(O(n^2)\)</span> 已足够，无需此优化；但当 <span class="arithmatex">\(n\)</span> 增大、(2) 的内层成为瓶颈时，这是标准的加速手段。</p>
 <h2 id="complexity">复杂度 (Complexity)<a class="headerlink" href="#complexity" title="Permanent link">#</a></h2>
 <ul>
-<li>法 1: Time <span class="arithmatex">\(O(n^2)\)</span>；Space <span class="arithmatex">\(O(n)\)</span>。</li>
+<li>法 1: Time <span class="arithmatex">\(O(n^2)\)</span>；Space <span class="arithmatex">\(O(n)\)</span>。嵌套循环无提前退出，转移次数恒为 <span class="arithmatex">\(\Theta(n^2)\)</span>，单一界即为精确界。</li>
 <li>法 2: Time <span class="arithmatex">\(O(n \log n)\)</span>；Space <span class="arithmatex">\(O(n)\)</span>。</li>
 </ul>
 <h2 id="pitfalls">陷阱 (Pitfalls)<a class="headerlink" href="#pitfalls" title="Permanent link">#</a></h2>
 <ul>
-<li><strong>排序双关键字</strong>：必须 <code>(age, score)</code>，否则同龄内顺序错乱会破坏"<span class="arithmatex">\(j &gt; i \Rightarrow s_j \geq s_i\)</span>"的局部结构（虽题面不冲突，但 DP 内部需要单调以正确转移）。</li>
-<li><strong>非降 vs 严格</strong>：同龄不冲突 ⇒ 允许 <span class="arithmatex">\(s_i = s_j\)</span> ⇒ 用 <code>&lt;=</code> 转移。</li>
-<li><strong>dp 初值</strong>：<span class="arithmatex">\(dp[i] \geq s_i\)</span>（自己单独成队）。</li>
-<li><strong>答案取 max 全局</strong>：<span class="arithmatex">\(dp[i]\)</span> 是"以 <span class="arithmatex">\(i\)</span> 结尾"的最优；全局 max 才是答案。</li>
+<li><strong>排序双关键字</strong>：必须 <code>(age, score)</code> 升序。次关键字若降序，会让同龄合法组合在递推 (2) 中被误判为非法（见形式化中 age=2、得分 6/4 的反例）。</li>
+<li><strong>非降 vs 严格</strong>：同龄不冲突 <span class="arithmatex">\(\Rightarrow\)</span> 允许 <span class="arithmatex">\(s_i = s_j\)</span> <span class="arithmatex">\(\Rightarrow\)</span> 转移用 <code>&lt;=</code>，对应 (1) 的 <span class="arithmatex">\(s_i \leq s_j\)</span>。</li>
+<li><strong>dp 初值</strong>：(2) 中集合并入 <span class="arithmatex">\(0\)</span> 保证 <span class="arithmatex">\(dp[i] \geq s_i\)</span>，对应代码里的 <code>dp[i] = si</code>（自己单独成队）。</li>
+<li><strong>答案取全局 max</strong>：<span class="arithmatex">\(dp[i]\)</span> 只是"以 <span class="arithmatex">\(i\)</span> 结尾"的最优，须按 (3) 对所有 <span class="arithmatex">\(i\)</span> 取最大才是答案。</li>
 </ul>
 <h2 id="related">相关题目 (Related)<a class="headerlink" href="#related" title="Permanent link">#</a></h2>
 <ul>
@@ -22625,6 +22675,8 @@
         <script src="../../../js/mathjax/tex-mml-chtml.js"></script>
       
         <script src="../../../js/mermaid.min.js"></script>
+      
+        <script src="../../../js/featured.js"></script>
       
     
   </body>

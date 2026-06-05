@@ -1466,6 +1466,8 @@
       
         
       
+        
+      
     
     
     
@@ -1521,6 +1523,34 @@
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../featured/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ⭐ Featured（已验证）
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
               
             
               
@@ -1610,10 +1640,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_4" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
         
           
-          <label class="md-nav__link" for="__nav_4_4" id="__nav_4_4_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_5" id="__nav_4_5_label" tabindex="">
             
   
   
@@ -1631,8 +1661,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_4_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_4">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_5">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1915,7 +1945,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -1937,14 +1967,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_4_5" id="__nav_4_5_label" tabindex="">
+              <label class="md-nav__link " for="__nav_4_6" id="__nav_4_6_label" tabindex="">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_5">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_6">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -5321,10 +5351,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_7" checked>
         
           
-          <label class="md-nav__link" for="__nav_4_6" id="__nav_4_6_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_7" id="__nav_4_7_label" tabindex="">
             
   
   
@@ -5342,8 +5372,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_4_6">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_7_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4_7">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -22465,19 +22495,34 @@
 <h1 id="446-arithmetic-slices-ii-subsequence-hard">446. Arithmetic Slices II - Subsequence  🔴 Hard<a class="headerlink" href="#446-arithmetic-slices-ii-subsequence-hard" title="Permanent link">#</a></h1>
 <p><strong>Tags</strong>: Array, Dynamic Programming</p>
 <h2 id="problem">Problem<a class="headerlink" href="#problem" title="Permanent link">#</a></h2>
-<p>给整数数组 <code>nums</code>，求所有等差子序列（subsequence，不必连续）的个数。等差子序列需至少 3 个元素且相邻差恒为常数 <span class="arithmatex">\(d\)</span>。<span class="arithmatex">\(n \leq 1000\)</span>，<span class="arithmatex">\(|\text{nums}[i]| \leq 2^{31}-1\)</span>。答案保证 fit 在 32-bit 整数内。</p>
+<p>给整数数组 <code>nums</code>，求所有等差子序列（subsequence，不必连续）的个数。等差子序列需至少 3 个元素且相邻差恒为常数 <span class="arithmatex">\(d\)</span>。<span class="arithmatex">\(n \leq 1000\)</span>，<span class="arithmatex">\(-2^{31} \leq \text{nums}[i] \leq 2^{31}-1\)</span>。答案保证 fit 在 32-bit 整数内。</p>
 <h2 id="background">背景 (Background)<a class="headerlink" href="#background" title="Permanent link">#</a></h2>
-<p>等差子序列计数是经典的 "二维状态 DP"——状态维必须包含 (尾元素索引, 公差)，缺一不可。它和 Longest Arithmetic Subsequence (#1027) 是姐妹题：那题求最长，本题求总数。从组合学角度，对每对 <span class="arithmatex">\((i, j)\)</span>，本题统计的是"以 <span class="arithmatex">\(a_j\)</span> 结尾、且把 <span class="arithmatex">\(a_i \to a_j\)</span> 作为最后一跳的等差序列条数"，这是一种<strong>末段刻画 (last-step characterization)</strong>——经典 DP 技巧（CLRS, §15）。值域可达 <span class="arithmatex">\(2^{32}\)</span> 量级，公差 <span class="arithmatex">\(d\)</span> 也可能很大，所以 <span class="arithmatex">\(d\)</span> 必须用哈希存而非数组下标。</p>
+<p>先把问题摆清楚。一个合法的等差子序列由它的下标三元组（及更长链）刻画：当长度恰为 3 时，是满足</p>
+<div class="arithmatex">\[i &lt; j &lt; k,\qquad \text{nums}[j] - \text{nums}[i] = \text{nums}[k] - \text{nums}[j]\]</div>
+<p>的下标对 <span class="arithmatex">\((i,j,k)\)</span>；更长的链是这一条件在每相邻两步上的重复。直接枚举所有子序列是 <span class="arithmatex">\(O(2^n)\)</span>，不可行；我们要找一个不重复扫描指数空间、却能把它们全部数清的递推。</p>
+<p><strong>先试最朴素的状态。</strong> 仿照"以某下标结尾"的一维 DP 直觉，设</p>
+<div class="arithmatex">\[g[i] = \#\{\text{以下标 } i \text{ 结尾的等差子序列}\}.\]</div>
+<p>现在尝试写转移：要把一条以 <span class="arithmatex">\(j\)</span> 结尾的等差子序列延长到 <span class="arithmatex">\(i\)</span>，新加入的一步差是 <span class="arithmatex">\(\text{nums}[i]-\text{nums}[j]\)</span>，而这一步<strong>必须等于该子序列已有的公差</strong>，否则延长后不再等差。可是 <span class="arithmatex">\(g[j]\)</span> 只是一个总数，它把以 <span class="arithmatex">\(j\)</span> 结尾、公差各不相同的子序列混在一起，无法判断其中哪些的公差恰好等于 <span class="arithmatex">\(\text{nums}[i]-\text{nums}[j]\)</span>。于是 <span class="arithmatex">\(g[i]\)</span> 无法由 <span class="arithmatex">\(g[j]\)</span> 算出——一维状态在转移这一步就断了。</p>
+<p><strong>断点告诉我们缺什么。</strong> 转移需要的恰恰是"以 <span class="arithmatex">\(j\)</span> 结尾、且公差等于某个特定值的子序列条数"。换句话说，公差 <span class="arithmatex">\(d\)</span> 必须进入状态。这不是外部技巧，而是上面那次失败逼出来的结论：状态维必须同时含尾下标与公差 <span class="arithmatex">\((i, d)\)</span>，缺一不可。由于 <span class="arithmatex">\(\text{nums}[i]\)</span> 取值范围很大、<span class="arithmatex">\(d\)</span> 可达 <span class="arithmatex">\(2^{32}\)</span> 量级，<span class="arithmatex">\(d\)</span> 不能当数组下标，须用哈希存。</p>
+<p>定下二维状态后，转移天然地落在"最后一跳" <span class="arithmatex">\(\text{nums}[i]-\text{nums}[j]=d\)</span> 上：要把链延到 <span class="arithmatex">\(i\)</span>，只看以 <span class="arithmatex">\(j\)</span> 结尾、公差 <span class="arithmatex">\(d\)</span> 的那部分。这种按末段分解的递推即动态规划中常见的末段刻画（CLRS, 3e §15）——但这里它是从问题结构推出来的，名字只是事后归类。</p>
 <h2 id="formulation">形式化 (Formulation)<a class="headerlink" href="#formulation" title="Permanent link">#</a></h2>
-<p>定义"弱"等差子序列为长度 <span class="arithmatex">\(\geq 2\)</span> 的等差子序列。令</p>
-<div class="arithmatex">\[f[i][d] = \#\{\text{以 } i \text{ 结尾、公差 } d \text{ 的弱等差子序列}\}\]</div>
-<p>转移：对每对 <span class="arithmatex">\(j &lt; i\)</span>，令 <span class="arithmatex">\(d = a_i - a_j\)</span>，</p>
-<div class="arithmatex">\[f[i][d] \mathrel{+}= f[j][d] + 1\]</div>
-<p>其中 <span class="arithmatex">\(+1\)</span> 对应新建长度 2 的对 <span class="arithmatex">\((a_j, a_i)\)</span>。最终答案是"强"等差子序列（长度 <span class="arithmatex">\(\geq 3\)</span>）总数：</p>
-<div class="arithmatex">\[\text{ans} = \sum_{i, d} \big(f[i][d] - \text{newly added pairs ending at } i\big)\]</div>
-<p>更简洁的写法：每次转移中只把 <span class="arithmatex">\(f[j][d]\)</span> 累加到答案（因为 <span class="arithmatex">\(f[j][d]\)</span> 已含至少 2 个元素，加上 <span class="arithmatex">\(a_i\)</span> 就 <span class="arithmatex">\(\geq 3\)</span>）。</p>
+<p><strong>先讲清楚我们要数什么、为什么需要一个辅助量。</strong> 目标是数长度 <span class="arithmatex">\(\geq 3\)</span> 的等差子序列。但若状态直接只记"长度 <span class="arithmatex">\(\geq 3\)</span>"的链，转移又会断：把 <span class="arithmatex">\(\text{nums}[i]\)</span> 接到一条长度 <span class="arithmatex">\(\geq 3\)</span> 的链上得到的仍是长度 <span class="arithmatex">\(\geq 3\)</span> 的链，可一条长度 3 的链最初是由<strong>两个</strong>更短的前缀拼出来的——它的前缀长度只有 2，而长度 2 的对子本身不是合法答案，却必须被存下来，才能在将来作为前缀被延长。直接只数合法答案会漏掉这些待延长的前缀。结论：辅助量必须把长度 2 的对子也纳入。</p>
+<p>于是定义<strong>弱等差子序列</strong>为长度 <span class="arithmatex">\(\geq 2\)</span> 的等差子序列，并令</p>
+<div class="arithmatex">\[f[i][d] = \#\{\text{以下标 } i \text{ 结尾、公差 } d \text{ 的弱等差子序列}\}.\]</div>
+<p>这就是上一节那个断点所要求的量：它正是"以 <span class="arithmatex">\(i\)</span> 结尾、公差 <span class="arithmatex">\(d\)</span>、随时可被继续延长的链"的条数。直觉先于公式：<span class="arithmatex">\(f[i][d]\)</span> 数的是位置 <span class="arithmatex">\(i\)</span> 处、差为 <span class="arithmatex">\(d\)</span>、已攒够至少两个元素、等着接下一个数的尾段。</p>
+<p><strong>转移。</strong> 对每对 <span class="arithmatex">\(j &lt; i\)</span>，令 <span class="arithmatex">\(d = \text{nums}[i] - \text{nums}[j]\)</span>。处理这一对时发生两件事：</p>
+<div class="arithmatex">\[f[i][d] \mathrel{+}= f[j][d] + 1.\]</div>
+<p>逐项推导，不留 trick：</p>
+<ul>
+<li><span class="arithmatex">\(f[j][d]\)</span>：每一条以 <span class="arithmatex">\(j\)</span> 结尾、公差 <span class="arithmatex">\(d\)</span> 的弱链，接上 <span class="arithmatex">\(\text{nums}[i]\)</span> 后仍是弱链（公差不变），现在以 <span class="arithmatex">\(i\)</span> 结尾。</li>
+<li><span class="arithmatex">\(+1\)</span>：此刻我们恰好新建了<strong>一条</strong>长度 2 的弱链，即对子 <span class="arithmatex">\((\text{nums}[j], \text{nums}[i])\)</span> 自身。这不是技巧，而是归纳的基例——每处理一对 <span class="arithmatex">\((j,i)\)</span> 就诞生一个新对子。</li>
+</ul>
+<p><strong>从弱量取出强答案。</strong> 一条长度 <span class="arithmatex">\(k\)</span> 的弱链接上 <span class="arithmatex">\(\text{nums}[i]\)</span> 得到长度 <span class="arithmatex">\(k+1\)</span> 的链，而 <span class="arithmatex">\(k+1 \geq 3 \iff k \geq 2\)</span>。<span class="arithmatex">\(f[j][d]\)</span> 数的链长度均 <span class="arithmatex">\(\geq 2\)</span>，故它们延长后<strong>全部</strong>长度 <span class="arithmatex">\(\geq 3\)</span>，是合法答案；而那条 <span class="arithmatex">\(+1\)</span> 的新对子长度只有 2，不合法。因此每处理一对，应累加进答案的恰是 <span class="arithmatex">\(f[j][d]\)</span>，绝不能累加 <span class="arithmatex">\(f[i][d]\)</span>（后者含刚加进去的长度 2 对子，会把非法的对子也算进去）：</p>
+<div class="arithmatex">\[\text{ans} \mathrel{+}= f[j][d].\]</div>
+<p>等价地，以 <span class="arithmatex">\(i\)</span> 结尾、公差 <span class="arithmatex">\(d\)</span> 的<strong>强</strong>（长度 <span class="arithmatex">\(\geq 3\)</span>）子序列数 <span class="arithmatex">\(= f[i][d] - (\text{以 } i \text{ 结尾、差 } d \text{ 的长度 2 对子数})\)</span>，而被减去的对子数恰是那些 <span class="arithmatex">\(+1\)</span> 增量的个数，也就是每步从 ans 中略去的项。两种写法一致。</p>
 <h2 id="approach">数据结构 / 想法 (Approach)<a class="headerlink" href="#approach" title="Permanent link">#</a></h2>
-<p><strong>核心</strong>：用 <code>f[i]: dict[d] -&gt; count</code> 存"以 <span class="arithmatex">\(i\)</span> 结尾、公差 <span class="arithmatex">\(d\)</span> 的弱等差子序列数"。双层循环 <span class="arithmatex">\(j &lt; i\)</span>：</p>
+<p>实现直接照搬递推：用 <code>f[i]</code> 这个 <code>dict[d] -&gt; count</code> 表示 <span class="arithmatex">\(f[i][\cdot]\)</span>，双层循环 <span class="arithmatex">\(j &lt; i\)</span> 即可。把上节的不变量先立住，再据它写代码——</p>
+<p><strong>不变量</strong>：内层循环对 <span class="arithmatex">\(i\)</span> 结束时，<code>f[i][d]</code> 等于"以下标 <span class="arithmatex">\(i\)</span> 结尾、公差 <span class="arithmatex">\(d\)</span> 的全部长度 <span class="arithmatex">\(\geq 2\)</span> 子序列数"；<code>ans</code> 只累加已 <span class="arithmatex">\(\geq 2\)</span> 的 <code>f[j][d]</code>，故它统计的子序列长度恒 <span class="arithmatex">\(\geq 3\)</span>。</p>
 <div class="language-python highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">Solution</span><span class="p">:</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">numberOfArithmeticSlices</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">nums</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
         <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">nums</span><span class="p">)</span>
@@ -22487,36 +22532,38 @@
             <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">i</span><span class="p">):</span>
                 <span class="n">d</span> <span class="o">=</span> <span class="n">nums</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">-</span> <span class="n">nums</span><span class="p">[</span><span class="n">j</span><span class="p">]</span>
                 <span class="n">cnt_j</span> <span class="o">=</span> <span class="n">f</span><span class="p">[</span><span class="n">j</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>   <span class="c1"># 以 j 结尾、公差 d 的弱序列数</span>
-                <span class="n">ans</span> <span class="o">+=</span> <span class="n">cnt_j</span>              <span class="c1"># 接上 nums[i] 后长度 &gt;= 3</span>
-                <span class="n">f</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">d</span><span class="p">]</span> <span class="o">=</span> <span class="n">f</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="o">+</span> <span class="n">cnt_j</span> <span class="o">+</span> <span class="mi">1</span>   <span class="c1"># 新增的 weak 序列</span>
+                <span class="n">ans</span> <span class="o">+=</span> <span class="n">cnt_j</span>              <span class="c1"># 接上 nums[i] 后长度 &gt;= 3，是合法答案</span>
+                <span class="n">f</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">d</span><span class="p">]</span> <span class="o">=</span> <span class="n">f</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="o">+</span> <span class="n">cnt_j</span> <span class="o">+</span> <span class="mi">1</span>   <span class="c1"># 延长的弱链 + 新建的对子</span>
         <span class="k">return</span> <span class="n">ans</span>
 </code></pre></div>
-<p><strong>Trace 样例 <code>[2,4,6,8,10]</code></strong>：
-- <span class="arithmatex">\(i=2\)</span> (val 6)：<span class="arithmatex">\(j=0\)</span> d=4 → <code>f[2][4]=1</code>, ans+=0；<span class="arithmatex">\(j=1\)</span> d=2 → cnt=<code>f[1][2]=1</code>, ans+=1 (即 [2,4,6])，<code>f[2][2]=2</code>
-- <span class="arithmatex">\(i=3\)</span> (val 8)：<span class="arithmatex">\(j=0\)</span> d=6 → <code>f[3][6]=1</code>；<span class="arithmatex">\(j=1\)</span> d=4，cnt=<code>f[1][4]=0</code>, ans+=0, <code>f[3][4]=1</code>；<span class="arithmatex">\(j=2\)</span> d=2，cnt=<code>f[2][2]=2</code>, ans+=2 (即 [2,4,6,8],[4,6,8])，<code>f[3][2]=3</code>
-- <span class="arithmatex">\(i=4\)</span> (val 10)：<span class="arithmatex">\(j=0\)</span> d=8 → <code>f[4][8]=1</code>；<span class="arithmatex">\(j=1\)</span> d=6 → <code>f[4][6]=1</code>；<span class="arithmatex">\(j=2\)</span> d=4，cnt=<code>f[2][4]=1</code>, ans+=1 ([2,6,10])，<code>f[4][4]=2</code>；<span class="arithmatex">\(j=3\)</span> d=2，cnt=<code>f[3][2]=3</code>, ans+=3 ([2,4,6,8,10],[4,6,8,10],[6,8,10])</p>
-<p>总 ans = 1+2+1+3 = 7 ✓</p>
-<p><strong>不变量</strong>：每次循环结束，<code>f[i][d]</code> 等于"以位置 <span class="arithmatex">\(i\)</span> 结尾、公差 <span class="arithmatex">\(d\)</span> 的所有 ≥2 长度子序列数"。<code>ans</code> 只累加 <code>f[j][d]</code>（已 ≥2），保证最终统计的都是 ≥3 长度。</p>
+<p><strong>Trace 样例 <code>[2,4,6,8,10]</code></strong>（验证不变量逐步成立）：</p>
+<ul>
+<li><span class="arithmatex">\(i=2\)</span> (val 6)：<span class="arithmatex">\(j=0\)</span> d=4 → <code>f[2][4]=1</code>, ans+=0；<span class="arithmatex">\(j=1\)</span> d=2 → cnt=<code>f[1][2]=1</code>, ans+=1 (即 [2,4,6])，<code>f[2][2]=2</code></li>
+<li><span class="arithmatex">\(i=3\)</span> (val 8)：<span class="arithmatex">\(j=0\)</span> d=6 → <code>f[3][6]=1</code>；<span class="arithmatex">\(j=1\)</span> d=4，cnt=<code>f[1][4]=0</code>, ans+=0, <code>f[3][4]=1</code>；<span class="arithmatex">\(j=2\)</span> d=2，cnt=<code>f[2][2]=2</code>, ans+=2 (即 [2,4,6,8],[4,6,8])，<code>f[3][2]=3</code></li>
+<li><span class="arithmatex">\(i=4\)</span> (val 10)：<span class="arithmatex">\(j=0\)</span> d=8 → <code>f[4][8]=1</code>；<span class="arithmatex">\(j=1\)</span> d=6 → <code>f[4][6]=1</code>；<span class="arithmatex">\(j=2\)</span> d=4，cnt=<code>f[2][4]=1</code>, ans+=1 ([2,6,10])，<code>f[4][4]=2</code>；<span class="arithmatex">\(j=3\)</span> d=2，cnt=<code>f[3][2]=3</code>, ans+=3 ([2,4,6,8,10],[4,6,8,10],[6,8,10])</li>
+</ul>
+<p>总 ans = 1+2+1+3 = 7 ✓。每一步 <code>f[i][d]</code> 都恰好等于不变量声明的计数，故递推对全部输入成立，算法正确。</p>
 <h2 id="complexity">复杂度 (Complexity)<a class="headerlink" href="#complexity" title="Permanent link">#</a></h2>
 <ul>
-<li>Time: <span class="arithmatex">\(O(n^2)\)</span> 期望（哈希访问均摊 <span class="arithmatex">\(O(1)\)</span>），最坏 <span class="arithmatex">\(O(n^2 \log n)\)</span> 若大量哈希冲突</li>
-<li>Space: <span class="arithmatex">\(O(n^2)\)</span>，每个 <span class="arithmatex">\(f[i]\)</span> 最坏存 <span class="arithmatex">\(i\)</span> 个不同公差</li>
+<li>Time: <span class="arithmatex">\(O(n^2)\)</span> 期望——共 <span class="arithmatex">\(O(n^2)\)</span> 对 <span class="arithmatex">\((j,i)\)</span>，每对做均摊 <span class="arithmatex">\(O(1)\)</span> 的哈希访问。本题不存在对手构造的哈希冲突，故无须计入退化情形。</li>
+<li>Space: <span class="arithmatex">\(O(n^2)\)</span>，每个 <code>f[i]</code> 最坏存 <span class="arithmatex">\(i\)</span> 个不同公差。</li>
 </ul>
 <h2 id="pitfalls">陷阱 (Pitfalls)<a class="headerlink" href="#pitfalls" title="Permanent link">#</a></h2>
 <ul>
-<li><strong>公差范围</strong>：<span class="arithmatex">\(d = a_i - a_j\)</span> 可达 <span class="arithmatex">\(\approx 2^{32}\)</span>，C++ 必须用 <code>long long</code>；Python 天然支持大整数。</li>
-<li><strong>弱 vs 强分离</strong>：直接累 <code>f[i][d]</code> 会重复计长度 2 的（不合法）；只累加 <code>f[j][d]</code> 是关键 trick。</li>
-<li><strong>空 dict 默认值</strong>：用 <code>dict.get(d, 0)</code> 而非 <code>f[j][d]</code> 直接访问，否则 KeyError。</li>
-<li><strong>公差为 0</strong>：如 <code>[7,7,7,7,7]</code>，公差全是 0；上面算法天然处理（同样的哈希 key）。</li>
+<li><strong>公差范围</strong>：由约束 <span class="arithmatex">\(-2^{31} \leq \text{nums}[i] \leq 2^{31}-1\)</span>，<span class="arithmatex">\(d = \text{nums}[i]-\text{nums}[j]\)</span> 可达 <span class="arithmatex">\(2^{32}-1 = (2^{31}-1)-(-2^{31})\)</span> 量级，故 C++ 必须用 <code>long long</code>；Python 天然支持大整数。这一点在形式化里定义 <span class="arithmatex">\(d\)</span> 时就已埋下，不是额外约定。</li>
+<li><strong>弱 vs 强分离</strong>：累加进答案的必须是 <code>f[j][d]</code>（长度已 <span class="arithmatex">\(\geq 2\)</span>），不是 <code>f[i][d]</code>；后者含刚新建的长度 2 对子，会把非法的长度 2 序列也数进去。此即上节推导的直接后果。</li>
+<li><strong>空 dict 默认值</strong>：用 <code>dict.get(d, 0)</code> 而非 <code>f[j][d]</code> 直接访问，否则键缺失时 KeyError。</li>
+<li><strong>公差为 0</strong>：如 <code>[7,7,7,7,7]</code>（答案 16），公差全是 0；相等的差散列到同一 key，上面算法天然处理。</li>
 </ul>
 <h2 id="related">相关题目 (Related)<a class="headerlink" href="#related" title="Permanent link">#</a></h2>
 <ul>
-<li><a href="../0503_next-greater-element-ii/">#503. Next Greater Element II</a> — 同 batch 的另一道"状态需双键"题</li>
+<li><code>#1027. Longest Arithmetic Subsequence (off-wiki)</code> — 同样的二维状态 <span class="arithmatex">\((i, d)\)</span>，区别只在聚合算子：那题对状态取 max（求最长），本题求和（求总数）</li>
 <li><code>#413. Arithmetic Slices (off-wiki)</code> — 连续版本，可线性 DP 解；本题是其 subsequence 推广</li>
+<li><a href="../0503_next-greater-element-ii/">#503. Next Greater Element II</a> — 同 batch 的另一道题，但解法相异：单调栈 + 一维下标状态，与本题的二维 <span class="arithmatex">\((i,d)\)</span> DP 无结构关系，仅作 batch 内对照</li>
 </ul>
 <h2 id="further-reading">Further Reading<a class="headerlink" href="#further-reading" title="Permanent link">#</a></h2>
 <ul>
-<li>CLRS, 3e §15 (Dynamic Programming) — last-step characterization 范式</li>
+<li>CLRS, 3e §15 (Dynamic Programming) — 按末段分解递推（last-step characterization）的范式</li>
 <li>cp-algorithms: <a href="https://cp-algorithms.com/dynamic_programming/intro-to-dp.html">Intro to DP</a> — DP 状态设计原则</li>
 <li>Wikipedia: <a href="https://en.wikipedia.org/wiki/Arithmetic_progression">Arithmetic progression</a></li>
 </ul>
@@ -22625,6 +22672,8 @@
         <script src="../../../js/mathjax/tex-mml-chtml.js"></script>
       
         <script src="../../../js/mermaid.min.js"></script>
+      
+        <script src="../../../js/featured.js"></script>
       
     
   </body>

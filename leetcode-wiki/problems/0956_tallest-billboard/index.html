@@ -1466,6 +1466,8 @@
       
         
       
+        
+      
     
     
     
@@ -1521,6 +1523,34 @@
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../featured/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ⭐ Featured（已验证）
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
               
             
               
@@ -1610,10 +1640,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_4" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
         
           
-          <label class="md-nav__link" for="__nav_4_4" id="__nav_4_4_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_5" id="__nav_4_5_label" tabindex="">
             
   
   
@@ -1631,8 +1661,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_4_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_4">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_5">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1915,7 +1945,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -1937,14 +1967,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_4_5" id="__nav_4_5_label" tabindex="">
+              <label class="md-nav__link " for="__nav_4_6" id="__nav_4_6_label" tabindex="">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_5">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_6">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -5321,10 +5351,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_7" checked>
         
           
-          <label class="md-nav__link" for="__nav_4_6" id="__nav_4_6_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_7" id="__nav_4_7_label" tabindex="">
             
   
   
@@ -5342,8 +5372,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_4_6">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_7_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4_7">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -22467,53 +22497,74 @@
 <h2 id="problem">Problem<a class="headerlink" href="#problem" title="Permanent link">#</a></h2>
 <p>给 <code>rods</code>，把每根分到三组（左支 / 右支 / 丢弃），左、右支总和相等。最大化该相等总和。<span class="arithmatex">\(1 \le |\text{rods}| \le 20\)</span>，<span class="arithmatex">\(\sum \text{rods} \le 5000\)</span>。</p>
 <h2 id="background">背景 (Background)<a class="headerlink" href="#background" title="Permanent link">#</a></h2>
-<p><strong>子集平衡 / Subset-Sum 变体的 DP</strong>。把每根 <span class="arithmatex">\(r\)</span> 视作 <span class="arithmatex">\(\{+r, -r, 0\}\)</span> 三选一作用于"差值 <span class="arithmatex">\(d = L - R\)</span>"，目标 <span class="arithmatex">\(d = 0\)</span> 且最大 <span class="arithmatex">\(L\)</span>。这是 <strong>balanced partition</strong> 与 <strong>meet-in-the-middle</strong> 的交叉问题；与 Knapsack 同框架但状态是"差值"而非"总重"。</p>
-<p>类似思想出现在 spin glass（Ising 模型的 ground state），sign assignment problem，"<span class="arithmatex">\(\pm 1\)</span> trick" 等优化。</p>
+<p>每根杆有且只有三个去处：放进左支、放进右支、丢弃。我们要在所有这样的三选一分配中，找到使左、右总和相等的那些，并取相等总和的最大值。</p>
+<p>最直接的想法是枚举。<span class="arithmatex">\(n\)</span> 根杆、每根 3 种去处，共 <span class="arithmatex">\(3^n\)</span> 种分配；对每种检查左和是否等于右和。<span class="arithmatex">\(n\)</span> 可达 <span class="arithmatex">\(20\)</span>，<span class="arithmatex">\(3^{20} \approx 3.5 \times 10^9\)</span>，逐一枚举不可行。枚举之所以浪费，是因为它区分了大量<strong>最终无关</strong>的细节：两次不同的分配，只要走到当前为止左右两支的<strong>差</strong>相同，它们对"剩下的杆能否救回平衡"的影响就完全一样。这提示我们：不必记录具体哪根去了哪边，只需记录一个能概括"当前局面"的标量。</p>
+<p>下面先确定这个标量是什么，再由它推出递推。</p>
 <h2 id="formulation">形式化 (Formulation)<a class="headerlink" href="#formulation" title="Permanent link">#</a></h2>
-<p>设 $f(i, d) = $ 用前 <span class="arithmatex">\(i\)</span> 根，使差 <span class="arithmatex">\(L - R = d\)</span> 时<strong>较大堆</strong>的最大值。转移：</p>
-<div class="arithmatex">\[f(i, d) = \max\Big(f(i-1, d),\ f(i-1, d - r_i) + r_i,\ f(i-1, d + r_i)\Big)\]</div>
-<p>三项对应：丢弃；放左支（<span class="arithmatex">\(d\)</span> 变 <span class="arithmatex">\(d - r_i\)</span> 的状态过来，新加到左 <span class="arithmatex">\(\Rightarrow\)</span> "较大堆"加 <span class="arithmatex">\(r_i\)</span>）；放右支。最终答案 <span class="arithmatex">\(f(n, 0)\)</span>。</p>
-<p><strong>注意</strong>：维护"较大堆"= <span class="arithmatex">\(\max(L, R)\)</span>。因 <span class="arithmatex">\(d\)</span> 可能转正负，要对称处理。常用约定：<span class="arithmatex">\(d \ge 0\)</span> 表 <span class="arithmatex">\(L - R\)</span>；当 <span class="arithmatex">\(d = 0\)</span> 时 <span class="arithmatex">\(L = R\)</span> 即答案。当 <span class="arithmatex">\(d &lt; 0\)</span> 由对称归约。</p>
+<p>设处理到某一前缀后，左支总和为 <span class="arithmatex">\(L\)</span>、右支总和为 <span class="arithmatex">\(R\)</span>。把每根杆 <span class="arithmatex">\(r\)</span> 的决策记作对差值 <span class="arithmatex">\(d = L - R\)</span> 的作用：放左支令 <span class="arithmatex">\(d \mathrel{+}= r\)</span>，放右支令 <span class="arithmatex">\(d \mathrel{-}= r\)</span>，丢弃令 <span class="arithmatex">\(d\)</span> 不变。于是每根杆是对 <span class="arithmatex">\(d\)</span> 的一次 <span class="arithmatex">\(\{+r, -r, 0\}\)</span> 操作，目标是让最终 <span class="arithmatex">\(d = 0\)</span>（即 <span class="arithmatex">\(L = R\)</span>）并最大化此时的公共高度。</p>
+<p><strong>第一次尝试：只记录差值是否可达。</strong> 令</p>
+<div class="arithmatex">\[g(i, d) = \begin{cases} 1 &amp; \text{前 } i \text{ 根能使 } L - R = d \\ 0 &amp; \text{否则} \end{cases} \tag{1}\]</div>
+<p>转移是三选一的或运算。这个状态足以回答"<span class="arithmatex">\(d = 0\)</span> 是否可达"，但答不出我们真正要的东西——<strong>当 <span class="arithmatex">\(d = 0\)</span> 时公共高度是多少</strong>。原因是同一个 <span class="arithmatex">\(d\)</span> 可由许多不同的 <span class="arithmatex">\((L, R)\)</span> 达成：差为 <span class="arithmatex">\(0\)</span> 既可能是 <span class="arithmatex">\(L = R = 0\)</span>，也可能是 <span class="arithmatex">\(L = R = 6\)</span>。<span class="arithmatex">\(g\)</span> 把它们压成同一个布尔值，丢失了高度信息。可达性 DP 在这里不够，必须升级状态。</p>
+<p><strong>修正：在每个差值上缓存可达到的最大高度。</strong> 要恢复高度，最少需要在 <span class="arithmatex">\(d\)</span> 之外再记一个量。注意 <span class="arithmatex">\(L\)</span> 与 <span class="arithmatex">\(R\)</span> 在问题中是对称的——交换"左""右"两个标签不改变任何分配的合法性与得分。因此状态应当对 <span class="arithmatex">\(L, R\)</span> 对称，记录 <span class="arithmatex">\(L\)</span> 单独一项会破坏这种对称，并迫使递推按 <span class="arithmatex">\(L \ge R\)</span> 与 <span class="arithmatex">\(L &lt; R\)</span> 分两套。改记两支中<strong>较高</strong>的一支 <span class="arithmatex">\(\max(L, R)\)</span>，对称即被吸收。</p>
+<p>关键在于：<span class="arithmatex">\(d\)</span> 与 <span class="arithmatex">\(\max(L, R)\)</span> 一起，恰好唯一确定 <span class="arithmatex">\(L\)</span> 和 <span class="arithmatex">\(R\)</span>。若约定 <span class="arithmatex">\(d = |L - R| \ge 0\)</span>、<span class="arithmatex">\(\text{hi} = \max(L, R)\)</span>，则较低一支</p>
+<div class="arithmatex">\[\text{lo} = \min(L, R) = \text{hi} - d. \tag{2}\]</div>
+<p>这是后续所有代数的依据，也说明 <span class="arithmatex">\((d, \text{hi})\)</span> 是能回答原问题的<strong>最小充分状态</strong>：再少一维就退回 <span class="arithmatex">\(g\)</span>，丢掉高度。</p>
+<p><strong>直觉先于形式</strong>：递推要表达的就是"在已知 <span class="arithmatex">\((d, \text{hi})\)</span> 时新来一根 <span class="arithmatex">\(r\)</span> 的三种走法"。把 <span class="arithmatex">\(r\)</span> 加到较高支，差扩大、较高支升高；把 <span class="arithmatex">\(r\)</span> 加到较低支，差缩小，而且若 <span class="arithmatex">\(r\)</span> 够大，较低支会反超、两支身份互换；丢弃则什么都不变。据此定义</p>
+<div class="arithmatex">\[f(i, d) = \text{前 } i \text{ 根中，使 } |L - R| = d \text{ 的所有分配里 } \max(L, R) \text{ 的最大值}. \tag{3}\]</div>
+<p>三种走法给出转移。设处理第 <span class="arithmatex">\(i\)</span> 根 <span class="arithmatex">\(r = r_i\)</span>，从状态 <span class="arithmatex">\((d, \text{hi})\)</span> 出发，其中 <span class="arithmatex">\(\text{lo} = \text{hi} - d\)</span>：</p>
+<div class="arithmatex">\[
+\begin{aligned}
+\textbf{丢弃:}\quad &amp; (d,\ \text{hi}) \ \longrightarrow\ (d,\ \text{hi}) \\
+\textbf{加到较高支:}\quad &amp; (d,\ \text{hi}) \ \longrightarrow\ (d + r,\ \text{hi} + r) \\
+\textbf{加到较低支:}\quad &amp; (d,\ \text{hi}) \ \longrightarrow\ \bigl(|d - r|,\ \max(\text{hi},\ \text{lo} + r)\bigr)
+\end{aligned}
+\tag{4}
+\]</div>
+<p>第三条用到式 (2)：较低支变为 <span class="arithmatex">\(\text{lo} + r = \text{hi} - d + r\)</span>。当 <span class="arithmatex">\(\text{lo} + r \le \text{hi}\)</span>（即 <span class="arithmatex">\(r \le d\)</span>）较高支不变、差缩小为 <span class="arithmatex">\(d - r\)</span>；当 <span class="arithmatex">\(\text{lo} + r &gt; \text{hi}\)</span>（即 <span class="arithmatex">\(r &gt; d\)</span>）较低支反超成为新的较高支、差为 <span class="arithmatex">\(r - d\)</span>。两种情形被 <span class="arithmatex">\(|d - r|\)</span> 与 <span class="arithmatex">\(\max(\text{hi}, \text{lo} + r)\)</span> 统一表达。</p>
+<p><strong>答案是 <span class="arithmatex">\(f(n, 0)\)</span>。</strong> 当 <span class="arithmatex">\(d = 0\)</span> 时 <span class="arithmatex">\(L = R\)</span>，由式 (2) 有 <span class="arithmatex">\(\text{lo} = \text{hi}\)</span>，公共高度即 <span class="arithmatex">\(\text{hi}\)</span>。故 <span class="arithmatex">\(f(n, 0)\)</span> 正是左右相等时的最大公共高度。</p>
 <h2 id="approach">数据结构 / 想法 (Approach)<a class="headerlink" href="#approach" title="Permanent link">#</a></h2>
-<p><strong>字典 DP</strong>：<code>dp[d] =</code> 当前差值下"高堆"的最大值。每根 <span class="arithmatex">\(r\)</span> 更新：</p>
+<p>式 (3) 的 <span class="arithmatex">\(f(i, d)\)</span> 只通过第 <span class="arithmatex">\(i-1\)</span> 行影响第 <span class="arithmatex">\(i\)</span> 行，<span class="arithmatex">\(i\)</span> 这一维可滚动掉，于是只需保存"当前差值 <span class="arithmatex">\(\to\)</span> 当前较高支最大值"的一张表。同时，可达的差值远少于 <span class="arithmatex">\([0, S]\)</span> 中的全部整数，用字典按需存储比定长数组更省。</p>
+<p><strong>不变量（贯穿全程）</strong>：字典 <code>dp</code> 中每个键值对 <code>d: hi</code> 表示存在一种分配使 <span class="arithmatex">\(|L - R| = d\)</span> 且 <span class="arithmatex">\(\max(L, R) = \text{hi}\)</span>；由式 (2)，较低支为 <span class="arithmatex">\(\text{hi} - d\)</span>。</p>
+<p>逐根处理时，对每个旧状态 <code>(d, hi)</code> 写出式 (4) 的两条非平凡转移（丢弃对应保留旧表，由复制 <code>dp</code> 实现），各自更新目标键上的最大值。两条转移与递推一一对应：</p>
 <div class="language-python highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">Solution</span><span class="p">:</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">tallestBillboard</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rods</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
-        <span class="n">dp</span> <span class="o">=</span> <span class="p">{</span><span class="mi">0</span><span class="p">:</span> <span class="mi">0</span><span class="p">}</span>
+        <span class="n">dp</span> <span class="o">=</span> <span class="p">{</span><span class="mi">0</span><span class="p">:</span> <span class="mi">0</span><span class="p">}</span>  <span class="c1"># 不变量: dp[d] = 当前差值 d 下 max(L,R) 的最大值</span>
         <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">rods</span><span class="p">:</span>
-            <span class="n">new</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">dp</span><span class="p">)</span>
+            <span class="n">new</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">dp</span><span class="p">)</span>  <span class="c1"># “丢弃”分支: 旧状态原样保留</span>
             <span class="k">for</span> <span class="n">d</span><span class="p">,</span> <span class="n">hi</span> <span class="ow">in</span> <span class="n">dp</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-                <span class="c1"># 放左支：新差 d+r，新高 = max(hi+r, lo+r)，但 lo = hi - d</span>
-                <span class="c1"># 严谨：把 r 加到较高堆，则新差 = d + r，新 hi = hi + r</span>
-                <span class="n">nd1</span> <span class="o">=</span> <span class="n">d</span> <span class="o">+</span> <span class="n">r</span>
-                <span class="k">if</span> <span class="n">new</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">nd1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">hi</span> <span class="o">+</span> <span class="n">r</span><span class="p">:</span>
-                    <span class="n">new</span><span class="p">[</span><span class="n">nd1</span><span class="p">]</span> <span class="o">=</span> <span class="n">hi</span> <span class="o">+</span> <span class="n">r</span>
-                <span class="c1"># 放右支（加到较低堆）：新差 = |d - r|；新 hi = max(hi, lo + r) = max(hi, hi - d + r)</span>
-                <span class="n">nd2</span> <span class="o">=</span> <span class="nb">abs</span><span class="p">(</span><span class="n">d</span> <span class="o">-</span> <span class="n">r</span><span class="p">)</span>
-                <span class="n">nh2</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">hi</span><span class="p">,</span> <span class="n">hi</span> <span class="o">-</span> <span class="n">d</span> <span class="o">+</span> <span class="n">r</span><span class="p">)</span> <span class="k">if</span> <span class="n">d</span> <span class="o">&gt;=</span> <span class="n">r</span> <span class="k">else</span> <span class="n">hi</span> <span class="o">-</span> <span class="n">d</span> <span class="o">+</span> <span class="n">r</span>  <span class="c1"># 翻转后较高</span>
-                <span class="k">if</span> <span class="n">new</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">nd2</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">nh2</span><span class="p">:</span>
-                    <span class="n">new</span><span class="p">[</span><span class="n">nd2</span><span class="p">]</span> <span class="o">=</span> <span class="n">nh2</span>
+                <span class="c1"># 加到较高支: (d, hi) -&gt; (d + r, hi + r)        式(4)</span>
+                <span class="k">if</span> <span class="n">new</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">d</span> <span class="o">+</span> <span class="n">r</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">hi</span> <span class="o">+</span> <span class="n">r</span><span class="p">:</span>
+                    <span class="n">new</span><span class="p">[</span><span class="n">d</span> <span class="o">+</span> <span class="n">r</span><span class="p">]</span> <span class="o">=</span> <span class="n">hi</span> <span class="o">+</span> <span class="n">r</span>
+                <span class="c1"># 加到较低支: (d, hi) -&gt; (|d - r|, max(hi, lo + r)), lo = hi - d   式(2)(4)</span>
+                <span class="n">nd</span> <span class="o">=</span> <span class="nb">abs</span><span class="p">(</span><span class="n">d</span> <span class="o">-</span> <span class="n">r</span><span class="p">)</span>
+                <span class="n">nh</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">hi</span><span class="p">,</span> <span class="n">hi</span> <span class="o">-</span> <span class="n">d</span> <span class="o">+</span> <span class="n">r</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">new</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">nd</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">nh</span><span class="p">:</span>
+                    <span class="n">new</span><span class="p">[</span><span class="n">nd</span><span class="p">]</span> <span class="o">=</span> <span class="n">nh</span>
             <span class="n">dp</span> <span class="o">=</span> <span class="n">new</span>
         <span class="k">return</span> <span class="n">dp</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
 </code></pre></div>
-<p>样例 1：<code>[1,2,3,6]</code>。期望答 6。逐步：
-- 初 <code>{0:0}</code>。
-- r=1: <code>{0:0, 1:1}</code>（差 1 的较大堆 = 1）。
-- r=2: 处理 (0,0) → 加左：(2, 2)；加右：(2, 2)。处理 (1,1) → 加左：(3,3)；加右：(|1-2|=1, max(1, 1-1+2)=2)。新 <code>{0:0,1:2,2:2,3:3}</code>。
-- r=3: 处理诸多状态。一项关键：从 (3,3) 加右 r=3 → (|3-3|=0, max(3, 3-3+3)=3)。新里 <code>{0:3, ...}</code>。
-- r=6: 关键：(3,3) 加左 → (9,9)；(3,3) 加右 → (3, max(3, 3-3+6)=6)。新里 <code>{..., 3:6, ...}</code>。处理 <code>{0:3}</code> + r=6 → 加左 (6, 9); 加右 (6, max(3, 3+6)=9)。注意已有的 (3,6) 后续：处理 (3,6) + nothing 因 r 已用完。
-- 最终 dp[0] 应为 6。</p>
-<p>更直观的分组解：{1,2,3} 与 {6} 都和 6 → 答 6。✓</p>
-<p>样例 3：<code>[1,2]</code>。任何分法 L≠R 或 L=R=0。dp[0]=0。✓</p>
+<p><code>new[d + r]</code> 对应"加到较高支"，<code>new[abs(d - r)]</code> 对应"加到较低支"，两个目标键各取已有值与新值的较大者，与式 (4) 逐项对照即可。</p>
+<p><strong>为何不能只记 <span class="arithmatex">\(L\)</span>。</strong> 若把状态简化为"差值 <span class="arithmatex">\(d\)</span> 下 <span class="arithmatex">\(L\)</span> 的最大值"，则"加到较低支"分支无法计算：要更新较低支需要知道 <span class="arithmatex">\(\text{lo} = \text{hi} - d\)</span>，而在反超情形（<span class="arithmatex">\(r &gt; d\)</span>）较高支与较低支身份互换，新的 <span class="arithmatex">\(\max(L, R)\)</span> 依赖旧的 <span class="arithmatex">\(\text{lo}\)</span>。只有缓存 <span class="arithmatex">\(\max(L, R)\)</span> 才能借式 (2) 取回 <span class="arithmatex">\(\text{lo}\)</span>，使第三条转移闭合。这正是该 DP 的核心，省掉它会漏掉所有需要"反超"的可行解。</p>
+<p><strong>逐步验证（样例 1：<code>[1,2,3,6]</code>，期望 6）</strong>。初始 <code>{0:0}</code>。</p>
+<ul>
+<li><span class="arithmatex">\(r=1\)</span>：从 <code>(0,0)</code> 加到较高支得 <code>(1,1)</code>。表为 <code>{0:0, 1:1}</code>。</li>
+<li><span class="arithmatex">\(r=2\)</span>：<code>(0,0)</code> 加高 <span class="arithmatex">\(\to\)</span> <code>(2,2)</code>；<code>(1,1)</code> 加高 <span class="arithmatex">\(\to\)</span> <code>(3,3)</code>，加低 <span class="arithmatex">\(\to (|1-2|, \max(1, 1-1+2)) = (1, 2)\)</span>。表为 <code>{0:0, 1:2, 2:2, 3:3}</code>。</li>
+<li><span class="arithmatex">\(r=3\)</span>：其中 <code>(3,3)</code> 加低 <span class="arithmatex">\(\to (|3-3|, \max(3, 3-3+3)) = (0, 3)\)</span>，使 <code>dp[0]</code> 升到 <code>3</code>（即子集 <code>{3}</code> 对 <code>{3}</code> 已平衡于高度 3）。</li>
+<li><span class="arithmatex">\(r=6\)</span>：<code>(3,3)</code> 加低 <span class="arithmatex">\(\to (|3-6|, \max(3, 3-3+6)) = (3, 6)\)</span>；随后 <code>(3,6)</code> 这条记录意味着子集 <code>{1,2,3}</code>（和 6）对 <code>{6}</code>（和 6）平衡。最终 <code>dp[0] = 6</code>。</li>
+</ul>
+<p>返回 <code>dp[0] = 6</code>，对应分组 <code>{1,2,3}</code> 与 <code>{6}</code> 均和 6。✓</p>
+<p>样例 <code>[1,2]</code>：任何分法都使 <span class="arithmatex">\(L \ne R\)</span>，唯一平衡是 <span class="arithmatex">\(L = R = 0\)</span>，故 <code>dp[0] = 0</code>。✓</p>
 <h2 id="complexity">复杂度 (Complexity)<a class="headerlink" href="#complexity" title="Permanent link">#</a></h2>
 <ul>
-<li>状态：差值 <span class="arithmatex">\(d \in [0, S]\)</span>，<span class="arithmatex">\(S \le 5000\)</span>；<span class="arithmatex">\(n\)</span> 根。Time <span class="arithmatex">\(O(n \cdot S) = O(20 \cdot 5000) = 10^5\)</span>。</li>
-<li>Space: <span class="arithmatex">\(O(S)\)</span>。</li>
+<li>状态：差值 <span class="arithmatex">\(d \in [0, S]\)</span>，<span class="arithmatex">\(S = \sum \text{rods} \le 5000\)</span>；<span class="arithmatex">\(n\)</span> 根。Time <span class="arithmatex">\(O(n \cdot S) = O(20 \cdot 5000) = 10^5\)</span>。</li>
+<li>Space: <span class="arithmatex">\(O(S)\)</span>（字典至多 <span class="arithmatex">\(S + 1\)</span> 个不同差值键）。</li>
 </ul>
 <h2 id="pitfalls">陷阱 (Pitfalls)<a class="headerlink" href="#pitfalls" title="Permanent link">#</a></h2>
 <ul>
-<li><strong>"较大堆"维护</strong>：转移时区分加到较高还是较低堆，及翻转方向时的代数。常见 bug：直接 <code>new[d+r] = dp[d] + r</code>，忽略"加到较低堆"分支会漏可行解。</li>
-<li>不用 <span class="arithmatex">\(3^{20} \approx 3.5 \times 10^9\)</span> 暴力枚举，但 meet-in-the-middle (<span class="arithmatex">\(3^{10} = 59049\)</span> 每半) 也是可行替代方案。</li>
-<li><span class="arithmatex">\(d\)</span> 的范围最坏到 <span class="arithmatex">\(S\)</span>，要么用 dict 要么用数组 + 偏移。</li>
+<li><strong>较高支 / 较低支两条分支都要写</strong>：式 (4) 的"加到较低支"分支最易被漏。常见 bug 是只写 <code>new[d + r] = dp[d] + r</code>，丢掉 <code>abs(d - r)</code> 分支，从而漏掉所有需要反超（<span class="arithmatex">\(r &gt; d\)</span>）才能平衡的解。</li>
+<li><strong>状态必须缓存 <span class="arithmatex">\(\max(L, R)\)</span> 而非 <span class="arithmatex">\(L\)</span></strong>：见上文推导。只记 <span class="arithmatex">\(L\)</span> 会使"加到较低支"无法在反超时正确更新身份互换后的较高支。</li>
+<li><strong>差值范围最坏到 <span class="arithmatex">\(S\)</span></strong>：用字典按需存储，或用数组 + 偏移；不要假设差值很小。</li>
+<li>不必用 <span class="arithmatex">\(3^{20} \approx 3.5 \times 10^9\)</span> 的暴力枚举；若坚持枚举，meet-in-the-middle（每半 <span class="arithmatex">\(3^{10} = 59049\)</span>，再按差值配对）是可行替代，但本 DP 更简洁。</li>
 </ul>
 <h2 id="related">相关题目 (Related)<a class="headerlink" href="#related" title="Permanent link">#</a></h2>
 <ul>
@@ -22631,6 +22682,8 @@
         <script src="../../../js/mathjax/tex-mml-chtml.js"></script>
       
         <script src="../../../js/mermaid.min.js"></script>
+      
+        <script src="../../../js/featured.js"></script>
       
     
   </body>

@@ -1466,6 +1466,8 @@
       
         
       
+        
+      
     
     
     
@@ -1521,6 +1523,34 @@
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../featured/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ⭐ Featured（已验证）
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
               
             
               
@@ -1610,10 +1640,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_4" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
         
           
-          <label class="md-nav__link" for="__nav_4_4" id="__nav_4_4_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_5" id="__nav_4_5_label" tabindex="">
             
   
   
@@ -1631,8 +1661,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_4_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_4">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_5">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1915,7 +1945,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -1937,14 +1967,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_4_5" id="__nav_4_5_label" tabindex="">
+              <label class="md-nav__link " for="__nav_4_6" id="__nav_4_6_label" tabindex="">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_5">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_6">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -5321,10 +5351,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_7" checked>
         
           
-          <label class="md-nav__link" for="__nav_4_6" id="__nav_4_6_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_7" id="__nav_4_7_label" tabindex="">
             
   
   
@@ -5342,8 +5372,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_4_6">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_7_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4_7">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -22467,21 +22497,34 @@
 <h2 id="problem">Problem<a class="headerlink" href="#problem" title="Permanent link">#</a></h2>
 <p>二叉树 <code>root</code>（<span class="arithmatex">\(2 \leq n \leq 5 \cdot 10^4\)</span>，节点值 <span class="arithmatex">\(\in [1, 10^4]\)</span>）。删除一条边，将树分成两棵，使两棵的节点和之积最大。返回该最大积 <strong>模</strong> <span class="arithmatex">\(10^9 + 7\)</span>。注意"先取最大再取模"，不要先模再比较。</p>
 <h2 id="background">背景 (Background)<a class="headerlink" href="#background" title="Permanent link">#</a></h2>
-<p>经典 <strong>树形 DP / 子树和枚举</strong>：删某条边等价于把以某节点 <span class="arithmatex">\(v\)</span> 为根的子树切出来作为一边，另一边为 <span class="arithmatex">\(T - \text{subtree}(v)\)</span>。固定总和 <span class="arithmatex">\(S\)</span>，目标函数为 <span class="arithmatex">\(f(s) = s(S - s)\)</span>（抛物线开口向下），在 <span class="arithmatex">\(s = S/2\)</span> 时取最大。所以最优 <span class="arithmatex">\(s\)</span> 是<strong>最接近 <span class="arithmatex">\(S/2\)</span> 的子树和</strong>。这是单变量优化 <span class="arithmatex">\(\max f(s)\)</span> s.t. $s \in $ 子树和集合的离散版本。</p>
+<p>最直接的想法是枚举：树有 <span class="arithmatex">\(n-1\)</span> 条边，逐条删除，对每条边算出分裂后两部分的节点和，取乘积的最大值。问题随之而来——删一条边之后，两部分各自的和怎么算？朴素做法是删边后对每一部分各跑一次遍历求和，单条边 <span class="arithmatex">\(O(n)\)</span>，<span class="arithmatex">\(n-1\)</span> 条边合计 <span class="arithmatex">\(O(n^2)\)</span>。在 <span class="arithmatex">\(n = 5 \cdot 10^4\)</span> 下约 <span class="arithmatex">\(2.5 \cdot 10^9\)</span> 次操作，太慢。</p>
+<p>慢在重复求和。要去掉这层重复，先看清"删一条边"在有根树里到底做了什么。</p>
+<p>取任意一条边，它连接某节点 <span class="arithmatex">\(v\)</span> 和其父节点 <span class="arithmatex">\(p\)</span>。删掉这条边，树断成两个连通块：一块是以 <span class="arithmatex">\(v\)</span> 为根、包含 <span class="arithmatex">\(v\)</span> 全部后代的子树，记其节点和为 <span class="arithmatex">\(s_v\)</span>；另一块是剩下的所有节点。由于全树节点和 <span class="arithmatex">\(S = \sum_v \text{val}(v)\)</span> 固定，剩下那块的和必然是 <span class="arithmatex">\(S - s_v\)</span>。于是每条边由它"下端"的节点 <span class="arithmatex">\(v\)</span> 唯一确定，分裂后的两个和是 <span class="arithmatex">\(s_v\)</span> 与 <span class="arithmatex">\(S - s_v\)</span>——只要知道 <span class="arithmatex">\(S\)</span> 和各个 <span class="arithmatex">\(s_v\)</span>，乘积无需重新遍历即可得到。</p>
+<p>这把"枚举边并各自求和"换成了"枚举子树和 <span class="arithmatex">\(s_v\)</span>"。后者只需计算一次每个子树的和，正是一次后序 DFS 能给出的全部信息。下面把这个观察固定成精确的目标，再据此导出算法。</p>
 <h2 id="formulation">形式化 (Formulation)<a class="headerlink" href="#formulation" title="Permanent link">#</a></h2>
-<p>设 <span class="arithmatex">\(S = \sum_{v} \text{val}(v)\)</span>。对每个非根节点 <span class="arithmatex">\(v\)</span>，设 $s_v = $ 子树 <span class="arithmatex">\(v\)</span> 的节点和。所求：</p>
+<p>设 <span class="arithmatex">\(S = \sum_{v} \text{val}(v)\)</span> 为全树节点和。对每个非根节点 <span class="arithmatex">\(v\)</span>，设 <span class="arithmatex">\(s_v\)</span> 为以 <span class="arithmatex">\(v\)</span> 为根的子树的节点和。删除 <span class="arithmatex">\(v\)</span> 与其父节点之间的边，得到两部分，和分别为 <span class="arithmatex">\(s_v\)</span> 和 <span class="arithmatex">\(S - s_v\)</span>，乘积为 <span class="arithmatex">\(s_v(S - s_v)\)</span>。所求为</p>
 <div class="arithmatex">\[
-\max_{v \neq \text{root}} s_v (S - s_v) \pmod{10^9 + 7}.
+\max_{v \neq \text{root}} \; s_v (S - s_v) \pmod{10^9 + 7}. \tag{1}
 \]</div>
-<p>枚举的 <span class="arithmatex">\(v\)</span> 对应"删除 <span class="arithmatex">\(v\)</span> 与父节点之间那条边"。</p>
+<p>枚举范围限定 <span class="arithmatex">\(v \neq \text{root}\)</span>：根没有父边，不对应任何一次合法分裂。</p>
+<p>式 (1) 把原问题归结为：在离散集合 <span class="arithmatex">\(\{s_v : v \neq \text{root}\}\)</span> 上最大化函数 <span class="arithmatex">\(f(s) = s(S - s)\)</span>。这里 <span class="arithmatex">\(S\)</span> 是常数，<span class="arithmatex">\(f\)</span> 是关于单个变量 <span class="arithmatex">\(s\)</span> 的二次函数，可以直接分析它在哪个 <span class="arithmatex">\(s\)</span> 处取最大。</p>
+<p>把 <span class="arithmatex">\(f\)</span> 配方：</p>
+<div class="arithmatex">\[
+f(s) = s(S - s) = -\,s^2 + S s = \frac{S^2}{4} - \left(s - \frac{S}{2}\right)^2. \tag{2}
+\]</div>
+<p>式 (2) 右端第一项 <span class="arithmatex">\(S^2/4\)</span> 是常数，第二项 <span class="arithmatex">\(-(s - S/2)^2 \leq 0\)</span>。因此最大化 <span class="arithmatex">\(f(s)\)</span> 等价于最小化 <span class="arithmatex">\((s - S/2)^2\)</span>，即 <span class="arithmatex">\(s\)</span> 越靠近 <span class="arithmatex">\(S/2\)</span>，乘积越大。在实数范围内 <span class="arithmatex">\(s = S/2\)</span> 取得最大；但 <span class="arithmatex">\(s\)</span> 只能取离散的子树和，所以最优的 <span class="arithmatex">\(s_v\)</span> 是<strong>最接近 <span class="arithmatex">\(S/2\)</span> 的那个子树和</strong>。</p>
+<p>这给出两条等价的求解路径：要么枚举所有 <span class="arithmatex">\(s_v\)</span> 直接代入 <span class="arithmatex">\(f\)</span> 取最大，要么找出最接近 <span class="arithmatex">\(S/2\)</span> 的 <span class="arithmatex">\(s_v\)</span>。两者都依赖同一组数据——全部子树和与总和 <span class="arithmatex">\(S\)</span>。</p>
 <h2 id="approach">数据结构 / 想法 (Approach)<a class="headerlink" href="#approach" title="Permanent link">#</a></h2>
-<p><strong>两遍 DFS</strong>（或一遍 + 父引用）：</p>
+<p>式 (1) 要求遍历集合 <span class="arithmatex">\(\{s_v\}\)</span> 并对每个值求 <span class="arithmatex">\(f\)</span>。先想能不能在一次 DFS 里边算子树和边比较，省掉单独的扫描。这里有个障碍：<span class="arithmatex">\(f(s_v) = s_v(S - s_v)\)</span> 用到总和 <span class="arithmatex">\(S\)</span>，而 <span class="arithmatex">\(S\)</span> 等于根的子树和，在后序 DFS 中最后一步才算出。访问到某个内部节点 <span class="arithmatex">\(v\)</span> 时 <span class="arithmatex">\(S\)</span> 尚未确定，无法当场计算 <span class="arithmatex">\(s_v(S - s_v)\)</span>。</p>
+<p>所以自然地分两阶段：</p>
 <ol>
-<li>第一遍 DFS：算出 <span class="arithmatex">\(S\)</span> 与每个节点的 <span class="arithmatex">\(s_v\)</span>（可存数组或集合）。</li>
-<li>第二遍遍历所有 <span class="arithmatex">\(s_v\)</span>，取 <span class="arithmatex">\(\arg\max s_v (S - s_v)\)</span>。</li>
+<li><strong>收集</strong>：一次后序 DFS，自底向上算出每个节点的子树和 <span class="arithmatex">\(s_v\)</span>，全部记入列表；DFS 返回值给出根的子树和，即 <span class="arithmatex">\(S\)</span>。</li>
+<li><strong>求值</strong>：<span class="arithmatex">\(S\)</span> 确定后，线性扫描列表，对每个 <span class="arithmatex">\(s\)</span> 求 <span class="arithmatex">\(f(s) = s(S - s)\)</span>，取最大，最后对结果取模。</li>
 </ol>
-<p>可以合并成"DFS 中收集所有子树和，最后扫一遍"：</p>
-<div class="language-python highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">TreeNode</span><span class="p">:</span>
+<p>两个阶段都是 <span class="arithmatex">\(O(n)\)</span>。第一阶段算的就是式 (1) 里的 <span class="arithmatex">\(s_v\)</span> 和 <span class="arithmatex">\(S\)</span>，第二阶段算的就是式 (1) 的 <span class="arithmatex">\(\max\)</span>，算法逐项对应公式。</p>
+<div class="language-python highlight"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">sys</span>
+
+<span class="k">class</span><span class="w"> </span><span class="nc">TreeNode</span><span class="p">:</span>
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">val</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">left</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">right</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">val</span> <span class="o">=</span> <span class="n">val</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">left</span> <span class="o">=</span> <span class="n">left</span>
@@ -22490,6 +22533,7 @@
 <span class="k">class</span><span class="w"> </span><span class="nc">Solution</span><span class="p">:</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">maxProduct</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">root</span><span class="p">:</span> <span class="n">TreeNode</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
         <span class="c1"># Time: O(n), Space: O(n) for recursion + sums list</span>
+        <span class="n">sys</span><span class="o">.</span><span class="n">setrecursionlimit</span><span class="p">(</span><span class="mi">60000</span><span class="p">)</span>  <span class="c1"># chain tree depth up to n = 5e4</span>
         <span class="n">MOD</span> <span class="o">=</span> <span class="mi">10</span><span class="o">**</span><span class="mi">9</span> <span class="o">+</span> <span class="mi">7</span>
         <span class="n">sums</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">def</span><span class="w"> </span><span class="nf">subtree</span><span class="p">(</span><span class="n">node</span><span class="p">):</span>
@@ -22498,22 +22542,26 @@
             <span class="n">s</span> <span class="o">=</span> <span class="n">node</span><span class="o">.</span><span class="n">val</span> <span class="o">+</span> <span class="n">subtree</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">left</span><span class="p">)</span> <span class="o">+</span> <span class="n">subtree</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">right</span><span class="p">)</span>
             <span class="n">sums</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
             <span class="k">return</span> <span class="n">s</span>
-        <span class="n">total</span> <span class="o">=</span> <span class="n">subtree</span><span class="p">(</span><span class="n">root</span><span class="p">)</span>
+        <span class="n">total</span> <span class="o">=</span> <span class="n">subtree</span><span class="p">(</span><span class="n">root</span><span class="p">)</span>        <span class="c1"># root&#39;s subtree sum = S</span>
         <span class="n">best</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">s</span> <span class="o">*</span> <span class="p">(</span><span class="n">total</span> <span class="o">-</span> <span class="n">s</span><span class="p">)</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">sums</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">best</span> <span class="o">%</span> <span class="n">MOD</span>
 </code></pre></div>
-<p>注意：列表 <code>sums</code> 包含根的总和 <span class="arithmatex">\(S\)</span>（对应 "split 时 <span class="arithmatex">\(s_v = S\)</span>"，另一边 0，乘积为 0，不会影响 max），所以无需手动排除。</p>
-<p>样例 1 验证：树和 <span class="arithmatex">\(S = 1+2+3+4+5+6 = 21\)</span>。子树和包括 4, 5, 11(=2+4+5), 6, 9(=3+6), 21. 对每个 <span class="arithmatex">\(s\)</span> 算 <span class="arithmatex">\(s(21-s)\)</span>：4×17=68, 5×16=80, 11×10=<strong>110</strong>, 6×15=90, 9×12=108, 21×0=0. 最大 110 ✓。</p>
+<p>收集阶段把每个节点（含根）的子树和都放进 <code>sums</code>。根对应的项是 <span class="arithmatex">\(S \cdot (S - S) = 0\)</span>：它表示"不切任何边"，另一边为空，乘积为 0，永远不会成为最大值，因此无需手动从列表中排除根。</p>
+<p>样例 1 验证：树和 <span class="arithmatex">\(S = 1+2+3+4+5+6 = 21\)</span>。子树和集合为 <span class="arithmatex">\(\{4, 5, 11, 6, 9, 21\}\)</span>，其中 <span class="arithmatex">\(11 = 2+4+5\)</span> 是节点 2 的子树和。对每个 <span class="arithmatex">\(s\)</span> 求 <span class="arithmatex">\(s(21-s)\)</span>：<span class="arithmatex">\(4\times17=68\)</span>，<span class="arithmatex">\(5\times16=80\)</span>，<span class="arithmatex">\(11\times10=\mathbf{110}\)</span>，<span class="arithmatex">\(6\times15=90\)</span>，<span class="arithmatex">\(9\times12=108\)</span>，<span class="arithmatex">\(21\times0=0\)</span>。最大为 110。注意 <span class="arithmatex">\(S/2 = 10.5\)</span>，最接近的子树和正是 <span class="arithmatex">\(11\)</span>，与式 (2) 的分析一致。</p>
 <h2 id="complexity">复杂度 (Complexity)<a class="headerlink" href="#complexity" title="Permanent link">#</a></h2>
 <ul>
-<li>Time: <span class="arithmatex">\(O(n)\)</span> 两遍线性</li>
-<li>Space: <span class="arithmatex">\(O(n)\)</span> 子树和数组 + 递归栈</li>
+<li>Time: <span class="arithmatex">\(O(n)\)</span>——一次 DFS 收集子树和，一次线性扫描求值。</li>
+<li>Space: <span class="arithmatex">\(O(n)\)</span>——子树和列表 <span class="arithmatex">\(O(n)\)</span>，加递归栈 <span class="arithmatex">\(O(h)\)</span>，链式树最坏 <span class="arithmatex">\(h = n\)</span>。</li>
 </ul>
 <h2 id="pitfalls">陷阱 (Pitfalls)<a class="headerlink" href="#pitfalls" title="Permanent link">#</a></h2>
+<p>算法正确性：</p>
 <ul>
-<li><strong>先取 max 再 mod</strong>——否则 mod 后比较两数大小无意义（mod 破坏序）。题面已专门强调。</li>
-<li>不要在 DFS 中实时比较"子树和与 <span class="arithmatex">\(S\)</span> - 子树和"——第一遍时 <span class="arithmatex">\(S\)</span> 还没算完（其实根的 <span class="arithmatex">\(S\)</span> 在最后一步才知道）。所以两阶段更安全。</li>
-<li>节点数 <span class="arithmatex">\(\leq 5 \times 10^4\)</span>，递归深度最差为 <span class="arithmatex">\(n\)</span>（链式树），Python 需设 <code>sys.setrecursionlimit(60000)</code> 或改迭代。</li>
+<li><strong>先取 max 再 mod</strong>。模运算破坏序：<span class="arithmatex">\(a &gt; b\)</span> 不蕴含 <span class="arithmatex">\(a \bmod m &gt; b \bmod m\)</span>，故 mod 之后再比较两数大小无意义。必须在原始整数上取最大，最后只对结果取模一次。题面专门强调此点；Python 大整数天然支持，无需中途取模。</li>
+<li><strong>不能在第一遍 DFS 中实时比较</strong>。<span class="arithmatex">\(f(s_v)\)</span> 依赖 <span class="arithmatex">\(S\)</span>，而 <span class="arithmatex">\(S\)</span> 等于根的子树和，第一遍 DFS 完成后才能得到；遍历过程中 <span class="arithmatex">\(S\)</span> 尚未确定，因此无法当场比较。两阶段设计确保 <span class="arithmatex">\(S\)</span> 在求值阶段已完全确定。</li>
+</ul>
+<p>语言相关工程：</p>
+<ul>
+<li>节点数 <span class="arithmatex">\(\leq 5 \times 10^4\)</span>，链式树的递归深度最坏为 <span class="arithmatex">\(n\)</span>，超过 CPython 默认上限 1000。需 <code>sys.setrecursionlimit(60000)</code>（已在代码中设置），或改写为迭代后序遍历。该余量在 <span class="arithmatex">\(n = 5\cdot10^4\)</span> 下足够，但跨 Python 版本/栈设置可能偏紧，对深度敏感的环境建议用迭代版。</li>
 </ul>
 <h2 id="related">相关题目 (Related)<a class="headerlink" href="#related" title="Permanent link">#</a></h2>
 <ul>
@@ -22631,6 +22679,8 @@
         <script src="../../../js/mathjax/tex-mml-chtml.js"></script>
       
         <script src="../../../js/mermaid.min.js"></script>
+      
+        <script src="../../../js/featured.js"></script>
       
     
   </body>

@@ -1466,6 +1466,8 @@
       
         
       
+        
+      
     
     
     
@@ -1521,6 +1523,34 @@
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../featured/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ⭐ Featured（已验证）
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
               
             
               
@@ -1610,10 +1640,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_4" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
         
           
-          <label class="md-nav__link" for="__nav_4_4" id="__nav_4_4_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_5" id="__nav_4_5_label" tabindex="">
             
   
   
@@ -1631,8 +1661,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_4_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_4">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_5">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1915,7 +1945,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -1937,14 +1967,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_4_5" id="__nav_4_5_label" tabindex="">
+              <label class="md-nav__link " for="__nav_4_6" id="__nav_4_6_label" tabindex="">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_5">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_6">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -5321,10 +5351,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_7" checked>
         
           
-          <label class="md-nav__link" for="__nav_4_6" id="__nav_4_6_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_7" id="__nav_4_7_label" tabindex="">
             
   
   
@@ -5342,8 +5372,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_4_6">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_7_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4_7">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -22465,31 +22495,44 @@
 <h1 id="1595-minimum-cost-to-connect-two-groups-of-points-hard">1595. Minimum Cost to Connect Two Groups of Points  🔴 Hard<a class="headerlink" href="#1595-minimum-cost-to-connect-two-groups-of-points-hard" title="Permanent link">#</a></h1>
 <p><strong>Tags</strong>: Array, Dynamic Programming, Bit Manipulation, Matrix, Bitmask</p>
 <h2 id="problem">Problem<a class="headerlink" href="#problem" title="Permanent link">#</a></h2>
-<p>两组点，size <span class="arithmatex">\(s_1, s_2\)</span> (<span class="arithmatex">\(s_1 \ge s_2 \le 12\)</span>)，连接成本矩阵 <code>cost[i][j]</code>。要求：每个点至少连到对面的一个点。求最小总成本。</p>
+<p>两组点，左侧 size <span class="arithmatex">\(s_1\)</span>、右侧 size <span class="arithmatex">\(s_2\)</span>，约束 <span class="arithmatex">\(1 \le s_2 \le s_1 \le 12\)</span>，连接成本矩阵 <code>cost[i][j]</code>（左点 <span class="arithmatex">\(i\)</span> 连右点 <span class="arithmatex">\(j\)</span> 的代价）。要求：每个点至少连到对面的一个点（左点可连多个右点，右点也可被多个左点连）。求最小总成本。</p>
 <h2 id="_1">背景<a class="headerlink" href="#_1" title="Permanent link">#</a></h2>
-<p>本题是 <strong>bipartite covering / set cover</strong> 的变体，标准建模需要"两侧都被覆盖"。由于 <span class="arithmatex">\(s_2 \le 12 \Rightarrow 2^{s_2} \le 4096\)</span> 可枚举，问题归约为<strong>状压 DP</strong>。</p>
-<p>数学背景：这接近 <strong>集合覆盖 (set cover)</strong> 与 <strong>顶点覆盖 (vertex cover)</strong> 在二部图上的最小成本松弛 — 一般集合覆盖 NP-hard，本题指数项 <span class="arithmatex">\(O(s_1 \cdot 2^{s_2})\)</span> 是 <span class="arithmatex">\(s_2\)</span> 小才可行的"假多项式"。这种"一边小，另一边大用 DP"模式在调度（任务-机器）、稀疏 bipartite matching、最小汉明覆盖等场景常用。</p>
+<p>约束很对称：每个左点必须够到至少一个右点，每个右点也必须被至少一个左点够到。先试最直接的贪心——把每个左点单独连到它最便宜的右邻居：</p>
+<div class="arithmatex">\[\sum_{i} \min_j c_{ij}.\]</div>
+<p>这满足了"左点全覆盖"，但右侧可能漏点。考虑</p>
+<div class="arithmatex">\[c = \begin{pmatrix} 1 &amp; 3 &amp; 5 \\ 4 &amp; 1 &amp; 1 \\ 1 &amp; 5 &amp; 3 \end{pmatrix}.\]</div>
+<p>三个左点各取行最小，得到边 <span class="arithmatex">\((0,0),(1,1),(2,0)\)</span>，成本 <span class="arithmatex">\(1+1+1=3\)</span>；但右点 <span class="arithmatex">\(2\)</span> 从未被连到。要补救它，得在 <span class="arithmatex">\(\min_i c_{i2}=1\)</span> 处再加一条边，总成本变 <span class="arithmatex">\(4\)</span>。贪心之所以失手，是因为"右侧全覆盖"是一个<strong>全局约束</strong>：给左点 <span class="arithmatex">\(i\)</span> 选局部最便宜的边，可能让某个右点 <span class="arithmatex">\(j\)</span> 无人问津，而事后补 <span class="arithmatex">\(j\)</span> 又可能推翻先前的选择。逐点独立决策无法看见这种耦合。</p>
+<p>耦合来自右侧的覆盖状态。但右侧只有 <span class="arithmatex">\(s_2 \le 12\)</span> 个点，其覆盖情况无非是一个 <span class="arithmatex">\(s_2\)</span> 元集合的子集，共 <span class="arithmatex">\(2^{s_2} \le 4096\)</span> 种。状态空间小到可枚举，这正是把全局约束塞进 DP 状态的入口——也是约束 <span class="arithmatex">\(s_2 \le 12\)</span> 的全部用意。</p>
+<p>（顺带澄清复杂度归属：本题等价于二部图上的<strong>最小权边覆盖</strong>，可经最小权完美匹配 / 最小费用流在多项式时间精确求解，并非 NP-hard。下面的指数项来自 bitmask 这一具体方法，而非问题本身的难度。）</p>
 <h2 id="_2">形式化<a class="headerlink" href="#_2" title="Permanent link">#</a></h2>
-<p>令 <span class="arithmatex">\(L\)</span> 左侧点集 (<span class="arithmatex">\(|L| = s_1\)</span>)，<span class="arithmatex">\(R\)</span> 右侧点集 (<span class="arithmatex">\(|R| = s_2\)</span>)。求边集 <span class="arithmatex">\(E \subseteq L \times R\)</span> 使每 <span class="arithmatex">\(u \in L \cup R\)</span> 都至少在 <span class="arithmatex">\(E\)</span> 中出现，最小化 <span class="arithmatex">\(\sum_{(u,v) \in E} c_{uv}\)</span>。</p>
+<p>令 <span class="arithmatex">\(L\)</span> 为左侧点集（<span class="arithmatex">\(|L| = s_1\)</span>），<span class="arithmatex">\(R\)</span> 为右侧点集（<span class="arithmatex">\(|R| = s_2\)</span>）。求边集 <span class="arithmatex">\(E \subseteq L \times R\)</span> 使每个 <span class="arithmatex">\(u \in L \cup R\)</span> 都至少在 <span class="arithmatex">\(E\)</span> 中出现一次（即 <span class="arithmatex">\(u\)</span> 是某条选中边的端点），最小化</p>
+<div class="arithmatex">\[\sum_{(i,j) \in E} c_{ij}. \tag{1}\]</div>
+<p>这是二部图上的<strong>最小权边覆盖</strong>。注意题目允许一条"虚拟复用"：右点 <span class="arithmatex">\(j\)</span> 被某左点连上后，其他左点也可免费视它为已覆盖——形式上 <span class="arithmatex">\(E\)</span> 中可以让多条边共用端点而不额外计费，因为 (1) 只对<strong>选中的边</strong>求和。这一点下面会成为关键。</p>
 <h2 id="_3">数据结构 / 想法<a class="headerlink" href="#_3" title="Permanent link">#</a></h2>
-<p><strong>状压 DP</strong>：
-- 状态 <span class="arithmatex">\(f(i, S)\)</span>：处理完左侧前 <span class="arithmatex">\(i\)</span> 个点后，<strong>右侧已被覆盖</strong>的子集为 <span class="arithmatex">\(S\)</span> 的最小成本。
-- 转移：对左点 <span class="arithmatex">\(i\)</span>，可任选右子集 <span class="arithmatex">\(T \subseteq R\)</span>（至少一个），代价 <span class="arithmatex">\(\sum_{j \in T} c_{ij}\)</span>；新状态 <span class="arithmatex">\(f(i+1, S \cup T)\)</span>。
-- 答案：<span class="arithmatex">\(f(s_1, R_{\text{full}}) + \text{补全成本}\)</span>。但左点最后一行用完后右侧可能未全覆盖 — 实际转移可让左点选择"复用之前 <span class="arithmatex">\(j\)</span> 已被覆盖" 的右点，最后若仍未覆盖，需要"无主"地把剩余右点连到某左点（成本 = <span class="arithmatex">\(\min_i c_{ij}\)</span>）。</p>
-<p><strong>朴素枚举右子集</strong>：每左点枚举 <span class="arithmatex">\(2^{s_2}\)</span> 个非空子集，总 <span class="arithmatex">\(O(s_1 \cdot 2^{s_2} \cdot 2^{s_2})\)</span>。<span class="arithmatex">\(12 \cdot 4096 \cdot 4096 = 2 \cdot 10^8\)</span>，可过。</p>
-<p><strong>更聪明</strong>：每个左点至少要连到右一个点。所以转移时枚举"该左点连到哪个右子集"等价于"枚举右子集 <span class="arithmatex">\(T\)</span> 满足 <span class="arithmatex">\(T \subseteq R\)</span> 且 <span class="arithmatex">\(|T| \ge 1\)</span>"。处理完左侧后还可能有未覆盖的右点 — 用预处理 <span class="arithmatex">\(\text{minRowCost}[j] = \min_i c_{ij}\)</span> 把它们追加：</p>
-<div class="arithmatex">\[\text{ans} = \min_S \left[ f(s_1, S) + \sum_{j \notin S} \text{minRowCost}[j] \right].\]</div>
-<p><strong>不变量</strong>：<span class="arithmatex">\(f(i, S)\)</span> 是处理完前 <span class="arithmatex">\(i\)</span> 个左点后右侧覆盖恰为 <span class="arithmatex">\(S\)</span> 的最优成本。<strong>正确性</strong>：标准状压 DP 归纳。</p>
+<p><strong>为什么用右侧覆盖子集做状态。</strong> 把 <span class="arithmatex">\(L\)</span> 逐个处理。处理完前 <span class="arithmatex">\(i\)</span> 个左点后，未来代价只依赖一件事：右侧哪些点还没被覆盖。原因是结尾补全时，给右点 <span class="arithmatex">\(j\)</span> 补一条边的最小代价是 <span class="arithmatex">\(\min_i c_{ij}\)</span>，<strong>逐点不同</strong>——所以必须知道未覆盖集合里<strong>具体是哪些 <span class="arithmatex">\(j\)</span></strong>，而不只是个数。这一观察唯一地决定了 DP 状态：右侧已覆盖子集。</p>
+<p><strong>状态。</strong> 定义</p>
+<div class="arithmatex">\[f(i, S) = \text{处理完前 } i \text{ 个左点、右侧已覆盖子集恰为 } S \text{ 的最小成本},\]</div>
+<p>其中 <span class="arithmatex">\(S \subseteq R\)</span> 用 <span class="arithmatex">\(s_2\)</span> 位的 bitmask 表示。这直接对应 (1)：<span class="arithmatex">\(f\)</span> 累计的是已选边的代价和，<span class="arithmatex">\(S\)</span> 记录这些边在右侧并到的端点集合。</p>
+<p><strong>转移。</strong> 第 <span class="arithmatex">\(i\)</span> 个左点必须连到至少一个右点（约束要求左点全覆盖），所以枚举它连的非空右子集 <span class="arithmatex">\(T \subseteq R\)</span>（<span class="arithmatex">\(T \ne \varnothing\)</span>）：</p>
+<div class="arithmatex">\[f(i+1,\, S \cup T) \;\leftarrow\; f(i, S) + \sum_{j \in T} c_{ij}. \tag{2}\]</div>
+<p>未来代价只看覆盖集 <span class="arithmatex">\(S \cup T\)</span>，与具体选了哪些边无关，所以 (2) 是无后效的。基态 <span class="arithmatex">\(f(0, \varnothing) = 0\)</span>。</p>
+<p><strong>补全未覆盖的右点。</strong> 处理完全部 <span class="arithmatex">\(s_1\)</span> 个左点后，<span class="arithmatex">\(S\)</span> 未必等于全集——把某些右点留到最后再补，有时更便宜。对每个仍未覆盖的 <span class="arithmatex">\(j \notin S\)</span>，单独接一条最便宜的边即可。预处理列最小值</p>
+<div class="arithmatex">\[\text{minColCost}[j] = \min_i c_{ij},\]</div>
+<p>（沿列方向固定右点 <span class="arithmatex">\(j\)</span>、对左点 <span class="arithmatex">\(i\)</span> 取最小，故为列最小而非行最小。）于是</p>
+<div class="arithmatex">\[\text{ans} = \min_{S \subseteq R} \Big[\, f(s_1, S) + \sum_{j \notin S} \text{minColCost}[j] \,\Big]. \tag{3}\]</div>
+<p><strong>为什么补全可以独立叠加。</strong> 这一步的正确性依赖 (1) 的复用许可。右点 <span class="arithmatex">\(j\)</span> 在 DP 结束后未覆盖，就把它接到使 <span class="arithmatex">\(c_{ij}\)</span> 最小的那个左点 <span class="arithmatex">\(i\)</span> 上；该左点早已在 DP 中连过别的右点并付过费，再多接一个 <span class="arithmatex">\(j\)</span> 不影响它已满足的左点约束，也不改变任何其他右点的覆盖状态。因此各个 <span class="arithmatex">\(j \notin S\)</span> 的补全互不干扰，可以各取 <span class="arithmatex">\(\min_i c_{ij}\)</span> 后直接求和——这正是 (3) 把残余项写成可分离求和的依据。</p>
+<p><strong>不变量与正确性。</strong> 不变量：<span class="arithmatex">\(f(i,S)\)</span> 是"仅用左点 <span class="arithmatex">\(1\ldots i\)</span> 的边、且这些边在右侧并集恰为 <span class="arithmatex">\(S\)</span>"所能达到的最小代价。归纳基态显然成立；归纳步由 (2) 给出——任何达到 <span class="arithmatex">\((i+1, S')\)</span> 的最优方案，其第 <span class="arithmatex">\(i\)</span> 个左点所连子集 <span class="arithmatex">\(T\)</span> 满足 <span class="arithmatex">\(S' = S \cup T\)</span> 且前 <span class="arithmatex">\(i-1\)</span> 个左点的部分对应某个 <span class="arithmatex">\(f(i,S)\)</span>，故枚举所有 <span class="arithmatex">\((S,T)\)</span> 覆盖了所有最优方案。最后 (3) 在所有可能的 DP 终态上取最优并补齐残余覆盖。</p>
 <h2 id="_4">复杂度<a class="headerlink" href="#_4" title="Permanent link">#</a></h2>
 <ul>
-<li>Time: <span class="arithmatex">\(O(s_1 \cdot 2^{s_2} \cdot 2^{s_2})\)</span>，<span class="arithmatex">\(\sim 2 \cdot 10^8\)</span>；可优化为 <span class="arithmatex">\(O(s_1 \cdot 2^{s_2} \cdot s_2)\)</span> 用"逐位添加右点"枚举方式。</li>
-<li>Space: <span class="arithmatex">\(O(s_1 \cdot 2^{s_2})\)</span> 或滚动 <span class="arithmatex">\(O(2^{s_2})\)</span>。</li>
+<li>Time: 朴素地对每个左点枚举所有非空右子集 <span class="arithmatex">\(T\)</span>，再对每个已有状态 <span class="arithmatex">\(S\)</span> 做 (2)，为 <span class="arithmatex">\(O(s_1 \cdot 2^{s_2} \cdot 2^{s_2}) = 12 \cdot 4096 \cdot 4096 \approx 2 \times 10^8\)</span>，落在可接受的运算量内。可优化为 <span class="arithmatex">\(O(s_1 \cdot 2^{s_2} \cdot s_2)\)</span>：转移时不枚举整个 <span class="arithmatex">\(T\)</span>，而是"逐位添加右点"——对每个 <span class="arithmatex">\((i,S)\)</span>，要么不给 <span class="arithmatex">\(i\)</span> 加新右点，要么把某个右点 <span class="arithmatex">\(j\)</span> 加入并支付 <span class="arithmatex">\(c_{ij}\)</span>，得 <span class="arithmatex">\(12 \cdot 4096 \cdot 12 \approx 5.9 \times 10^5\)</span>。</li>
+<li>Space: <span class="arithmatex">\(O(s_1 \cdot 2^{s_2})\)</span>；因 (2) 只依赖上一层，可滚动到 <span class="arithmatex">\(O(2^{s_2})\)</span>。</li>
 </ul>
 <h2 id="_5">陷阱<a class="headerlink" href="#_5" title="Permanent link">#</a></h2>
 <ul>
-<li>每个左点<strong>必连至少一个</strong>右点，不能"跳过"——枚举子集时排除空集，或在转移逻辑中保证。</li>
-<li>最后剩余右点需要"追加"覆盖，<strong>不计左点的复用成本</strong>（题目允许重复）；用 minRowCost 即可。</li>
-<li>题目保证 <span class="arithmatex">\(s_1 \ge s_2\)</span> 是为了减小状压维度；若反过来需要 swap。</li>
+<li>每个左点<strong>必连至少一个</strong>右点，不能"跳过"——转移 (2) 中枚举 <span class="arithmatex">\(T\)</span> 时排除空集，否则会漏掉左点的覆盖约束。</li>
+<li>结尾残余右点用 (3) 的 minColCost <strong>追加</strong>覆盖，<strong>不计左点的复用成本</strong>：题目允许一个右点被多个左点共享而只计已选边的费用，这正是补全可独立叠加的前提。</li>
+<li>列最小值是 <span class="arithmatex">\(\min_i c_{ij}\)</span>（固定列 <span class="arithmatex">\(j\)</span>），命名上是 minColCost；若误写成行最小 <span class="arithmatex">\(\min_j c_{ij}\)</span> 会算错残余项。</li>
+<li>题目保证 <span class="arithmatex">\(s_1 \ge s_2\)</span> 是为了让 bitmask 维度 <span class="arithmatex">\(2^{s_2}\)</span> 尽量小；若输入反过来（右侧更大），应先 swap 两侧再套用上式。</li>
 </ul>
 <h2 id="_6">相关题目<a class="headerlink" href="#_6" title="Permanent link">#</a></h2>
 <ul>
@@ -22610,6 +22653,8 @@
         <script src="../../../js/mathjax/tex-mml-chtml.js"></script>
       
         <script src="../../../js/mermaid.min.js"></script>
+      
+        <script src="../../../js/featured.js"></script>
       
     
   </body>

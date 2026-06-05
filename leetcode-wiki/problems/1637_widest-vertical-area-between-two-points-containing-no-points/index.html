@@ -1466,6 +1466,8 @@
       
         
       
+        
+      
     
     
     
@@ -1521,6 +1523,34 @@
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../featured/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ⭐ Featured（已验证）
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
               
             
               
@@ -1610,10 +1640,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_4" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
         
           
-          <label class="md-nav__link" for="__nav_4_4" id="__nav_4_4_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_5" id="__nav_4_5_label" tabindex="">
             
   
   
@@ -1631,8 +1661,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_4_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_4">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_5">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1915,7 +1945,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -1937,14 +1967,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_4_5" id="__nav_4_5_label" tabindex="">
+              <label class="md-nav__link " for="__nav_4_6" id="__nav_4_6_label" tabindex="">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_5">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_6">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -5321,10 +5351,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_7" checked>
         
           
-          <label class="md-nav__link" for="__nav_4_6" id="__nav_4_6_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_7" id="__nav_4_7_label" tabindex="">
             
   
   
@@ -5342,8 +5372,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_4_6">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_7_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4_7">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -22467,17 +22497,26 @@
 <h2 id="problem">Problem<a class="headerlink" href="#problem" title="Permanent link">#</a></h2>
 <p>给平面上 <span class="arithmatex">\(n\)</span> 个点。"垂直区域" 是 <span class="arithmatex">\(\{(x, y) : x_a &lt; x &lt; x_b\}\)</span>（开区间，无界高度）。求不含任何输入点的最宽垂直区域的宽度。约束 <span class="arithmatex">\(2 \le n \le 10^5\)</span>，<span class="arithmatex">\(0 \le x_i, y_i \le 10^9\)</span>。</p>
 <h2 id="background">背景 (Background)<a class="headerlink" href="#background" title="Permanent link">#</a></h2>
-<p><span class="arithmatex">\(y\)</span> 坐标完全无关——只在 <span class="arithmatex">\(x\)</span> 轴一维上找"相邻间隙的最大值"。这是 <strong>gap problem</strong>（如 #164 Maximum Gap）的简化版（这里不要求线性时间，可直接排序）。一般思路：投影到一维后排序，看相邻差最大值。</p>
+<p>题面同时给了 <span class="arithmatex">\(x\)</span> 和 <span class="arithmatex">\(y\)</span>，下笔前先问一个问题：哪一维真正决定答案？</p>
+<p>一个垂直区域 <span class="arithmatex">\(\{(x,y): x_a &lt; x &lt; x_b\}\)</span> 在高度上无界——它覆盖所有 <span class="arithmatex">\(y\)</span>。于是某个输入点 <span class="arithmatex">\((x_i, y_i)\)</span> 是否落在区域内，只看 <span class="arithmatex">\(x_i\)</span>：若 <span class="arithmatex">\(x_i \in (x_a, x_b)\)</span>，无论 <span class="arithmatex">\(y_i\)</span> 多大它都在区域内；若 <span class="arithmatex">\(x_i \notin (x_a, x_b)\)</span>，无论 <span class="arithmatex">\(y_i\)</span> 多大它都在区域外。<span class="arithmatex">\(y\)</span> 坐标在两种情形里都被消去。所以"区域不含任何点"是一个纯粹关于 <span class="arithmatex">\(x\)</span> 的条件，整道题坍缩到一维：在数轴上的 <span class="arithmatex">\(n\)</span> 个 <span class="arithmatex">\(x\)</span> 值之间，找一段不含任何点的最宽开区间。</p>
+<p>剩下要决定的就是这个一维问题怎么解。</p>
 <h2 id="formulation">形式化 (Formulation)<a class="headerlink" href="#formulation" title="Permanent link">#</a></h2>
-<p>设 <span class="arithmatex">\(X = \{x_1, \dots, x_n\}\)</span>，排序得 <span class="arithmatex">\(x_{(1)} \le \dots \le x_{(n)}\)</span>，答案为：</p>
-<div class="arithmatex">\[\max_{1 \le i &lt; n}\; x_{(i+1)} - x_{(i)}\]</div>
+<p>先从最直接的想法出发，再看它在哪里需要被收紧。</p>
+<p>一个空区间 <span class="arithmatex">\((x_a, x_b)\)</span> 的端点可以取任意实数，候选区间是连续无穷多的。但宽度要最大，端点就不能浪费：把 <span class="arithmatex">\(x_a\)</span> 向右推、<span class="arithmatex">\(x_b\)</span> 向左推，直到各自顶到某个输入点为止——再推就会把那个点吞进区间，破坏"不含点"。所以最优区间的两个端点都落在输入的 <span class="arithmatex">\(x\)</span> 值上。这把候选从无穷多收缩为有限多：只需考虑两个输入 <span class="arithmatex">\(x\)</span> 值之间的区间。</p>
+<p>朴素做法到此已经成形：枚举所有点对 <span class="arithmatex">\((i, j)\)</span>，检查开区间 <span class="arithmatex">\((x_i, x_j)\)</span> 内是否还有第三个点，无则它是一个合法空区间，取其中最宽者。这是 <span class="arithmatex">\(O(n^2)\)</span>，但它能让我们看清一个更强的结构。</p>
+<p>把所有 <span class="arithmatex">\(x\)</span> 排序得 <span class="arithmatex">\(x_{(1)} \le \dots \le x_{(n)}\)</span>。<strong>关键观察</strong>：在排序后的序列里，只有相邻一对之间的区间可能是空的。理由直接来自排序的定义——若取一对非相邻的 <span class="arithmatex">\(x_{(i)} &lt; x_{(j)}\)</span>（即 <span class="arithmatex">\(j &gt; i+1\)</span>），则中间那个 <span class="arithmatex">\(x_{(i+1)}\)</span> 满足 <span class="arithmatex">\(x_{(i)} &lt; x_{(i+1)} &lt; x_{(j)}\)</span>，落在区间 <span class="arithmatex">\((x_{(i)}, x_{(j)})\)</span> 内，区间非空。于是任何非相邻对都被排除，候选只剩 <span class="arithmatex">\(n-1\)</span> 个相邻间隙。</p>
+<p>直观是这样的：最宽空区间就是排序后相邻 <span class="arithmatex">\(x\)</span> 值之间最大的那段间隙。形式化即</p>
+<div class="arithmatex">\[\max_{1 \le i &lt; n}\; x_{(i+1)} - x_{(i)}.\]</div>
+<p>这就是本题的脊柱。它属于一族 <strong>max-gap 问题</strong>（投影到一维、排序、取相邻差最大值）——这个名字现在是从公式里挣来的词，#164 Maximum Gap 是它要求线性时间的更难版本。</p>
 <h2 id="approach">数据结构 / 想法 (Approach)<a class="headerlink" href="#approach" title="Permanent link">#</a></h2>
+<p>代码是对上述公式的逐字翻译。公式要的是排序序列 <span class="arithmatex">\(x_{(1)} \le \dots \le x_{(n)}\)</span>，故先抽出所有 <span class="arithmatex">\(x\)</span> 并排序；公式的 <span class="arithmatex">\(\max_i (x_{(i+1)} - x_{(i)})\)</span> 则是一遍线性扫描相邻差。</p>
 <div class="language-python highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">Solution</span><span class="p">:</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">maxWidthOfVerticalArea</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">points</span><span class="p">):</span>
         <span class="n">xs</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">p</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">points</span><span class="p">)</span>
         <span class="k">return</span> <span class="nb">max</span><span class="p">(</span><span class="n">xs</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">xs</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">xs</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">))</span>
 </code></pre></div>
-<p>如要 <span class="arithmatex">\(O(n)\)</span> 可用 <strong>桶排序 / Maximum Gap</strong> 技巧（pigeonhole：将 <span class="arithmatex">\([x_{\min}, x_{\max}]\)</span> 分成 <span class="arithmatex">\(n-1\)</span> 个桶，每桶记录 min/max，间隙最大值必跨桶边界）。本题 <span class="arithmatex">\(n \le 10^5\)</span> 直接排序即可。</p>
+<p><span class="arithmatex">\(n \ge 2\)</span> 保证 <code>range(len(xs) - 1)</code> 非空，<code>max</code> 不会收到空序列。</p>
+<p><strong>扩展（可选）</strong>：本题 <span class="arithmatex">\(n \le 10^5\)</span>，<span class="arithmatex">\(O(n \log n)\)</span> 排序绰绰有余，无需更快的算法。但若被要求 <span class="arithmatex">\(O(n)\)</span>（即 #164 的设定），排序这一步可被绕开。设 <span class="arithmatex">\(x_{\min}, x_{\max}\)</span> 为极值，把区间 <span class="arithmatex">\([x_{\min}, x_{\max}]\)</span> 均分成 <span class="arithmatex">\(n-1\)</span> 个等宽桶，每桶宽 <span class="arithmatex">\(w = (x_{\max}-x_{\min})/(n-1)\)</span>。除两端点外的 <span class="arithmatex">\(n-2\)</span> 个点分入这 <span class="arithmatex">\(n-1\)</span> 个桶，桶数比待分配的点多，故至少有一个桶为空。一个空桶意味着它左右两侧最近的点之间隔了至少 <span class="arithmatex">\(w\)</span>，即最大间隙不小于 <span class="arithmatex">\(w\)</span>，因而最大间隙必定跨越某个桶边界、不会落在单个桶内部。于是只需记录每桶的 min/max，最大间隙取自"前一非空桶的 max 到后一非空桶的 min"，一遍扫描即得，全程 <span class="arithmatex">\(O(n)\)</span>。</p>
 <h2 id="complexity">复杂度 (Complexity)<a class="headerlink" href="#complexity" title="Permanent link">#</a></h2>
 <ul>
 <li>Time: <span class="arithmatex">\(O(n \log n)\)</span>（排序）。</li>
@@ -22485,8 +22524,8 @@
 </ul>
 <h2 id="pitfalls">陷阱 (Pitfalls)<a class="headerlink" href="#pitfalls" title="Permanent link">#</a></h2>
 <ul>
-<li><strong>不要算 <span class="arithmatex">\(y\)</span> 维度</strong>：题面强调"infinite height"，<span class="arithmatex">\(y\)</span> 不影响结果。</li>
-<li><strong>相等 <span class="arithmatex">\(x\)</span></strong>：若两点 <span class="arithmatex">\(x\)</span> 相同，间隙 0，不影响 max。</li>
+<li><strong>不要算 <span class="arithmatex">\(y\)</span> 维度</strong>：背景里已论证区域高度无界、<span class="arithmatex">\(y\)</span> 被消去；写代码时只抽 <span class="arithmatex">\(x\)</span>，多读一维既无意义又拖慢。</li>
+<li><strong>相等 <span class="arithmatex">\(x\)</span></strong>：若两点 <span class="arithmatex">\(x\)</span> 相同，对应间隙为 <span class="arithmatex">\(0\)</span>，不会成为 max；<span class="arithmatex">\(n \ge 2\)</span> 下答案至少由一对相邻 <span class="arithmatex">\(x\)</span> 给出，合法。</li>
 </ul>
 <h2 id="related">相关题目 (Related)<a class="headerlink" href="#related" title="Permanent link">#</a></h2>
 <ul>
@@ -22602,6 +22641,8 @@
         <script src="../../../js/mathjax/tex-mml-chtml.js"></script>
       
         <script src="../../../js/mermaid.min.js"></script>
+      
+        <script src="../../../js/featured.js"></script>
       
     
   </body>

@@ -1466,6 +1466,8 @@
       
         
       
+        
+      
     
     
     
@@ -1521,6 +1523,34 @@
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../featured/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ⭐ Featured（已验证）
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
               
             
               
@@ -1610,10 +1640,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_4" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
         
           
-          <label class="md-nav__link" for="__nav_4_4" id="__nav_4_4_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_5" id="__nav_4_5_label" tabindex="">
             
   
   
@@ -1631,8 +1661,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_4_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_4">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_5">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1915,7 +1945,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -1937,14 +1967,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_4_5" id="__nav_4_5_label" tabindex="">
+              <label class="md-nav__link " for="__nav_4_6" id="__nav_4_6_label" tabindex="">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_5">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_6">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -5321,10 +5351,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_7" checked>
         
           
-          <label class="md-nav__link" for="__nav_4_6" id="__nav_4_6_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_7" id="__nav_4_7_label" tabindex="">
             
   
   
@@ -5342,8 +5372,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_4_6">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_7_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4_7">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -22467,56 +22497,86 @@
 <h2 id="problem">Problem<a class="headerlink" href="#problem" title="Permanent link">#</a></h2>
 <p>字符串 <code>s</code> 仅含 <code>(</code>、<code>)</code>、<code>*</code>。<code>*</code> 可视为 <code>(</code>、<code>)</code> 或空串。判断是否能让 <code>s</code> 成为合法括号串。<span class="arithmatex">\(1 \le |s| \le 100\)</span>。</p>
 <h2 id="background">背景 (Background)<a class="headerlink" href="#background" title="Permanent link">#</a></h2>
-<p>合法括号串在形式语言里对应 Dyck 语言 <span class="arithmatex">\(\mathcal{D}\)</span>，是上下文无关文法 <span class="arithmatex">\(S \to (S)S \mid \varepsilon\)</span> 生成的集合。带通配符 <code>*</code> 时，问题变成"是否存在 <code>*</code> 的某种实例化使 <span class="arithmatex">\(s \in \mathcal{D}\)</span>"——本质是确定一个非确定有限状态机的可达性。可由 DP <span class="arithmatex">\(O(n^2)\)</span> 解或贪心<strong>区间技巧</strong>用 <span class="arithmatex">\(O(n)\)</span> 解。"区间技巧"是这道题的经典优雅解，被广泛复用于带不确定字符的括号匹配题。</p>
+<p>先看没有 <code>*</code> 的版本。判断纯 <code>(</code>、<code>)</code> 串是否合法，只需一个计数器：从左到右扫描，<code>(</code> 加一，<code>)</code> 减一，要求计数器<strong>始终 <span class="arithmatex">\(\ge 0\)</span></strong>（任何前缀里 <code>)</code> 不能多于 <code>(</code>），且<strong>结束时恰为 <span class="arithmatex">\(0\)</span></strong>（左右括号数量相等）。这两条就是合法括号串的全部内容，单次扫描 <span class="arithmatex">\(O(n)\)</span> 解决。</p>
+<p>现在引入 <code>*</code>。扫描到一个 <code>*</code> 时，计数器该加一、减一、还是不变？三种都可能，取决于后续字符如何要求。一个标量计数器无法同时保留三种可能——这正是本题的全部难点：<code>*</code> 让"扫到此处的计数值"不再是单个数，而是一个<strong>集合</strong>。</p>
+<p>整个解法围绕一个问题展开：扫到每个位置时，这个可达计数值的集合长什么样？答案将表明它始终是一段连续整数区间，于是只需两个端点即可刻画，<span class="arithmatex">\(O(n)\)</span> 仍然成立。合法括号串在形式语言里对应 Dyck 语言（CFG <span class="arithmatex">\(S \to (S)S \mid \varepsilon\)</span> 生成的集合），带 <code>*</code> 后即"是否存在某种实例化使 <span class="arithmatex">\(s\)</span> 落入 Dyck 语言"——这层背景在下面的形式化里会变成精确的前缀和条件。</p>
 <h2 id="formulation">形式化 (Formulation)<a class="headerlink" href="#formulation" title="Permanent link">#</a></h2>
-<p>设 <code>(</code>、<code>)</code>、<code>*</code> 对应权值 <span class="arithmatex">\(+1, -1, ? \in \{-1, 0, +1\}\)</span>。要求存在权值序列 <span class="arithmatex">\(w_1, \dots, w_n\)</span>（其中 <code>*</code> 处 <span class="arithmatex">\(w_i \in \{-1, 0, +1\}\)</span>，其它处固定）使得所有前缀和 <span class="arithmatex">\(\ge 0\)</span> 且总和 <span class="arithmatex">\(= 0\)</span>。</p>
+<p>把字符映射成权值：<code>(</code> 取 <span class="arithmatex">\(+1\)</span>，<code>)</code> 取 <span class="arithmatex">\(-1\)</span>，<code>*</code> 取 <span class="arithmatex">\(w \in \{-1, 0, +1\}\)</span>（分别对应当作 <code>)</code>、空串、<code>(</code>）。一种"实例化"就是给每个 <code>*</code> 选定一个权值，从而把整串固定成一个权值序列 <span class="arithmatex">\(w_1, \dots, w_n\)</span>（非 <code>*</code> 位置权值固定）。</p>
+<p>令前缀和 <span class="arithmatex">\(P_k = \sum_{i=1}^{k} w_i\)</span>，<span class="arithmatex">\(P_0 = 0\)</span>。沿用纯括号串的两条判据，<span class="arithmatex">\(s\)</span> 合法当且仅当<strong>存在一种实例化</strong>使得</p>
+<div class="arithmatex">\[
+P_k \ge 0 \quad (\forall\, 1 \le k \le n) \qquad\text{且}\qquad P_n = 0 .
+\]</div>
+<p><span class="arithmatex">\(P_k\)</span> 的含义是扫到第 <span class="arithmatex">\(k\)</span> 个字符后尚未匹配的 <code>(</code> 的数量。<code>*</code> 处的选择 <span class="arithmatex">\(w \in \{-1,0,+1\}\)</span> 使 <span class="arithmatex">\(P_k\)</span> 不再唯一，而是依赖实例化。定义</p>
+<div class="arithmatex">\[
+R_k = \{\, P_k \ \text{在某个满足 “前缀至此始终 } \ge 0 \text{” 的实例化下的取值} \,\}
+\]</div>
+<p>为第 <span class="arithmatex">\(k\)</span> 步<strong>可达的尚未匹配 <code>(</code> 数量</strong>之集合。这个 <span class="arithmatex">\(R_k\)</span> 是整个算法要追踪的对象：答案为真当且仅当 <span class="arithmatex">\(0 \in R_n\)</span>。</p>
 <h2 id="approach">数据结构 / 想法 (Approach)<a class="headerlink" href="#approach" title="Permanent link">#</a></h2>
-<p><strong>解法 1（贪心区间，<span class="arithmatex">\(O(n)\)</span>，最优）</strong>：维护一对 <span class="arithmatex">\((lo, hi)\)</span>，分别表示"已扫描部分对应未匹配 <code>(</code> 数量的<strong>下界</strong>与<strong>上界</strong>"：
-- 遇 <code>(</code>：<span class="arithmatex">\(lo \mathrel{+}= 1\)</span>，<span class="arithmatex">\(hi \mathrel{+}= 1\)</span>。
-- 遇 <code>)</code>：<span class="arithmatex">\(lo \mathrel{-}= 1\)</span>，<span class="arithmatex">\(hi \mathrel{-}= 1\)</span>。
-- 遇 <code>*</code>：<span class="arithmatex">\(lo \mathrel{-}= 1\)</span>（视为 <code>)</code>），<span class="arithmatex">\(hi \mathrel{+}= 1\)</span>（视为 <code>(</code>）。
-- 任何时候若 <span class="arithmatex">\(hi &lt; 0\)</span>：右括号无法匹配，返回 <code>False</code>。
-- 把 <span class="arithmatex">\(lo\)</span> clamp 到 <span class="arithmatex">\(\ge 0\)</span>（不能有"负的未匹配 <code>(</code>"，物理上意味着多余 <code>)</code> 已无法被未来 <code>(</code> 抵消，但 <code>*</code> 的下界估计可能为负——只是上界）。
-- 结束时若 <span class="arithmatex">\(lo = 0\)</span> 则存在合法实例化。</p>
-<p><strong>不变量</strong>：<span class="arithmatex">\((lo, hi)\)</span> 是"扫到当前位置时所有合法实例化"对应未匹配 <code>(</code> 数量集合的紧致上下界，且该集合是 <span class="arithmatex">\([lo, hi]\)</span> 中的整数（步长 1）。</p>
-<p><strong>解法 2（双栈，<span class="arithmatex">\(O(n)\)</span>）</strong>：一栈存 <code>(</code> 下标，一栈存 <code>*</code> 下标；遇 <code>)</code> 优先匹配 <code>(</code>，否则匹配 <code>*</code>。末尾把剩余 <code>(</code> 与 <code>*</code> 匹配（要求每个 <code>*</code> 在配对的 <code>(</code> 之后）。</p>
-<p><strong>解法 3（DP，<span class="arithmatex">\(O(n^3)\)</span> 或 <span class="arithmatex">\(O(n^2)\)</span>）</strong>：<code>dp[i][j]</code> = 子串 <code>s[i:j+1]</code> 是否合法。区间 DP，对本题数据规模足够。</p>
+<p><strong>直接追踪 <span class="arithmatex">\(R_k\)</span> 会有多大？</strong> 长度为 <span class="arithmatex">\(k\)</span> 的前缀里若有 <span class="arithmatex">\(m\)</span> 个 <code>*</code>，朴素实例化有 <span class="arithmatex">\(3^m\)</span> 种，逐一枚举是指数级的。要做到线性，必须找出 <span class="arithmatex">\(R_k\)</span> 的结构。</p>
+<p><strong>直觉</strong>：每读一个字符，<span class="arithmatex">\(R_k\)</span> 由 <span class="arithmatex">\(R_{k-1}\)</span> 经平移得到。读 <code>(</code> 时每个可达值 <span class="arithmatex">\(+1\)</span>，读 <code>)</code> 时每个 <span class="arithmatex">\(-1\)</span>，二者都把区间整体平移、不改变其"连续无空洞"的形态；读 <code>*</code> 时三种权值各自平移再取并，相当于把区间向两侧各扩张一格。无论哪种情形，连续整数区间都映成连续整数区间。再叠加"前缀始终 <span class="arithmatex">\(\ge 0\)</span>"的约束——它只是砍掉区间里小于 <span class="arithmatex">\(0\)</span> 的部分，不会在中间挖洞。所以 <span class="arithmatex">\(R_k\)</span> 从头到尾保持为一段连续整数区间。</p>
+<p><strong>不变量</strong>：<span class="arithmatex">\(R_k\)</span> 是一段连续整数区间，记 <span class="arithmatex">\(R_k = [lo_k,\ hi_k] \cap \mathbb{Z}\)</span>，其中 <span class="arithmatex">\(lo_k = \min R_k\)</span>，<span class="arithmatex">\(hi_k = \max R_k\)</span>。</p>
+<p>下面验证它，并由此读出 <span class="arithmatex">\(lo, hi\)</span> 的更新规则。<span class="arithmatex">\(R_0 = \{0\}\)</span>，即 <span class="arithmatex">\(lo_0 = hi_0 = 0\)</span>，是平凡区间。设 <span class="arithmatex">\(R_{k-1} = [lo,\ hi] \cap \mathbb{Z}\)</span>，看第 <span class="arithmatex">\(k\)</span> 个字符：</p>
+<ul>
+<li><code>(</code>：唯一权值 <span class="arithmatex">\(+1\)</span>，每个可达值整体加一。新区间 <span class="arithmatex">\([lo+1,\ hi+1]\)</span>。</li>
+<li><code>)</code>：唯一权值 <span class="arithmatex">\(-1\)</span>，每个可达值整体减一。新区间 <span class="arithmatex">\([lo-1,\ hi-1]\)</span>。</li>
+<li><code>*</code>：权值取遍 <span class="arithmatex">\(\{-1,0,+1\}\)</span>，三个平移区间的并是 <span class="arithmatex">\([lo-1,\ hi+1]\)</span>（端点向外各扩一格，内部因步长为 <span class="arithmatex">\(1\)</span> 无缝衔接）。</li>
+</ul>
+<p>三种情形都把区间映成区间,即更新规则为</p>
+<div class="arithmatex">\[
+(lo, hi) \;\mapsto\; \begin{cases}
+(lo+1,\ hi+1) &amp; \text{字符为 } \texttt{(} \\
+(lo-1,\ hi-1) &amp; \text{字符为 } \texttt{)} \\
+(lo-1,\ hi+1) &amp; \text{字符为 } \texttt{*}
+\end{cases}
+\]</div>
+<p>还需把前缀约束 <span class="arithmatex">\(P_k \ge 0\)</span> 并入。它对 <span class="arithmatex">\(R_k\)</span> 的作用是只保留 <span class="arithmatex">\(\ge 0\)</span> 的那些值，故应取 <span class="arithmatex">\([lo_k, hi_k] \cap [0, \infty)\)</span>：</p>
+<ul>
+<li><strong><span class="arithmatex">\(hi_k &lt; 0\)</span></strong>：<span class="arithmatex">\(hi_k\)</span> 是该步可达的最大值，最大值都小于零，说明所有实例化在此前缀都已让 <span class="arithmatex">\(P_k &lt; 0\)</span>，违反判据。<span class="arithmatex">\(R_k\)</span> 为空，且后续字符（包括 <code>*</code> 当 <code>(</code>）无法回填一个已经违约的前缀，直接判定为 <code>False</code>。</li>
+<li><strong><span class="arithmatex">\(lo_k &lt; 0 \le hi_k\)</span></strong>：区间跨越零点。<span class="arithmatex">\(P_k &lt; 0\)</span> 的那部分实例化已违约、被剔除，幸存实例化的最小可达值变成 <span class="arithmatex">\(0\)</span>，于是把 <span class="arithmatex">\(lo_k\)</span> 上调到 <span class="arithmatex">\(0\)</span>。这一步不是近似，而是精确地把 <span class="arithmatex">\(R_k\)</span> 重置为 <span class="arithmatex">\([0,\ hi_k] \cap \mathbb{Z}\)</span>。</li>
+</ul>
+<p>扫描结束时 <span class="arithmatex">\(0 \in R_n\)</span> 等价于 <span class="arithmatex">\(lo_n \le 0 \le hi_n\)</span>；由于上面已保证 <span class="arithmatex">\(lo_n \ge 0\)</span>，判据简化为 <span class="arithmatex">\(lo_n = 0\)</span>。</p>
 <div class="language-python highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">Solution</span><span class="p">:</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">checkValidString</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">s</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
-        <span class="n">lo</span> <span class="o">=</span> <span class="n">hi</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">lo</span> <span class="o">=</span> <span class="n">hi</span> <span class="o">=</span> <span class="mi">0</span>  <span class="c1"># R_k = [lo, hi] ∩ Z：可达的未匹配 &#39;(&#39; 数</span>
         <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">s</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">c</span> <span class="o">==</span> <span class="s1">&#39;(&#39;</span><span class="p">:</span>
                 <span class="n">lo</span> <span class="o">+=</span> <span class="mi">1</span><span class="p">;</span> <span class="n">hi</span> <span class="o">+=</span> <span class="mi">1</span>
             <span class="k">elif</span> <span class="n">c</span> <span class="o">==</span> <span class="s1">&#39;)&#39;</span><span class="p">:</span>
                 <span class="n">lo</span> <span class="o">-=</span> <span class="mi">1</span><span class="p">;</span> <span class="n">hi</span> <span class="o">-=</span> <span class="mi">1</span>
-            <span class="k">else</span><span class="p">:</span>  <span class="c1"># &#39;*&#39;</span>
+            <span class="k">else</span><span class="p">:</span>  <span class="c1"># &#39;*&#39;：权值取遍 {-1, 0, +1}</span>
                 <span class="n">lo</span> <span class="o">-=</span> <span class="mi">1</span><span class="p">;</span> <span class="n">hi</span> <span class="o">+=</span> <span class="mi">1</span>
-            <span class="k">if</span> <span class="n">hi</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">hi</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>          <span class="c1"># 最大可达值已为负 → R_k 空，无救</span>
                 <span class="k">return</span> <span class="kc">False</span>
-            <span class="k">if</span> <span class="n">lo</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">lo</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>          <span class="c1"># 砍掉 &lt;0 的违约部分，幸存最小值为 0</span>
                 <span class="n">lo</span> <span class="o">=</span> <span class="mi">0</span>
-        <span class="k">return</span> <span class="n">lo</span> <span class="o">==</span> <span class="mi">0</span>
+        <span class="k">return</span> <span class="n">lo</span> <span class="o">==</span> <span class="mi">0</span>          <span class="c1"># 0 ∈ R_n ?</span>
 </code></pre></div>
-<p>样例 3 trace：<code>"(*))"</code>. 初始 (0,0)。
-- <code>(</code>: (1,1)。
-- <code>*</code>: (0,2)。
-- <code>)</code>: (-1,1) → clamp lo=0 → (0,1)。
-- <code>)</code>: (-1,0) → clamp lo=0 → (0,0)。
-末尾 lo=0 → True。✓</p>
-<p>样例 <code>"(*)"</code>: (0,0)→(1,1)→(0,2)→(-1,1)→(0,1)。末尾 lo=0 → True。✓</p>
-<p>边界 <code>"(*)("</code>: (0,0)→(1,1)→(0,2)→(-1,1)→(0,1)→(1,2)。末尾 lo=1 ≠ 0 → False。✓</p>
+<p>样例 <code>"(*))"</code>，每步记 <span class="arithmatex">\((lo, hi)\)</span>，初始 <span class="arithmatex">\((0,0)\)</span>：</p>
+<ul>
+<li><code>(</code>：<span class="arithmatex">\((1,1)\)</span>。</li>
+<li><code>*</code>：<span class="arithmatex">\((0,2)\)</span>。</li>
+<li><code>)</code>：<span class="arithmatex">\((-1,1)\)</span>，<span class="arithmatex">\(lo&lt;0\)</span> 上调 <span class="arithmatex">\(\to (0,1)\)</span>。</li>
+<li><code>)</code>：<span class="arithmatex">\((-1,0)\)</span>，<span class="arithmatex">\(lo&lt;0\)</span> 上调 <span class="arithmatex">\(\to (0,0)\)</span>。</li>
+</ul>
+<p>末尾 <span class="arithmatex">\(lo=0\)</span>，返回 <code>True</code>。✓</p>
+<p>样例 <code>"(*)"</code>：<span class="arithmatex">\((0,0)\to(1,1)\to(0,2)\to(-1,1)\xrightarrow{\text{clamp}}(0,1)\)</span>，末尾 <span class="arithmatex">\(lo=0\)</span> → <code>True</code>。✓</p>
+<p>边界 <code>"(*)("</code>：<span class="arithmatex">\((0,0)\to(1,1)\to(0,2)\xrightarrow{\text{clamp}}(0,1)\to(1,2)\)</span>，末尾 <span class="arithmatex">\(lo=1\ne 0\)</span> → <code>False</code>。✓ 末尾 <span class="arithmatex">\(lo=1\)</span> 意味着 <span class="arithmatex">\(0 \notin R_n\)</span>：任何实例化都至少剩一个未匹配的 <code>(</code>。</p>
+<p><strong>其它解法（不在此展开推导）</strong>：</p>
+<ul>
+<li><strong>双栈，<span class="arithmatex">\(O(n)\)</span> 时间 / <span class="arithmatex">\(O(n)\)</span> 空间</strong>：一栈存 <code>(</code> 下标、一栈存 <code>*</code> 下标；遇 <code>)</code> 优先弹 <code>(</code>，否则弹 <code>*</code>。末尾把剩余 <code>(</code> 与其右侧的 <code>*</code> 逐一配对。它追踪的是同一个可达性，只是用具体下标而非区间端点。</li>
+<li><strong>区间 DP，<span class="arithmatex">\(O(n^3)\)</span> 时间 / <span class="arithmatex">\(O(n^2)\)</span> 空间</strong>：<code>dp[i][j]</code> = 子串 <code>s[i..j]</code> 是否合法，按拆分点与配对递推，<code>*</code> 的三种取值都要尝试。数据规模 <span class="arithmatex">\(n \le 100\)</span> 下足够，但比上面的区间法慢。</li>
+</ul>
 <h2 id="complexity">复杂度 (Complexity)<a class="headerlink" href="#complexity" title="Permanent link">#</a></h2>
 <ul>
-<li>贪心：Time <span class="arithmatex">\(O(n)\)</span>，Space <span class="arithmatex">\(O(1)\)</span>。</li>
+<li>区间法（上面的解）：Time <span class="arithmatex">\(O(n)\)</span>，Space <span class="arithmatex">\(O(1)\)</span>。单趟扫描，<code>hi &lt; 0</code> 提前返回只可能更快。</li>
 <li>双栈：Time <span class="arithmatex">\(O(n)\)</span>，Space <span class="arithmatex">\(O(n)\)</span>。</li>
-<li>DP：Time <span class="arithmatex">\(O(n^3)\)</span>，Space <span class="arithmatex">\(O(n^2)\)</span>。</li>
+<li>区间 DP：Time <span class="arithmatex">\(O(n^3)\)</span>，Space <span class="arithmatex">\(O(n^2)\)</span>。</li>
 </ul>
 <h2 id="pitfalls">陷阱 (Pitfalls)<a class="headerlink" href="#pitfalls" title="Permanent link">#</a></h2>
 <ul>
-<li><code>lo</code> 不 clamp 到 <span class="arithmatex">\(\ge 0\)</span> 会得到伪反例。物理意义：若 <code>lo</code> 为负只表示"如果把所有 <code>*</code> 都当 <code>)</code>，已 underflow"——但我们有自由把 <code>*</code> 当 <code>(</code> 或空，所以 lo 可重新视为 0。</li>
-<li><code>hi &lt; 0</code> 必须立即返回——再多 <code>*</code> 当 <code>(</code> 也无救（因为前面已断定右括号过剩）。</li>
-<li>不要把"空串"视作 <code>(</code> 或 <code>)</code>——<code>*</code> 第三种选择是空串，等价于在 <span class="arithmatex">\(lo, hi\)</span> 范围中包含 0 偏移（已被 <span class="arithmatex">\([-1, +1]\)</span> 覆盖）。</li>
-<li>DP 解时记得三种 <code>*</code> 情形都要尝试（包含空串 → 区间 <code>s[i+1:j+1]</code> 是否合法）。</li>
+<li><strong>不对 <span class="arithmatex">\(lo\)</span> 做 <span class="arithmatex">\(\ge 0\)</span> 上调会产生伪反例</strong>。<span class="arithmatex">\(lo &lt; 0\)</span> 表示 <span class="arithmatex">\(R_k\)</span> 跨越零点；<span class="arithmatex">\(P_k &lt; 0\)</span> 的那段对应已经违反前缀判据的实例化，必须从可达集中剔除。剔除后幸存的最小可达值是 <span class="arithmatex">\(0\)</span>，所以把 <span class="arithmatex">\(lo\)</span> 重置为 <span class="arithmatex">\(0\)</span> 是精确操作，而非松弛。若保留负的 <span class="arithmatex">\(lo\)</span>，等于把这些违约实例化继续算作可达，从而漏判本来合法的串。</li>
+<li><strong><span class="arithmatex">\(hi &lt; 0\)</span> 必须立刻返回</strong>。<span class="arithmatex">\(hi\)</span> 是该步可达的最大值；最大值都小于零，意味着所有实例化都已在此前缀让 <span class="arithmatex">\(P_k &lt; 0\)</span>。前缀一旦违约，后续任何字符（包括把 <code>*</code> 当 <code>(</code>）都无法回填，故无救。</li>
+<li><strong>别漏掉 <code>*</code> 当空串的情形</strong>。空串对应权值 <span class="arithmatex">\(0\)</span>，它已包含在 <code>*</code> 的权值集合 <span class="arithmatex">\(\{-1,0,+1\}\)</span> 里：区间更新 <span class="arithmatex">\((lo-1,\ hi+1)\)</span> 自动覆盖了 <span class="arithmatex">\(0\)</span> 偏移，无需额外处理。在区间 DP 解里，这一项对应"<code>*</code> 取空串后检查区间 <code>s[i+1..j]</code> 是否合法"，容易遗漏。</li>
 </ul>
 <h2 id="related">相关题目 (Related)<a class="headerlink" href="#related" title="Permanent link">#</a></h2>
 <ul>
@@ -22634,6 +22694,8 @@
         <script src="../../../js/mathjax/tex-mml-chtml.js"></script>
       
         <script src="../../../js/mermaid.min.js"></script>
+      
+        <script src="../../../js/featured.js"></script>
       
     
   </body>

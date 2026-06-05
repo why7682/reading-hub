@@ -1466,6 +1466,8 @@
       
         
       
+        
+      
     
     
     
@@ -1521,6 +1523,34 @@
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../featured/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ⭐ Featured（已验证）
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
               
             
               
@@ -1610,10 +1640,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_4" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
         
           
-          <label class="md-nav__link" for="__nav_4_4" id="__nav_4_4_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_5" id="__nav_4_5_label" tabindex="">
             
   
   
@@ -1631,8 +1661,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_4_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_4">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_5">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1915,7 +1945,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -1937,14 +1967,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_4_5" id="__nav_4_5_label" tabindex="">
+              <label class="md-nav__link " for="__nav_4_6" id="__nav_4_6_label" tabindex="">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_5">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_6">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -5321,10 +5351,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_7" checked>
         
           
-          <label class="md-nav__link" for="__nav_4_6" id="__nav_4_6_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_7" id="__nav_4_7_label" tabindex="">
             
   
   
@@ -5342,8 +5372,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_4_6">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_7_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4_7">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -22467,15 +22497,27 @@
 <h2 id="problem">Problem<a class="headerlink" href="#problem" title="Permanent link">#</a></h2>
 <p>给 <span class="arithmatex">\(m \times n\)</span> 矩阵，对每个单元给出"行/列约束下尽可能小的整数 rank"：同行同列内严格保序，且若值相等则 rank 相等。返回 rank 矩阵。约束 <span class="arithmatex">\(1 \le m, n \le 500\)</span>，<span class="arithmatex">\(|v| \le 10^9\)</span>，rank 唯一可解。</p>
 <h2 id="background">背景 (Background)<a class="headerlink" href="#background" title="Permanent link">#</a></h2>
-<p>本题是<strong>偏序拓扑赋值</strong> (rank assignment on a partial order) 的应用：先按值升序处理元素，再用并查集把"同值且共享行或列"的单元合并成等价类，每类的 rank 取该类中所有"行最大 rank"和"列最大 rank"的最大值 +1。这与 <strong>PERT/CPM 调度</strong> 中"按依赖关系给任务赋最早开始时间" 的思路同构——把矩阵单元视作任务，"同行/同列且值更小"为先序约束，相等单元被合并成一个任务。并查集 + 按值分批处理的模式在 <strong>Kruskal MST 离线</strong> 与 <strong>Edge-Length-Limited Paths</strong> (#1697) 中反复出现。</p>
+<p>这道题让两条约束在同一个矩阵上相撞。第一条：同行或同列的两个单元，值更大的 rank 必须更大——这是逐行、逐列的严格保序。第二条：值相等的单元，rank 必须相等。单看任意一条都不难，难点在于第二条会把第一条沿行、列<strong>传递</strong>地耦合起来。</p>
+<p>设想值 <span class="arithmatex">\(5\)</span> 出现在 <span class="arithmatex">\((0,0)\)</span>、<span class="arithmatex">\((0,1)\)</span>、<span class="arithmatex">\((1,1)\)</span>。<span class="arithmatex">\((0,0)\)</span> 与 <span class="arithmatex">\((0,1)\)</span> 同行，rank 必相等；<span class="arithmatex">\((0,1)\)</span> 与 <span class="arithmatex">\((1,1)\)</span> 同列，rank 也必相等。于是三者被一条"同行—同列"的链锁在一起，尽管 <span class="arithmatex">\((0,0)\)</span> 与 <span class="arithmatex">\((1,1)\)</span> 既不同行也不同列。一旦它们的 rank 被绑成同一个值，这个值又要同时压过第 <span class="arithmatex">\(0\)</span> 行、第 <span class="arithmatex">\(1\)</span> 行、第 <span class="arithmatex">\(0\)</span> 列、第 <span class="arithmatex">\(1\)</span> 列里所有更小的元素。等值单元的耦合不是局部的，它能跨越整行整列连锁扩散。</p>
+<p>所以问题不是"逐个单元算 rank"，而是"先找出哪些单元被强制绑成一组，再给每组算一个统一的、合法的最小 rank"。下面先把这两条约束写成精确形式，再从形式出发推导算法。</p>
 <h2 id="formulation">形式化 (Formulation)<a class="headerlink" href="#formulation" title="Permanent link">#</a></h2>
+<p>直觉上，"同行同列严格保序 + 等值同 rank"恰好是说：对任意共享行或列的一对单元，rank 之差与值之差<strong>同号</strong>——值大则 rank 大，值小则 rank 小，值相等则 rank 相等。符号函数 <span class="arithmatex">\(\operatorname{sgn}\)</span> 一次性编码这三种情形（<span class="arithmatex">\(\operatorname{sgn}(x)=x/|x|\)</span> 当 <span class="arithmatex">\(x \ne 0\)</span>，<span class="arithmatex">\(\operatorname{sgn}(0)=0\)</span>）。</p>
 <p>对每个单元 <span class="arithmatex">\((i, j)\)</span> 求 <span class="arithmatex">\(r_{ij} \in \mathbb{Z}_{\ge 1}\)</span>，使得：</p>
-<div class="arithmatex">\[\forall (i, j), (i', j'):\quad (i = i' \lor j = j') \implies \text{sgn}(r_{ij} - r_{i'j'}) = \text{sgn}(v_{ij} - v_{i'j'})\]</div>
-<p>且 <span class="arithmatex">\(\sum r_{ij}\)</span> 最小。</p>
+<div class="arithmatex">\[\forall (i, j), (i', j'):\quad (i = i' \lor j = j') \implies \operatorname{sgn}(r_{ij} - r_{i'j'}) = \operatorname{sgn}(v_{ij} - v_{i'j'})\]</div>
+<p>且 <span class="arithmatex">\(\sum r_{ij}\)</span> 最小。<span class="arithmatex">\(\operatorname{sgn}=\pm 1\)</span> 给出严格保序，<span class="arithmatex">\(\operatorname{sgn}=0\)</span> 给出等值同 rank，两者由同一式子表达。最小化 <span class="arithmatex">\(\sum r_{ij}\)</span> 把 rank 压到行列约束允许的最小整数，保证解唯一。</p>
+<p>这个约束直接决定了处理顺序。在同一行或同一列里，<span class="arithmatex">\(v_{ij} &lt; v_{i'j'}\)</span> 强制 <span class="arithmatex">\(r_{ij} &lt; r_{i'j'}\)</span>：每个单元的 rank 必须严格大于同行、同列中所有值更小单元的 rank。若把"同行或同列且值更小"看作一条有向边 <span class="arithmatex">\((i,j)\to(i',j')\)</span>，约束构成一个 DAG，而合法 rank 就是它的一个拓扑赋值。按值升序处理单元，正是在按这个 DAG 的拓扑序推进：轮到某个单元时，它的全部前驱（更小值）都已定 rank。下一节据此展开算法。</p>
 <h2 id="approach">数据结构 / 想法 (Approach)<a class="headerlink" href="#approach" title="Permanent link">#</a></h2>
-<p><strong>核心观察</strong>：rank 只取决于"同行/同列中比自己小的元素"。按值升序处理时，所有更小元素的 rank 已知，故 <span class="arithmatex">\(r_{ij} = \max(\text{rowMax}[i], \text{colMax}[j]) + 1\)</span>。</p>
-<p><strong>等值挑战</strong>：若同行同列有等值元素，rank 必须相等。处理一批（同一值）时，把"同行的等值单元"和"同列的等值单元"用 <strong>DSU</strong> 连成等价类，每类的最终 rank 取该类内所有 <code>max(rowMax[i], colMax[j]) + 1</code> 的最大值，然后用该 rank 同时更新涉及到的行/列。</p>
-<p><strong>模式</strong>：本题是 <strong>Kruskal-style 离线 + DSU</strong> 的典型应用。</p>
+<p><strong>先定义两个量</strong>，它们贯穿整个算法。处理到某一步时，令 <span class="arithmatex">\(\text{rowMax}[i]\)</span> 为第 <span class="arithmatex">\(i\)</span> 行已确定 rank 的最大值，<span class="arithmatex">\(\text{colMax}[j]\)</span> 为第 <span class="arithmatex">\(j\)</span> 列已确定 rank 的最大值（初始全为 <span class="arithmatex">\(0\)</span>）。这两个量就是"前驱施加的下界"：单元 <span class="arithmatex">\((i,j)\)</span> 的 rank 必须严格大于它们。</p>
+<p><strong>先试最朴素的做法</strong>：按值升序逐个单元赋值，单元 <span class="arithmatex">\((i,j)\)</span> 取 <span class="arithmatex">\(r_{ij} = \max(\text{rowMax}[i], \text{colMax}[j]) + 1\)</span>，然后更新 <span class="arithmatex">\(\text{rowMax}[i]\)</span>、<span class="arithmatex">\(\text{colMax}[j]\)</span>。当所有值互不相同时这是对的——升序保证前驱已定，<span class="arithmatex">\(\max(\cdot)+1\)</span> 是满足保序的最小整数。</p>
+<p><strong>它在哪里坏掉</strong>：等值单元。回到背景里的例子，值 <span class="arithmatex">\(5\)</span> 在 <span class="arithmatex">\((0,0)\)</span>、<span class="arithmatex">\((0,1)\)</span>、<span class="arithmatex">\((1,1)\)</span>。逐个赋值时，先处理 <span class="arithmatex">\((0,0)\)</span> 得某个 <span class="arithmatex">\(r\)</span> 并写进 <span class="arithmatex">\(\text{rowMax}[0]\)</span>；处理 <span class="arithmatex">\((0,1)\)</span> 时它读到刚被抬高的 <span class="arithmatex">\(\text{rowMax}[0]\)</span>，于是拿到比 <span class="arithmatex">\((0,0)\)</span> 更大的 rank——但 <span class="arithmatex">\(\operatorname{sgn}(v)=0\)</span> 要求两者相等。朴素法违反了等值同 rank。</p>
+<p><strong>为什么不能简单"按行分组"或"按列分组"</strong>：还是这三个单元。按行分组只把同行的 <span class="arithmatex">\((0,0)\)</span>、<span class="arithmatex">\((0,1)\)</span> 绑在一起，漏掉 <span class="arithmatex">\((1,1)\)</span>——它经由第 <span class="arithmatex">\(1\)</span> 列与 <span class="arithmatex">\((0,1)\)</span> 相连。背景已说明：等值耦合是沿行、列传递的，需要的等价类正是"同值单元、同行或同列相邻"这张图的<strong>连通分量</strong>。在线维护连通分量、支持合并与查询的标准工具就是并查集 (DSU)：它近 <span class="arithmatex">\(O(1)\)</span> 回答"两个单元是否同组"并支持合并。</p>
+<p><strong>修正后的算法</strong>。把同值单元按值分批，每批内：</p>
+<ol>
+<li>为这批每个单元引入行键 <span class="arithmatex">\(('r', i)\)</span> 与列键 <span class="arithmatex">\(('c', j)\)</span>，并 <span class="arithmatex">\(\text{union}\)</span> 之——这把同行或同列的同值单元接入同一分量，传递闭包由 DSU 自动完成。</li>
+<li>对每个分量，rank 取该分量内所有 <span class="arithmatex">\(\max(\text{rowMax}[i], \text{colMax}[j]) + 1\)</span> 的<strong>最大值</strong>。取 max 而非 min：分量内不同单元所在行、列的已用最大 rank 不同，只有取最大才能同时压过所有相关行列的前驱。</li>
+<li>把这个统一 rank 写回该分量的每个单元，并据此更新涉及的 <span class="arithmatex">\(\text{rowMax}\)</span>、<span class="arithmatex">\(\text{colMax}\)</span>。更新必须在分量 rank 全部定下后批量进行，否则同批单元会互相抬高彼此的下界，重蹈朴素法的覆辙。</li>
+</ol>
+<p><strong>循环不变量</strong>（读代码前先建立）：处理值 <span class="arithmatex">\(v\)</span> 之前，所有 <span class="arithmatex">\(v' &lt; v\)</span> 的单元已正确赋 rank，且 <span class="arithmatex">\(\text{rowMax}[i]\)</span>、<span class="arithmatex">\(\text{colMax}[j]\)</span> 恰等于第 <span class="arithmatex">\(i\)</span> 行、第 <span class="arithmatex">\(j\)</span> 列已确定 rank 的最大值。每批处理保持这一不变量，循环结束即得全矩阵合法且最小的 rank。下面的代码逐行实现这三步。</p>
 <div class="language-python highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">Solution</span><span class="p">:</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">matrixRankTransform</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">matrix</span><span class="p">):</span>
         <span class="n">m</span><span class="p">,</span> <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">matrix</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">matrix</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
@@ -22526,7 +22568,7 @@
                 <span class="n">parent</span><span class="o">.</span><span class="n">pop</span><span class="p">((</span><span class="s1">&#39;c&#39;</span><span class="p">,</span> <span class="n">j</span><span class="p">),</span> <span class="kc">None</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">ans</span>
 </code></pre></div>
-<p><strong>不变量</strong>：处理值 <span class="arithmatex">\(v\)</span> 之前，所有 <span class="arithmatex">\(v' &lt; v\)</span> 的单元已正确赋 rank；<code>row_max[i]</code>/<code>col_max[j]</code> 等于第 <span class="arithmatex">\(i\)</span> 行/<span class="arithmatex">\(j\)</span> 列已确定 rank 的最大值。</p>
+<p>每批结束后清空 DSU 键（或用按值唯一的键），下一节的陷阱会说明为何必须如此。这套"按权值升序离线分批 + DSU 合并"的模式，与 Kruskal MST 离线、Edge-Length-Limited Paths (#1697) 同形。</p>
 <h2 id="complexity">复杂度 (Complexity)<a class="headerlink" href="#complexity" title="Permanent link">#</a></h2>
 <ul>
 <li>Time: <span class="arithmatex">\(O(mn \cdot \alpha(mn) + mn \log(mn))\)</span>，排序主导；DSU 操作几乎线性。</li>
@@ -22534,9 +22576,9 @@
 </ul>
 <h2 id="pitfalls">陷阱 (Pitfalls)<a class="headerlink" href="#pitfalls" title="Permanent link">#</a></h2>
 <ul>
-<li><strong>不能逐单元独立 rank</strong>：若忽略"同行同列等值需相等"会得到错答；例 3 中两行 <code>[-19,4,19]</code> 的 rank 必须完全一致。</li>
+<li><strong>不能逐单元独立 rank</strong>：忽略"同行同列等值需相等"会得到错答。例 3 矩阵 <code>[[20,-21,14],[-19,4,19],[22,-47,24],[-19,4,7]]</code> 的第 1 行 <code>[-19,4,19]</code> 与第 3 行 <code>[-19,4,7]</code>，被强制相等的不是整行，而是它们共享值的那些单元：第 0 列两个 <code>-19</code>（rank 同为 1）、第 1 列两个 <code>4</code>（rank 同为 3）。正确输出 <code>[[6,2,5],[1,3,6],[7,1,8],[1,3,4]]</code> 中两行末列分别是 6 与 4——值 19 与 7 不同，rank 自然不同。</li>
 <li><strong>DSU 必须按 value 批次重置或用唯一 key</strong>：跨 value 复用 parent 会把不同 value 的单元错误合并。</li>
-<li><strong>componentRank 取 max 不是 min</strong>：同等价类中任意单元的"地基"(行/列已用过的 max rank) 不同，必须取最大才能同时满足所有行列约束。</li>
+<li><strong>componentRank 取 max 不是 min</strong>：同等价类中各单元所在行/列的已用最大 rank 不同，必须取最大才能同时满足所有行列约束。</li>
 <li><strong>rowMax/colMax 更新时机</strong>：必须在 component rank 全部确定后再 batch 更新，否则同批内会互相污染。</li>
 </ul>
 <h2 id="related">相关题目 (Related)<a class="headerlink" href="#related" title="Permanent link">#</a></h2>
@@ -22657,6 +22699,8 @@
         <script src="../../../js/mathjax/tex-mml-chtml.js"></script>
       
         <script src="../../../js/mermaid.min.js"></script>
+      
+        <script src="../../../js/featured.js"></script>
       
     
   </body>

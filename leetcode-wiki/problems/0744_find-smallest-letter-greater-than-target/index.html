@@ -1466,6 +1466,8 @@
       
         
       
+        
+      
     
     
     
@@ -1521,6 +1523,34 @@
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../featured/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ⭐ Featured（已验证）
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
               
             
               
@@ -1610,10 +1640,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_4" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
         
           
-          <label class="md-nav__link" for="__nav_4_4" id="__nav_4_4_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_5" id="__nav_4_5_label" tabindex="">
             
   
   
@@ -1631,8 +1661,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_4_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_4">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_5">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1915,7 +1945,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -1937,14 +1967,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_4_5" id="__nav_4_5_label" tabindex="">
+              <label class="md-nav__link " for="__nav_4_6" id="__nav_4_6_label" tabindex="">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_5">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_6">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -5321,10 +5351,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_7" checked>
         
           
-          <label class="md-nav__link" for="__nav_4_6" id="__nav_4_6_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_7" id="__nav_4_7_label" tabindex="">
             
   
   
@@ -5342,8 +5372,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_4_6">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_7_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4_7">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -22467,11 +22497,38 @@
 <h2 id="problem">Problem<a class="headerlink" href="#problem" title="Permanent link">#</a></h2>
 <p>非递减排序的字符数组 <code>letters</code>（至少含两种字符）与字符 <code>target</code>。返回 <code>letters</code> 中<strong>严格大于</strong> <code>target</code> 的最小字符；若不存在则返回 <code>letters[0]</code>（环绕）。<span class="arithmatex">\(2 \le |\mathrm{letters}| \le 10^4\)</span>。</p>
 <h2 id="background">背景 (Background)<a class="headerlink" href="#background" title="Permanent link">#</a></h2>
-<p>这是 <strong>lower_bound / upper_bound</strong> 二分模板的练习。C++ STL 的 <code>upper_bound</code> 直接给"严格大于 target 的最小位置"；环绕语义可统一为 <code>letters[ub % n]</code>。掌握"找区间左侧首个满足条件的位置"的二分写法是 LeetCode 二分题的入场券。</p>
+<p>最直接的解法是从左到右扫描：<code>letters</code> 已经非递减，所以第一个满足 <span class="arithmatex">\(a_i &gt; t\)</span> 的字符就是答案；扫到末尾仍无，则环绕取 <code>letters[0]</code>。</p>
+<div class="language-python highlight"><pre><span></span><code><span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">c</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">letters</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">c</span> <span class="o">&gt;</span> <span class="n">target</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">c</span>
+<span class="k">return</span> <span class="n">letters</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+</code></pre></div>
+<p>这段代码完全正确，<span class="arithmatex">\(O(n)\)</span>，在 <span class="arithmatex">\(n = 10^4\)</span> 下也毫秒级。它没有逻辑缺陷——会"破"的不是正确性，而是它<strong>用线性扫描去查询一个本可对数级回答的结构</strong>。问题给的不是任意数组，而是有序数组；线性扫描丢掉了"有序"这一前提承载的全部信息。下面要做的，是先把"答案藏在哪"这件事用排序结构本身讲清楚，再据此把扫描替换成二分。</p>
 <h2 id="formulation">形式化 (Formulation)<a class="headerlink" href="#formulation" title="Permanent link">#</a></h2>
-<p>给排序序列 <span class="arithmatex">\(a\)</span> 与 <span class="arithmatex">\(t\)</span>。求最小 <span class="arithmatex">\(i\)</span> 使 <span class="arithmatex">\(a_i &gt; t\)</span>；若不存在则返回 <span class="arithmatex">\(a_0\)</span>。等价于 <code>upper_bound(a, t)</code> 模 <span class="arithmatex">\(n\)</span> 取下标。</p>
+<p>先看排序结构如何约束答案的位置。考虑谓词 <span class="arithmatex">\(P(i) = [\,a_i &gt; t\,]\)</span>。因为 <span class="arithmatex">\(a\)</span> 非递减，一旦某个 <span class="arithmatex">\(a_i &gt; t\)</span>，其后所有 <span class="arithmatex">\(a_j\ (j \ge i)\)</span> 都有 <span class="arithmatex">\(a_j \ge a_i &gt; t\)</span>。所以 <span class="arithmatex">\(P\)</span> 沿下标<strong>单调</strong>：数组被切成前段 <span class="arithmatex">\(P\)</span> 全假、后段 <span class="arithmatex">\(P\)</span> 全真两块，中间只有一个分界。答案正是这个分界——后段的第一个下标。这一单调性来自排序本身，不依赖字符的具体取值；它就是线性扫描没有利用、而二分将要利用的结构。</p>
+<p>有了这个观察，可给出形式化定义。设排序序列 <span class="arithmatex">\(a = (a_0, \dots, a_{n-1})\)</span>（非递减字符）与单字符 <span class="arithmatex">\(t\)</span>。求</p>
+<div class="arithmatex">\[
+i^\* \;=\; \min\,\{\, i \;:\; a_i &gt; t \,\}, \tag{1}
+\]</div>
+<p>当集合为空时约定 <span class="arithmatex">\(i^\* = n\)</span>。最终答案为</p>
+<div class="arithmatex">\[
+\mathrm{ans} \;=\; a_{\,i^\* \bmod n}. \tag{2}
+\]</div>
+<p>式 (1) 即"后段第一个下标"；<span class="arithmatex">\(i^\* = n\)</span> 对应"全段 <span class="arithmatex">\(P\)</span> 假"（所有 <span class="arithmatex">\(a_i \le t\)</span>），此时 (2) 中 <span class="arithmatex">\(n \bmod n = 0\)</span> 给出环绕值 <span class="arithmatex">\(a_0\)</span>，其余情形 <span class="arithmatex">\(i^\* &lt; n\)</span> 时 <span class="arithmatex">\(i^\* \bmod n = i^\*\)</span> 保持不变。模运算不是技巧，而是把 <span class="arithmatex">\(\{0,\dots,n\}\)</span> 中唯一越界值 <span class="arithmatex">\(n\)</span> 精确映回 <span class="arithmatex">\(0\)</span>。式 (1) 正是 <code>upper_bound(a, t)</code> 的定义，下节将其化为不变量驱动的二分。</p>
 <h2 id="approach">数据结构 / 想法 (Approach)<a class="headerlink" href="#approach" title="Permanent link">#</a></h2>
-<p><strong>二分（upper_bound）</strong>：维护 <code>[lo, hi)</code> 半开区间，<code>lo</code> 收敛到首个 <span class="arithmatex">\(a[i] &gt; t\)</span> 的下标，若无则 <span class="arithmatex">\(= n\)</span>。最后取 <code>letters[lo % n]</code>。</p>
+<p>要对数级地找到式 (1) 的分界 <span class="arithmatex">\(i^\*\)</span>，用半开区间 <span class="arithmatex">\([\,lo, hi\,)\)</span> 框住"分界尚可能所在的位置"，每步将区间减半。关键是想清楚这个区间在循环中维持什么性质——一旦性质明确，更新规则不再是需要记忆的代码，而是从性质推出的唯一选择。</p>
+<p><strong>循环不变量</strong>。在每次迭代开始时，</p>
+<div class="arithmatex">\[
+\forall k &lt; lo:\; a_k \le t \qquad\text{且}\qquad \forall k \ge hi:\; a_k &gt; t. \tag{3}
+\]</div>
+<p>即 <span class="arithmatex">\(lo\)</span> 左侧已确定 <span class="arithmatex">\(P\)</span> 全假，<span class="arithmatex">\(hi\)</span> 及其右侧已确定 <span class="arithmatex">\(P\)</span> 全真，分界 <span class="arithmatex">\(i^\*\)</span> 必落在 <span class="arithmatex">\([\,lo, hi\,)\)</span> 内。初始 <span class="arithmatex">\(lo = 0,\ hi = n\)</span> 时两个量词均为空，(3) 平凡成立。</p>
+<p><strong>更新规则由不变量推出</strong>。取 <span class="arithmatex">\(mid \in [\,lo, hi\,)\)</span>，检查 <span class="arithmatex">\(a_{mid}\)</span>：</p>
+<ul>
+<li>若 <span class="arithmatex">\(a_{mid} \le t\)</span>：由单调性，<span class="arithmatex">\(a_0,\dots,a_{mid}\)</span> 全部 <span class="arithmatex">\(\le t\)</span>，故 <span class="arithmatex">\(P\)</span> 在 <span class="arithmatex">\([\,lo, mid\,]\)</span> 全假，分界在右侧。置 <span class="arithmatex">\(lo = mid + 1\)</span>，恰好把这段并入 (3) 的左侧已知区，且严格推进。</li>
+<li>若 <span class="arithmatex">\(a_{mid} &gt; t\)</span>：同理 <span class="arithmatex">\(a_{mid},\dots,a_{hi-1}\)</span> 全部 <span class="arithmatex">\(&gt; t\)</span>，<span class="arithmatex">\(P\)</span> 在 <span class="arithmatex">\([\,mid, hi\,)\)</span> 全真，分界在 <span class="arithmatex">\(mid\)</span> 或其左。置 <span class="arithmatex">\(hi = mid\)</span>，把这段并入 (3) 的右侧已知区。</li>
+</ul>
+<p>每步区间长度严格减小，故必终止于 <span class="arithmatex">\(lo = hi\)</span>。此时 (3) 的两个量词拼满整个数组：<span class="arithmatex">\(lo\)</span> 左侧全 <span class="arithmatex">\(\le t\)</span>、<span class="arithmatex">\(lo\)</span> 及右侧全 <span class="arithmatex">\(&gt; t\)</span>，于是 <span class="arithmatex">\(lo = i^\*\)</span> 正是式 (1) 的分界（含 <span class="arithmatex">\(i^\* = n\)</span> 的情形）。返回 <code>letters[lo % n]</code> 即式 (2)。</p>
+<p>注意比较用 <span class="arithmatex">\(a_{mid} \le t\)</span>（非 <span class="arithmatex">\(&lt;\)</span>）：当 <span class="arithmatex">\(a_{mid} = t\)</span> 时该位置 <span class="arithmatex">\(P\)</span> 为假，应归入左侧、令 <span class="arithmatex">\(lo = mid+1\)</span> 跳过它；这正是"<strong>严格</strong>大于"的语义落点。</p>
 <div class="language-python highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">Solution</span><span class="p">:</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">nextGreatestLetter</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">letters</span><span class="p">,</span> <span class="n">target</span><span class="p">):</span>
         <span class="n">lo</span><span class="p">,</span> <span class="n">hi</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">letters</span><span class="p">)</span>
@@ -22483,20 +22540,21 @@
                 <span class="n">hi</span> <span class="o">=</span> <span class="n">mid</span>
         <span class="k">return</span> <span class="n">letters</span><span class="p">[</span><span class="n">lo</span> <span class="o">%</span> <span class="nb">len</span><span class="p">(</span><span class="n">letters</span><span class="p">)]</span>
 </code></pre></div>
+<p>下面三个 trace 用来核对不变量：观察每步 <span class="arithmatex">\(lo, hi\)</span> 的更新是否始终把已判定的一段并入 (3) 的对应已知区。</p>
 <p>样例 1 trace：<code>letters=["c","f","j"]</code>, target="a"。lo=0,hi=3。mid=1, 'f' &gt; 'a' → hi=1. mid=0, 'c' &gt; 'a' → hi=0. 退出 lo=0. letters[0]="c"。✓</p>
-<p>样例 2：target="c"。lo=0,hi=3. mid=1, 'f' &gt; 'c' → hi=1. mid=0, 'c' &lt;= 'c' → lo=1. 退出 lo=1. letters[1]="f"。✓</p>
-<p>样例 3：target="z", <code>["x","x","y","y"]</code>. 每个 mid 都 ≤ 'z' → lo 升至 4. letters[4%4]=letters[0]="x"。✓</p>
+<p>样例 2：target="c"。lo=0,hi=3. mid=1, 'f' &gt; 'c' → hi=1. mid=0, 'c' &lt;= 'c' → lo=1. 退出 lo=1. letters[1]="f"。✓（注意 'c' == target 时走 <code>&lt;=</code> 分支被跳过，验证了严格大于语义）</p>
+<p>样例 3：target="z", <code>["x","x","y","y"]</code>. 每个 mid 都 ≤ 'z' → lo 升至 4. letters[4%4]=letters[0]="x"。✓（<span class="arithmatex">\(i^\* = n = 4\)</span>，模运算环绕到 <span class="arithmatex">\(a_0\)</span>）</p>
 <h2 id="complexity">复杂度 (Complexity)<a class="headerlink" href="#complexity" title="Permanent link">#</a></h2>
 <ul>
-<li>Time: <span class="arithmatex">\(O(\log n)\)</span>。</li>
-<li>Space: <span class="arithmatex">\(O(1)\)</span>。</li>
-<li>朴素扫描 <span class="arithmatex">\(O(n)\)</span> 在 <span class="arithmatex">\(n = 10^4\)</span> 也快，但二分是题目意图。</li>
+<li>Time: <span class="arithmatex">\(O(\log n)\)</span>。每次迭代 <span class="arithmatex">\([\,lo, hi\,)\)</span> 长度至少减半，从 <span class="arithmatex">\(n\)</span> 到 <span class="arithmatex">\(1\)</span> 需 <span class="arithmatex">\(\lceil \log_2 n \rceil\)</span> 步。</li>
+<li>Space: <span class="arithmatex">\(O(1)\)</span>。仅存 <span class="arithmatex">\(lo, hi, mid\)</span> 三个下标。</li>
+<li>对比背景中的线性扫描 <span class="arithmatex">\(O(n)\)</span>：二者皆正确，二分的收益不在 <span class="arithmatex">\(n = 10^4\)</span> 的常数时间差，而在它把"有序"这一前提兑换成对数复杂度——这是该结构能支撑的渐近下界级查询。</li>
 </ul>
 <h2 id="pitfalls">陷阱 (Pitfalls)<a class="headerlink" href="#pitfalls" title="Permanent link">#</a></h2>
 <ul>
-<li>"严格大于"：比较用 <code>&lt;=</code> 而非 <code>&lt;</code>，否则等于 target 时会停在错位。</li>
-<li>环绕：用 <code>lo % n</code> 处理"全部 ≤ target"的情形，比 <code>if lo == n: return letters[0]</code> 更紧凑。</li>
-<li>半开区间 <code>[lo, hi)</code> 与闭区间 <code>[lo, hi]</code> 的二分模板边界更新不同；混用容易死循环。</li>
+<li><strong>比较方向</strong>：用 <code>&lt;=</code> 而非 <code>&lt;</code>。由不变量 (3)，<span class="arithmatex">\(a_{mid} = t\)</span> 时 <span class="arithmatex">\(P\)</span> 为假，须归入左侧已知区 (<span class="arithmatex">\(lo = mid+1\)</span>)；若误用 <code>&lt;</code>，等于 target 的位置被当成 <span class="arithmatex">\(P\)</span> 真而停在错位，破坏"严格大于"。实测 target='f' 于 <code>['c','f','j']</code> 会返回 'f' 而非正确的 'j'。</li>
+<li><strong>环绕</strong>：<code>lo % n</code> 处理 <span class="arithmatex">\(i^\* = n\)</span>（全部 <span class="arithmatex">\(\le t\)</span>）的情形。由二分过程 <span class="arithmatex">\(lo\)</span> 始终被界在 <span class="arithmatex">\([0, n]\)</span>，故 <span class="arithmatex">\(\bmod\, n\)</span> 仅把唯一越界值 <span class="arithmatex">\(n\)</span> 映回 <span class="arithmatex">\(0\)</span>、其余不变；与显式 <code>if lo == n: return letters[0]</code> 等价。</li>
+<li><strong>区间约定</strong>：半开 <span class="arithmatex">\([\,lo, hi\,)\)</span> 与闭 <span class="arithmatex">\([\,lo, hi\,]\)</span> 的不变量边界不同，更新规则（<code>hi = mid</code> vs <code>hi = mid - 1</code>）随之不同。混用会破坏 (3) 的拼接条件而死循环。</li>
 </ul>
 <h2 id="related">相关题目 (Related)<a class="headerlink" href="#related" title="Permanent link">#</a></h2>
 <ul>
@@ -22612,6 +22670,8 @@
         <script src="../../../js/mathjax/tex-mml-chtml.js"></script>
       
         <script src="../../../js/mermaid.min.js"></script>
+      
+        <script src="../../../js/featured.js"></script>
       
     
   </body>

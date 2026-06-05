@@ -1466,6 +1466,8 @@
       
         
       
+        
+      
     
     
     
@@ -1521,6 +1523,34 @@
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../featured/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ⭐ Featured（已验证）
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
               
             
               
@@ -1610,10 +1640,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_4" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
         
           
-          <label class="md-nav__link" for="__nav_4_4" id="__nav_4_4_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_5" id="__nav_4_5_label" tabindex="">
             
   
   
@@ -1631,8 +1661,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_4_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_4">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_5">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1915,7 +1945,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -1937,14 +1967,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_4_5" id="__nav_4_5_label" tabindex="">
+              <label class="md-nav__link " for="__nav_4_6" id="__nav_4_6_label" tabindex="">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_5">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_6">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -5321,10 +5351,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_7" checked>
         
           
-          <label class="md-nav__link" for="__nav_4_6" id="__nav_4_6_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_7" id="__nav_4_7_label" tabindex="">
             
   
   
@@ -5342,8 +5372,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_4_6">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_7_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4_7">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -22467,14 +22497,22 @@
 <h2 id="problem">Problem<a class="headerlink" href="#problem" title="Permanent link">#</a></h2>
 <p>计算 <span class="arithmatex">\(a^b \bmod 1337\)</span>，其中 <span class="arithmatex">\(b\)</span> 是<strong>极大</strong>整数，以十进制数组 <code>b = [b_0, b_1, \dots, b_{k-1}]</code> 给出（<span class="arithmatex">\(b_0\)</span> 为最高位）。<span class="arithmatex">\(1 \le a \le 2^{31}-1\)</span>，<span class="arithmatex">\(1 \le |b| \le 2000\)</span>，<span class="arithmatex">\(b\)</span> 无前导 0。</p>
 <h2 id="background">背景 (Background)<a class="headerlink" href="#background" title="Permanent link">#</a></h2>
-<p>本题是 <strong>快速幂 (binary exponentiation)</strong> 与 <strong>模乘</strong> 的组合，加上"指数以位数组给出"的工程包装。模 1337 不是质数（<span class="arithmatex">\(1337 = 7 \times 191\)</span>），故<strong>不能</strong>用 Fermat 小定理或 Euler 定理直接约化指数；必须按位处理。</p>
-<p>数学上，<span class="arithmatex">\(a^b \bmod m\)</span> 与 <span class="arithmatex">\(a\)</span> 在 <span class="arithmatex">\((\mathbb{Z}/m\mathbb{Z})^*\)</span> 中的乘法阶有关（Lagrange 定理：<span class="arithmatex">\(a^{\phi(m)} \equiv 1\)</span> 当 <span class="arithmatex">\(\gcd(a, m) = 1\)</span>）。<span class="arithmatex">\(\phi(1337) = \phi(7) \phi(191) = 6 \times 190 = 1140\)</span>。但若 <span class="arithmatex">\(\gcd(a, 1337) &gt; 1\)</span>，Euler 定理不直接适用——需广义形式（Carmichael 函数）或干脆按位计算更稳。</p>
+<p>先看为什么这道题不能直接做。指数以十进制数组给出，长度最多 2000 位，所以它代表的整数 <span class="arithmatex">\(B\)</span> 最大约为 <span class="arithmatex">\(10^{2000}\)</span>。把 <span class="arithmatex">\(B\)</span> 拼成一个机器整数再求 <span class="arithmatex">\(a^B\)</span>，无论用什么大数库，结果 <span class="arithmatex">\(a^B\)</span> 的位数都在 <span class="arithmatex">\(10^{2000} \cdot \log_{10} a\)</span> 量级——这个数无法存储，更无法逐次相乘算出来。</p>
+<p>题目要的是 <span class="arithmatex">\(a^B \bmod 1337\)</span>，模数让结果落回 <span class="arithmatex">\([0, 1337)\)</span>，所以<strong>答案本身是小的</strong>；不可行的只是中间量 <span class="arithmatex">\(a^B\)</span>。整道题的任务，就是在永不materialize <span class="arithmatex">\(B\)</span>、也永不materialize <span class="arithmatex">\(a^B\)</span> 的前提下，仍然算出这个模值。这两条约束——指数太长不能存、幂太大不能算——决定了下面所有设计。</p>
 <h2 id="formulation">形式化 (Formulation)<a class="headerlink" href="#formulation" title="Permanent link">#</a></h2>
-<p>设 <span class="arithmatex">\(B = \sum_{i=0}^{k-1} b_i \cdot 10^{k-1-i}\)</span>（实际数值）。求 <span class="arithmatex">\(a^B \bmod 1337\)</span>。</p>
+<p>数组 <code>b</code> 的十进制位值展开给出 <span class="arithmatex">\(B\)</span> 的确切含义：</p>
+<div class="arithmatex">\[B = \sum_{i=0}^{k-1} b_i \cdot 10^{k-1-i}. \tag{1}\]</div>
+<p>目标是求 <span class="arithmatex">\(a^B \bmod 1337\)</span>。注意 (1) 是<strong>位值记数法</strong>的定义本身，没有引入任何外部结构；下一节的递推将完全从这个式子推出。</p>
 <h2 id="approach">数据结构 / 想法 (Approach)<a class="headerlink" href="#approach" title="Permanent link">#</a></h2>
-<p><strong>关键恒等式 (Horner-style)</strong>：</p>
-<div class="arithmatex">\[a^B = a^{10 B' + b_{k-1}} = (a^{B'})^{10} \cdot a^{b_{k-1}},\]</div>
-<p>其中 <span class="arithmatex">\(B' = \sum_{i=0}^{k-2} b_i \cdot 10^{k-2-i}\)</span>（去掉最末位）。递归化为对前缀求 <span class="arithmatex">\(a^{B'}\)</span>，再乘以末位贡献，再整体 10 次方——所有运算都模 1337。</p>
+<p><strong>直觉：从位值展开剥出最后一位。</strong> 既然不能整体处理 <span class="arithmatex">\(B\)</span>，自然要问：能不能一位一位地处理？观察 (1) 中去掉最低位 <span class="arithmatex">\(b_{k-1}\)</span> 之后剩下的部分。设</p>
+<div class="arithmatex">\[B' = \sum_{i=0}^{k-2} b_i \cdot 10^{k-2-i}\]</div>
+<p>为前 <span class="arithmatex">\(k-1\)</span> 位（即数组前缀 <code>b[:-1]</code>）所代表的整数。把 <span class="arithmatex">\(B'\)</span> 整体左移一位（乘 10）再补上末位，恰好还原 <span class="arithmatex">\(B\)</span>：</p>
+<div class="arithmatex">\[B = 10 \, B' + b_{k-1}. \tag{2}\]</div>
+<p>(2) 不是新假设，它就是"在十进制末尾追加一位 <span class="arithmatex">\(d\)</span> 等于把原数乘 10 再加 <span class="arithmatex">\(d\)</span>"这一记数法事实，直接来自 (1)。</p>
+<p><strong>从 (2) 导出对幂的递推。</strong> 把 (2) 代入指数，用指数律 <span class="arithmatex">\(a^{x+y}=a^x a^y\)</span> 和 <span class="arithmatex">\(a^{cx}=(a^x)^c\)</span>：</p>
+<div class="arithmatex">\[a^B = a^{10 B' + b_{k-1}} = \left(a^{B'}\right)^{10} \cdot a^{b_{k-1}}. \tag{3}\]</div>
+<p>(3) 是整个解法的脊柱。它说：只要已经算出<strong>短一位</strong>的子问题 <span class="arithmatex">\(a^{B'}\)</span>，就能用一次"10 次方"加一次"乘以末位贡献"得到 <span class="arithmatex">\(a^B\)</span>。子问题的数组比原数组短一位，于是递归必然终止；空数组对应 <span class="arithmatex">\(B=0\)</span>，<span class="arithmatex">\(a^0 = 1\)</span> 作为基线。所有运算都对 1337 取模，中间量始终小于 <span class="arithmatex">\(1337^2\)</span>，从不溢出。</p>
+<p><strong>子例程：模幂 <span class="arithmatex">\(a^{b_{k-1}} \bmod 1337\)</span> 与 <span class="arithmatex">\((\cdot)^{10} \bmod 1337\)</span>。</strong> 这里的指数都很小（末位 <span class="arithmatex">\(\le 9\)</span>，方次 <span class="arithmatex">\(=10\)</span>），但仍值得说清怎么算。最朴素的办法是把底数自乘 <span class="arithmatex">\(n\)</span> 次，需要 <span class="arithmatex">\(n-1\)</span> 次乘法——对 <span class="arithmatex">\(n\le 10\)</span> 完全够用。不过同一个子例程也是大指数模幂的通用工具，所以用<strong>二进制快速幂</strong>：把 <span class="arithmatex">\(n\)</span> 写成二进制，<span class="arithmatex">\(x^n = \prod_{j:\, n_j=1} x^{2^j}\)</span>，一边反复平方得到 <span class="arithmatex">\(x^{2^j}\)</span>，一边在对应位为 1 时累乘。指数每步右移一位，<span class="arithmatex">\(O(\log n)\)</span> 次乘法即可。</p>
 <div class="language-python highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">Solution</span><span class="p">:</span>
     <span class="n">MOD</span> <span class="o">=</span> <span class="mi">1337</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">superPow</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">a</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
@@ -22488,22 +22526,22 @@
             <span class="k">return</span> <span class="n">res</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">b</span><span class="p">:</span>
             <span class="k">return</span> <span class="mi">1</span>
-        <span class="n">last</span> <span class="o">=</span> <span class="n">b</span><span class="o">.</span><span class="n">pop</span><span class="p">()</span>                          <span class="c1"># 末位</span>
+        <span class="n">last</span> <span class="o">=</span> <span class="n">b</span><span class="o">.</span><span class="n">pop</span><span class="p">()</span>                          <span class="c1"># 末位 b_{k-1}</span>
         <span class="k">return</span> <span class="n">pow_mod</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">superPow</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">),</span> <span class="mi">10</span><span class="p">)</span> <span class="o">*</span> <span class="n">pow_mod</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">last</span><span class="p">)</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">MOD</span>
 </code></pre></div>
-<p><strong>不变量</strong>：递归调用 <code>superPow(a, b[:-1])</code> 返回 <span class="arithmatex">\(a^{B'} \bmod 1337\)</span>；将其 10 次方再乘 <span class="arithmatex">\(a^{b_{k-1}}\)</span> 即 <span class="arithmatex">\(a^B\)</span>。</p>
-<p><strong>子例程 pow_mod</strong>：标准二进制快速幂，对小指数 <span class="arithmatex">\(n \le 10\)</span> 也只需 4 次乘法，开销极小。</p>
-<p>Trace a=2, b=[1,0] (B=10):
-- 递归 superPow(2, [1]) (pop last=0, 但等等：上面代码 pop 后 b 变 [1])
-- 注: b.pop() 返回末位 0, b 变为 [1]
-- 递归 superPow(2, [1]): pop last=1, b 变 [].
-  - if not b → return 1 (空 b 时)
-  - return pow_mod(1, 10) * pow_mod(2, 1) % 1337 = 1 * 2 % 1337 = 2.
-- 回到外层: return pow_mod(2, 10) * pow_mod(2, 0) % 1337 = 1024 * 1 % 1337 = 1024. ✓</p>
-<p>Trace a=2, b=[3]: pop last=3, b=[].
-- 递归 superPow(2, []): 空 → 1.
-- return pow_mod(1, 10) * pow_mod(2, 3) % 1337 = 1 * 8 = 8. ✓</p>
-<p><strong>警告</strong>：上面代码用 <code>b.pop()</code> 会修改原数组——LC 通常不在意，但生产代码应复制 <code>b = list(b)</code>。亦可用索引代替 pop：</p>
+<p><strong>正确性（递归不变量）。</strong> 这一行正是 (3) 的直接转写：递归调用 <code>superPow(a, b[:-1])</code> 按归纳假设返回 <span class="arithmatex">\(a^{B'} \bmod 1337\)</span>；对它取 10 次方得 <span class="arithmatex">\((a^{B'})^{10}\)</span>，再乘 <span class="arithmatex">\(a^{b_{k-1}}\)</span>，结果即 <span class="arithmatex">\(a^B \bmod 1337\)</span>。基线 <code>if not b: return 1</code> 对应 <span class="arithmatex">\(B=0\)</span>。归纳成立，故对任意长度的 <code>b</code> 返回正确值。</p>
+<p>两个 trace 验证递归的展开（步骤逐行列出）：</p>
+<p><strong>Trace 1: <span class="arithmatex">\(a=2\)</span>, <span class="arithmatex">\(b=[1,0]\)</span>（<span class="arithmatex">\(B=10\)</span>）</strong>
+1. <code>superPow(2, [1,0])</code>：<code>pop()</code> 取末位 <span class="arithmatex">\(0\)</span>，<code>b</code> 变 <code>[1]</code>。
+2. 递归 <code>superPow(2, [1])</code>：<code>pop()</code> 取末位 <span class="arithmatex">\(1\)</span>，<code>b</code> 变 <code>[]</code>。
+3. 递归 <code>superPow(2, [])</code>：空数组，返回 <span class="arithmatex">\(1\)</span>。
+4. 回到步骤 2：<code>pow_mod(1, 10) * pow_mod(2, 1) % 1337 = 1 * 2 = 2</code>。
+5. 回到步骤 1：<code>pow_mod(2, 10) * pow_mod(2, 0) % 1337 = 1024 * 1 = 1024</code>。✓</p>
+<p><strong>Trace 2: <span class="arithmatex">\(a=2\)</span>, <span class="arithmatex">\(b=[3]\)</span>（<span class="arithmatex">\(B=3\)</span>）</strong>
+1. <code>superPow(2, [3])</code>：<code>pop()</code> 取末位 <span class="arithmatex">\(3\)</span>，<code>b</code> 变 <code>[]</code>。
+2. 递归 <code>superPow(2, [])</code>：空数组，返回 <span class="arithmatex">\(1\)</span>。
+3. 回到步骤 1：<code>pow_mod(1, 10) * pow_mod(2, 3) % 1337 = 1 * 8 = 8</code>。✓</p>
+<p><strong>迭代展平：同一递推的自底向上展开。</strong> 把 (3) 从最低位逐位展开，等价于从右向左扫描数组：维护 <span class="arithmatex">\(\text{res}=a^{(\text{已处理后缀})}\bmod 1337\)</span>，每读入更高一位就先乘上该位贡献，再把"底数"自身升 10 次方为下一位做准备。这与递归是同一条递推 (3)，只是去掉了调用栈，且不修改输入数组：</p>
 <div class="language-python highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">superPow</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
     <span class="n">res</span><span class="p">,</span> <span class="n">ai</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">a</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">MOD</span>
     <span class="k">for</span> <span class="n">digit</span> <span class="ow">in</span> <span class="nb">reversed</span><span class="p">(</span><span class="n">b</span><span class="p">):</span>
@@ -22511,19 +22549,18 @@
         <span class="n">ai</span> <span class="o">=</span> <span class="n">pow_mod</span><span class="p">(</span><span class="n">ai</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">res</span>
 </code></pre></div>
-<p>后者从低位到高位扫描，本质同一递推展平。</p>
 <h2 id="complexity">复杂度 (Complexity)<a class="headerlink" href="#complexity" title="Permanent link">#</a></h2>
 <ul>
-<li>Time: <span class="arithmatex">\(O(k \log 10) = O(k)\)</span> 乘法操作（<span class="arithmatex">\(k = |b|\)</span>），每次模乘 <span class="arithmatex">\(O(1)\)</span>。</li>
-<li>Space: 递归 <span class="arithmatex">\(O(k)\)</span> 栈；迭代版 <span class="arithmatex">\(O(1)\)</span>。</li>
+<li>Time: <span class="arithmatex">\(O(k)\)</span> 次模乘（<span class="arithmatex">\(k = |b|\)</span>）。每一位做常数次 <code>pow_mod</code>，每次 <code>pow_mod</code> 至多 <span class="arithmatex">\(O(\log 10)\)</span> 次乘法（<span class="arithmatex">\(n=10\)</span> 约 6 次乘法，末位 <span class="arithmatex">\(\le 9\)</span> 更少），每次模乘 <span class="arithmatex">\(O(1)\)</span>。</li>
+<li>Space: 递归版 <span class="arithmatex">\(O(k)\)</span> 调用栈；迭代版 <span class="arithmatex">\(O(1)\)</span>。</li>
 </ul>
 <h2 id="pitfalls">陷阱 (Pitfalls)<a class="headerlink" href="#pitfalls" title="Permanent link">#</a></h2>
 <ul>
-<li><strong>不能用 Euler 定理化简指数</strong>：<span class="arithmatex">\(\gcd(a, 1337)\)</span> 可能不为 1（如 <span class="arithmatex">\(a = 7\)</span>），Fermat / Euler 失效。Carmichael 法可行但需小心。</li>
-<li><strong>模运算结合律</strong>：每步都取模，否则 <span class="arithmatex">\(a^{10}\)</span> 在 <span class="arithmatex">\(a\)</span> 大时溢出（Python 安全，C++ 用 <code>long long</code> 或更高）。</li>
-<li><strong>b 为空</strong>：上述递归基线 <code>if not b: return 1</code>。代码中 <code>b = [0]</code> 时也能返回 1（因 <span class="arithmatex">\(a^0 = 1\)</span>）——但题目保证 <span class="arithmatex">\(|b| \ge 1\)</span> 且无前导 0，若 b=[0] 仅在 b 本身就是 0。</li>
-<li><strong>修改输入</strong>：<code>b.pop()</code> 改变调用方数组；迭代写法更安全。</li>
-<li><strong>a = 0</strong> 边界：<span class="arithmatex">\(0^{\text{positive}} = 0\)</span>，<span class="arithmatex">\(0^0 = 1\)</span> 约定；代码 <code>pow_mod(0, n)</code> 当 n&gt;0 返回 0，n=0 返回 1，正确。</li>
+<li><strong>不能用 Euler / Fermat 直接约化指数。</strong> 一个自然的"能否更快"的想法是：把指数对 <span class="arithmatex">\(\phi(1337)\)</span> 取模，从而把 <span class="arithmatex">\(B\)</span> 压成小数。这要求底数与模数互质。但 <span class="arithmatex">\(1337 = 7 \times 191\)</span> 非质数，且 <span class="arithmatex">\(\gcd(a, 1337)\)</span> 可能大于 <span class="arithmatex">\(1\)</span>——例如 <span class="arithmatex">\(a=7\)</span> 时 <span class="arithmatex">\(\gcd=7\)</span>，此时 Euler 定理 <span class="arithmatex">\(a^{\phi(m)}\equiv 1\)</span>（<span class="arithmatex">\(\gcd(a,m)=1\)</span> 时成立）不适用，盲目约化会得到错误答案。Carmichael 函数给出更紧的周期 <span class="arithmatex">\(\lambda(1337)=\mathrm{lcm}(6,190)=570\)</span>，但同样要求互质且需分情形讨论；逐位递推 (3) 不依赖任何互质假设，是更稳的路线。（群论背景：元素阶整除群阶 <span class="arithmatex">\(|(\mathbb{Z}/m\mathbb{Z})^*|=\phi(m)\)</span> 是 Lagrange 定理，<span class="arithmatex">\(a^{\phi(m)}\equiv 1\)</span> 是其推论，即 Euler 定理。）</li>
+<li><strong>模运算结合律必须每步落实。</strong> 每次乘法后立即取模，否则 <span class="arithmatex">\((a^{B'})^{10}\)</span> 在 <span class="arithmatex">\(a\)</span> 大时溢出。Python 大整数安全；C++ 需 <code>long long</code>，尤其初始 <code>a % MOD</code> 之前 <span class="arithmatex">\(a\)</span> 可达 <span class="arithmatex">\(2^{31}-1\)</span>，<span class="arithmatex">\(a\cdot a\)</span> 会溢出 int32。</li>
+<li><strong>修改输入数组。</strong> 递归版 <code>b.pop()</code> 会改变调用方的数组。LC 通常不计较，生产代码应先 <code>b = list(b)</code>，或直接用迭代版（不触碰输入）。</li>
+<li><strong><span class="arithmatex">\(a=0\)</span> 边界。</strong> 约定 <span class="arithmatex">\(0^{\text{positive}}=0\)</span>、<span class="arithmatex">\(0^0=1\)</span>。代码中 <code>pow_mod(0, n)</code> 在 <span class="arithmatex">\(n&gt;0\)</span> 时返回 <span class="arithmatex">\(0\)</span>、<span class="arithmatex">\(n=0\)</span> 时返回 <span class="arithmatex">\(1\)</span>，与约定一致。</li>
+<li><strong>空数组 / <code>b=[0]</code>。</strong> 递归基线 <code>if not b: return 1</code> 处理 <span class="arithmatex">\(B=0\)</span>。题目保证 <span class="arithmatex">\(|b|\ge 1\)</span> 且无前导 <span class="arithmatex">\(0\)</span>，故 <code>b=[0]</code> 仅在 <span class="arithmatex">\(B\)</span> 本身为 <span class="arithmatex">\(0\)</span> 时出现，仍返回 <span class="arithmatex">\(a^0=1\)</span>。</li>
 </ul>
 <h2 id="related">相关题目 (Related)<a class="headerlink" href="#related" title="Permanent link">#</a></h2>
 <ul>
@@ -22642,6 +22679,8 @@
         <script src="../../../js/mathjax/tex-mml-chtml.js"></script>
       
         <script src="../../../js/mermaid.min.js"></script>
+      
+        <script src="../../../js/featured.js"></script>
       
     
   </body>

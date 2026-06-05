@@ -1466,6 +1466,8 @@
       
         
       
+        
+      
     
     
     
@@ -1521,6 +1523,34 @@
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../featured/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ⭐ Featured（已验证）
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
               
             
               
@@ -1610,10 +1640,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_4" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
         
           
-          <label class="md-nav__link" for="__nav_4_4" id="__nav_4_4_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_5" id="__nav_4_5_label" tabindex="">
             
   
   
@@ -1631,8 +1661,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_4_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_4">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_5">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1915,7 +1945,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -1937,14 +1967,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_4_5" id="__nav_4_5_label" tabindex="">
+              <label class="md-nav__link " for="__nav_4_6" id="__nav_4_6_label" tabindex="">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_5">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_6">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -5321,10 +5351,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_7" checked>
         
           
-          <label class="md-nav__link" for="__nav_4_6" id="__nav_4_6_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_7" id="__nav_4_7_label" tabindex="">
             
   
   
@@ -5342,8 +5372,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_4_6">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_7_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4_7">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -22467,14 +22497,31 @@
 <h2 id="problem">Problem<a class="headerlink" href="#problem" title="Permanent link">#</a></h2>
 <p>给 <code>m×n</code> 矩阵 <code>mat</code>，按反对角线"之"字形遍历返回所有元素。<span class="arithmatex">\(1 \leq m, n\)</span>，<span class="arithmatex">\(1 \leq m \cdot n \leq 10^4\)</span>。例：<code>[[1,2,3],[4,5,6],[7,8,9]]</code> → <code>[1,2,4,7,5,3,6,8,9]</code>。</p>
 <h2 id="background">背景 (Background)<a class="headerlink" href="#background" title="Permanent link">#</a></h2>
-<p>矩阵反对角线 <span class="arithmatex">\(i + j = k\)</span> 是个经典分组——在数论中对应 lattice path 的"等距步数"层、在 DP 中常用于"按对角扫描"（如 Hirschberg 算法、CYK 分析）。本题中"之"字形访问对应每条对角线奇偶交替反向：偶数对角线从下到上（即 <span class="arithmatex">\(j\)</span> 增大），奇数对角线从上到下（即 <span class="arithmatex">\(i\)</span> 增大）。这种 zigzag 访问模式也出现在 JPEG 量化系数序列化（"zigzag scan"）。</p>
+<p>先看输出要求自己说了什么。对例子 <code>[[1,2,3],[4,5,6],[7,8,9]]</code>，输出是 <code>[1,2,4,7,5,3,6,8,9]</code>。把每个值标回它的坐标 <span class="arithmatex">\((i,j)\)</span>：</p>
+<div class="arithmatex">\[(0,0),\ (0,1),(1,0),\ (2,0),(1,1),(0,2),\ (1,2),(2,1),\ (2,2).\]</div>
+<p>逗号把序列分成五组。组内每个格子的行列之和 <span class="arithmatex">\(i+j\)</span> 是常数：第一组 <span class="arithmatex">\(i+j=0\)</span>，第二组 <span class="arithmatex">\(i+j=1\)</span>，依次到第五组 <span class="arithmatex">\(i+j=4\)</span>。所以遍历天然按 <span class="arithmatex">\(i+j\)</span> 分层，层与层之间这个和每次加一。</p>
+<p>为什么会这样？从任一格 <span class="arithmatex">\((i,j)\)</span> 出发，只有向右 <span class="arithmatex">\((i,j{+}1)\)</span> 或向下 <span class="arithmatex">\((i{+}1,j)\)</span> 两种相邻移动会把和 <span class="arithmatex">\(i+j\)</span> 增加 <span class="arithmatex">\(1\)</span>，没有别的方式只增加 <span class="arithmatex">\(1\)</span>。因此"和等于 <span class="arithmatex">\(k\)</span> 的所有格子"恰好构成一层，下一层就是"和等于 <span class="arithmatex">\(k+1\)</span>"。这条反对角线分层不依赖任何外部约定，它就是从相邻关系里读出来的。</p>
+<p>剩下要决定的只有两件事：每一层内部按什么顺序走，以及相邻两层怎么衔接。下面先尝试最直接的走法，看它在哪里断掉，再由此推出分层做法。</p>
 <h2 id="formulation">形式化 (Formulation)<a class="headerlink" href="#formulation" title="Permanent link">#</a></h2>
-<p>对每条对角线 <span class="arithmatex">\(D_k = \{(i, j) : i + j = k, 0 \leq i &lt; m, 0 \leq j &lt; n\}\)</span>，<span class="arithmatex">\(k = 0, \ldots, m+n-2\)</span>：
-- <span class="arithmatex">\(k\)</span> 偶：按 <span class="arithmatex">\(i\)</span> 降序遍历（即左下 → 右上）
-- <span class="arithmatex">\(k\)</span> 奇：按 <span class="arithmatex">\(i\)</span> 升序遍历（即右上 → 左下）</p>
+<p><strong>先看朴素走法为什么脆弱。</strong> 最自然的第一反应是模拟方向：维护当前位置和一个方向标志（"右上"或"左下"），沿对角线一步步走，碰到矩阵边界就翻转方向并跨到下一条对角线。问题在于"碰到边界"有四种情形——上边界、左边界、右边界、下边界——每种翻转后跨格的落点不同。例如在右上方向碰到顶行要往右挪一格，但若同时已在最后一列则要往下挪一格；这些角落分支极易写错下标，是这类题最常见的 off-by-one 来源。方向模拟把"层内顺序"和"层间衔接"两件事缠在一组条件分支里。</p>
+<p><strong>用分层把状态消掉。</strong> 既然背景已经说明遍历按 <span class="arithmatex">\(i+j=k\)</span> 分层，就不必再跟踪方向：直接枚举层号 <span class="arithmatex">\(k\)</span>，把第 <span class="arithmatex">\(k\)</span> 层的格子按规定顺序输出即可。层内不再有方向状态，只剩"这一层按 <span class="arithmatex">\(i\)</span> 升还是降"一个二选一。</p>
+<p>直观先行：相邻两层必须首尾相接。第 <span class="arithmatex">\(k\)</span> 层走完，最后一格紧挨着第 <span class="arithmatex">\(k+1\)</span> 层的第一格——否则输出顺序会在层边界处跳格。要让衔接连续，第 <span class="arithmatex">\(k+1\)</span> 层的起点必须是第 <span class="arithmatex">\(k\)</span> 层终点的邻居，这迫使方向在每层之间翻转。再用 <span class="arithmatex">\(k=0\)</span> 定标：第 <span class="arithmatex">\(0\)</span> 层只有 <span class="arithmatex">\((0,0)\)</span>，它要最先输出，而紧随其后的是 <span class="arithmatex">\((0,1)\)</span>（<span class="arithmatex">\(i\)</span> 较小）——所以第 <span class="arithmatex">\(1\)</span> 层按 <span class="arithmatex">\(i\)</span> 升序，第 <span class="arithmatex">\(0\)</span> 层则按 <span class="arithmatex">\(i\)</span> 降序。方向随 <span class="arithmatex">\(k\)</span> 的奇偶交替。</p>
+<p>由此得到形式化。对每条对角线
+$<span class="arithmatex">\(D_k = \{(i, j) : i + j = k,\ 0 \leq i &lt; m,\ 0 \leq j &lt; n\},\qquad k = 0, 1, \ldots, m+n-2,\)</span>$
+遍历规则为：</p>
+<ul>
+<li><span class="arithmatex">\(k\)</span> 偶：按 <span class="arithmatex">\(i\)</span> 降序遍历（<span class="arithmatex">\(i\)</span> 从大到小）</li>
+<li><span class="arithmatex">\(k\)</span> 奇：按 <span class="arithmatex">\(i\)</span> 升序遍历（<span class="arithmatex">\(i\)</span> 从小到大）</li>
+</ul>
+<p>这里只用下标方向（<span class="arithmatex">\(i\)</span> 升/降）描述，不再混入"左下/右上"的空间方向，避免两套语言同时出现。</p>
 <h2 id="approach">数据结构 / 想法 (Approach)<a class="headerlink" href="#approach" title="Permanent link">#</a></h2>
-<p><strong>解法</strong>：枚举对角线 index <span class="arithmatex">\(k\)</span>，确定该对角线 <span class="arithmatex">\(i\)</span> 的合法范围。</p>
-<p>对 <span class="arithmatex">\(D_k\)</span>，<span class="arithmatex">\(i \in [\max(0, k - n + 1), \min(m - 1, k)]\)</span>。</p>
+<p>形式化已是算法的脊柱：枚举 <span class="arithmatex">\(k\)</span>，确定第 <span class="arithmatex">\(k\)</span> 层中 <span class="arithmatex">\(i\)</span> 的合法范围，按奇偶顺序输出 <code>mat[i][k-i]</code>。唯一需要补的，是把 <span class="arithmatex">\(D_k\)</span> 的集合定义翻译成 <span class="arithmatex">\(i\)</span> 的闭区间——这正是朴素方向模拟里那些角落分支的算术替身。</p>
+<p><strong>推导 <span class="arithmatex">\(i\)</span> 的范围。</strong> 格子 <span class="arithmatex">\((i, k-i)\)</span> 属于 <span class="arithmatex">\(D_k\)</span> 当且仅当四个下标条件同时成立：</p>
+<div class="arithmatex">\[i \geq 0,\quad i \leq m-1,\quad k - i \geq 0,\quad k - i \leq n-1.\]</div>
+<p>后两个对 <span class="arithmatex">\(i\)</span> 求解：<span class="arithmatex">\(k-i \geq 0 \Rightarrow i \leq k\)</span>，<span class="arithmatex">\(k-i \leq n-1 \Rightarrow i \geq k-n+1\)</span>。把四个不等式合并成对 <span class="arithmatex">\(i\)</span> 的上下界：</p>
+<div class="arithmatex">\[i_{\text{lo}} = \max(0,\ k-n+1),\qquad i_{\text{hi}} = \min(m-1,\ k).\]</div>
+<p>对每个合法的 <span class="arithmatex">\(k\)</span>，该区间非空（可对所有 <span class="arithmatex">\(m,n\)</span> 验证），所以无需额外判空。注意这一推导没有用到 <span class="arithmatex">\(m=n\)</span>，非方阵照用同一公式——朴素模拟里区分上/下/左/右边界的四个分支，在这里坍缩成一个 <span class="arithmatex">\(\max\)</span> 和一个 <span class="arithmatex">\(\min\)</span>。</p>
+<p>代码就是上述形式化的直接转写：</p>
 <div class="language-python highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">Solution</span><span class="p">:</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">findDiagonalOrder</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mat</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]])</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]:</span>
         <span class="n">m</span><span class="p">,</span> <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">mat</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">mat</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
@@ -22492,14 +22539,16 @@
                     <span class="n">out</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">mat</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">k</span> <span class="o">-</span> <span class="n">i</span><span class="p">])</span>
         <span class="k">return</span> <span class="n">out</span>
 </code></pre></div>
-<p><strong>Trace <code>[[1,2,3],[4,5,6],[7,8,9]]</code></strong> (m=n=3)：
-- k=0: i_lo=0, i_hi=0, 偶 → [1]
-- k=1: i_lo=0, i_hi=1, 奇 → [2,4]
-- k=2: i_lo=0, i_hi=2, 偶 → 倒序 i=2,1,0 → [7,5,3]
-- k=3: i_lo=1, i_hi=2, 奇 → [6,8]
-- k=4: i_lo=2, i_hi=2, 偶 → [9]</p>
+<p><strong>Trace <code>[[1,2,3],[4,5,6],[7,8,9]]</code></strong> (m=n=3)：</p>
+<ul>
+<li>k=0: i_lo=0, i_hi=0, 偶 → [1]</li>
+<li>k=1: i_lo=0, i_hi=1, 奇 → [2,4]</li>
+<li>k=2: i_lo=0, i_hi=2, 偶 → 倒序 i=2,1,0 → [7,5,3]</li>
+<li>k=3: i_lo=1, i_hi=2, 奇 → [6,8]</li>
+<li>k=4: i_lo=2, i_hi=2, 偶 → [9]</li>
+</ul>
 <p>合并：<code>[1,2,4,7,5,3,6,8,9]</code> ✓</p>
-<p><strong>替代解法</strong>：用 <code>dict[k] -&gt; list</code>，先扫一遍矩阵按 <span class="arithmatex">\(k = i+j\)</span> 分桶，再按奇偶决定是否 reverse。代码更短，但常数大、空间多。</p>
+<p><strong>替代解法</strong>：用 <code>dict[k] -&gt; list</code>，先扫一遍矩阵按 <span class="arithmatex">\(k = i+j\)</span> 分桶，再按奇偶决定是否 reverse。代码更短，但它需要额外 <span class="arithmatex">\(O(mn)\)</span> 空间存桶，常数因子也更大。这一对比也指向 #1424：当矩阵是 ragged（每行长度不一）时，闭区间公式不再成立，分桶法反而是自然选择。</p>
 <h2 id="complexity">复杂度 (Complexity)<a class="headerlink" href="#complexity" title="Permanent link">#</a></h2>
 <ul>
 <li>Time: <span class="arithmatex">\(O(mn)\)</span>，每个元素访问一次</li>
@@ -22507,18 +22556,18 @@
 </ul>
 <h2 id="pitfalls">陷阱 (Pitfalls)<a class="headerlink" href="#pitfalls" title="Permanent link">#</a></h2>
 <ul>
-<li><strong>对角线边界</strong>：<span class="arithmatex">\(i\)</span> 范围需同时考虑 <span class="arithmatex">\(i \geq 0, i &lt; m, k - i &lt; n, k - i \geq 0\)</span>，即 <code>i_lo = max(0, k-n+1)</code>, <code>i_hi = min(m-1, k)</code>，漏一个就 IndexError。</li>
-<li><strong>奇偶反向</strong>：注意题目"之"字方向从 <span class="arithmatex">\(k=0\)</span> 开始<strong>向上</strong>走（值 1 之后是 2），所以偶数对角线倒序（<span class="arithmatex">\(i\)</span> 大 → 小）才对。心算 trace 一遍最稳妥。</li>
-<li><strong>非方阵</strong>：<span class="arithmatex">\(m \neq n\)</span> 时 <code>i_lo/i_hi</code> 公式照用。</li>
+<li><strong>对角线边界</strong>：<span class="arithmatex">\(i\)</span> 范围需同时满足 <span class="arithmatex">\(i \geq 0,\ i &lt; m,\ k-i \geq 0,\ k-i &lt; n\)</span> 四个条件，合并即 <code>i_lo = max(0, k-n+1)</code>、<code>i_hi = min(m-1, k)</code>。漏掉任一条件会让 <span class="arithmatex">\(k-i\)</span> 或 <span class="arithmatex">\(i\)</span> 越界，触发 IndexError。</li>
+<li><strong>奇偶反向</strong>：偶数对角线必须按 <span class="arithmatex">\(i\)</span> 降序。验证方法是检查 <span class="arithmatex">\(k=0\)</span>：此时仅有格子 <span class="arithmatex">\((0,0)\)</span>，它应最先出现，确认偶数层从大到小遍历 <span class="arithmatex">\(i\)</span>；任何把偶/奇方向写反的实现都会在这一最小情形上失败。</li>
+<li><strong>非方阵</strong>：<span class="arithmatex">\(m \neq n\)</span> 时 <code>i_lo</code>/<code>i_hi</code> 公式不变，因为推导从未假设 <span class="arithmatex">\(m=n\)</span>。</li>
 </ul>
 <h2 id="related">相关题目 (Related)<a class="headerlink" href="#related" title="Permanent link">#</a></h2>
 <ul>
 <li><a href="../3609_minimum-moves-to-reach-target-in-grid/">#3609. Minimum Moves to Reach Target in Grid</a> — 同 matrix 域的另一种几何遍历</li>
-<li><code>#1424. Diagonal Traverse II (off-wiki)</code> — 推广到 ragged matrix（jagged），需用 dict 分桶</li>
+<li><a href="../1424_diagonal-traverse-ii/">#1424. Diagonal Traverse II</a> — 推广到 ragged matrix（jagged），闭区间公式失效，需用 dict 分桶</li>
 </ul>
 <h2 id="further-reading">Further Reading<a class="headerlink" href="#further-reading" title="Permanent link">#</a></h2>
 <ul>
-<li>Wikipedia: <a href="https://en.wikipedia.org/wiki/JPEG#Entropy_coding">JPEG zigzag scan</a> — 同形态的 zigzag 序列化</li>
+<li>Wikipedia: <a href="https://en.wikipedia.org/wiki/JPEG#Entropy_coding">JPEG zigzag scan</a> — 另一处按反对角线序列化矩阵的工程实例</li>
 </ul>
 
 
@@ -22625,6 +22674,8 @@
         <script src="../../../js/mathjax/tex-mml-chtml.js"></script>
       
         <script src="../../../js/mermaid.min.js"></script>
+      
+        <script src="../../../js/featured.js"></script>
       
     
   </body>

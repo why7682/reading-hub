@@ -1466,6 +1466,8 @@
       
         
       
+        
+      
     
     
     
@@ -1521,6 +1523,34 @@
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../featured/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ⭐ Featured（已验证）
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
               
             
               
@@ -1610,10 +1640,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_4" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
         
           
-          <label class="md-nav__link" for="__nav_4_4" id="__nav_4_4_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_5" id="__nav_4_5_label" tabindex="">
             
   
   
@@ -1631,8 +1661,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_4_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_4">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_5">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1915,7 +1945,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -1937,14 +1967,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_4_5" id="__nav_4_5_label" tabindex="">
+              <label class="md-nav__link " for="__nav_4_6" id="__nav_4_6_label" tabindex="">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_5">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_6">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -5321,10 +5351,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_7" checked>
         
           
-          <label class="md-nav__link" for="__nav_4_6" id="__nav_4_6_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_7" id="__nav_4_7_label" tabindex="">
             
   
   
@@ -5342,8 +5372,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_4_6">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_7_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4_7">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -22467,17 +22497,29 @@
 <h2 id="problem">Problem<a class="headerlink" href="#problem" title="Permanent link">#</a></h2>
 <p>设计 <code>encode(longUrl) -&gt; shortUrl</code> 与 <code>decode(shortUrl) -&gt; longUrl</code> 一对函数，要求互逆。</p>
 <h2 id="_1">背景<a class="headerlink" href="#_1" title="Permanent link">#</a></h2>
-<p>本题是系统设计经典题 <strong>"Design TinyURL"</strong> 的算法侧 stub。真正工业实现要考虑：
-- <strong>可哈希性 vs 可枚举性</strong>：是用哈希取截断（碰撞概率？），还是用自增 ID + Base62 编码？
-- <strong>分布式 ID 生成</strong>：Snowflake (Twitter)、TicketServer、ZooKeeper sequential nodes。
-- <strong>存储</strong>：KV store (Redis / DynamoDB)，TTL / 永久。
-- <strong>生日悖论 / 碰撞</strong>：6 位 Base62 = <span class="arithmatex">\(62^6 \approx 5.7 \times 10^{10}\)</span> 空间；当存量达 <span class="arithmatex">\(\sqrt{N} \approx 240k\)</span> 时碰撞概率约 50%。
-- <strong>安全 / 隐私</strong>：可猜测（自增 ID 暴露增长率）vs 不可枚举（hash + salt）。</p>
-<p>学术上属于 <strong>perfect hashing / minimal perfect hashing</strong> 的特例，但绝大多数实现选 collision-aware 的方案 + 重试。</p>
+<p>先弄清这道题到底要求什么。<code>encode</code> 把任意长 URL 变成一个短码，<code>decode</code> 必须把短码还原成原 URL。唯一的硬约束是这两步可逆：你 <code>encode</code> 过的任何 URL，<code>decode</code> 都能拿回原值。</p>
+<p>最朴素的做法直接满足这个约束——让 <code>encode</code> 原样返回 <code>longUrl</code>，<code>decode</code> 也原样返回。这是一个合法的可逆映射，但它不"短"，等于没做事。于是真正使问题非平凡的，不是可逆性本身，而是<strong>在保证可逆的前提下把码压短</strong>。短码取自一个固定且不大的集合，可逆性要求两个不同的 URL 永不撞进同一个短码。这一句话就是全文的主线：所有方案都在回答同一个问题——如何在一个小集合里挑出互不冲突的短码。</p>
+<p>明确了主线，再看这道题在工业 URL 短链系统里被抽掉了什么。本题是系统设计经典题 <strong>"Design TinyURL"</strong> 的算法核心，去掉了下面这些维度后剩下的部分：</p>
+<ul>
+<li><strong>存储</strong>：真实系统把 <code>(短码, 长 URL)</code> 存进 KV store（Redis / DynamoDB），可设 TTL 或永久；本题用进程内哈希表代替。</li>
+<li><strong>分布式 ID 生成</strong>：若用自增 ID 生成短码，多机环境下要保证 ID 全局唯一且不冲突，业界方案有 Snowflake（Twitter 的 64 位时间戳+机器号+序列号方案）、TicketServer、ZooKeeper 顺序节点；本题单机单线程，自增计数器即可。</li>
+<li><strong>安全 / 隐私</strong>：自增 ID 生成的短码可被枚举，会暴露总量与增长率；随机或加盐哈希的短码不可枚举。</li>
+<li><strong>碰撞</strong>：短码集合有限，随机生成时两个 URL 可能撞码。这一维度本题保留，下面会从短码集合的大小把碰撞概率推导出来。</li>
+</ul>
+<p>本题保留的就是最后这一条：短码集合有限，如何挑码才能不冲突。</p>
 <h2 id="_2">形式化<a class="headerlink" href="#_2" title="Permanent link">#</a></h2>
-<p>找一对函数 <span class="arithmatex">\(f: U \to S, g: S \to U\)</span> 使 <span class="arithmatex">\(g \circ f = \text{id}_U\)</span>，其中 <span class="arithmatex">\(U\)</span> 是 URL 字符串集，<span class="arithmatex">\(S\)</span> 是固定长度短码集（如 <span class="arithmatex">\(S \subset \{a-zA-Z0-9\}^6\)</span>）。</p>
+<p>直觉先行。<code>encode</code> 必须是<strong>单射</strong>：两个不同的 URL 必须给出两个不同的短码——否则 <code>decode</code> 拿到那个共享短码时无法判断该还原成哪个。而 <code>decode</code> 只需在 <code>encode</code> 用过的那些短码上做 <code>encode</code> 的逆。这是可逆契约的最小数学要求，它直接划定了设计空间。</p>
+<p>形式化如下。设 <span class="arithmatex">\(U\)</span> 是 URL 字符串集（无限），<span class="arithmatex">\(S\)</span> 是固定长度短码集（有限，如 <span class="arithmatex">\(S \subset \{a\text{-}zA\text{-}Z0\text{-}9\}^6\)</span>）。要找一对函数</p>
+<div class="arithmatex">\[f: U \to S, \qquad g: S \to U, \qquad g \circ f = \mathrm{id}_U.\]</div>
+<p>注意 <span class="arithmatex">\(g \circ f = \mathrm{id}_U\)</span> 只要求 <span class="arithmatex">\(g\)</span> 是 <span class="arithmatex">\(f\)</span> 的<strong>左逆</strong>，并不要求 <span class="arithmatex">\(f\)</span> 满射或 <span class="arithmatex">\(S \to U\)</span> 是双射——<span class="arithmatex">\(U\)</span> 无限而 <span class="arithmatex">\(S\)</span> 有限，本来也不可能双射。左逆存在的充要条件是 <span class="arithmatex">\(f\)</span> 在其用到的定义域上单射。所以全部设计自由度就一句话：</p>
+<blockquote>
+<p><strong>不变量</strong>：<code>encode</code> 给不同 URL 分配不同短码（<span class="arithmatex">\(f\)</span> 单射），<code>decode</code> 维护 <span class="arithmatex">\(f\)</span> 的左逆。等价地，哈希表里每条 <code>(code, url)</code> 双向唯一，于是 <code>decode(encode(u)) == u</code> 恒成立。</p>
+</blockquote>
+<p>满足左逆最直接的结构就是一张查找表：<code>encode</code> 把 <code>(code, url)</code> 写进表，<code>decode</code> 反查。于是剩下的唯一决策是<strong>如何生成短码 <code>code</code> 使 <span class="arithmatex">\(f\)</span> 保持单射</strong>。下面三个方案是这个决策的三种答案，正好对应保证单射的三种不同手段。</p>
 <h2 id="_3">数据结构 / 想法<a class="headerlink" href="#_3" title="Permanent link">#</a></h2>
-<p><strong>方案 A：自增 ID + Base62</strong>
+<p>主线是同一个：在有限短码集里挑互不冲突的码。三个方案的差别只在"怎么保证不冲突"。</p>
+<p><strong>方案 A：自增 ID + Base62（确定性单射）</strong></p>
+<p>最直接保证单射的办法是给每次 <code>encode</code> 一个永不重复的整数 ID（自增计数器天然单调，故不同 URL 拿到不同整数）。但整数十进制太长，要压短，就把这个整数换一个进制写。短码字符只能用 URL 安全、可手打的字符，自然取 <code>a-z</code>、<code>A-Z</code>、<code>0-9</code> 共 <span class="arithmatex">\(26+26+10=62\)</span> 个，于是用 <strong>62 进制</strong>：每一位能编码 62 种取值，比十进制（每位 10 种）或十六进制（每位 16 种）更密，同样的整数用更少的字符表示。把整数 <span class="arithmatex">\(n\)</span> 在 62 进制下逐位取余即得短码。</p>
 <div class="language-python highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">Solution</span><span class="p">:</span>
     <span class="n">BASE</span> <span class="o">=</span> <span class="s2">&quot;abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789&quot;</span>
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -22485,39 +22527,45 @@
     <span class="k">def</span><span class="w"> </span><span class="nf">encode</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">longUrl</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">counter</span> <span class="o">+=</span> <span class="mi">1</span>
         <span class="n">n</span><span class="p">,</span> <span class="n">code</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">counter</span><span class="p">,</span> <span class="s2">&quot;&quot;</span>
-        <span class="k">while</span> <span class="n">n</span><span class="p">:</span>
+        <span class="k">while</span> <span class="n">n</span><span class="p">:</span>                       <span class="c1"># 把整数 n 写成 62 进制</span>
             <span class="n">n</span><span class="p">,</span> <span class="n">r</span> <span class="o">=</span> <span class="nb">divmod</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="mi">62</span><span class="p">);</span> <span class="n">code</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">BASE</span><span class="p">[</span><span class="n">r</span><span class="p">]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">map</span><span class="p">[</span><span class="n">code</span><span class="p">]</span> <span class="o">=</span> <span class="n">longUrl</span>
         <span class="k">return</span> <span class="s2">&quot;http://tinyurl.com/&quot;</span> <span class="o">+</span> <span class="n">code</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">decode</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">shortUrl</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">map</span><span class="p">[</span><span class="n">shortUrl</span><span class="o">.</span><span class="n">rsplit</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)[</span><span class="mi">1</span><span class="p">]]</span>
 </code></pre></div>
-优点：无碰撞、紧凑；缺点：可枚举、暴露顺序。</p>
-<p><strong>方案 B：随机 6 字符 + 碰撞重试</strong>
+<p>（逐位取余得到的是低位在前的串，但只要是单调整数到字符串的双射即可，顺序无所谓。）单调计数器保证 <span class="arithmatex">\(f\)</span> 严格单射，无碰撞、码紧凑；代价是短码可枚举、暴露分配顺序。</p>
+<p><strong>方案 B：随机 6 字符 + 碰撞重试（概率性单射）</strong></p>
+<p>若不愿暴露顺序，就随机抽 6 个字符当短码。随机抽不再天然单射，所以必须<strong>显式拒绝</strong>已用过的码——<code>if code not in self.map</code> 这个判断就是把单射性补回来的地方，去掉它就破坏不变量。</p>
 <div class="language-python highlight"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">random</span><span class="o">,</span><span class="w"> </span><span class="nn">string</span>
 <span class="k">def</span><span class="w"> </span><span class="nf">encode</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">longUrl</span><span class="p">):</span>
     <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
         <span class="n">code</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">random</span><span class="o">.</span><span class="n">choices</span><span class="p">(</span><span class="n">string</span><span class="o">.</span><span class="n">ascii_letters</span> <span class="o">+</span> <span class="n">string</span><span class="o">.</span><span class="n">digits</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="mi">6</span><span class="p">))</span>
-        <span class="k">if</span> <span class="n">code</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">map</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">code</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">map</span><span class="p">:</span>       <span class="c1"># 拒绝采样：撞已用码则重抽</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">map</span><span class="p">[</span><span class="n">code</span><span class="p">]</span> <span class="o">=</span> <span class="n">longUrl</span>
             <span class="k">return</span> <span class="s2">&quot;http://tinyurl.com/&quot;</span> <span class="o">+</span> <span class="n">code</span>
 </code></pre></div>
-<strong>碰撞分析</strong>：当已映射 <span class="arithmatex">\(k\)</span> 条时，新建一条需重试期望 <span class="arithmatex">\(\frac{62^6}{62^6 - k}\)</span> 次，几乎 1。</p>
-<p><strong>方案 C：哈希截断</strong>
-- <code>MD5(longUrl)[:6]</code> → 紧凑、确定性、相同 URL 同短码（自然去重）。
-- 缺点：仍可能碰撞，碰撞时需附加版本号或重哈希。</p>
-<p><strong>不变量</strong>：<code>map</code> 中每条 <code>(code, url)</code> 双向唯一；<code>encode</code> 之后必有 <code>decode(encode(u)) == u</code>。</p>
+<p><strong>插入一条的重试代价</strong>：设短码集大小 <span class="arithmatex">\(N = 62^6\)</span>，当前已占用 <span class="arithmatex">\(k\)</span> 个码。每次抽中空码的概率是 <span class="arithmatex">\(\frac{N-k}{N}\)</span>，重抽到成功的次数服从几何分布，期望为成功概率的倒数：</p>
+<div class="arithmatex">\[\mathbb{E}[\text{trials}] = \frac{N}{N-k}.\]</div>
+<p>只要 <span class="arithmatex">\(k \ll N\)</span>，这个值几乎为 1，单次插入实际只抽一次。注意这是插入第 <span class="arithmatex">\(k+1\)</span> 条的<strong>单次</strong>期望，不是全部插入的总代价（总代价是 <span class="arithmatex">\(\sum_i \frac{N}{N-i}\)</span> 这样的调和式）；正因如此，下面的均摊 <span class="arithmatex">\(O(1)\)</span> 只在远离饱和（<span class="arithmatex">\(k \ll N\)</span>）时成立。</p>
+<p><strong>方案 C：哈希截断（确定性但非单射）</strong></p>
+<p>把 <code>MD5(longUrl)</code> 取前 6 个字符当短码（MD5 是把任意输入映成定长摘要的哈希函数，取前缀即截断）。它确定且对相同 URL 给相同短码，天然去重。但从形式化立刻能看出它的结构缺陷：截断哈希的值域只有 <span class="arithmatex">\(62^6\)</span> 个，而 <span class="arithmatex">\(U\)</span> 无限，按鸽巢原理必存在 <span class="arithmatex">\(u_1 \neq u_2\)</span> 使 <span class="arithmatex">\(f(u_1) = f(u_2)\)</span>——<strong><span class="arithmatex">\(f\)</span> 在 <span class="arithmatex">\(U\)</span> 上不单射</strong>，直接违反左逆要求。所以方案 C 的"碰撞"不是工程小注脚，而是形式化推出的必然：它必须额外加版本号或重哈希来修补单射性，否则不是合法实现。</p>
+<p>这也回答了主线在三方案上的分工：A 用单调计数器<strong>构造</strong>单射，B 用拒绝采样<strong>保持</strong>单射，C 默认不单射、要靠修补<strong>找回</strong>单射。</p>
 <h2 id="_4">复杂度<a class="headerlink" href="#_4" title="Permanent link">#</a></h2>
 <ul>
-<li>各操作均摊 <span class="arithmatex">\(O(1)\)</span>（哈希表 + 随机/自增 <span class="arithmatex">\(O(1)\)</span>）。</li>
-<li>Base62 编码 <span class="arithmatex">\(O(\log N)\)</span> 字符。</li>
+<li>三个方案各操作均摊 <span class="arithmatex">\(O(1)\)</span>：哈希表读写 <span class="arithmatex">\(O(1)\)</span>，自增 / 单次随机抽样 <span class="arithmatex">\(O(1)\)</span>。如方案 B 所述，均摊 <span class="arithmatex">\(O(1)\)</span> 依赖 <span class="arithmatex">\(k \ll N\)</span>（远离饱和），否则重试期望 <span class="arithmatex">\(\frac{N}{N-k}\)</span> 增大。</li>
+<li>Base62 编码一个整数 <span class="arithmatex">\(n\)</span> 需 <span class="arithmatex">\(\lfloor \log_{62} n \rfloor + 1 = \Theta(\log n)\)</span> 个字符；以累计条数 <span class="arithmatex">\(N_{\text{cnt}}\)</span> 计即 <span class="arithmatex">\(O(\log N_{\text{cnt}})\)</span> 长度。</li>
 </ul>
+<p><strong>碰撞概率（从短码集大小推导）</strong>。方案 B/C 的撞码风险可由短码集大小 <span class="arithmatex">\(N = 62^6 = 56{,}800{,}235{,}584 \approx 5.7 \times 10^{10}\)</span> 算出。当已随机分配 <span class="arithmatex">\(k\)</span> 个互异短码后，按生日问题模型，至少出现一次碰撞的概率约</p>
+<div class="arithmatex">\[P(k) \approx 1 - \exp\!\left(-\frac{k^2}{2N}\right).\]</div>
+<p>这个式子来自：<span class="arithmatex">\(k\)</span> 个码两两不撞的概率约 <span class="arithmatex">\(\exp(-\binom{k}{2}/N) \approx \exp(-k^2/2N)\)</span>，取补即得碰撞概率。代入数值：当 <span class="arithmatex">\(k = \sqrt{N} \approx 2.38 \times 10^5 \approx 238\text{k}\)</span> 时 <span class="arithmatex">\(P \approx 39.3\%\)</span>；碰撞概率达 <span class="arithmatex">\(50\%\)</span> 的阈值在 <span class="arithmatex">\(k = \sqrt{2N\ln 2} \approx 1.177\sqrt{N} \approx 2.81 \times 10^5 \approx 281\text{k}\)</span>。即存量到几十万级就有显著撞码，这正是工业方案要碰撞感知 + 重试（方案 B）或修补（方案 C）的原因。</p>
 <h2 id="_5">陷阱<a class="headerlink" href="#_5" title="Permanent link">#</a></h2>
+<p>每条都是从可逆契约或主线推出的真实决策点，而非杂项清单。</p>
 <ul>
-<li>题目允许 <code>encode</code> 直接返回 <code>longUrl</code> 本身（任何 bijection 即可），但工程上 short code 才有意义。</li>
-<li>在线测试 <code>decode(encode(u))</code> 必须等于 <span class="arithmatex">\(u\)</span>；保留 prefix 还是 strip 要一致。</li>
-<li>多次 <code>encode</code> 同一 URL 是否返回同一 short code？方案 A/B 返回不同（每次新 ID），方案 C 返回相同 —— 题目未强制，但是 dedup 决策点。</li>
-<li>多线程下需对 counter / map 加锁；本题假设单线程。</li>
+<li><strong>可逆即可，但"短"才是题眼</strong>：契约只要求 <span class="arithmatex">\(g \circ f = \mathrm{id}_U\)</span>，所以 <code>encode</code> 直接返回 <code>longUrl</code> 也合法。既然如此为何还要 Base62 和随机码？因为题目不强制"短"，但"短"才是使问题有意义的隐含目标——压短是全文要保的东西，平凡解只是用来界定下界。</li>
+<li><strong>前缀必须一致</strong>：<code>decode</code> 去掉的前缀必须正好是 <code>encode</code> 加的前缀（这里用 <code>rsplit('/', 1)[1]</code> 取最后一段）。两个方案都依赖这一致性，否则 <span class="arithmatex">\(g\)</span> 不再是 <span class="arithmatex">\(f\)</span> 的左逆，<code>decode(encode(u)) != u</code>。</li>
+<li><strong>同一 URL 重复 encode 是否同码</strong>：方案 A/B 每次新分配，返回不同短码；方案 C 确定性，返回相同短码。题目未强制，但这是 dedup 决策点——要不要去重决定选确定性还是非确定性的 <span class="arithmatex">\(f\)</span>。</li>
+<li><strong>并发</strong>：多线程下 <code>counter</code> 自增与 <code>map</code> 读写需加锁以维持单射不变量；本题假设单线程，可忽略。</li>
 </ul>
 <h2 id="_6">相关题目<a class="headerlink" href="#_6" title="Permanent link">#</a></h2>
 <ul>
@@ -22527,9 +22575,8 @@
 </ul>
 <h2 id="further-reading">Further Reading<a class="headerlink" href="#further-reading" title="Permanent link">#</a></h2>
 <ul>
-<li>Alex Xu. <em>System Design Interview</em> Vol. 1, Ch. "Design A URL Shortener" — 行业标准面试参考。</li>
-<li>TwitterEng. Blog: <em>Announcing Snowflake</em> (2010) — 分布式 ID 生成的开篇工程参考。</li>
-<li>Cormode &amp; Muthukrishnan (2005). <em>Summarizing and Mining Skewed Data Streams</em>. SDM. — Count-Min Sketch 等近邻技巧，与短码碰撞分析数学相通。</li>
+<li>Alex Xu. <em>System Design Interview</em> Vol. 1, Ch. "Design A URL Shortener" — 行业标准面试参考，涵盖本题略去的存储、分布式 ID、碰撞处理。</li>
+<li>TwitterEng. Blog: <em>Announcing Snowflake</em> (2010) — 分布式 ID 生成的开篇工程参考，对应方案 A 在多机环境下保证自增 ID 全局唯一的问题。</li>
 </ul>
 
 
@@ -22636,6 +22683,8 @@
         <script src="../../../js/mathjax/tex-mml-chtml.js"></script>
       
         <script src="../../../js/mermaid.min.js"></script>
+      
+        <script src="../../../js/featured.js"></script>
       
     
   </body>

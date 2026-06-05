@@ -1466,6 +1466,8 @@
       
         
       
+        
+      
     
     
     
@@ -1521,6 +1523,34 @@
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../featured/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ⭐ Featured（已验证）
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
               
             
               
@@ -1610,10 +1640,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_4" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
         
           
-          <label class="md-nav__link" for="__nav_4_4" id="__nav_4_4_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_5" id="__nav_4_5_label" tabindex="">
             
   
   
@@ -1631,8 +1661,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_4_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_4">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_5">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1915,7 +1945,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -1937,14 +1967,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_4_5" id="__nav_4_5_label" tabindex="">
+              <label class="md-nav__link " for="__nav_4_6" id="__nav_4_6_label" tabindex="">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_5">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_6">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -5321,10 +5351,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_7" checked>
         
           
-          <label class="md-nav__link" for="__nav_4_6" id="__nav_4_6_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_7" id="__nav_4_7_label" tabindex="">
             
   
   
@@ -5342,8 +5372,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_4_6">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_7_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4_7">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -22467,17 +22497,31 @@
 <h2 id="problem">Problem<a class="headerlink" href="#problem" title="Permanent link">#</a></h2>
 <p>给定 <span class="arithmatex">\(m \times n\)</span> 的 0/1 矩阵 <code>matrix</code>，返回其中<strong>全 1 正方形</strong>子矩阵的总数。（每个不同大小、不同位置的全 1 正方形都算一次。）<span class="arithmatex">\(m, n \leq 300\)</span>。</p>
 <h2 id="background">背景 (Background)<a class="headerlink" href="#background" title="Permanent link">#</a></h2>
-<p>经典 DP 题，与 <em>Maximal Square</em>（LeetCode #221）同一族——属于 <strong>格上结构计数 / 子矩阵问题</strong>。其状态压缩与递推方式（<span class="arithmatex">\(\min\)</span> of 3 neighbors + 1）是 image processing 中 <em>distance transform</em> 在 <span class="arithmatex">\(L_\infty\)</span> 度量下的离散形式：<span class="arithmatex">\(\text{dp}[i][j]\)</span> 等于以 <span class="arithmatex">\((i,j)\)</span> 为右下角能扩出的最大空白方距离，本质是 <em>Chebyshev distance</em> 到最近 0 沿左/上方向的截断。</p>
+<p>先把问题拆到最朴素的形式：一个全 1 正方形由它的位置和边长唯一确定。最直接的做法是枚举每一个可能的正方形——选一个左上角，选一个边长 <span class="arithmatex">\(k\)</span>，然后扫一遍这 <span class="arithmatex">\(k \times k\)</span> 个格子确认全是 1。这能得到正确答案，但代价是 <span class="arithmatex">\(O(m^2 n^2)\)</span>：<span class="arithmatex">\(O(mn)\)</span> 个左上角、<span class="arithmatex">\(O(\min(m,n))\)</span> 个边长、每次验证又花 <span class="arithmatex">\(O(k^2)\)</span>。</p>
+<p>这个朴素枚举的浪费一眼可见：一个边长 <span class="arithmatex">\(k\)</span> 的全 1 正方形，它内部包含了大量更小的全 1 正方形，而我们对每个正方形都从头重扫一遍格子，把同一片 1 反复检验。换句话说，"以某个角为基准的正方形能扩多大"这件事，相邻位置之间是高度相关的，朴素枚举却把它们当成彼此独立的查询。</p>
+<p>下面要做的，就是把"能扩多大"这个量沿格子一次性算出来、并让相邻格子复用彼此的结果。这正是动态规划的切入点，也把本题归入 <em>格上结构计数 / 子矩阵问题</em> 一族（与 LeetCode #221 <em>Maximal Square</em> 同框架）。</p>
 <h2 id="formulation">形式化 (Formulation)<a class="headerlink" href="#formulation" title="Permanent link">#</a></h2>
-<p>设 <span class="arithmatex">\(\text{dp}[i][j]\)</span> = 以 <span class="arithmatex">\((i,j)\)</span> 为右下角的最大全 1 正方形边长。答案 = <span class="arithmatex">\(\sum_{i,j} \text{dp}[i][j]\)</span>。</p>
-<p>递推：</p>
+<p>要复用相邻结果，关键是给每个格子定义一个可以由邻居推出的量。先固定一个观察角度：<strong>用右下角作为正方形的基准</strong>。每个全 1 正方形恰有一个右下角，所以"以 <span class="arithmatex">\((i,j)\)</span> 为右下角"把所有正方形按右下角划分成互不相交的组。</p>
+<p><strong>直觉。</strong> 定义 <span class="arithmatex">\(\text{dp}[i][j]\)</span> 为"以 <span class="arithmatex">\((i,j)\)</span> 为右下角的最大全 1 正方形边长"。现在问：若想让以 <span class="arithmatex">\((i,j)\)</span> 为右下角、边长为 <span class="arithmatex">\(k\)</span> 的正方形全是 1，需要什么条件？首先 <span class="arithmatex">\(M_{i,j}=1\)</span>。其次，把这个 <span class="arithmatex">\(k \times k\)</span> 正方形去掉最后一行和最后一列，剩下的部分必须由三个方向同时"撑住"——</p>
+<ul>
+<li>它的上方需要一个以 <span class="arithmatex">\((i-1,j)\)</span> 为右下角、边长 <span class="arithmatex">\(\ge k-1\)</span> 的全 1 正方形；</li>
+<li>它的左方需要一个以 <span class="arithmatex">\((i,j-1)\)</span> 为右下角、边长 <span class="arithmatex">\(\ge k-1\)</span> 的全 1 正方形；</li>
+<li>它的左上需要一个以 <span class="arithmatex">\((i-1,j-1)\)</span> 为右下角、边长 <span class="arithmatex">\(\ge k-1\)</span> 的全 1 正方形。</li>
+</ul>
+<p>三个邻居必须<strong>同时</strong>支持 <span class="arithmatex">\(k-1\)</span>，因此 <span class="arithmatex">\(k-1\)</span> 至多取它们的最小值。能扩到的最大边长就是 <span class="arithmatex">\(1 + \min\)</span> 这三个邻居的 dp 值。注意这里的 <span class="arithmatex">\(\min\)</span> 不是凑出来的：三个邻居各自约束了正方形的一条边/一角，缺一不可，所以是三者取 min 而非只看左和上。</p>
+<p><strong>形式化。</strong> 由上述结构约束得到递推 (1)：</p>
 <div class="arithmatex">\[
-\text{dp}[i][j] = \begin{cases} 0 &amp; \text{if } M_{i,j} = 0 \\ 1 + \min(\text{dp}[i-1][j],\ \text{dp}[i][j-1],\ \text{dp}[i-1][j-1]) &amp; \text{if } M_{i,j} = 1 \end{cases}
+\text{dp}[i][j] = \begin{cases} 0 &amp; \text{if } M_{i,j} = 0 \\ 1 + \min(\text{dp}[i-1][j],\ \text{dp}[i][j-1],\ \text{dp}[i-1][j-1]) &amp; \text{if } M_{i,j} = 1 \end{cases} \tag{1}
 \]</div>
-<p>边界 <span class="arithmatex">\(i = 0\)</span> 或 <span class="arithmatex">\(j = 0\)</span> 时 <span class="arithmatex">\(\text{dp}[i][j] = M_{i,j}\)</span>。</p>
-<p><strong>为什么累加得到所有正方形数</strong>：若以 <span class="arithmatex">\((i,j)\)</span> 为右下角的最大边长为 <span class="arithmatex">\(k\)</span>，则边长 <span class="arithmatex">\(1, 2, \dots, k\)</span> 的正方形都成立（每个都唯一以 <span class="arithmatex">\((i,j)\)</span> 为右下角），共 <span class="arithmatex">\(k\)</span> 个。对所有右下角求和无重复。</p>
+<p>边界 <span class="arithmatex">\(i = 0\)</span> 或 <span class="arithmatex">\(j = 0\)</span> 时无法向上/向左扩展，故 <span class="arithmatex">\(\text{dp}[i][j] = M_{i,j}\)</span>（即 <span class="arithmatex">\(M_{i,j}=1\)</span> 时为 1，否则为 0）。</p>
+<p><strong>从 dp 到答案。</strong> 我们要的不是某个最大边长，而是正方形总数。下面这条引理把两者连起来。</p>
+<blockquote>
+<p><strong>引理（计数恒等式）。</strong> 设以 <span class="arithmatex">\((i,j)\)</span> 为右下角的最大全 1 正方形边长为 <span class="arithmatex">\(k = \text{dp}[i][j]\)</span>。则恰好存在 <span class="arithmatex">\(k\)</span> 个以 <span class="arithmatex">\((i,j)\)</span> 为右下角的全 1 正方形，边长分别为 <span class="arithmatex">\(1, 2, \dots, k\)</span>。因此全 1 正方形总数为 <span class="arithmatex">\(\sum_{i,j} \text{dp}[i][j]\)</span>。</p>
+</blockquote>
+<p><em>证明。</em> 一个边长为 <span class="arithmatex">\(k\)</span> 的全 1 正方形，其右下角对齐 <span class="arithmatex">\((i,j)\)</span> 后，任意 <span class="arithmatex">\(t \le k\)</span> 的"右下对齐子正方形"也全是 1（它是大正方形的子区域）。故边长 <span class="arithmatex">\(1, \dots, k\)</span> 各对应唯一一个以 <span class="arithmatex">\((i,j)\)</span> 为右下角的全 1 正方形，共 <span class="arithmatex">\(k\)</span> 个；边长 <span class="arithmatex">\(&gt; k\)</span> 的则不存在（否则与 <span class="arithmatex">\(k\)</span> 是最大值矛盾）。又因每个全 1 正方形只有一个右下角，按右下角分组不重不漏，求和即得总数。<span class="arithmatex">\(\square\)</span></p>
+<p>这条引理也解释了为什么不能"只数最大边长"：<span class="arithmatex">\(\text{dp}[i][j]=k\)</span> 这一个格子就贡献了 <span class="arithmatex">\(k\)</span> 个正方形，把它们压成 1 个会漏掉 <span class="arithmatex">\(k-1\)</span> 个。</p>
 <h2 id="approach">数据结构 / 想法 (Approach)<a class="headerlink" href="#approach" title="Permanent link">#</a></h2>
-<p><strong>解法 1：DP（推荐）</strong>。直接按上式递推，<span class="arithmatex">\(O(mn)\)</span> 时间 <span class="arithmatex">\(O(mn)\)</span> 空间（可滚动到 <span class="arithmatex">\(O(n)\)</span>）。</p>
+<p>递推 (1) 与计数恒等式合在一起就是一个完整算法：按行从上到下、每行从左到右计算 <span class="arithmatex">\(\text{dp}[i][j]\)</span>，每算出一个就把它累加进答案。由于每个 <span class="arithmatex">\(\text{dp}[i][j]\)</span> 只依赖正上、正左、左上三个<strong>已算好</strong>的格子，单次遍历即可填完整张表，朴素枚举中"反复重扫同一片 1"的浪费被彻底消除。</p>
 <div class="language-python highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">Solution</span><span class="p">:</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">countSquares</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">matrix</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]])</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
         <span class="c1"># Time: O(mn), Space: O(mn) (or O(n) with rolling)</span>
@@ -22494,22 +22538,24 @@
                     <span class="n">ans</span> <span class="o">+=</span> <span class="n">dp</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span>
         <span class="k">return</span> <span class="n">ans</span>
 </code></pre></div>
-<p>样例 1 验证：3×4 矩阵，DP 表的累加和应为 15（10 个边长 1 + 4 个边长 2 + 1 个边长 3）。手算 dp 表：
+<p><strong>样例验证（3×4 矩阵）。</strong> 输入 <span class="arithmatex">\([[0,1,1,1],[1,1,1,1],[0,1,1,1]]\)</span>，按 (1) 填出的 dp 表为：</p>
 <div class="language-text highlight"><pre><span></span><code>0 1 1 1
 1 1 2 2
 0 1 2 3
 </code></pre></div>
-和 = 0+1+1+1+1+1+2+2+0+1+2+3 = 15 ✓。</p>
-<p><strong>解法 2：二维前缀和 + 枚举边长</strong>。<span class="arithmatex">\(O(mn)\)</span> 预处理前缀和，再 <span class="arithmatex">\(O(mn \cdot \min(m,n))\)</span> 枚举边长检查；<span class="arithmatex">\(O(m^2 n)\)</span> 比 DP 慢但思路直观，hint 给的就是这个方向。</p>
+<p>逐格读这张表正是计数恒等式的实例：值为 2 的格子贡献边长 1、2 两个正方形，右下角那个值为 3 的格子贡献边长 1、2、3 三个正方形。求和</p>
+<div class="arithmatex">\[0+1+1+1+\;1+1+2+2+\;0+1+2+3 = 15,\]</div>
+<p>按边长拆分为 <span class="arithmatex">\(10\)</span> 个边长 1 <span class="arithmatex">\(+\ 4\)</span> 个边长 2 <span class="arithmatex">\(+\ 1\)</span> 个边长 3 <span class="arithmatex">\(= 15\)</span>，与逐格求和一致。</p>
+<p><strong>备选解法（前缀和 + 枚举边长）。</strong> 若不沿用上面的 dp，也可回到枚举正方形的思路，只把"验证全 1"这一步用二维前缀和加速：<span class="arithmatex">\(O(mn)\)</span> 预处理前缀和后，枚举每个右下角与边长 <span class="arithmatex">\(k\)</span>，用一次区域和查询判断该 <span class="arithmatex">\(k \times k\)</span> 块是否全为 1（块内元素和等于 <span class="arithmatex">\(k^2\)</span> 即全 1）。这把朴素验证从 <span class="arithmatex">\(O(k^2)\)</span> 降到 <span class="arithmatex">\(O(1)\)</span>，总复杂度 <span class="arithmatex">\(O(mn \cdot \min(m,n))\)</span>。它仍慢于 dp，但只用到"区域全 1 ⟺ 区域和 = 面积"这一个事实，无需引入 dp 状态。</p>
 <h2 id="complexity">复杂度 (Complexity)<a class="headerlink" href="#complexity" title="Permanent link">#</a></h2>
 <ul>
-<li>Time: <span class="arithmatex">\(O(mn)\)</span>（DP 解法）</li>
-<li>Space: <span class="arithmatex">\(O(mn)\)</span> 或 <span class="arithmatex">\(O(n)\)</span>（滚动）</li>
+<li>Time: <span class="arithmatex">\(O(mn)\)</span>（dp 解法）；备选前缀和解法为 <span class="arithmatex">\(O(mn \cdot \min(m,n))\)</span>。</li>
+<li>Space: <span class="arithmatex">\(O(mn)\)</span>；因 (1) 只依赖当前行与上一行，可滚动压缩到 <span class="arithmatex">\(O(n)\)</span>。</li>
 </ul>
 <h2 id="pitfalls">陷阱 (Pitfalls)<a class="headerlink" href="#pitfalls" title="Permanent link">#</a></h2>
 <ul>
-<li>不能只统计最大边长 → 错过较小正方形；必须每个 dp 值都累加。</li>
-<li>边界第 0 行/列若用 <code>min(dp[i-1][..])</code> 越界，要单独处理或预先 pad 一圈 0。</li>
+<li>不能只统计最大边长 → 由计数恒等式，<span class="arithmatex">\(\text{dp}[i][j]=k\)</span> 贡献 <span class="arithmatex">\(k\)</span> 个正方形，只取最大值会漏掉较小的；必须累加每个 dp 值。</li>
+<li>边界第 0 行/列没有正上/正左/左上邻居，若直接套 <span class="arithmatex">\(\min(\text{dp}[i-1][\cdot])\)</span> 会越界，要单独按 <span class="arithmatex">\(\text{dp}[i][j]=M_{i,j}\)</span> 处理，或预先 pad 一圈 0。</li>
 <li>不可以修改原 <code>matrix</code>（题目未明确允许）；要么复制要么开新 dp 数组。</li>
 </ul>
 <h2 id="related">相关题目 (Related)<a class="headerlink" href="#related" title="Permanent link">#</a></h2>
@@ -22522,6 +22568,7 @@
 <ul>
 <li>CLRS, §15 "Dynamic Programming"（DP 范式与子结构推导）</li>
 <li>cp-algorithms: <a href="https://cp-algorithms.com/dynamic_programming/intro-to-dp.html"><code>/dynamic_programming/intro-to-dp.html</code></a></li>
+<li><strong>连接（求解之后再看）</strong>：<span class="arithmatex">\(\text{dp}[i][j]\)</span> 恰等于以 <span class="arithmatex">\((i,j)\)</span> 为右下角能容纳的最大全 1 方块边长，这与图像处理中的 <em>distance transform</em> 在 <span class="arithmatex">\(L_\infty\)</span>（Chebyshev）度量下的离散形式一致——它衡量沿左/上方向到最近 0（或边界）的截断 Chebyshev 距离。这是递推 (1) 推出来的一个等价刻画，而非推导它的前提。</li>
 </ul>
 
 
@@ -22628,6 +22675,8 @@
         <script src="../../../js/mathjax/tex-mml-chtml.js"></script>
       
         <script src="../../../js/mermaid.min.js"></script>
+      
+        <script src="../../../js/featured.js"></script>
       
     
   </body>

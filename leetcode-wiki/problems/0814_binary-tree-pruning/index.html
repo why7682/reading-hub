@@ -1466,6 +1466,8 @@
       
         
       
+        
+      
     
     
     
@@ -1521,6 +1523,34 @@
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../featured/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ⭐ Featured（已验证）
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
               
             
               
@@ -1610,10 +1640,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_4" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
         
           
-          <label class="md-nav__link" for="__nav_4_4" id="__nav_4_4_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_5" id="__nav_4_5_label" tabindex="">
             
   
   
@@ -1631,8 +1661,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_4_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_4">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_5">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1915,7 +1945,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -1937,14 +1967,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_4_5" id="__nav_4_5_label" tabindex="">
+              <label class="md-nav__link " for="__nav_4_6" id="__nav_4_6_label" tabindex="">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_5">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_6">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -5321,10 +5351,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_7" checked>
         
           
-          <label class="md-nav__link" for="__nav_4_6" id="__nav_4_6_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_7" id="__nav_4_7_label" tabindex="">
             
   
   
@@ -5342,8 +5372,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_4_6">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_7_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4_7">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -22467,13 +22497,29 @@
 <h2 id="problem">Problem<a class="headerlink" href="#problem" title="Permanent link">#</a></h2>
 <p>二叉树节点值 0/1。删除所有"不含 1 的子树"（包括所有叶子 0）。返回剪枝后的树。节点数 ≤ 200。</p>
 <h2 id="background">背景 (Background)<a class="headerlink" href="#background" title="Permanent link">#</a></h2>
-<p>这是 <strong>post-order 树形 DP</strong> 的最小实例：每个节点的"是否保留"取决于其子树聚合属性（"是否含 1"），必须先处理孩子再决定自己。形式上等价于在树上做<strong>自底向上重写规则</strong> <span class="arithmatex">\(r\)</span>：若 <span class="arithmatex">\(r(\text{left}) = r(\text{right}) = \bot\)</span> 且 <span class="arithmatex">\(v = 0\)</span>，则 <span class="arithmatex">\(r(\text{node}) = \bot\)</span>（删除）；否则保留并递归更新引用。</p>
+<p>先问最朴素的问题：站在一个节点 <span class="arithmatex">\(v\)</span> 面前，能不能当场决定要不要删除它？</p>
+<p>删除规则是"删除不含 1 的子树"。所以删 <span class="arithmatex">\(v\)</span> 当且仅当以 <span class="arithmatex">\(v\)</span> 为根的整棵子树里一个 1 都没有。这句话立刻暴露困难：判断 <span class="arithmatex">\(v\)</span> 是否含 1，需要先知道 <span class="arithmatex">\(v.\text{left}\)</span> 是否含 1、<span class="arithmatex">\(v.\text{right}\)</span> 是否含 1。</p>
+<p>设想一种自顶向下（前序）的写法：先看 <span class="arithmatex">\(v\)</span>，再递归孩子。轮到 <span class="arithmatex">\(v\)</span> 时，孩子的子树还没被访问，"左子树是否含 1"这个信息根本不存在。于是 <span class="arithmatex">\(v\)</span> 的删除决策无法做出。前序顺序在这里失败，<strong>不是因为代码细节，而是因为信息的流向</strong>：决定一个节点需要的事实，全部位于它下方，只能由孩子向父亲汇报。</p>
+<p>这把遍历顺序唯一地钉死了：必须先处理完两个孩子，再回到父节点。这就是后序遍历。它不是一个被外部套用的"技巧名字"，而是上面那个信息流向的直接后果。下面把"是否含 1"这个汇报量精确化。</p>
 <h2 id="formulation">形式化 (Formulation)<a class="headerlink" href="#formulation" title="Permanent link">#</a></h2>
-<p>定义 <span class="arithmatex">\(\mathrm{contains1}(v)\)</span>：</p>
+<p>直觉：一个节点含 1，当且仅当它自己是 1，或者它的某个孩子的子树含 1。空子树不含任何 1。把这句话写成谓词 <span class="arithmatex">\(\mathrm{contains1}\)</span>，约定 <span class="arithmatex">\(\mathrm{contains1}(\text{null}) = \bot\)</span>（空树没有 1），其余情形：</p>
 <div class="arithmatex">\[\mathrm{contains1}(v) = (v.\text{val} = 1) \lor \mathrm{contains1}(v.\text{left}) \lor \mathrm{contains1}(v.\text{right})\]</div>
-<p>返回的树：对每个节点 <span class="arithmatex">\(v\)</span>，若 <span class="arithmatex">\(\neg \mathrm{contains1}(v.\text{left})\)</span> 则置 <span class="arithmatex">\(v.\text{left} = \text{null}\)</span>；右孩子同理；若 <span class="arithmatex">\(\neg \mathrm{contains1}(v)\)</span> 则返回 null 替代 <span class="arithmatex">\(v\)</span> 本身。</p>
+<p>剪枝就是按这个谓词重写整棵树。对节点 <span class="arithmatex">\(v\)</span>，定义重写结果 <span class="arithmatex">\(\mathrm{prune}(v)\)</span>：</p>
+<div class="arithmatex">\[
+\mathrm{prune}(v) =
+\begin{cases}
+\text{null}, &amp; v = \text{null} \\
+\text{null}, &amp; \neg\,\mathrm{contains1}(v) \\
+v, &amp; \text{否则（同时令 } v.\text{left} \gets \mathrm{prune}(v.\text{left}),\ v.\text{right} \gets \mathrm{prune}(v.\text{right})\text{）}
+\end{cases}
+\]</div>
+<p>返回的树即 <span class="arithmatex">\(\mathrm{prune}(\text{root})\)</span>。注意第二行：若 <span class="arithmatex">\(v\)</span> 整棵子树无 1，则 <span class="arithmatex">\(v\)</span> 连同其下方全部被一次性删去，无需再递归——因为它们也必然无 1。</p>
+<p>这个定义给出一个结构性不变量，正好回答"<span class="arithmatex">\(v.\text{val}=0\)</span> 但某个孩子存活时怎么办"：若任一后代是 1，从根到该后代的整条路径都含 1，路径上每个祖先都满足 <span class="arithmatex">\(\mathrm{contains1}\)</span>，因此无论自身值是 0 还是 1 都必须保留。删除只发生在"子树彻底无 1"的节点上。</p>
 <h2 id="approach">数据结构 / 想法 (Approach)<a class="headerlink" href="#approach" title="Permanent link">#</a></h2>
-<p><strong>后序 DFS</strong>：递归剪左、剪右；若当前节点值 0 且左右孩子都被剪光 → 返回 null。</p>
+<p>形式化已经把实现确定下来，剩下的是把 <span class="arithmatex">\(\mathrm{prune}\)</span> 直接翻译成递归，并验证它确实在做后序遍历。</p>
+<p>先排除一个错误写法：如果在递归孩子<strong>之前</strong>就判断 <span class="arithmatex">\(v\)</span>，则此刻 <span class="arithmatex">\(v.\text{left}/v.\text{right}\)</span> 仍是原始子树，尚未剪枝，<code>not root.left</code> 永远为假，删除条件几乎不可能触发——这正是前序顺序失败的代码体现。正确做法是先递归、令孩子被各自的 <span class="arithmatex">\(\mathrm{prune}\)</span> 结果替换，再判断 <span class="arithmatex">\(v\)</span> 自己。</p>
+<p>关键观察：判断 <span class="arithmatex">\(\neg\,\mathrm{contains1}(v)\)</span> 不必另算一遍谓词。递归返回后，若两个孩子都变成了 null，说明它们的子树都无 1；此时 <span class="arithmatex">\(v\)</span> 含 1 当且仅当 <span class="arithmatex">\(v.\text{val}=1\)</span>。于是删除条件简化为</p>
+<div class="arithmatex">\[v.\text{val} = 0 \ \land\ v.\text{left} = \text{null} \ \land\ v.\text{right} = \text{null}.\]</div>
 <div class="language-python highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">TreeNode</span><span class="p">:</span>
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">val</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">left</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">right</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">val</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">left</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">right</span> <span class="o">=</span> <span class="n">val</span><span class="p">,</span> <span class="n">left</span><span class="p">,</span> <span class="n">right</span>
@@ -22488,6 +22534,7 @@
             <span class="k">return</span> <span class="kc">None</span>
         <span class="k">return</span> <span class="n">root</span>
 </code></pre></div>
+<p>下面两个 trace 验证：每一步的删/留都与上述删除条件一致，且每个节点恰好被访问一次。</p>
 <p>样例 1 trace：<code>root = [1,null,0,0,1]</code>。结构：
 <div class="language-text highlight"><pre><span></span><code>1
  \
@@ -22495,12 +22542,53 @@
  / \
 0   1
 </code></pre></div></p>
-<ul>
-<li>递归到左叶 0：左右均 null，val=0 → 返回 null。</li>
-<li>递归到右叶 1：val=1 → 保留，返回自身。</li>
-<li>回到中间 0：左=null（剪掉），右=1。val=0 但右孩子存在 → 保留，返回自身。</li>
-<li>根 1：右=该 0 节点，val=1 → 保留。</li>
-</ul>
+<p>按后序，孩子先于父节点处理：</p>
+<table>
+<thead>
+<tr>
+<th>步</th>
+<th>节点</th>
+<th>左 / 右（递归后）</th>
+<th>val</th>
+<th>删除条件</th>
+<th>结果</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>左叶 0</td>
+<td>null / null</td>
+<td>0</td>
+<td>满足</td>
+<td>返回 null</td>
+</tr>
+<tr>
+<td>2</td>
+<td>右叶 1</td>
+<td>null / null</td>
+<td>1</td>
+<td>不满足（val=1）</td>
+<td>保留</td>
+</tr>
+<tr>
+<td>3</td>
+<td>中间 0</td>
+<td>null / 节点1</td>
+<td>0</td>
+<td>不满足（右非空）</td>
+<td>保留</td>
+</tr>
+<tr>
+<td>4</td>
+<td>根 1</td>
+<td>null / 中间0</td>
+<td>1</td>
+<td>不满足（val=1）</td>
+<td>保留</td>
+</tr>
+</tbody>
+</table>
 <p>结果 <code>[1,null,0,null,1]</code>。✓</p>
 <p>样例 3 trace：<code>[1,1,0,1,1,0,1,0]</code>。结构：
 <div class="language-text highlight"><pre><span></span><code>        1
@@ -22511,8 +22599,87 @@
    /
   0
 </code></pre></div></p>
-<p>后序：最底部 0（左叶）→ null。其父 1 → 左右 null 但 val=1 → 保留。再上层 1 → 左=该 1（保留）、右=1 → 保留。0 节点（位置 [2]）→ 左=0→null（递归后），右=1 保留。0 节点本身：val=0、左 null、右非 null → 保留。根：左=1（保留）、右=0（保留）→ 保留。</p>
-<p>输出层序：根 1，左 1（左 1（左 0 已剪 → null），右 1），右 0（左 null，右 1）。即 <code>[1,1,0,1,1,null,1]</code>。✓</p>
+<p>仍按后序自底向上：</p>
+<table>
+<thead>
+<tr>
+<th>步</th>
+<th>节点（位置）</th>
+<th>左 / 右（递归后）</th>
+<th>val</th>
+<th>删除条件</th>
+<th>结果</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>最底 0（[3]的左孩子）</td>
+<td>null / null</td>
+<td>0</td>
+<td>满足</td>
+<td>返回 null</td>
+</tr>
+<tr>
+<td>2</td>
+<td>1（[3]，其左被剪）</td>
+<td>null / null</td>
+<td>1</td>
+<td>不满足（val=1）</td>
+<td>保留</td>
+</tr>
+<tr>
+<td>3</td>
+<td>1（[4]）</td>
+<td>null / null</td>
+<td>1</td>
+<td>不满足（val=1）</td>
+<td>保留</td>
+</tr>
+<tr>
+<td>4</td>
+<td>1（[1]）</td>
+<td>节点[3] / 节点[4]</td>
+<td>1</td>
+<td>不满足（val=1）</td>
+<td>保留</td>
+</tr>
+<tr>
+<td>5</td>
+<td>0（[5]）</td>
+<td>null / null</td>
+<td>0</td>
+<td>满足</td>
+<td>返回 null</td>
+</tr>
+<tr>
+<td>6</td>
+<td>1（[6]）</td>
+<td>null / null</td>
+<td>1</td>
+<td>不满足（val=1）</td>
+<td>保留</td>
+</tr>
+<tr>
+<td>7</td>
+<td>0（[2]）</td>
+<td>null（[5]被剪）/ 节点[6]</td>
+<td>0</td>
+<td>不满足（右非空）</td>
+<td>保留</td>
+</tr>
+<tr>
+<td>8</td>
+<td>根 1</td>
+<td>节点[1] / 节点[2]</td>
+<td>1</td>
+<td>不满足（val=1）</td>
+<td>保留</td>
+</tr>
+</tbody>
+</table>
+<p>输出层序 <code>[1,1,0,1,1,null,1]</code>。✓</p>
+<p>两个 trace 共同确认：递归严格自底向上，删除恰在"子树无 1"处发生，访问总数等于节点数，与下面的复杂度一致。</p>
 <h2 id="complexity">复杂度 (Complexity)<a class="headerlink" href="#complexity" title="Permanent link">#</a></h2>
 <ul>
 <li>Time: <span class="arithmatex">\(O(n)\)</span>，每节点一次访问。</li>
@@ -22520,9 +22687,9 @@
 </ul>
 <h2 id="pitfalls">陷阱 (Pitfalls)<a class="headerlink" href="#pitfalls" title="Permanent link">#</a></h2>
 <ul>
-<li>必须<strong>先递归再判断当前节点</strong>——否则孩子的"是否被剪"信息不可得。这是后序 DFS 与前序 DFS 区别的核心场景。</li>
-<li>根节点也可能被剪光（全 0 树 → 返回 null）。许多人写"root 不剪"是错的。</li>
-<li>"不含 1 的子树"包含叶子 0 自身——它是一个 1 节点的子树，没 1 → 剪。</li>
+<li><strong>必须先递归再判断当前节点。</strong> 这是后序遍历的决定性约束：子问题的答案（孩子是否被剪光）必须在父节点决策前完全确定，否则删除条件 <code>not root.left</code> 永远读到未剪枝的旧子树。</li>
+<li><strong>根节点也可能被剪光。</strong> 全 0 树满足 <span class="arithmatex">\(\neg\,\mathrm{contains1}(\text{root})\)</span>，返回 null。写"root 不剪"是错的——根并不享有豁免，它和其它节点服从同一条 <span class="arithmatex">\(\mathrm{prune}\)</span> 规则。</li>
+<li><strong>叶子 0 必被剪，由定义直接判定。</strong> 对值为 0 的叶子，<span class="arithmatex">\(\mathrm{contains1} = (0=1)\lor\mathrm{contains1}(\text{null})\lor\mathrm{contains1}(\text{null}) = \bot\)</span>，满足删除条件。无需额外特判，形式化已经覆盖。</li>
 </ul>
 <h2 id="related">相关题目 (Related)<a class="headerlink" href="#related" title="Permanent link">#</a></h2>
 <ul>
@@ -22639,6 +22806,8 @@
         <script src="../../../js/mathjax/tex-mml-chtml.js"></script>
       
         <script src="../../../js/mermaid.min.js"></script>
+      
+        <script src="../../../js/featured.js"></script>
       
     
   </body>

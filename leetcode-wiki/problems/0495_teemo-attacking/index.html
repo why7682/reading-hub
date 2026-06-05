@@ -1466,6 +1466,8 @@
       
         
       
+        
+      
     
     
     
@@ -1521,6 +1523,34 @@
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../featured/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ⭐ Featured（已验证）
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
               
             
               
@@ -1610,10 +1640,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_4" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
         
           
-          <label class="md-nav__link" for="__nav_4_4" id="__nav_4_4_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_5" id="__nav_4_5_label" tabindex="">
             
   
   
@@ -1631,8 +1661,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_4_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_4">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_5">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1915,7 +1945,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -1937,14 +1967,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_4_5" id="__nav_4_5_label" tabindex="">
+              <label class="md-nav__link " for="__nav_4_6" id="__nav_4_6_label" tabindex="">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_5">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_6">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -5321,10 +5351,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_7" checked>
         
           
-          <label class="md-nav__link" for="__nav_4_6" id="__nav_4_6_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_7" id="__nav_4_7_label" tabindex="">
             
   
   
@@ -5342,8 +5372,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_4_6">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_7_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4_7">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -22467,11 +22497,37 @@
 <h2 id="problem">Problem<a class="headerlink" href="#problem" title="Permanent link">#</a></h2>
 <p>非降数组 <code>timeSeries</code>，每个时刻 <code>t_i</code> 触发持续 <code>duration</code> 秒的中毒（区间 <span class="arithmatex">\([t_i, t_i + \text{duration} - 1]\)</span>）。新攻击会<strong>重置</strong>计时（不是叠加）。求总中毒秒数。<span class="arithmatex">\(|\text{ts}| \leq 10^4\)</span>，<span class="arithmatex">\(\text{ts}_i, \text{duration} \leq 10^7\)</span>。</p>
 <h2 id="background">背景 (Background)<a class="headerlink" href="#background" title="Permanent link">#</a></h2>
-<p>经典<strong>区间并集长度</strong>问题，但因输入按时间排序且区间宽度固定，可线性扫描而无需扫描线（#218 等）。物理类比是排队论中的"服务重置"（preemptive reset）：每个新任务到达若覆盖在旧服务期内，旧服务被替换。</p>
+<p>"重置而非叠加"是这道题唯一的难点。如果中毒会叠加，总秒数就是 <span class="arithmatex">\(n \cdot d\)</span>，无须思考。重置意味着两次攻击若在时间上靠得太近，第二次会<strong>覆盖</strong>第一次尚未结束的部分，那段被覆盖的秒数只能算一次。于是问题变成：把每次攻击的中毒区间求并集，问这个并集一共覆盖多少个整数秒。</p>
+<p>要算并集，最直接的办法是逐秒标记：开一个布尔数组，对每次攻击把 <span class="arithmatex">\([t_i, t_i+d-1]\)</span> 内的每一秒标成 <code>True</code>，最后数有多少个 <code>True</code>。这是对"并集"定义的字面翻译，正确无疑。但它的代价由数值范围而非元素个数决定：标记总次数是 <span class="arithmatex">\(O(n \cdot d)\)</span>，数组大小是 <span class="arithmatex">\(O(\max t_i)\)</span>。在本题取值下分别达到 <span class="arithmatex">\(10^4 \times 10^7 = 10^{11}\)</span> 与 <span class="arithmatex">\(10^7\)</span>，逐秒方案直接出局。</p>
+<p>逐秒方案之所以慢，是因为它没有利用输入的两个结构性约束：<span class="arithmatex">\(t_i\)</span> <strong>单调非降</strong>，且所有区间<strong>宽度相同</strong>（都等于 <span class="arithmatex">\(d\)</span>）。下面会看到，这两个约束足以把并集长度化简成一趟扫描里的一个加法。</p>
 <h2 id="formulation">形式化 (Formulation)<a class="headerlink" href="#formulation" title="Permanent link">#</a></h2>
-<p>记 <span class="arithmatex">\(T_i = [t_i, t_i + d - 1]\)</span>。求 <span class="arithmatex">\(|\bigcup_i T_i|\)</span>（按整数测度）。由于 <span class="arithmatex">\(t_i\)</span> 单调非降，相邻区间的重叠仅可能在 <span class="arithmatex">\(T_i\)</span> 与 <span class="arithmatex">\(T_{i+1}\)</span> 之间。</p>
+<p>记第 <span class="arithmatex">\(i\)</span> 次攻击的中毒区间为
+$<span class="arithmatex">\(T_i = [t_i,\; t_i + d - 1], \qquad i = 0, 1, \dots, n-1.\)</span>$
+按整数测度，所求即并集长度
+$$
+\text{answer} \;=\; \Bigl|\bigcup_{i=0}^{n-1} T_i\Bigr|. \tag{1}
+$$</p>
+<p>直接对 <span class="arithmatex">\((1)\)</span> 求并集需要考虑任意两个区间是否相交。但在本题的约束下，相交关系被极大地收窄了：</p>
+<blockquote>
+<p><strong>命题.</strong> 若 <span class="arithmatex">\(j \ge i+2\)</span>，则 <span class="arithmatex">\(T_i\)</span> 与 <span class="arithmatex">\(T_j\)</span> 不相交。</p>
+</blockquote>
+<p><strong>证明.</strong> <span class="arithmatex">\(T_i\)</span> 的右端点是 <span class="arithmatex">\(t_i + d - 1\)</span>。因为序列非降，<span class="arithmatex">\(t_{i+1} \le t_j\)</span>；又因为 <span class="arithmatex">\(T_{i+1}\)</span> 与 <span class="arithmatex">\(T_i\)</span> 宽度相同，若 <span class="arithmatex">\(T_i\)</span> 与某个更靠后的 <span class="arithmatex">\(T_j\)</span> 相交，则 <span class="arithmatex">\(T_{i+1}\)</span> 必然也覆盖那段重叠区域。换言之，任何重叠都已经被相邻一对捕捉到，无需考虑跨度 <span class="arithmatex">\(\ge 2\)</span> 的区间对。形式上，只要 <span class="arithmatex">\(t_{i+1} &gt; t_i + d - 1\)</span>，则对所有 <span class="arithmatex">\(j \ge i+1\)</span> 有 <span class="arithmatex">\(t_j \ge t_{i+1} &gt; t_i + d - 1\)</span>，故 <span class="arithmatex">\(T_i\)</span> 与 <span class="arithmatex">\(T_j\)</span> 不交；而若 <span class="arithmatex">\(t_{i+1} \le t_i + d - 1\)</span>，重叠也仅发生在 <span class="arithmatex">\(T_i\)</span> 与 <span class="arithmatex">\(T_{i+1}\)</span> 之间。<span class="arithmatex">\(\square\)</span></p>
+<p>这条命题把 <span class="arithmatex">\((1)\)</span> 从"任意区间对"的问题降为"只看相邻对"的问题，是整个线性解法的支点。</p>
 <h2 id="approach">数据结构 / 想法 (Approach)<a class="headerlink" href="#approach" title="Permanent link">#</a></h2>
-<p><strong>线性扫描</strong>：每个新区间贡献 <span class="arithmatex">\(\min(d, t_{i+1} - t_i)\)</span> 秒（除了最后一个贡献全 <span class="arithmatex">\(d\)</span>）。原理：若 <span class="arithmatex">\(t_{i+1} - t_i \geq d\)</span>，旧区间完整结束，贡献 <span class="arithmatex">\(d\)</span>；否则被截断为 <span class="arithmatex">\(t_{i+1} - t_i\)</span> 秒。</p>
+<p><strong>从命题到逐项求和。</strong> 既然重叠只在相邻区间之间发生，就可以把并集 <span class="arithmatex">\((1)\)</span> 拆成每个区间"新贡献"的总和——即区间 <span class="arithmatex">\(T_i\)</span> 中不被前面任何区间覆盖的那部分长度：
+$$
+\Bigl|\bigcup_{i} T_i\Bigr| \;=\; \sum_{i=0}^{n-1} \bigl|\,T_i \setminus \textstyle\bigcup_{j&lt;i} T_j\,\bigr|. \tag{2}
+$$
+由命题，<span class="arithmatex">\(T_i\)</span> 只可能与 <span class="arithmatex">\(T_{i-1}\)</span> 重叠，所以 <span class="arithmatex">\(T_i \setminus \bigcup_{j&lt;i} T_j\)</span> 等价于 <span class="arithmatex">\(T_i\)</span> 中起点不早于 <span class="arithmatex">\(t_i\)</span> 的部分被 <span class="arithmatex">\(T_{i-1}\)</span> 截掉之后剩下的。把视角换到"后一个区间截断前一个"会更直接：固定 <span class="arithmatex">\(T_i\)</span>，它真正算进并集的秒数，是从 <span class="arithmatex">\(t_i\)</span> 开始、到"下一次攻击 <span class="arithmatex">\(t_{i+1}\)</span> 把它打断"或"自身自然结束 <span class="arithmatex">\(t_i+d\)</span>"两者较早处为止。</p>
+<p><strong>先建立直觉，再写公式。</strong> 攻击 <span class="arithmatex">\(i\)</span> 本会持续 <span class="arithmatex">\(d\)</span> 秒。若下一次攻击在它结束前到来（<span class="arithmatex">\(t_{i+1} &lt; t_i + d\)</span>），从 <span class="arithmatex">\(t_{i+1}\)</span> 起的中毒被重置归属到攻击 <span class="arithmatex">\(i+1\)</span>，于是攻击 <span class="arithmatex">\(i\)</span> 实际只独占了 <span class="arithmatex">\([t_i,\; t_{i+1}-1]\)</span> 这 <span class="arithmatex">\(t_{i+1} - t_i\)</span> 秒；若下一次攻击在它结束后才到来（<span class="arithmatex">\(t_{i+1} \ge t_i + d\)</span>），攻击 <span class="arithmatex">\(i\)</span> 完整地贡献 <span class="arithmatex">\(d\)</span> 秒。两种情形合并，就是取较小者：</p>
+<div class="arithmatex">\[
+\text{contrib}(i) \;=\; \min\bigl(d,\; t_{i+1} - t_i\bigr), \qquad i = 0, \dots, n-2. \tag{3}
+\]</div>
+<p>最后一次攻击没有"下一次"来截断，完整贡献 <span class="arithmatex">\(d\)</span> 秒。把 <span class="arithmatex">\((3)\)</span> 代回 <span class="arithmatex">\((2)\)</span> 得到闭式：
+$$
+\text{answer} \;=\; \sum_{i=0}^{n-2} \min\bigl(d,\; t_{i+1} - t_i\bigr) \;+\; d. \tag{4}
+$$</p>
+<p>公式 <span class="arithmatex">\((4)\)</span> 不再涉及数值范围 <span class="arithmatex">\(\max t_i\)</span>，只对 <span class="arithmatex">\(n-1\)</span> 个相邻间隔各做一次 <span class="arithmatex">\(\min\)</span>，逐秒方案的两个瓶颈同时消失。代码就是 <span class="arithmatex">\((4)\)</span> 的直接转写：</p>
 <div class="language-python highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">Solution</span><span class="p">:</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">findPoisonedDuration</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">timeSeries</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">],</span> <span class="n">duration</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">timeSeries</span><span class="p">:</span>
@@ -22482,19 +22538,24 @@
         <span class="n">total</span> <span class="o">+=</span> <span class="n">duration</span>  <span class="c1"># 最后一次完整</span>
         <span class="k">return</span> <span class="n">total</span>
 </code></pre></div>
-<p><strong>Trace <code>ts=[1,4], d=2</code></strong>：i=0: min(2, 4-1)=min(2,3)=2；加 d=2。总 4 ✓
-<strong>Trace <code>ts=[1,2], d=2</code></strong>：i=0: min(2, 2-1)=1；加 d=2。总 3 ✓</p>
-<p><strong>不变量</strong>：扫描到 <span class="arithmatex">\(i\)</span> 时，<code>total</code> 已含 <span class="arithmatex">\(T_0 \cup \cdots \cup T_{i-1}\)</span> 中"在 <span class="arithmatex">\(t_i\)</span> 之前结束的部分"的总长。</p>
+<p><strong>循环不变量。</strong> 设循环体执行到下标 <span class="arithmatex">\(i\)</span>（尚未把 <span class="arithmatex">\(i\)</span> 的贡献加入）之前。此时 <code>total</code> 等于前 <span class="arithmatex">\(i\)</span> 个区间并集中、在 <span class="arithmatex">\(t_i\)</span> 之前结束的那部分总长，即 <span class="arithmatex">\(\sum_{k&lt;i} \text{contrib}(k)\)</span>。每次迭代加入 <span class="arithmatex">\(\text{contrib}(i) = \min(d, t_{i+1}-t_i)\)</span>，恰好补上 <span class="arithmatex">\(T_i\)</span> 不与 <span class="arithmatex">\(T_{i+1}\)</span> 重叠的新秒数，不变量得以保持。循环结束时所有相邻贡献已累计，再加上末项的完整 <span class="arithmatex">\(d\)</span>，便是 <span class="arithmatex">\((4)\)</span>。</p>
+<p><strong>用例验证。</strong> 两个例子各检验一种情形：</p>
+<ul>
+<li><code>ts=[1,4], d=2</code>：<span class="arithmatex">\(i=0\)</span> 时 <span class="arithmatex">\(\min(2,\,4-1)=\min(2,3)=2\)</span>（间隔够大，完整贡献）；加末项 <span class="arithmatex">\(d=2\)</span>。合计 <span class="arithmatex">\(4\)</span>。✓</li>
+<li><code>ts=[1,2], d=2</code>：<span class="arithmatex">\(i=0\)</span> 时 <span class="arithmatex">\(\min(2,\,2-1)=1\)</span>（间隔被截断）；加末项 <span class="arithmatex">\(d=2\)</span>。合计 <span class="arithmatex">\(3\)</span>。✓</li>
+</ul>
 <h2 id="complexity">复杂度 (Complexity)<a class="headerlink" href="#complexity" title="Permanent link">#</a></h2>
+<p>公式 <span class="arithmatex">\((4)\)</span> 是对 <span class="arithmatex">\(n-1\)</span> 个间隔的一趟求和，每项只做一次减法与一次 <span class="arithmatex">\(\min\)</span>，不需要任何辅助存储。</p>
 <ul>
 <li>Time: <span class="arithmatex">\(O(n)\)</span></li>
 <li>Space: <span class="arithmatex">\(O(1)\)</span></li>
 </ul>
+<p>与逐秒方案相比，时间从 <span class="arithmatex">\(O(n \cdot d)\)</span> 降到 <span class="arithmatex">\(O(n)\)</span>，空间从 <span class="arithmatex">\(O(\max t_i)\)</span> 降到 <span class="arithmatex">\(O(1)\)</span>——两个瓶颈都来自"枚举每一秒"，而命题让我们绕过了枚举。</p>
 <h2 id="pitfalls">陷阱 (Pitfalls)<a class="headerlink" href="#pitfalls" title="Permanent link">#</a></h2>
 <ul>
-<li><strong>空输入</strong>：<code>timeSeries</code> 可能没说必非空；防御性返回 0（虽然约束 <span class="arithmatex">\(\geq 1\)</span>）。</li>
-<li><strong>整数计算无 off-by-one</strong>：区间 <span class="arithmatex">\([t, t+d-1]\)</span> 长度为 <span class="arithmatex">\(d\)</span>，差值 <span class="arithmatex">\(t_{i+1} - t_i\)</span> 直接是"未覆盖的新部分"，无需 +1/-1 调整。</li>
-<li><strong>大整数</strong>：<span class="arithmatex">\(10^4 \times 10^7 = 10^{11}\)</span>，Python 天然支持，C++ 要用 <code>long long</code>。</li>
+<li><strong>空输入</strong>：约束写明 <span class="arithmatex">\(|\text{ts}| \ge 1\)</span>，但题面未必处处保证；防御性地先判空返回 0，代价为零。</li>
+<li><strong>整数计算无 off-by-one</strong>：区间 <span class="arithmatex">\([t,\, t+d-1]\)</span> 恰含 <span class="arithmatex">\(d\)</span> 个整数点，而相邻差值 <span class="arithmatex">\(t_{i+1}-t_i\)</span> 直接就是"未被覆盖的新部分"长度，因此 <span class="arithmatex">\((3)\)</span> 里既不用 <span class="arithmatex">\(+1\)</span> 也不用 <span class="arithmatex">\(-1\)</span>。若把区间误记为 <span class="arithmatex">\([t, t+d]\)</span>（含 <span class="arithmatex">\(d+1\)</span> 个点），整条推导都会偏移。</li>
+<li><strong>大整数溢出</strong>：最坏情形 <span class="arithmatex">\(n \cdot d = 10^4 \times 10^7 = 10^{11}\)</span>，超过 32 位上限（约 <span class="arithmatex">\(2.1\times10^9\)</span>）。Python 整数任意精度，无忧；C++ 必须用 <code>long long</code>。</li>
 </ul>
 <h2 id="related">相关题目 (Related)<a class="headerlink" href="#related" title="Permanent link">#</a></h2>
 <ul>
@@ -22608,6 +22669,8 @@
         <script src="../../../js/mathjax/tex-mml-chtml.js"></script>
       
         <script src="../../../js/mermaid.min.js"></script>
+      
+        <script src="../../../js/featured.js"></script>
       
     
   </body>

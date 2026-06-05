@@ -1466,6 +1466,8 @@
       
         
       
+        
+      
     
     
     
@@ -1521,6 +1523,34 @@
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../featured/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ⭐ Featured（已验证）
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
               
             
               
@@ -1610,10 +1640,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_4" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
         
           
-          <label class="md-nav__link" for="__nav_4_4" id="__nav_4_4_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_5" id="__nav_4_5_label" tabindex="">
             
   
   
@@ -1631,8 +1661,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_4_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_4">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_5">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1915,7 +1945,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -1937,14 +1967,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_4_5" id="__nav_4_5_label" tabindex="">
+              <label class="md-nav__link " for="__nav_4_6" id="__nav_4_6_label" tabindex="">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_5">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_6">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -5321,10 +5351,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_7" checked>
         
           
-          <label class="md-nav__link" for="__nav_4_6" id="__nav_4_6_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_7" id="__nav_4_7_label" tabindex="">
             
   
   
@@ -5342,8 +5372,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_4_6">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_7_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4_7">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -22467,17 +22497,43 @@
 <h2 id="problem">Problem<a class="headerlink" href="#problem" title="Permanent link">#</a></h2>
 <p><code>piles</code> 为石子堆数组，Alice 与 Bob 轮流取（Alice 先）。每次玩家从前 <span class="arithmatex">\(X\)</span> 堆中拿 <span class="arithmatex">\(1 \leq X \leq 2M\)</span> 堆，然后 <span class="arithmatex">\(M \leftarrow \max(M, X)\)</span>，初始 <span class="arithmatex">\(M=1\)</span>。双方最优博弈，求 Alice 最多能拿多少。<span class="arithmatex">\(1 \leq n \leq 100\)</span>，<span class="arithmatex">\(1 \leq \text{piles}[i] \leq 10^4\)</span>。</p>
 <h2 id="background">背景 (Background)<a class="headerlink" href="#background" title="Permanent link">#</a></h2>
-<p>经典「<strong>对抗博弈 DP</strong>」。两人零和、信息完全博弈中，"最大化己方得分"等价于"最大化 <span class="arithmatex">\(\sum_{i \in \text{我的}} a_i\)</span>"，可化简为「假设己方先手，从总和减去对手最优值」的递推。同型题包括 #877 Stone Game、#1406 Stone Game III，背后是 Sprague-Grundy / minimax 框架（AIMA §5）。后缀和 + 二维状态 <span class="arithmatex">\((i, M)\)</span> 是常见模板。</p>
+<p>先尝试最直接的写法，看它在哪里卡住。两个玩家轮流取，自然的递归会同时跟踪「轮到谁」和「两人各自已得分数」。设状态为 <span class="arithmatex">\((i, M, \text{turn})\)</span>，从下标 <span class="arithmatex">\(i\)</span> 起、参数为 <span class="arithmatex">\(M\)</span>、当前轮到 <span class="arithmatex">\(\text{turn}\)</span>，递归返回 <span class="arithmatex">\((\text{Alice 得分}, \text{Bob 得分})\)</span>。每一步当前玩家枚举拿 <span class="arithmatex">\(X\)</span> 堆，把 <span class="arithmatex">\(\text{piles}[i:i+X]\)</span> 加进自己的分数，再递归到对手。</p>
+<p>这个写法能算出正确答案，但有一处冗余值得追问：递归要返回两个数。Alice 的最优选择依赖 Bob 之后会怎么走，Bob 又依赖 Alice，两人的得分纠缠在一起。能不能只跟踪一个数？</p>
+<p>关键约束来自题目本身：从下标 <span class="arithmatex">\(i\)</span> 往后的石子总数是<strong>固定的</strong>。无论谁拿、怎么拿，下标 <span class="arithmatex">\(i\)</span> 之后的所有石子最终都会被两人分光，二者得分之和恒等于这个总数。于是只要知道当前玩家拿了多少，对手拿的就是「总数减去它」——一个数完全决定另一个。<span class="arithmatex">\(\text{turn}\)</span> 这一维和「返回两个分数」都可以消去：每个玩家只需在自己的回合里<strong>最大化自己拿到的总量</strong>，对手的最优会自动成为剩余部分的最优。</p>
+<p>这把双人博弈坍缩成了单值递推。下面把这个观察写成精确形式。</p>
 <h2 id="formulation">形式化 (Formulation)<a class="headerlink" href="#formulation" title="Permanent link">#</a></h2>
-<p>令 <span class="arithmatex">\(S_i = \sum_{k=i}^{n-1} \text{piles}[k]\)</span>（后缀和）。定义</p>
-<div class="arithmatex">\[f(i, M) = \text{当前玩家面对从下标 } i \text{ 开始的剩余堆且当前参数为 } M \text{ 时，能取走的最大值。}\]</div>
-<p>转移：</p>
-<div class="arithmatex">\[f(i, M) = \max_{1 \leq X \leq 2M} \big[\, S_i - f(i + X, \max(M, X)) \,\big].\]</div>
-<p>边界：若 <span class="arithmatex">\(i + 2M \geq n\)</span>，本玩家可直接拿剩下全部，<span class="arithmatex">\(f(i, M) = S_i\)</span>。</p>
-<p>答案 <span class="arithmatex">\(f(0, 1)\)</span>。</p>
+<p>令 <span class="arithmatex">\(S_i = \sum_{k=i}^{n-1} \text{piles}[k]\)</span> 为后缀和，即从下标 <span class="arithmatex">\(i\)</span> 起的剩余石子总数。定义</p>
+<div class="arithmatex">\[f(i, M) = \text{当前玩家面对从下标 } i \text{ 开始的剩余堆、参数为 } M \text{ 时，能取走的最大石子数。}\]</div>
+<p>注意 <span class="arithmatex">\(f\)</span> 不区分这个玩家是 Alice 还是 Bob——双方在自己回合里目标相同，函数只刻画「轮到行动的人」。</p>
+<p><strong>转移的推导。</strong> 当前玩家拿 <span class="arithmatex">\(X\)</span> 堆（<span class="arithmatex">\(1 \leq X \leq 2M\)</span>），立刻获得 <span class="arithmatex">\(\text{piles}[i:i+X]\)</span>，剩下的局面是状态 <span class="arithmatex">\((i+X, \max(M, X))\)</span>，轮到对手。对手在这个局面里也最优行动，能拿走的恰是 <span class="arithmatex">\(f(i+X, \max(M, X))\)</span>。由上一节的固定总和约束：从 <span class="arithmatex">\(i\)</span> 起的总数 <span class="arithmatex">\(S_i\)</span> 被两人分光，对手拿走 <span class="arithmatex">\(f(i+X, \max(M, X))\)</span>，<strong>当前玩家拿到的就是剩下的 <span class="arithmatex">\(S_i - f(i+X, \max(M, X))\)</span></strong>。当前玩家挑使这个差最大的 <span class="arithmatex">\(X\)</span>：</p>
+<div class="arithmatex">\[f(i, M) = \max_{1 \leq X \leq 2M} \big[\, S_i - f(i + X, \max(M, X)) \,\big]. \tag{1}\]</div>
+<p>这里 <span class="arithmatex">\(\max(M, X)\)</span> 来自规则 <span class="arithmatex">\(M \leftarrow \max(M, X)\)</span>：本步拿的越多，下一个玩家的窗口 <span class="arithmatex">\(2M\)</span> 越宽。正因如此，未来的可行动作依赖当前的 <span class="arithmatex">\(M\)</span>，<span class="arithmatex">\(M\)</span> 必须进入状态——若 <span class="arithmatex">\(M\)</span> 是常数，状态只剩一维 <span class="arithmatex">\(i\)</span>，问题就退化了。</p>
+<p><strong>边界。</strong> 当 <span class="arithmatex">\(i + 2M \geq n\)</span> 时，剩余堆数 <span class="arithmatex">\(n - i \leq 2M\)</span>，当前玩家可直接取 <span class="arithmatex">\(X = n - i\)</span>（满足 <span class="arithmatex">\(X \leq 2M\)</span>）一次拿完，没有对手再行动：</p>
+<div class="arithmatex">\[i + 2M \geq n \;\Longrightarrow\; f(i, M) = S_i. \tag{2}\]</div>
+<p>答案为 <span class="arithmatex">\(f(0, 1)\)</span>。</p>
+<p><strong>用 (1) 手动 trace 样例 1</strong>：<code>piles=[2,7,9,4,4]</code>，后缀和 <span class="arithmatex">\(S = [26,24,17,8,4,0]\)</span>。</p>
+<p><span class="arithmatex">\(f(0, 1)\)</span> 枚举 <span class="arithmatex">\(X \in \{1, 2\}\)</span>：</p>
+<ul>
+<li><span class="arithmatex">\(X=1\)</span>：<span class="arithmatex">\(26 - f(1, 1)\)</span></li>
+<li><span class="arithmatex">\(f(1, 1)\)</span> 枚举 <span class="arithmatex">\(X \in \{1,2\}\)</span>：<ul>
+<li><span class="arithmatex">\(X=1\)</span>：<span class="arithmatex">\(24 - f(2,1)\)</span></li>
+<li><span class="arithmatex">\(f(2,1)\)</span>：<span class="arithmatex">\(i=2\)</span>，<span class="arithmatex">\(2+2=4&lt;5\)</span>，枚举 <span class="arithmatex">\(X \in \{1,2\}\)</span>：<span class="arithmatex">\(X=1\)</span> 得 <span class="arithmatex">\(17-f(3,1)\)</span>；<span class="arithmatex">\(X=2\)</span> 得 <span class="arithmatex">\(17-f(4,2)\)</span>。<ul>
+<li><span class="arithmatex">\(f(3, 1)\)</span>：<span class="arithmatex">\(3+2=5 \geq 5\)</span>，由 (2) 返 <span class="arithmatex">\(8\)</span>。</li>
+<li><span class="arithmatex">\(f(4, 2)\)</span>：<span class="arithmatex">\(4+4=8 \geq 5\)</span>，由 (2) 返 <span class="arithmatex">\(4\)</span>。</li>
+</ul>
+</li>
+<li><span class="arithmatex">\(f(2,1) = \max(17-8,\, 17-4) = \max(9, 13) = 13\)</span>。</li>
+<li><span class="arithmatex">\(X=2\)</span>：<span class="arithmatex">\(24 - f(3, 2)\)</span>。<span class="arithmatex">\(f(3,2)\)</span>：<span class="arithmatex">\(3+4=7 \geq 5\)</span>，返 <span class="arithmatex">\(8\)</span>。得 <span class="arithmatex">\(24 - 8 = 16\)</span>。</li>
+</ul>
+</li>
+<li><span class="arithmatex">\(f(1, 1) = \max(24-13,\, 16) = \max(11, 16) = 16\)</span>。</li>
+<li><span class="arithmatex">\(X=2\)</span>：<span class="arithmatex">\(26 - f(2, 2)\)</span></li>
+<li><span class="arithmatex">\(f(2, 2)\)</span>：<span class="arithmatex">\(2+4=6 \geq 5\)</span>，返 <span class="arithmatex">\(17\)</span>。得 <span class="arithmatex">\(26 - 17 = 9\)</span>。</li>
+<li><span class="arithmatex">\(f(0, 1) = \max(26 - 16,\, 9) = \max(10, 9) = 10\)</span>。 ✓</li>
+</ul>
+<p>trace 中每个 <span class="arithmatex">\(f(i,M)\)</span> 都是「<span class="arithmatex">\(S_i\)</span> 减去对手最优」的一次具体落地，可对照 (1) 逐步验证。</p>
 <h2 id="approach">数据结构 / 想法 (Approach)<a class="headerlink" href="#approach" title="Permanent link">#</a></h2>
-<p><strong>关键不变量</strong>：玩家最优即"最大化 <span class="arithmatex">\(S_i -\)</span> 对手的最优值"——零和博弈的对称形式。<span class="arithmatex">\(M\)</span> 的范围限制为 <span class="arithmatex">\(1 \leq M \leq n\)</span>（因为 <span class="arithmatex">\(M\)</span> 只会增长且不超过 <span class="arithmatex">\(n\)</span>）。</p>
-<p><strong>实现（记忆化）</strong>：</p>
+<p>代码是递推 (1) 与边界 (2) 的直接转写，无额外技巧。状态空间为 <span class="arithmatex">\((i, M)\)</span>，其中 <span class="arithmatex">\(i \in [0, n]\)</span>；<span class="arithmatex">\(M\)</span> 由 <span class="arithmatex">\(M \leftarrow \max(M, X)\)</span> 单调不降，且任何时刻 <span class="arithmatex">\(X \leq\)</span> 剩余堆数 <span class="arithmatex">\(\leq n\)</span>，故 <span class="arithmatex">\(1 \leq M \leq n\)</span>。状态数 <span class="arithmatex">\(O(n^2)\)</span>，用记忆化避免重复求解。</p>
 <div class="language-python highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">functools</span><span class="w"> </span><span class="kn">import</span> <span class="n">lru_cache</span>
 
 <span class="k">class</span><span class="w"> </span><span class="nc">Solution</span><span class="p">:</span>
@@ -22489,11 +22545,12 @@
 
         <span class="nd">@lru_cache</span><span class="p">(</span><span class="n">maxsize</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
         <span class="k">def</span><span class="w"> </span><span class="nf">f</span><span class="p">(</span><span class="n">i</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">M</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
-            <span class="k">if</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">M</span> <span class="o">&gt;=</span> <span class="n">n</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">M</span> <span class="o">&gt;=</span> <span class="n">n</span><span class="p">:</span>          <span class="c1"># 边界 (2)：可一次拿完</span>
                 <span class="k">return</span> <span class="n">suf</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
             <span class="n">best</span> <span class="o">=</span> <span class="mi">0</span>
             <span class="k">for</span> <span class="n">X</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">M</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
-                <span class="c1"># 当前玩家拿 piles[i:i+X]，剩下让对手在 f(i+X, max(M,X)) 拿</span>
+                <span class="c1"># 递推 (1)：当前玩家拿 piles[i:i+X]，</span>
+                <span class="c1"># 对手在 f(i+X, max(M,X)) 拿走 suf[i] 的其余部分</span>
                 <span class="n">cand</span> <span class="o">=</span> <span class="n">suf</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">-</span> <span class="n">f</span><span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="n">X</span><span class="p">,</span> <span class="nb">max</span><span class="p">(</span><span class="n">M</span><span class="p">,</span> <span class="n">X</span><span class="p">))</span>
                 <span class="k">if</span> <span class="n">cand</span> <span class="o">&gt;</span> <span class="n">best</span><span class="p">:</span>
                     <span class="n">best</span> <span class="o">=</span> <span class="n">cand</span>
@@ -22501,37 +22558,23 @@
 
         <span class="k">return</span> <span class="n">f</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
 </code></pre></div>
-<p><strong>手动 trace 样例 1</strong>：<code>piles=[2,7,9,4,4]</code>, <span class="arithmatex">\(S = [26,24,17,8,4,0]\)</span>。
-<span class="arithmatex">\(f(0, 1)\)</span> 枚举 <span class="arithmatex">\(X \in \{1, 2\}\)</span>：
-- X=1: <span class="arithmatex">\(26 - f(1, 1)\)</span>
-  - <span class="arithmatex">\(f(1, 1)\)</span> 枚举 X∈{1,2}: 
-    - X=1: <span class="arithmatex">\(24 - f(2,1)\)</span>
-      - <span class="arithmatex">\(f(2,1)\)</span>: i=2, 2+2=4&lt;5, 枚举 X∈{1,2}: X=1: 17-f(3,1); X=2: 17-f(4,2). 
-        - <span class="arithmatex">\(f(3, 1)\)</span>: 3+2=5 ≥ 5, 返 8.
-        - <span class="arithmatex">\(f(4, 2)\)</span>: 4+4=8 ≥ 5, 返 4.
-      - <span class="arithmatex">\(f(2,1) = \max(17-8, 17-4) = \max(9, 13) = 13\)</span>.
-    - X=2: <span class="arithmatex">\(24 - f(3, 2)\)</span>. <span class="arithmatex">\(f(3,2)\)</span>: 3+4=7 ≥ 5, 返 8. = 24 - 8 = 16.
-  - <span class="arithmatex">\(f(1, 1) = \max(24-13, 16) = \max(11, 16) = 16\)</span>.
-- X=2: <span class="arithmatex">\(26 - f(2, 2)\)</span>
-  - <span class="arithmatex">\(f(2, 2)\)</span>: 2+4=6 ≥ 5, 返 17.
-  - = 26 - 17 = 9.
-- <span class="arithmatex">\(f(0, 1) = \max(26 - 16, 9) = \max(10, 9) = 10\)</span>. ✓</p>
+<p><code>suf[i]</code> 即 <span class="arithmatex">\(S_i\)</span>，<code>f(i, M)</code> 即递推中的 <span class="arithmatex">\(f\)</span>，循环体逐项对应 <span class="arithmatex">\(S_i - f(i+X, \max(M,X))\)</span>。</p>
 <h2 id="complexity">复杂度 (Complexity)<a class="headerlink" href="#complexity" title="Permanent link">#</a></h2>
 <ul>
-<li>Time: <span class="arithmatex">\(O(n^3)\)</span>；状态 <span class="arithmatex">\(O(n^2)\)</span>，每个转移 <span class="arithmatex">\(O(n)\)</span>。</li>
+<li>Time: <span class="arithmatex">\(O(n^3)\)</span>。状态 <span class="arithmatex">\((i, M)\)</span> 中 <span class="arithmatex">\(i \in [0, n]\)</span>、<span class="arithmatex">\(M \in [1, n]\)</span>，共 <span class="arithmatex">\(O(n^2)\)</span> 个；每个状态枚举 <span class="arithmatex">\(X \in [1, 2M]\)</span>，<span class="arithmatex">\(O(n)\)</span> 次转移。</li>
 <li>Space: <span class="arithmatex">\(O(n^2)\)</span> 记忆化表。</li>
 </ul>
 <h2 id="pitfalls">陷阱 (Pitfalls)<a class="headerlink" href="#pitfalls" title="Permanent link">#</a></h2>
 <ul>
-<li>把 <span class="arithmatex">\(M\)</span> 上界设到 <span class="arithmatex">\(n\)</span> 即可——<span class="arithmatex">\(M\)</span> 单调不降且任何时刻 <span class="arithmatex">\(X \leq\)</span> 剩余堆数 <span class="arithmatex">\(\leq n\)</span>。</li>
-<li>"终止条件"是 <span class="arithmatex">\(i + 2M \geq n\)</span>（当前可一次拿完），不是 <span class="arithmatex">\(i = n\)</span>。</li>
+<li>把 <span class="arithmatex">\(M\)</span> 上界设到 <span class="arithmatex">\(n\)</span> 即可——由 <span class="arithmatex">\(M \leftarrow \max(M, X)\)</span> 知 <span class="arithmatex">\(M\)</span> 单调不降，且任何时刻 <span class="arithmatex">\(X \leq\)</span> 剩余堆数 <span class="arithmatex">\(\leq n\)</span>。</li>
+<li>终止条件是 <span class="arithmatex">\(i + 2M \geq n\)</span>（当前可一次拿完），不是 <span class="arithmatex">\(i = n\)</span>。</li>
 <li>后缀和必须有 <span class="arithmatex">\(n+1\)</span> 个元素以便 <span class="arithmatex">\(\text{suf}[n] = 0\)</span>。</li>
 </ul>
 <h2 id="related">相关题目 (Related)<a class="headerlink" href="#related" title="Permanent link">#</a></h2>
 <ul>
 <li><a href="../0322_coin-change/">#322. Coin Change</a> — 一维 DP 对照。</li>
 <li><code>#877. Stone Game (Medium, off-wiki)</code> — Alice 必胜结论的简化版。</li>
-<li><code>#1406. Stone Game III (Hard, off-wiki)</code> — 同型 minimax 但取 1/2/3 堆。</li>
+<li><code>#1406. Stone Game III (Hard, off-wiki)</code> — 同型固定总和 minimax 但取 1/2/3 堆。</li>
 </ul>
 <h2 id="further-reading">Further Reading<a class="headerlink" href="#further-reading" title="Permanent link">#</a></h2>
 <ul>
@@ -22643,6 +22686,8 @@
         <script src="../../../js/mathjax/tex-mml-chtml.js"></script>
       
         <script src="../../../js/mermaid.min.js"></script>
+      
+        <script src="../../../js/featured.js"></script>
       
     
   </body>

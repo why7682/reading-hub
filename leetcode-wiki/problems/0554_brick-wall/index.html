@@ -1466,6 +1466,8 @@
       
         
       
+        
+      
     
     
     
@@ -1521,6 +1523,34 @@
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../featured/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ⭐ Featured（已验证）
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
               
             
               
@@ -1610,10 +1640,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_4" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
         
           
-          <label class="md-nav__link" for="__nav_4_4" id="__nav_4_4_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_5" id="__nav_4_5_label" tabindex="">
             
   
   
@@ -1631,8 +1661,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_4_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_4">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_5">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1915,7 +1945,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -1937,14 +1967,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_4_5" id="__nav_4_5_label" tabindex="">
+              <label class="md-nav__link " for="__nav_4_6" id="__nav_4_6_label" tabindex="">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_5">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_6">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -5321,10 +5351,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_7" checked>
         
           
-          <label class="md-nav__link" for="__nav_4_6" id="__nav_4_6_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_7" id="__nav_4_7_label" tabindex="">
             
   
   
@@ -5342,8 +5372,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_4_6">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_7_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4_7">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -22467,13 +22497,22 @@
 <h2 id="problem">Problem<a class="headerlink" href="#problem" title="Permanent link">#</a></h2>
 <p><code>n</code> 行砖墙，每行砖宽度不同但总宽相等。画一条<strong>垂直线</strong>（不能贴最左/最右边界），穿过砖数最少。求此最小数。<span class="arithmatex">\(1 \leq n \leq 10^4\)</span>，<span class="arithmatex">\(\sum |wall[i]| \leq 2 \times 10^4\)</span>，每块宽 <span class="arithmatex">\(\leq 2^{31}-1\)</span>。</p>
 <h2 id="background">背景 (Background)<a class="headerlink" href="#background" title="Permanent link">#</a></h2>
-<p>经典"<strong>最大化避开</strong>"问题——把"穿过最少"转换成"在最多的砖缝处下刀"，再用差集求出穿砖数。这种正反转换在最优化中常见（如最大子段和的 Kadane 思想、最大权独立集 vs 最小覆盖等价）。具体技巧：用哈希计数所有"内部砖缝位置（前缀和）"出现频次，最多的那个位置就是最优切线。</p>
+<p>垂直线放在水平位置 <span class="arithmatex">\(x\)</span>。对单独一行而言，只有两种情况：<span class="arithmatex">\(x\)</span> 落在某块砖的内部（穿过这块砖），或 <span class="arithmatex">\(x\)</span> 恰好落在两块砖的接缝上（不穿砖）。整面墙的穿砖数，就是前一种情况的行数。</p>
+<p>最直接的想法是枚举所有可能的 <span class="arithmatex">\(x\)</span>：墙宽为 <span class="arithmatex">\(W\)</span>，对每个整数位置 <span class="arithmatex">\(x \in \{1, \dots, W-1\}\)</span>，逐行检查 <span class="arithmatex">\(x\)</span> 是否落在砖内，累加穿砖数，取最小。这一定正确，但代价是 <span class="arithmatex">\(O(W \cdot n)\)</span>。题目允许单块砖宽达 <span class="arithmatex">\(2^{31}-1\)</span>，于是 <span class="arithmatex">\(W\)</span> 可达约 <span class="arithmatex">\(2^{31}\)</span>——逐位置枚举不可行。</p>
+<p>枚举失败的原因不在于 <span class="arithmatex">\(x\)</span> 的取值多，而在于其中绝大多数取值毫无区别。若把某行的接缝位置集合记下来，那么在两条相邻接缝之间移动 <span class="arithmatex">\(x\)</span>，这一行的穿砖与否始终不变。真正改变答案的 <span class="arithmatex">\(x\)</span>，只能是某行的接缝位置。所有行的接缝位置加起来至多 <span class="arithmatex">\(\sum |wall[i]| \leq 2 \times 10^4\)</span> 个，远小于 <span class="arithmatex">\(W\)</span>。把搜索空间从 <span class="arithmatex">\(\{1, \dots, W-1\}\)</span> 缩小到这个有限集合，是后续一切的出发点。</p>
 <h2 id="formulation">形式化 (Formulation)<a class="headerlink" href="#formulation" title="Permanent link">#</a></h2>
-<p>对每行 <span class="arithmatex">\(i\)</span>，砖宽序列的前缀和（不含最后那个，因为那是右边界）给出该行所有<strong>内部缝位置</strong>集合 <span class="arithmatex">\(P_i\)</span>。垂直线位置 <span class="arithmatex">\(x\)</span> 穿过的砖数为：</p>
-<div class="arithmatex">\[\text{cross}(x) = n - |\{i : x \in P_i\}|\]</div>
-<p>求 <span class="arithmatex">\(\min_x \text{cross}(x) = n - \max_x |\{i : x \in P_i\}|\)</span>。</p>
+<p>先固定记号。第 <span class="arithmatex">\(i\)</span> 行砖宽为 <span class="arithmatex">\(w_{i,0}, w_{i,1}, \dots, w_{i,k_i-1}\)</span>，它们的前缀和给出接缝的绝对位置。第 <span class="arithmatex">\(j\)</span> 个接缝（<span class="arithmatex">\(1 \leq j \leq k_i - 1\)</span>）位于</p>
+<div class="arithmatex">\[x = w_{i,0} + w_{i,1} + \dots + w_{i,j-1}.\]</div>
+<p>最后一个前缀和 <span class="arithmatex">\(\sum_j w_{i,j}\)</span> 等于墙宽 <span class="arithmatex">\(W\)</span>，那是右边界，不算内部接缝，故 <span class="arithmatex">\(j\)</span> 只取到 <span class="arithmatex">\(k_i - 1\)</span>。把第 <span class="arithmatex">\(i\)</span> 行所有内部接缝位置的集合记为 <span class="arithmatex">\(P_i\)</span>。例如 <span class="arithmatex">\(wall[0] = [1,2,2,1]\)</span>，前缀和去掉末项后 <span class="arithmatex">\(P_0 = \{1, 3, 5\}\)</span>。</p>
+<p>现在刻画穿砖数。垂直线在位置 <span class="arithmatex">\(x\)</span> 穿过第 <span class="arithmatex">\(i\)</span> 行的砖，当且仅当 <span class="arithmatex">\(x \notin P_i\)</span>（<span class="arithmatex">\(x\)</span> 不在该行任何接缝上）。每行恰好贡献 <span class="arithmatex">\(0\)</span> 或 <span class="arithmatex">\(1\)</span> 次穿砖，于是</p>
+<div class="arithmatex">\[\text{cross}(x) = |\{i : x \notin P_i\}|.\]</div>
+<p>直觉是：一行要么被穿要么不被穿，二者必居其一，没有第三种状态。这把穿砖与不穿砖绑成互补关系。形式化地，对固定的 <span class="arithmatex">\(x\)</span>，集合 <span class="arithmatex">\(\{i : x \notin P_i\}\)</span> 与 <span class="arithmatex">\(\{i : x \in P_i\}\)</span> 划分全体 <span class="arithmatex">\(n\)</span> 行，故</p>
+<div class="arithmatex">\[\text{cross}(x) = n - |\{i : x \in P_i\}|. \tag{1}\]</div>
+<p>要让 <span class="arithmatex">\(\text{cross}(x)\)</span> 最小，就让 <span class="arithmatex">\(|\{i : x \in P_i\}|\)</span>——即接缝落在 <span class="arithmatex">\(x\)</span> 处的行数——最大：</p>
+<div class="arithmatex">\[\min_x \text{cross}(x) = n - \max_x |\{i : x \in P_i\}|. \tag{2}\]</div>
+<p>由 §背景 的论证，<span class="arithmatex">\(\max\)</span> 只需在有限集合 <span class="arithmatex">\(\bigcup_i P_i\)</span> 上取，无需枚举所有整数位置。剩下的计算任务由式 <span class="arithmatex">\((2)\)</span> 唯一确定：求位置 <span class="arithmatex">\(x\)</span> 在所有 <span class="arithmatex">\(P_i\)</span> 中出现的最大次数。</p>
 <h2 id="approach">数据结构 / 想法 (Approach)<a class="headerlink" href="#approach" title="Permanent link">#</a></h2>
-<p><strong>哈希计数</strong>：对每行算前缀和（不含最后一个），用 <code>Counter</code> 全部汇总。最高频次 = 最多行的缝对齐位置。</p>
+<p>式 <span class="arithmatex">\((2)\)</span> 要的 <span class="arithmatex">\(\max_x |\{i : x \in P_i\}|\)</span>，正是「某个接缝位置被多少行共享」的最大值。把所有行的 <span class="arithmatex">\(P_i\)</span> 看成一个多重集合 <span class="arithmatex">\(\bigcup_i P_i\)</span>（同一位置可来自不同行，重复计入），那么 <span class="arithmatex">\(|\{i : x \in P_i\}|\)</span> 就是位置 <span class="arithmatex">\(x\)</span> 在这个多重集合里的出现次数。于是问题归结为：求多重集合中出现频次最高的元素的频次。这正是哈希计数擅长的——遍历一遍，用哈希表累加每个位置的出现次数，最后取最大频次。</p>
 <div class="language-python highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">collections</span><span class="w"> </span><span class="kn">import</span> <span class="n">Counter</span>
 
 <span class="k">class</span><span class="w"> </span><span class="nc">Solution</span><span class="p">:</span>
@@ -22481,34 +22520,37 @@
         <span class="n">cnt</span> <span class="o">=</span> <span class="n">Counter</span><span class="p">()</span>
         <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">wall</span><span class="p">:</span>
             <span class="n">s</span> <span class="o">=</span> <span class="mi">0</span>
-            <span class="k">for</span> <span class="n">w</span> <span class="ow">in</span> <span class="n">row</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]:</span>    <span class="c1"># 跳过最后一块：边界</span>
+            <span class="k">for</span> <span class="n">w</span> <span class="ow">in</span> <span class="n">row</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]:</span>    <span class="c1"># 跳过最后一块：右边界不算内部缝</span>
                 <span class="n">s</span> <span class="o">+=</span> <span class="n">w</span>
                 <span class="n">cnt</span><span class="p">[</span><span class="n">s</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
-        <span class="c1"># 若所有行都只有一块砖（无内部缝），cnt 空</span>
+        <span class="c1"># 若所有行都只有一块砖（无内部缝），cnt 为空</span>
         <span class="n">most</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">cnt</span><span class="o">.</span><span class="n">values</span><span class="p">(),</span> <span class="n">default</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
         <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="n">wall</span><span class="p">)</span> <span class="o">-</span> <span class="n">most</span>
 </code></pre></div>
-<p><strong>Trace <code>[[1,2,2,1],[3,1,2],[1,3,2],[2,4],[3,1,2],[1,3,1,1]]</code></strong>：n=6
-- 行 0: 前缀（去末）1, 3, 5 → cnt += {1,3,5}
-- 行 1: 3, 4 → cnt += {3,4}
-- 行 2: 1, 4 → cnt += {1,4}
-- 行 3: 2 → cnt += {2}
-- 行 4: 3, 4 → cnt += {3,4}
-- 行 5: 1, 4, 5 → cnt += {1,4,5}</p>
-<p>cnt = {1:3, 3:3, 5:2, 4:4, 2:1}。max = 4 (at x=4)。穿砖 = 6 - 4 = 2 ✓</p>
-<p><strong>Trace <code>[[1],[1],[1]]</code></strong>：每行无内部缝，cnt 空。max default 0，返回 3 - 0 = 3 ✓</p>
-<p><strong>不变量</strong>：哈希 key 对应的是行内某缝的累计偏移；同一 key 出现 <span class="arithmatex">\(k\)</span> 次说明 <span class="arithmatex">\(k\)</span> 行在此处共有缝。</p>
+<p><code>row[:-1]</code> 丢掉每行最后一块砖，对应式 <span class="arithmatex">\((1)\)</span> 中 <span class="arithmatex">\(P_i\)</span> 不含右边界；累加得到的 <code>s</code> 即接缝绝对位置，<code>cnt[s] += 1</code> 把它计入多重集合。<code>most</code> 是 <span class="arithmatex">\(\max_x |\{i : x \in P_i\}|\)</span>，<code>len(wall) - most</code> 直接由式 <span class="arithmatex">\((2)\)</span> 给出答案。</p>
+<p><strong>先看一行的内部不变量</strong>。第 <span class="arithmatex">\(i\)</span> 行循环中，<code>s</code> 始终等于已扫描砖宽之和，即某个前缀和，也就是 <span class="arithmatex">\(P_i\)</span> 中的一个接缝位置；<code>cnt[s] += 1</code> 表示「第 <span class="arithmatex">\(i\)</span> 行在位置 <code>s</code> 有一条缝」。汇总后，<code>cnt[x]</code> 等于位置 <span class="arithmatex">\(x\)</span> 处有缝的行数，恰为 <span class="arithmatex">\(|\{i : x \in P_i\}|\)</span>。</p>
+<p><strong>完整 Trace</strong> <code>[[1,2,2,1],[3,1,2],[1,3,2],[2,4],[3,1,2],[1,3,1,1]]</code>，<span class="arithmatex">\(n=6\)</span>：</p>
+<ul>
+<li>行 0: 前缀（去末）<span class="arithmatex">\(1, 3, 5\)</span> → cnt += <span class="arithmatex">\(\{1,3,5\}\)</span></li>
+<li>行 1: <span class="arithmatex">\(3, 4\)</span> → cnt += <span class="arithmatex">\(\{3,4\}\)</span></li>
+<li>行 2: <span class="arithmatex">\(1, 4\)</span> → cnt += <span class="arithmatex">\(\{1,4\}\)</span></li>
+<li>行 3: <span class="arithmatex">\(2\)</span> → cnt += <span class="arithmatex">\(\{2\}\)</span></li>
+<li>行 4: <span class="arithmatex">\(3, 4\)</span> → cnt += <span class="arithmatex">\(\{3,4\}\)</span></li>
+<li>行 5: <span class="arithmatex">\(1, 4, 5\)</span> → cnt += <span class="arithmatex">\(\{1,4,5\}\)</span></li>
+</ul>
+<p>cnt = <span class="arithmatex">\(\{1{:}3,\ 3{:}3,\ 5{:}2,\ 4{:}4,\ 2{:}1\}\)</span>。最大频次 <span class="arithmatex">\(4\)</span>（位置 <span class="arithmatex">\(x=4\)</span>，四行在此有缝），穿砖 <span class="arithmatex">\(= 6 - 4 = 2\)</span> ✓。</p>
+<p><strong>边界 Trace</strong> <code>[[1],[1],[1]]</code>：每行单砖，<code>row[:-1]</code> 为空切片，无内部缝，cnt 为空。<code>max(..., default=0)</code> 给 <span class="arithmatex">\(0\)</span>，返回 <span class="arithmatex">\(3 - 0 = 3\)</span> ✓——三行都被穿，与「没有任何缝可对齐」一致。</p>
 <h2 id="complexity">复杂度 (Complexity)<a class="headerlink" href="#complexity" title="Permanent link">#</a></h2>
 <ul>
-<li>Time: <span class="arithmatex">\(O(\sum |\text{wall}[i]|) = O(2 \times 10^4)\)</span></li>
-<li>Space: <span class="arithmatex">\(O(\sum |\text{wall}[i]|)\)</span>（哈希表）</li>
+<li>Time: <span class="arithmatex">\(O\!\left(\sum_i |wall[i]|\right)\)</span>——每块砖（每行少算一块）恰被处理一次写入哈希表；本题约束下 <span class="arithmatex">\(\sum_i |wall[i]| \leq 2 \times 10^4\)</span>。</li>
+<li>Space: <span class="arithmatex">\(O\!\left(\sum_i |wall[i]|\right)\)</span>——最坏情况所有接缝位置互异，哈希表存满全部前缀和。</li>
 </ul>
 <h2 id="pitfalls">陷阱 (Pitfalls)<a class="headerlink" href="#pitfalls" title="Permanent link">#</a></h2>
 <ul>
-<li><strong>不能在最右边界下刀</strong>：所以前缀和必须跳过最后一块砖（题目"不能贴边"）。漏掉这一步会导致所有行都共享一个右边界 key，最大频次 = n，答案恒为 0。</li>
-<li><strong>空哈希 default</strong>：所有行单砖时，<code>max([])</code> 抛错。用 <code>max(..., default=0)</code>。</li>
-<li><strong>大宽度</strong>：每块宽 <span class="arithmatex">\(\leq 2^{31}-1\)</span>，Python 天然；C++ 需 <code>long long</code>。</li>
-<li><strong>不是按列扫描整面墙</strong>：那是 <span class="arithmatex">\(O(\text{width} \times n)\)</span>，宽可达 <span class="arithmatex">\(2^{31}\)</span>，必爆。</li>
+<li><strong>不能在最右边界下刀</strong>：所以前缀和必须跳过每行最后一块砖。漏掉这一步，则每行的右边界（位置 <span class="arithmatex">\(W\)</span>）都会被计入，成为所有 <span class="arithmatex">\(n\)</span> 行共享的 key，最大频次恒为 <span class="arithmatex">\(n\)</span>，由式 <span class="arithmatex">\((2)\)</span> 答案恒为 <span class="arithmatex">\(0\)</span>——已在主例上验证该错误变体确实返回 <span class="arithmatex">\(0\)</span>。</li>
+<li><strong>空哈希需要 default</strong>：所有行都是单砖时 cnt 为空，裸 <code>max([])</code> 抛 <code>ValueError</code>。用 <code>max(..., default=0)</code> 兜底。</li>
+<li><strong>大宽度</strong>：每块宽 <span class="arithmatex">\(\leq 2^{31}-1\)</span>，前缀和可超 32 位。Python 整数任意精度，天然安全；C++ 需用 <code>long long</code> 存前缀和。</li>
+<li><strong>不要逐列扫描整面墙</strong>：那是 §背景 中已被否决的 <span class="arithmatex">\(O(W \cdot n)\)</span> 朴素法，<span class="arithmatex">\(W\)</span> 可达约 <span class="arithmatex">\(2^{31}\)</span>，在本约束下不可行。</li>
 </ul>
 <h2 id="related">相关题目 (Related)<a class="headerlink" href="#related" title="Permanent link">#</a></h2>
 <ul>
@@ -22624,6 +22666,8 @@
         <script src="../../../js/mathjax/tex-mml-chtml.js"></script>
       
         <script src="../../../js/mermaid.min.js"></script>
+      
+        <script src="../../../js/featured.js"></script>
       
     
   </body>

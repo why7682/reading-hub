@@ -1466,6 +1466,8 @@
       
         
       
+        
+      
     
     
     
@@ -1521,6 +1523,34 @@
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../featured/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ⭐ Featured（已验证）
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
               
             
               
@@ -1610,10 +1640,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_4" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
         
           
-          <label class="md-nav__link" for="__nav_4_4" id="__nav_4_4_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_5" id="__nav_4_5_label" tabindex="">
             
   
   
@@ -1631,8 +1661,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_4_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_4">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_5">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1915,7 +1945,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -1937,14 +1967,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_4_5" id="__nav_4_5_label" tabindex="">
+              <label class="md-nav__link " for="__nav_4_6" id="__nav_4_6_label" tabindex="">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_5">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_6">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -5321,10 +5351,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_7" checked>
         
           
-          <label class="md-nav__link" for="__nav_4_6" id="__nav_4_6_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_7" id="__nav_4_7_label" tabindex="">
             
   
   
@@ -5342,8 +5372,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_4_6">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_7_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4_7">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -22467,12 +22497,36 @@
 <h2 id="problem">Problem<a class="headerlink" href="#problem" title="Permanent link">#</a></h2>
 <p><span class="arithmatex">\(n\)</span> 台计算机（编号 <span class="arithmatex">\(0\)</span> 到 <span class="arithmatex">\(n-1\)</span>）由 <code>connections[i] = [a, b]</code> 表示的双向连线组成无向图。一次操作可拆下任意一条已有边并把它接到任意两个未直连的计算机之间。求让所有计算机连通所需的最少操作数；不可能则返回 <span class="arithmatex">\(-1\)</span>。</p>
 <h2 id="background">背景 (Background)<a class="headerlink" href="#background" title="Permanent link">#</a></h2>
-<p>经典 <strong>连通图最小连接</strong>：图论里"使 <span class="arithmatex">\(n\)</span> 节点连通至少需 <span class="arithmatex">\(n-1\)</span> 条边"是树的定义。给 <span class="arithmatex">\(E\)</span> 条边、<span class="arithmatex">\(c\)</span> 个连通分量，需要再加 <span class="arithmatex">\(c - 1\)</span> 条边来连通；这些边可从冗余边（在某连通分量内形成环的边）拆下来。可行性条件：<span class="arithmatex">\(E \geq n - 1\)</span>（否则边数本身不足以张成树）。Union–Find（DSU）以接近 <span class="arithmatex">\(O(\alpha(n))\)</span> 摊销时间数连通分量。</p>
+<p>把问题摆正：当前图分裂成若干互不连通的块，我们想用最少的操作把它们并成一块。每次操作不会凭空造一条新线——它只能<strong>拆一条已有线，再接到别处</strong>。两个数量从一开始就互相牵制：要并块得<strong>有线可接</strong>，而被接的线又只能来自<strong>当前已铺的线</strong>。这个张力就是整道题的核心，下面所有推导都从它展开。</p>
+<p>先问最朴素的问题：<strong>要把分裂的块并成一块，至少要接几条线？</strong></p>
+<p>设当前有 <span class="arithmatex">\(c\)</span> 个连通分量。盯住一条被接的线：它的两端必须落在两个<strong>不同</strong>的分量上，否则两端早已连通，这条线接了等于没接，分量数不变。而只要两端落在不同分量，接上这条线就把这两个分量合二为一，分量数恰好减 <span class="arithmatex">\(1\)</span>。于是每条<strong>有效</strong>操作让分量数从 <span class="arithmatex">\(c\)</span> 出发严格下降 <span class="arithmatex">\(1\)</span>，要降到 <span class="arithmatex">\(1\)</span> 就需要 <span class="arithmatex">\(c-1\)</span> 条有效线。这是个下界：少于 <span class="arithmatex">\(c-1\)</span> 条线无论怎么接都至少剩两个分量。</p>
+<p>朴素的答案似乎就是 <span class="arithmatex">\(c-1\)</span>。但它在一处断裂：<strong>这 <span class="arithmatex">\(c-1\)</span> 条可拆可接的线，真的存在吗？</strong> 操作不能造新线，只能搬已有的线；要搬走一条线而不破坏它所在分量的连通性，这条线必须是<strong>可拆的</strong>——拆掉它，它两端仍由别的路径相连。</p>
+<p>什么样的线可拆？一个有 <span class="arithmatex">\(k\)</span> 个节点的连通分量，要让这 <span class="arithmatex">\(k\)</span> 个节点连通，最少需要 <span class="arithmatex">\(k-1\)</span> 条线（这正是树：连通且无环的极小连边方式）。超出 <span class="arithmatex">\(k-1\)</span> 的每一条线都使分量内出现环；环上任意一条线拆掉后，环退化成路径，两端仍连通——这条线就是可拆的。<strong>可拆的线恰好是使分量内成环的"多余边"</strong>，多余边数等于该分量的边数减去 <span class="arithmatex">\((k-1)\)</span>。把所有分量的多余边累加，就是全图可供搬运的线的总数。</p>
+<p>于是朴素答案 <span class="arithmatex">\(c-1\)</span> 成立的前提是：<strong>全图多余边数 <span class="arithmatex">\(\geq c-1\)</span></strong>。这正是上一段断裂处需要补上的条件。下一节把它形式化，并化简成一次比较。</p>
 <h2 id="formulation">形式化 (Formulation)<a class="headerlink" href="#formulation" title="Permanent link">#</a></h2>
-<p>无向图 <span class="arithmatex">\(G = (V, E)\)</span>，<span class="arithmatex">\(|V| = n\)</span>，<span class="arithmatex">\(|E| = m\)</span>。设连通分量数为 <span class="arithmatex">\(c\)</span>，多余边数为 <span class="arithmatex">\(r = m - (n - c)\)</span>（每个分量至少需 <span class="arithmatex">\(|V_i| - 1\)</span> 条边构成 spanning tree，多余即冗余）。所求 = <span class="arithmatex">\(c - 1\)</span> 当 <span class="arithmatex">\(r \geq c - 1\)</span>（必然成立，因为 <span class="arithmatex">\(r = m - n + c \geq c - 1 \iff m \geq n - 1\)</span>）；否则 <span class="arithmatex">\(-1\)</span>。</p>
-<p>更简：直接判 <span class="arithmatex">\(m \geq n - 1\)</span>，是则答案 <span class="arithmatex">\(c - 1\)</span>，否则 <span class="arithmatex">\(-1\)</span>。</p>
+<p>无向图 <span class="arithmatex">\(G = (V, E)\)</span>，<span class="arithmatex">\(|V| = n\)</span>，<span class="arithmatex">\(|E| = m\)</span>。设连通分量数为 <span class="arithmatex">\(c\)</span>。</p>
+<p><strong>所需操作数</strong>。由上节的下界论证，把 <span class="arithmatex">\(c\)</span> 个分量并成一块，至少需要 <span class="arithmatex">\(c-1\)</span> 条有效线，且 <span class="arithmatex">\(c-1\)</span> 条可达；故操作数恰为</p>
+<div class="arithmatex">\[\text{ops} = c - 1. \tag{1}\]</div>
+<p><strong>可行性</strong>。这 <span class="arithmatex">\(c-1\)</span> 条线须来自多余边。每个分量 <span class="arithmatex">\(i\)</span>（含 <span class="arithmatex">\(|V_i|\)</span> 个节点）构成连通子图至少用 <span class="arithmatex">\(|V_i| - 1\)</span> 条边，故全图的"骨架"边数为 <span class="arithmatex">\(\sum_i (|V_i| - 1) = n - c\)</span>。超出骨架的边即多余边，其总数为</p>
+<div class="arithmatex">\[r = m - (n - c). \tag{2}\]</div>
+<p>可行当且仅当多余边足够支付 <span class="arithmatex">\(c-1\)</span> 条桥，即 <span class="arithmatex">\(r \geq c - 1\)</span>。把 <span class="arithmatex">\((2)\)</span> 代入并化简：</p>
+<div class="arithmatex">\[
+r \geq c - 1
+\;\iff\; m - (n - c) \geq c - 1
+\;\iff\; m - n + c \geq c - 1
+\;\iff\; m \geq n - 1. \tag{3}
+\]</div>
+<p>中间一步两边同消去 <span class="arithmatex">\(c\)</span>，可行性与 <span class="arithmatex">\(c\)</span> 无关，<strong>只取决于 <span class="arithmatex">\(m\)</span> 与 <span class="arithmatex">\(n\)</span></strong>。这有直接的解释：<span class="arithmatex">\(n\)</span> 个节点连成一块（一棵生成树）至少需 <span class="arithmatex">\(n-1\)</span> 条边，边数本身不足 <span class="arithmatex">\(n-1\)</span> 时再怎么搬都张不成树。</p>
+<p><strong>结论</strong>。<span class="arithmatex">\((1)\)</span> 与 <span class="arithmatex">\((3)\)</span> 合并：当 <span class="arithmatex">\(m \geq n - 1\)</span> 时答案为 <span class="arithmatex">\(c - 1\)</span>，否则返回 <span class="arithmatex">\(-1\)</span>。形式化把原问题压成两个量——分量数 <span class="arithmatex">\(c\)</span> 与边数 <span class="arithmatex">\(m\)</span>——下一节用一种数据结构同时算出它们。</p>
 <h2 id="approach">数据结构 / 想法 (Approach)<a class="headerlink" href="#approach" title="Permanent link">#</a></h2>
-<p><strong>DSU 路径压缩 + 按秩合并</strong>。逐边合并；最后数连通分量。<span class="arithmatex">\(O((n + m) \alpha(n))\)</span>。</p>
+<p>由 <span class="arithmatex">\((3)\)</span>，先用一次 <span class="arithmatex">\(m \geq n-1\)</span> 的比较判可行；不可行直接返回 <span class="arithmatex">\(-1\)</span>。剩下的工作是算出分量数 <span class="arithmatex">\(c\)</span>。</p>
+<p><strong>为什么用 DSU</strong>。分量数的定义是"把节点按连通关系划分成等价类后类的个数"。我们需要的操作恰是：逐条读入边，把边的两端<strong>合并</strong>进同一类，并随时知道<strong>当前还剩几类</strong>。并查集（DSU）正是为这种"动态合并 + 查询所属类"设计的：每次 <code>union</code> 要么把两个不同的类并成一个（类数减 <span class="arithmatex">\(1\)</span>），要么发现两端已同类（这条边是多余边，类数不变）。读完所有边，剩下的类数就是 <span class="arithmatex">\(c\)</span>。</p>
+<p><strong>朴素 DSU 会退化</strong>。最直白的实现把每个类表示成一棵树，<code>union</code> 时把一棵树的根直接挂到另一棵根下，<code>find</code> 则一路爬到根。但若每次都把新节点挂到旧根下，处理一条链 <span class="arithmatex">\(0\!-\!1\!-\!2\!-\!\cdots\!-\!(n\!-\!1)\)</span> 会长出一条高度 <span class="arithmatex">\(O(n)\)</span> 的退化树，此后每次 <code>find</code> 都要爬 <span class="arithmatex">\(O(n)\)</span> 步。两个补丁消除退化：</p>
+<ul>
+<li><strong>按秩合并</strong>：总把较矮的树挂到较高的树下，树高增长被压到 <span class="arithmatex">\(O(\log n)\)</span>。</li>
+<li><strong>路径压缩</strong>：<code>find</code> 爬到根的途中顺手把沿途节点直接指向更上层（此处用 halving 变种，每步令 <code>p[x] = p[p[x]]</code>），把走过的路径就地拍扁，后续查询近乎 <span class="arithmatex">\(O(1)\)</span>。</li>
+</ul>
+<p>两者叠加后，<span class="arithmatex">\(m\)</span> 次 <code>union</code> 的摊销代价为 <span class="arithmatex">\(O((n+m)\,\alpha(n))\)</span>，<span class="arithmatex">\(\alpha\)</span> 是 Ackermann 反函数，实质为常数。</p>
 <div class="language-python highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">DSU</span><span class="p">:</span>
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">p</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">))</span>
@@ -22502,11 +22556,14 @@
             <span class="n">dsu</span><span class="o">.</span><span class="n">union</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">dsu</span><span class="o">.</span><span class="n">cnt</span> <span class="o">-</span> <span class="mi">1</span>
 </code></pre></div>
-<p><strong>替代解法：DFS / BFS</strong>。把图建邻接表，扫所有节点，未访问的发起 DFS 标记一个分量；最后分量数同上。复杂度同。</p>
-<p>样例验证：
-- <code>n=4, connections=[[0,1],[0,2],[1,2]]</code>：<span class="arithmatex">\(m=3 \geq 3 = n-1\)</span>。分量 {0,1,2} 与 {3}，<span class="arithmatex">\(c = 2\)</span> → 答 <span class="arithmatex">\(c - 1 = 1\)</span> ✓。
-- <code>n=6, connections=[[0,1],[0,2],[0,3],[1,2],[1,3]]</code>：<span class="arithmatex">\(m=5 \geq 5\)</span>。分量 {0,1,2,3} 与 {4} 与 {5}，<span class="arithmatex">\(c = 3\)</span> → 答 2 ✓。
-- <code>n=6, connections=[[0,1],[0,2],[0,3],[1,2]]</code>：<span class="arithmatex">\(m=4 &lt; 5\)</span> → 答 <span class="arithmatex">\(-1\)</span> ✓。</p>
+<p><code>cnt</code> 初始为 <span class="arithmatex">\(n\)</span>（每个节点自成一类），每次成功 <code>union</code> 减 <span class="arithmatex">\(1\)</span>，最终等于 <span class="arithmatex">\(c\)</span>；返回 <span class="arithmatex">\(c-1\)</span> 即式 <span class="arithmatex">\((1)\)</span>。</p>
+<p>样例验证（先判 <span class="arithmatex">\(m \geq n-1\)</span>，再数分量）：</p>
+<ul>
+<li><code>n=4, connections=[[0,1],[0,2],[1,2]]</code>：<span class="arithmatex">\(m=3 \geq 3 = n-1\)</span>。分量 {0,1,2} 与 {3}，<span class="arithmatex">\(c = 2\)</span> → 答 <span class="arithmatex">\(c - 1 = 1\)</span> ✓。</li>
+<li><code>n=6, connections=[[0,1],[0,2],[0,3],[1,2],[1,3]]</code>：<span class="arithmatex">\(m=5 \geq 5\)</span>。分量 {0,1,2,3} 与 {4} 与 {5}，<span class="arithmatex">\(c = 3\)</span> → 答 2 ✓。</li>
+<li><code>n=6, connections=[[0,1],[0,2],[0,3],[1,2]]</code>：<span class="arithmatex">\(m=4 &lt; 5\)</span> → 答 <span class="arithmatex">\(-1\)</span> ✓。</li>
+</ul>
+<p><strong>替代解法：DFS / BFS</strong>。分量数也可不借助 DSU：把图建成邻接表，遍历所有节点，遇到未访问的就发起一次 DFS（或 BFS）标记它所在的整个分量，发起的次数即分量数 <span class="arithmatex">\(c\)</span>。可行性仍由 <span class="arithmatex">\((3)\)</span> 单独判定。复杂度同为线性级别。</p>
 <h2 id="complexity">复杂度 (Complexity)<a class="headerlink" href="#complexity" title="Permanent link">#</a></h2>
 <ul>
 <li>Time: <span class="arithmatex">\(O((n + m) \alpha(n))\)</span>，其中 <span class="arithmatex">\(\alpha\)</span> 是 Ackermann 反函数（实质常数）</li>
@@ -22514,9 +22571,9 @@
 </ul>
 <h2 id="pitfalls">陷阱 (Pitfalls)<a class="headerlink" href="#pitfalls" title="Permanent link">#</a></h2>
 <ul>
-<li>必须<strong>先</strong>判 <span class="arithmatex">\(m &lt; n - 1\)</span> 才返回 <span class="arithmatex">\(-1\)</span>；写在 union 之后再判也对但浪费。</li>
-<li>不要把"冗余边数 <span class="arithmatex">\(r\)</span>"与"分量数 <span class="arithmatex">\(c - 1\)</span>"混淆。题目要的是后者；前者只用于可行性（已被 <span class="arithmatex">\(m \geq n - 1\)</span> 蕴含）。</li>
-<li>DSU 实现要点：路径压缩（任一变种，如 halving 或 full 都行）+ 按秩合并；否则最坏 <span class="arithmatex">\(O(\log n)\)</span> 查询并不致命但不严谨。</li>
+<li>由 <span class="arithmatex">\((3)\)</span> 知 <span class="arithmatex">\(m &lt; n - 1\)</span> 必然不可行。把这次比较<strong>前置</strong>到所有 <code>union</code> 之前可提前返回 <span class="arithmatex">\(-1\)</span>；放到 <code>union</code> 之后再判也正确，但白做了一遍合并，是多余的工作。</li>
+<li>不要把"多余边数 <span class="arithmatex">\(r\)</span>"（式 <span class="arithmatex">\((2)\)</span>）与"分量数 <span class="arithmatex">\(c - 1\)</span>"（式 <span class="arithmatex">\((1)\)</span>）混淆。题目要的是后者；前者只用于可行性判定，且已被 <span class="arithmatex">\((3)\)</span> 的 <span class="arithmatex">\(m \geq n - 1\)</span> 蕴含——不必显式计算 <span class="arithmatex">\(r\)</span>。</li>
+<li>DSU 的两个补丁缺一不可严谨：路径压缩（halving 或 full 变种均可）配按秩合并。缺其一最坏退化到 <span class="arithmatex">\(O(\log n)\)</span> 查询，对本题数据规模虽不致命，但复杂度结论不再是近常数。</li>
 </ul>
 <h2 id="related">相关题目 (Related)<a class="headerlink" href="#related" title="Permanent link">#</a></h2>
 <ul>
@@ -22636,6 +22693,8 @@
         <script src="../../../js/mathjax/tex-mml-chtml.js"></script>
       
         <script src="../../../js/mermaid.min.js"></script>
+      
+        <script src="../../../js/featured.js"></script>
       
     
   </body>

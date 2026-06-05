@@ -1466,6 +1466,8 @@
       
         
       
+        
+      
     
     
     
@@ -1521,6 +1523,34 @@
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../featured/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ⭐ Featured（已验证）
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
               
             
               
@@ -1610,10 +1640,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_4" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
         
           
-          <label class="md-nav__link" for="__nav_4_4" id="__nav_4_4_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_5" id="__nav_4_5_label" tabindex="">
             
   
   
@@ -1631,8 +1661,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_4_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_4">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_5">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1915,7 +1945,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -1937,14 +1967,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_4_5" id="__nav_4_5_label" tabindex="">
+              <label class="md-nav__link " for="__nav_4_6" id="__nav_4_6_label" tabindex="">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_5">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_6">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -5321,10 +5351,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_7" checked>
         
           
-          <label class="md-nav__link" for="__nav_4_6" id="__nav_4_6_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_7" id="__nav_4_7_label" tabindex="">
             
   
   
@@ -5342,8 +5372,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_4_6">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_7_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4_7">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -22467,12 +22497,16 @@
 <h2 id="problem">Problem<a class="headerlink" href="#problem" title="Permanent link">#</a></h2>
 <p>给单链表 head，返回环的<strong>入口节点</strong>；若无环返回 NULL。<strong>不可修改链表</strong>。<span class="arithmatex">\(0 \le n \le 10^4\)</span>。<strong>Follow-up</strong>: <span class="arithmatex">\(O(1)\)</span> 额外空间。</p>
 <h2 id="background">背景 (Background)<a class="headerlink" href="#background" title="Permanent link">#</a></h2>
-<p>本题是 <strong>Floyd 龟兔 (Tortoise and Hare) 环检测</strong> (1967) 的经典舞台。在 <span class="arithmatex">\(O(1)\)</span> 空间约束下定位环入口需要一段精巧的数论论证：相遇点距入口的距离 = head 距入口的距离（模环长）。该算法既是函数迭代 <span class="arithmatex">\(x_{n+1} = f(x_n)\)</span> 的周期检测原型（如 <strong>Pollard's rho</strong> 因式分解 1975、随机数生成器的周期分析），也是动态系统理论中"轨道"概念的离散版。</p>
-<p>替代算法 <strong>Brent (1980)</strong> 用倍增的步长上界来检测，常数更优但代码复杂。两者都属于"<span class="arithmatex">\(O(1)\)</span> 内存的功能函数周期检测"经典。</p>
+<p>沿 <code>next</code> 指针走，节点序列只有两种结局：走到 <code>None</code>（无环），或在某处第一次重访一个节点，此后永远在一段固定节点上循环。于是任意遍历轨迹的形状只有两类——一条直线，或一条"先直后圈"的轨迹：长度 <span class="arithmatex">\(\mu\)</span> 的不重复前缀，接上长度 <span class="arithmatex">\(\lambda\)</span> 的循环。本题要定位的，正是直线段与循环段的交界，即环入口。</p>
+<p>定位入口最直接的办法是记录走过的每个节点，第一个被重访者即入口。这要 <span class="arithmatex">\(O(n)\)</span> 空间。Follow-up 把空间压到 <span class="arithmatex">\(O(1)\)</span>，等于禁止"记录"，逼我们改用轨迹本身的结构——前缀长 <span class="arithmatex">\(\mu\)</span> 与环长 <span class="arithmatex">\(\lambda\)</span> 之间的算术关系。下面就从这两个量出发，把定位入口的算法一步步推导出来。</p>
 <h2 id="formulation">形式化 (Formulation)<a class="headerlink" href="#formulation" title="Permanent link">#</a></h2>
-<p>设链表节点 <span class="arithmatex">\(v_0, v_1, \dots\)</span>，迭代 <span class="arithmatex">\(v_{i+1} = v_i.\text{next}\)</span>，可能存在某 <span class="arithmatex">\(\mu, \lambda\)</span>：<span class="arithmatex">\(v_{\mu+i} = v_{\mu+\lambda+i}\)</span> 对所有 <span class="arithmatex">\(i \ge 0\)</span>，即从 index <span class="arithmatex">\(\mu\)</span> 起进入长度 <span class="arithmatex">\(\lambda\)</span> 的环。求 <span class="arithmatex">\(v_\mu\)</span>（环入口）或 NULL（无环）。</p>
+<p>先说清"先直后圈"在节点序列上意味着什么，再写成等式。设链表节点 <span class="arithmatex">\(v_0, v_1, \dots\)</span>，迭代 <span class="arithmatex">\(v_{i+1} = v_i.\text{next}\)</span>。"先直后圈"是说：前 <span class="arithmatex">\(\mu\)</span> 个节点互不相同且不在环上，从第 <span class="arithmatex">\(\mu\)</span> 个起进入一段长度 <span class="arithmatex">\(\lambda\)</span> 的环、之后周期复现。形式化为：存在最小的 <span class="arithmatex">\(\mu \ge 0\)</span> 与 <span class="arithmatex">\(\lambda \ge 1\)</span>，使</p>
+<div class="arithmatex">\[v_{\mu+i} = v_{\mu+\lambda+i} \quad \text{对所有 } i \ge 0,\]</div>
+<p>而 <span class="arithmatex">\(v_0, \dots, v_{\mu-1}\)</span> 互不相同也不在环上。要求 <span class="arithmatex">\(v_\mu\)</span>（环入口）；若不存在这样的 <span class="arithmatex">\(\lambda\)</span>（轨迹走到 <code>None</code>），返回 NULL。</p>
+<p>由此立刻得到一条周期性：对环内位置 <span class="arithmatex">\(j, j' \ge \mu\)</span>，<span class="arithmatex">\(v_j = v_{j'}\)</span> 当且仅当 <span class="arithmatex">\(j \equiv j' \pmod{\lambda}\)</span>。环上节点的 index 是模 <span class="arithmatex">\(\lambda\)</span> 周期的——这条性质是后面所有推导的唯一工具。</p>
 <h2 id="approach">数据结构 / 想法 (Approach)<a class="headerlink" href="#approach" title="Permanent link">#</a></h2>
-<p><strong>解法 A：哈希集 (<span class="arithmatex">\(O(n)\)</span> 空间，无脑)</strong></p>
+<p><strong>基线：哈希集 (<span class="arithmatex">\(O(n)\)</span> 额外空间)</strong></p>
+<p>直接照形式化实现：边走边记录走过的节点，第一个重访者即入口。</p>
 <div class="language-python highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">Solution</span><span class="p">:</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">detectCycle</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">head</span><span class="p">):</span>
         <span class="n">seen</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
@@ -22484,7 +22518,20 @@
             <span class="n">p</span> <span class="o">=</span> <span class="n">p</span><span class="o">.</span><span class="n">next</span>
         <span class="k">return</span> <span class="kc">None</span>
 </code></pre></div>
-<p><strong>解法 B：Floyd 龟兔 (<span class="arithmatex">\(O(1)\)</span> 空间，标准)</strong></p>
+<p>正确，<span class="arithmatex">\(O(n)\)</span> 时间，但 <code>seen</code> 占 <span class="arithmatex">\(O(n)\)</span> 空间，违反 follow-up。问题随之收紧成：<strong>不存任何节点，只用常数个指针，能否定位入口？</strong></p>
+<p><strong>第一步：用速度差检测"有没有环"</strong></p>
+<p>不存节点，就只剩"走"这一个动作。无环时遍历会走到 <code>None</code>，所以只要某种走法能区分"走到头"与"绕回来"，就能判环。单个指针做不到：它没有参照物，无法判断当前节点是否来过。引入第二个指针，让两者以不同速度前进，互为参照。</p>
+<p>为什么速度差能逼出相遇？看二者都进入环之后的相对位置。设此刻快指针在慢指针前方 <span class="arithmatex">\(d\)</span> 个位置（模 <span class="arithmatex">\(\lambda\)</span>）。若快指针每步比慢指针多走 <span class="arithmatex">\(1\)</span> 格，则 <span class="arithmatex">\(d\)</span> 每步加 <span class="arithmatex">\(1\)</span>；在 <span class="arithmatex">\(\lambda\)</span> 步内，<span class="arithmatex">\(d\)</span> 取遍 <span class="arithmatex">\(0, 1, \dots, \lambda-1\)</span>，必有一步 <span class="arithmatex">\(d \equiv 0 \pmod{\lambda}\)</span>，即两指针落在同一节点。取速度 <span class="arithmatex">\(1\)</span> 与 <span class="arithmatex">\(2\)</span> 恰好实现"每步多走 <span class="arithmatex">\(1\)</span> 格"，且最简单。<strong>所以速度 <span class="arithmatex">\(1\)</span>、<span class="arithmatex">\(2\)</span> 的两指针一旦都进入环，至多 <span class="arithmatex">\(\lambda\)</span> 步内必相遇。</strong> 反之若无环，快指针先到 <code>None</code>，据此返回。</p>
+<p>这判定了"有没有环"。但相遇点落在环内某处——记它在入口之后 <span class="arithmatex">\(k\)</span> 步（<span class="arithmatex">\(0 \le k &lt; \lambda\)</span>）——与入口 <span class="arithmatex">\(v_\mu\)</span> 没有显然的位置关系。基线那条退路（"重访即入口"）也用不上：我们既不许存节点，又不知道 <span class="arithmatex">\(k\)</span>。要继续，必须把 <span class="arithmatex">\(\mu, k, \lambda\)</span> 的关系算出来。</p>
+<p><strong>第二步：从相遇条件解出入口位置</strong></p>
+<p>相遇时，慢指针走了 <span class="arithmatex">\(\mu + k\)</span> 步（入口前 <span class="arithmatex">\(\mu\)</span> 步，环内 <span class="arithmatex">\(k\)</span> 步），快指针走了它的两倍 <span class="arithmatex">\(2(\mu + k)\)</span> 步。二者落在同一节点，意味着快指针比慢指针多走的步数恰是环长的整数倍：</p>
+<div class="arithmatex">\[2(\mu + k) - (\mu + k) = \mu + k = m\lambda \quad \text{for some } m \ge 1. \tag{1}\]</div>
+<p>（<span class="arithmatex">\(m \ge 1\)</span>：相遇发生在环内，慢指针进环后快指针已至少把它套圈一次。）由 (1) 直接解出入口距离：</p>
+<div class="arithmatex">\[\mu = m\lambda - k. \tag{2}\]</div>
+<p>(2) 是整个算法的支点。它回答了一个具体问题：<strong>从相遇点出发，沿环再走 <span class="arithmatex">\(\mu\)</span> 步会到哪里？</strong> 相遇点偏移 <span class="arithmatex">\(k\)</span>，再走 <span class="arithmatex">\(\mu = m\lambda - k\)</span> 步后偏移变为</p>
+<div class="arithmatex">\[k + (m\lambda - k) = m\lambda \equiv 0 \pmod{\lambda}, \tag{3}\]</div>
+<p>由形式化的周期性，偏移 <span class="arithmatex">\(\equiv 0\)</span> 就是回到入口 <span class="arithmatex">\(v_\mu\)</span>。与此同时，从 head 出发走 <span class="arithmatex">\(\mu\)</span> 步也到入口（这是 <span class="arithmatex">\(\mu\)</span> 的定义）。<strong>于是两个指针——一个从 head、一个从相遇点——每步各走一格，恰好同时第一次到达入口。</strong> 定位算法就从 (2) 读了出来，全程不需要知道 <span class="arithmatex">\(\mu\)</span> 或 <span class="arithmatex">\(k\)</span> 的具体数值。</p>
+<p><strong>算法</strong>：阶段 1，速度 <span class="arithmatex">\(1/2\)</span> 找相遇点（或判无环）；阶段 2，一指针回 head，另一指针留在相遇点，二者同速前进，相遇处即入口。</p>
 <div class="language-python highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">Solution</span><span class="p">:</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">detectCycle</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">head</span><span class="p">):</span>
         <span class="n">slow</span> <span class="o">=</span> <span class="n">fast</span> <span class="o">=</span> <span class="n">head</span>
@@ -22505,43 +22552,37 @@
             <span class="n">slow</span> <span class="o">=</span> <span class="n">slow</span><span class="o">.</span><span class="n">next</span>
         <span class="k">return</span> <span class="n">p</span>
 </code></pre></div>
-<p><strong>心算 trace <code>head=[3,2,0,-4], pos=1</code></strong> (即 -4 → 2 形成环, <span class="arithmatex">\(\mu=1, \lambda=3\)</span>)：
-- 节点序列：v0=3, v1=2, v2=0, v3=-4. v3.next = v1。
-- 阶段 1: slow=fast=v0.
-  - iter 1: slow=v1, fast=v2. ≠.
-  - iter 2: slow=v2, fast=v1 (因 v2→v3→v1). 即 slow=v2, fast=v1. ≠.
-  - iter 3: slow=v3, fast=v3 (v1→v2→v3). 相遇 ✓ 在 v3。break.
-- 阶段 2: p=v0=3, slow=v3=-4. ≠
-  - p=v1=2, slow=v1=2 (因 v3→v1). 相遇 ✓
-- 返 v1 ✓（指向值 2 的节点，即环入口 index 1）</p>
+<p><strong>不变量</strong>（阶段 2 的等价视角）：进入阶段 2 时，<code>p</code> 距入口 <span class="arithmatex">\(\mu\)</span> 步，<code>slow</code> 沿环正向距入口 <span class="arithmatex">\(m\lambda - k \equiv \mu \pmod{\lambda}\)</span> 步，二者按相对环位置之差恒为 <span class="arithmatex">\(0\)</span>。每步同步前进，差始终为 <span class="arithmatex">\(0\)</span>，故首次相遇即入口——这与 (3) 是同一件事，只是从"差"而非"和"的角度看。</p>
+<p><strong>心算 trace <code>head=[3,2,0,-4], pos=1</code></strong>（即 <span class="arithmatex">\(-4 \to 2\)</span> 形成环，<span class="arithmatex">\(\mu=1, \lambda=3\)</span>）：
+- 节点序列：v0=3, v1=2, v2=0, v3=-4，且 v3.next = v1。
+- 阶段 1: slow=fast=v0。
+  - iter 1: slow=v1, fast=v2。≠。
+  - iter 2: slow=v2, fast=v1（v2→v3→v1）。≠。
+  - iter 3: slow=v3, fast=v3（v1→v2→v3）。相遇 ✓ 于 v3，break。
+- 阶段 2: p=v0=3, slow=v3=-4。≠
+  - p=v1=2, slow=v1=2（v3→v1）。相遇 ✓
+- 返 v1 ✓（值 2 的节点，即环入口 index 1）。</p>
 <p><strong><code>head=[1,2], pos=0</code></strong>：v0=1→v1=2→v0。
-- 阶段 1: slow=v0, fast=v0. iter1: slow=v1, fast=v0 (v0→v1→v0). ≠. iter2: slow=v0, fast=v0. 相遇 ✓ 在 v0. break.
-- 阶段 2: p=v0, slow=v0. 已等. 返 v0 ✓（环入口 index 0）</p>
-<p><strong><code>head=[1], pos=-1</code></strong>：v0.next=None. 进 while: fast=v0, fast.next=None → 不进循环. while-else 触发 → return None ✓</p>
-<p><strong>数学证明（关键引理）</strong>：</p>
-<p>设 head 到入口距离 <span class="arithmatex">\(\mu\)</span>，环长 <span class="arithmatex">\(\lambda\)</span>，相遇点距入口距离 <span class="arithmatex">\(k\)</span>（<span class="arithmatex">\(0 \le k &lt; \lambda\)</span>）。</p>
-<p>相遇时 slow 走 <span class="arithmatex">\(\mu + k\)</span> 步，fast 走 <span class="arithmatex">\(2(\mu + k)\)</span> 步。因 fast 比 slow 多走若干整圈：</p>
-<div class="arithmatex">\[2(\mu + k) - (\mu + k) = \mu + k = m \lambda \quad \text{for some } m \ge 1.\]</div>
-<p>即 <span class="arithmatex">\(\mu = m \lambda - k\)</span>。</p>
-<p>阶段 2：p 从 head 走 <span class="arithmatex">\(\mu\)</span> 步到入口；slow 从相遇点走 <span class="arithmatex">\(\mu = m\lambda - k\)</span> 步：先走 <span class="arithmatex">\(k\)</span> 步到入口前 <span class="arithmatex">\(-k\)</span> 位置（即继续转 <span class="arithmatex">\(m\lambda - 2k\)</span> 步... 略）—— 准确说，从相遇点走 <span class="arithmatex">\(k\)</span> 步回到入口，再走 <span class="arithmatex">\(m\lambda - 2k\)</span> 步是整圈整数倍（若加 <span class="arithmatex">\(k\)</span> 即 <span class="arithmatex">\(m\lambda\)</span>，正确）。简化：slow 走 <span class="arithmatex">\(\mu\)</span> 步在环上从相遇点出发，正好绕到入口（相对位置 <span class="arithmatex">\(m\lambda - k + k = m\lambda \equiv 0 \pmod \lambda\)</span>）。两者同时到达入口 ✓。</p>
-<p><strong>不变量</strong>：阶段 1 相遇时 slow 位置 = <span class="arithmatex">\(\mu + k\)</span>。阶段 2 同步行进，每步两者距入口的差不变；起点差为 <span class="arithmatex">\(\mu\)</span>（按相对环位置），故 <span class="arithmatex">\(\mu\)</span> 步后差为 0。</p>
+- 阶段 1: slow=v0, fast=v0。iter1: slow=v1, fast=v0（v0→v1→v0）。≠。iter2: slow=v0, fast=v0。相遇 ✓ 于 v0，break。
+- 阶段 2: p=v0, slow=v0。已等。返 v0 ✓（环入口 index 0）。</p>
+<p><strong><code>head=[1], pos=-1</code></strong>：v0.next=None。进 while：fast=v0，fast.next=None → 不进循环。while-else 触发 → return None ✓。</p>
 <h2 id="complexity">复杂度 (Complexity)<a class="headerlink" href="#complexity" title="Permanent link">#</a></h2>
 <ul>
-<li>Time: 阶段 1 <span class="arithmatex">\(\le O(\mu + \lambda)\)</span>（fast 每步追近 slow 一格，最多 <span class="arithmatex">\(\lambda\)</span> 步追上）；阶段 2 <span class="arithmatex">\(O(\mu)\)</span>。合计 <span class="arithmatex">\(O(n)\)</span>。</li>
-<li>Space: A 哈希 <span class="arithmatex">\(O(n)\)</span>；B Floyd <span class="arithmatex">\(O(1)\)</span>。</li>
+<li>Time: 阶段 1 <span class="arithmatex">\(\le O(\mu + \lambda)\)</span>（慢指针进环前走 <span class="arithmatex">\(\mu\)</span> 步；进环后两指针偏移每步减 <span class="arithmatex">\(1\)</span>、初始偏移 <span class="arithmatex">\(&lt; \lambda\)</span>，故至多再 <span class="arithmatex">\(\lambda\)</span> 步追上）；阶段 2 <span class="arithmatex">\(O(\mu)\)</span>。合计 <span class="arithmatex">\(O(n)\)</span>。</li>
+<li>Space: 基线哈希 <span class="arithmatex">\(O(n)\)</span>；阶段化双指针 <span class="arithmatex">\(O(1)\)</span>。</li>
 </ul>
 <h2 id="pitfalls">陷阱 (Pitfalls)<a class="headerlink" href="#pitfalls" title="Permanent link">#</a></h2>
 <ul>
-<li><strong><code>fast and fast.next</code> 检查</strong>：无环情况下 fast 会走到 None；漏检会 NPE。</li>
-<li><strong><code>is</code> vs <code>==</code></strong>：节点比较应用 <code>is</code>（身份），不是 <code>==</code>（值）；不同节点可能 val 相同。</li>
+<li><strong><code>fast and fast.next</code> 检查</strong>：无环时 fast 会走到 None；漏检会 NPE。</li>
+<li><strong><code>is</code> vs <code>==</code></strong>：节点比较用 <code>is</code>（身份），不是 <code>==</code>（值）；不同节点可能 val 相同。</li>
 <li><strong>空链表</strong>：head=None 时第一个 while 直接不进，进入 <code>else</code> 返回 None ✓。</li>
-<li><strong>单节点自环</strong>：v0.next = v0。slow=fast=v0；iter: slow=v0, fast=v0, 相遇 → 阶段 2: p=v0=slow → 返 v0 ✓。</li>
+<li><strong>单节点自环</strong>：v0.next = v0。slow=fast=v0；iter: slow=v0, fast=v0，相遇 → 阶段 2: p=v0=slow → 返 v0 ✓。</li>
 <li><strong>不能修改链表</strong>：禁止把 visited 节点 val 改成 sentinel 来标记（曾经的 hack）。</li>
 </ul>
 <h2 id="related">相关题目 (Related)<a class="headerlink" href="#related" title="Permanent link">#</a></h2>
 <ul>
 <li><code>#141. Linked List Cycle (off-wiki)</code> — 只判存在性 (bool)，阶段 1 即终。</li>
-<li><code>#202. Happy Number (off-wiki)</code> — 在数字映射图上做 Floyd 检环。</li>
+<li><a href="../0202_happy-number/">#202. Happy Number</a> — 在数字映射图上做 Floyd 检环。</li>
 <li><code>#287. Find the Duplicate Number (off-wiki)</code> — 用 Floyd 在数组隐含的链上找重复（巧妙归约）。</li>
 <li><a href="../0234_palindrome-linked-list/">#0234. Palindrome Linked List</a> — 快慢指针的另一应用（找链中点）。</li>
 <li><a href="../0019_remove-nth-node-from-end-of-list/">#0019. Remove Nth Node From End of List</a> — 双指针模板。</li>
@@ -22658,6 +22699,8 @@
         <script src="../../../js/mathjax/tex-mml-chtml.js"></script>
       
         <script src="../../../js/mermaid.min.js"></script>
+      
+        <script src="../../../js/featured.js"></script>
       
     
   </body>

@@ -1466,6 +1466,8 @@
       
         
       
+        
+      
     
     
     
@@ -1521,6 +1523,34 @@
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../featured/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ⭐ Featured（已验证）
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
               
             
               
@@ -1610,10 +1640,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_4" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
         
           
-          <label class="md-nav__link" for="__nav_4_4" id="__nav_4_4_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_5" id="__nav_4_5_label" tabindex="">
             
   
   
@@ -1631,8 +1661,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_4_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_4">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_5">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1915,7 +1945,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -1937,14 +1967,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_4_5" id="__nav_4_5_label" tabindex="">
+              <label class="md-nav__link " for="__nav_4_6" id="__nav_4_6_label" tabindex="">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_5">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_6">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -5321,10 +5351,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_7" checked>
         
           
-          <label class="md-nav__link" for="__nav_4_6" id="__nav_4_6_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_7" id="__nav_4_7_label" tabindex="">
             
   
   
@@ -5342,8 +5372,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_4_6">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_7_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4_7">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -22467,21 +22497,27 @@
 <h2 id="problem">Problem<a class="headerlink" href="#problem" title="Permanent link">#</a></h2>
 <p>整数 <span class="arithmatex">\(n \in [0, 2^{31} - 1]\)</span>，每三位插入一个点 <code>"."</code>，返回字符串。例：<code>1234 → "1.234"</code>。</p>
 <h2 id="background">背景 (Background)<a class="headerlink" href="#background" title="Permanent link">#</a></h2>
-<p>i18n 中的千位分隔符在欧洲多国（德/法）确实用点，英美用逗号。本题是字符串格式化，无算法深度。</p>
+<p>千位分隔符的分组从数字的<strong>右端</strong>开始：个、千、百万……每三位一组。这一约定是整道题唯一的结构事实，下面所有内容都从它推出。先看它如何决定分组，再看一个忽略它的朴素写法会在哪里失败。</p>
+<p>考虑一个朴素的从左到右切法：取字符串的前 3 位作为第一组，再每 3 位一组，组间插点。对 <code>n = 1234</code>，<code>s = "1234"</code> 被切成 <code>"123"</code> 和 <code>"4"</code>，输出 <code>"123.4"</code>——错的，正确答案是 <code>"1.234"</code>。错因是分组并非从左端对齐，而是从右端对齐：最右三位 <code>234</code> 才是完整的一组，剩下的 <code>1</code> 落在最左、可以不足三位。修正方向由此确定：<strong>从右端切</strong>。</p>
 <h2 id="formulation">形式化 (Formulation)<a class="headerlink" href="#formulation" title="Permanent link">#</a></h2>
-<p>设 <span class="arithmatex">\(s = \text{str}(n) = d_1 d_2 \dots d_L\)</span>，从右向左每 3 位插入 <code>.</code>：</p>
-<div class="arithmatex">\[\text{out} = d_1 \dots d_{L \bmod 3} \; . \; d_{L \bmod 3 + 1} d_{L \bmod 3 + 2} d_{L \bmod 3 + 3} \; . \; \dots\]</div>
-<p>（若 <span class="arithmatex">\(L \bmod 3 = 0\)</span> 则首段为 3 位。）</p>
+<p>把右端对齐写成精确陈述。设 <span class="arithmatex">\(s = \text{str}(n)\)</span>，<span class="arithmatex">\(L = |s|\)</span> 为其十进制位数，<span class="arithmatex">\(s = d_1 d_2 \dots d_L\)</span>（<span class="arithmatex">\(d_1\)</span> 是最高位）。从右端每三位切一刀，所有切出的组恰好是三位，只有最左一组装下剩余位。</p>
+<p>设第一组的长度为 <span class="arithmatex">\(r\)</span>。由右端对齐，<span class="arithmatex">\(r\)</span> 是 <span class="arithmatex">\(L\)</span> 除以 3 的非零余数；当 <span class="arithmatex">\(L\)</span> 是 3 的倍数时没有余数，第一组就是满三位：</p>
+<div class="arithmatex">\[r = \begin{cases} L \bmod 3, &amp; L \bmod 3 \neq 0 \\ 3, &amp; L \bmod 3 = 0 \end{cases}\]</div>
+<p>输出按 <span class="arithmatex">\(r\)</span> 切出第一组，其后每三位一组，组间插点：</p>
+<div class="arithmatex">\[\text{out} = \underbrace{d_1 \dots d_r}_{\text{首组 } r \text{ 位}} \; . \; \underbrace{d_{r+1} d_{r+2} d_{r+3}}_{3 \text{ 位}} \; . \; \underbrace{d_{r+4} d_{r+5} d_{r+6}}_{3 \text{ 位}} \; . \; \dots \; . \; \underbrace{d_{L-2} d_{L-1} d_{L}}_{\text{末组 } 3 \text{ 位}}\]</div>
+<p><span class="arithmatex">\(r\)</span> 的两分支正是朴素左切法失败的根源：左切法默认 <span class="arithmatex">\(r = 3\)</span>，但 <span class="arithmatex">\(r\)</span> 实际由 <span class="arithmatex">\(L \bmod 3\)</span> 决定，只有 <span class="arithmatex">\(L\)</span> 是 3 的倍数时两者才一致。</p>
 <h2 id="approach">数据结构 / 想法 (Approach)<a class="headerlink" href="#approach" title="Permanent link">#</a></h2>
+<p>形式化暴露了一个实现上的两难。若照公式直接从左切，必须先算出 <span class="arithmatex">\(r\)</span>（即先读完整个串求 <span class="arithmatex">\(L\)</span>），再分两个阶段：先取 <span class="arithmatex">\(r\)</span> 位，再每三位。这正是朴素写法需要一个条件分支去处理 <span class="arithmatex">\(r=0\)</span>（<span class="arithmatex">\(L\)</span> 整除 3）的来源。</p>
+<p>换一个方向就能消掉这个分支。<strong>从右端切</strong>时，除最后切出的一组外，每一组恰好三位——这是上面形式化里"其后每三位一组"的直接编码，不依赖 <span class="arithmatex">\(L\)</span> 的值。于是循环不变量是：当剩余长度大于 3 时，最右三位必是完整一组；当剩余长度不超过 3 时，剩下的整体就是首组。无需预先计算 <span class="arithmatex">\(r\)</span>，无需条件分支。</p>
 <div class="language-python highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">Solution</span><span class="p">:</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">thousandSeparator</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
         <span class="n">s</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
-        <span class="c1"># 从后向前每 3 位插 &#39;.&#39;</span>
+        <span class="c1"># 从右端切：剩余长度 &gt; 3 时，最右 3 位必是完整一组</span>
         <span class="n">parts</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">while</span> <span class="nb">len</span><span class="p">(</span><span class="n">s</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">3</span><span class="p">:</span>
             <span class="n">parts</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">s</span><span class="p">[</span><span class="o">-</span><span class="mi">3</span><span class="p">:])</span>
             <span class="n">s</span> <span class="o">=</span> <span class="n">s</span><span class="p">[:</span><span class="o">-</span><span class="mi">3</span><span class="p">]</span>
-        <span class="n">parts</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
+        <span class="n">parts</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>          <span class="c1"># 剩余 ≤3 位整体作首组</span>
         <span class="k">return</span> <span class="s2">&quot;.&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">reversed</span><span class="p">(</span><span class="n">parts</span><span class="p">))</span>
 
 <span class="c1"># Trace 样例 2: n=1234</span>
@@ -22493,16 +22529,18 @@
 <span class="c1"># Trace n=0: s=&quot;0&quot;. parts=[&quot;0&quot;]. → &quot;0&quot; ✓</span>
 <span class="c1"># Trace n=1000000: &quot;1000000&quot; → [&quot;000&quot;,&quot;000&quot;,&quot;1&quot;] reversed → &quot;1.000.000&quot; ✓</span>
 </code></pre></div>
-<p><strong>Pythonic 替代</strong>：<code>f"{n:,}".replace(",", ".")</code> 一行解决，但训练目的下手写更清晰。</p>
+<p><code>parts</code> 按从右到左的顺序收集每一组，<code>reversed</code> 把它们恢复成自左向右的阅读顺序后用 <code>.</code> 连接。代码不显式出现 <span class="arithmatex">\(r\)</span>，但 <code>parts</code> 中最后被追加的那段长度正是 <span class="arithmatex">\(r\)</span>：循环切走若干个三位组后，剩余的 <span class="arithmatex">\(L \bmod 3\)</span> 位（或满三位）就是首组。</p>
+<p>标准库的格式化能一行完成同样的事：<code>f"{n:,}".replace(",", ".")</code> 先用逗号分组再换成点。手写版保留出来，是因为它把"除首组外每组恰三位"这一不变量显式写在循环里，与形式化逐句对应。</p>
 <h2 id="complexity">复杂度 (Complexity)<a class="headerlink" href="#complexity" title="Permanent link">#</a></h2>
 <ul>
-<li>Time <span class="arithmatex">\(O(\log n)\)</span>（<span class="arithmatex">\(n\)</span> 的位数）。Space <span class="arithmatex">\(O(\log n)\)</span>。</li>
+<li>Time <span class="arithmatex">\(O(\log n)\)</span>（<span class="arithmatex">\(n\)</span> 的位数 <span class="arithmatex">\(L = \lfloor \log_{10} n \rfloor + 1\)</span>）。Space <span class="arithmatex">\(O(\log n)\)</span>（<code>parts</code> 与输出串长度均为 <span class="arithmatex">\(\Theta(L)\)</span>）。</li>
 </ul>
 <h2 id="pitfalls">陷阱 (Pitfalls)<a class="headerlink" href="#pitfalls" title="Permanent link">#</a></h2>
 <ul>
-<li><strong><span class="arithmatex">\(n = 0\)</span></strong>：直接返回 <code>"0"</code>，循环不进入。</li>
-<li><strong>从右向左</strong>：插入位置以右端为基准，左端可能不足 3 位。</li>
-<li><strong>大数</strong>：<span class="arithmatex">\(2^{31} - 1 \approx 2.1 \times 10^9\)</span>，10 位以内；Python <code>str(int)</code> 直接处理。</li>
+<li><strong><span class="arithmatex">\(n = 0\)</span></strong>：<span class="arithmatex">\(L = 1 \le 3\)</span>，循环不进入，直接 <code>parts=["0"]</code> 返回 <code>"0"</code>。</li>
+<li><strong>右端对齐</strong>：分组以右端为基准，左端首组可能不足三位；这正是朴素左切法失败、改为从右切的原因。</li>
+<li><strong><span class="arithmatex">\(L\)</span> 整除 3</strong>：此时 <span class="arithmatex">\(L \bmod 3 = 0\)</span>，首组应为满三位而非 0 位。从右切的写法天然正确——循环把所有三位组切完后，最后剩下整三位作首组（如 <code>n=1000000</code>）。</li>
+<li><strong>大数</strong>：<span class="arithmatex">\(2^{31} - 1 = 2147483647\)</span>，恰 10 位；Python <code>str(int)</code> 直接处理全范围。</li>
 </ul>
 <h2 id="related">相关题目 (Related)<a class="headerlink" href="#related" title="Permanent link">#</a></h2>
 <ul>
@@ -22511,7 +22549,7 @@
 </ul>
 <h2 id="further-reading">Further Reading<a class="headerlink" href="#further-reading" title="Permanent link">#</a></h2>
 <ul>
-<li>无推荐外部资源（题目难度不足以需要专题文献）。</li>
+<li>None.</li>
 </ul>
 
 
@@ -22618,6 +22656,8 @@
         <script src="../../../js/mathjax/tex-mml-chtml.js"></script>
       
         <script src="../../../js/mermaid.min.js"></script>
+      
+        <script src="../../../js/featured.js"></script>
       
     
   </body>

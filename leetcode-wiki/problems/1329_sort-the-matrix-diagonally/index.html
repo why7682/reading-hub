@@ -1466,6 +1466,8 @@
       
         
       
+        
+      
     
     
     
@@ -1521,6 +1523,34 @@
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../featured/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ⭐ Featured（已验证）
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
               
             
               
@@ -1610,10 +1640,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_4" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
         
           
-          <label class="md-nav__link" for="__nav_4_4" id="__nav_4_4_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_5" id="__nav_4_5_label" tabindex="">
             
   
   
@@ -1631,8 +1661,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_4_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_4">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_5">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1915,7 +1945,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -1937,14 +1967,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_4_5" id="__nav_4_5_label" tabindex="">
+              <label class="md-nav__link " for="__nav_4_6" id="__nav_4_6_label" tabindex="">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_5">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_6">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -5321,10 +5351,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_7" checked>
         
           
-          <label class="md-nav__link" for="__nav_4_6" id="__nav_4_6_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_7" id="__nav_4_7_label" tabindex="">
             
   
   
@@ -5342,8 +5372,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_4_6">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_7_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4_7">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -22467,11 +22497,25 @@
 <h2 id="problem">Problem<a class="headerlink" href="#problem" title="Permanent link">#</a></h2>
 <p>给定 <span class="arithmatex">\(m \times n\)</span> 整数矩阵 <code>mat</code>（<span class="arithmatex">\(1 \leq m,n \leq 100\)</span>，元素 <span class="arithmatex">\(\in [1, 100]\)</span>）。一条<strong>对角线</strong>是从顶行或左列某格出发沿"右下"方向延伸到矩阵边界的格序列。将每条对角线上的元素按升序排序，返回结果矩阵。</p>
 <h2 id="background">背景 (Background)<a class="headerlink" href="#background" title="Permanent link">#</a></h2>
-<p>经典 <em>index trick</em>：同一条对角线上 <span class="arithmatex">\((i, j)\)</span> 满足 <span class="arithmatex">\(i - j = \text{const}\)</span>，类似副对角线 <span class="arithmatex">\(i + j = \text{const}\)</span>。这种"按对角线分桶"在图像处理（Toeplitz / Hankel 矩阵）、动态规划（区间 DP 转移）、线性代数（带状矩阵存储）中频繁出现。</p>
+<p>题目要我们对每条对角线独立排序。排序本身是已解决的问题——<code>sort</code> 即可。困难在它之前的一步：<strong>给定一格 <span class="arithmatex">\((i,j)\)</span>，哪些格子与它同属一条对角线？</strong> 在能把一条对角线的元素收集成一个列表之前，没有东西可排。所以全部工作压在"如何刻画一条对角线"上。</p>
+<p>先看朴素做法会卡在哪。最直接的想法是逐格遍历，对每个 <span class="arithmatex">\((i,j)\)</span> 顺着右下方向走到边界，收集这条线、排序、写回。但这样每条对角线会被它上面的每一格各触发一次重复处理；更糟的是，若边走边写回，会在一条对角线的其余元素被读取<strong>之前</strong>就覆盖掉某格的原值，破坏后续收集。问题的症结是：我们缺一个<strong>一次性把每格归到唯一一条对角线</strong>的标签。有了标签，遍历一遍即可分组，重复与覆盖都消失。</p>
+<p>这个标签可以直接从"右下"这个移动规则里读出来，无需任何外部背景，下一节给出推导。</p>
 <h2 id="formulation">形式化 (Formulation)<a class="headerlink" href="#formulation" title="Permanent link">#</a></h2>
-<p>按 <span class="arithmatex">\(d = i - j\)</span> 分组（<span class="arithmatex">\(d \in [-(n-1), m-1]\)</span>，共 <span class="arithmatex">\(m + n - 1\)</span> 条对角线）。对每组排序后回写至原位置（按 <span class="arithmatex">\(i\)</span> 递增）。</p>
+<p><strong>直觉（来自移动规则本身）。</strong> 沿"右下"走一步，意味着行加一、列加一：<span class="arithmatex">\((i,j) \to (i+1, j+1)\)</span>。两个坐标同步增减，它们的<strong>差</strong> <span class="arithmatex">\(i - j\)</span> 保持不变。所以同一条对角线上所有格子共享同一个 <span class="arithmatex">\(i - j\)</span> 值——这正是我们要的、一格只属于一条线的标签。</p>
+<p>具体看主对角线方向的一段 <span class="arithmatex">\((0,0) \to (1,1) \to (2,2)\)</span>：行每次加一、列每次加一，差恒为 <span class="arithmatex">\(0\)</span>。换一条 <span class="arithmatex">\((1,0) \to (2,1) \to (3,2)\)</span>：差恒为 <span class="arithmatex">\(1\)</span>。差值唯一确定一条对角线。</p>
+<p><strong>形式化陈述。</strong> 令
+$$
+d(i,j) = i - j .
+$$
+则 <span class="arithmatex">\((i_1,j_1)\)</span> 与 <span class="arithmatex">\((i_2,j_2)\)</span> 在同一条右下对角线 <span class="arithmatex">\(\iff d(i_1,j_1) = d(i_2,j_2)\)</span>。</p>
+<p><strong>取值范围。</strong> <span class="arithmatex">\(d\)</span> 在 <span class="arithmatex">\(j = n-1, i = 0\)</span> 处取最小值 <span class="arithmatex">\(-(n-1)\)</span>，在 <span class="arithmatex">\(i = m-1, j = 0\)</span> 处取最大值 <span class="arithmatex">\(m-1\)</span>，故
+$$
+d \in [-(n-1),\, m-1], \qquad #{\text{对角线}} = (m-1) - (-(n-1)) + 1 = m + n - 1 .
+$$</p>
+<p><strong>问题重述。</strong> 把矩阵按 <span class="arithmatex">\(d\)</span> 划分为 $m+n-1 $ 个不相交的等价类 <span class="arithmatex">\(S_d = \{\, \text{mat}[i][j] : i - j = d \,\}\)</span>；对每个 <span class="arithmatex">\(S_d\)</span> 升序排序；再按行递增（即沿对角线从上到下）的顺序写回。这一重述把整道题约化为"分组 → 排序 → 回写"，下一节据此构造算法。</p>
 <h2 id="approach">数据结构 / 想法 (Approach)<a class="headerlink" href="#approach" title="Permanent link">#</a></h2>
-<p><strong>方法 1：哈希桶 + 排序（直观）</strong></p>
+<p>形式化直接给出实现：用一个以 <span class="arithmatex">\(d\)</span> 为键的桶把每格归类，桶内排序，再写回。这天然是<strong>两趟</strong>结构——先收集后回写——正好绕开朴素做法的覆盖问题：第一趟只读、第二趟只写，互不干扰。</p>
+<p><strong>方法 1：哈希桶 + 排序</strong></p>
 <div class="language-python highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">collections</span><span class="w"> </span><span class="kn">import</span> <span class="n">defaultdict</span>
 
 <span class="k">class</span><span class="w"> </span><span class="nc">Solution</span><span class="p">:</span>
@@ -22489,23 +22533,80 @@
                 <span class="n">mat</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">diag</span><span class="p">[</span><span class="n">i</span> <span class="o">-</span> <span class="n">j</span><span class="p">]</span><span class="o">.</span><span class="n">pop</span><span class="p">()</span>
         <span class="k">return</span> <span class="n">mat</span>
 </code></pre></div>
-<p>按 <span class="arithmatex">\(d = i - j\)</span> 收集 → 排序 → 回写。<code>reverse=True</code> + <code>pop()</code> 等价于"按升序顺序取"，避免维护额外指针。</p>
-<p><strong>方法 2：对每条对角线就地排序</strong></p>
-<p>对每个起点 <span class="arithmatex">\((i, 0)\)</span> 或 <span class="arithmatex">\((0, j)\)</span>，提取沿右下方向的子序列，sort 后写回。同复杂度 <span class="arithmatex">\(O(mn \log \min(m,n))\)</span>，常数更优但代码更长。</p>
-<p>样例 1 验证：<code>mat=[[3,3,1,1],[2,2,1,2],[1,1,1,2]]</code>。
-- <span class="arithmatex">\(d = i-j\)</span> 分桶：<span class="arithmatex">\(d=2\)</span>: [1] (i=2,j=0); <span class="arithmatex">\(d=1\)</span>: [2,1] (i=1,j=0; i=2,j=1); <span class="arithmatex">\(d=0\)</span>: [3,2,1] (i=0,j=0; i=1,j=1; i=2,j=2); <span class="arithmatex">\(d=-1\)</span>: [3,1,2]; <span class="arithmatex">\(d=-2\)</span>: [1,2]; <span class="arithmatex">\(d=-3\)</span>: [1].
-- 排序：<span class="arithmatex">\(d=2\)</span> [1]; <span class="arithmatex">\(d=1\)</span> [1,2]; <span class="arithmatex">\(d=0\)</span> [1,2,3]; <span class="arithmatex">\(d=-1\)</span> [1,2,3]; <span class="arithmatex">\(d=-2\)</span> [1,2]; <span class="arithmatex">\(d=-3\)</span> [1].
-- 回写按 (i,j) 顺序：得 <code>[[1,1,1,1],[1,2,2,2],[1,2,3,3]]</code> ✓。</p>
+<p><strong>为什么回写必须按 <span class="arithmatex">\((i,j)\)</span> 二重循环。</strong> 写回时我们要让对角线从上到下递增。沿一条对角线，行 <span class="arithmatex">\(i\)</span> 递增对应位置从上到下，所以只要外层按 <span class="arithmatex">\(i\)</span>、内层按 <span class="arithmatex">\(j\)</span> 遍历，对每格从对应桶取"当前最小的未用值"即可。<code>for k in diag</code> 这类按键遍历桶不保证落在正确的格子上，必须由 <span class="arithmatex">\((i,j)\)</span> 循环驱动、用 <span class="arithmatex">\(d = i-j\)</span> 反查桶。</p>
+<p><strong><code>reverse=True</code> + <code>pop()</code> 为何等价于"按升序取"。</strong> 取一条三元素对角线 <span class="arithmatex">\([3,2,1]\)</span> 为例：先 <code>sort(reverse=True)</code> 得降序 <span class="arithmatex">\([3,2,1]\)</span>；此后每次 <code>pop()</code> 从尾部取，依次得到 <span class="arithmatex">\(1, 2, 3\)</span>。而 <span class="arithmatex">\((i,j)\)</span> 循环正按对角线从上到下访问格子，于是这条线被填成升序。降序存、尾部取，省去一个显式下标指针。</p>
+<p><strong>方法 2：对每条对角线就地枚举</strong></p>
+<p>不建全局桶，而是从每个边界起点直接枚举一条对角线。一条对角线的起点恰是它最上方的格子：要么在顶行 <span class="arithmatex">\((0, j)\)</span>，要么在左列 <span class="arithmatex">\((i, 0)\)</span>。从起点反复执行 <span class="arithmatex">\((i,j) \to (i+1,j+1)\)</span> 直到越界，即可提取整条线；排序后沿同一路径写回。</p>
+<div class="language-python highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">Solution</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">diagonalSort</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mat</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]])</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]]:</span>
+        <span class="c1"># Time: O(mn log min(m,n)), Space: O(min(m,n))</span>
+        <span class="n">m</span><span class="p">,</span> <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">mat</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">mat</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="n">starts</span> <span class="o">=</span> <span class="p">[(</span><span class="mi">0</span><span class="p">,</span> <span class="n">j</span><span class="p">)</span> <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">)]</span> <span class="o">+</span> <span class="p">[(</span><span class="n">i</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">m</span><span class="p">)]</span>
+        <span class="k">for</span> <span class="n">si</span><span class="p">,</span> <span class="n">sj</span> <span class="ow">in</span> <span class="n">starts</span><span class="p">:</span>
+            <span class="n">vals</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="n">i</span><span class="p">,</span> <span class="n">j</span> <span class="o">=</span> <span class="n">si</span><span class="p">,</span> <span class="n">sj</span>
+            <span class="k">while</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">m</span> <span class="ow">and</span> <span class="n">j</span> <span class="o">&lt;</span> <span class="n">n</span><span class="p">:</span>
+                <span class="n">vals</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">mat</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]);</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span> <span class="o">=</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">j</span> <span class="o">+</span> <span class="mi">1</span>
+            <span class="n">vals</span><span class="o">.</span><span class="n">sort</span><span class="p">()</span>
+            <span class="n">i</span><span class="p">,</span> <span class="n">j</span> <span class="o">=</span> <span class="n">si</span><span class="p">,</span> <span class="n">sj</span>
+            <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">vals</span><span class="p">:</span>
+                <span class="n">mat</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">v</span><span class="p">;</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span> <span class="o">=</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">j</span> <span class="o">+</span> <span class="mi">1</span>
+        <span class="k">return</span> <span class="n">mat</span>
+</code></pre></div>
+<p>两种方法刻画的是同一组等价类：方法 1 用 <span class="arithmatex">\(d=i-j\)</span> 显式分桶，方法 2 用"从边界起点沿右下走"隐式枚举同一条线。复杂度相同，但方法 2 任一时刻只持有一条对角线，额外空间降到 <span class="arithmatex">\(O(\min(m,n))\)</span>；代价是代码更长、起点枚举更易出错。</p>
+<p><strong>样例验证。</strong> <code>mat=[[3,3,1,1],[2,2,1,2],[1,1,1,2]]</code>。按 <span class="arithmatex">\(d=i-j\)</span> 分桶（按访问顺序）：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: right;"><span class="arithmatex">\(d\)</span></th>
+<th style="text-align: left;">收集（pre-sort）</th>
+<th style="text-align: left;">排序后</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: right;"><span class="arithmatex">\(2\)</span></td>
+<td style="text-align: left;"><span class="arithmatex">\([1]\)</span></td>
+<td style="text-align: left;"><span class="arithmatex">\([1]\)</span></td>
+</tr>
+<tr>
+<td style="text-align: right;"><span class="arithmatex">\(1\)</span></td>
+<td style="text-align: left;"><span class="arithmatex">\([2,1]\)</span></td>
+<td style="text-align: left;"><span class="arithmatex">\([1,2]\)</span></td>
+</tr>
+<tr>
+<td style="text-align: right;"><span class="arithmatex">\(0\)</span></td>
+<td style="text-align: left;"><span class="arithmatex">\([3,2,1]\)</span></td>
+<td style="text-align: left;"><span class="arithmatex">\([1,2,3]\)</span></td>
+</tr>
+<tr>
+<td style="text-align: right;"><span class="arithmatex">\(-1\)</span></td>
+<td style="text-align: left;"><span class="arithmatex">\([3,1,2]\)</span></td>
+<td style="text-align: left;"><span class="arithmatex">\([1,2,3]\)</span></td>
+</tr>
+<tr>
+<td style="text-align: right;"><span class="arithmatex">\(-2\)</span></td>
+<td style="text-align: left;"><span class="arithmatex">\([1,2]\)</span></td>
+<td style="text-align: left;"><span class="arithmatex">\([1,2]\)</span></td>
+</tr>
+<tr>
+<td style="text-align: right;"><span class="arithmatex">\(-3\)</span></td>
+<td style="text-align: left;"><span class="arithmatex">\([1]\)</span></td>
+<td style="text-align: left;"><span class="arithmatex">\([1]\)</span></td>
+</tr>
+</tbody>
+</table>
+<p>按 <span class="arithmatex">\((i,j)\)</span> 顺序回写得 <code>[[1,1,1,1],[1,2,2,2],[1,2,3,3]]</code> ✓。</p>
 <h2 id="complexity">复杂度 (Complexity)<a class="headerlink" href="#complexity" title="Permanent link">#</a></h2>
 <ul>
-<li>Time: <span class="arithmatex">\(O(mn \log \min(m,n))\)</span>，单条对角线长 <span class="arithmatex">\(\leq \min(m,n)\)</span></li>
-<li>Space: <span class="arithmatex">\(O(mn)\)</span> 桶存储</li>
+<li><strong>Time</strong>: <span class="arithmatex">\(O(mn \log \min(m,n))\)</span>。单条对角线长 <span class="arithmatex">\(L \le \min(m,n)\)</span>，排序耗 <span class="arithmatex">\(O(L\log L)\)</span>；对所有对角线求和 <span class="arithmatex">\(\sum_d L_d \log L_d \le \big(\sum_d L_d\big)\log\min(m,n) = mn\log\min(m,n)\)</span>。</li>
+<li><strong>Space</strong>: 方法 1 为 <span class="arithmatex">\(O(mn)\)</span>（全部入桶）；方法 2 为 <span class="arithmatex">\(O(\min(m,n))\)</span>（只缓一条对角线）。</li>
 </ul>
 <h2 id="pitfalls">陷阱 (Pitfalls)<a class="headerlink" href="#pitfalls" title="Permanent link">#</a></h2>
 <ul>
-<li>用 <span class="arithmatex">\(i + j\)</span> 是<strong>反对角线</strong>（"右上→左下"方向），与题目要的"右下"方向不符；本题用 <span class="arithmatex">\(i - j\)</span>。</li>
-<li>桶按字典序遍历回写时<strong>未必</strong>按对角线顺序，必须用 <code>(i, j)</code> 二重循环 + 桶 pop。</li>
-<li>不要直接对原矩阵切片排序后赋值，Python <code>mat[i][j::n+1]</code> 这种 stride 写法对 2D list 无效（list of lists 不是连续内存）。</li>
+<li><strong>方向标签搞反。</strong> 由移动规则推得右下对角线的不变量是 <span class="arithmatex">\(i - j\)</span>。若改用 <span class="arithmatex">\(i + j\)</span>，对应的是 <span class="arithmatex">\((i,j)\to(i+1,j-1)\)</span> 即"右上→左下"的反对角线，方向与本题不符。记住标签的来源是"哪两个坐标同步增"，就不会选错。</li>
+<li><strong>靠桶的遍历顺序回写。</strong> 字典/桶的键遍历顺序不保证落在正确格子，回写必须由 <span class="arithmatex">\((i,j)\)</span> 二重循环驱动、用 <span class="arithmatex">\(d=i-j\)</span> 反查桶（方法 1），或沿起点路径写回（方法 2）。</li>
+<li><strong>误用 stride 切片当对角线。</strong> <code>mat[i][j::n+1]</code> 对 list-of-lists 无效：它切的是某一行内的元素（list of lists 非连续内存），并非对角线。stride <span class="arithmatex">\(n+1\)</span> 的技巧只对<strong>展平后的一维连续数组</strong>成立。</li>
 </ul>
 <h2 id="related">相关题目 (Related)<a class="headerlink" href="#related" title="Permanent link">#</a></h2>
 <ul>
@@ -22515,7 +22616,7 @@
 </ul>
 <h2 id="further-reading">Further Reading<a class="headerlink" href="#further-reading" title="Permanent link">#</a></h2>
 <ul>
-<li>Wikipedia: en.wikipedia.org/wiki/Toeplitz_matrix （对角线常数矩阵——本题分桶思路的代数背景）</li>
+<li>Wikipedia: en.wikipedia.org/wiki/Toeplitz_matrix （Toeplitz 矩阵满足 <span class="arithmatex">\(A_{ij}\)</span> 只依赖 <span class="arithmatex">\(i-j\)</span>，即沿对角线为常数——与本题 <span class="arithmatex">\(d=i-j\)</span> 标签精确对应）</li>
 </ul>
 
 
@@ -22622,6 +22723,8 @@
         <script src="../../../js/mathjax/tex-mml-chtml.js"></script>
       
         <script src="../../../js/mermaid.min.js"></script>
+      
+        <script src="../../../js/featured.js"></script>
       
     
   </body>

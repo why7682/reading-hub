@@ -1466,6 +1466,8 @@
       
         
       
+        
+      
     
     
     
@@ -1521,6 +1523,34 @@
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../featured/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ⭐ Featured（已验证）
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
               
             
               
@@ -1610,10 +1640,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_4" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
         
           
-          <label class="md-nav__link" for="__nav_4_4" id="__nav_4_4_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_5" id="__nav_4_5_label" tabindex="">
             
   
   
@@ -1631,8 +1661,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_4_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_4">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_5">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1915,7 +1945,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -1937,14 +1967,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_4_5" id="__nav_4_5_label" tabindex="">
+              <label class="md-nav__link " for="__nav_4_6" id="__nav_4_6_label" tabindex="">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_5">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_6">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -5321,10 +5351,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_7" checked>
         
           
-          <label class="md-nav__link" for="__nav_4_6" id="__nav_4_6_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_7" id="__nav_4_7_label" tabindex="">
             
   
   
@@ -5342,8 +5372,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_4_6">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_7_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4_7">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -22467,19 +22497,34 @@
 <h2 id="problem">Problem<a class="headerlink" href="#problem" title="Permanent link">#</a></h2>
 <p>给定二叉树 <code>root</code>、值 <code>val</code> 和深度 <code>depth</code>。在第 <code>depth</code> 层插入一整行新节点：对第 <code>depth - 1</code> 层每个非空节点 <code>cur</code>，以两个值为 <code>val</code> 的新节点分别作为 <code>cur</code> 的左右孩子；<code>cur</code> 原左子树挂到新左孩子的左侧、原右子树挂到新右孩子的右侧。若 <code>depth == 1</code>，则新节点成为整棵树的新根，原树作为它的左子树。<code>1 ≤ depth ≤ tree.depth + 1</code>，节点数 ≤ <span class="arithmatex">\(10^4\)</span>。</p>
 <h2 id="background">背景 (Background)<a class="headerlink" href="#background" title="Permanent link">#</a></h2>
-<p>这是经典的二叉树<strong>层级修改</strong>问题。把"在某一层插入一行"形式化后，可看作对树的层序遍历（BFS）的局部 splice 操作，或对前序/后序 DFS 的特定深度截断改写。在 persistent / functional 数据结构里，这类操作通常会创建沿插入路径的新节点而保留旧子树共享（这里不要求 persistence，但同样的思想适用）。</p>
+<p>考虑这个操作真正要改动的是什么。要在父节点 <code>cur</code> 和它的某个孩子 <code>child</code> 之间插入一个新节点 <code>t</code>，最终的链路必须是 <code>cur → t → child</code>。这一步只涉及三个指针：<code>cur</code> 指向旧孩子、<code>t</code> 指向旧孩子、<code>cur</code> 指向 <code>t</code>。</p>
+<p>最自然的第一反应是直接覆写父指针：</p>
+<div class="language-python highlight"><pre><span></span><code><span class="n">cur</span><span class="o">.</span><span class="n">left</span> <span class="o">=</span> <span class="n">TreeNode</span><span class="p">(</span><span class="n">val</span><span class="p">)</span>   <span class="c1"># 想在 cur 和它的左孩子之间插入</span>
+</code></pre></div>
+<p>这一行执行后，<code>cur.left</code> 指向了新节点，但原来的左子树没有任何引用指向它——它被永久丢弃了。问题的全部难点就在这里：覆写父指针之前，必须先把旧孩子的引用接到新节点上。正确的顺序是</p>
+<div class="language-python highlight"><pre><span></span><code><span class="n">t</span> <span class="o">=</span> <span class="n">TreeNode</span><span class="p">(</span><span class="n">val</span><span class="p">)</span>
+<span class="n">t</span><span class="o">.</span><span class="n">left</span> <span class="o">=</span> <span class="n">cur</span><span class="o">.</span><span class="n">left</span>   <span class="c1"># 先让新节点接住旧子树</span>
+<span class="n">cur</span><span class="o">.</span><span class="n">left</span> <span class="o">=</span> <span class="n">t</span>        <span class="c1"># 再覆写父指针</span>
+</code></pre></div>
+<p>或者等价地用构造参数一次写完 <code>t = TreeNode(val, left=cur.left)</code>。先存后改，旧子树才不会丢。这条约束——指针改写的次序——决定了下面整段推导。</p>
 <h2 id="formulation">形式化 (Formulation)<a class="headerlink" href="#formulation" title="Permanent link">#</a></h2>
+<p>直觉上，这个操作只触及一层：第 <code>depth - 1</code> 层的每个节点都要在自己和孩子之间插入一对新节点，其余节点原封不动。把"第 <span class="arithmatex">\(d\)</span> 层"写成集合，操作就能精确到只对这一层生效。</p>
 <p>设二叉树 <span class="arithmatex">\(T\)</span> 的节点深度从根 <span class="arithmatex">\(1\)</span> 开始计数。定义层集合：</p>
 <div class="arithmatex">\[L_d(T) = \{ v \in T : \mathrm{depth}(v) = d \}\]</div>
-<p>操作 <span class="arithmatex">\(\mathrm{AddRow}(T, v, d)\)</span>：</p>
+<p>操作 <span class="arithmatex">\(\mathrm{AddRow}(T, v, d)\)</span> 是一次原地改写，按 <span class="arithmatex">\(d\)</span> 是否为 <span class="arithmatex">\(1\)</span> 分两种情形：</p>
 <ul>
-<li>若 <span class="arithmatex">\(d = 1\)</span>：返回新根 <span class="arithmatex">\(r\)</span>，其值为 <span class="arithmatex">\(v\)</span>，<span class="arithmatex">\(r.\text{left} = T\)</span>，<span class="arithmatex">\(r.\text{right} = \text{null}\)</span>。</li>
-<li>否则对所有 <span class="arithmatex">\(u \in L_{d-1}(T)\)</span>，分别新建 <span class="arithmatex">\(\ell, r\)</span> 值为 <span class="arithmatex">\(v\)</span>，置 <span class="arithmatex">\(\ell.\text{left} = u.\text{left}\)</span>，<span class="arithmatex">\(r.\text{right} = u.\text{right}\)</span>，再令 <span class="arithmatex">\(u.\text{left} = \ell\)</span>，<span class="arithmatex">\(u.\text{right} = r\)</span>。</li>
+<li>若 <span class="arithmatex">\(d = 1\)</span>：返回新根 <span class="arithmatex">\(t\)</span>，其值为 <span class="arithmatex">\(v\)</span>，<span class="arithmatex">\(t.\text{left} = T\)</span>，<span class="arithmatex">\(t.\text{right} = \text{null}\)</span>。</li>
+<li>否则对每个 <span class="arithmatex">\(u \in L_{d-1}(T)\)</span>，新建 <span class="arithmatex">\(\ell, r\)</span> 值为 <span class="arithmatex">\(v\)</span>，先置 <span class="arithmatex">\(\ell.\text{left} = u.\text{left}\)</span>、<span class="arithmatex">\(r.\text{right} = u.\text{right}\)</span>（接住旧子树），再令 <span class="arithmatex">\(u.\text{left} = \ell\)</span>、<span class="arithmatex">\(u.\text{right} = r\)</span>（覆写父指针）。其余指针 <span class="arithmatex">\(\ell.\text{right}, r.\text{left}\)</span> 默认 <span class="arithmatex">\(\text{null}\)</span>。</li>
 </ul>
+<p>形式化把"先接后改"的次序锁进了定义本身：<span class="arithmatex">\(\ell.\text{left} = u.\text{left}\)</span> 必须先于 <span class="arithmatex">\(u.\text{left} = \ell\)</span>，否则等号右边的 <span class="arithmatex">\(u.\text{left}\)</span> 已经不是旧子树了。这正是背景里那行裸覆写之所以错的原因。</p>
+<p>注意 <span class="arithmatex">\(d=1\)</span> 为何不能并入一般情形：一般情形依赖"第 <span class="arithmatex">\(d-1\)</span> 层的父节点 <span class="arithmatex">\(u\)</span>"，而 <span class="arithmatex">\(d=1\)</span> 时 <span class="arithmatex">\(d-1=0\)</span>，树里没有深度为 <span class="arithmatex">\(0\)</span> 的节点，没有 <span class="arithmatex">\(u\)</span> 可改，新根只能在树外另建。边界不是特例硬塞，而是 <span class="arithmatex">\(L_{d-1}\)</span> 在 <span class="arithmatex">\(d=1\)</span> 处为空的直接后果。</p>
 <h2 id="approach">数据结构 / 想法 (Approach)<a class="headerlink" href="#approach" title="Permanent link">#</a></h2>
-<p><strong>解法 1：DFS 递归。</strong> 维护"当前节点深度"，到达 <code>depth - 1</code> 时执行 splice。</p>
-<p><strong>解法 2：BFS 层序。</strong> 用队列推进，记录层号；到第 <code>depth - 1</code> 层时对每个节点做插入。</p>
-<p><strong>不变量</strong>：DFS 解法中"递归进入子节点前判断当前深度"，确保只在 <code>depth - 1</code> 处修改一次；递归不再向下深入。</p>
+<p>形式化只对 <span class="arithmatex">\(L_{d-1}(T)\)</span> 这一层生效，于是算法只需做一件事：找到第 <span class="arithmatex">\(depth-1\)</span> 层的全部节点，对每个执行那对插入。这是一次到达指定深度就停的遍历，DFS 和 BFS 都能实现，下面用 DFS——它把"到了 <span class="arithmatex">\(depth-1\)</span> 就改、改完不再下探"直接写成递归结构。</p>
+<p>先看若不加停止条件会怎样。若 DFS 一路下探到底再处理，就分不清哪一层是 <span class="arithmatex">\(depth-1\)</span>，也会重复改写已经插好的节点。所以必须在递归进入孩子之前先判断当前深度，命中 <span class="arithmatex">\(depth-1\)</span> 就地插入、立即返回，不再递归。这给出一个可在每次递归调用前后检验的不变量：</p>
+<blockquote>
+<p><strong>不变量</strong>：<code>dfs(node, d)</code> 被调用时，<code>node</code> 的深度恰为 <code>d</code>，且 <code>node</code> 子树尚未被改写。当 <code>d == depth - 1</code> 时执行且仅执行一次插入并停止下探；当 <code>d &lt; depth - 1</code> 时不改写 <code>node</code>，只把不变量传给深度 <code>d+1</code> 的孩子。</p>
+</blockquote>
+<p>由不变量，命中层每个节点只被处理一次，插入后子树不再被访问，旧子树在改写前已由新节点接住——三点都来自上面的形式化。代码就是这条不变量的直译：</p>
 <div class="language-python highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">TreeNode</span><span class="p">:</span>
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">val</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">left</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">right</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">val</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">left</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">right</span> <span class="o">=</span> <span class="n">val</span><span class="p">,</span> <span class="n">left</span><span class="p">,</span> <span class="n">right</span>
@@ -22502,17 +22547,18 @@
         <span class="n">dfs</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">root</span>
 </code></pre></div>
-<p>样例 1 trace：<code>root = [4,2,6,3,1,5]</code>, <code>val=1</code>, <code>depth=2</code>。<code>depth-1=1</code>，即在根处插入。根 <code>4</code> 左右孩子改为新 <code>1, 1</code>；原左子树 <code>2(3,1)</code> 接到新左 <code>1</code> 的左侧，原右子树 <code>6(5,null)</code> 接到新右 <code>1</code> 的右侧。层序输出 <code>[4,1,1,2,null,null,6,3,1,5]</code>。✓</p>
+<p><code>TreeNode(val, left=node.left)</code> 这一句把"先接后改"压进一行：构造参数 <code>left=node.left</code> 在赋值给 <code>node.left</code> 之前求值，旧左子树先被新节点接住，再覆写父指针。左右两侧方向相反不是约定而是形式化所迫：新左节点替换的是左分支，旧左子树要顺着它的 <strong>左</strong> 侧继续往下才能保形；右侧对称，旧右子树顺新右节点的 <strong>右</strong> 侧。写反——让新左节点用 <code>right</code> 接旧左子树——会改变树形并丢失另一侧。</p>
+<p>走一遍样例确认。输入 <code>root = [4,2,6,3,1,5]</code>、<code>val=1</code>、<code>depth=2</code>。此时 <span class="arithmatex">\(depth-1=1\)</span>，命中层只有根 <code>4</code>。先存旧子树：左子树是 <code>2(3,1)</code>、右子树是 <code>6(5,null)</code>。再插入：根的左右孩子改成两个新 <code>1</code>，旧左子树 <code>2(3,1)</code> 接到新左 <code>1</code> 的左侧，旧右子树 <code>6(5,null)</code> 接到新右 <code>1</code> 的右侧。层序输出 <code>[4,1,1,2,null,null,6,3,1,5]</code>。✓</p>
 <h2 id="complexity">复杂度 (Complexity)<a class="headerlink" href="#complexity" title="Permanent link">#</a></h2>
 <ul>
-<li>Time: <span class="arithmatex">\(O(n)\)</span>，每个节点至多访问一次。</li>
-<li>Space: <span class="arithmatex">\(O(h)\)</span> 递归栈，<span class="arithmatex">\(h\)</span> 为树高，最坏 <span class="arithmatex">\(O(n)\)</span>。</li>
+<li>Time: <span class="arithmatex">\(O(n)\)</span>，每个节点至多访问一次；命中 <span class="arithmatex">\(depth-1\)</span> 后停止下探，下层不再遍历。</li>
+<li>Space: <span class="arithmatex">\(O(h)\)</span> 递归栈，<span class="arithmatex">\(h\)</span> 为树高，最坏（退化为链）<span class="arithmatex">\(O(n)\)</span>。</li>
 </ul>
 <h2 id="pitfalls">陷阱 (Pitfalls)<a class="headerlink" href="#pitfalls" title="Permanent link">#</a></h2>
 <ul>
-<li><code>depth == 1</code> 必须单独处理（没有"depth-1 层"）。</li>
-<li>splice 时左右各自方向不同：新左孩子的 <code>left</code> 指向原 <code>left</code>，新右孩子的 <code>right</code> 指向原 <code>right</code>；写反会丢失子树。</li>
-<li>当 <code>depth == tree.depth + 1</code> 时第 <code>depth-1</code> 层是当前叶子层，节点的 <code>left/right</code> 都是 <code>None</code>，仍要新建两个值为 <code>val</code> 的叶子（不要 <code>if node.left</code> 这种短路过滤）。</li>
+<li><code>depth == 1</code> 必须单独处理：<span class="arithmatex">\(d-1=0\)</span> 层不存在，没有父节点可改，新根须在树外另建（形式化里 <span class="arithmatex">\(L_{d-1}\)</span> 为空的直接后果）。</li>
+<li>左右方向不可互换：新左孩子的 <code>left</code> 指向原 <code>left</code>，新右孩子的 <code>right</code> 指向原 <code>right</code>。写反会改变树形并丢失子树。</li>
+<li>当 <code>depth == tree.depth + 1</code> 时第 <code>depth-1</code> 层正是当前叶子层，节点的 <code>left/right</code> 都是 <code>None</code>，仍要新建两个值为 <code>val</code> 的叶子。不要写 <code>if node.left</code> 这种真值短路过滤——<code>None</code> 也是合法的旧孩子，照样要被新节点接住。</li>
 </ul>
 <h2 id="related">相关题目 (Related)<a class="headerlink" href="#related" title="Permanent link">#</a></h2>
 <ul>
@@ -22629,6 +22675,8 @@
         <script src="../../../js/mathjax/tex-mml-chtml.js"></script>
       
         <script src="../../../js/mermaid.min.js"></script>
+      
+        <script src="../../../js/featured.js"></script>
       
     
   </body>

@@ -1466,6 +1466,8 @@
       
         
       
+        
+      
     
     
     
@@ -1521,6 +1523,34 @@
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../featured/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ⭐ Featured（已验证）
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
               
             
               
@@ -1610,10 +1640,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_4" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
         
           
-          <label class="md-nav__link" for="__nav_4_4" id="__nav_4_4_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_5" id="__nav_4_5_label" tabindex="">
             
   
   
@@ -1631,8 +1661,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_4_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_4">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_5">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1915,7 +1945,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -1937,14 +1967,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_4_5" id="__nav_4_5_label" tabindex="">
+              <label class="md-nav__link " for="__nav_4_6" id="__nav_4_6_label" tabindex="">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_5">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_6">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -5321,10 +5351,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_7" checked>
         
           
-          <label class="md-nav__link" for="__nav_4_6" id="__nav_4_6_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_7" id="__nav_4_7_label" tabindex="">
             
   
   
@@ -5342,8 +5372,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_4_6">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_7_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4_7">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -22470,16 +22500,24 @@
 - <code>search(word)</code>：判断是否存在某条已加单词与查询匹配，其中 <code>'.'</code> 可匹配任一字母。
 单词长度 <span class="arithmatex">\(\le 25\)</span>，查询中 <code>.</code> 至多 2 个，调用总数 <span class="arithmatex">\(\le 10^4\)</span>。</p>
 <h2 id="background">背景 (Background)<a class="headerlink" href="#background" title="Permanent link">#</a></h2>
-<p>本题是 <strong>Trie (前缀树, Fredkin 1960)</strong> 的标准应用，并加入 <strong>通配符匹配</strong>——使其等价于在 Trie 上做受限 DFS。Trie 是 KMP / Aho-Corasick / 后缀自动机等串匹配结构的基石；本题的"少量 '.'" 又让它与 NFA 的 <span class="arithmatex">\(\epsilon\)</span>-分叉模拟同构（每碰一个 <code>.</code> 就在所有子分支上派生一支 DFS）。</p>
-<p>约束"<code>.</code> 至多 2 个"是关键：朴素 DFS 在最坏情况下需要遍历 Trie 的若干路径，本题的分支因子被压缩至常数倍——这是设计层面的"友好约束"。</p>
+<p>先尝试最朴素的做法：把每个 <code>addWord</code> 的单词原样存进一个集合或列表，<code>search</code> 时逐个比对。没有 <code>.</code> 时这是哈希查找，<span class="arithmatex">\(O(L)\)</span>；问题出在 <code>.</code>。查询 <code>".ad"</code> 不对应任何固定字符串，无法直接哈希，只能取出每条已存单词、逐字符检查"长度相等且每位要么相同要么查询位是 <code>.</code>"。设字典有 <span class="arithmatex">\(N\)</span> 条单词、平均长度 <span class="arithmatex">\(L\)</span>，一次带 <code>.</code> 的 <code>search</code> 就是 <span class="arithmatex">\(O(N \cdot L)\)</span>。</p>
+<p>这条朴素路线的浪费在哪里，正是改进的入口。考虑字典 <code>["bad", "bat", "ball", "band"]</code> 与查询 <code>"ba."</code>：四条单词都以 <code>ba</code> 开头，逐个扫描会把这两个公共字符重复比对四遍，直到第三位才分叉。换言之，比对工作沿单词逐条独立展开，<strong>共享前缀被反复处理</strong>。若能让相同前缀只走一次、仅在字符开始相异处才分支，带 <code>.</code> 的查询就不必触碰全部 <span class="arithmatex">\(N\)</span> 条单词。把单词按字符逐位归并、共享公共前缀的树形结构，就是 <strong>Trie（前缀树，Fredkin 1960）</strong>；本节余下部分从匹配条件出发推导它如何支持 <code>.</code>。</p>
 <h2 id="formulation">形式化 (Formulation)<a class="headerlink" href="#formulation" title="Permanent link">#</a></h2>
-<p>设字典 <span class="arithmatex">\(\mathcal{D} = \{w_1, w_2, \dots\} \subseteq \Sigma^*\)</span>，$\Sigma = $ 26 个小写字母。给查询 <span class="arithmatex">\(q \in (\Sigma \cup \{.\})^*\)</span>，返回是否存在 <span class="arithmatex">\(w \in \mathcal{D}\)</span> 使 <span class="arithmatex">\(|w| = |q|\)</span> 且对每个 <span class="arithmatex">\(i\)</span> 有 <span class="arithmatex">\(q_i = w_i\)</span> 或 $q_i = $ <code>.</code>。</p>
+<p>直觉是：把字典组织成"按字符逐位分叉"的树后，<code>search</code> 退化为从根开始、逐位决定往哪些孩子走——固定字符只走一条边，<code>.</code> 则在该层放开约束。要把这句话变成算法，先精确写下"匹配"的判定条件。</p>
+<p>设字典 <span class="arithmatex">\(\mathcal{D} = \{w_1, w_2, \dots\} \subseteq \Sigma^*\)</span>，$\Sigma = $ 26 个小写字母。给查询 <span class="arithmatex">\(q \in (\Sigma \cup \{.\})^*\)</span>，需要判定</p>
+<div class="arithmatex">\[
+\mathrm{Match}(q) \;=\; \exists\, w \in \mathcal{D} \;:\; |w| = |q| \;\wedge\; \forall i \in [0, |q|),\; \big(q_i = w_i \;\vee\; q_i = \texttt{.}\big).
+\]</div>
+<p>逐项读这个谓词，三个子句各自规定了搜索的一个动作：长度子句 <span class="arithmatex">\(|w|=|q|\)</span> 要求恰好走 <span class="arithmatex">\(|q|\)</span> 步后停在一个单词末端；逐位子句里 <span class="arithmatex">\(q_i = w_i\)</span> 把第 <span class="arithmatex">\(i\)</span> 步限死在某条边上；而 <span class="arithmatex">\(q_i = \texttt{.}\)</span> 使该位的约束为真空——任何 <span class="arithmatex">\(w_i\)</span> 都满足，于是这一步必须放开到所有可能的字符。<code>.</code> 之所以要在所有孩子上分支，不是外加的设计选择，而是这条真空约束的直接后果：约束不排除任何字符，正确性就要求逐一尝试。下一节把这三条子句翻译成 Trie 上的一次 DFS。</p>
 <h2 id="approach">数据结构 / 想法 (Approach)<a class="headerlink" href="#approach" title="Permanent link">#</a></h2>
-<p><strong>Trie 节点</strong>：26 个子指针 (或字典) + <code>is_end</code> 标志。<code>addWord</code> <span class="arithmatex">\(O(L)\)</span> 沿路径插入即可。</p>
-<p><strong>search</strong>：在 Trie 上做 DFS：
-- 当前字符是字母 <span class="arithmatex">\(c\)</span>：只走子 <span class="arithmatex">\(c\)</span>。
-- 当前字符是 <code>.</code>：对所有非空子分别递归。
-- 走到 <span class="arithmatex">\(|q|\)</span> 末尾，检查 <code>is_end</code>。</p>
+<p><strong>Trie 节点</strong>：每个节点持有 26 个（最多）子指针，按字符索引下一层；外加一个 <code>is_end</code> 标志，标记从根到此节点的字符序列恰好是一条已插入单词。两条单词的公共前缀在树中共用同一段路径，这正是上一节要消除的重复比对。<code>addWord</code> 沿 <code>word</code> 逐字符下行、缺边则建，末端置 <code>is_end = True</code>，故为 <span class="arithmatex">\(O(L)\)</span>。</p>
+<p><strong>从谓词推导 search</strong>：把 <span class="arithmatex">\(\mathrm{Match}(q)\)</span> 沿查询长度做归纳。定义 <code>dfs(node, i)</code> 判定"以 <code>node</code> 为根的子树中，是否存在一条单词使其后缀与 <span class="arithmatex">\(q\)</span> 从第 <span class="arithmatex">\(i\)</span> 位起匹配"。三条子句各对应一个分支：</p>
+<ul>
+<li><strong>长度子句</strong>（基例）：<span class="arithmatex">\(i = |q|\)</span> 时，已恰好走满 <span class="arithmatex">\(|q|\)</span> 步，匹配成立当且仅当此处是某单词末端，即返回 <code>node.is_end</code>。这把 <span class="arithmatex">\(|w|=|q|\)</span> 与"停在单词末端"两个要求合并成一次检查。</li>
+<li><strong>固定字符子句</strong>：<span class="arithmatex">\(q_i = c \in \Sigma\)</span> 时，<span class="arithmatex">\(q_i = w_i\)</span> 要求第 <span class="arithmatex">\(i\)</span> 条边正是 <span class="arithmatex">\(c\)</span>，故仅当 <code>node</code> 有孩子 <span class="arithmatex">\(c\)</span> 时下行到该孩子并递归 <code>dfs(child_c, i+1)</code>，否则该路径失败。</li>
+<li><strong>通配子句</strong>：<span class="arithmatex">\(q_i = \texttt{.}\)</span> 时约束真空，对 <code>node</code> 的每个非空孩子各递归一次，任一成功即成立。</li>
+</ul>
+<p><strong>先有不变量，再读代码</strong>。<code>dfs(node, i)</code> 被调用时，<code>node</code> 恒为"从根沿 <span class="arithmatex">\(q\)</span> 的前 <span class="arithmatex">\(i\)</span> 位匹配所抵达的节点"——固定位沿该字符的边下行，<code>.</code> 位沿某个被选中的字符下行。三个分支都把这一不变量推进一位：基例在不变量下检查末端，固定位与通配位各把 <span class="arithmatex">\(i\)</span> 推到 <span class="arithmatex">\(i+1\)</span> 并保持 <code>node</code> 仍是合法前缀匹配点。由此归纳，<code>dfs(root, 0)</code> 返回 <code>True</code> 当且仅当 <span class="arithmatex">\(\mathrm{Match}(q)\)</span> 成立。</p>
 <div class="language-python highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">WordDictionary</span><span class="p">:</span>
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">children</span> <span class="o">=</span> <span class="p">{}</span>  <span class="c1"># char -&gt; WordDictionary</span>
@@ -22503,25 +22541,59 @@
             <span class="k">return</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">node</span><span class="o">.</span><span class="n">children</span> <span class="ow">and</span> <span class="n">dfs</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">children</span><span class="p">[</span><span class="n">c</span><span class="p">],</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">dfs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
 </code></pre></div>
-<p><strong>不变量</strong>：DFS 调用 <code>dfs(node, i)</code> 时，<code>node</code> 是某个已插入单词前缀 <code>word[:i]</code> 的匹配点（部分位置可被 <code>.</code> 替代）。</p>
-<p>Trace 样例: addWord("bad","dad","mad"); search("pad")→ root.children 无 'p' → False ✓. search(".ad")→ root 每子（b/d/m）递归 search 后两位 "ad"，三条路径都成功 → True ✓. search("b..")→ 走 'b' 子，再 '.': 'a' 子，再 '.': 'd' 子，到末尾 is_end=True → True ✓.</p>
-<p><strong>复杂度对比</strong>：朴素哈希存所有字符串 + 线性扫描 <span class="arithmatex">\(O(N \cdot L \cdot |q|)\)</span>；Trie 的优势在共享前缀大幅剪枝。<strong>当 <code>.</code> 数 <span class="arithmatex">\(k\)</span> 较多时</strong>，DFS 最坏 <span class="arithmatex">\(O(26^k \cdot L)\)</span>；本题 <span class="arithmatex">\(k \le 2\)</span> 故 <span class="arithmatex">\(26^2 = 676\)</span>，仍快速。</p>
+<p>代码三行恰好对照三条子句：基例 <code>return node.is_end</code>，通配 <code>any(...)</code>，固定字符 <code>c in node.children and ...</code>。</p>
+<p>下表用 <code>addWord("bad","dad","mad")</code> 后的三次查询验证三个分支：</p>
+<table>
+<thead>
+<tr>
+<th>查询</th>
+<th>走法</th>
+<th>命中分支</th>
+<th>结果</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>"pad"</code></td>
+<td>根无孩子 <code>'p'</code>，固定字符子句立即失败</td>
+<td>固定字符</td>
+<td><code>False</code></td>
+</tr>
+<tr>
+<td><code>".ad"</code></td>
+<td>根的每个孩子 <code>b/d/m</code> 各递归匹配后两位 <code>"ad"</code>，三条路径都到达末端</td>
+<td>通配 → 固定字符 → 基例</td>
+<td><code>True</code></td>
+</tr>
+<tr>
+<td><code>"b.."</code></td>
+<td>走孩子 <code>'b'</code>；第二位 <code>.</code> 进 <code>'a'</code>；第三位 <code>.</code> 进 <code>'d'</code>，此处 <code>is_end=True</code></td>
+<td>固定 → 通配 → 通配 → 基例</td>
+<td><code>True</code></td>
+</tr>
+</tbody>
+</table>
+<p>回到上一节的浪费：朴素扫描对带 <code>.</code> 的查询是 <span class="arithmatex">\(O(N \cdot L)\)</span>，因为每条单词从头独立比对。Trie 把公共前缀只走一遍——查询 <code>"ba."</code> 在字典 <code>["bad","bat","ball","band"]</code> 上先到达唯一的 <code>b→a</code> 节点，再在该层一次性铺开到 <code>d/t/l/n</code>，公共前缀 <code>ba</code> 只比对一次而非四次。剪枝来自前缀共享，且仅在出现 <code>.</code> 的那一层产生分支。</p>
+<p>至此唯一未量化的代价就是通配子句的分支：每个 <code>.</code> 把搜索从一条路径放开到至多 26 条孩子，这把代价从前缀共享省下的部分加了回来，下一节据此给出确切上界。</p>
 <h2 id="complexity">复杂度 (Complexity)<a class="headerlink" href="#complexity" title="Permanent link">#</a></h2>
+<p>代价完全由通配子句的分支决定。无 <code>.</code> 时搜索只沿固定字符走一条路径，每步一次孩子查找；有 <span class="arithmatex">\(k\)</span> 个 <code>.</code> 时，第一个 <code>.</code> 把当前路径放开到至多 26 条，第二个再各放开 26 条，故 DFS 触及的节点至多 <span class="arithmatex">\(26^k \cdot L\)</span>。</p>
 <ul>
-<li><code>addWord</code>: Time <span class="arithmatex">\(O(L)\)</span>, Space <span class="arithmatex">\(O(L)\)</span>（最坏新增 <span class="arithmatex">\(L\)</span> 节点）。</li>
-<li><code>search</code>: 无 <code>.</code> 时 <span class="arithmatex">\(O(L)\)</span>；有 <span class="arithmatex">\(k\)</span> 个 <code>.</code> 时最坏 <span class="arithmatex">\(O(26^k \cdot L)\)</span>；本题 <span class="arithmatex">\(k \le 2\)</span> 故 <span class="arithmatex">\(O(L)\)</span> 常数 <span class="arithmatex">\(\le 676\)</span>。</li>
-<li>总空间：<span class="arithmatex">\(O(\sum |w_i|)\)</span>（Trie 节点数）。</li>
+<li><code>addWord</code>：Time <span class="arithmatex">\(O(L)\)</span>；Space <span class="arithmatex">\(O(L)\)</span>（最坏新增 <span class="arithmatex">\(L\)</span> 个节点，无公共前缀可共享时）。</li>
+<li><code>search</code>：无 <code>.</code> 时 <span class="arithmatex">\(O(L)\)</span>；有 <span class="arithmatex">\(k\)</span> 个 <code>.</code> 时最坏 <span class="arithmatex">\(O(26^k \cdot L)\)</span>。本题约束 <span class="arithmatex">\(k \le 2\)</span>，故 DFS 至多触及 <span class="arithmatex">\(26^2 \cdot L = 676 L\)</span> 个节点，即 <span class="arithmatex">\(O(L)\)</span>、常数因子至多 676。</li>
+<li>总空间：<span class="arithmatex">\(O\!\left(\sum_i |w_i|\right)\)</span>，等于 Trie 的节点数；公共前缀越多，实际节点越少。</li>
 </ul>
+<p>约束 <span class="arithmatex">\(k \le 2\)</span> 在这里不是装饰：它把通配分支因子 <span class="arithmatex">\(26^k\)</span> 钉成常数 676，使 <code>search</code> 与无通配时同阶。若 <span class="arithmatex">\(k\)</span> 可随查询增长，<span class="arithmatex">\(26^k\)</span> 将成为主导项，朴素扫描的 <span class="arithmatex">\(O(N\cdot L)\)</span> 反而可能更优——故这条约束正是 Trie 方案占优的前提。</p>
+<p>下面的陷阱都出自上述三条子句的边界：长度子句的"恰好停在末端"、通配子句的"恰好一个字符"。</p>
 <h2 id="pitfalls">陷阱 (Pitfalls)<a class="headerlink" href="#pitfalls" title="Permanent link">#</a></h2>
 <ul>
-<li><strong>末尾判断必须是 <code>is_end</code>，不仅仅是 "到达"</strong>：例如已加 "bad"，查询 "ba" 不应返回 True。</li>
-<li><strong><code>.</code> 不匹配空字符</strong>：<code>'.'</code> 必须对应<strong>一个</strong>字母，不能跳过。<code>search</code> 长度必须等于已加单词长度。</li>
-<li>用 <code>dict</code> 而非长度 26 数组：本题字符集小、稀疏意义不大，但 <code>dict</code> 写法简洁；性能差异可接受。</li>
-<li>递归深度 <span class="arithmatex">\(\le 25\)</span>，无栈溢出风险。</li>
+<li><strong>末端判断必须是 <code>is_end</code>，不仅仅是"走满"</strong>：这是长度子句的直接要求。已加 <code>"bad"</code>，查询 <code>"ba"</code> 在第二步走满，但落点 <code>is_end=False</code>，应返回 <code>False</code>——到达某节点不等于该处是单词末端。</li>
+<li><strong><code>.</code> 匹配恰好一个字母，不能跳过</strong>：通配子句仍要求第 <span class="arithmatex">\(i\)</span> 步走一条边、把 <span class="arithmatex">\(i\)</span> 推进一位，故 <code>search</code> 的长度必须等于某条已加单词的长度。<code>.</code> 不对应空字符。</li>
+<li>用 <code>dict</code> 而非定长 26 数组存孩子：本题字符集小、稀疏收益有限，但 <code>dict</code> 写法更简洁，性能差异可接受。</li>
+<li>递归深度 <span class="arithmatex">\(\le |q| \le 25\)</span>，栈帧至多 26 层，无溢出风险。</li>
 </ul>
 <h2 id="related">相关题目 (Related)<a class="headerlink" href="#related" title="Permanent link">#</a></h2>
 <ul>
-<li><code>#208. Implement Trie (Prefix Tree) (off-wiki)</code> — 本题的前置；纯 Trie 没有通配符。</li>
+<li><code>#208. Implement Trie (Prefix Tree) (off-wiki)</code> — 本题的前置；纯 Trie 没有通配符，建议先实现它再回到这里。</li>
 <li><code>#212. Word Search II (off-wiki)</code> — Trie + 网格 DFS 的经典组合。</li>
 <li><code>#745. Prefix and Suffix Search (off-wiki)</code> — Trie 的另一变体（前缀 + 后缀联合）。</li>
 <li><a href="../3407_substring-matching-pattern/">#3407. Substring Matching Pattern</a> — 通配符 <code>*</code> 的简化版（字符串匹配而非字典）。</li>
@@ -22638,6 +22710,8 @@
         <script src="../../../js/mathjax/tex-mml-chtml.js"></script>
       
         <script src="../../../js/mermaid.min.js"></script>
+      
+        <script src="../../../js/featured.js"></script>
       
     
   </body>

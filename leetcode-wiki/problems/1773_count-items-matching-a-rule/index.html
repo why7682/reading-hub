@@ -1466,6 +1466,8 @@
       
         
       
+        
+      
     
     
     
@@ -1521,6 +1523,34 @@
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../featured/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ⭐ Featured（已验证）
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
               
             
               
@@ -1610,10 +1640,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_4" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
         
           
-          <label class="md-nav__link" for="__nav_4_4" id="__nav_4_4_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_5" id="__nav_4_5_label" tabindex="">
             
   
   
@@ -1631,8 +1661,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_4_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_4">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_5">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1915,7 +1945,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -1937,14 +1967,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_4_5" id="__nav_4_5_label" tabindex="">
+              <label class="md-nav__link " for="__nav_4_6" id="__nav_4_6_label" tabindex="">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_5">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_6">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -5321,10 +5351,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_7" checked>
         
           
-          <label class="md-nav__link" for="__nav_4_6" id="__nav_4_6_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_7" id="__nav_4_7_label" tabindex="">
             
   
   
@@ -5342,8 +5372,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_4_6">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_7_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4_7">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -22467,27 +22497,44 @@
 <h2 id="problem">Problem<a class="headerlink" href="#problem" title="Permanent link">#</a></h2>
 <p><code>items[i] = [type, color, name]</code>，给 <code>ruleKey ∈ {"type","color","name"}</code> 与 <code>ruleValue</code>，求匹配项数。约束 <span class="arithmatex">\(|items| \le 10^4\)</span>。</p>
 <h2 id="background">背景 (Background)<a class="headerlink" href="#background" title="Permanent link">#</a></h2>
-<p>基础数组遍历与 if-else。无特殊学科背景。</p>
+<p>每个 <code>item</code> 是一个长度为 3 的列表，三个字段按固定顺序排列：位置 0 是 <code>type</code>，位置 1 是 <code>color</code>，位置 2 是 <code>name</code>。<code>ruleKey</code> 恰好取这三个字段名之一，<code>ruleValue</code> 是要匹配的取值。一条规则做的事，是从每个 item 里取出 <code>ruleKey</code> 指定的那一个字段，看它是否等于 <code>ruleValue</code>。换句话说：规则把 item 投影到某一列，整道题只关心匹配该列的项有多少个。</p>
+<p>唯一需要决定的，是怎样把字段名 <code>ruleKey</code> 翻译成它对应的列号。</p>
 <h2 id="formulation">形式化 (Formulation)<a class="headerlink" href="#formulation" title="Permanent link">#</a></h2>
-<p><span class="arithmatex">\(\text{idx}(\text{ruleKey}) \in \{0, 1, 2\}\)</span>；答案 <span class="arithmatex">\(= |\{i : \text{items}[i][\text{idx}] = \text{ruleValue}\}|\)</span>。</p>
+<p>先看最直接的写法。<code>ruleKey</code> 只有三种可能，于是可以逐一分支：</p>
+<div class="language-python highlight"><pre><span></span><code><span class="k">if</span> <span class="n">ruleKey</span> <span class="o">==</span> <span class="s2">&quot;type&quot;</span><span class="p">:</span>
+    <span class="k">return</span> <span class="nb">sum</span><span class="p">(</span><span class="mi">1</span> <span class="k">for</span> <span class="n">it</span> <span class="ow">in</span> <span class="n">items</span> <span class="k">if</span> <span class="n">it</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="n">ruleValue</span><span class="p">)</span>
+<span class="k">elif</span> <span class="n">ruleKey</span> <span class="o">==</span> <span class="s2">&quot;color&quot;</span><span class="p">:</span>
+    <span class="k">return</span> <span class="nb">sum</span><span class="p">(</span><span class="mi">1</span> <span class="k">for</span> <span class="n">it</span> <span class="ow">in</span> <span class="n">items</span> <span class="k">if</span> <span class="n">it</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="n">ruleValue</span><span class="p">)</span>
+<span class="k">else</span><span class="p">:</span>  <span class="c1"># &quot;name&quot;</span>
+    <span class="k">return</span> <span class="nb">sum</span><span class="p">(</span><span class="mi">1</span> <span class="k">for</span> <span class="n">it</span> <span class="ow">in</span> <span class="n">items</span> <span class="k">if</span> <span class="n">it</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">==</span> <span class="n">ruleValue</span><span class="p">)</span>
+</code></pre></div>
+<p>这是正确的，但三个分支结构完全相同，唯一的差别是下标 <code>0 / 1 / 2</code>。分支本身没有携带任何逻辑，只是在把字段名翻译成下标。把这个翻译抽出来，分支就消失了——这正是形式化要捕捉的东西。</p>
+<p>定义字段名到列号的映射</p>
+<div class="arithmatex">\[\text{idx} : \{\text{"type"}, \text{"color"}, \text{"name"}\} \to \{0, 1, 2\}, \quad \text{"type"} \mapsto 0,\ \text{"color"} \mapsto 1,\ \text{"name"} \mapsto 2.\]</div>
+<p>这个映射来自字段在 item 中的固定排列顺序，与具体数据无关。有了它，答案就是满足"指定列等于 <code>ruleValue</code>"的下标集合的基数：</p>
+<div class="arithmatex">\[\text{answer} = \bigl|\,\{\, i : \text{items}[i][\text{idx}(\text{ruleKey})] = \text{ruleValue} \,\}\,\bigr|. \tag{1}\]</div>
+<p>上面那三个分支，现在统一成了同一个表达式，只是把 <code>idx(ruleKey)</code> 算出来代进去。</p>
 <h2 id="approach">数据结构 / 想法 (Approach)<a class="headerlink" href="#approach" title="Permanent link">#</a></h2>
+<p>公式 (1) 把实现拆成两步：先求出列号 <span class="arithmatex">\(\text{idx}(\text{ruleKey})\)</span>，再数出该列等于 <code>ruleValue</code> 的项。</p>
+<p>第一步只需把映射 <span class="arithmatex">\(\text{idx}\)</span> 存成一个查表结构。<code>ruleKey</code> 是三个常量字符串之一，dict 字面量正好把"字符串 → 列号"这层对应直接编码出来，一次查表 <span class="arithmatex">\(O(1)\)</span> 得到列号 <code>idx</code>，分支链随之消去。第二步是一遍线性扫描，对每个 item 比较第 <code>idx</code> 列与 <code>ruleValue</code>，统计相等的个数——即式 (1) 中集合的基数。</p>
 <div class="language-python highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">Solution</span><span class="p">:</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">countMatches</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">items</span><span class="p">,</span> <span class="n">ruleKey</span><span class="p">,</span> <span class="n">ruleValue</span><span class="p">):</span>
         <span class="n">idx</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;color&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="mi">2</span><span class="p">}[</span><span class="n">ruleKey</span><span class="p">]</span>
         <span class="k">return</span> <span class="nb">sum</span><span class="p">(</span><span class="mi">1</span> <span class="k">for</span> <span class="n">it</span> <span class="ow">in</span> <span class="n">items</span> <span class="k">if</span> <span class="n">it</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span> <span class="o">==</span> <span class="n">ruleValue</span><span class="p">)</span>
 </code></pre></div>
+<p>代码逐行对应式 (1)：dict 字面量编码映射 <span class="arithmatex">\(\text{idx}(\cdot)\)</span>，下标查询给出 <code>idx</code>，生成器表达式配合 <code>sum</code> 计算被索引集合的基数。无匹配项时 <code>sum</code> 得 0，所有项匹配时得 <span class="arithmatex">\(|items|\)</span>，两种边界都自然落在式 (1) 的定义内，无需特判。</p>
 <h2 id="complexity">复杂度 (Complexity)<a class="headerlink" href="#complexity" title="Permanent link">#</a></h2>
 <ul>
-<li>Time: <span class="arithmatex">\(O(n)\)</span></li>
-<li>Space: <span class="arithmatex">\(O(1)\)</span></li>
+<li>Time: <span class="arithmatex">\(O(n)\)</span> —— dict 查表 <span class="arithmatex">\(O(1)\)</span>，随后对 <span class="arithmatex">\(n\)</span> 个 item 各做一次 <span class="arithmatex">\(O(1)\)</span> 比较；无提前退出，故 best = avg = worst = <span class="arithmatex">\(\Theta(n)\)</span>。</li>
+<li>Space: <span class="arithmatex">\(O(1)\)</span> —— dict 只有 3 个常量条目；<code>sum</code> 接收生成器，不物化中间列表。</li>
 </ul>
 <h2 id="pitfalls">陷阱 (Pitfalls)<a class="headerlink" href="#pitfalls" title="Permanent link">#</a></h2>
 <ul>
-<li>无。</li>
+<li>列号映射必须与题目定义的字段顺序 <code>[type, color, name]</code> 一致：<code>type→0, color→1, name→2</code>。错位会让规则投影到错误的列，扫描本身却照常通过，错误难以察觉。</li>
 </ul>
 <h2 id="related">相关题目 (Related)<a class="headerlink" href="#related" title="Permanent link">#</a></h2>
 <ul>
-<li><a href="../1108_defanging-an-ip-address/">#1108. Defanging an IP Address</a> — 类似的字符串/数组浅遍历。</li>
+<li><a href="../1108_defanging-an-ip-address/">#1108. Defanging an IP Address</a> — 同属对数组/字符串做一遍线性变换或统计、无需额外数据结构的题型。</li>
 </ul>
 <h2 id="further-reading">Further Reading<a class="headerlink" href="#further-reading" title="Permanent link">#</a></h2>
 <ul>
@@ -22598,6 +22645,8 @@
         <script src="../../../js/mathjax/tex-mml-chtml.js"></script>
       
         <script src="../../../js/mermaid.min.js"></script>
+      
+        <script src="../../../js/featured.js"></script>
       
     
   </body>

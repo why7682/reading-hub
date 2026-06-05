@@ -1466,6 +1466,8 @@
       
         
       
+        
+      
     
     
     
@@ -1521,6 +1523,34 @@
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../featured/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ⭐ Featured（已验证）
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
               
             
               
@@ -1610,10 +1640,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_4" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
         
           
-          <label class="md-nav__link" for="__nav_4_4" id="__nav_4_4_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_5" id="__nav_4_5_label" tabindex="">
             
   
   
@@ -1631,8 +1661,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_4_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_4">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_5">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1915,7 +1945,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -1937,14 +1967,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_4_5" id="__nav_4_5_label" tabindex="">
+              <label class="md-nav__link " for="__nav_4_6" id="__nav_4_6_label" tabindex="">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_5">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_6">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -5321,10 +5351,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_7" checked>
         
           
-          <label class="md-nav__link" for="__nav_4_6" id="__nav_4_6_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_7" id="__nav_4_7_label" tabindex="">
             
   
   
@@ -5342,8 +5372,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_4_6">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_7_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4_7">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -22471,11 +22501,32 @@
 - 点中 E 且周围有 <span class="arithmatex">\(k \geq 1\)</span> 个雷 → 改 <code>'k'</code>（不递归）</p>
 <p><span class="arithmatex">\(m, n \leq 50\)</span>。</p>
 <h2 id="background">背景 (Background)<a class="headerlink" href="#background" title="Permanent link">#</a></h2>
-<p>经典 <strong>flood fill</strong> 题：从起点 BFS/DFS 展开邻接区域，遇边界停止。和图像处理的 connected component labeling、Photoshop 的"魔术棒"工具同源。本题边界条件是"格子周围有雷数 &gt; 0"——展开到带数字的格子就停下，把数字写上。</p>
+<p>先看最朴素的做法：点击落在一个 E 格上，按规则原地改它。统计它周围 8 邻的雷数 <span class="arithmatex">\(k\)</span>。若 <span class="arithmatex">\(k \geq 1\)</span>，写 <code>'k'</code>，结束。若 <span class="arithmatex">\(k = 0\)</span>，写 <code>'B'</code>——然后规则要求“递归揭开 8 邻”。</p>
+<p>问题就出在这个“递归”二字。它不是修辞，而是规则本身的一部分：第三条规则要求一个 <span class="arithmatex">\(k=0\)</span> 的 E 格去<strong>揭开它的每个 E 邻居</strong>，而被揭开的邻居若也满足 <span class="arithmatex">\(k=0\)</span>，又会去揭开<strong>它的</strong>邻居。一次点击触发的不是一格的改动，而是一条沿着 <span class="arithmatex">\(k=0\)</span> 格不断传播的链。只处理点击那一格的局部逻辑会漏掉整条链。</p>
+<p>为什么这条链会停？因为传播只发生在 <span class="arithmatex">\(k=0\)</span> 的格子上。一旦走到某个 <span class="arithmatex">\(k \geq 1\)</span> 的 E 格，规则第三条说它写数字、不递归——传播在此终止。于是揭开区域的形状完全由两个谓词决定：</p>
+<ul>
+<li>一个格子<strong>继续传播</strong>，当且仅当它是 E 且周围无雷（<span class="arithmatex">\(k = 0\)</span>）；</li>
+<li>一个格子<strong>被揭开但不传播</strong>（写数字），当且仅当它是 E 且周围有雷（<span class="arithmatex">\(k \geq 1\)</span>）。</li>
+</ul>
+<p>朴素做法缺的不是某个技巧，而是把这条传播链系统地走完的机制。这正是把它看成图遍历的理由。</p>
 <h2 id="formulation">形式化 (Formulation)<a class="headerlink" href="#formulation" title="Permanent link">#</a></h2>
-<p>设无向图 <span class="arithmatex">\(G\)</span>：节点 = E 格；当节点周围 8 邻无雷时，与所有 E 邻居连边。点击 <span class="arithmatex">\((r, c)\)</span> 的 BFS 连通块内的格子全部翻成 B（若无雷）或数字（若周围有雷的 frontier）。</p>
+<p>直觉是：<span class="arithmatex">\(k=0\)</span> 的格子之间可以互相“引爆揭开”，<span class="arithmatex">\(k \geq 1\)</span> 的格子接收揭开但不再传出。把“能互相传播”定义成图的边，揭开区域就是一次图遍历能到达的点集。</p>
+<p>把 E 格当作图 <span class="arithmatex">\(G = (V, E)\)</span> 的节点。设 <span class="arithmatex">\(\mathrm{mines}(u)\)</span> 为格子 <span class="arithmatex">\(u\)</span> 周围 8 邻的雷数。在两个 E 邻居 <span class="arithmatex">\(u, v\)</span> 之间连边，当且仅当 <span class="arithmatex">\(u, v\)</span> 中<strong>至少一方</strong> <span class="arithmatex">\(\mathrm{mines} = 0\)</span>。更精确地，只从 <span class="arithmatex">\(\mathrm{mines}(u) = 0\)</span> 的格 <span class="arithmatex">\(u\)</span> 向它的每个 E 邻居 <span class="arithmatex">\(v\)</span> 引一条有向边——这正是规则第三条“<span class="arithmatex">\(k=0\)</span> 格揭开 8 邻”的逐字翻译。</p>
+<blockquote>
+<p><strong>不变量 (I1)</strong>：从点击格 <span class="arithmatex">\((r,c)\)</span> 出发，沿这些边可达的格子，恰好是本次点击应当揭开的格子。其中 <span class="arithmatex">\(\mathrm{mines} = 0\)</span> 的写 <code>'B'</code> 并继续向外引边；<span class="arithmatex">\(\mathrm{mines} \geq 1\)</span> 的写对应数字，是遍历的边界（frontier），不再向外引边。</p>
+</blockquote>
+<p>(I1) 把“揭开哪些格”这个问题归结为标准的图可达性。点击格本身若是 M，按第一条规则单独处理（写 <code>'X'</code>，无遍历）；若 <span class="arithmatex">\(\mathrm{mines}(r,c) \geq 1\)</span>，则可达集只有它自己，写一个数字了事。其余情形就是从 <span class="arithmatex">\((r,c)\)</span> 出发的一次遍历。</p>
+<p>边界条件由谓词而非人为设计决定：数字格之所以是边界，是因为它的 E 邻居挨着雷，点开会显示数字而非空格，按定义不属于 <span class="arithmatex">\(\mathrm{mines}=0\)</span> 的传播链。停止条件不是要记住的实现规则，而是 (I1) 的直接推论。</p>
 <h2 id="approach">数据结构 / 想法 (Approach)<a class="headerlink" href="#approach" title="Permanent link">#</a></h2>
-<p><strong>BFS 实现</strong>（避免深递归栈风险，虽然 50×50 也勉强可用 DFS）：</p>
+<p>遍历用 BFS 还是 DFS 都行，二者都正确实现 (I1) 的可达性。这里选 BFS：DFS 的递归深度可达 <span class="arithmatex">\(mn = 2500\)</span>，超过 Python 默认递归上限 1000，会抛 <code>RecursionError</code>；显式队列没有这个限制。</p>
+<p><strong>先手算一遍</strong>，看 (I1) 如何在小局上展开。取样例左下区域（点击 <code>[3,0]</code>，雷在 <code>(1,2)</code>）：</p>
+<ol>
+<li>队列初始 <code>[(3,0)]</code>。弹出 <code>(3,0)</code>，查 8 邻无 M，<span class="arithmatex">\(\mathrm{mines}=0\)</span> → 写 <code>'B'</code>，把 E 邻居 <code>(2,0), (3,1)</code> 入队。</li>
+<li>弹出 <code>(2,0)</code>，同样 <span class="arithmatex">\(\mathrm{mines}=0\)</span> → <code>'B'</code>，邻居 <code>(1,0), (1,1), (2,1)</code> 入队（已写值的格不再入队）。</li>
+<li>传播到 <code>(1,1)</code>：查 8 邻发现 <code>(1,2)</code> 是 M，<span class="arithmatex">\(\mathrm{mines}=1\)</span> → 写 <code>'1'</code>，<strong>不入队任何邻居</strong>。它是边界。</li>
+<li>队列耗尽，停止。靠雷的一圈都写成了数字，其余写成 <code>'B'</code>，与样例输出一致。</li>
+</ol>
+<p>第 3 步是 (I1) 边界条件的现场体现：传播到带雷邻居的格就地停下。现在把它写成代码。</p>
 <div class="language-python highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">collections</span><span class="w"> </span><span class="kn">import</span> <span class="n">deque</span>
 
 <span class="k">class</span><span class="w"> </span><span class="nc">Solution</span><span class="p">:</span>
@@ -22494,13 +22545,13 @@
                        <span class="ow">and</span> <span class="n">board</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="n">dr</span><span class="p">][</span><span class="n">j</span><span class="o">+</span><span class="n">dc</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;M&#39;</span><span class="p">)</span>
 
         <span class="n">q</span> <span class="o">=</span> <span class="n">deque</span><span class="p">([(</span><span class="n">r</span><span class="p">,</span> <span class="n">c</span><span class="p">)])</span>
-        <span class="c1"># 标记已入队避免重复访问</span>
+        <span class="c1"># 入队前提前写值，标记该格已离开 E 状态</span>
         <span class="n">visited</span> <span class="o">=</span> <span class="p">{(</span><span class="n">r</span><span class="p">,</span> <span class="n">c</span><span class="p">)}</span>
         <span class="k">while</span> <span class="n">q</span><span class="p">:</span>
             <span class="n">i</span><span class="p">,</span> <span class="n">j</span> <span class="o">=</span> <span class="n">q</span><span class="o">.</span><span class="n">popleft</span><span class="p">()</span>
             <span class="n">cnt</span> <span class="o">=</span> <span class="n">count_mines</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">cnt</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
-                <span class="n">board</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">cnt</span><span class="p">)</span>
+                <span class="n">board</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">cnt</span><span class="p">)</span>        <span class="c1"># frontier：写数字，不扩展</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">board</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;B&#39;</span>
                 <span class="k">for</span> <span class="n">dr</span><span class="p">,</span> <span class="n">dc</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">DIRS</span><span class="p">:</span>
@@ -22511,27 +22562,27 @@
                         <span class="n">q</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">ni</span><span class="p">,</span> <span class="n">nj</span><span class="p">))</span>
         <span class="k">return</span> <span class="n">board</span>
 </code></pre></div>
-<p><strong>关键不变量</strong>：(1) 数字格作为 frontier，不再扩展；(2) 用 <code>visited</code> 集合或入队前提前写值，避免同一 E 多次入队。</p>
-<p><strong>Trace 示例 1 (<code>click=[3,0]</code>，最底行最左)</strong>：该位置周围 8 邻无 M（M 在 (1,2)），cnt=0 → B，扩展到 (2,0), (3,1)。继续 BFS，碰到 (1,1) 时检查 8 邻发现 M(1,2)，cnt=1 → 写 "1"，停。最终如样例输出 ✓</p>
-<p><strong>为什么入队时就加 visited</strong>：若等到 pop 才查重，多源邻接的格会被推入多次，触发后续重复 <code>count_mines</code> 工作。</p>
+<p>循环体逐字对应 (I1)：<code>cnt &gt; 0</code> 分支处理 frontier（写数字、不引边），<code>else</code> 分支沿 <span class="arithmatex">\(\mathrm{mines}=0\)</span> 的边把 E 邻居推入遍历。</p>
+<p><strong>去重为什么放在入队时。</strong> 设想去掉入队时的标记，改成弹出时再判。一个 E 格可能同时是两个已入队 <span class="arithmatex">\(k=0\)</span> 格的邻居（8 邻有重叠），于是它会被推入队列两次。后果不是错误结果——它第一次弹出就被改成 <code>'B'</code> 或数字，第二次弹出时已不是 <code>'E'</code>，循环体里对它的写入是幂等的——而是白做一遍 <code>count_mines</code> 与重复入队。<strong>先看坏在哪，再决定怎么修</strong>：把标记提前到入队时，保证每个格至多入队一次。</p>
+<p>不过要说清一个常被高估的点：这里的 <code>visited</code> 集合其实<strong>不是正确性所必需</strong>的。内层判断已有 <code>board[ni][nj] == 'E'</code> 这一守卫；一个格被写成 <code>'B'</code>/数字后就不再是 <code>'E'</code>，自然不会被再次扩展。<code>visited</code> 只能挡住“同一格在被弹出之前、被多个邻居重复入队”这一窗口期，是个常数因子优化，不改变渐近界（见复杂度）。</p>
 <h2 id="complexity">复杂度 (Complexity)<a class="headerlink" href="#complexity" title="Permanent link">#</a></h2>
 <ul>
-<li>Time: <span class="arithmatex">\(O(mn)\)</span>（每格 visit 一次，count_mines <span class="arithmatex">\(O(8)\)</span> 常数）</li>
-<li>Space: <span class="arithmatex">\(O(mn)\)</span>（visited + 队列）</li>
+<li>Time: <span class="arithmatex">\(O(mn)\)</span>。每个 E 格至多被弹出处理一次，每次 <code>count_mines</code> 是 <span class="arithmatex">\(O(8) = O(1)\)</span>。即便没有 <code>visited</code>、靠 <code>'E'</code> 守卫去重，总入队次数也被每格的度数（<span class="arithmatex">\(\leq 8\)</span>）限制，至多 <span class="arithmatex">\(8mn = O(mn)\)</span>，渐近界不变。</li>
+<li>Space: <span class="arithmatex">\(O(mn)\)</span>（队列与 <code>visited</code> 集合）。</li>
 </ul>
 <h2 id="pitfalls">陷阱 (Pitfalls)<a class="headerlink" href="#pitfalls" title="Permanent link">#</a></h2>
 <ul>
-<li><strong>递归 DFS 栈深</strong>：50×50=2500，Python 默认 recursion limit 1000 会爆。BFS 更稳妥。</li>
-<li><strong>重复入队</strong>：必须在 push 时（不是 pop 时）加 visited，否则 worst-case <span class="arithmatex">\(O((mn)^2)\)</span>。</li>
-<li><strong>8 方向 vs 4 方向</strong>：扫雷是 8 邻（含对角线）；常见 bug 是用了 4 邻。</li>
-<li><strong>frontier 写值</strong>：cnt &gt; 0 时只写 'k'，<strong>不继续扩展</strong>——否则会把数字邻居错误地翻出来。</li>
-<li><strong>就地修改还是返回新副本</strong>：题目允许就地。</li>
+<li><strong>递归 DFS 栈深</strong>：<span class="arithmatex">\(50 \times 50 = 2500\)</span> 的传播链超过 Python 默认递归上限 1000，DFS 会抛 <code>RecursionError</code>；BFS 用显式队列规避。</li>
+<li><strong>去重时机</strong>：把标记放在入队时而非弹出时，避免同一格被多次入队、重复 <code>count_mines</code>。注意这是常数因子优化——总入队次数受度数 <span class="arithmatex">\(\leq 8\)</span> 限制，无论是否去重都是 <span class="arithmatex">\(O(mn)\)</span>，<strong>不是</strong> <span class="arithmatex">\(O((mn)^2)\)</span>。</li>
+<li><strong>8 方向 vs 4 方向</strong>：扫雷邻域是 8 邻（含对角线），不是 4 邻；用 4 邻是常见 bug。</li>
+<li><strong>frontier 写值</strong>：<span class="arithmatex">\(\mathrm{mines} \geq 1\)</span> 时只写数字、<strong>不扩展</strong>。这是 (I1) 的边界条件；扩展了就会把数字格的邻居错误揭开。</li>
+<li><strong>就地修改还是返回新副本</strong>：题目允许就地修改并返回原棋盘。</li>
 </ul>
 <h2 id="related">相关题目 (Related)<a class="headerlink" href="#related" title="Permanent link">#</a></h2>
 <ul>
 <li><a href="../3609_minimum-moves-to-reach-target-in-grid/">#3609. Minimum Moves to Reach Target in Grid</a> — 网格 BFS 的另一变种</li>
 <li><code>#200. Number of Islands (off-wiki)</code> — 4 邻 flood fill 经典题</li>
-<li><code>#733. Flood Fill (off-wiki)</code> — flood fill 的最干净形式</li>
+<li><a href="../0733_flood-fill/">#733. Flood Fill</a> — flood fill 的最干净形式</li>
 </ul>
 <h2 id="further-reading">Further Reading<a class="headerlink" href="#further-reading" title="Permanent link">#</a></h2>
 <ul>
@@ -22644,6 +22695,8 @@
         <script src="../../../js/mathjax/tex-mml-chtml.js"></script>
       
         <script src="../../../js/mermaid.min.js"></script>
+      
+        <script src="../../../js/featured.js"></script>
       
     
   </body>

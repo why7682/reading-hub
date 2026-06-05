@@ -1466,6 +1466,8 @@
       
         
       
+        
+      
     
     
     
@@ -1521,6 +1523,34 @@
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../featured/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ⭐ Featured（已验证）
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
               
             
               
@@ -1610,10 +1640,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_4" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
         
           
-          <label class="md-nav__link" for="__nav_4_4" id="__nav_4_4_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_5" id="__nav_4_5_label" tabindex="">
             
   
   
@@ -1631,8 +1661,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_4_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_4">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_5">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1915,7 +1945,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -1937,14 +1967,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_4_5" id="__nav_4_5_label" tabindex="">
+              <label class="md-nav__link " for="__nav_4_6" id="__nav_4_6_label" tabindex="">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_5">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_6">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -5321,10 +5351,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_7" checked>
         
           
-          <label class="md-nav__link" for="__nav_4_6" id="__nav_4_6_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_7" id="__nav_4_7_label" tabindex="">
             
   
   
@@ -5342,8 +5372,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_4_6">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_7_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4_7">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -22467,13 +22497,39 @@
 <h2 id="problem">Problem<a class="headerlink" href="#problem" title="Permanent link">#</a></h2>
 <p>给候选数组 <span class="arithmatex">\(\text{candidates}\)</span>（<strong>可能含重复</strong>）和目标 <span class="arithmatex">\(\text{target}\)</span>，每个元素<strong>至多用一次</strong>，返回所有<strong>不重复</strong>的组合 (multi-set) 使其和为 <span class="arithmatex">\(\text{target}\)</span>。<span class="arithmatex">\(1 \le n \le 100\)</span>，<span class="arithmatex">\(1 \le c_i, \text{target} \le 50\)</span> / <span class="arithmatex">\(30\)</span>。</p>
 <h2 id="background">背景 (Background)<a class="headerlink" href="#background" title="Permanent link">#</a></h2>
-<p>本题是经典 <strong>0/1 子集和 (Subset Sum)</strong> 的枚举版本——决策版 NP-Complete，但枚举版受输出大小限制。Combination Sum 三联 (#39, #40, #216) 都是<strong>回溯 + 剪枝</strong>模板的练手：每元素"取/不取"，配合排序后的<strong>同层重复跳过</strong>消除重复组合。这种"同层去重"思路在 #47 Permutations II、#90 Subsets II 中同源——核心观察是：<strong>在排序数组上，连续相等元素若在同一回溯深度的"第二次以后"被选作起点，则会与第一次选的产生完全相同的子树</strong>。</p>
+<p>枚举"和为 <span class="arithmatex">\(\text{target}\)</span> 的子集"有一个标准做法：按下标递增，对每个元素做"取/不取"的二元决策，深度优先地走遍整棵决策树。每条根到当前节点的路径就是一个候选子集，命中 <span class="arithmatex">\(\text{target}\)</span> 就记下。这套框架本身没有难点。</p>
+<p>难点只来自题目的一个条件：<span class="arithmatex">\(\text{candidates}\)</span> <strong>可能含重复值</strong>，而输出要求<strong>不重复的组合</strong>。要看清这个条件如何破坏朴素枚举，先取最小例子 <span class="arithmatex">\(\text{candidates}=[1,1,2]\)</span>、<span class="arithmatex">\(\text{target}=3\)</span>，不做任何去重地从每个起点向后展开：</p>
+<ul>
+<li>选下标 <span class="arithmatex">\(0\)</span>（值 <span class="arithmatex">\(1\)</span>），再选下标 <span class="arithmatex">\(1\)</span>（值 <span class="arithmatex">\(1\)</span>）→ 还差 <span class="arithmatex">\(1\)</span>，无解；选下标 <span class="arithmatex">\(0\)</span> 再选下标 <span class="arithmatex">\(2\)</span>（值 <span class="arithmatex">\(2\)</span>）→ 命中组合 <span class="arithmatex">\(\{1,2\}\)</span>。</li>
+<li>选下标 <span class="arithmatex">\(1\)</span>（值 <span class="arithmatex">\(1\)</span>），再选下标 <span class="arithmatex">\(2\)</span>（值 <span class="arithmatex">\(2\)</span>）→ 又命中组合 <span class="arithmatex">\(\{1,2\}\)</span>。</li>
+</ul>
+<p>同一个组合 <span class="arithmatex">\(\{1,2\}\)</span> 被输出了两次。重复不在"取/不取"的框架里，而在这两条路径的起点上：下标 <span class="arithmatex">\(0\)</span> 的 <span class="arithmatex">\(1\)</span> 和下标 <span class="arithmatex">\(1\)</span> 的 <span class="arithmatex">\(1\)</span> 值相等，<strong>作为根这一层第一个被选的元素时，它们之后的剩余可选池相同、剩余目标也相同</strong>，于是各自展开出的子树逐节点对应、生成的组合一模一样。</p>
+<p>把这件事说准：重复不是偶然，而是搜索树里一类<strong>结构上等价的兄弟子树</strong>——同一层中两个相等值，作为该层首选元素时剩余可选池与剩余目标都相同，往下展开的组合一一对应。要去重，就要在不漏解的前提下，让每一组这样的等价子树只展开一次。下一节先把"哪些索引集合算同一个组合"形式化，再据此推导出该跳过哪一个分支。</p>
 <h2 id="formulation">形式化 (Formulation)<a class="headerlink" href="#formulation" title="Permanent link">#</a></h2>
-<p>给多重集 <span class="arithmatex">\(C = \{c_1, \dots, c_n\}\)</span> 和 <span class="arithmatex">\(T \in \mathbb{Z}_{&gt;0}\)</span>, 求所有</p>
-<div class="arithmatex">\[S \subseteq \{1, \dots, n\} : \sum_{i \in S} c_i = T,\]</div>
-<p>且按映射 <span class="arithmatex">\(S \mapsto \text{multiset}(c_i : i \in S)\)</span> 等价的两个 <span class="arithmatex">\(S\)</span> 只输出一个。</p>
+<p>给多重集 <span class="arithmatex">\(C = \{c_1, \dots, c_n\}\)</span>（<span class="arithmatex">\(n = |\text{candidates}|\)</span>，对应代码里的 <code>n = len(candidates)</code>）和 <span class="arithmatex">\(T \in \mathbb{Z}_{&gt;0}\)</span>（对应 <span class="arithmatex">\(\text{target}\)</span>）。先在<strong>索引</strong>层面定义解空间</p>
+<div class="arithmatex">\[
+\mathcal{S} = \Big\{\, S \subseteq \{1, \dots, n\} \;:\; \sum_{i \in S} c_i = T \,\Big\}. \tag{1}
+\]</div>
+<p><span class="arithmatex">\((1)\)</span> 里的两个不同索引集合可能对应相同的组合，正如背景节中下标集合 <span class="arithmatex">\(\{0,2\}\)</span> 与 <span class="arithmatex">\(\{1,2\}\)</span> 都给出 <span class="arithmatex">\(\{1,2\}\)</span>。引入等价关系刻画这种"同一个组合"：<span class="arithmatex">\(S \sim S'\)</span> 当且仅当</p>
+<div class="arithmatex">\[
+\text{multiset}(c_i : i \in S) = \text{multiset}(c_j : j \in S'). \tag{2}
+\]</div>
+<p>题目要的不是 <span class="arithmatex">\(\mathcal{S}\)</span>，而是商集 <span class="arithmatex">\(\mathcal{S}/{\sim}\)</span>——每个等价类只输出一个代表。背景节观察到的"重复子树"正是 <span class="arithmatex">\((2)\)</span> 的来源：当两个索引集合仅在"用了哪个相等副本"上不同时，它们落进同一个等价类。</p>
+<p><span class="arithmatex">\(\mathcal{S}\)</span> 由"对每个下标取/不取再约束和为 <span class="arithmatex">\(T\)</span>"刻画，这种逐元素决策天然对应一棵深度优先搜索树，故用回溯枚举 <span class="arithmatex">\((1)\)</span>。但直接枚举 <span class="arithmatex">\(\mathcal{S}\)</span> 会把同一等价类的多个代表都数进来。于是问题归约为：在搜索 <span class="arithmatex">\((1)\)</span> 的过程中，为每个等价类 <span class="arithmatex">\((2)\)</span> <strong>选定唯一代表</strong>，并保证只走到该代表对应的那条路径。下一节就从这个"选定代表"的要求出发，推出具体的剪枝条件。</p>
 <h2 id="approach">数据结构 / 想法 (Approach)<a class="headerlink" href="#approach" title="Permanent link">#</a></h2>
-<p><strong>回溯模板 (排序 + 同层去重)</strong>：</p>
+<p><strong>从形式化推导去重规则。</strong> 整个算法由一个选择决定：给每个等价类 <span class="arithmatex">\((2)\)</span> 取哪个索引集合作代表。最自然的选法是<strong>字典序最小的索引集合</strong>。要让搜索只走到这些最小代表，先排序 <span class="arithmatex">\(\text{candidates}\)</span>，使相等的值在数组中连续排列；回溯按下标递增地选元素，某一层固定 <code>start</code> 后下一个加入的下标 <span class="arithmatex">\(i \ge \text{start}\)</span>，并以 <code>dfs(i+1, ...)</code> 进入下一层——这样每条搜索路径对应一个<strong>严格递增</strong>的下标序列。</p>
+<p>把"取字典序最小代表"落到搜索树的每一层，就是一条局部规则。设某一层的可选段含一串相等值 <span class="arithmatex">\(c_{\text{start}} = \dots = c_{\text{start}+k}\)</span>，要从中挑该层"第一个"加入的元素：</p>
+<ul>
+<li>挑最靠前者（<span class="arithmatex">\(i = \text{start}\)</span>）得到字典序更小的下标。</li>
+<li>挑后面的副本（<span class="arithmatex">\(i &gt; \text{start}\)</span> 且 <span class="arithmatex">\(c_i = c_{i-1}\)</span>）只会让下标更大；而剩余可选池与剩余目标都没变，往下展开的子树与挑最靠前者<strong>逐一相同</strong>。它枚举的是同一批等价类，却用了非最小代表。</li>
+</ul>
+<p>第二种分支必须跳过。这就是去重条件</p>
+<div class="arithmatex">\[
+i &gt; \text{start} \;\wedge\; c_i = c_{i-1} \;\Longrightarrow\; \text{跳过下标 } i. \tag{3}
+\]</div>
+<p>注意条件里是 <code>i &gt; start</code> 而非 <code>i &gt; 0</code>：跨层（更深的递归）使用相等副本是<strong>合法</strong>的——下标 <span class="arithmatex">\(0\)</span> 的 <span class="arithmatex">\(1\)</span> 和下标 <span class="arithmatex">\(1\)</span> 的 <span class="arithmatex">\(1\)</span> 可以同属一个组合 <span class="arithmatex">\(\{1,1,6\}\)</span>，因为它们由不同层、经 <code>dfs(i+1, ...)</code> 递增 <code>start</code> 先后选入，并非同一层的等价兄弟。<span class="arithmatex">\((3)\)</span> 只抹掉同一层内的等价分支，详见陷阱节的失败追踪。</p>
+<p><strong>正确性（基于形式化）。</strong> 由 <span class="arithmatex">\((3)\)</span>，每一层中一段相等值只有最前的副本能作为该层首选元素，故任意被走到的路径，其索引集合在"相等副本的选择"上都取最小下标，即每个等价类 <span class="arithmatex">\((2)\)</span> 恰被其字典序最小代表走到一次——既不重（其余代表被 <span class="arithmatex">\((3)\)</span> 剪掉）也不漏（最小代表始终保留）。这把对商集 <span class="arithmatex">\(\mathcal{S}/{\sim}\)</span> 的枚举，归约成了对 <span class="arithmatex">\((1)\)</span> 中代表元的枚举。</p>
+<p>据此得到回溯模板：</p>
 <div class="language-python highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">Solution</span><span class="p">:</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">combinationSum2</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">candidates</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">],</span> <span class="n">target</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]]:</span>
         <span class="n">candidates</span><span class="o">.</span><span class="n">sort</span><span class="p">()</span>
@@ -22489,7 +22545,7 @@
                 <span class="k">if</span> <span class="n">v</span> <span class="o">&gt;</span> <span class="n">remain</span><span class="p">:</span>           <span class="c1"># 排序后剪枝：后续都更大</span>
                     <span class="k">break</span>
                 <span class="k">if</span> <span class="n">i</span> <span class="o">&gt;</span> <span class="n">start</span> <span class="ow">and</span> <span class="n">candidates</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="n">candidates</span><span class="p">[</span><span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="p">]:</span>
-                    <span class="k">continue</span>              <span class="c1"># 同层去重</span>
+                    <span class="k">continue</span>              <span class="c1"># 同层去重，即规则 (3)</span>
                 <span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
                 <span class="n">dfs</span><span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">remain</span> <span class="o">-</span> <span class="n">v</span><span class="p">)</span>
                 <span class="n">path</span><span class="o">.</span><span class="n">pop</span><span class="p">()</span>
@@ -22497,24 +22553,105 @@
         <span class="n">dfs</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">target</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">res</span>
 </code></pre></div>
-<p><strong>心算 trace <code>candidates=[10,1,2,7,6,1,5], target=8</code></strong>：</p>
-<p>排序后 <code>[1,1,2,5,6,7,10]</code>。<code>dfs(0, 8)</code> 遍历 start=0 取 <code>1</code>：进入 <code>dfs(1, 7)</code>；start=1 取另一个 <code>1</code> → <code>dfs(2, 6)</code> → 取 <code>6</code> → <code>dfs(?, 0)</code> → 命中 <code>[1,1,6]</code> ✓。回溯到 <code>dfs(1, 7)</code>，start=1 不去重（<code>i==start</code>）；下次 i=2 (<code>2</code>) → <code>dfs(3, 5)</code> → 取 <code>5</code> → 命中 <code>[1,2,5]</code> ✓。i=3 取 <code>5</code> → <code>dfs(4, 2)</code> → 5&gt;2 剪枝；i=4 取 <code>6</code> → 命中 <code>[1,2,6]</code>？6≠remain(1)... 实际上 i=4 试 <code>6</code> 时 <code>remain=2</code>，<code>6&gt;2</code> break。回到 <code>dfs(1, 7)</code>：i=5 取 <code>7</code> → <code>[1,7]</code> ✓。回到 <code>dfs(0, 8)</code>：i=1 是与 i=0 同值的 <code>1</code>，<code>i &gt; start=0 且 candidates[1]==candidates[0]</code> → 跳过去重；i=2 取 <code>2</code> → <code>dfs(3, 6)</code> → i=3 取 <code>5</code> → <code>dfs(?, 1)</code> 5&gt;1 break；i=4 取 <code>6</code> → 命中 <code>[2,6]</code> ✓。继续不会再有解。最终 <code>[[1,1,6],[1,2,5],[1,7],[2,6]]</code> ✓。</p>
-<p><strong>不变量 + 去重正确性</strong>：
-- 排序后，DFS 在每个递归层 (<code>start</code> 固定) 决定下一个加入元素的位置 <code>i</code>。
-- 跳过条件 <code>i &gt; start and candidates[i] == candidates[i-1]</code> 保证<strong>同一层只让相同值的第一次出现做代表</strong>。
-- 不同层间的相同值通过 <code>dfs(i+1, ...)</code>（递增 start）允许使用——这正是"一个候选元素只用一次但同值多副本可同时入选"的关键。</p>
-<p><strong>为何 <code>break</code> 而非 <code>continue</code></strong> 在 <code>v &gt; remain</code>：排序保证 <code>candidates[i..]</code> 都 <code>≥ v</code>，再试只会更大，直接终止内层。</p>
+<p>代码与 <span class="arithmatex">\((3)\)</span> 一一对应：<code>if i &gt; start and candidates[i] == candidates[i-1]: continue</code> 是去重规则；<code>dfs(i + 1, ...)</code> 用 <code>i+1</code> 保证每个元素至多用一次。</p>
+<p><strong>为何 <code>break</code> 而非 <code>continue</code>（剪枝 <code>v &gt; remain</code>）</strong>：排序保证 <span class="arithmatex">\(c_i \le c_{i+1} \le \dots\)</span>，一旦当前值已超过剩余目标，后续值只会更大，再试必然无解，可直接终止整层循环，而不是逐个 <code>continue</code> 试探。</p>
+<p><strong>执行追踪 <code>candidates=[10,1,2,7,6,1,5], target=8</code>。</strong> 排序后 <span class="arithmatex">\([1,1,2,5,6,7,10]\)</span>。下表逐步展开 <code>dfs</code>（缩进表示递归深度，<code>✓</code> 表示命中一个解）：</p>
+<table>
+<thead>
+<tr>
+<th>调用</th>
+<th>选取下标/值</th>
+<th>剩余</th>
+<th>事件</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>dfs(0,8)</code></td>
+<td><span class="arithmatex">\(i=0\)</span>，值 <span class="arithmatex">\(1\)</span></td>
+<td><span class="arithmatex">\(7\)</span></td>
+<td>进入下一层</td>
+</tr>
+<tr>
+<td>&nbsp;&nbsp;<code>dfs(1,7)</code></td>
+<td><span class="arithmatex">\(i=1\)</span>，值 <span class="arithmatex">\(1\)</span>（<code>i==start</code>，不去重）</td>
+<td><span class="arithmatex">\(6\)</span></td>
+<td>进入下一层</td>
+</tr>
+<tr>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;<code>dfs(2,6)</code></td>
+<td><span class="arithmatex">\(i=4\)</span>，值 <span class="arithmatex">\(6\)</span></td>
+<td><span class="arithmatex">\(0\)</span></td>
+<td>命中 <span class="arithmatex">\([1,1,6]\)</span> ✓</td>
+</tr>
+<tr>
+<td>&nbsp;&nbsp;<code>dfs(1,7)</code></td>
+<td><span class="arithmatex">\(i=2\)</span>，值 <span class="arithmatex">\(2\)</span></td>
+<td><span class="arithmatex">\(5\)</span></td>
+<td>进入下一层</td>
+</tr>
+<tr>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;<code>dfs(3,5)</code></td>
+<td><span class="arithmatex">\(i=3\)</span>，值 <span class="arithmatex">\(5\)</span></td>
+<td><span class="arithmatex">\(0\)</span></td>
+<td>命中 <span class="arithmatex">\([1,2,5]\)</span> ✓</td>
+</tr>
+<tr>
+<td>&nbsp;&nbsp;<code>dfs(1,7)</code></td>
+<td><span class="arithmatex">\(i=3\)</span>，值 <span class="arithmatex">\(5\)</span></td>
+<td><span class="arithmatex">\(2\)</span></td>
+<td>进入下一层</td>
+</tr>
+<tr>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;<code>dfs(4,2)</code></td>
+<td><span class="arithmatex">\(i=4\)</span>，值 <span class="arithmatex">\(6\)</span></td>
+<td>—</td>
+<td><span class="arithmatex">\(6&gt;2\)</span>，<code>break</code></td>
+</tr>
+<tr>
+<td>&nbsp;&nbsp;<code>dfs(1,7)</code></td>
+<td><span class="arithmatex">\(i=5\)</span>，值 <span class="arithmatex">\(7\)</span></td>
+<td><span class="arithmatex">\(0\)</span></td>
+<td>命中 <span class="arithmatex">\([1,7]\)</span> ✓</td>
+</tr>
+<tr>
+<td><code>dfs(0,8)</code></td>
+<td><span class="arithmatex">\(i=1\)</span>，值 <span class="arithmatex">\(1\)</span></td>
+<td>—</td>
+<td><code>i&gt;start</code> 且 <span class="arithmatex">\(c_1=c_0\)</span>，规则 (3) 跳过</td>
+</tr>
+<tr>
+<td><code>dfs(0,8)</code></td>
+<td><span class="arithmatex">\(i=2\)</span>，值 <span class="arithmatex">\(2\)</span></td>
+<td><span class="arithmatex">\(6\)</span></td>
+<td>进入下一层</td>
+</tr>
+<tr>
+<td>&nbsp;&nbsp;<code>dfs(3,6)</code></td>
+<td><span class="arithmatex">\(i=3\)</span>，值 <span class="arithmatex">\(5\)</span></td>
+<td><span class="arithmatex">\(1\)</span></td>
+<td>进下一层后 <span class="arithmatex">\(c\ge 6&gt;1\)</span> 无解</td>
+</tr>
+<tr>
+<td>&nbsp;&nbsp;<code>dfs(3,6)</code></td>
+<td><span class="arithmatex">\(i=4\)</span>，值 <span class="arithmatex">\(6\)</span></td>
+<td><span class="arithmatex">\(0\)</span></td>
+<td>命中 <span class="arithmatex">\([2,6]\)</span> ✓</td>
+</tr>
+</tbody>
+</table>
+<p>此后无新解。最终结果 <span class="arithmatex">\([[1,1,6],[1,2,5],[1,7],[2,6]]\)</span>。注意第 9 行：根层第二个 <span class="arithmatex">\(1\)</span> 正是被规则 <span class="arithmatex">\((3)\)</span> 抹掉的等价兄弟——若不跳过，它会重新生成 <code>dfs(1,7)</code> 下的全部解。规则 <span class="arithmatex">\((3)\)</span> 与 <code>break</code> 剪枝都只删去注定无效或重复的分支，不改变枚举到的代表集合，因此复杂度的上界仍由代表元的总数决定——这正是下一节分析的起点。</p>
 <h2 id="complexity">复杂度 (Complexity)<a class="headerlink" href="#complexity" title="Permanent link">#</a></h2>
 <ul>
-<li>Time: 最坏 <span class="arithmatex">\(O(2^n \cdot n)\)</span>（子集枚举 × 拷贝 path）。剪枝 + 去重在实际数据上大幅缩小常数。约束 <span class="arithmatex">\(n \le 100\)</span>、<span class="arithmatex">\(\text{target} \le 30\)</span>、<span class="arithmatex">\(c_i \ge 1\)</span> → 路径长度 <span class="arithmatex">\(\le 30\)</span>，搜索树远小于 <span class="arithmatex">\(2^{100}\)</span>。</li>
+<li>Time: 最坏 <span class="arithmatex">\(O(2^n \cdot n)\)</span>（子集枚举 <span class="arithmatex">\(\times\)</span> 拷贝 path）。剪枝 + 去重在实际数据上大幅缩小常数。由约束 <span class="arithmatex">\(c_i \ge 1\)</span>、<span class="arithmatex">\(\text{target} \le 30\)</span> 可得路径长度 <span class="arithmatex">\(\le 30\)</span>，故搜索树深度远小于 <span class="arithmatex">\(n \le 100\)</span>，实际规模远小于 <span class="arithmatex">\(2^{100}\)</span>。</li>
 <li>Space: <span class="arithmatex">\(O(n)\)</span> 递归栈 + <span class="arithmatex">\(O(\sum |\text{path}|)\)</span> 输出。</li>
 </ul>
 <h2 id="pitfalls">陷阱 (Pitfalls)<a class="headerlink" href="#pitfalls" title="Permanent link">#</a></h2>
 <ul>
-<li><strong>不排序就去重</strong>：去重逻辑依赖排序，否则同值散落在不同位置，跳过条件失效，会出 <code>[1,7]</code> 和 <code>[7,1]</code> 重复。</li>
-<li><strong><code>i &gt; i</code> vs <code>i &gt; start</code></strong>：去重条件必须是 <code>i &gt; start</code>，不是 <code>i &gt; 0</code>。后者会错杀第一层不同分支的合法重复（例如 <code>[1,1,6]</code> 中两个 <code>1</code> 不同位置不同层，是合法的）。</li>
-<li><strong>递归用 <code>i</code> 还是 <code>i+1</code></strong>：本题每元素至多用一次，必须 <code>i+1</code>。用 <code>i</code> 就退化成 #39 Combination Sum（无限次取）。</li>
-<li><strong>拷贝 <code>path</code></strong>：<code>res.append(path)</code> 会让所有结果共享同一引用，回溯后全空。必须 <code>path[:]</code> 或 <code>list(path)</code>。</li>
+<li><strong>不排序就去重</strong>：去重规则 <span class="arithmatex">\((3)\)</span> 依赖排序把相等值排成连续段，从而用相邻比较 <code>candidates[i] == candidates[i-1]</code> 检测同层等价副本。若不排序，相等值散落在不同下标，相邻比较检测不到它们，规则 <span class="arithmatex">\((3)\)</span> 失效——例如两个值同为 <span class="arithmatex">\(1\)</span> 的元素不相邻时不会被去重，同一组合会从不同起点被重复输出。</li>
+<li><strong><code>i &gt; start</code> 写成 <code>i &gt; 0</code></strong>：去重条件必须是 <code>i &gt; start</code>。看一个具体失败追踪：在 <code>dfs(1, 7)</code> 中 <code>start=1</code>，循环首次取 <span class="arithmatex">\(i=1\)</span>（<code>candidates[1]=1</code>）。用 <code>i &gt; 0</code>：条件 <code>1 &gt; 0</code> 为真且 <code>candidates[1]==candidates[0]</code>，于是这个 <span class="arithmatex">\(1\)</span> 被跳过——但它是本层<strong>第一个</strong>被选的元素（<span class="arithmatex">\(i = \text{start}\)</span>），是合法代表，不该跳。结果 <span class="arithmatex">\([1,1,6]\)</span> 被静默丢弃。用 <code>i &gt; start</code>：<code>1 &gt; 1</code> 为假，正确保留。</li>
+<li><strong>递归用 <code>i</code> 还是 <code>i+1</code></strong>：本题每元素至多用一次，必须 <code>dfs(i+1, ...)</code>。用 <code>i</code> 允许同一下标重复选取，退化成 #39 Combination Sum（每元素可取无限次）。</li>
+<li><strong>拷贝 <code>path</code></strong>：<code>res.append(path)</code> 会让所有结果共享同一引用，回溯 <code>path.pop()</code> 后全部变空。必须 <code>path[:]</code> 或 <code>list(path)</code> 存入快照。</li>
 <li><strong>空目标</strong>：<code>target=0</code> 时一开始就命中空 path，但题面 <span class="arithmatex">\(\text{target} \ge 1\)</span>，无需处理。</li>
 </ul>
 <h2 id="related">相关题目 (Related)<a class="headerlink" href="#related" title="Permanent link">#</a></h2>
@@ -22636,6 +22773,8 @@
         <script src="../../../js/mathjax/tex-mml-chtml.js"></script>
       
         <script src="../../../js/mermaid.min.js"></script>
+      
+        <script src="../../../js/featured.js"></script>
       
     
   </body>

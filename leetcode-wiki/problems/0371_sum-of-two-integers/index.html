@@ -74,7 +74,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#371-sum-of-two-integers-medium" class="md-skip">
+        <a href="#371-sum-of-two-integers-easy" class="md-skip">
           跳转至
         </a>
       
@@ -1466,6 +1466,8 @@
       
         
       
+        
+      
     
     
     
@@ -1521,6 +1523,34 @@
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../featured/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ⭐ Featured（已验证）
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
               
             
               
@@ -1610,10 +1640,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_4" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
         
           
-          <label class="md-nav__link" for="__nav_4_4" id="__nav_4_4_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_5" id="__nav_4_5_label" tabindex="">
             
   
   
@@ -1631,8 +1661,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_4_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_4">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_5">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1915,7 +1945,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -1937,14 +1967,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_4_5" id="__nav_4_5_label" tabindex="">
+              <label class="md-nav__link " for="__nav_4_6" id="__nav_4_6_label" tabindex="">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_5">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_6">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -5321,10 +5351,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_7" checked>
         
           
-          <label class="md-nav__link" for="__nav_4_6" id="__nav_4_6_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_7" id="__nav_4_7_label" tabindex="">
             
   
   
@@ -5342,8 +5372,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_4_6">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_7_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4_7">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -22462,55 +22492,150 @@
 
 
 
-<h1 id="371-sum-of-two-integers-medium">371. Sum of Two Integers  🟠 Medium<a class="headerlink" href="#371-sum-of-two-integers-medium" title="Permanent link">#</a></h1>
+<h1 id="371-sum-of-two-integers-easy">371. Sum of Two Integers  🟢 Easy<a class="headerlink" href="#371-sum-of-two-integers-easy" title="Permanent link">#</a></h1>
 <p><strong>Tags</strong>: Math, Bit Manipulation</p>
 <h2 id="problem">Problem<a class="headerlink" href="#problem" title="Permanent link">#</a></h2>
 <p>不使用 <code>+</code> 或 <code>-</code>，返回两整数 <span class="arithmatex">\(a + b\)</span>。<span class="arithmatex">\(-1000 \le a, b \le 1000\)</span>。</p>
 <h2 id="_1">背景<a class="headerlink" href="#_1" title="Permanent link">#</a></h2>
-<p>本题考的是<strong>全加器 (full adder)</strong> 的软件级模拟，是数字电路里"半加器 → 全加器 → 涟波进位 / 超前进位加法器" 课程线的第一站。
-半加器：异或 (XOR) 给和，与 (AND) 给进位 → <span class="arithmatex">\(a \oplus b\)</span> 是无进位求和，<span class="arithmatex">\((a \land b) \ll 1\)</span> 是进位的"待加值"。重复直到进位为零，即为最终结果。这正是 CPU ALU 的基础。</p>
-<p>特别有意思的是：<strong>减法可同样表达</strong> <span class="arithmatex">\(a - b = a + (-b) = a + (\bar b + 1)\)</span>（二补码 (two's complement)）。所以加法器 + 取反器 = 所有加减运算的硬件基础。</p>
+<p>约束直接封死了正常做法：<code>+</code> 和 <code>-</code> 都不可用，所以无法对整数本身做算术。剩下能用的只有按位运算 <code>^</code>、<code>&amp;</code>、<code>&lt;&lt;</code>、<code>|</code>、<code>~</code>。问题因此变成：<strong>只用位运算，能否复现加法？</strong></p>
+<p>要回答这个，先把加法退回到它最朴素的形态——竖式逐位相加，看看每一位上到底发生了什么。考虑两个比特 <span class="arithmatex">\(x, y \in \{0,1\}\)</span> 相加，列出全部四种情况，记录"本位结果"和"进位"：</p>
+<table>
+<thead>
+<tr>
+<th><span class="arithmatex">\(x\)</span></th>
+<th><span class="arithmatex">\(y\)</span></th>
+<th>本位 (sum)</th>
+<th>进位 (carry)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+</tr>
+<tr>
+<td>0</td>
+<td>1</td>
+<td>1</td>
+<td>0</td>
+</tr>
+<tr>
+<td>1</td>
+<td>0</td>
+<td>1</td>
+<td>0</td>
+</tr>
+<tr>
+<td>1</td>
+<td>1</td>
+<td>0</td>
+<td>1</td>
+</tr>
+</tbody>
+</table>
+<p>观察这两列各自的真值表：本位列在 <span class="arithmatex">\(x \ne y\)</span> 时为 1、<span class="arithmatex">\(x = y\)</span> 时为 0，这正是 <span class="arithmatex">\(x \oplus y\)</span>；进位列只在 <span class="arithmatex">\(x = y = 1\)</span> 时为 1，这正是 <span class="arithmatex">\(x \land y\)</span>。于是单比特加法被两条位运算完全刻画：</p>
+<div class="arithmatex">\[\text{本位} = x \oplus y, \qquad \text{进位} = x \land y.\]</div>
+<p>这不是凑出来的，而是从真值表直接读出来的——XOR 给"忽略进位的和"，AND 给"该位产生的进位"。</p>
+<p>把这条规则推广到整数。设 <span class="arithmatex">\(a, b\)</span> 是按位对齐的两个数。对每一位独立做上面的运算：<span class="arithmatex">\(a \oplus b\)</span> 是所有位"忽略进位"后的和；<span class="arithmatex">\(a \land b\)</span> 标出所有"在本位产生进位"的位置。进位要影响的是<strong>更高一位</strong>，所以左移一位得到 <span class="arithmatex">\((a \land b) \ll 1\)</span>,即每个进位的"待加值"。两者相加即还原 <span class="arithmatex">\(a + b\)</span>：</p>
+<div class="arithmatex">\[a + b \;=\; (a \oplus b) \;+\; \big((a \land b) \ll 1\big). \tag{1}\]</div>
+<p>但式 (1) 的右边仍含一个 <code>+</code>。关键在于:这个 <code>+</code> 比原来的加法"更小"——<span class="arithmatex">\((a \land b) \ll 1\)</span> 通常比 <span class="arithmatex">\(a, b\)</span> 含更少的 1。把式 (1) 当作一步<strong>化简</strong>反复施加,把"无进位和"记为新的 <span class="arithmatex">\(a\)</span>、"进位待加值"记为新的 <span class="arithmatex">\(b\)</span>,只要 <span class="arithmatex">\(b\)</span> 还非零就继续。当 <span class="arithmatex">\(b = 0\)</span> 时再无进位需要处理,<span class="arithmatex">\(a\)</span> 即最终结果。下一节证明这个迭代既保持答案不变,又必然停机。</p>
 <h2 id="_2">形式化<a class="headerlink" href="#_2" title="Permanent link">#</a></h2>
-<p>设 <span class="arithmatex">\(a, b\)</span> 是有限位整数。定义</p>
-<div class="arithmatex">\[\text{XOR}(a, b) = a \oplus b\quad (\text{按位无进位和}),\qquad \text{CARRY}(a, b) = (a \land b) \ll 1.\]</div>
-<p>则 <span class="arithmatex">\(a + b = \text{XOR}(a, b) + \text{CARRY}(a, b)\)</span>。在 CARRY 上递归，直到 CARRY <span class="arithmatex">\(= 0\)</span>。</p>
+<p>设 <span class="arithmatex">\(a, b\)</span> 为字长 <span class="arithmatex">\(w\)</span> 的整数(本题 <span class="arithmatex">\(w = 32\)</span>)。定义两个映射:</p>
+<div class="arithmatex">\[\text{XOR}(a, b) = a \oplus b \quad(\text{按位无进位和}), \qquad \text{CARRY}(a, b) = (a \land b) \ll 1 \quad(\text{进位待加值}).\]</div>
+<p>迭代格式为:从 <span class="arithmatex">\((a_0, b_0) = (a, b)\)</span> 出发,</p>
+<div class="arithmatex">\[a_{k+1} = \text{XOR}(a_k, b_k), \qquad b_{k+1} = \text{CARRY}(a_k, b_k). \tag{2}\]</div>
+<p><strong>命题 (不变量).</strong> 对每一步 <span class="arithmatex">\(k\)</span>,有 <span class="arithmatex">\(a_k + b_k = a + b\)</span>。</p>
+<p><em>证明.</em> 只需证单步不变,即 <span class="arithmatex">\(\text{XOR}(a,b) + \text{CARRY}(a,b) = a + b\)</span>,这就是式 (1)。按位看:第 <span class="arithmatex">\(i\)</span> 位上 <span class="arithmatex">\(a_i + b_i\)</span> 的真实贡献是 <span class="arithmatex">\(a_i + b_i \in \{0,1,2\}\)</span>;其中 <span class="arithmatex">\(a_i \oplus b_i\)</span> 记录 <span class="arithmatex">\(\bmod 2\)</span> 的本位,<span class="arithmatex">\(a_i \land b_i\)</span> 记录是否产生一个权重为 <span class="arithmatex">\(2^{i+1}\)</span> 的进位,即 <span class="arithmatex">\(a_i + b_i = (a_i \oplus b_i) + 2(a_i \land b_i)\)</span>。对所有位求和并把因子 <span class="arithmatex">\(2\)</span> 提升为左移一位,得式 (1)。∎</p>
+<p><strong>命题 (终止性).</strong> 迭代 (2) 至多 <span class="arithmatex">\(w\)</span> 步后 <span class="arithmatex">\(b_k = 0\)</span>。</p>
+<p><em>证明.</em> 进位 <span class="arithmatex">\(b_{k+1} = (a_k \land b_k) \ll 1\)</span> 是一次<strong>左移</strong>,故 <span class="arithmatex">\(b_{k+1}\)</span> 的每个 1 位都严格高于 <span class="arithmatex">\(b_k\)</span> 中对应的 1 位。更精确地:<span class="arithmatex">\(b_k\)</span> 的最低 1 位位置每步至少增加 1,逐步向最高位移动。经过至多 <span class="arithmatex">\(w\)</span> 步,所有进位都被移出第 <span class="arithmatex">\(w-1\)</span> 位之外(在固定字长下被截断丢弃),<span class="arithmatex">\(b\)</span> 归零。∎</p>
+<p>两条命题合起来给出正确性:迭代保持 <span class="arithmatex">\(a + b\)</span> 不变,且在有限步内 <span class="arithmatex">\(b \to 0\)</span>,此时 <span class="arithmatex">\(a = a + b\)</span>。</p>
 <h2 id="_3">数据结构 / 想法<a class="headerlink" href="#_3" title="Permanent link">#</a></h2>
-<p><strong>主循环</strong>：
+<p>直接把迭代格式 (2) 翻译成循环。每轮用旧的 <span class="arithmatex">\(a, b\)</span> 同时算出新的两者,因此用元组同步赋值:</p>
 <div class="language-python highlight"><pre><span></span><code><span class="k">while</span> <span class="n">b</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
     <span class="n">a</span><span class="p">,</span> <span class="n">b</span> <span class="o">=</span> <span class="n">a</span> <span class="o">^</span> <span class="n">b</span><span class="p">,</span> <span class="p">(</span><span class="n">a</span> <span class="o">&amp;</span> <span class="n">b</span><span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="mi">1</span>
 <span class="k">return</span> <span class="n">a</span>
-</code></pre></div></p>
-<p><strong>Python 特殊处理</strong>：Python 整数是任意精度，没有自动截断 → 模拟 32 位 + 处理符号位（最高位 1 表负）：
+</code></pre></div>
+<p><strong>为什么单次式 (1) 不够。</strong> 当 <span class="arithmatex">\(a, b\)</span> 在同一位上都为 1 时会产生进位,而进位本身又可能与更高位继续相撞,引发连锁。取 <span class="arithmatex">\(a = 6 = 0b0110\)</span>,<span class="arithmatex">\(b = 3 = 0b0011\)</span>,按式 (2) 逐轮追踪,观察进位如何沿位向左传播:</p>
+<table>
+<thead>
+<tr>
+<th>轮</th>
+<th><span class="arithmatex">\(a\)</span></th>
+<th><span class="arithmatex">\(b\)</span></th>
+<th><span class="arithmatex">\(a \oplus b\)</span></th>
+<th><span class="arithmatex">\((a \land b)\ll 1\)</span></th>
+<th><span class="arithmatex">\(a+b\)</span></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td><code>0110</code> (6)</td>
+<td><code>0011</code> (3)</td>
+<td><code>0101</code> (5)</td>
+<td><code>0100</code> (4)</td>
+<td>9</td>
+</tr>
+<tr>
+<td>1</td>
+<td><code>0101</code> (5)</td>
+<td><code>0100</code> (4)</td>
+<td><code>0001</code> (1)</td>
+<td><code>1000</code> (8)</td>
+<td>9</td>
+</tr>
+<tr>
+<td>2</td>
+<td><code>0001</code> (1)</td>
+<td><code>1000</code> (8)</td>
+<td><code>1001</code> (9)</td>
+<td><code>0000</code> (0)</td>
+<td>9</td>
+</tr>
+<tr>
+<td>3</td>
+<td><code>1001</code> (9)</td>
+<td><code>0000</code> (0)</td>
+<td>—</td>
+<td>—</td>
+<td>9</td>
+</tr>
+</tbody>
+</table>
+<p>每轮 <span class="arithmatex">\(a + b\)</span> 恒为 <span class="arithmatex">\(9\)</span>(不变量命题),而 <span class="arithmatex">\(b\)</span> 的最低 1 位位置从第 2 位 <span class="arithmatex">\(\to\)</span> 第 3 位 <span class="arithmatex">\(\to\)</span> 被移出(终止性命题),共 3 步收敛,返回 <span class="arithmatex">\(a = 9\)</span> ✓。这条向左推进的进位链正是单次式 (1) 不足、必须迭代的原因。</p>
+<p><strong>为什么 Python 需要额外处理。</strong> 上面四行在 C / C++ / Java 里直接可用:这些语言的 32 位整型在溢出时自动按 <span class="arithmatex">\(2^{32}\)</span> 截断,负数天然以补码 (two's complement) 存储,符号位无需特殊照料。Python 整数是任意精度,左移不会截断,<span class="arithmatex">\((a \land b) \ll 1\)</span> 的进位会一路向高位扩散永不归零——对负操作数直接死循环。</p>
+<p>补救办法是手动模拟 32 位:每步对结果与 <code>MASK = 0xFFFFFFFF</code> 做与,强制只保留低 32 位。但这样得到的 <span class="arithmatex">\(a\)</span> 始终是 <span class="arithmatex">\([0, 2^{32})\)</span> 的无符号值,还需把它解释回有符号整数:</p>
 <div class="language-python highlight"><pre><span></span><code><span class="n">MASK</span> <span class="o">=</span> <span class="mh">0xFFFFFFFF</span>
-<span class="n">SIGN</span> <span class="o">=</span> <span class="mh">0x80000000</span>
+<span class="n">SIGN</span> <span class="o">=</span> <span class="mh">0x80000000</span>           <span class="c1"># 第 31 位 = 符号位</span>
 <span class="k">while</span> <span class="n">b</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
     <span class="n">a</span><span class="p">,</span> <span class="n">b</span> <span class="o">=</span> <span class="p">(</span><span class="n">a</span> <span class="o">^</span> <span class="n">b</span><span class="p">)</span> <span class="o">&amp;</span> <span class="n">MASK</span><span class="p">,</span> <span class="p">((</span><span class="n">a</span> <span class="o">&amp;</span> <span class="n">b</span><span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="mi">1</span><span class="p">)</span> <span class="o">&amp;</span> <span class="n">MASK</span>
 <span class="k">return</span> <span class="n">a</span> <span class="k">if</span> <span class="n">a</span> <span class="o">&lt;</span> <span class="n">SIGN</span> <span class="k">else</span> <span class="n">a</span> <span class="o">-</span> <span class="p">(</span><span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="mi">32</span><span class="p">)</span>
-</code></pre></div></p>
-<p><strong>不变量</strong>：每次迭代后，<span class="arithmatex">\(a + b\)</span> 的值不变（<span class="arithmatex">\((a \oplus b) + ((a \land b) \ll 1) = a + b\)</span> 在任意位长下成立）。<strong>终止性</strong>：每次迭代 <code>b</code> 的最低 1 位至少右移一位（因为 carry 来自更低位的 and）→ 至多 <span class="arithmatex">\(O(w)\)</span> 次（<span class="arithmatex">\(w\)</span> 为字长）。</p>
-<p>C/C++/Java 32 位整型自动截断，原始 4 行代码就工作。Python 需手动模拟。</p>
+</code></pre></div>
+<p><strong>符号恢复的推导。</strong> 32 位补码约定:位模式的最高位(第 31 位)为符号位。若该位为 0,数值就是无符号读数本身;若为 1,该模式表示的有符号值是 <span class="arithmatex">\((\text{无符号读数}) - 2^{32}\)</span>。这正是补码定义——负数 <span class="arithmatex">\(n\)</span> 被编码为 <span class="arithmatex">\(2^{32} + n\)</span> 这个无符号位模式,反解就要减回 <span class="arithmatex">\(2^{32}\)</span>。代码用 <code>a &lt; SIGN</code>(即最高位是否为 0)区分两种情形:小于 <code>SIGN</code> 直接返回,否则 <code>a - (1 &lt;&lt; 32)</code> 还原负值。</p>
 <h2 id="_4">复杂度<a class="headerlink" href="#_4" title="Permanent link">#</a></h2>
 <ul>
-<li>Time: <span class="arithmatex">\(O(w)\)</span>，<span class="arithmatex">\(w\)</span> 为字长（32 或 64）。</li>
-<li>Space: <span class="arithmatex">\(O(1)\)</span>。</li>
+<li>Time: <span class="arithmatex">\(O(w)\)</span>。由终止性命题,至多 <span class="arithmatex">\(w\)</span> 轮迭代,每轮常数次位运算;本题 <span class="arithmatex">\(w = 32\)</span>,实测约束范围内最坏 32 轮。</li>
+<li>Space: <span class="arithmatex">\(O(1)\)</span>,只用常数个变量。</li>
 </ul>
 <h2 id="_5">陷阱<a class="headerlink" href="#_5" title="Permanent link">#</a></h2>
 <ul>
-<li>Python 必须手动 mask 否则进位会向无穷扩散 → 死循环或返回错误大数。</li>
-<li>处理负数：依赖 two's complement。题目限制 <span class="arithmatex">\(|a|, |b| \le 1000\)</span>，结果在 int32 范围内。</li>
-<li>别忘 <code>b == 0</code> 立即返回 <code>a</code>（含 <span class="arithmatex">\(a = b = 0\)</span> 情形）。</li>
+<li><strong>Python 必须 mask</strong>:否则进位向无穷高位扩散,对负操作数死循环或返回错误大数。这是 Python 任意精度与"固定字长加法"语义不匹配的直接后果。</li>
+<li><strong>符号位解释</strong>:masked 后的 <span class="arithmatex">\(a\)</span> 是无符号 32 位读数,最高位为 1 时须减 <span class="arithmatex">\(2^{32}\)</span> 还原有符号值,依据是补码定义而非约定俗成。</li>
+<li><strong><span class="arithmatex">\(b = 0\)</span> 即返回 <span class="arithmatex">\(a\)</span></strong>:循环条件天然覆盖,包含 <span class="arithmatex">\(a = b = 0\)</span> 的边界。</li>
+<li><strong>减法同源</strong>:本题只问加法,但补码下 <span class="arithmatex">\(a - b = a + (-b) = a + (\lnot b + 1)\)</span>,取反加一即可把减法化归为同一加法器,无需额外逻辑。</li>
 </ul>
 <h2 id="_6">相关题目<a class="headerlink" href="#_6" title="Permanent link">#</a></h2>
 <ul>
-<li><a href="../0461_hamming-distance/">#461. Hamming Distance</a> — 位运算入门搭档：异或后数 1。</li>
+<li><a href="../0461_hamming-distance/">#461. Hamming Distance</a> — 位运算入门搭档:异或后数 1。</li>
 <li><code>#190. Reverse Bits (off-wiki)</code> — 同 family 的位操作。</li>
 <li><code>#7. Reverse Integer (off-wiki)</code> — 涉及 int 溢出处理。</li>
 </ul>
 <h2 id="further-reading">Further Reading<a class="headerlink" href="#further-reading" title="Permanent link">#</a></h2>
 <ul>
-<li>Patterson &amp; Hennessy, <em>Computer Organization and Design</em> 5e, §3.2 — 二进制加法器 / ALU 的详尽硬件视角。</li>
-<li>Hacker's Delight (2e), Henry S. Warren — 整章讨论"非常规算术"，是 bit manipulation 的圣经。</li>
-<li>cp-algorithms.com/algebra/binary-exp.html — bit twiddling 心法的入门链接。</li>
+<li>Patterson &amp; Hennessy, <em>Computer Organization and Design</em> 5e, §3.2 — 二进制加法器 / ALU 的详尽硬件视角,可对照本题的逐位进位结构。</li>
+<li>Hacker's Delight (2e), Henry S. Warren — 整章讨论"非常规算术",是 bit manipulation 的经典参考。</li>
 </ul>
 
 
@@ -22617,6 +22742,8 @@
         <script src="../../../js/mathjax/tex-mml-chtml.js"></script>
       
         <script src="../../../js/mermaid.min.js"></script>
+      
+        <script src="../../../js/featured.js"></script>
       
     
   </body>

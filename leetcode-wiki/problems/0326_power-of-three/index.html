@@ -1466,6 +1466,8 @@
       
         
       
+        
+      
     
     
     
@@ -1521,6 +1523,34 @@
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../featured/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ⭐ Featured（已验证）
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
               
             
               
@@ -1610,10 +1640,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_4" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
         
           
-          <label class="md-nav__link" for="__nav_4_4" id="__nav_4_4_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_5" id="__nav_4_5_label" tabindex="">
             
   
   
@@ -1631,8 +1661,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_4_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_4">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_5">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1915,7 +1945,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -1937,14 +1967,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_4_5" id="__nav_4_5_label" tabindex="">
+              <label class="md-nav__link " for="__nav_4_6" id="__nav_4_6_label" tabindex="">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_5">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_6">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -5321,10 +5351,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_7" checked>
         
           
-          <label class="md-nav__link" for="__nav_4_6" id="__nav_4_6_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_7" id="__nav_4_7_label" tabindex="">
             
   
   
@@ -5342,8 +5372,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_4_6">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_7_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4_7">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -22467,15 +22497,16 @@
 <h2 id="problem">Problem<a class="headerlink" href="#problem" title="Permanent link">#</a></h2>
 <p>给整数 <span class="arithmatex">\(n\)</span>，判断是否 <span class="arithmatex">\(n = 3^k\)</span>（<span class="arithmatex">\(k \in \mathbb{Z}_{\ge 0}\)</span>，即 <span class="arithmatex">\(n = 1, 3, 9, 27, \dots\)</span>）。<span class="arithmatex">\(-2^{31} \le n \le 2^{31}-1\)</span>。Follow-up：无循环 / 递归。</p>
 <h2 id="background">背景 (Background)<a class="headerlink" href="#background" title="Permanent link">#</a></h2>
-<p>"判断是否某基数 <span class="arithmatex">\(b\)</span> 的幂"系列问题（#231 Power of Two, #326 Power of Three, #342 Power of Four）暴露了 <strong>数制 / 整除性</strong> 的有趣差异：
-- <span class="arithmatex">\(b = 2\)</span>：可用 <code>n &amp; (n - 1) == 0</code>（位运算 1 步）。
-- <span class="arithmatex">\(b = 4\)</span>：在 2 的幂基础上加"二进制 1 在偶数位"判定（位掩码 <code>n &amp; 0x55555555 != 0</code>）。
-- <span class="arithmatex">\(b = 3\)</span>：3 与 2 不互为同基，无简洁位技巧；但 32-bit 整数下 <strong>最大的 <span class="arithmatex">\(3^k = 3^{19} = 1162261467\)</span></strong> 在 <span class="arithmatex">\(2^{31}\)</span> 范围内，因此 <span class="arithmatex">\(n\)</span> 是 <span class="arithmatex">\(3\)</span> 的幂 ⟺ <span class="arithmatex">\(n &gt; 0\)</span> 且 <span class="arithmatex">\(n\)</span> 整除 <span class="arithmatex">\(3^{19}\)</span>。</p>
-<p>后者本质是 <strong>唯一分解定理</strong>：若 <span class="arithmatex">\(3^{19} = 3^{19}\)</span> 且 <span class="arithmatex">\(n \mid 3^{19}\)</span>，则 <span class="arithmatex">\(n\)</span> 必形如 <span class="arithmatex">\(3^k\)</span>，<span class="arithmatex">\(0 \le k \le 19\)</span>。这是个 32-bit 范围下的小巧技巧。</p>
+<p>判断 <span class="arithmatex">\(n = 3^k\)</span> 的直接办法，是顺着 <span class="arithmatex">\(3\)</span> 的幂的定义走：一个数若是 <span class="arithmatex">\(3\)</span> 的幂，就能被 <span class="arithmatex">\(3\)</span> 整除若干次后剩下 <span class="arithmatex">\(1\)</span>。于是反复地把 <span class="arithmatex">\(n\)</span> 除以 <span class="arithmatex">\(3\)</span>，直到不再整除，再看剩下的是不是 <span class="arithmatex">\(1\)</span>。这条思路无需任何先验技巧，下一节会把它写成代码并分析其代价。</p>
+<p>真正值得追问的是 Follow-up：题目额外要求<strong>不用循环、不用递归</strong>。这一约束直接否决了上述按需迭代的做法——它的运行步数随 <span class="arithmatex">\(n\)</span> 增大而增加。问题随之变成：能否用<strong>一次性的、与 <span class="arithmatex">\(n\)</span> 大小无关的判定</strong>取代这串迭代？回答这个问题，需要利用 <span class="arithmatex">\(3\)</span> 的两个结构性事实——<span class="arithmatex">\(3\)</span> 是素数，且 <span class="arithmatex">\(32\)</span>-bit 范围内只有有限多个 <span class="arithmatex">\(3\)</span> 的幂。后续两节把这两点逐步展开为一个常数时间的判定。</p>
 <h2 id="formulation">形式化 (Formulation)<a class="headerlink" href="#formulation" title="Permanent link">#</a></h2>
-<p><span class="arithmatex">\(\exists k \in \mathbb{Z}_{\ge 0}: n = 3^k\)</span>？等价：<span class="arithmatex">\(n &gt; 0\)</span> 且 <span class="arithmatex">\(\log_3 n \in \mathbb{Z}_{\ge 0}\)</span>。</p>
+<p>问题要判定的命题是：存在非负整数 <span class="arithmatex">\(k\)</span> 使 <span class="arithmatex">\(n = 3^k\)</span>。等价地，<span class="arithmatex">\(n\)</span> 落在集合
+$$
+S = {\, 3^k : k \in \mathbb{Z}_{\ge 0} \,} = {1, 3, 9, 27, \dots}. \tag{1}
+$$
+所有候选都为正，故 <span class="arithmatex">\(n \le 0\)</span> 立即排除。两种解法都是这一判定 <span class="arithmatex">\(n \in S\)</span> 的计算实现：解法 A 通过逐次除以 <span class="arithmatex">\(3\)</span> 检验 <span class="arithmatex">\(n\)</span> 能否还原到 <span class="arithmatex">\(3^0 = 1\)</span>；解法 B 利用 <span class="arithmatex">\(S\)</span> 在 <span class="arithmatex">\(32\)</span>-bit 范围内有限这一事实，把判定压成单次整除测试。</p>
 <h2 id="approach">数据结构 / 想法 (Approach)<a class="headerlink" href="#approach" title="Permanent link">#</a></h2>
-<p><strong>解法 A — 循环除法</strong>：反复 <code>n /= 3</code> 直到 <code>n != 0 (mod 3)</code>，最后判 <code>n == 1</code>。<span class="arithmatex">\(O(\log n)\)</span>。</p>
+<p><strong>解法 A — 循环除法（朴素起点）</strong>。直接复现形式化中的判定：若 <span class="arithmatex">\(n \in S\)</span>，则不断除以 <span class="arithmatex">\(3\)</span> 必能逐级降到 <span class="arithmatex">\(3^0 = 1\)</span>；若 <span class="arithmatex">\(n \notin S\)</span>，则在某一步会留下非 <span class="arithmatex">\(3\)</span> 的因子，使 <span class="arithmatex">\(n\)</span> 停在不等于 <span class="arithmatex">\(1\)</span> 的残值。</p>
 <div class="language-python highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">Solution</span><span class="p">:</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">isPowerOfThree</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
         <span class="k">if</span> <span class="n">n</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="p">:</span> <span class="k">return</span> <span class="kc">False</span>
@@ -22483,33 +22514,82 @@
             <span class="n">n</span> <span class="o">//=</span> <span class="mi">3</span>
         <span class="k">return</span> <span class="n">n</span> <span class="o">==</span> <span class="mi">1</span>
 </code></pre></div>
-<p><strong>解法 B — 整除技巧 (常数时间)</strong>：<span class="arithmatex">\(3^{19} = 1162261467\)</span> 是 32-bit 内最大 <span class="arithmatex">\(3^k\)</span>。则 <span class="arithmatex">\(n\)</span> 是 <span class="arithmatex">\(3\)</span> 的幂 ⟺ <span class="arithmatex">\(n &gt; 0\)</span> 且 <code>1162261467 % n == 0</code>。</p>
+<p>循环执行约 <span class="arithmatex">\(\log_3 n\)</span> 次，故时间 <span class="arithmatex">\(O(\log_3 n)\)</span>、空间 <span class="arithmatex">\(O(1)\)</span>。正确性无虞，但它依赖循环——恰好是 Follow-up 禁止的。这暴露了下一步要解决的问题：能否在不迭代的前提下完成同一判定？</p>
+<p><strong>从约束到判定</strong>。注意 <span class="arithmatex">\(S\)</span> 在受限整数范围内是<strong>有限</strong>的。<span class="arithmatex">\(32\)</span>-bit 有符号整数上界为 <span class="arithmatex">\(2^{31}-1 = 2147483647\)</span>；而
+$$
+3^{19} = 1162261467 \le 2^{31}-1 &lt; 3^{20} = 3486784401, \tag{2}
+$$
+所以 <span class="arithmatex">\(32\)</span>-bit 范围内的 <span class="arithmatex">\(3\)</span> 的幂恰为 <span class="arithmatex">\(3^0, 3^1, \dots, 3^{19}\)</span>，且其中最大者为 <span class="arithmatex">\(M = 3^{19} = 1162261467\)</span>。</p>
+<p>接下来的关键观察是：<strong>这有限多个幂，每一个都整除最大的那个</strong>。因为对 <span class="arithmatex">\(0 \le k \le 19\)</span> 有 <span class="arithmatex">\(M = 3^{19} = 3^k \cdot 3^{19-k}\)</span>，故 <span class="arithmatex">\(3^k \mid M\)</span>。于是"<span class="arithmatex">\(n\)</span> 是这些幂之一"可以改述为"<span class="arithmatex">\(n \mid M\)</span> 且 <span class="arithmatex">\(n &gt; 0\)</span>"——只要逆命题也成立，单次整除测试就够了。逆命题正是下面要证的：<span class="arithmatex">\(M\)</span> 的正因子<strong>只能</strong>是 <span class="arithmatex">\(3\)</span> 的幂。</p>
+<p><strong>解法 B — 整除判定（常数时间）</strong>。据上，<span class="arithmatex">\(n\)</span> 是 <span class="arithmatex">\(3\)</span> 的幂当且仅当 <span class="arithmatex">\(n &gt; 0\)</span> 且 <span class="arithmatex">\(M \bmod n = 0\)</span>，其中 <span class="arithmatex">\(M = 3^{19} = 1162261467\)</span>。</p>
 <div class="language-python highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">Solution</span><span class="p">:</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">isPowerOfThree</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">n</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="ow">and</span> <span class="mi">1162261467</span> <span class="o">%</span> <span class="n">n</span> <span class="o">==</span> <span class="mi">0</span>
 </code></pre></div>
-<p><strong>正确性</strong>：<span class="arithmatex">\(1162261467 = 3^{19}\)</span>。设 <span class="arithmatex">\(n \mid 3^{19}\)</span> 且 <span class="arithmatex">\(n &gt; 0\)</span>。由整数唯一分解，<span class="arithmatex">\(n\)</span> 只能由素因子 <span class="arithmatex">\(3\)</span> 组成，即 <span class="arithmatex">\(n = 3^k\)</span>，<span class="arithmatex">\(0 \le k \le 19\)</span>。反之显然。</p>
-<p><strong>解法 C — 对数</strong>：<code>log(n) / log(3)</code> 接近整数，但浮点误差使其不可靠（例如 <span class="arithmatex">\(n = 243\)</span> 可能算出 <span class="arithmatex">\(4.9999\dots\)</span>）。<strong>不推荐</strong>。</p>
-<p>Trace n=27: 27%3=0, n=9; 9%3=0, n=3; 3%3=0, n=1; 退出, return 1==1 → True ✓
-Trace n=0: n&lt;1 → False ✓
-Trace n=-1: &lt;1 → False ✓
-解法 B: n=27, 1162261467 % 27 = 0 → True; n=0 防 div0 已由 <code>n&gt;0</code> 保护; n=45, 1162261467 % 45 ≠ 0 (因 45 含因子 5) → False ✓</p>
+<p>短路求值先验 <span class="arithmatex">\(n &gt; 0\)</span>，既排除非正候选，又避免 <span class="arithmatex">\(n = 0\)</span> 时的除零。时间与空间均为 <span class="arithmatex">\(O(1)\)</span>，且不含循环或递归，满足 Follow-up。</p>
+<p><strong>正确性</strong>。需证：对 <span class="arithmatex">\(n &gt; 0\)</span>，<span class="arithmatex">\(n \mid M \iff n = 3^k\)</span>（某 <span class="arithmatex">\(0 \le k \le 19\)</span>）。</p>
+<p><span class="arithmatex">\((\Leftarrow)\)</span> 若 <span class="arithmatex">\(n = 3^k\)</span> 且 <span class="arithmatex">\(0 \le k \le 19\)</span>，则由式 (2) 后的分解 <span class="arithmatex">\(M = 3^k \cdot 3^{19-k}\)</span> 知 <span class="arithmatex">\(n \mid M\)</span>。</p>
+<p><span class="arithmatex">\((\Rightarrow)\)</span> 设 <span class="arithmatex">\(n \mid M\)</span> 且 <span class="arithmatex">\(n &gt; 0\)</span>。由算术基本定理，每个正整数有唯一的素因子分解。<span class="arithmatex">\(M = 3^{19}\)</span> 的素因子分解只含素数 <span class="arithmatex">\(3\)</span>。而 <span class="arithmatex">\(n\)</span> 的任一素因子 <span class="arithmatex">\(p\)</span> 必整除 <span class="arithmatex">\(M\)</span>，故 <span class="arithmatex">\(p\)</span> 也是 <span class="arithmatex">\(M\)</span> 的素因子，只能是 <span class="arithmatex">\(3\)</span>。于是 <span class="arithmatex">\(n\)</span> 的素因子分解仅由 <span class="arithmatex">\(3\)</span> 构成，即 <span class="arithmatex">\(n = 3^k\)</span>；又 <span class="arithmatex">\(n \le M = 3^{19}\)</span> 给出 <span class="arithmatex">\(k \le 19\)</span>。<span class="arithmatex">\(\square\)</span></p>
+<p>这条证明就是解法 B 的全部依据：把"是否 <span class="arithmatex">\(3\)</span> 的幂"这一无界判定，靠 <span class="arithmatex">\(M\)</span> 唯一素因子为 <span class="arithmatex">\(3\)</span>，收缩成一次取模。</p>
+<p><strong>解法 C — 对数（不推荐）</strong>。形式化的等价形式 <span class="arithmatex">\(\log_3 n \in \mathbb{Z}_{\ge 0}\)</span> 诱使人直接算 <code>log(n) / log(3)</code> 并判它是否接近整数。但浮点舍入使其不可靠：例如 <span class="arithmatex">\(n = 243 = 3^5\)</span> 时 <code>math.log(243)/math.log(3)</code> 算得 <span class="arithmatex">\(4.999999999999999\)</span>，判定整数会失败。故不采用。</p>
+<p><strong>验证</strong>。下表对两种解法各取代表性输入，逐步追踪执行：</p>
+<table>
+<thead>
+<tr>
+<th>输入 <span class="arithmatex">\(n\)</span></th>
+<th>解法 A 过程</th>
+<th>结果</th>
+<th>解法 B：<span class="arithmatex">\(M \bmod n\)</span></th>
+<th>结果</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><span class="arithmatex">\(27 = 3^3\)</span></td>
+<td><span class="arithmatex">\(27 \to 9 \to 3 \to 1\)</span>，余 <span class="arithmatex">\(1\)</span></td>
+<td>True</td>
+<td><span class="arithmatex">\(1162261467 \bmod 27 = 0\)</span></td>
+<td>True</td>
+</tr>
+<tr>
+<td><span class="arithmatex">\(45 = 3^2 \cdot 5\)</span></td>
+<td><span class="arithmatex">\(45 \to 15 \to 5\)</span>，余 <span class="arithmatex">\(5 \ne 1\)</span></td>
+<td>False</td>
+<td><span class="arithmatex">\(1162261467 \bmod 45 \ne 0\)</span>（含因子 <span class="arithmatex">\(5\)</span>）</td>
+<td>False</td>
+</tr>
+<tr>
+<td><span class="arithmatex">\(0\)</span></td>
+<td><span class="arithmatex">\(n &lt; 1\)</span>，直接退出</td>
+<td>False</td>
+<td><span class="arithmatex">\(n &gt; 0\)</span> 短路，不取模</td>
+<td>False</td>
+</tr>
+<tr>
+<td><span class="arithmatex">\(-1\)</span></td>
+<td><span class="arithmatex">\(n &lt; 1\)</span>，直接退出</td>
+<td>False</td>
+<td><span class="arithmatex">\(n &gt; 0\)</span> 短路，不取模</td>
+<td>False</td>
+</tr>
+</tbody>
+</table>
 <h2 id="complexity">复杂度 (Complexity)<a class="headerlink" href="#complexity" title="Permanent link">#</a></h2>
 <ul>
 <li>解法 A：Time <span class="arithmatex">\(O(\log_3 n)\)</span>, Space <span class="arithmatex">\(O(1)\)</span>.</li>
-<li>解法 B：Time <span class="arithmatex">\(O(1)\)</span>, Space <span class="arithmatex">\(O(1)\)</span>。</li>
+<li>解法 B：Time <span class="arithmatex">\(O(1)\)</span>, Space <span class="arithmatex">\(O(1)\)</span>。满足 Follow-up（无循环/递归）。</li>
 </ul>
 <h2 id="pitfalls">陷阱 (Pitfalls)<a class="headerlink" href="#pitfalls" title="Permanent link">#</a></h2>
 <ul>
-<li><strong><span class="arithmatex">\(n \le 0\)</span> 必须先剔除</strong>：<span class="arithmatex">\(3^k\)</span> 永为正；遗漏会导致 <code>1162261467 % 0</code> 除零。</li>
-<li><strong>整除技巧只在 32-bit 范围有效</strong>：64-bit 需用 <span class="arithmatex">\(3^{39}\)</span>；任意位数则失效。</li>
-<li><strong>浮点 <code>log</code> 法误差</strong>：不要用。</li>
+<li><strong><span class="arithmatex">\(n \le 0\)</span> 必须先剔除</strong>：<span class="arithmatex">\(3^k\)</span> 永为正；解法 B 中若漏掉 <code>n &gt; 0</code> 前置，<span class="arithmatex">\(n = 0\)</span> 会触发 <code>1162261467 % 0</code> 除零。短路 <code>n &gt; 0 and ...</code> 已覆盖此点。</li>
+<li><strong>整除判定只在 <span class="arithmatex">\(32\)</span>-bit 范围有效</strong>：常数 <span class="arithmatex">\(M = 3^{19}\)</span> 是由式 (2) 的范围上界确定的；<span class="arithmatex">\(64\)</span>-bit 范围需换成最大的 <span class="arithmatex">\(3^{39}\)</span>，任意精度整数则无最大幂可用，方法失效。</li>
+<li><strong>浮点 <code>log</code> 法不可靠</strong>：见解法 C 的 <span class="arithmatex">\(n = 243\)</span> 反例，舍入误差会误判。</li>
 </ul>
 <h2 id="related">相关题目 (Related)<a class="headerlink" href="#related" title="Permanent link">#</a></h2>
 <ul>
 <li><code>#231. Power of Two (off-wiki)</code> — <code>n &amp; (n-1) == 0</code> 位技巧。</li>
 <li><a href="../0342_power-of-four/">#0342. Power of Four</a> — 同框架但加奇偶位掩码。</li>
-<li><code>#1780. Check if Number is a Sum of Powers of Three (off-wiki)</code> — 进一步的三进制表示判定。</li>
+<li><a href="../1780_check-if-number-is-a-sum-of-powers-of-three/">#1780. Check if Number is a Sum of Powers of Three</a> — 进一步的三进制表示判定。</li>
 <li><a href="../0371_sum-of-two-integers/">#0371. Sum of Two Integers</a> — 另一种位运算技巧。</li>
 </ul>
 <h2 id="further-reading">Further Reading<a class="headerlink" href="#further-reading" title="Permanent link">#</a></h2>
@@ -22621,6 +22701,8 @@ Trace n=-1: &lt;1 → False ✓
         <script src="../../../js/mathjax/tex-mml-chtml.js"></script>
       
         <script src="../../../js/mermaid.min.js"></script>
+      
+        <script src="../../../js/featured.js"></script>
       
     
   </body>

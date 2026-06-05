@@ -1466,6 +1466,8 @@
       
         
       
+        
+      
     
     
     
@@ -1521,6 +1523,34 @@
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../featured/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ⭐ Featured（已验证）
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
               
             
               
@@ -1610,10 +1640,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_4" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
         
           
-          <label class="md-nav__link" for="__nav_4_4" id="__nav_4_4_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_5" id="__nav_4_5_label" tabindex="">
             
   
   
@@ -1631,8 +1661,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_4_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_4">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_5">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1915,7 +1945,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -1937,14 +1967,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_4_5" id="__nav_4_5_label" tabindex="">
+              <label class="md-nav__link " for="__nav_4_6" id="__nav_4_6_label" tabindex="">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_5">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_6">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -5321,10 +5351,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_7" checked>
         
           
-          <label class="md-nav__link" for="__nav_4_6" id="__nav_4_6_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_7" id="__nav_4_7_label" tabindex="">
             
   
   
@@ -5342,8 +5372,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_4_6">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_7_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4_7">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -22467,13 +22497,24 @@
 <h2 id="problem">Problem<a class="headerlink" href="#problem" title="Permanent link">#</a></h2>
 <p><span class="arithmatex">\(m \times n\)</span> 网格，每格是 <code>1</code>（左上 → 右下斜板，把球导向右）或 <code>-1</code>（右上 → 左下斜板，把球导向左）。从每列顶端放球，模拟下落，若被"V 形"或被斜板挤向墙则卡住；返回每球出口列号（卡住为 -1）。约束 <span class="arithmatex">\(1 \le m, n \le 100\)</span>。</p>
 <h2 id="background">背景 (Background)<a class="headerlink" href="#background" title="Permanent link">#</a></h2>
-<p><strong>网格上的确定性模拟</strong>：每球的轨迹完全由网格决定，无随机/分支。"V 形" 即相邻两格分别为 <code>1</code> 和 <code>-1</code>（左 <code>1</code> 右 <code>-1</code> 形成 V）；"挤墙"即在 0 列遇 <code>-1</code> 或在 <span class="arithmatex">\(n-1\)</span> 列遇 <code>1</code>。物理上每格 = 一个 45° 反射板，球只会被偏转一次（在一行内只跨一列），无回流。</p>
+<p>标签写着"模拟"，但难点不在模拟本身，而在<strong>球如何卡住</strong>。一个球落到格 <span class="arithmatex">\((r, c)\)</span>，斜板会把它推到同一行的相邻列；问题是它能不能继续下到第 <span class="arithmatex">\(r+1\)</span> 行。</p>
+<p>先把最朴素的想法写清楚：逐行处理，在每一行让球按当前格的斜板方向左移或右移一列，移完就进入下一行。这个想法漏掉了卡住——而卡住恰好有两种、且仅有两种来源，必须分清：</p>
+<ol>
+<li><strong>挤墙</strong>：格 <span class="arithmatex">\((r, c)\)</span> 是 <code>1</code>（向右推）但 <span class="arithmatex">\(c\)</span> 已是最右列，或是 <code>-1</code>（向左推）但 <span class="arithmatex">\(c\)</span> 已是最左列。球被推向不存在的列。</li>
+<li><strong>V 形冲突</strong>：球被推到的那一格，斜板方向与当前格相反。<code>1</code> 想把球送到右邻列，但右邻列是 <code>-1</code>，要把它送回左边——两块斜板在同一行夹住球。</li>
+</ol>
+<p>把这两种情况和"挤墙"画在一起即可看清：相邻两格 <code>1</code>、<code>-1</code>（左推右、右推左）构成一个朝上的夹角，球落进去出不来。这就是"V 形"。下面的任务是把"球能下一行"这件事写成一个精确的判定。</p>
 <h2 id="formulation">形式化 (Formulation)<a class="headerlink" href="#formulation" title="Permanent link">#</a></h2>
-<p>对每列 <span class="arithmatex">\(c_0\)</span> 启动 <span class="arithmatex">\((r, c) = (0, c_0)\)</span>；每行更新：</p>
-<div class="arithmatex">\[c \leftarrow c + g_{r,c},\quad \text{若 } c \notin [0, n-1] \text{ 或 } g_{r, c} \ne g_{r, c+g_{r,c}}\text{：卡住}\]</div>
-<p>否则 <span class="arithmatex">\(r \leftarrow r + 1\)</span>。<span class="arithmatex">\(r = m\)</span> 时输出 <span class="arithmatex">\(c\)</span>。</p>
+<p>设 <span class="arithmatex">\(g_{r,c} \in \{+1, -1\}\)</span> 为格 <span class="arithmatex">\((r, c)\)</span> 的值（行 <span class="arithmatex">\(r\)</span> 从 0 计，列 <span class="arithmatex">\(c\)</span> 从 0 计）。</p>
+<p><strong>直觉</strong>：球在格 <span class="arithmatex">\((r, c)\)</span> 被推向列 <span class="arithmatex">\(c' = c + g_{r,c}\)</span>。它要下到第 <span class="arithmatex">\(r+1\)</span> 行，必须真的能停在 <span class="arithmatex">\((r, c')\)</span> 这一格——这要求 <span class="arithmatex">\(c'\)</span> 是合法列，且该格的斜板不把球顶回来，即 <span class="arithmatex">\(g_{r,c'} = g_{r,c}\)</span>（同方向）。这两个条件正好排除上一节的"挤墙"和"V 形"。</p>
+<p>由此，对起始列 <span class="arithmatex">\(c_0\)</span>，令 <span class="arithmatex">\((r, c) = (0, c_0)\)</span>，逐行迭代。定义本行的落点</p>
+<div class="arithmatex">\[c' = c + g_{r,c}. \tag{1}\]</div>
+<p>球在第 <span class="arithmatex">\(r\)</span> 行卡住，当且仅当</p>
+<div class="arithmatex">\[c' \notin [0,\, n-1] \quad\text{（挤墙）}\qquad\text{或}\qquad g_{r,c'} \ne g_{r,c} \quad\text{（V 形）}. \tag{2}\]</div>
+<p>若 (2) 成立，输出 <span class="arithmatex">\(-1\)</span>；否则令 <span class="arithmatex">\(c \leftarrow c'\)</span>，<span class="arithmatex">\(r \leftarrow r + 1\)</span>。当 <span class="arithmatex">\(r = m\)</span>（穿过所有 <span class="arithmatex">\(m\)</span> 行）时，输出当前列 <span class="arithmatex">\(c\)</span>。</p>
+<p>注意 (2) 的两个析取项有先后：必须先判 <span class="arithmatex">\(c' \in [0, n-1]\)</span>，否则 <span class="arithmatex">\(g_{r,c'}\)</span> 会越界。</p>
 <h2 id="approach">数据结构 / 想法 (Approach)<a class="headerlink" href="#approach" title="Permanent link">#</a></h2>
-<p><strong>直接模拟</strong>：</p>
+<p>式 (1)–(2) 把每一行压成一次判定，代码只是逐字转写：算出 <span class="arithmatex">\(c'\)</span>，按 (2) 判卡住，否则推进。每个球从顶到底独立跑一遍。</p>
 <div class="language-python highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">Solution</span><span class="p">:</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">findBall</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">grid</span><span class="p">):</span>
         <span class="n">m</span><span class="p">,</span> <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">grid</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">grid</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
@@ -22481,36 +22522,37 @@
         <span class="k">for</span> <span class="n">start</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
             <span class="n">c</span> <span class="o">=</span> <span class="n">start</span>
             <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">m</span><span class="p">):</span>
-                <span class="n">nc</span> <span class="o">=</span> <span class="n">c</span> <span class="o">+</span> <span class="n">grid</span><span class="p">[</span><span class="n">r</span><span class="p">][</span><span class="n">c</span><span class="p">]</span>
-                <span class="c1"># check wall and V-pattern</span>
+                <span class="n">nc</span> <span class="o">=</span> <span class="n">c</span> <span class="o">+</span> <span class="n">grid</span><span class="p">[</span><span class="n">r</span><span class="p">][</span><span class="n">c</span><span class="p">]</span>               <span class="c1"># (1): 本行落点 c&#39;</span>
                 <span class="k">if</span> <span class="n">nc</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">nc</span> <span class="o">&gt;=</span> <span class="n">n</span> <span class="ow">or</span> <span class="n">grid</span><span class="p">[</span><span class="n">r</span><span class="p">][</span><span class="n">nc</span><span class="p">]</span> <span class="o">!=</span> <span class="n">grid</span><span class="p">[</span><span class="n">r</span><span class="p">][</span><span class="n">c</span><span class="p">]:</span>
-                    <span class="n">c</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+                    <span class="n">c</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>                          <span class="c1"># (2): 挤墙 或 V 形</span>
                     <span class="k">break</span>
-                <span class="n">c</span> <span class="o">=</span> <span class="n">nc</span>
+                <span class="n">c</span> <span class="o">=</span> <span class="n">nc</span>                              <span class="c1"># 推进到下一行</span>
             <span class="n">ans</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">c</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">ans</span>
 </code></pre></div>
-<p><strong>关键观察</strong>：球从 <span class="arithmatex">\((r, c)\)</span> 下落必先在本格被斜板偏转到 <span class="arithmatex">\((r, c \pm 1)\)</span>，但要继续到 <span class="arithmatex">\((r+1, c \pm 1)\)</span> 必须该列也是同方向斜板（否则 V 形挡住）。检查 <code>grid[r][c] == grid[r][nc]</code> 即可。</p>
-<p><strong>心算 trace 示例 1</strong>: grid=[[1,1,1,-1,-1],[1,1,1,-1,-1],[-1,-1,-1,1,1],[1,1,1,1,-1],[-1,-1,-1,-1,-1]], start=0
-- (0,0): g=1, nc=1; g[0][1]=1, match → c=1
-- (1,1): g=1, nc=2; g[1][2]=1, match → c=2
-- (2,2): g=-1, nc=1; g[2][1]=-1, match → c=1
-- (3,1): g=1, nc=2; g[3][2]=1, match → c=2
-- (4,2): g=-1, nc=1; g[4][1]=-1, match → c=1
-- 输出 1 ✓</p>
-<p><strong>DP 替代</strong>：可写 <code>fall(r, c)</code>，但本题模拟已最优。</p>
+<p><code>nc = c + grid[r][c]</code> 是 (1)；<code>nc &lt; 0 or nc &gt;= n</code> 是挤墙；<code>grid[r][nc] != grid[r][c]</code> 是 V 形，且因 <code>or</code> 短路，越界时不会去读 <code>grid[r][nc]</code>，这正是 (2) 中两析取项的次序要求。</p>
+<p>为什么检查的是<strong>前进方向上的邻格</strong> <span class="arithmatex">\(c' = c + g_{r,c}\)</span>，而不是正下方的格？因为球离开 <span class="arithmatex">\((r, c)\)</span> 后，在第 <span class="arithmatex">\(r\)</span> 行内的下一个位置就是 <span class="arithmatex">\((r, c')\)</span>；它必须先在这一行内走通，才谈得上下到 <span class="arithmatex">\(r+1\)</span> 行。正下方的格属于下一行，与本行能否走通无关。这一判定完全来自网格自身的转移结构，不依赖任何外部模型。</p>
+<p><strong>示例 1（逐步追踪 start=0）</strong>：grid=[[1,1,1,-1,-1],[1,1,1,-1,-1],[-1,-1,-1,1,1],[1,1,1,1,-1],[-1,-1,-1,-1,-1]]
+- (0,0): <span class="arithmatex">\(g=1\)</span>，<span class="arithmatex">\(c'=1\)</span>；<span class="arithmatex">\(g_{0,1}=1\)</span>，同号 → <span class="arithmatex">\(c=1\)</span>
+- (1,1): <span class="arithmatex">\(g=1\)</span>，<span class="arithmatex">\(c'=2\)</span>；<span class="arithmatex">\(g_{1,2}=1\)</span>，同号 → <span class="arithmatex">\(c=2\)</span>
+- (2,2): <span class="arithmatex">\(g=-1\)</span>，<span class="arithmatex">\(c'=1\)</span>；<span class="arithmatex">\(g_{2,1}=-1\)</span>，同号 → <span class="arithmatex">\(c=1\)</span>
+- (3,1): <span class="arithmatex">\(g=1\)</span>，<span class="arithmatex">\(c'=2\)</span>；<span class="arithmatex">\(g_{3,2}=1\)</span>，同号 → <span class="arithmatex">\(c=2\)</span>
+- (4,2): <span class="arithmatex">\(g=-1\)</span>，<span class="arithmatex">\(c'=1\)</span>；<span class="arithmatex">\(g_{4,1}=-1\)</span>，同号 → <span class="arithmatex">\(c=1\)</span>
+- 穿过 5 行，输出 1 ✓（完整答案向量为 [1,-1,-1,-1,-1]，此处只追踪 start=0）</p>
+<p><strong>关于 DP</strong>：每个球的轨迹只由它的起始列决定，不同球之间没有共享的子问题，正下方格的结果也不参与本行判定，因此没有可记忆化的重叠结构。写成 <code>fall(r, c)</code> 递归并不会减少工作量，逐列模拟即是最优。</p>
 <h2 id="complexity">复杂度 (Complexity)<a class="headerlink" href="#complexity" title="Permanent link">#</a></h2>
 <ul>
-<li>Time: <span class="arithmatex">\(O(mn)\)</span> — 每球 <span class="arithmatex">\(O(m)\)</span> 步，<span class="arithmatex">\(n\)</span> 球。</li>
-<li>Space: <span class="arithmatex">\(O(n)\)</span> 输出。</li>
+<li>Time: <span class="arithmatex">\(O(mn)\)</span> — 每球恰好跑 <span class="arithmatex">\(m\)</span> 行（每行推进一行或提前卡住），<span class="arithmatex">\(n\)</span> 个球。</li>
+<li>Space: <span class="arithmatex">\(O(n)\)</span> 输出（输出外辅助空间 <span class="arithmatex">\(O(1)\)</span>）。</li>
 </ul>
 <h2 id="pitfalls">陷阱 (Pitfalls)<a class="headerlink" href="#pitfalls" title="Permanent link">#</a></h2>
-<ul>
-<li><strong>V 形检测</strong>：必须比较 <code>grid[r][c]</code> 与 <code>grid[r][nc]</code>，不是与 <code>grid[r+1][c]</code>。</li>
-<li><strong>墙边界</strong>：<code>nc &lt; 0</code> 或 <code>nc &gt;= n</code> 时立即 -1，不要试图越界访问。</li>
-<li><strong>顺序</strong>：先检查越界与 V，再更新 <code>c</code>，否则会读到错值。</li>
-<li><strong>不要按列分别 DFS</strong>：每球独立，简单 for 循环最清晰。</li>
-</ul>
+<p>这一节的前三条都是式 (2) 的正确实现条件，第四条是设计取舍，性质不同，分列如下。</p>
+<p>实现 (2) 的三个条件：
+- <strong>V 形检测对象</strong>：必须比较 <span class="arithmatex">\(g_{r,c}\)</span> 与 <span class="arithmatex">\(g_{r,c'}\)</span>（<code>grid[r][nc]</code>），不是与正下方 <code>grid[r+1][c]</code>。冲突发生在同一行内。
+- <strong>越界先于读值</strong>：<code>nc &lt; 0 or nc &gt;= n</code> 必须排在 <code>grid[r][nc]</code> 之前，靠 <code>or</code> 短路，否则会越界访问。
+- <strong>判定先于更新</strong>：先按 (2) 判卡住，再更新 <span class="arithmatex">\(c\)</span>，否则会用到已被覆盖的列号。</p>
+<p>设计取舍：
+- <strong>不必按列 DFS</strong>：各球独立、无重叠子问题（见上），简单 for 循环最清晰，递归只增加开销。</p>
 <h2 id="related">相关题目 (Related)<a class="headerlink" href="#related" title="Permanent link">#</a></h2>
 <ul>
 <li><a href="../0874_walking-robot-simulation/">#874. Walking Robot Simulation</a> — 另一道纯模拟。</li>
@@ -22625,6 +22667,8 @@
         <script src="../../../js/mathjax/tex-mml-chtml.js"></script>
       
         <script src="../../../js/mermaid.min.js"></script>
+      
+        <script src="../../../js/featured.js"></script>
       
     
   </body>

@@ -1466,6 +1466,8 @@
       
         
       
+        
+      
     
     
     
@@ -1521,6 +1523,34 @@
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../featured/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ⭐ Featured（已验证）
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
               
             
               
@@ -1610,10 +1640,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_4" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
         
           
-          <label class="md-nav__link" for="__nav_4_4" id="__nav_4_4_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_5" id="__nav_4_5_label" tabindex="">
             
   
   
@@ -1631,8 +1661,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_4_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_4">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_5">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1915,7 +1945,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -1937,14 +1967,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_4_5" id="__nav_4_5_label" tabindex="">
+              <label class="md-nav__link " for="__nav_4_6" id="__nav_4_6_label" tabindex="">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_5">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_6">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -5321,10 +5351,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_7" checked>
         
           
-          <label class="md-nav__link" for="__nav_4_6" id="__nav_4_6_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_7" id="__nav_4_7_label" tabindex="">
             
   
   
@@ -5342,8 +5372,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_4_6">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_7_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4_7">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -22467,50 +22497,56 @@
 <h2 id="problem">Problem<a class="headerlink" href="#problem" title="Permanent link">#</a></h2>
 <p>0/1 串 <code>s</code>。操作 1：把首字符移到末尾（循环左移），不计入答案。操作 2：翻转某字符。求最少操作 2 次数使 <code>s</code> 交替。</p>
 <h2 id="_1">背景<a class="headerlink" href="#_1" title="Permanent link">#</a></h2>
-<p><strong>循环移位</strong>等价于"取 <span class="arithmatex">\(s + s\)</span> 的某长度 <span class="arithmatex">\(n\)</span> 子串"。所以问题转化为：在长 <span class="arithmatex">\(2n\)</span> 的串 <span class="arithmatex">\(s + s\)</span> 上，扫描所有长 <span class="arithmatex">\(n\)</span> 的滑动窗口，求每个窗口到"0101..." 或 "1010..." 的最小 Hamming 距离，输出全局最小。</p>
-<p>这是 <strong>滑动窗口 + Hamming distance</strong> 的经典：维护两个计数（与两目标的差异数），窗口右移时只需 <span class="arithmatex">\(O(1)\)</span> 更新。</p>
+<p>先看不带循环移位的版本。一个长 <span class="arithmatex">\(n\)</span> 的交替串完全由首字符决定：首位是 0 就只能是 <code>0101...</code>，首位是 1 就只能是 <code>1010...</code>。所以目标只有两个，记 <span class="arithmatex">\(T_0 = 0101\dots\)</span>、<span class="arithmatex">\(T_1 = 1010\dots\)</span>。要把 <span class="arithmatex">\(s\)</span> 变成交替串，翻转次数就是 <span class="arithmatex">\(s\)</span> 与某个目标不同的位置数，即 Hamming 距离 <span class="arithmatex">\(d_H\)</span>；取两者较小者即可。</p>
+<p>操作 1 把这件事复杂化：它允许先做任意次循环左移，再去贴目标。循环左移 <span class="arithmatex">\(k\)</span> 次得到的串记 <span class="arithmatex">\(\mathrm{rot}_k(s)\)</span>，那么答案是在所有 <span class="arithmatex">\(k\)</span> 上再取最小：</p>
+<div class="arithmatex">\[\text{ans} = \min_{0 \le k &lt; n} \min\big(d_H(\mathrm{rot}_k(s),\, T_0),\; d_H(\mathrm{rot}_k(s),\, T_1)\big). \tag{1}\]</div>
+<p>最直接的算法就照搬这个式子：对每个 <span class="arithmatex">\(k\)</span> 重新拼出 <span class="arithmatex">\(\mathrm{rot}_k(s)\)</span>，逐位与两个目标比较。单个 <span class="arithmatex">\(k\)</span> 是 <span class="arithmatex">\(O(n)\)</span>，<span class="arithmatex">\(n\)</span> 个旋转共 <span class="arithmatex">\(O(n^2)\)</span>。下面要做的，是发现相邻旋转之间几乎没有变化，从而把每步的更新摊到 <span class="arithmatex">\(O(1)\)</span>。</p>
 <h2 id="_2">形式化<a class="headerlink" href="#_2" title="Permanent link">#</a></h2>
-<div class="arithmatex">\[\text{ans} = \min_{0 \le k &lt; n} \min\big(d_H(\text{rot}_k(s),\, T_0),\; d_H(\text{rot}_k(s),\, T_1)\big),\]</div>
-<p>其中 <span class="arithmatex">\(T_0 = 0101\dots\)</span>, <span class="arithmatex">\(T_1 = 1010\dots\)</span>。</p>
+<p>式 <span class="arithmatex">\((1)\)</span> 已经是精确的问题陈述，但 <span class="arithmatex">\(\mathrm{rot}_k(s)\)</span> 还是抽象的旋转。要做增量更新，先把旋转写成一个可以滑动的窗口。</p>
+<p><strong>直觉</strong>：循环左移一次，就是把首字符挪到末尾——串里的字符顺序不变，只是“起点”往右挪了一格。如果把 <span class="arithmatex">\(s\)</span> 复制一份接在后面得到 <span class="arithmatex">\(s+s\)</span>，那么从位置 <span class="arithmatex">\(k\)</span> 起、长度 <span class="arithmatex">\(n\)</span> 的那一段，恰好就是从第 <span class="arithmatex">\(k\)</span> 个字符开始绕一圈读出来的结果。于是所有旋转都成了同一条长 <span class="arithmatex">\(2n\)</span> 串上的连续子串，只差起点不同。</p>
+<p><strong>形式化</strong>：对 <span class="arithmatex">\(0 \le k &lt; n\)</span>，</p>
+<div class="arithmatex">\[\mathrm{rot}_k(s) = s[k{:}] + s[{:}k] = (s+s)[k{:}k+n]. \tag{2}\]</div>
+<p>左边是“后半段接前半段”的旋转定义；右边因为 <span class="arithmatex">\(s+s\)</span> 在位置 <span class="arithmatex">\(k\)</span> 之后正好先排完 <span class="arithmatex">\(s[k{:}]\)</span>、再从头排 <span class="arithmatex">\(s[{:}k]\)</span>，两边逐位相等。把 <span class="arithmatex">\((2)\)</span> 代回 <span class="arithmatex">\((1)\)</span>，问题变成：在 <span class="arithmatex">\(s+s\)</span> 上滑动所有长 <span class="arithmatex">\(n\)</span> 的窗口 <span class="arithmatex">\([k, k+n)\)</span>，对每个窗口求它到 <span class="arithmatex">\(T_0\)</span>、<span class="arithmatex">\(T_1\)</span> 的较小 Hamming 距离，全局取最小。</p>
+<p>这一步把“旋转”消解成了“窗口”，而相邻窗口 <span class="arithmatex">\([k, k+n)\)</span> 与 <span class="arithmatex">\([k+1, k+1+n)\)</span> 只差一头一尾两个字符——这正是 <span class="arithmatex">\(O(1)\)</span> 更新的来源。</p>
 <h2 id="_3">数据结构 / 想法<a class="headerlink" href="#_3" title="Permanent link">#</a></h2>
-<p><strong>滑动窗口</strong>：
+<p><strong>为什么能 <span class="arithmatex">\(O(1)\)</span> 更新</strong>。设当前窗口对目标 <span class="arithmatex">\(T_0\)</span> 的不匹配数是 <span class="arithmatex">\(\text{diff}_0\)</span>。窗口右移一格时，左端字符 <span class="arithmatex">\(s2[i-n]\)</span> 离开、右端字符 <span class="arithmatex">\(s2[i]\)</span> 进入，中间 <span class="arithmatex">\(n-1\)</span> 个字符的贡献完全不变。每个字符对 <span class="arithmatex">\(\text{diff}_0\)</span> 的贡献只取决于它的值和它在 <span class="arithmatex">\(s+s\)</span> 中的<strong>绝对下标</strong>奇偶——因为 <span class="arithmatex">\(T_0\)</span> 是一条全局固定的 <code>0101...</code>，位置 <span class="arithmatex">\(j\)</span> 上的期望字符是 <code>'01'[j % 2]</code>，与该字符落在窗口里第几位无关。进入时若不匹配就 <span class="arithmatex">\(+1\)</span>，离开时若曾不匹配就 <span class="arithmatex">\(-1\)</span>，每步 <span class="arithmatex">\(O(1)\)</span>。<span class="arithmatex">\(T_1\)</span> 同理。</p>
+<p><strong>不变量</strong>（先于代码声明，代码即为其实现）：处理完下标 <span class="arithmatex">\(i\)</span> 后，<span class="arithmatex">\(\text{diff}_0\)</span> 等于窗口 <span class="arithmatex">\([\max(0, i-n+1),\, i]\)</span> 内、字符与 <code>'01'[j % 2]</code> 不同的位置数；<span class="arithmatex">\(\text{diff}_1\)</span> 对 <code>'10'[j % 2]</code> 同理。当窗口长度满 <span class="arithmatex">\(n\)</span>（即 <span class="arithmatex">\(i \ge n-1\)</span>）时，<span class="arithmatex">\(\min(\text{diff}_0, \text{diff}_1)\)</span> 就是当前旋转到两目标的较小距离，用它更新答案。</p>
 <div class="language-python highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">minFlips</span><span class="p">(</span><span class="n">s</span><span class="p">):</span>
     <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">s</span><span class="p">);</span> <span class="n">s2</span> <span class="o">=</span> <span class="n">s</span> <span class="o">+</span> <span class="n">s</span>
-    <span class="n">diff0</span> <span class="o">=</span> <span class="n">diff1</span> <span class="o">=</span> <span class="mi">0</span>  <span class="c1"># count mismatches with target0/1 in current window</span>
+    <span class="n">diff0</span> <span class="o">=</span> <span class="n">diff1</span> <span class="o">=</span> <span class="mi">0</span>  <span class="c1"># 当前窗口与 T0 / T1 的不匹配数</span>
     <span class="n">res</span> <span class="o">=</span> <span class="n">n</span>
     <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">ch</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">s2</span><span class="p">):</span>
-        <span class="c1"># 当前期望字符</span>
+        <span class="c1"># 进入：按绝对下标 i 的奇偶决定期望字符</span>
         <span class="k">if</span> <span class="n">ch</span> <span class="o">!=</span> <span class="s1">&#39;01&#39;</span><span class="p">[</span><span class="n">i</span> <span class="o">%</span> <span class="mi">2</span><span class="p">]:</span> <span class="n">diff0</span> <span class="o">+=</span> <span class="mi">1</span>
         <span class="k">if</span> <span class="n">ch</span> <span class="o">!=</span> <span class="s1">&#39;10&#39;</span><span class="p">[</span><span class="n">i</span> <span class="o">%</span> <span class="mi">2</span><span class="p">]:</span> <span class="n">diff1</span> <span class="o">+=</span> <span class="mi">1</span>
-        <span class="c1"># 缩窗：长度超过 n</span>
+        <span class="c1"># 离开：窗口长度超过 n，剔除左端 s2[i-n]，期望基于 (i-n) % 2</span>
         <span class="k">if</span> <span class="n">i</span> <span class="o">&gt;=</span> <span class="n">n</span><span class="p">:</span>
             <span class="n">old</span> <span class="o">=</span> <span class="n">s2</span><span class="p">[</span><span class="n">i</span> <span class="o">-</span> <span class="n">n</span><span class="p">]</span>
-            <span class="c1"># 注意：被移除的字符在原 window 的位置 i-n，其期望基于 (i-n) % 2</span>
             <span class="k">if</span> <span class="n">old</span> <span class="o">!=</span> <span class="s1">&#39;01&#39;</span><span class="p">[(</span><span class="n">i</span> <span class="o">-</span> <span class="n">n</span><span class="p">)</span> <span class="o">%</span> <span class="mi">2</span><span class="p">]:</span> <span class="n">diff0</span> <span class="o">-=</span> <span class="mi">1</span>
             <span class="k">if</span> <span class="n">old</span> <span class="o">!=</span> <span class="s1">&#39;10&#39;</span><span class="p">[(</span><span class="n">i</span> <span class="o">-</span> <span class="n">n</span><span class="p">)</span> <span class="o">%</span> <span class="mi">2</span><span class="p">]:</span> <span class="n">diff1</span> <span class="o">-=</span> <span class="mi">1</span>
         <span class="k">if</span> <span class="n">i</span> <span class="o">&gt;=</span> <span class="n">n</span> <span class="o">-</span> <span class="mi">1</span><span class="p">:</span>
             <span class="n">res</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">res</span><span class="p">,</span> <span class="n">diff0</span><span class="p">,</span> <span class="n">diff1</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">res</span>
-</code></pre></div></p>
-<p><strong>关键 trick</strong>：通过把 <span class="arithmatex">\(s\)</span> 复制一份得 <span class="arithmatex">\(s + s\)</span>，循环左移变成线性子串。窗口 <span class="arithmatex">\(i \in [0, n)\)</span> 对应"左移 <span class="arithmatex">\(i\)</span> 次"的状态。</p>
-<p><strong>不变量</strong>：处理到 <span class="arithmatex">\(i\)</span> 时，<code>diff0/1</code> 是窗口 <span class="arithmatex">\([\max(0, i-n+1), i]\)</span> 与各自目标在该窗口位置上的不匹配数。</p>
+</code></pre></div>
+<p><strong><span class="arithmatex">\(\text{diff}_0\)</span> 测的不一定是 <span class="arithmatex">\(d_H(\mathrm{rot}_k, T_0)\)</span></strong>。这里有一个容易误读的细节。式 <span class="arithmatex">\((1)\)</span> 里 <span class="arithmatex">\(\mathrm{rot}_k\)</span> 的首位对齐到目标的第 0 位；但窗口的期望字符按<strong>绝对下标</strong> <span class="arithmatex">\(j \bmod 2\)</span> 取，窗口起点 <span class="arithmatex">\(k\)</span> 自身就有奇偶。当 <span class="arithmatex">\(n\)</span> 为偶时窗口长度不改变奇偶，绝对下标与窗口内相对位置同奇偶，<span class="arithmatex">\(\text{diff}_0\)</span> 恰好就是 <span class="arithmatex">\(d_H(\mathrm{rot}_k, T_0)\)</span>。当 <span class="arithmatex">\(n\)</span> 为奇时，起点每右移一格奇偶翻转，于是对一半窗口而言 <span class="arithmatex">\(\text{diff}_0\)</span> 量的其实是到<strong>另一个</strong>目标的距离，<span class="arithmatex">\(\text{diff}_0\)</span> 与 <span class="arithmatex">\(\text{diff}_1\)</span> 整体互换。算法依旧正确，靠的是它每窗口只取 <span class="arithmatex">\(\min(\text{diff}_0, \text{diff}_1)\)</span>，而 <span class="arithmatex">\(\min\)</span> 在这对值互换下不变。换言之，真正“吸收”奇偶翻转的不是 <span class="arithmatex">\(s+s\)</span>，是对两个目标取 <span class="arithmatex">\(\min\)</span> 这一步。</p>
+<p>这条性质对正确性是充分的，但若有人想从 <span class="arithmatex">\(\text{diff}_0\)</span> 单独反推“哪个目标最优”，在奇 <span class="arithmatex">\(n\)</span> 下会取错目标。</p>
 <h2 id="_4">复杂度<a class="headerlink" href="#_4" title="Permanent link">#</a></h2>
 <ul>
-<li>Time: <span class="arithmatex">\(O(n)\)</span></li>
-<li>Space: <span class="arithmatex">\(O(n)\)</span>（拼接），可优化为 <span class="arithmatex">\(O(1)\)</span> 通过模运算。</li>
+<li>Time: <span class="arithmatex">\(O(n)\)</span>——<span class="arithmatex">\(2n\)</span> 个位置各做 <span class="arithmatex">\(O(1)\)</span> 工作，无输入相关的提前退出，最好/平均/最坏同阶。</li>
+<li>Space: <span class="arithmatex">\(O(n)\)</span>（拼接 <span class="arithmatex">\(s+s\)</span>）；用对 <span class="arithmatex">\(s\)</span> 取模索引代替拼接可降到 <span class="arithmatex">\(O(1)\)</span>。</li>
 </ul>
 <h2 id="_5">陷阱<a class="headerlink" href="#_5" title="Permanent link">#</a></h2>
 <ul>
-<li>期望字符基于<strong>绝对下标</strong>（即在拼接串中的位置 <span class="arithmatex">\(i\)</span> 模 2），不是窗口内相对位置。</li>
-<li>偶/奇 <span class="arithmatex">\(n\)</span> 行为不同：<span class="arithmatex">\(n\)</span> 偶时两个目标都是 "<span class="arithmatex">\(0101\)</span>" 与 "<span class="arithmatex">\(1010\)</span>" 的循环，相对位置稳定；<span class="arithmatex">\(n\)</span> 奇时目标在循环中<strong>改变奇偶</strong>，但通过 <span class="arithmatex">\(s+s\)</span> 已自动处理。</li>
-<li>窗口缩进的时机：<code>i &gt;= n</code> 时把 <span class="arithmatex">\(s2[i-n]\)</span> 剔除。</li>
+<li>期望字符基于<strong>绝对下标</strong>（拼接串中位置 <span class="arithmatex">\(i\)</span> 模 2），不是窗口内相对位置——这是全局固定目标 <span class="arithmatex">\(T_0, T_1\)</span> 的直接后果。</li>
+<li>奇 <span class="arithmatex">\(n\)</span> 下 <span class="arithmatex">\(\text{diff}_0\)</span> 与 <span class="arithmatex">\(T_0\)</span> 的对应会与 <span class="arithmatex">\(\text{diff}_1\)</span> 整体互换；正确性靠每窗口取 <span class="arithmatex">\(\min\)</span> 拯救，不能用单个 <span class="arithmatex">\(\text{diff}\)</span> 反推最优目标。</li>
+<li>窗口缩进时机：<code>i &gt;= n</code> 时剔除 <span class="arithmatex">\(s2[i-n]\)</span>；答案收集从 <code>i &gt;= n-1</code>（窗口首次满 <span class="arithmatex">\(n\)</span>）开始。</li>
 <li><span class="arithmatex">\(n=1\)</span> 时答案 0（任意单字符已交替）。</li>
 </ul>
 <h2 id="_6">相关题目<a class="headerlink" href="#_6" title="Permanent link">#</a></h2>
 <ul>
-<li><a href="../1758_minimum-changes-to-make-alternating-binary-string/">#1758. Minimum Changes To Make Alternating Binary String</a> — 不允许循环移位的简化版。</li>
+<li><a href="../1758_minimum-changes-to-make-alternating-binary-string/">#1758. Minimum Changes To Make Alternating Binary String</a> — 不允许循环移位的简化版，即式 <span class="arithmatex">\((1)\)</span> 去掉外层 <span class="arithmatex">\(\min_k\)</span>。</li>
 <li><a href="../3750_minimum-number-of-flips-to-reverse-binary-string/">#3750. Minimum Number of Flips to Reverse Binary String</a> — 同 family。</li>
-<li><code>#567. Permutation in String (off-wiki)</code> — 同款滑动窗口 + 差异计数。</li>
+<li><code>#567. Permutation in String (off-wiki)</code> — 同款滑动窗口 + 差异计数：窗口右移时一进一出、<span class="arithmatex">\(O(1)\)</span> 维护计数。</li>
 </ul>
 <h2 id="further-reading">Further Reading<a class="headerlink" href="#further-reading" title="Permanent link">#</a></h2>
 <ul>
@@ -22622,6 +22658,8 @@
         <script src="../../../js/mathjax/tex-mml-chtml.js"></script>
       
         <script src="../../../js/mermaid.min.js"></script>
+      
+        <script src="../../../js/featured.js"></script>
       
     
   </body>

@@ -1466,6 +1466,8 @@
       
         
       
+        
+      
     
     
     
@@ -1521,6 +1523,34 @@
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../featured/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ⭐ Featured（已验证）
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
               
             
               
@@ -1610,10 +1640,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_4" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
         
           
-          <label class="md-nav__link" for="__nav_4_4" id="__nav_4_4_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_5" id="__nav_4_5_label" tabindex="">
             
   
   
@@ -1631,8 +1661,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_4_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_4">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_5">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1915,7 +1945,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -1937,14 +1967,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_4_5" id="__nav_4_5_label" tabindex="">
+              <label class="md-nav__link " for="__nav_4_6" id="__nav_4_6_label" tabindex="">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_5">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_6">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -5321,10 +5351,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_7" checked>
         
           
-          <label class="md-nav__link" for="__nav_4_6" id="__nav_4_6_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_7" id="__nav_4_7_label" tabindex="">
             
   
   
@@ -5342,8 +5372,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_4_6">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_7_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4_7">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -22467,11 +22497,19 @@
 <h2 id="problem">Problem<a class="headerlink" href="#problem" title="Permanent link">#</a></h2>
 <p><code>nums</code> 中偶数和奇数各半。重排使 <code>nums[i]</code> 偶则 <span class="arithmatex">\(i\)</span> 偶，奇则 <span class="arithmatex">\(i\)</span> 奇。Follow-up：原地。</p>
 <h2 id="_1">背景<a class="headerlink" href="#_1" title="Permanent link">#</a></h2>
-<p>此题是 <strong>dual-index two pointers</strong> 模式的最小例：用两个指针分别在"偶下标"和"奇下标"上走，每次跨步 2。属于 <em>partition</em> 算法家族（Hoare's partition、Dutch national flag、Quickselect）的退化版。<span class="arithmatex">\(O(n)\)</span> 时间 <span class="arithmatex">\(O(1)\)</span> 空间，且无需稳定性。</p>
+<p>最直接的做法是分两步：第一遍把所有偶数收进一个列表、所有奇数收进另一个列表；第二遍把它们交替写回，偶数填偶下标、奇数填奇下标。这正确，时间 <span class="arithmatex">\(O(n)\)</span>，但需要两个辅助列表，空间 <span class="arithmatex">\(O(n)\)</span>。</p>
+<p>Follow-up 要求原地。于是问题变成：能否不开辅助数组，只靠下标的奇偶结构本身就把元素摆到正确位置？观察约束的形状——每个元素该去哪里，只由它的奇偶决定：偶数必须落在某个偶下标，奇数必须落在某个奇下标。偶下标集合 <span class="arithmatex">\(\{0,2,4,\dots\}\)</span> 与奇下标集合 <span class="arithmatex">\(\{1,3,5,\dots\}\)</span> 互不相交，且元素去哪一组完全确定。这意味着我们可以分别扫描这两组下标，各自找出"摆错"的位置，再把错配的偶下标与错配的奇下标配对交换。下面把这个观察形式化为可推导算法的约束。</p>
 <h2 id="_2">形式化<a class="headerlink" href="#_2" title="Permanent link">#</a></h2>
-<p>求置换 <span class="arithmatex">\(\pi\)</span> 使 <span class="arithmatex">\(\forall i,\, \text{nums}[\pi^{-1}(i)] \equiv i \pmod 2\)</span>。</p>
+<p>目标用一句话说清：每个元素的奇偶必须与它最终所在下标的奇偶一致。落到新下标 <span class="arithmatex">\(i\)</span> 的元素来自原位置 <span class="arithmatex">\(\pi^{-1}(i)\)</span>，故求置换 <span class="arithmatex">\(\pi\)</span> 使得</p>
+<div class="arithmatex">\[\forall i,\quad \text{nums}[\pi^{-1}(i)] \equiv i \pmod 2. \tag{1}\]</div>
+<p>把 (1) 按下标奇偶拆开看更直接：偶下标 <span class="arithmatex">\(i\)</span> 要求其元素为偶，奇下标 <span class="arithmatex">\(i\)</span> 要求其元素为奇。整个约束是这两族逐位条件的合取，下标之间彼此独立——这正是允许"分两组、各自处理"的结构来源。</p>
 <h2 id="_3">数据结构 / 想法<a class="headerlink" href="#_3" title="Permanent link">#</a></h2>
-<p><strong>双指针，原地</strong>：
+<p><strong>从形式化导出原地算法</strong>。条件 (1) 把任务拆成两族独立约束：偶下标全偶、奇下标全奇。用两个指针 <code>i</code>（走偶下标 <span class="arithmatex">\(0,2,4,\dots\)</span>）、<code>j</code>（走奇下标 <span class="arithmatex">\(1,3,5,\dots\)</span>）分别巡查这两族，步幅为 2。步幅 2 不是凑出来的——它恰好是逐组遍历同奇偶下标的最小步长。</p>
+<p><strong>不变量</strong>（先于代码给出，作为每个分支的设计依据）：每次循环开始时，<code>nums[0..i-1]</code> 中的偶下标已全部满足 (1)（即已全偶），<code>nums[1..j-1]</code> 中的奇下标已全部满足 (1)（即已全奇）。指针 <code>i</code>、<code>j</code> 指向各自尚未验证的第一个位置。</p>
+<p>由不变量推出三个分支：
+- 若 <code>nums[i]</code> 已偶，则偶下标 <code>i</code> 满足 (1)，前移 <code>i += 2</code>，不变量延伸一格。
+- 否则 <code>nums[i]</code> 为奇（摆错）。看 <code>nums[j]</code>：若 <code>nums[j]</code> 已奇，则奇下标 <code>j</code> 满足 (1)，前移 <code>j += 2</code>。
+- 否则 <code>nums[i]</code> 奇、<code>nums[j]</code> 偶，两处恰好互为对方所需：交换后偶下标 <code>i</code> 得到偶数、奇下标 <code>j</code> 得到奇数，两者同时满足 (1)，<code>i += 2; j += 2</code>。</p>
 <div class="language-python highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">sortArrayByParityII</span><span class="p">(</span><span class="n">nums</span><span class="p">):</span>
     <span class="n">i</span><span class="p">,</span> <span class="n">j</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span>  <span class="c1"># i for even idx, j for odd idx</span>
     <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">nums</span><span class="p">)</span>
@@ -22484,19 +22522,20 @@
             <span class="n">nums</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">nums</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">nums</span><span class="p">[</span><span class="n">j</span><span class="p">],</span> <span class="n">nums</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
             <span class="n">i</span> <span class="o">+=</span> <span class="mi">2</span><span class="p">;</span> <span class="n">j</span> <span class="o">+=</span> <span class="mi">2</span>
     <span class="k">return</span> <span class="n">nums</span>
-</code></pre></div></p>
-<p><strong>不变量</strong>：循环开始时 <code>nums[0..i-1]</code> 偶下标已全偶，<code>nums[1..j-1]</code> 奇下标已全奇。<strong>正确性</strong>：每次推进至少一个指针，最终 <code>i, j</code> 双双越界即排好。</p>
-<p><strong>两遍扫描法</strong>（备选）：第一遍把所有偶数放偶下标、所有奇数放奇下标到新数组。<span class="arithmatex">\(O(n)\)</span> 空间。</p>
+</code></pre></div>
+<p><strong>终止与正确性</strong>。每个分支至少推进一个指针，故循环必然停止，无死循环。循环条件 <code>i &lt; n and j &lt; n</code>，因此一旦某个指针走完它那一族下标，循环即退出——退出时通常只有一个指针越界，而非两个。但这恰好足够：偶数与奇数各占一半，意味着偶下标与奇下标数量相等。当一个指针（设为 <code>i</code>）走完所有偶下标时，每次配对交换都同步推进了 <code>i</code> 与 <code>j</code>，故已处理的奇下标数量不少于已处理的偶下标数量；结合两族数量相等与剩余偶数已耗尽，另一族剩下的奇下标只能被奇数占据。于是不变量覆盖全数组，(1) 处处成立。</p>
+<p><strong>两遍扫描法</strong>（备选，作为原地版改进的起点）：即上文"背景"的两列表交替写回，<span class="arithmatex">\(O(n)\)</span> 时间 <span class="arithmatex">\(O(n)\)</span> 空间。原地双指针把这 <span class="arithmatex">\(O(n)\)</span> 辅助空间降到 <span class="arithmatex">\(O(1)\)</span>，代价是引入逐组扫描的不变量推理。</p>
+<p><strong>与 partition 家族的精确对应</strong>。上述交换逻辑——扫描中遇到"谓词不满足"的位置就与另一侧错配位置交换——与 Hoare partition 是同一机制：均为原地、按谓词划分、<span class="arithmatex">\(O(n)\)</span> 时间 <span class="arithmatex">\(O(1)\)</span> 空间。本题的谓词是"下标奇偶 = 元素奇偶"，划分维持的是 (1)。这是结构上的精确对应，而非引子。</p>
 <h2 id="_4">复杂度<a class="headerlink" href="#_4" title="Permanent link">#</a></h2>
 <ul>
-<li>Time: <span class="arithmatex">\(O(n)\)</span></li>
+<li>Time: <span class="arithmatex">\(O(n)\)</span>——每次迭代至少把 <code>i</code> 或 <code>j</code> 推进 2，总迭代数被 <span class="arithmatex">\(n\)</span> 约束，三种情形均为 <span class="arithmatex">\(\Theta(n)\)</span>。</li>
 <li>Space: <span class="arithmatex">\(O(1)\)</span> 一遍原地 / <span class="arithmatex">\(O(n)\)</span> 双数组。</li>
 </ul>
 <h2 id="_5">陷阱<a class="headerlink" href="#_5" title="Permanent link">#</a></h2>
 <ul>
-<li>别忘检查 <code>i &lt; n and j &lt; n</code>；越界即可停。</li>
-<li>题目保证偶数奇数各半，无需校验。</li>
-<li>此题不需要"保留原顺序"——任何满足条件的重排都接受。</li>
+<li>循环条件 <code>i &lt; n and j &lt; n</code> 必不可少；某一指针越界即停。退出时往往只有一个指针越界，不要误以为两个都越界（数量平衡保证另一族剩余位置已正确）。</li>
+<li>题目保证偶数奇数各半，正是这一平衡使单指针越界即可终止；若不平衡则需额外校验。</li>
+<li>此题不需要"保留原顺序"——任何满足 (1) 的重排都接受。</li>
 </ul>
 <h2 id="_6">相关题目<a class="headerlink" href="#_6" title="Permanent link">#</a></h2>
 <ul>
@@ -22614,6 +22653,8 @@
         <script src="../../../js/mathjax/tex-mml-chtml.js"></script>
       
         <script src="../../../js/mermaid.min.js"></script>
+      
+        <script src="../../../js/featured.js"></script>
       
     
   </body>

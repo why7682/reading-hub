@@ -1466,6 +1466,8 @@
       
         
       
+        
+      
     
     
     
@@ -1521,6 +1523,34 @@
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../featured/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ⭐ Featured（已验证）
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
               
             
               
@@ -1610,10 +1640,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_4" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
         
           
-          <label class="md-nav__link" for="__nav_4_4" id="__nav_4_4_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_5" id="__nav_4_5_label" tabindex="">
             
   
   
@@ -1631,8 +1661,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_4_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_4">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_5">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1915,7 +1945,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -1937,14 +1967,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_4_5" id="__nav_4_5_label" tabindex="">
+              <label class="md-nav__link " for="__nav_4_6" id="__nav_4_6_label" tabindex="">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_5">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_6">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -5321,10 +5351,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_7" checked>
         
           
-          <label class="md-nav__link" for="__nav_4_6" id="__nav_4_6_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_7" id="__nav_4_7_label" tabindex="">
             
   
   
@@ -5342,8 +5372,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_4_6">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_7_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4_7">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -22467,17 +22497,27 @@
 <h2 id="problem">Problem<a class="headerlink" href="#problem" title="Permanent link">#</a></h2>
 <p>给数组 <code>nums</code>。每次可选某个 <code>nums[i]</code> 加分 <code>nums[i]</code>，但删除它后所有等于 <code>nums[i] ± 1</code> 的元素也被强制删除。求最大总得分。<span class="arithmatex">\(1 \le n \le 2 \times 10^4\)</span>，<span class="arithmatex">\(1 \le \mathrm{nums}[i] \le 10^4\)</span>。</p>
 <h2 id="background">背景 (Background)<a class="headerlink" href="#background" title="Permanent link">#</a></h2>
-<p>这是 <strong>House Robber</strong>（不能选相邻的）问题的一个映射变体。把"值 <span class="arithmatex">\(v\)</span>"作为新轴，定义 <code>gain[v] = v * count(v)</code>；选了 <span class="arithmatex">\(v\)</span> 后不能选 <span class="arithmatex">\(v - 1\)</span> 也不能选 <span class="arithmatex">\(v + 1\)</span>——正是 House Robber 在长度 <span class="arithmatex">\(\max(\mathrm{nums})\)</span> 数组上的实例。这种"按值聚合 + 一维 DP"是 LeetCode 经典转化套路。</p>
+<p>先尝试最直接的读法：按数组位置逐个决策，对每个下标 <span class="arithmatex">\(i\)</span> 决定取或不取 <code>nums[i]</code>。这条路立刻卡住，因为约束并不作用在下标上。删除 <code>nums[i]</code> 时被连带删掉的是所有<strong>值等于</strong> <span class="arithmatex">\(\mathrm{nums}[i] \pm 1\)</span> 的元素，无论它们在数组的哪个位置。于是"相邻"不是位置相邻，而是值相差 1。下标顺序与答案无关，可以打乱而结果不变。</p>
+<p>既然约束只看值，就应该按值来组织决策。固定一个值 <span class="arithmatex">\(v\)</span>，问：选 <span class="arithmatex">\(v\)</span> 能拿多少分，又会失去什么？删除规则强制删掉的是 <span class="arithmatex">\(v-1\)</span> 与 <span class="arithmatex">\(v+1\)</span> 的全部副本，<strong>但不删 <span class="arithmatex">\(v\)</span> 自己的其它副本</strong>。所以一旦我们决定碰 <span class="arithmatex">\(v\)</span>，把 <span class="arithmatex">\(v\)</span> 的每一个副本都取走是纯赚的——反正 <span class="arithmatex">\(v\pm1\)</span> 已经因为第一次选择而不可用，留着 <span class="arithmatex">\(v\)</span> 的副本不取没有任何好处。这把"取哪几个 <span class="arithmatex">\(v\)</span>"的细粒度选择消解掉了：对每个值只有一个二元决策，取全部副本或一个都不取。</p>
+<p>由此得到两个量。其一，值 <span class="arithmatex">\(v\)</span> 一旦被选，贡献固定为它所有副本的总分；记</p>
+<div class="arithmatex">\[g(v) = v \cdot \bigl|\{i : \mathrm{nums}[i] = v\}\bigr|.\]</div>
+<p>其二，选了 <span class="arithmatex">\(v\)</span> 就不能选 <span class="arithmatex">\(v-1\)</span> 与 <span class="arithmatex">\(v+1\)</span>。决策空间从"下标序列的子集"坍缩为"值集合 <span class="arithmatex">\(\{1,\dots,V\}\)</span> 的子集，且任意两个被选值之差不为 1"，其中 <span class="arithmatex">\(V = \max(\mathrm{nums})\)</span>。下一节把这句话写成精确的优化问题，并由它直接推出递推。</p>
 <h2 id="formulation">形式化 (Formulation)<a class="headerlink" href="#formulation" title="Permanent link">#</a></h2>
-<p>令 <span class="arithmatex">\(g(v) = v \cdot |\{i : \mathrm{nums}[i] = v\}|\)</span>，定义 <span class="arithmatex">\(V = \max(\mathrm{nums})\)</span>。求：</p>
-<div class="arithmatex">\[\max \sum_{v \in S} g(v) \quad \text{s.t.} \quad \forall u, v \in S: |u - v| \ne 1\]</div>
-<p>由 House Robber DP：</p>
-<div class="arithmatex">\[f(v) = \max(f(v-1),\ f(v-2) + g(v))\]</div>
-<p>边界 <span class="arithmatex">\(f(0) = 0\)</span>，<span class="arithmatex">\(f(1) = g(1)\)</span>。答案 <span class="arithmatex">\(f(V)\)</span>。</p>
+<p>令 <span class="arithmatex">\(V = \max(\mathrm{nums})\)</span>，<span class="arithmatex">\(g(v)\)</span> 如上定义（对未出现的值 <span class="arithmatex">\(g(v) = 0\)</span>）。所求为</p>
+<div class="arithmatex">\[\max_{S \subseteq \{1,\dots,V\}} \ \sum_{v \in S} g(v) \quad \text{s.t.} \quad \forall u, v \in S:\ |u - v| \ne 1. \tag{1}\]</div>
+<p>直接枚举所有合法 <span class="arithmatex">\(S\)</span> 是指数级的，需要按 <span class="arithmatex">\(v\)</span> 增序逐步构造最优解。为此定义子问题</p>
+<div class="arithmatex">\[f(v) := \max_{\substack{S \subseteq \{1,\dots,v\} \\ \text{无相邻}}} \ \sum_{u \in S} g(u), \tag{2}\]</div>
+<p>即只允许使用值 <span class="arithmatex">\(1,\dots,v\)</span> 时 (1) 的最优值。最终答案是 <span class="arithmatex">\(f(V)\)</span>。</p>
+<p>推递推只需对最大值 <span class="arithmatex">\(v\)</span> 是否入选做分类，约束 (1) 自动给出两个互斥分支：</p>
+<ul>
+<li><strong>不选 <span class="arithmatex">\(v\)</span></strong>：合法集合落在 <span class="arithmatex">\(\{1,\dots,v-1\}\)</span> 内，最优值就是 <span class="arithmatex">\(f(v-1)\)</span>。</li>
+<li><strong>选 <span class="arithmatex">\(v\)</span></strong>：约束禁止 <span class="arithmatex">\(v-1\)</span> 入选，故剩余选择落在 <span class="arithmatex">\(\{1,\dots,v-2\}\)</span> 内，最优值为 <span class="arithmatex">\(g(v) + f(v-2)\)</span>。注意 <span class="arithmatex">\(v+1\)</span> 超出当前值域，不构成限制。</li>
+</ul>
+<p>两分支取较大者：</p>
+<div class="arithmatex">\[f(v) = \max\bigl(f(v-1),\ g(v) + f(v-2)\bigr). \tag{3}\]</div>
+<p>边界由 (2) 直接读出：<span class="arithmatex">\(f(0) = 0\)</span>（空值域），<span class="arithmatex">\(f(1) = g(1)\)</span>（唯一候选 <span class="arithmatex">\(v=1\)</span> 无相邻冲突）。递推 (3) 与 (2) 的定义完全吻合，无需借助任何外部结论。</p>
 <h2 id="approach">数据结构 / 想法 (Approach)<a class="headerlink" href="#approach" title="Permanent link">#</a></h2>
-<p><strong>步骤</strong>：
-1. 计 <code>gain[v]</code>（数组或 dict）。
-2. 一维 DP 自底向上。</p>
+<p>(3) 只回看前两个状态，因此自底向上扫一遍值域即可，用两个滚动变量保存 <span class="arithmatex">\(f(v-1)\)</span> 与 <span class="arithmatex">\(f(v-2)\)</span>，无需开 <span class="arithmatex">\(f\)</span> 数组。代码先做一次计数填 <code>gain[v] = g(v)</code>，其中 <code>gain[1]</code> 对应边界 <span class="arithmatex">\(f(1)\)</span>，循环从 <span class="arithmatex">\(v=2\)</span> 起套用 (3)。</p>
 <div class="language-python highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">Solution</span><span class="p">:</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">deleteAndEarn</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">nums</span><span class="p">):</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">nums</span><span class="p">:</span>
@@ -22485,40 +22525,43 @@
         <span class="n">V</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">nums</span><span class="p">)</span>
         <span class="n">gain</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="n">V</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
         <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">nums</span><span class="p">:</span>
-            <span class="n">gain</span><span class="p">[</span><span class="n">x</span><span class="p">]</span> <span class="o">+=</span> <span class="n">x</span>
-        <span class="c1"># House Robber DP</span>
-        <span class="n">prev2</span> <span class="o">=</span> <span class="mi">0</span>       <span class="c1"># f(v-2)</span>
-        <span class="n">prev1</span> <span class="o">=</span> <span class="n">gain</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="c1"># f(v-1), 边界 f(1) = gain[1]; v=0 不在题面但 f(0)=0</span>
+            <span class="n">gain</span><span class="p">[</span><span class="n">x</span><span class="p">]</span> <span class="o">+=</span> <span class="n">x</span>          <span class="c1"># 累加同值副本，得到 g(v)</span>
+        <span class="n">prev2</span> <span class="o">=</span> <span class="mi">0</span>                 <span class="c1"># f(v-2), 初值 f(0) = 0</span>
+        <span class="n">prev1</span> <span class="o">=</span> <span class="n">gain</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>           <span class="c1"># f(v-1), 边界 f(1) = g(1)</span>
         <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">V</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
-            <span class="n">cur</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">prev1</span><span class="p">,</span> <span class="n">prev2</span> <span class="o">+</span> <span class="n">gain</span><span class="p">[</span><span class="n">v</span><span class="p">])</span>
+            <span class="n">cur</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">prev1</span><span class="p">,</span> <span class="n">prev2</span> <span class="o">+</span> <span class="n">gain</span><span class="p">[</span><span class="n">v</span><span class="p">])</span>   <span class="c1"># 递推 (3)</span>
             <span class="n">prev2</span><span class="p">,</span> <span class="n">prev1</span> <span class="o">=</span> <span class="n">prev1</span><span class="p">,</span> <span class="n">cur</span>
-        <span class="k">return</span> <span class="n">prev1</span>
+        <span class="k">return</span> <span class="n">prev1</span>              <span class="c1"># 循环结束时 prev1 = f(V)</span>
 </code></pre></div>
-<p>样例 1 trace：<code>nums=[3,4,2]</code>. V=4. gain=[0,0,2,3,4].
-- v=2: cur = max(0, 0+2) = 2. prev2=0,prev1=2 → 0,2.
-- v=3: cur = max(2, 0+3) = 3. → prev2=2, prev1=3.
-- v=4: cur = max(3, 2+4) = 6. → 3,6.</p>
-<p>返回 6。✓</p>
-<p>样例 2 trace：<code>nums=[2,2,3,3,3,4]</code>. V=4. gain=[0,0,4,9,4].
-- v=2: cur = max(0, 0+4) = 4. → 0,4.
-- v=3: cur = max(4, 0+9) = 9. → 4,9.
-- v=4: cur = max(9, 4+4) = 9. → 9,9.</p>
-<p>返回 9。✓</p>
+<p>样例 1 trace：<code>nums=[3,4,2]</code>. <span class="arithmatex">\(V=4\)</span>. <code>gain=[0,0,2,3,4]</code>. 按 (3)：</p>
+<ul>
+<li><span class="arithmatex">\(v=2\)</span>: <span class="arithmatex">\(\max(0,\ 0+2)=2\)</span>. → <code>prev2=0, prev1=2</code>.</li>
+<li><span class="arithmatex">\(v=3\)</span>: <span class="arithmatex">\(\max(2,\ 0+3)=3\)</span>. → <code>prev2=2, prev1=3</code>.</li>
+<li><span class="arithmatex">\(v=4\)</span>: <span class="arithmatex">\(\max(3,\ 2+4)=6\)</span>. → <code>prev2=3, prev1=6</code>.</li>
+</ul>
+<p>返回 <span class="arithmatex">\(f(4)=6\)</span>。✓</p>
+<p>样例 2 trace：<code>nums=[2,2,3,3,3,4]</code>. <span class="arithmatex">\(V=4\)</span>. <code>gain=[0,0,4,9,4]</code>. 按 (3)：</p>
+<ul>
+<li><span class="arithmatex">\(v=2\)</span>: <span class="arithmatex">\(\max(0,\ 0+4)=4\)</span>. → <code>prev2=0, prev1=4</code>.</li>
+<li><span class="arithmatex">\(v=3\)</span>: <span class="arithmatex">\(\max(4,\ 0+9)=9\)</span>. → <code>prev2=4, prev1=9</code>.</li>
+<li><span class="arithmatex">\(v=4\)</span>: <span class="arithmatex">\(\max(9,\ 4+4)=9\)</span>. → <code>prev2=9, prev1=9</code>.</li>
+</ul>
+<p>返回 <span class="arithmatex">\(f(4)=9\)</span>。✓ （选 <span class="arithmatex">\(\{3\}\)</span> 得 9，优于选 <span class="arithmatex">\(\{2,4\}\)</span> 得 8。）</p>
 <h2 id="complexity">复杂度 (Complexity)<a class="headerlink" href="#complexity" title="Permanent link">#</a></h2>
 <ul>
-<li>Time: <span class="arithmatex">\(O(n + V)\)</span>，其中 <span class="arithmatex">\(V = \max(\mathrm{nums}) \le 10^4\)</span>。</li>
-<li>Space: <span class="arithmatex">\(O(V)\)</span> 计数数组（可改 dict + 排序唯一值，<span class="arithmatex">\(O(n \log n)\)</span> Time, <span class="arithmatex">\(O(n)\)</span> Space）。</li>
+<li>Time: <span class="arithmatex">\(O(n + V)\)</span>，其中 <span class="arithmatex">\(V = \max(\mathrm{nums}) \le 10^4\)</span>（<span class="arithmatex">\(n\)</span> 用于计数，<span class="arithmatex">\(V\)</span> 用于扫描值域）。</li>
+<li>Space: <span class="arithmatex">\(O(V)\)</span> 计数数组。若值域稀疏，可改用 dict 计数并对唯一值排序后做 DP，得 <span class="arithmatex">\(O(n \log n)\)</span> Time、<span class="arithmatex">\(O(n)\)</span> Space。</li>
 </ul>
 <h2 id="pitfalls">陷阱 (Pitfalls)<a class="headerlink" href="#pitfalls" title="Permanent link">#</a></h2>
 <ul>
-<li>边界 <code>f(0)=0, f(1)=gain[1]</code>；若用单一 <code>f(0) = gain[0]</code> 错位会少一项。题目保证 <span class="arithmatex">\(v \ge 1\)</span> 所以 gain[0]=0 安全。</li>
-<li><code>nums[i]</code> 可能重复多次，必须用<strong>总分</strong> <code>gain[v]</code> 而非"选不选 v"（House Robber 原题每个值出现一次）。</li>
-<li>用 dict 而非数组时记得对 keys 排序后 DP，跳过的值之间的关系是"非相邻则可自由"，需特殊处理（或仍按完整值域 DP）。</li>
-<li>不要直接对 nums 做 House Robber——nums 顺序无关，关键是值的相邻性。</li>
+<li>边界须用 <span class="arithmatex">\(f(0)=0,\ f(1)=g(1)\)</span>；若错写成 <span class="arithmatex">\(f(0)=g(0)\)</span> 等价于把值轴整体平移，会少算一项。题目保证 <span class="arithmatex">\(v \ge 1\)</span>，故 <code>gain[0]=0</code> 本就安全。</li>
+<li>同一个值可能出现多次，递推中的贡献必须是<strong>总分</strong> <span class="arithmatex">\(g(v)=v\cdot\mathrm{count}(v)\)</span>，而非"取一份 <span class="arithmatex">\(v\)</span>"。这是本题相对单副本场景的关键差别——上一节已论证：碰 <span class="arithmatex">\(v\)</span> 就该取尽其所有副本。</li>
+<li>用 dict 替代数组时，需对唯一值排序后再 DP，并注意相邻判断按<strong>值是否相差 1</strong>：两个相差 <span class="arithmatex">\(\ge 2\)</span> 的值可自由共存，递推要正确处理跳空的值域。</li>
+<li>不要直接对 <code>nums</code> 的下标序列做"不取相邻位置"的 DP——约束在值而非位置上，<code>nums</code> 的排列顺序与答案无关。</li>
 </ul>
 <h2 id="related">相关题目 (Related)<a class="headerlink" href="#related" title="Permanent link">#</a></h2>
 <ul>
-<li><code>#House Robber (Medium) (off-wiki)</code> — 直接前置。</li>
+<li><code>#House Robber (Medium) (off-wiki)</code> — (3) 与 House Robber 的递推形式完全一致，可作对照；区别仅在本题的状态贡献是聚合后的 <span class="arithmatex">\(g(v)\)</span>。</li>
 <li><a href="../0322_coin-change/">#0322 Coin Change</a> — 1D DP 训练。</li>
 <li><a href="../0055_jump-game/">#0055 Jump Game</a> — DP 经典训练。</li>
 </ul>
@@ -22632,6 +22675,8 @@
         <script src="../../../js/mathjax/tex-mml-chtml.js"></script>
       
         <script src="../../../js/mermaid.min.js"></script>
+      
+        <script src="../../../js/featured.js"></script>
       
     
   </body>

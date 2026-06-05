@@ -1466,6 +1466,8 @@
       
         
       
+        
+      
     
     
     
@@ -1521,6 +1523,34 @@
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../featured/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ⭐ Featured（已验证）
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
               
             
               
@@ -1610,10 +1640,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_4" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
         
           
-          <label class="md-nav__link" for="__nav_4_4" id="__nav_4_4_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_5" id="__nav_4_5_label" tabindex="">
             
   
   
@@ -1631,8 +1661,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_4_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_4">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_5">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1915,7 +1945,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -1937,14 +1967,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_4_5" id="__nav_4_5_label" tabindex="">
+              <label class="md-nav__link " for="__nav_4_6" id="__nav_4_6_label" tabindex="">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_5">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_6">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -5321,10 +5351,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_7" checked>
         
           
-          <label class="md-nav__link" for="__nav_4_6" id="__nav_4_6_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_7" id="__nav_4_7_label" tabindex="">
             
   
   
@@ -5342,8 +5372,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_4_6">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_7_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4_7">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -22467,46 +22497,76 @@
 <h2 id="problem">Problem<a class="headerlink" href="#problem" title="Permanent link">#</a></h2>
 <p>设计 <code>SeatManager</code> 管理编号 <span class="arithmatex">\(1..n\)</span> 的座位。<code>reserve()</code> 取并预订最小空闲号；<code>unreserve(s)</code> 释放座位 <span class="arithmatex">\(s\)</span>。约束 <span class="arithmatex">\(n, \text{操作数} \le 10^5\)</span>。</p>
 <h2 id="background">背景 (Background)<a class="headerlink" href="#background" title="Permanent link">#</a></h2>
-<p>这是<strong>优先队列 (min-heap)</strong> 的标志性应用：动态集合上支持"插入"+"取最小"。等价问题包括 OS 调度（最小 PID 复用）、Erlang 进程注册表、内存池空闲块管理。</p>
-<p>可以用更强的数据结构（平衡 BST / 有序集合）实现，但本题不需要"按位置查询/删除任意元素"，所以堆已足够；这也体现 priority queue 与 ordered set 的边界——前者只支持极值访问、后者支持任意访问，前者实现更轻量、常数更小。</p>
+<p>本题不带任何外部场景包装，它直接暴露出一组操作约束：在一个整数集合上反复取最小值、并不时把某个值放回去。题目的全部难度都来自这两个操作必须<strong>反复、交替、且高效</strong>地执行——单看一次操作都不难，难的是在 <span class="arithmatex">\(10^5\)</span> 量级的操作流下保持每次都快。</p>
+<p>因此正确的入手点不是先想"用什么数据结构"，而是先把这两个操作的精确语义写下来。一旦操作语义清楚，所需的数据结构性质（支持什么、不必支持什么）就被唯一地确定下来，剩下的只是按需选择最轻量的实现。下面的 形式化 一节就是这条主线的起点。</p>
 <h2 id="formulation">形式化 (Formulation)<a class="headerlink" href="#formulation" title="Permanent link">#</a></h2>
-<p>维护集合 <span class="arithmatex">\(S \subseteq \{1, \dots, n\}\)</span>（初始 <span class="arithmatex">\(S = \{1, \dots, n\}\)</span>，表"空闲"）。</p>
+<p>维护集合 <span class="arithmatex">\(S \subseteq \{1, \dots, n\}\)</span>，表示当前<strong>空闲</strong>的座位号。初始时全部空闲，<span class="arithmatex">\(S = \{1, \dots, n\}\)</span>。</p>
+<div class="arithmatex">\[
+\textbf{reserve}():\quad m \gets \min S,\quad S \gets S \setminus \{m\},\quad \textbf{return } m. \tag{1}
+\]</div>
+<div class="arithmatex">\[
+\textbf{unreserve}(s):\quad S \gets S \cup \{s\}. \tag{2}
+\]</div>
+<p>这就是全部需求。两条定义直接给出了对数据结构的要求，且只给出这些要求：</p>
 <ul>
-<li><code>reserve()</code>：弹出并返回 <span class="arithmatex">\(\min S\)</span>，<span class="arithmatex">\(S \gets S \setminus \{\min S\}\)</span>。</li>
-<li><code>unreserve(s)</code>：<span class="arithmatex">\(S \gets S \cup \{s\}\)</span>。</li>
+<li>式 (1) 要求<strong>取并删除最小值</strong>（extract-min）；</li>
+<li>式 (2) 要求<strong>插入一个元素</strong>（insert）；</li>
+<li>二者都不要求查询、删除或定位<strong>任意指定</strong>的元素——除了最小值，集合里其他元素从不被单独访问。</li>
 </ul>
+<p>最后一点是后续选型的关键，因此值得单独点明：所需操作集恰好是 <span class="arithmatex">\(\{\text{extract-min},\ \text{insert}\}\)</span>，不多不少。一个能按任意位置查询/删除的结构（如平衡 BST、有序集合）能完成任务，但它支持的是一个<strong>严格更大</strong>的操作集，为用不到的能力付出更高的常数。把数据结构选窄到恰好覆盖式 (1)、(2)，是本题效率的来源。</p>
 <h2 id="approach">数据结构 / 想法 (Approach)<a class="headerlink" href="#approach" title="Permanent link">#</a></h2>
-<p><strong>核心 idea — 懒初始化堆 + 边界指针</strong>：朴素方案 push 所有 <span class="arithmatex">\(1..n\)</span> 入堆开销 <span class="arithmatex">\(O(n \log n)\)</span>；可以<strong>懒</strong>地：维护 <code>next_unseen</code>（永远没被分配过的最小号）和 <code>heap</code>（被释放回来的号码）。</p>
-<ul>
-<li><code>reserve()</code>：若 heap 非空返回堆顶；否则返回 <code>next_unseen</code> 并自增。</li>
-<li><code>unreserve(s)</code>：<code>heappush(heap, s)</code>。</li>
-</ul>
+<p><strong>从操作集到数据结构。</strong> 式 (1)、(2) 把需求收窄为 <span class="arithmatex">\(\{\text{extract-min},\ \text{insert}\}\)</span>。二叉<strong>最小堆</strong>（min-heap）恰好把这两个操作都做到 <span class="arithmatex">\(O(\log k)\)</span>（<span class="arithmatex">\(k\)</span> 为堆中元素数），且不提供任何多余能力——这正是上一节"选窄"原则要的结构。于是问题变成：怎样用一个最小堆来维护集合 <span class="arithmatex">\(S\)</span>。</p>
+<p><strong>朴素方案：把 <span class="arithmatex">\(S\)</span> 全部物化进堆。</strong> 最直接的做法是开局就把全部空闲座位放进堆，之后严格照式 (1)、(2) 翻译：</p>
 <div class="language-python highlight"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">heapq</span>
 <span class="k">class</span><span class="w"> </span><span class="nc">SeatManager</span><span class="p">:</span>
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">next_unseen</span> <span class="o">=</span> <span class="mi">1</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">heap</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">heap</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">n</span> <span class="o">+</span> <span class="mi">1</span><span class="p">))</span>
+        <span class="n">heapq</span><span class="o">.</span><span class="n">heapify</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">heap</span><span class="p">)</span>          <span class="c1"># O(n)</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">reserve</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">heapq</span><span class="o">.</span><span class="n">heappop</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">heap</span><span class="p">)</span>   <span class="c1"># extract-min</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">unreserve</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">seatNumber</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">heapq</span><span class="o">.</span><span class="n">heappush</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">heap</span><span class="p">,</span> <span class="n">seatNumber</span><span class="p">)</span>  <span class="c1"># insert</span>
+</code></pre></div>
+<p>这是正确的，每次 <code>reserve</code>/<code>unreserve</code> 都是 <span class="arithmatex">\(O(\log k)\)</span>。问题出在构造：<code>heapify</code> 是 <span class="arithmatex">\(O(n)\)</span> 时间与 <span class="arithmatex">\(O(n)\)</span> 空间，且这笔开销<strong>无条件</strong>支付。</p>
+<p><strong>朴素方案在哪里崩。</strong> 设操作数为 <span class="arithmatex">\(Q\)</span>。当 <span class="arithmatex">\(Q \ll n\)</span>——例如 <span class="arithmatex">\(n = 10^5\)</span> 而只调用了 <span class="arithmatex">\(3\)</span> 次 <code>reserve</code>——开局仍要建一个 <span class="arithmatex">\(10^5\)</span> 大小的堆，单这一步就压过了所有实际操作的代价。换言之，朴素方案把成本绑在了座位总数 <span class="arithmatex">\(n\)</span> 上，而真正决定工作量的应该是操作数 <span class="arithmatex">\(Q\)</span>。我们想要构造 <span class="arithmatex">\(O(1)\)</span>、并让总成本只随 <span class="arithmatex">\(Q\)</span> 增长。</p>
+<p><strong>关键观察：<span class="arithmatex">\(S\)</span> 天然分成两块，其中一块根本不必物化。</strong> 把初始的空闲集 <span class="arithmatex">\(\{1, \dots, n\}\)</span> 按"是否被分配过"切开。任何时刻，从未被 <code>reserve</code> 取出过的座位构成一个<strong>连续后缀</strong> <span class="arithmatex">\(\{p, p+1, \dots, n\}\)</span>，因为分配总是从小到大取最小值，被取走的必是一段前缀。这个后缀的最小值永远是它的左端点 <span class="arithmatex">\(p\)</span>——一个整数就完全刻画了它，不需要堆。真正"乱序"的只有被 <code>unreserve</code> 放回来的座位，它们才需要堆来取最小值。</p>
+<p><strong>不变量（先于实现陈述）。</strong> 维护一个整数指针 <code>next_unseen</code>（记为 <span class="arithmatex">\(p\)</span>，表示"尚未被分配过的最小号"）与一个最小堆 <code>heap</code>（存放被释放回来的号），使得在每次操作前后始终满足：</p>
+<div class="arithmatex">\[
+S \;=\; (\text{heap 中的元素}) \;\cup\; \{p,\, p+1,\, \dots,\, n\}. \tag{3}
+\]</div>
+<p>且两部分不相交。式 (3) 是整个方案的正确性核心，下面的两个分支都是它的直接推论：</p>
+<ul>
+<li><strong><code>reserve</code> = 在式 (3) 右侧取最小。</strong> 全局最小要么来自 <code>heap</code>（被释放的较小号），要么——当 <code>heap</code> 为空时——来自连续后缀的左端点 <span class="arithmatex">\(p\)</span>。所以：堆非空则弹堆顶；否则返回 <span class="arithmatex">\(p\)</span> 并令 <span class="arithmatex">\(p \gets p+1\)</span>（即把后缀左端右移一格，等价于从后缀中删除 <span class="arithmatex">\(p\)</span>）。</li>
+<li><strong><code>unreserve(s)</code> = 把 <span class="arithmatex">\(s\)</span> 加回式 (3)。</strong> <span class="arithmatex">\(s\)</span> 是一个被预订过的号，故 <span class="arithmatex">\(s &lt; p\)</span>，不属于后缀那一块；按式 (2) 把它放进 <code>heap</code> 即可。</li>
+</ul>
+<p>代码即是式 (3) 与上述两条推论的逐字转写：</p>
+<div class="language-python highlight"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">heapq</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">SeatManager</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">next_unseen</span> <span class="o">=</span> <span class="mi">1</span>          <span class="c1"># p：连续后缀 {p..n} 的左端点</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">heap</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>     <span class="c1"># 被释放回来的号</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">reserve</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">heap</span><span class="p">:</span>
-            <span class="k">return</span> <span class="n">heapq</span><span class="o">.</span><span class="n">heappop</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">heap</span><span class="p">)</span>
-        <span class="n">s</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">next_unseen</span>
+            <span class="k">return</span> <span class="n">heapq</span><span class="o">.</span><span class="n">heappop</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">heap</span><span class="p">)</span>   <span class="c1"># 后缀外的较小号</span>
+        <span class="n">s</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">next_unseen</span>                  <span class="c1"># 后缀左端点 = 全局最小</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">next_unseen</span> <span class="o">+=</span> <span class="mi">1</span>
         <span class="k">return</span> <span class="n">s</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">unreserve</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">seatNumber</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">heapq</span><span class="o">.</span><span class="n">heappush</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">heap</span><span class="p">,</span> <span class="n">seatNumber</span><span class="p">)</span>
 </code></pre></div>
-<p><strong>不变量</strong>：任何时刻空闲座位集合 = <code>heap 中的元素 ∪ {next_unseen, next_unseen+1, ..., n}</code>。</p>
-<p>Trace 例 1：<code>reserve</code> 三次 → 1, 2, next_unseen=3；<code>unreserve(2)</code> → heap=[2]；<code>reserve</code> → 2 (heap 弹出)；<code>reserve</code> 三次 → 3, 4, 5；<code>unreserve(5)</code> → heap=[5]。✓</p>
-<p><strong>替代解法 — 完整堆</strong>：直接 <code>heap = list(range(1, n+1)); heapify(heap)</code>。构造 <span class="arithmatex">\(O(n)\)</span>，但内存 <span class="arithmatex">\(O(n)\)</span> 提前付出；总操作复杂度同。</p>
+<p>构造降到 <span class="arithmatex">\(O(1)\)</span>、空间降到 <span class="arithmatex">\(O(k)\)</span>（<span class="arithmatex">\(k\)</span> 为堆中元素数），且都只随实际操作增长，与 <span class="arithmatex">\(n\)</span> 无关。注意构造函数收到参数 <span class="arithmatex">\(n\)</span> 却不使用：题目保证 <code>reserve</code> 次数不超过空闲座位数，故 <span class="arithmatex">\(p\)</span> 永不越过 <span class="arithmatex">\(n\)</span>，无需边界检查。</p>
+<p><strong>Trace（验证不变量 (3)）。</strong> 三次 <code>reserve</code> 依次返回 <span class="arithmatex">\(1, 2, 3\)</span>，此后 <span class="arithmatex">\(p = 4\)</span>、<code>heap</code> 空；<code>unreserve(2)</code> 使 <code>heap = [2]</code>；下一次 <code>reserve</code> 弹出 <span class="arithmatex">\(2\)</span>；再三次 <code>reserve</code> 返回 <span class="arithmatex">\(3, 4, 5\)</span>，<span class="arithmatex">\(p = 6\)</span>；<code>unreserve(5)</code> 使 <code>heap = [5]</code>。每一步右侧两块的并都恰好等于当前空闲集，式 (3) 始终成立。</p>
+<p><strong>为何值得这次精细化。</strong> 朴素方案和懒方案的单次操作复杂度相同，差别只在构造。当 <span class="arithmatex">\(Q \ll n\)</span> 时，去掉那笔 <span class="arithmatex">\(O(n)\)</span> 的预付是从"被 <span class="arithmatex">\(n\)</span> 拖累"到"只随 <span class="arithmatex">\(Q\)</span> 增长"的质变；当 <span class="arithmatex">\(Q\)</span> 与 <span class="arithmatex">\(n\)</span> 同阶时两者相当，懒方案也不更差。下一节把这笔账算清。</p>
 <h2 id="complexity">复杂度 (Complexity)<a class="headerlink" href="#complexity" title="Permanent link">#</a></h2>
 <ul>
-<li><code>reserve</code>、<code>unreserve</code>: <span class="arithmatex">\(O(\log m)\)</span>（<span class="arithmatex">\(m\)</span> 为堆当前大小，<span class="arithmatex">\(m \le\)</span> 操作数）。</li>
-<li>构造：<span class="arithmatex">\(O(1)\)</span>（懒方案）或 <span class="arithmatex">\(O(n)\)</span>（完整堆）。</li>
+<li><code>reserve</code>、<code>unreserve</code>: <span class="arithmatex">\(O(\log k)\)</span>，<span class="arithmatex">\(k\)</span> 为堆当前大小。</li>
+<li>构造：<span class="arithmatex">\(O(1)\)</span>（懒方案）或 <span class="arithmatex">\(O(n)\)</span>（朴素全堆）。</li>
 <li>总：<span class="arithmatex">\(O(Q \log Q)\)</span>，<span class="arithmatex">\(Q\)</span> 为操作数。</li>
 </ul>
+<p>堆大小 <span class="arithmatex">\(k\)</span> 的界来自不变量 (3)：堆中元素都是被 <code>unreserve</code> 放回的号，每个 <code>unreserve</code> 至多压入一个，故 <span class="arithmatex">\(k\)</span> 不超过 <code>unreserve</code> 的次数，进而 <span class="arithmatex">\(k \le Q\)</span>。于是单次操作 <span class="arithmatex">\(O(\log k) = O(\log Q)\)</span>，<span class="arithmatex">\(Q\)</span> 次累加得总复杂度 <span class="arithmatex">\(O(Q \log Q)\)</span>，空间 <span class="arithmatex">\(O(k) \le O(Q)\)</span>。这条界正是懒方案让成本脱离 <span class="arithmatex">\(n\)</span>、只系于 <span class="arithmatex">\(Q\)</span> 的体现。</p>
 <h2 id="pitfalls">陷阱 (Pitfalls)<a class="headerlink" href="#pitfalls" title="Permanent link">#</a></h2>
 <ul>
-<li><strong>不要每次 unreserve 都扫数组找空位</strong> — 那是 <span class="arithmatex">\(O(n)\)</span> 单次操作，整体 <span class="arithmatex">\(O(nQ)\)</span> 会 TLE。</li>
+<li><strong>不要每次 unreserve 都扫数组找空位</strong> — 那是 <span class="arithmatex">\(O(n)\)</span> 单次操作，整体 <span class="arithmatex">\(O(nQ)\)</span> 会 TLE。这正是朴素全堆之外另一个把成本绑死在 <span class="arithmatex">\(n\)</span> 上的反例。</li>
 <li><strong>不要存 reserved 集合然后线性找</strong> — 同样 <span class="arithmatex">\(O(n)\)</span>。</li>
 <li><strong>Python heapq 是 min-heap</strong>——题目恰好要最小，无需取反；其它语言（Java <code>PriorityQueue</code> 默认 min；C++ <code>priority_queue</code> 默认 <strong>max</strong>，需要 <code>greater&lt;int&gt;</code>）。</li>
 </ul>
@@ -22626,6 +22686,8 @@
         <script src="../../../js/mathjax/tex-mml-chtml.js"></script>
       
         <script src="../../../js/mermaid.min.js"></script>
+      
+        <script src="../../../js/featured.js"></script>
       
     
   </body>

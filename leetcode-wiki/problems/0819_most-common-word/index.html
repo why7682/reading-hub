@@ -1466,6 +1466,8 @@
       
         
       
+        
+      
     
     
     
@@ -1521,6 +1523,34 @@
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../featured/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ⭐ Featured（已验证）
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
               
             
               
@@ -1610,10 +1640,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_4" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
         
           
-          <label class="md-nav__link" for="__nav_4_4" id="__nav_4_4_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_5" id="__nav_4_5_label" tabindex="">
             
   
   
@@ -1631,8 +1661,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_4_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_4">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_5">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1915,7 +1945,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -1937,14 +1967,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_4_5" id="__nav_4_5_label" tabindex="">
+              <label class="md-nav__link " for="__nav_4_6" id="__nav_4_6_label" tabindex="">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_5">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_6">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -5321,10 +5351,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_7" checked>
         
           
-          <label class="md-nav__link" for="__nav_4_6" id="__nav_4_6_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_7" id="__nav_4_7_label" tabindex="">
             
   
   
@@ -5342,8 +5372,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_4_6">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_7_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4_7">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -22467,41 +22497,64 @@
 <h2 id="problem">Problem<a class="headerlink" href="#problem" title="Permanent link">#</a></h2>
 <p>给段落 <code>paragraph</code> 与禁用词数组 <code>banned</code>。返回非禁用且出现次数最多的词（小写、不含标点；大小写无关）。保证答案唯一。<span class="arithmatex">\(1 \le |paragraph| \le 1000\)</span>。</p>
 <h2 id="background">背景 (Background)<a class="headerlink" href="#background" title="Permanent link">#</a></h2>
-<p>文本预处理 + 计数是 NLP 最基础的 pipeline：tokenization → normalization (lowercase) → stopword removal → frequency count。本题用基础工具（regex 或手工分割 + 计数）演示这一流程，与 TF-IDF、bag-of-words 等的第一步同构。</p>
+<p>最直接的尝试：把段落按空格切开，逐词计数，去掉禁用词，取最大。对样例 <code>"Bob hit a ball, the hit BALL flew far after it was hit."</code> 跑一遍：</p>
+<div class="language-python highlight"><pre><span></span><code><span class="n">paragraph</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+<span class="c1"># [&#39;Bob&#39;, &#39;hit&#39;, &#39;a&#39;, &#39;ball,&#39;, &#39;the&#39;, &#39;hit&#39;, &#39;BALL&#39;, &#39;flew&#39;, &#39;far&#39;, &#39;after&#39;, &#39;it&#39;, &#39;was&#39;, &#39;hit.&#39;]</span>
+</code></pre></div>
+<p>两处直接崩了。第一，<code>ball,</code> 带着逗号、<code>hit.</code> 带着句号，于是 <code>ball</code>（题面里出现两次）被劈成 <code>ball,</code> 和 <code>BALL</code> 两个互不相等的串，谁也没数到 2。第二，<code>BALL</code> 和 <code>ball</code> 大小写不同，即便去掉标点也是两个串。<code>split()</code> 把"同一个词"切成了多个互异的 key，计数自然全错。</p>
+<p>这两处失败不是边角情形，而是恰好划定了本题的核心：在计数之前，必须先把字符流归约成一个"词"的概念——只保留字母、忽略大小写。把这个归约写精确，就得到形式化。</p>
 <h2 id="formulation">形式化 (Formulation)<a class="headerlink" href="#formulation" title="Permanent link">#</a></h2>
-<p>设 <span class="arithmatex">\(\mathrm{tokens}(p)\)</span> 为 <code>paragraph</code> 按非字母字符切分后的小写单词流，<span class="arithmatex">\(B\)</span> 为禁用集合。求 <span class="arithmatex">\(\arg\max_{w \in \mathrm{tokens}(p) \setminus B} \mathrm{count}(w)\)</span>。</p>
+<p>设 <span class="arithmatex">\(p\)</span> 为段落字符串，<span class="arithmatex">\(B\)</span> 为禁用词集合。定义词流 <span class="arithmatex">\(\mathrm{tokens}(p)\)</span>：把 <span class="arithmatex">\(p\)</span> 中所有非字母字符当作分隔符，切出的每一段连续字母再整体转小写，按出现顺序排成一个<strong>多重序列</strong>（同一个词出现几次就计几次）。记 <span class="arithmatex">\(\mathrm{count}(w)\)</span> 为词 <span class="arithmatex">\(w\)</span> 在 <span class="arithmatex">\(\mathrm{tokens}(p)\)</span> 中的出现次数——注意是流中的出现频次，不是不同词的个数。所求为</p>
+<div class="arithmatex">\[
+w^\star = \arg\max_{w \in \mathrm{tokens}(p)\,\setminus\, B}\ \mathrm{count}(w). \tag{1}
+\]</div>
+<p>这个定义正好封住了 <code>split()</code> 的两处漏洞：「非字母字符当分隔符」剥掉了 <code>ball,</code> 的逗号和 <code>hit.</code> 的句号，「整体转小写」把 <code>BALL</code> 与 <code>ball</code> 合并为同一个 key。题面允许的标点集 <code>!?',;.</code> 全是非字母字符，因此一并被吸收。<span class="arithmatex">\(\setminus B\)</span> 则把禁用词从候选里删掉。式 (1) 是后续实现的脊梁：三个算子——抽取 <span class="arithmatex">\(\mathrm{tokens}\)</span>、对 <span class="arithmatex">\(B\)</span> 做差、取 <span class="arithmatex">\(\arg\max\)</span>——依次落地即得解。</p>
 <h2 id="approach">数据结构 / 想法 (Approach)<a class="headerlink" href="#approach" title="Permanent link">#</a></h2>
-<p><strong>步骤</strong>：
-1. 把所有非字母字符替换为空格，整体 lowercase。
-2. split 得词列表。
-3. Counter 计数，跳过禁用词，取最大频次的词。</p>
+<p>按式 (1) 逐算子实现：</p>
+<ol>
+<li>
+<p><strong>抽取 <span class="arithmatex">\(\mathrm{tokens}(p)\)</span></strong>。先整体 <code>lower()</code>，再用正则 <code>[a-z]+</code> 匹配每一段连续小写字母。<code>re.findall(r"[a-z]+", s)</code> 返回所有这样的段，恰好实现"非字母字符为分隔符"——逗号、句号、空格都不在 <code>[a-z]</code> 内，自动成为边界。这一步把 <code>ball,</code> 还原为 <code>ball</code>，把 <code>BALL</code> 归一为 <code>ball</code>。</p>
+</li>
+<li>
+<p><strong>对 <span class="arithmatex">\(B\)</span> 做差</strong>。<span class="arithmatex">\(\arg\max\)</span> 在 <span class="arithmatex">\(\mathrm{tokens}(p)\setminus B\)</span> 上取，所以计数时跳过 <span class="arithmatex">\(w \in B\)</span>。判断 <span class="arithmatex">\(w \in B\)</span> 需要高频查询，下面解释为何用 <code>set</code>。</p>
+</li>
+<li>
+<p><strong>取 <span class="arithmatex">\(\arg\max\)</span></strong>。<code>Counter</code> 累计每个词的 <span class="arithmatex">\(\mathrm{count}(w)\)</span>，<code>most_common(1)</code> 返回频次最高的一项。</p>
+</li>
+</ol>
 <div class="language-python highlight"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">re</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">collections</span><span class="w"> </span><span class="kn">import</span> <span class="n">Counter</span>
 
 <span class="k">class</span><span class="w"> </span><span class="nc">Solution</span><span class="p">:</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">mostCommonWord</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">paragraph</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">banned</span><span class="p">):</span>
-        <span class="n">words</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;[a-z]+&quot;</span><span class="p">,</span> <span class="n">paragraph</span><span class="o">.</span><span class="n">lower</span><span class="p">())</span>
-        <span class="n">banned_set</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">banned</span><span class="p">)</span>
+        <span class="n">words</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;[a-z]+&quot;</span><span class="p">,</span> <span class="n">paragraph</span><span class="o">.</span><span class="n">lower</span><span class="p">())</span>  <span class="c1"># 算子1: tokens(p)</span>
+        <span class="n">banned_set</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">banned</span><span class="p">)</span>                          <span class="c1"># 算子2: 准备 \ B</span>
         <span class="n">cnt</span> <span class="o">=</span> <span class="n">Counter</span><span class="p">(</span><span class="n">w</span> <span class="k">for</span> <span class="n">w</span> <span class="ow">in</span> <span class="n">words</span> <span class="k">if</span> <span class="n">w</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">banned_set</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">cnt</span><span class="o">.</span><span class="n">most_common</span><span class="p">(</span><span class="mi">1</span><span class="p">)[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+        <span class="c1"># most_common(1) 返回 [(word, count)]，故 [0][0] 取出 word</span>
+        <span class="k">return</span> <span class="n">cnt</span><span class="o">.</span><span class="n">most_common</span><span class="p">(</span><span class="mi">1</span><span class="p">)[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>                   <span class="c1"># 算子3: argmax</span>
 </code></pre></div>
-<p>样例 1 trace：<code>"Bob hit a ball, the hit BALL flew far after it was hit."</code>, banned=["hit"]。
-- lowercase: "bob hit a ball, the hit ball flew far after it was hit."
-- findall: ["bob","hit","a","ball","the","hit","ball","flew","far","after","it","was","hit"]
-- 过滤 "hit"，Counter: {bob:1, a:1, ball:2, the:1, flew:1, far:1, after:1, it:1, was:1}
-- most_common(1) → ("ball", 2)。✓</p>
-<p>样例 2：<code>"a."</code>, banned=[]。findall → ["a"]. Counter: {a:1}. → "a"。✓</p>
+<p>为什么 <code>banned</code> 要转 <code>set</code>？这从两种容器的查询机制本身推得，无需当作约定记。问 "<span class="arithmatex">\(w\)</span> 在不在 <code>banned</code> 里" 时，<code>list</code> 没有元素位置的先验，只能从头逐个比对，最坏扫完整个列表，单次 <span class="arithmatex">\(O(|B|)\)</span>；<code>set</code> 按元素的哈希值直接定位到桶，单次查询与集合大小无关，<span class="arithmatex">\(O(1)\)</span>。词流里每个词都要查一次 <span class="arithmatex">\(B\)</span>，差一个量级在累计后就是 <span class="arithmatex">\(O(|p|\cdot|B|)\)</span> 与 <span class="arithmatex">\(O(|p|+|B|)\)</span> 之别。</p>
+<p>回到样例 <code>"Bob hit a ball, the hit BALL flew far after it was hit."</code>，<code>banned=["hit"]</code>，逐算子追踪：</p>
+<ul>
+<li>算子1：<code>lower()</code> 得 <code>"bob hit a ball, the hit ball flew far after it was hit."</code>，<code>findall</code> 得 <code>["bob","hit","a","ball","the","hit","ball","flew","far","after","it","was","hit"]</code>——<code>ball,</code> 与 <code>BALL</code> 都已归一为 <code>ball</code>。</li>
+<li>算子2+3：跳过 <code>hit</code>，<code>Counter</code> 为 <code>{bob:1, a:1, ball:2, the:1, flew:1, far:1, after:1, it:1, was:1}</code>，<code>most_common(1)</code> → <code>("ball", 2)</code>。✓</li>
+</ul>
+<p>第二个样例 <code>"a."</code>，<code>banned=[]</code>：<code>findall</code> → <code>["a"]</code>，<code>Counter</code> → <code>{a:1}</code> → <code>"a"</code>。✓ 句号被算子1 吸收，符合预期。</p>
 <h2 id="complexity">复杂度 (Complexity)<a class="headerlink" href="#complexity" title="Permanent link">#</a></h2>
+<p>逐算子累加。<code>lower()</code> 与 <code>findall</code> 各扫一遍 <span class="arithmatex">\(p\)</span>，<span class="arithmatex">\(O(|p|)\)</span>（所有词长之和不超过 <span class="arithmatex">\(|p|\)</span>）；<code>set(banned)</code> 构建 <span class="arithmatex">\(O(|B|)\)</span>；<code>Counter</code> 遍历词流、每词做一次 <span class="arithmatex">\(O(1)\)</span> 的 <span class="arithmatex">\(B\)</span> 查询与累加，<span class="arithmatex">\(O(|p|)\)</span>；<code>most_common(1)</code> 在不同词上取最大，不同词数 <span class="arithmatex">\(\le |p|\)</span>，<span class="arithmatex">\(O(|p|)\)</span>。</p>
 <ul>
-<li>Time: <span class="arithmatex">\(O(|paragraph| + |banned|)\)</span>。</li>
-<li>Space: <span class="arithmatex">\(O(|paragraph|)\)</span>。</li>
+<li>Time: <span class="arithmatex">\(O(|p| + |B|)\)</span>。</li>
+<li>Space: <span class="arithmatex">\(O(|p|)\)</span>（词流、<code>Counter</code>、<code>banned_set</code> 均被输入规模界住）。</li>
 </ul>
+<p>题面保证答案唯一，故 <code>Counter</code> 非空、<code>most_common(1)[0][0]</code> 必有值；并列情形不会发生，无需考虑 tie-break。</p>
 <h2 id="pitfalls">陷阱 (Pitfalls)<a class="headerlink" href="#pitfalls" title="Permanent link">#</a></h2>
+<p>正确性两处、效率一处，正是上文三个失败/选择的归纳：</p>
 <ul>
-<li>标点必须全部剥离——题面允许 <code>"!?',;."</code>，逗号紧贴单词如 "ball," 不能直接 split by space。用正则 <code>[a-z]+</code> 一次解决。</li>
-<li>"大小写无关"：必须先 lowercase 再 count，否则 "BALL" 和 "ball" 分开。</li>
-<li>banned 数组需转 set，否则 <code>if w in banned</code> 是 <span class="arithmatex">\(O(|banned|)\)</span> 每次。</li>
+<li><strong>标点必须剥离</strong>（算子1）。<code>ball,</code> 与 <code>ball</code> 是不同的串；按空格 <code>split</code> 留下逗号、句号就把同一个词数成两个。<code>[a-z]+</code> 只匹配字母段，一次封死，题面 <code>!?',;.</code> 全部被当作分隔符。</li>
+<li><strong>先 lowercase 再计数</strong>（算子1）。漏掉 <code>lower()</code>，<code>BALL</code> 与 <code>ball</code> 各算一个 key，频次被拆分。归一化必须在计数之前完成。</li>
+<li><strong><code>banned</code> 转 <code>set</code></strong>（算子2，效率）。<code>list</code> 成员查询单次 <span class="arithmatex">\(O(|B|)\)</span>，对每个词都查会退化为 <span class="arithmatex">\(O(|p|\cdot|B|)\)</span>；<code>set</code> 的 <span class="arithmatex">\(O(1)\)</span> 查询把总复杂度压回 <span class="arithmatex">\(O(|p|+|B|)\)</span>。这是效率问题，与上面两处正确性问题分属不同范畴。</li>
 </ul>
+<p>下一步：若禁用词不是精确串而是模式（前缀、通配），或要返回前 <span class="arithmatex">\(k\)</span> 高频词，则计数后的 <span class="arithmatex">\(\arg\max\)</span> 需换成堆或 Trie——见相关题目。</p>
 <h2 id="related">相关题目 (Related)<a class="headerlink" href="#related" title="Permanent link">#</a></h2>
 <ul>
 <li><a href="../0387_first-unique-character-in-a-string/">#0387 First Unique Character in a String</a> — 同为词/字符频次。</li>
@@ -22616,6 +22669,8 @@
         <script src="../../../js/mathjax/tex-mml-chtml.js"></script>
       
         <script src="../../../js/mermaid.min.js"></script>
+      
+        <script src="../../../js/featured.js"></script>
       
     
   </body>

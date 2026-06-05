@@ -1466,6 +1466,8 @@
       
         
       
+        
+      
     
     
     
@@ -1521,6 +1523,34 @@
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../featured/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ⭐ Featured（已验证）
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
               
             
               
@@ -1610,10 +1640,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_4" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
         
           
-          <label class="md-nav__link" for="__nav_4_4" id="__nav_4_4_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_5" id="__nav_4_5_label" tabindex="">
             
   
   
@@ -1631,8 +1661,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_4_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_4">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_5">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1915,7 +1945,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -1937,14 +1967,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_4_5" id="__nav_4_5_label" tabindex="">
+              <label class="md-nav__link " for="__nav_4_6" id="__nav_4_6_label" tabindex="">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_5">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_6">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -5321,10 +5351,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_7" checked>
         
           
-          <label class="md-nav__link" for="__nav_4_6" id="__nav_4_6_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_7" id="__nav_4_7_label" tabindex="">
             
   
   
@@ -5342,8 +5372,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_4_6">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_7_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4_7">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -22467,12 +22497,27 @@
 <h2 id="problem">Problem<a class="headerlink" href="#problem" title="Permanent link">#</a></h2>
 <p>给整数 <span class="arithmatex">\(n\)</span>，返回 <span class="arithmatex">\(\ge n\)</span> 的最小<strong>素数回文</strong>。<span class="arithmatex">\(1 \le n \le 10^8\)</span>；答案保证存在且 <span class="arithmatex">\(\le 2 \times 10^8\)</span>。</p>
 <h2 id="background">背景 (Background)<a class="headerlink" href="#background" title="Permanent link">#</a></h2>
-<p>本题结合<strong>素数判定</strong>（Miller–Rabin / 试除）与<strong>回文构造</strong>两块工具。关键数论事实：<strong>所有偶数位长度（除 11 外）的回文都能被 11 整除</strong>——这是因为偶数位回文模 11 满足 <span class="arithmatex">\(\sum_{i \text{ 偶位}} d_i = \sum_{i \text{ 奇位}} d_i\)</span>（11 的整除规则）。这一观察把搜索空间从 <span class="arithmatex">\(O(\sqrt N)\)</span> 降到只枚举奇数位回文，缩减约 90%。同类背景包括 Erdős–Ko–Rado 类的"回文 + 数论结构"分析。</p>
+<p>最朴素的做法是从 <span class="arithmatex">\(n\)</span> 开始逐个向上检查：每个数同时判断它是不是回文、是不是素数，命中即返回。回文判定 <span class="arithmatex">\(O(d)\)</span>（<span class="arithmatex">\(d\)</span> 为位数），素性判定用试除是 <span class="arithmatex">\(O(\sqrt p)\)</span>。问题出在跨度：在 <span class="arithmatex">\(10^8\)</span> 量级，相邻两个素数回文之间可能隔着数百万个整数，逐个扫描要做上百万次 <span class="arithmatex">\(O(\sqrt p)\)</span> 的素性测试，<span class="arithmatex">\(\sqrt{10^8} = 10^4\)</span>，整体逼近 <span class="arithmatex">\(10^{10}\)</span> 量级，在时限内过不去。</p>
+<p>朴素扫描的浪费在于：它把绝大部分时间花在<strong>根本不是回文</strong>的数上。回文是稀疏的——<span class="arithmatex">\(d\)</span> 位数里只有约 <span class="arithmatex">\(10^{\lceil d/2 \rceil}\)</span> 个回文，而总数有 <span class="arithmatex">\(10^d\)</span>。所以正确的方向是反过来——不要扫描整数再筛回文，而是<strong>直接构造回文</strong>，只在回文这个稀疏集合上做素性测试。</p>
+<p>构造回文时还能再砍一刀。手算几个偶数位回文就会发现一个规律：</p>
+<div class="arithmatex">\[1001 = 7 \times 11 \times 13, \quad 1111 = 11 \times 101, \quad 1221 = 3 \times 11 \times 37, \quad 123321 = 3 \times 11 \times \cdots\]</div>
+<p>每一个都含因子 11。这不是巧合：<strong>除 11 本身外，所有偶数位长度的回文都能被 11 整除</strong>，因此都不是素数。于是构造时连偶数位回文都不必生成，候选集合再缩小一个数量级。下一节把这个观察证成引理，并由它推出枚举策略。</p>
 <h2 id="formulation">形式化 (Formulation)<a class="headerlink" href="#formulation" title="Permanent link">#</a></h2>
-<p>求 <span class="arithmatex">\(\min\{p : p \ge n,\ p \text{ 为素数},\ p = \text{reverse}(p)\}\)</span>。</p>
-<p>数论引理：偶数位长度的回文 <span class="arithmatex">\(p\)</span>（除 11 外）能被 11 整除。证明草图：设 <span class="arithmatex">\(p\)</span> 有 <span class="arithmatex">\(2k\)</span> 位，<span class="arithmatex">\(d_i\)</span> 是第 <span class="arithmatex">\(i\)</span> 位（从 0 起，权 <span class="arithmatex">\(10^i\)</span>）。回文性给出 <span class="arithmatex">\(d_i = d_{2k-1-i}\)</span>。模 11 有 <span class="arithmatex">\(10 \equiv -1\)</span>，故 <span class="arithmatex">\(10^i \equiv (-1)^i\)</span>。回文配对 <span class="arithmatex">\(d_i \cdot 10^i + d_{2k-1-i} \cdot 10^{2k-1-i} \equiv d_i ((-1)^i + (-1)^{2k-1-i}) = d_i ((-1)^i - (-1)^i) = 0\)</span>。所以整个数 <span class="arithmatex">\(\equiv 0 \pmod{11}\)</span>。</p>
+<p>求
+$<span class="arithmatex">\(\min\{\,p : p \ge n,\ p \text{ 为素数},\ p \text{ 为回文}\,\}.\)</span>$</p>
+<p>这里"回文"指：把 <span class="arithmatex">\(p\)</span> 写成十进制 <span class="arithmatex">\(d_{m-1} d_{m-2} \cdots d_1 d_0\)</span>（共 <span class="arithmatex">\(m\)</span> 位，<span class="arithmatex">\(d_i\)</span> 是 <span class="arithmatex">\(10^i\)</span> 位上的数字），满足 <span class="arithmatex">\(d_i = d_{m-1-i}\)</span> 对所有 <span class="arithmatex">\(i\)</span> 成立。</p>
+<p><strong>直觉</strong>：偶数位回文之所以全被 11 整除，是因为回文把对称位置的数字两两配对，而模 11 下 <span class="arithmatex">\(10 \equiv -1\)</span>，使每一对的两个位权恰好符号相反、相互抵消。下面把它写成引理。</p>
+<p><strong>引理</strong>：设回文 <span class="arithmatex">\(p\)</span> 有偶数位长度 <span class="arithmatex">\(2k\)</span>（<span class="arithmatex">\(k \ge 1\)</span>）。则 <span class="arithmatex">\(11 \mid p\)</span>。</p>
+<p><strong>证明</strong>。先记基本事实 <span class="arithmatex">\(10 = 11 - 1 \equiv -1 \pmod{11}\)</span>，故对任意 <span class="arithmatex">\(i\)</span> 有
+$<span class="arithmatex">\(10^i \equiv (-1)^i \pmod{11}.\)</span>$
+把 <span class="arithmatex">\(p\)</span> 按位展开 <span class="arithmatex">\(p = \sum_{i=0}^{2k-1} d_i \, 10^i\)</span>，并把位置 <span class="arithmatex">\(i\)</span> 与其对称位置 <span class="arithmatex">\(2k-1-i\)</span> 配成一对。回文性给出 <span class="arithmatex">\(d_i = d_{2k-1-i}\)</span>，故每一对贡献
+$<span class="arithmatex">\(d_i\,10^i + d_{2k-1-i}\,10^{2k-1-i} \equiv d_i\big((-1)^i + (-1)^{2k-1-i}\big) \pmod{11}.\)</span>$
+两个指数 <span class="arithmatex">\(i\)</span> 与 <span class="arithmatex">\(2k-1-i\)</span> 之和为奇数 <span class="arithmatex">\(2k-1\)</span>，奇偶性相反，故 <span class="arithmatex">\((-1)^i + (-1)^{2k-1-i} = (-1)^i - (-1)^i = 0\)</span>。每一对都 <span class="arithmatex">\(\equiv 0\)</span>，全部相加得 <span class="arithmatex">\(p \equiv 0 \pmod{11}\)</span>。<span class="arithmatex">\(\blacksquare\)</span></p>
+<p><strong>推论（搜索空间塌缩）</strong>：可行解集合中，偶数位回文只剩 <span class="arithmatex">\(p = 11\)</span> 一个能是素数（11 是唯一被 11 整除却仍为素数的数）。因此对 <span class="arithmatex">\(n \ge 12\)</span>，下一个素数回文必为<strong>奇数位长度</strong>。这把待生成的候选从"所有回文"压缩到"奇数位回文 <span class="arithmatex">\(\cup \{11\}\)</span>"，正是上一节预告的那一刀。</p>
 <h2 id="approach">数据结构 / 想法 (Approach)<a class="headerlink" href="#approach" title="Permanent link">#</a></h2>
-<p><strong>方案 1（推荐）：枚举奇数位回文</strong>。生成"半段" <span class="arithmatex">\(h\)</span>，镜像出回文 <span class="arithmatex">\(p\)</span>（长度 = <span class="arithmatex">\(2L-1\)</span>，<span class="arithmatex">\(L = |h|\)</span>），按 <span class="arithmatex">\(h\)</span> 递增枚举，对每个 <span class="arithmatex">\(p \ge n\)</span> 做素性测试。特殊处理 <span class="arithmatex">\(n \le 11\)</span>（覆盖 2, 3, 5, 7, 11）。</p>
+<p>形式化给出的搜索空间是"奇数位回文 <span class="arithmatex">\(\cup \{11\}\)</span>"，枚举策略直接照它来。</p>
+<p>奇数位回文由它的<strong>前半段</strong>唯一决定。设半段为整数 <span class="arithmatex">\(h\)</span>（含正中位），位数 <span class="arithmatex">\(L = |h|\)</span>，则镜像出的回文位数为 <span class="arithmatex">\(2L - 1\)</span>。例如 <span class="arithmatex">\(h = 12\)</span>，半段字符串 <code>"12"</code>，把除最后一位外的部分倒序接在后面得 <code>"12" + "1" = "121"</code>，即 <span class="arithmatex">\(121\)</span>；<span class="arithmatex">\(h = 123\)</span> 得 <code>"123" + "21" = "12321"</code>。关键是镜像时<strong>不重复正中位</strong>，所以接的是 <code>s[-2::-1]</code>（去掉最后一字符再倒序）而非 <code>s[::-1]</code>——后者会得到偶数位回文。</p>
+<p>按 <span class="arithmatex">\(h\)</span> 从小到大枚举，回文随之单调递增；对每个 <span class="arithmatex">\(\ge n\)</span> 的回文做素性测试，首个素数即答案。偶数位回文整段不生成，唯一的偶数位素回文 11 连同更小的 2,3,5,7 一起作为 <span class="arithmatex">\(n \le 11\)</span> 的特例硬编码返回。</p>
 <div class="language-python highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">Solution</span><span class="p">:</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">primePalindrome</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
         <span class="k">def</span><span class="w"> </span><span class="nf">is_prime</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
@@ -22501,20 +22546,19 @@
             <span class="n">L</span> <span class="o">+=</span> <span class="mi">1</span>
 </code></pre></div>
 <p>样例：
-- <span class="arithmatex">\(n=6\)</span>：跳过特例（<span class="arithmatex">\(n \le 7\)</span> 返回 7）。✓
-- <span class="arithmatex">\(n=8\)</span>：跳过特例（<span class="arithmatex">\(n \le 11\)</span> 返回 11）。✓
-- <span class="arithmatex">\(n=13\)</span>：<span class="arithmatex">\(L=1\)</span> 时 <span class="arithmatex">\(h \in [1,9]\)</span>，回文 = 1..9 全 <span class="arithmatex">\(&lt;13\)</span>；<span class="arithmatex">\(L=2\)</span> 时 <span class="arithmatex">\(h \in [10,99]\)</span>，回文 <span class="arithmatex">\(h=10\to101\)</span>，101 是素数 <span class="arithmatex">\(\ge 13\)</span> → 返回 101。✓</p>
-<p><strong>为什么只枚举奇位</strong>：偶位回文除 11 外都被 11 整除，不是素数。<span class="arithmatex">\(n \ge 12\)</span> 起，下一个素回文必在奇位长度。已在特例覆盖 11。</p>
+- <span class="arithmatex">\(n=6\)</span>：命中特例 <span class="arithmatex">\(n \le 7\)</span>，返回 7。✓
+- <span class="arithmatex">\(n=8\)</span>：命中特例 <span class="arithmatex">\(n \le 11\)</span>，返回 11——正是被推论排除在主循环之外、需硬编码的那个偶数位素回文。✓
+- <span class="arithmatex">\(n=13\)</span>：<span class="arithmatex">\(L=1\)</span> 时 <span class="arithmatex">\(h \in [1,9]\)</span>，回文 = 1..9 全 <span class="arithmatex">\(&lt;13\)</span>；<span class="arithmatex">\(L=2\)</span> 时 <span class="arithmatex">\(h \in [10,99]\)</span>，<span class="arithmatex">\(h=10 \to\)</span> <code>"10"+"1"</code> <span class="arithmatex">\(= 101\)</span>，101 是素数且 <span class="arithmatex">\(\ge 13\)</span>，返回 101。✓</p>
 <h2 id="complexity">复杂度 (Complexity)<a class="headerlink" href="#complexity" title="Permanent link">#</a></h2>
 <ul>
-<li>答案上界 <span class="arithmatex">\(2 \times 10^8\)</span>，9 位以内回文。9 位回文由 5 位半段决定，候选数 <span class="arithmatex">\(\le 9 \times 10^4\)</span>。每次素性测试 <span class="arithmatex">\(O(\sqrt p) \approx 1.4 \times 10^4\)</span>。最坏总 <span class="arithmatex">\(\sim 10^9\)</span> 基本操作；Python 边界但通常可过。可改用 Miller–Rabin 大幅加速。</li>
-<li>Space: <span class="arithmatex">\(O(1)\)</span>。</li>
+<li>答案上界 <span class="arithmatex">\(2 \times 10^8\)</span>，对应至多 9 位回文，即半段至多 5 位。枚举 <span class="arithmatex">\(L = 1,\dots,5\)</span> 的半段总数为 <span class="arithmatex">\(9 + 90 + 900 + 9000 + 90000 = 99999\)</span>，即约 <span class="arithmatex">\(10^5\)</span> 个候选。每个候选的试除素性测试为 <span class="arithmatex">\(O(\sqrt p)\)</span>，<span class="arithmatex">\(\sqrt{2 \times 10^8} \approx 1.41 \times 10^4\)</span>。最坏情形下整数除法的总次数约 <span class="arithmatex">\(10^5 \times 1.41 \times 10^4 \approx 1.4 \times 10^9\)</span>。这是 Python 在常见时限（数秒）内的临界规模，多数判题机可过；若要稳妥提速，把试除换成 Miller–Rabin 可将每次测试降到 <span class="arithmatex">\(O(\log^2 p)\)</span>。</li>
+<li>Space: <span class="arithmatex">\(O(1)\)</span>（只维护半段计数器，回文按需构造）。</li>
 </ul>
 <h2 id="pitfalls">陷阱 (Pitfalls)<a class="headerlink" href="#pitfalls" title="Permanent link">#</a></h2>
 <ul>
-<li><strong>偶位陷阱</strong>：若枚举所有回文（含偶位），既慢又冗余；但 11 必须特判，否则跳过它会错。</li>
-<li>镜像构造：<code>s + s[-2::-1]</code> 才是奇位回文（不重复中位），<code>s + s[::-1]</code> 会产生偶位。</li>
-<li>试除上界：用 <code>i*i &lt;= x</code> 而非 <code>i &lt;= int(sqrt(x))</code>，避免浮点误差。</li>
+<li><strong>偶位陷阱</strong>：若枚举所有回文（含偶位），既慢又冗余；但 11 必须特判，否则只生成奇位回文会漏掉它。</li>
+<li>镜像构造：奇位回文用 <code>s + s[-2::-1]</code>（不重复中位）；<code>s + s[::-1]</code> 会产生偶位回文，正是要排除的那类。</li>
+<li>试除上界：用 <code>i*i &lt;= x</code> 而非 <code>i &lt;= int(sqrt(x))</code>，避免浮点误差在边界处漏判。</li>
 <li><span class="arithmatex">\(n=1\)</span> 时答案是 2，不是 1（1 不是素数）。</li>
 </ul>
 <h2 id="related">相关题目 (Related)<a class="headerlink" href="#related" title="Permanent link">#</a></h2>
@@ -22634,6 +22678,8 @@
         <script src="../../../js/mathjax/tex-mml-chtml.js"></script>
       
         <script src="../../../js/mermaid.min.js"></script>
+      
+        <script src="../../../js/featured.js"></script>
       
     
   </body>

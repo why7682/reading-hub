@@ -1466,6 +1466,8 @@
       
         
       
+        
+      
     
     
     
@@ -1521,6 +1523,34 @@
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../featured/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ⭐ Featured（已验证）
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
               
             
               
@@ -1610,10 +1640,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_4" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
         
           
-          <label class="md-nav__link" for="__nav_4_4" id="__nav_4_4_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_5" id="__nav_4_5_label" tabindex="">
             
   
   
@@ -1631,8 +1661,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_4_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_4">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_5">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1915,7 +1945,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -1937,14 +1967,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_4_5" id="__nav_4_5_label" tabindex="">
+              <label class="md-nav__link " for="__nav_4_6" id="__nav_4_6_label" tabindex="">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_5">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_6">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -5321,10 +5351,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_7" checked>
         
           
-          <label class="md-nav__link" for="__nav_4_6" id="__nav_4_6_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_7" id="__nav_4_7_label" tabindex="">
             
   
   
@@ -5342,8 +5372,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_4_6">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_7_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4_7">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -22465,17 +22495,32 @@
 <h1 id="241-different-ways-to-add-parentheses-medium">241. Different Ways to Add Parentheses  🟠 Medium<a class="headerlink" href="#241-different-ways-to-add-parentheses-medium" title="Permanent link">#</a></h1>
 <p><strong>Tags</strong>: Math, String, Dynamic Programming, Recursion, Memoization</p>
 <h2 id="problem">Problem<a class="headerlink" href="#problem" title="Permanent link">#</a></h2>
-<p>给含数字与运算符 <code>+</code>, <code>-</code>, <code>*</code> 的字符串 <code>expression</code>（无前导符号、数字 <span class="arithmatex">\(\in [0, 99]\)</span>）。<strong>所有可能的加括号方式</strong>得到的值列出（顺序任意）。<span class="arithmatex">\(|expression| \le 20\)</span>，结果数 <span class="arithmatex">\(\le 10^4\)</span>，所有值 32-bit 内。</p>
+<p>给含数字与运算符 <code>+</code>, <code>-</code>, <code>*</code> 的字符串 <code>expression</code>（无前导符号、数字 <span class="arithmatex">\(\in [0, 99]\)</span>）。把<strong>所有可能的加括号方式</strong>得到的值列出（顺序任意）。<span class="arithmatex">\(|expression| \le 20\)</span>，所有结果落在 32-bit 整数范围内。</p>
 <h2 id="background">背景 (Background)<a class="headerlink" href="#background" title="Permanent link">#</a></h2>
-<p>本题枚举对象 = <strong>以运算符为根的二叉树</strong>（操作数为叶）。这正是 <strong>Catalan 数</strong> 的经典图像：长度 <span class="arithmatex">\(n\)</span> 的中缀表达式（<span class="arithmatex">\(n\)</span> 个操作数）有 <span class="arithmatex">\(C_{n-1} = \binom{2(n-1)}{n-1}/n\)</span> 种括号化方式（每种对应一棵不同的二叉树形状）。</p>
-<p>该问题等价于 <strong>矩阵链乘最优化</strong> (CLRS §15.2) 的 "枚举所有值" 变体——同样的"按最外层操作符切分"递推，但收集所有解而非最优解。该套路在 <strong>解析器组合子 (parser combinators)</strong>、<strong>编译原理 §4</strong>、<strong>RNA 二级结构枚举</strong> 中反复出现。</p>
+<p>先看一个最小的歧义例子。字符串 <code>"2-1-1"</code> 没有括号，但它的值并不唯一：</p>
+<ul>
+<li><span class="arithmatex">\((2-1)-1 = 0\)</span>，</li>
+<li><span class="arithmatex">\(2-(1-1) = 2\)</span>。</li>
+</ul>
+<p>两种括号化都合法，没有规则偏向其中一个——本题要的正是<strong>这一整套可能值</strong>。问题因此不是"求一个值"，而是"枚举所有括号化并各自求值"。</p>
+<p>第一反应可能是直接在字符串层面穷举括号：在某些位置插入 <code>(</code>、在另一些位置插入 <code>)</code>，生成所有合法括号串，逐个用普通表达式求值器算出。这条路能跑，但有两处会崩：括号位置的合法组合本身就是指数级的，且大量括号串对应<strong>同一棵求值树</strong>（例如 <code>((2-1)-1)</code> 与 <code>(2-1)-1</code> 完全等价），穷举字符层的括号会反复重算同一子表达式。我们需要一个直接枚举"求值结构"而非"括号字符"的刻画。</p>
+<p>观察上面的两种括号化：它们的区别完全在于<strong>哪个运算符最后执行</strong>。<code>(2-1)-1</code> 最后执行的是第二个 <code>-</code>；<code>2-(1-1)</code> 最后执行的是第一个 <code>-</code>。一旦固定"最后执行的运算符"，它左右两侧各自又是一个更短的子表达式，可以独立地继续括号化。这把一个表达式递归地劈成两半，劈点就是最后执行的运算符。这正是下一节要形式化的结构。</p>
 <h2 id="formulation">形式化 (Formulation)<a class="headerlink" href="#formulation" title="Permanent link">#</a></h2>
-<p>设 <span class="arithmatex">\(E = t_1 \circ_1 t_2 \circ_2 \cdots \circ_{n-1} t_n\)</span>，<span class="arithmatex">\(t_i\)</span> 为操作数，<span class="arithmatex">\(\circ_i \in \{+, -, *\}\)</span>。<span class="arithmatex">\(\text{eval}(E)\)</span> 定义为对每种括号化（即每棵 <span class="arithmatex">\(n\)</span> 个叶子的全二叉树形状）独立求值。返回 <span class="arithmatex">\(\{\text{eval}(\text{tree}) : \text{tree 是含 } n \text{ 叶的全二叉树}\}\)</span>（多重集，相同值保留多份）。</p>
+<p><strong>直觉</strong>：每一种合法括号化，都由它"最后执行的那个运算符"唯一确定；选定该运算符后，它左右两侧是两个互不干涉的子表达式，递归地继续括号化。</p>
+<p>形式化这个直觉。设输入为
+$<span class="arithmatex">\(E = t_1 \,\circ_1\, t_2 \,\circ_2\, \cdots \,\circ_{n-1}\, t_n,\)</span>$
+其中 <span class="arithmatex">\(t_i\)</span> 是操作数，<span class="arithmatex">\(\circ_i \in \{+, -, *\}\)</span> 是第 <span class="arithmatex">\(i\)</span> 个运算符。一种括号化对应一棵以运算符为内部节点、操作数为叶的<strong>满二叉树</strong>：树根是最后执行的运算符，左右子树是两侧子表达式的括号化。</p>
+<p><strong>分解引理</strong>：<span class="arithmatex">\(E\)</span> 的任一括号化恰由根运算符 <span class="arithmatex">\(\circ_i\)</span>（<span class="arithmatex">\(1 \le i \le n-1\)</span>）连同其左侧 <span class="arithmatex">\(t_1 \cdots t_i\)</span> 的某个括号化、右侧 <span class="arithmatex">\(t_{i+1} \cdots t_n\)</span> 的某个括号化唯一确定。反之，任选 <span class="arithmatex">\(\circ_i\)</span> 与两侧各自的括号化，拼出的就是 <span class="arithmatex">\(E\)</span> 的一种合法括号化。</p>
+<p>证明是结构性的：满二叉树的根唯一，根把叶集合切成连续的左、右两段，每段又是更小的满二叉树；这恰好是"选根运算符 + 两侧递归"的双射。于是若记 <span class="arithmatex">\(\text{ways}(E)\)</span> 为 <span class="arithmatex">\(E\)</span> 全体括号化的求值结果，引理给出递推
+$<span class="arithmatex">\(\text{ways}(E) \;=\; \biguplus_{i:\,\circ_i \in \{+,-,*\}} \;\big\{\, l \,\circ_i\, r \;:\; l \in \text{ways}(t_1\cdots t_i),\ r \in \text{ways}(t_{i+1}\cdots t_n) \,\big\},\)</span>$
+基线为 <span class="arithmatex">\(E\)</span> 不含运算符（纯操作数）时 <span class="arithmatex">\(\text{ways}(E) = \{\,\mathrm{int}(E)\,\}\)</span>。</p>
+<p>这里用<strong>多重集并</strong> <span class="arithmatex">\(\biguplus\)</span> 而非集合并 <span class="arithmatex">\(\bigcup\)</span>：不同的根 <span class="arithmatex">\(\circ_i\)</span> 或不同的左右组合可能算出相同的值，题目要求保留所有重份（见陷阱）。返回值是一个多重集。</p>
+<p>至此结构清楚了：<span class="arithmatex">\(E\)</span> 的括号化数即"<span class="arithmatex">\(n\)</span> 个叶的满二叉树数"，等于 <strong>Catalan 数</strong> <span class="arithmatex">\(C_{n-1} = \binom{2(n-1)}{n-1}/n\)</span>。这不是外部引入的事实，而是分解引理的直接计数推论——下面的复杂度分析会用到它。</p>
 <h2 id="approach">数据结构 / 想法 (Approach)<a class="headerlink" href="#approach" title="Permanent link">#</a></h2>
-<p><strong>核心递归</strong>：扫描字符串，遇到运算符 <code>s[i] = op</code> 时，把表达式切成 <code>left = s[:i]</code> 与 <code>right = s[i+1:]</code>，递归求出各自的所有可能值；然后笛卡尔积配对：</p>
-<div class="arithmatex">\[\text{ways}(s) = \bigcup_{i: s_i \in \{+,-,*\}} \{l \circ_{s_i} r : l \in \text{ways}(s_{:i}),\ r \in \text{ways}(s_{i+1:})\}.\]</div>
-<p><strong>基线</strong>：若 <span class="arithmatex">\(s\)</span> 不含任何运算符（纯数字），返回 <span class="arithmatex">\(\{int(s)\}\)</span>。</p>
-<p><strong>记忆化</strong>：对同一子串可能被多次切分，需 memo[s] → list。</p>
+<p>分解引理直接译成代码：在子串中扫描每个运算符位置 <span class="arithmatex">\(i\)</span>，把串切成 <code>left = s[:i]</code> 与 <code>right = s[i+1:]</code>，递归求出两侧各自的所有可能值，再对每个 <span class="arithmatex">\((l, r)\)</span> 用该运算符组合：</p>
+<div class="arithmatex">\[\text{ways}(s) \;=\; \biguplus_{i:\, s_i \in \{+,-,*\}} \;\big\{\, l \,\circ_{s_i}\, r \;:\; l \in \text{ways}(s_{:i}),\ r \in \text{ways}(s_{i+1:}) \big\}.\]</div>
+<p>基线：若 <span class="arithmatex">\(s\)</span> 不含任何运算符（纯数字），返回 <span class="arithmatex">\(\{\mathrm{int}(s)\}\)</span>。</p>
+<p><strong>为何需要记忆化</strong>：递归对子串重复求解。以 <code>"1+2+3"</code> 为例，按第一个 <code>+</code> 切，右半 <code>"2+3"</code> 要算一次；按第二个 <code>+</code> 切，左半 <code>"1+2"</code>、右半 <code>"3"</code> 各算一次。表达式更长时，同一个子串会被多条切分路径反复请求——例如 <code>"1+2+3+4"</code> 中的子串 <code>"2+3"</code> 同时出现在"按第一个 <code>+</code> 切的右半的左部"等多处。子串只有 <span class="arithmatex">\(O(L^2)\)</span> 个，但不缓存就会沿不同切分路径指数级重算。把 <code>go(s)</code> 的结果按子串缓存，每个子串只算一次。</p>
 <div class="language-python highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">functools</span><span class="w"> </span><span class="kn">import</span> <span class="n">lru_cache</span>
 <span class="k">class</span><span class="w"> </span><span class="nc">Solution</span><span class="p">:</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">diffWaysToCompute</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">expression</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
@@ -22494,24 +22539,26 @@
             <span class="k">return</span> <span class="n">res</span>
         <span class="k">return</span> <span class="n">go</span><span class="p">(</span><span class="n">expression</span><span class="p">)</span>
 </code></pre></div>
-<p><strong>不变量</strong>：<code>go(s)</code> 返回 <span class="arithmatex">\(s\)</span> 所有可能的求值结果（含重复）；递归终止于纯数字串。</p>
-<p><strong>模式归属</strong>：本题是 <strong>interval DP / catalan-tree enumeration</strong> 的典型——子结构是"按内部切点划分"。同模式：#95 Unique BSTs II（枚举所有 BST 形状）、矩阵链乘最优化、最优 BST。</p>
-<p>Trace <code>"2-1-1"</code>:
-- 切 i=1 (<code>-</code>): left "2" → [2], right "1-1" → 递归切 i=1: left "1" → [1], right "1" → [1] → [1-1=0]. So right="1-1" → [0]. Combine 2-0=2.
-- 切 i=3 (<code>-</code>): left "2-1" → ([2], [1]) → [2-1=1]. right "1" → [1]. Combine 1-1=0.
-- 结果 [2, 0]，与预期 [0, 2] 等价（顺序无关）。✓</p>
+<p><strong>不变量</strong>：<code>go(s)</code> 返回 <span class="arithmatex">\(s\)</span> 全体括号化的求值结果（多重集，保留重复）；递归在纯数字子串处终止。<code>res</code> 用 list 累加而非 set，正是为了保留多重集语义。</p>
+<p><strong>验证 <code>"2-1-1"</code></strong>。两个运算符给出两个切点：
+- 切 <span class="arithmatex">\(i=1\)</span>（第一个 <code>-</code>）：<code>left="2"</code> → <span class="arithmatex">\([2]\)</span>，<code>right="1-1"</code> 递归在内部 <code>-</code> 切，得 <code>[1-1] = [0]</code>；组合 <span class="arithmatex">\(2-0 = 2\)</span>。
+- 切 <span class="arithmatex">\(i=3\)</span>（第二个 <code>-</code>）：<code>left="2-1"</code> → <span class="arithmatex">\([2-1] = [1]\)</span>，<code>right="1"</code> → <span class="arithmatex">\([1]\)</span>；组合 <span class="arithmatex">\(1-1 = 0\)</span>。</p>
+<p>结果 <span class="arithmatex">\(\{2, 0\}\)</span>，与预期 <span class="arithmatex">\(\{0, 2\}\)</span> 相等（顺序无关）。这条 trace 同时印证了不变量：每个切点对应一棵以该运算符为根的树，两侧结果取笛卡尔积后组合，恰是分解引理的一次展开。</p>
 <h2 id="complexity">复杂度 (Complexity)<a class="headerlink" href="#complexity" title="Permanent link">#</a></h2>
+<p>延续上节的计数。子串由其在原串中的起止位置确定，共 <span class="arithmatex">\(O(L^2)\)</span> 个（<span class="arithmatex">\(L = |expression|\)</span>）；记忆化保证每个子串只求解一次。单个子串的结果数受 Catalan 数控制：含 <span class="arithmatex">\(k\)</span> 个操作数的子串至多产生 <span class="arithmatex">\(C_{k-1}\)</span> 个值，正是它的满二叉树数。</p>
+<p>代入约束 <span class="arithmatex">\(L \le 20\)</span>。操作数之间至少隔一个运算符，故 <span class="arithmatex">\(n\)</span> 个单字符操作数需 <span class="arithmatex">\(2n-1\)</span> 个字符，<span class="arithmatex">\(L \le 20\)</span> 给出 <span class="arithmatex">\(n \le 10\)</span>，即操作数最多 <span class="arithmatex">\(10\)</span> 个。整串的括号化数因此至多 <span class="arithmatex">\(C_{n-1} = C_9 = 4862\)</span>（注意是 <span class="arithmatex">\(C_9\)</span> 而非 <span class="arithmatex">\(C_{10} = 16796\)</span>，后者对应 <span class="arithmatex">\(11\)</span> 个操作数，需 <span class="arithmatex">\(\ge 21\)</span> 字符，超出约束）。</p>
+<p>枚举每个切点要对两侧结果取笛卡尔积，组合数的平方上界为 <span class="arithmatex">\(C_9^2 \approx 4862^2 \approx 2.4\times 10^7\)</span>。这是宽松上界；实际结果数远小于此，本题最坏输出规模不超过 <span class="arithmatex">\(C_9 = 4862 &lt; 10^4\)</span>。</p>
 <ul>
-<li>子串数量最多 <span class="arithmatex">\(O(L^2)\)</span> (<span class="arithmatex">\(L = |expression|\)</span>)，每个子串可能有 <span class="arithmatex">\(C_{k}\)</span> 个结果（Catalan 数，<span class="arithmatex">\(k\)</span> = 子串中操作数数）；总组合上界 <span class="arithmatex">\(O(C_n^2)\)</span>。对 <span class="arithmatex">\(L \le 20\)</span>（操作数 <span class="arithmatex">\(\le 10\)</span>）<span class="arithmatex">\(C_{10} = 16796\)</span>，乘法 <span class="arithmatex">\(\sim 10^8\)</span> 但在 LC 限制（结果 <span class="arithmatex">\(\le 10^4\)</span>）内远远更小。</li>
-<li>实际：Time <span class="arithmatex">\(O(\text{结果数} \cdot L)\)</span> 量级，Space 同。</li>
+<li><strong>时间</strong>：<span class="arithmatex">\(O(\sum_s |\text{ways}(s)|)\)</span> 量级，由 Catalan 上界控制，<span class="arithmatex">\(L \le 20\)</span> 时实际远低于上述 <span class="arithmatex">\(2.4\times 10^7\)</span> 的平方界。</li>
+<li><strong>空间</strong>：记忆化缓存 <span class="arithmatex">\(O(L^2)\)</span> 个子串、各存一个结果 list，加上递归栈 <span class="arithmatex">\(O(L)\)</span>。</li>
 </ul>
 <h2 id="pitfalls">陷阱 (Pitfalls)<a class="headerlink" href="#pitfalls" title="Permanent link">#</a></h2>
 <ul>
-<li><strong>多位数处理</strong>：<code>s[:i]</code> 与 <code>s[i+1:]</code> 切分以<strong>运算符为锚</strong>，多位操作数自然保留。若以"字符"为锚去枚举切分点会错。</li>
-<li><strong>基线判定</strong>：纯数字串可能 &gt; 9（如 "11"），不能以 <code>len(s) == 1</code> 为基线。用 "无运算符" 判定更安全：上面代码以 <code>if not res</code> 隐式处理。</li>
-<li><strong>重复结果</strong>：题目要"所有结果"含重复（不去重）。例 2 中 <code>-10</code> 出现两次。</li>
-<li><strong>lru_cache 与 list</strong>：返回 list 可以被缓存，但调用方不要原地修改返回值。</li>
-<li>不要先转中缀 → 后缀再处理：会丢失"枚举所有括号化"语义。</li>
+<li><strong>多位数处理</strong>：<code>s[:i]</code> 与 <code>s[i+1:]</code> 的切分以<strong>运算符为锚</strong>，多位操作数（如 <code>11</code>）自然完整保留。若改成以"字符"为锚枚举切分点会切坏操作数。</li>
+<li><strong>基线判定</strong>：纯数字串可能 <span class="arithmatex">\(&gt; 9\)</span>（如 <code>"11"</code>），不能用 <code>len(s) == 1</code> 当基线。判据应是"不含运算符"——上面代码以 <code>if not res</code> 隐式实现：扫不到运算符时 <code>res</code> 为空，才落到 <code>int(s)</code>。</li>
+<li><strong>重复结果不去重</strong>：返回的是多重集，相同值保留多份。例如 <code>"2*3-4*5"</code> 的结果中 <span class="arithmatex">\(-10\)</span> 出现两次（递推用 list、而非 set，正源于此）。</li>
+<li><strong>lru_cache 与 list</strong>：返回 list 可被缓存，但调用方不得原地修改返回值，否则污染缓存。</li>
+<li><strong>不要先转后缀再处理</strong>：转成后缀/逆波兰会固定一种求值序，丢失"枚举所有括号化"的语义。</li>
 </ul>
 <h2 id="related">相关题目 (Related)<a class="headerlink" href="#related" title="Permanent link">#</a></h2>
 <ul>
@@ -22521,6 +22568,7 @@
 <li><code>#282. Expression Add Operators (off-wiki)</code> — 反向：在数字串中插入运算符。</li>
 <li><a href="../0322_coin-change/">#0322. Coin Change</a> — 另一种 DP 范式（最优 vs 枚举）。</li>
 </ul>
+<p>本题"按最外层切点划分、收集所有解"的递推，与<strong>矩阵链乘最优化</strong>（CLRS §15.2）的区间切分套路同构——区别仅在前者收集全部值、后者取最优值；该结构性对应可作为延伸阅读的入口。</p>
 <h2 id="further-reading">Further Reading<a class="headerlink" href="#further-reading" title="Permanent link">#</a></h2>
 <ul>
 <li>CLRS, 3e §15.2 — 矩阵链乘 DP，区间切分套路的原型。</li>
@@ -22632,6 +22680,8 @@
         <script src="../../../js/mathjax/tex-mml-chtml.js"></script>
       
         <script src="../../../js/mermaid.min.js"></script>
+      
+        <script src="../../../js/featured.js"></script>
       
     
   </body>

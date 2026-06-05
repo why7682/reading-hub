@@ -1466,6 +1466,8 @@
       
         
       
+        
+      
     
     
     
@@ -1521,6 +1523,34 @@
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../featured/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ⭐ Featured（已验证）
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
               
             
               
@@ -1610,10 +1640,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_4" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
         
           
-          <label class="md-nav__link" for="__nav_4_4" id="__nav_4_4_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_5" id="__nav_4_5_label" tabindex="">
             
   
   
@@ -1631,8 +1661,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_4_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_4">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_5">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1915,7 +1945,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -1937,14 +1967,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_4_5" id="__nav_4_5_label" tabindex="">
+              <label class="md-nav__link " for="__nav_4_6" id="__nav_4_6_label" tabindex="">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_5">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_6">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -5321,10 +5351,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_7" checked>
         
           
-          <label class="md-nav__link" for="__nav_4_6" id="__nav_4_6_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_7" id="__nav_4_7_label" tabindex="">
             
   
   
@@ -5342,8 +5372,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_4_6">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_7_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4_7">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -22467,53 +22497,74 @@
 <h2 id="problem">Problem<a class="headerlink" href="#problem" title="Permanent link">#</a></h2>
 <p>机器人在二维网格，起点 <span class="arithmatex">\((0,0)\)</span> 朝北。命令 <span class="arithmatex">\(-2\)</span> = 左转、<span class="arithmatex">\(-1\)</span> = 右转、<span class="arithmatex">\(k \in [1,9]\)</span> = 前进 <span class="arithmatex">\(k\)</span> 步（一步步走，遇障碍停在前一格继续后续命令）。返回路径中<strong>最大欧氏距离平方</strong>。<span class="arithmatex">\(|\text{commands}|, |\text{obstacles}| \le 10^4\)</span>。</p>
 <h2 id="_1">背景<a class="headerlink" href="#_1" title="Permanent link">#</a></h2>
-<p>本题考察两件事：(1) 二维方向 + 旋转的<strong>简洁编码</strong>（4 方向数组 + 模 4 加减），是机器人 / 游戏 AI 编程的基础范式；(2) <strong>障碍快速判定</strong> —— 用集合 <span class="arithmatex">\(O(1)\)</span> 查询而非 <span class="arithmatex">\(O(|\text{obs}|)\)</span> 扫描。后者把暴力 <span class="arithmatex">\(O(n \cdot m \cdot k) = 9 \cdot 10^8\)</span> 降到 <span class="arithmatex">\(O(n \cdot k + m) = 9 \cdot 10^4\)</span>。</p>
-<p>机器人朝向模型 = <strong>离散二面体群 <span class="arithmatex">\(D_4\)</span></strong> 在 <span class="arithmatex">\(\mathbb{Z}^2\)</span> 上的作用：4 个方向构成循环群，左右转分别是生成元 <span class="arithmatex">\(r\)</span> 与 <span class="arithmatex">\(r^{-1}\)</span>。</p>
+<p>题目本身就是一台状态机：机器人有位置和朝向，每条命令确定地改变其中之一。没有可达性搜索、没有最优子结构，答案就是把这台状态机逐命令运行一遍，沿途记录到原点的最大平方距离。</p>
+<p>所以唯一的问题不是"用什么算法"，而是"怎样把状态机写得既正确又跑得动"。直接照着题面写，会立刻撞上两个具体障碍：转向怎么表示、前进时怎么判障。下面从最朴素的写法出发，看它们各自在哪里崩，再各自补上。这条线就是本页的主干——naive 状态机 → 两处瓶颈 → 两处修复。</p>
 <h2 id="_2">形式化<a class="headerlink" href="#_2" title="Permanent link">#</a></h2>
-<p>设方向 <span class="arithmatex">\(d \in \{0, 1, 2, 3\}\)</span> 表示北/东/南/西。位移向量 <span class="arithmatex">\(\text{dx}, \text{dy}\)</span>：</p>
-<div class="arithmatex">\[\text{dx} = [0, 1, 0, -1],\quad \text{dy} = [1, 0, -1, 0].\]</div>
-<p>左转 <span class="arithmatex">\(d \leftarrow (d - 1) \bmod 4\)</span>；右转 <span class="arithmatex">\(d \leftarrow (d + 1) \bmod 4\)</span>。</p>
-<p>每步前进若 <span class="arithmatex">\((x + \text{dx}[d], y + \text{dy}[d])\)</span> 不是障碍则更新 <span class="arithmatex">\((x, y)\)</span>；记录 <span class="arithmatex">\(\max(x^2 + y^2)\)</span>。</p>
+<p><strong>朴素状态机。</strong> 状态是三元组 <span class="arithmatex">\((x, y, d)\)</span>，其中 <span class="arithmatex">\(d\)</span> 是当前朝向。对每条命令 <span class="arithmatex">\(c\)</span>：</p>
+<ul>
+<li><span class="arithmatex">\(c = -2\)</span>：左转，<span class="arithmatex">\(d \leftarrow \text{turnLeft}(d)\)</span>；</li>
+<li><span class="arithmatex">\(c = -1\)</span>：右转，<span class="arithmatex">\(d \leftarrow \text{turnRight}(d)\)</span>；</li>
+<li><span class="arithmatex">\(c = k \ge 1\)</span>：重复 <span class="arithmatex">\(k\)</span> 次"试探下一格，非障碍则前进"。</li>
+</ul>
+<p>每次实际前进后更新 <span class="arithmatex">\(\text{best} \leftarrow \max(\text{best}, x^2 + y^2)\)</span>。</p>
+<p>这个描述是正确的，但 <span class="arithmatex">\(\text{turnLeft}/\text{turnRight}\)</span> 和"是否障碍"两处还是黑盒。把它们填成 naive 的样子，瓶颈就暴露出来。</p>
+<p><strong>瓶颈一：转向的朴素写法。</strong> 不引入任何结构，转向只能是一张显式跳转表或一串条件分支：朝北时右转得朝东、朝东时右转得朝南……四个方向、左右两种转，写八条 case，外加每个方向各记一个 <span class="arithmatex">\((\text{dx}, \text{dy})\)</span> 位移。能用，但冗长且易错。</p>
+<p>要消掉这八条 case，先看朝向自身的结构。右转一次，朝向沿 北 → 东 → 南 → 西 → 北 循环移动一格；左转则沿反方向移动一格。<strong>直觉</strong>：这是一个长度为 <span class="arithmatex">\(4\)</span> 的环，右转 = 沿环走一格，左转 = 沿环退一格。环上"走一格"正是模 <span class="arithmatex">\(4\)</span> 加法。于是只要按右转顺序给四个方向编号 <span class="arithmatex">\(0,1,2,3\)</span>，转向就退化成对编号做模 <span class="arithmatex">\(4\)</span> 的加减——不再需要任何跳转表。</p>
+<p><strong>形式化。</strong> 设方向 <span class="arithmatex">\(d \in \{0, 1, 2, 3\}\)</span> 依次表示 北、东、南、西（即按右转顺序）。则</p>
+<div class="arithmatex">\[\text{turnRight}(d) = (d + 1) \bmod 4, \qquad \text{turnLeft}(d) = (d - 1) \bmod 4. \tag{1}\]</div>
+<p>编号定下后，每个方向的单位位移随之确定：</p>
+<div class="arithmatex">\[\text{dx} = [\,0,\ 1,\ 0,\ -1\,], \qquad \text{dy} = [\,1,\ 0,\ -1,\ 0\,]. \tag{2}\]</div>
+<p>验证 <span class="arithmatex">\((2)\)</span> 与编号一致：<span class="arithmatex">\(d=0\)</span> 朝北 <span class="arithmatex">\((0,1)\)</span>，<span class="arithmatex">\(d=1\)</span> 朝东 <span class="arithmatex">\((1,0)\)</span>，<span class="arithmatex">\(d=2\)</span> 朝南 <span class="arithmatex">\((0,-1)\)</span>，<span class="arithmatex">\(d=3\)</span> 朝西 <span class="arithmatex">\((-1,0)\)</span>；右转 <span class="arithmatex">\(d \to d+1\)</span> 恰好把北转到东、东转到南，与物理转向吻合。前进一步即 <span class="arithmatex">\((x, y) \leftarrow (x + \text{dx}[d],\, y + \text{dy}[d])\)</span>。八条 case 至此被一行模运算和两张长度为 <span class="arithmatex">\(4\)</span> 的表取代。</p>
+<p><strong>瓶颈二：判障的朴素写法。</strong> 状态机里"下一格是不是障碍"若按字面实现，就是拿 <span class="arithmatex">\((nx, ny)\)</span> 去线性扫一遍障碍列表。设 <span class="arithmatex">\(N = |\text{commands}|\)</span>，单条前进命令最多 <span class="arithmatex">\(K = 9\)</span> 步，障碍数 <span class="arithmatex">\(M = |\text{obstacles}|\)</span>。每步一次线性扫描代价 <span class="arithmatex">\(O(M)\)</span>，总代价</p>
+<div class="arithmatex">\[O(N \cdot K \cdot M) = O(10^4 \cdot 9 \cdot 10^4) \approx 9 \times 10^9 \tag{3}\]</div>
+<p>次比较——远超时限。瓶颈是同一个判障问题被问了 <span class="arithmatex">\(N \cdot K\)</span> 次，而每次都重新线性扫描整张障碍表。</p>
+<p><strong>修复。</strong> 判障只关心"<span class="arithmatex">\((nx, ny)\)</span> 是否在障碍集合中"，这是纯粹的成员查询，与障碍的存储顺序无关。把障碍预先放进哈希集合，每次查询从 <span class="arithmatex">\(O(M)\)</span> 降到期望 <span class="arithmatex">\(O(1)\)</span>。预处理一次 <span class="arithmatex">\(O(M)\)</span>，总代价变为</p>
+<div class="arithmatex">\[O(N \cdot K + M) = O(10^4 \cdot 9 + 10^4) \approx 10^5 \tag{4}\]</div>
+<p>次操作。<span class="arithmatex">\((3)\)</span> 与 <span class="arithmatex">\((4)\)</span> 的差距正是"重复线性扫描"与"一次建表 + 常数查询"的差距；命令规模本身不大，逐步模拟在 <span class="arithmatex">\((4)\)</span> 的预算下绰绰有余。</p>
 <h2 id="_3">数据结构 / 想法<a class="headerlink" href="#_3" title="Permanent link">#</a></h2>
-<p><strong>核心代码</strong>：
+<p>两处修复——式 <span class="arithmatex">\((1)(2)\)</span> 的模 <span class="arithmatex">\(4\)</span> 转向编码、式 <span class="arithmatex">\((4)\)</span> 的哈希集合判障——直接翻译为代码。循环体逐条执行命令：遇转向命令按 <span class="arithmatex">\((1)\)</span> 改 <span class="arithmatex">\(d\)</span>，遇前进命令按 <span class="arithmatex">\((2)\)</span> 逐步推进，每步先查集合再决定是否落子。</p>
+<p><strong>循环不变量</strong>（读代码前先立好，便于对照）：每次进入 <code>for c in commands</code> 时，<span class="arithmatex">\((x, y)\)</span> 是机器人当前位置，<span class="arithmatex">\(d\)</span> 是当前朝向，<span class="arithmatex">\(\text{best}\)</span> 是迄今所有到访位置的最大平方距离。三者在每条命令处理后继续成立，故循环结束时 <span class="arithmatex">\(\text{best}\)</span> 即答案。</p>
 <div class="language-python highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">robotSim</span><span class="p">(</span><span class="n">commands</span><span class="p">,</span> <span class="n">obstacles</span><span class="p">):</span>
-    <span class="n">obs</span> <span class="o">=</span> <span class="p">{(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="ow">in</span> <span class="n">obstacles</span><span class="p">}</span>
-    <span class="n">dx</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">];</span> <span class="n">dy</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
+    <span class="n">obs</span> <span class="o">=</span> <span class="p">{(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="ow">in</span> <span class="n">obstacles</span><span class="p">}</span>      <span class="c1"># 修复二：障碍入哈希集合，O(1) 判障</span>
+    <span class="n">dx</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">];</span> <span class="n">dy</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>    <span class="c1"># 式 (2)：方向编号 -&gt; 单位位移</span>
     <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="n">best</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span>
     <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">commands</span><span class="p">:</span>
-        <span class="k">if</span> <span class="n">c</span> <span class="o">==</span> <span class="o">-</span><span class="mi">2</span><span class="p">:</span>    <span class="n">d</span> <span class="o">=</span> <span class="p">(</span><span class="n">d</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">%</span> <span class="mi">4</span>
-        <span class="k">elif</span> <span class="n">c</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>  <span class="n">d</span> <span class="o">=</span> <span class="p">(</span><span class="n">d</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">%</span> <span class="mi">4</span>
+        <span class="k">if</span> <span class="n">c</span> <span class="o">==</span> <span class="o">-</span><span class="mi">2</span><span class="p">:</span>    <span class="n">d</span> <span class="o">=</span> <span class="p">(</span><span class="n">d</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">%</span> <span class="mi">4</span>        <span class="c1"># 式 (1)：左转</span>
+        <span class="k">elif</span> <span class="n">c</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>  <span class="n">d</span> <span class="o">=</span> <span class="p">(</span><span class="n">d</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">%</span> <span class="mi">4</span>        <span class="c1"># 式 (1)：右转</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">c</span><span class="p">):</span>
                 <span class="n">nx</span><span class="p">,</span> <span class="n">ny</span> <span class="o">=</span> <span class="n">x</span> <span class="o">+</span> <span class="n">dx</span><span class="p">[</span><span class="n">d</span><span class="p">],</span> <span class="n">y</span> <span class="o">+</span> <span class="n">dy</span><span class="p">[</span><span class="n">d</span><span class="p">]</span>
-                <span class="k">if</span> <span class="p">(</span><span class="n">nx</span><span class="p">,</span> <span class="n">ny</span><span class="p">)</span> <span class="ow">in</span> <span class="n">obs</span><span class="p">:</span> <span class="k">break</span>
+                <span class="k">if</span> <span class="p">(</span><span class="n">nx</span><span class="p">,</span> <span class="n">ny</span><span class="p">)</span> <span class="ow">in</span> <span class="n">obs</span><span class="p">:</span> <span class="k">break</span>     <span class="c1"># 撞障：停在前一格，余下步数作废</span>
                 <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">nx</span><span class="p">,</span> <span class="n">ny</span>
-                <span class="n">best</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">best</span><span class="p">,</span> <span class="n">x</span><span class="o">*</span><span class="n">x</span> <span class="o">+</span> <span class="n">y</span><span class="o">*</span><span class="n">y</span><span class="p">)</span>
+                <span class="n">best</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">best</span><span class="p">,</span> <span class="n">x</span><span class="o">*</span><span class="n">x</span> <span class="o">+</span> <span class="n">y</span><span class="o">*</span><span class="n">y</span><span class="p">)</span>   <span class="c1"># 每步都更新，理由见下</span>
     <span class="k">return</span> <span class="n">best</span>
-</code></pre></div></p>
-<p><strong>优化（"sliding to next obstacle"）</strong>：把障碍按方向分组、二分找下一个障碍即可一次跳跃，<span class="arithmatex">\(O((n+m) \log m)\)</span>。但常数大，本题 <span class="arithmatex">\(9 \cdot 10^4\)</span> 操作直接逐步即可，无需此优化。</p>
-<p><strong>不变量</strong>：循环开始时 <span class="arithmatex">\((x, y)\)</span> 是机器人当前位置，<span class="arithmatex">\(d\)</span> 是当前朝向。<span class="arithmatex">\(\text{best}\)</span> 是历史最大距离平方。<strong>正确性</strong>：题面状态机直白翻译。</p>
+</code></pre></div>
+<p><strong>为何每步更新而非每条命令末更新。</strong> 一条前进命令最多走 <span class="arithmatex">\(K\)</span> 步，但可能在第 <span class="arithmatex">\(j &lt; K\)</span> 步达到本段离原点最远处，随后第 <span class="arithmatex">\(j+1\)</span> 步撞障停下。若只在命令结束时取一次距离，就会漏掉这个中途峰值。因此更新必须发生在每一步落子之后，而非命令边界。</p>
+<p><strong>收尾：转向编码的代数名字。</strong> 现在回头看式 <span class="arithmatex">\((1)\)</span>：四个方向在右转下构成一个 <span class="arithmatex">\(4\)</span> 阶循环群，右转是生成元，左转是其逆元，整套朝向 + 镜像翻转即二面体群 <span class="arithmatex">\(D_4\)</span> 在 <span class="arithmatex">\(\mathbb{Z}^2\)</span> 上的作用。这个名字不提供新算法——它只是给我们刚刚从环结构推出来的模 <span class="arithmatex">\(4\)</span> 编码贴上标准标签，说明同一套手法可移植到任何"离散旋转对称"的网格机器人问题。</p>
+<p><strong>进一步优化的可能。</strong> 若 <span class="arithmatex">\(K\)</span> 极大或前进步数远多于障碍数，可把障碍按行/列分组并二分查找当前方向上的下一个障碍，一次跳到撞障前一格，得到 <span class="arithmatex">\(O((N+M)\log M)\)</span>。本题 <span class="arithmatex">\(K \le 9\)</span>、规模仅 <span class="arithmatex">\(10^5\)</span> 级，此优化常数更大且无必要，逐步模拟已足。</p>
 <h2 id="_4">复杂度<a class="headerlink" href="#_4" title="Permanent link">#</a></h2>
 <ul>
-<li>Time: <span class="arithmatex">\(O(N \cdot K + M)\)</span>，<span class="arithmatex">\(N = |\text{commands}|, K = \max k \le 9, M = |\text{obs}|\)</span>。<span class="arithmatex">\(\le 9 \cdot 10^4\)</span>。</li>
-<li>Space: <span class="arithmatex">\(O(M)\)</span>（障碍集合）。</li>
+<li>Time：<span class="arithmatex">\(O(N \cdot K + M)\)</span>，其中 <span class="arithmatex">\(N = |\text{commands}|\)</span>、<span class="arithmatex">\(K = \max k \le 9\)</span>、<span class="arithmatex">\(M = |\text{obstacles}|\)</span>。代入约 <span class="arithmatex">\(10^5\)</span> 次操作，见式 <span class="arithmatex">\((4)\)</span>。</li>
+<li>Space：<span class="arithmatex">\(O(M)\)</span>，即障碍哈希集合。</li>
 </ul>
 <h2 id="_5">陷阱<a class="headerlink" href="#_5" title="Permanent link">#</a></h2>
 <ul>
-<li>障碍<strong>必须用 set</strong>；list 查询 <span class="arithmatex">\(O(m)\)</span> 必 TLE（合并 <span class="arithmatex">\(n \cdot k \cdot m = 9 \cdot 10^8\)</span>）。</li>
-<li>返回<strong>距离平方</strong>不是距离，题目明确，但易看漏。</li>
-<li>起点障碍：题面说从 <span class="arithmatex">\((0,0)\)</span> 起步时可"无视"障碍，但一旦离开就不能回 → 实际只要不让一开始移动撞 <span class="arithmatex">\((0,0)\)</span> 即可；上面代码自然处理（起点不在 obs 检测内）。</li>
-<li>模 4 的负数：Python <code>%</code> 返回非负，但 C/C++ 不保证；需 <code>(d - 1 + 4) % 4</code>。</li>
+<li><strong>判障必须用哈希集合</strong>：用列表线性扫描会回到式 <span class="arithmatex">\((3)\)</span> 的 <span class="arithmatex">\(O(N \cdot K \cdot M) \approx 9 \times 10^9\)</span> 次比较，超出时限。这正是修复二的全部动机。</li>
+<li><strong>返回距离平方而非距离</strong>：题目要的是 <span class="arithmatex">\(\max(x^2 + y^2)\)</span>，不开根号；看漏会答错。</li>
+<li><strong>起点障碍</strong>：题面允许从 <span class="arithmatex">\((0,0)\)</span> 起步时"无视"该处障碍，但一旦离开便不能返回。上面的代码天然处理——起点不进入任何判障分支，只有试探出的下一格才查集合。</li>
+<li><strong>负数取模</strong>：式 <span class="arithmatex">\((1)\)</span> 的左转用了 <span class="arithmatex">\((d-1) \bmod 4\)</span>。Python <code>%</code> 对负数返回非负结果，故 <span class="arithmatex">\(d=0\)</span> 左转得 <span class="arithmatex">\(3\)</span> 正确；但 C/C++ 的 <code>%</code> 可能返回负值，需写成 <span class="arithmatex">\((d - 1 + 4) \bmod 4\)</span>。</li>
 </ul>
 <h2 id="_6">相关题目<a class="headerlink" href="#_6" title="Permanent link">#</a></h2>
 <ul>
 <li><a href="../0055_jump-game/">#0055. Jump Game</a> — 一维版的"路径上的障碍" 思想。</li>
 <li><code>#1041. Robot Bounded In Circle (off-wiki)</code> — 同款机器人 + 转向，循环检测。</li>
-<li><code>#874. Walking Robot Simulation II (off-wiki)</code> — 周期性变体。</li>
+<li><a href="./">#874. Walking Robot Simulation II</a> — 周期性变体。</li>
 </ul>
 <h2 id="further-reading">Further Reading<a class="headerlink" href="#further-reading" title="Permanent link">#</a></h2>
 <ul>
-<li>无推荐外部资源（题目难度不足以需要专题文献）。Russell &amp; Norvig <em>AIMA</em> §3 "Solving Problems by Searching" 中关于 deterministic agent 的部分提供思维框架。</li>
+<li>无推荐外部资源（题目难度不足以需要专题文献）。Russell &amp; Norvig <em>AIMA</em> §3 "Solving Problems by Searching" 中关于 deterministic agent 的部分提供思维框架。
+</content>
+</invoke></li>
 </ul>
 
 
@@ -22620,6 +22671,8 @@
         <script src="../../../js/mathjax/tex-mml-chtml.js"></script>
       
         <script src="../../../js/mermaid.min.js"></script>
+      
+        <script src="../../../js/featured.js"></script>
       
     
   </body>

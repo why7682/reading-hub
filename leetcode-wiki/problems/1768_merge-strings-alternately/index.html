@@ -1466,6 +1466,8 @@
       
         
       
+        
+      
     
     
     
@@ -1521,6 +1523,34 @@
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../featured/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ⭐ Featured（已验证）
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
               
             
               
@@ -1610,10 +1640,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_4" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
         
           
-          <label class="md-nav__link" for="__nav_4_4" id="__nav_4_4_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_5" id="__nav_4_5_label" tabindex="">
             
   
   
@@ -1631,8 +1661,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_4_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_4">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_5">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1915,7 +1945,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -1937,14 +1967,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_4_5" id="__nav_4_5_label" tabindex="">
+              <label class="md-nav__link " for="__nav_4_6" id="__nav_4_6_label" tabindex="">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_5">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_6">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -5321,10 +5351,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_7" checked>
         
           
-          <label class="md-nav__link" for="__nav_4_6" id="__nav_4_6_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_7" id="__nav_4_7_label" tabindex="">
             
   
   
@@ -5342,8 +5372,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_4_6">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_7_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4_7">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -22465,13 +22495,33 @@
 <h1 id="1768-merge-strings-alternately-easy">1768. Merge Strings Alternately  🟢 Easy<a class="headerlink" href="#1768-merge-strings-alternately-easy" title="Permanent link">#</a></h1>
 <p><strong>Tags</strong>: Two Pointers, String</p>
 <h2 id="problem">Problem<a class="headerlink" href="#problem" title="Permanent link">#</a></h2>
-<p>交替合并 <code>word1, word2</code>：先 word1 第 0 个，再 word2 第 0 个，依次。某串短则末尾接另一串余下部分。</p>
+<p>交替合并 <code>word1, word2</code>：先取 word1 第 0 个字符，再取 word2 第 0 个，然后 word1 第 1 个、word2 第 1 个，依次轮流。当某一串先耗尽时，把另一串余下的字符全部接在末尾。</p>
 <h2 id="_1">背景<a class="headerlink" href="#_1" title="Permanent link">#</a></h2>
-<p>这是<strong>多路归并 (multiway merge)</strong> 的最小例（两路、固定顺序、不依赖比较）。同样思想出现在归并排序、外部排序、Polyphase merge sort、SQL <code>UNION ALL</code> 的物理实现。在 streaming 场景下，多路归并是 K-way merge sort 的核心步骤。</p>
+<p>先把操作本身看清楚，再谈它属于哪一类。取 <code>word1 = "abc"</code>、<code>word2 = "pqr"</code>，逐位轮流写出：<code>a p b q c r</code>，即 <code>"apbqcr"</code>。两串等长时规则很干净——输出第 0、2、4、… 位来自 <code>word1</code>，第 1、3、5、… 位来自 <code>word2</code>。</p>
+<p>唯一非平凡的情形是两串不等长。取 <code>word1 = "ab"</code>、<code>word2 = "pqrs"</code>：轮流写出 <code>a p b q</code>，此时 <code>word1</code> 已耗尽，剩下的 <code>r s</code> 只能原样接上，得到 <code>"apbqrs"</code>。注意尾部 <code>rs</code> 是同一串里<strong>连续</strong>的字符，不再交替——这一点正是后面形式化时必须单独处理的边界。</p>
+<p>这个操作是<strong>定序两路归并</strong>的最小形态：从两个有限序列中按固定的轮转顺序取元素，不依赖任何比较或键值。它与归并排序里的合并步骤共享同一骨架，区别仅在于这里的"谁先谁后"由位置奇偶决定，而非元素大小。理解了这个最小形态，比较驱动的归并只是把"奇偶选串"换成"取较小者"。</p>
 <h2 id="_2">形式化<a class="headerlink" href="#_2" title="Permanent link">#</a></h2>
-<div class="arithmatex">\[\text{merge}(w_1, w_2)_k = \begin{cases} w_1[k/2] &amp; k \text{ 偶且 } k/2 &lt; |w_1| \\ w_2[k/2] &amp; k \text{ 奇且 } k/2 &lt; |w_2| \\ \text{余下} &amp; \text{某串耗尽}\end{cases}\]</div>
+<p><strong>直觉</strong>：先只看两串都未耗尽的那段。输出位置 <code>k</code> 与源字符之间存在一个固定映射——把 <code>k</code> 除以 2 得到在源串中的下标，用 <code>k</code> 的奇偶决定取哪一串。<code>k = 0,1,2,3</code> 分别对应 <code>(word1[0], word2[0], word1[1], word2[1])</code>，即下标都是 <code>⌊k/2⌋</code>，偶数位取 <code>word1</code>、奇数位取 <code>word2</code>。这个映射只在两串都还有字符时成立；一旦短串耗尽，输出就退化为长串剩余下标的连续拷贝，奇偶规则失效。</p>
+<p>设 <span class="arithmatex">\(n_1 = |w_1|\)</span>、<span class="arithmatex">\(n_2 = |w_2|\)</span>，记 <span class="arithmatex">\(m = 2\min(n_1, n_2)\)</span> 为交替段的长度。输出 <span class="arithmatex">\(r = \text{merge}(w_1, w_2)\)</span> 分两段定义：</p>
+<p><strong>交替段</strong>（<span class="arithmatex">\(0 \le k &lt; m\)</span>，此区间内两串都未耗尽）：
+$<span class="arithmatex">\(r[k] = \begin{cases} w_1[\lfloor k/2 \rfloor] &amp; k \text{ 为偶} \\ w_2[\lfloor k/2 \rfloor] &amp; k \text{ 为奇} \end{cases}\)</span>$</p>
+<p><strong>尾段</strong>（<span class="arithmatex">\(k \ge m\)</span>，恰有一串有剩余）：将较长串从下标 <span class="arithmatex">\(\min(n_1, n_2)\)</span> 起的后缀整段接上
+$<span class="arithmatex">\(r[m{:}] = \begin{cases} w_1[\min(n_1,n_2){:}] &amp; n_1 &gt; n_2 \\ w_2[\min(n_1,n_2){:}] &amp; n_1 &lt; n_2 \\ \varepsilon &amp; n_1 = n_2 \end{cases}\)</span>$</p>
+<p>把尾段单列，是因为 §背景 里 <code>"apbqrs"</code> 的例子已经显示：尾部字符在源串中下标连续、且全来自同一串，无法用交替段那条奇偶映射表达。验证：<span class="arithmatex">\(w_1=\text{"ab"}, w_2=\text{"pqrs"}\)</span> 时 <span class="arithmatex">\(m=4\)</span>，交替段给出 <code>apbq</code>，尾段 <span class="arithmatex">\(w_2[2{:}]=\text{"rs"}\)</span>，拼得 <code>"apbqrs"</code>，与手算一致。</p>
+<p>这套分段定义就是解法的骨架：交替段对应一个双下标同步推进的循环，尾段对应一次后缀拼接。下面的代码逐字实现它。</p>
 <h2 id="_3">数据结构 / 想法<a class="headerlink" href="#_3" title="Permanent link">#</a></h2>
-<p><strong>双指针</strong>：
+<p><strong>先看朴素写法在哪里坏掉。</strong> 最直接的实现是边走边用 <code>+=</code> 拼接结果字符串：</p>
+<div class="language-python highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">mergeAlternately_naive</span><span class="p">(</span><span class="n">word1</span><span class="p">,</span> <span class="n">word2</span><span class="p">):</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+    <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="nb">min</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">word1</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">word2</span><span class="p">))):</span>
+        <span class="n">result</span> <span class="o">+=</span> <span class="n">word1</span><span class="p">[</span><span class="n">k</span> <span class="o">//</span> <span class="mi">2</span><span class="p">]</span> <span class="k">if</span> <span class="n">k</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">0</span> <span class="k">else</span> <span class="n">word2</span><span class="p">[</span><span class="n">k</span> <span class="o">//</span> <span class="mi">2</span><span class="p">]</span>
+    <span class="n">result</span> <span class="o">+=</span> <span class="n">word1</span><span class="p">[</span><span class="nb">min</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">word1</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">word2</span><span class="p">)):]</span>
+    <span class="n">result</span> <span class="o">+=</span> <span class="n">word2</span><span class="p">[</span><span class="nb">min</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">word1</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">word2</span><span class="p">)):]</span>
+    <span class="k">return</span> <span class="n">result</span>
+</code></pre></div>
+<p>逻辑正确，但有性能陷阱：Python 字符串不可变，<code>result += c</code> 不是原地追加，而是分配一个长度为"当前累计长度 + 1"的新串并整体拷贝。设总输出长度为 <span class="arithmatex">\(n = n_1 + n_2\)</span>，第 <span class="arithmatex">\(t\)</span> 次拼接拷贝约 <span class="arithmatex">\(t\)</span> 个字符，总拷贝量为 <span class="arithmatex">\(1 + 2 + \cdots + n = \Theta(n^2)\)</span>。一个本该 <span class="arithmatex">\(O(n)\)</span> 的问题被写成了 <span class="arithmatex">\(O(n^2)\)</span>。</p>
+<p><strong>修复</strong>：把字符先收集进一个列表（<code>list.append</code> 摊还 <span class="arithmatex">\(O(1)\)</span>），最后用 <code>''.join</code> 一次性拼接（线性时间、一次分配）。这样总时间回到 <span class="arithmatex">\(O(n)\)</span>。</p>
+<p><strong>双指针</strong>正是交替段那个同步推进循环的实现。维持的循环不变量是：每次进入循环体前，<code>i == j == 已写出的字符对数</code>，两个下标在共享长度段内步调一致地前进。循环退出时必有一串耗尽，两次切片把尾段补上——切片对已耗尽的串返回空串，是无害的 no-op，正好对应形式化里 <span class="arithmatex">\(\varepsilon\)</span> 那一支。</p>
 <div class="language-python highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">mergeAlternately</span><span class="p">(</span><span class="n">word1</span><span class="p">,</span> <span class="n">word2</span><span class="p">):</span>
     <span class="n">i</span> <span class="o">=</span> <span class="n">j</span> <span class="o">=</span> <span class="mi">0</span>
     <span class="n">out</span> <span class="o">=</span> <span class="p">[]</span>
@@ -22479,20 +22529,21 @@
         <span class="n">out</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">word1</span><span class="p">[</span><span class="n">i</span><span class="p">]);</span> <span class="n">out</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">word2</span><span class="p">[</span><span class="n">j</span><span class="p">]);</span> <span class="n">i</span> <span class="o">+=</span> <span class="mi">1</span><span class="p">;</span> <span class="n">j</span> <span class="o">+=</span> <span class="mi">1</span>
     <span class="n">out</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">word1</span><span class="p">[</span><span class="n">i</span><span class="p">:]);</span> <span class="n">out</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">word2</span><span class="p">[</span><span class="n">j</span><span class="p">:])</span>
     <span class="k">return</span> <span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">out</span><span class="p">)</span>
-</code></pre></div></p>
-<p><strong>zip 风格</strong> (Pythonic)：
+</code></pre></div>
+<p><strong>zip 风格</strong> 是同一算法的紧凑改写。<code>zip_longest(word1, word2, fillvalue='')</code> 逐位产出的 <code>(a, b)</code> 对，与双指针循环写出的字符对完全一致；某串耗尽后该位补空串 <code>''</code>，拼接空串又是 no-op——于是交替段与尾段被统一成一条表达式，无需显式分支。</p>
 <div class="language-python highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">itertools</span><span class="w"> </span><span class="kn">import</span> <span class="n">zip_longest</span>
 <span class="k">return</span> <span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">a</span> <span class="o">+</span> <span class="n">b</span> <span class="k">for</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span> <span class="ow">in</span> <span class="n">zip_longest</span><span class="p">(</span><span class="n">word1</span><span class="p">,</span> <span class="n">word2</span><span class="p">,</span> <span class="n">fillvalue</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">))</span>
-</code></pre></div></p>
+</code></pre></div>
 <h2 id="_4">复杂度<a class="headerlink" href="#_4" title="Permanent link">#</a></h2>
 <ul>
-<li>Time: <span class="arithmatex">\(O(|w_1| + |w_2|)\)</span></li>
-<li>Space: <span class="arithmatex">\(O(|w_1| + |w_2|)\)</span> — 输出。</li>
+<li>Time: <span class="arithmatex">\(O(n_1 + n_2)\)</span> —— 交替段单趟扫描，尾段一次切片，<code>join</code> 线性。</li>
+<li>Space: <span class="arithmatex">\(O(n_1 + n_2)\)</span> —— 输出缓冲主导。</li>
 </ul>
 <h2 id="_5">陷阱<a class="headerlink" href="#_5" title="Permanent link">#</a></h2>
+<p>两类陷阱性质不同，一类关乎<strong>正确性</strong>，一类关乎<strong>性能</strong>，分开记。</p>
 <ul>
-<li>不用 <code>+=</code> 字符串拼接（Python 中 <span class="arithmatex">\(O(n)\)</span> → <span class="arithmatex">\(O(n^2)\)</span>）；用 <code>list + join</code>。</li>
-<li><code>zip</code> 会截断到短串长度，必须 <code>zip_longest</code> 才能保留尾部。</li>
+<li><strong>正确性</strong>：用 <code>zip</code> 会截断到短串长度，尾部字符被丢弃（<code>zip("ab","pqrs")</code> 只产出 <code>apbq</code>，丢掉 <code>rs</code>）。必须用 <code>zip_longest</code> 并设 <code>fillvalue=''</code> 才能保留尾段。这对应形式化里"尾段不能用交替规则表达"的那一点。</li>
+<li><strong>性能</strong>：不要用 <code>+=</code> 逐字符拼接字符串。如 §数据结构 所推导，不可变串使每次拼接退化为整体拷贝，<span class="arithmatex">\(n\)</span> 次累计 <span class="arithmatex">\(\Theta(n^2)\)</span>。用 <code>list.append</code> + <code>''.join</code> 把它压回 <span class="arithmatex">\(O(n)\)</span>。</li>
 </ul>
 <h2 id="_6">相关题目<a class="headerlink" href="#_6" title="Permanent link">#</a></h2>
 <ul>
@@ -22608,6 +22659,8 @@
         <script src="../../../js/mathjax/tex-mml-chtml.js"></script>
       
         <script src="../../../js/mermaid.min.js"></script>
+      
+        <script src="../../../js/featured.js"></script>
       
     
   </body>

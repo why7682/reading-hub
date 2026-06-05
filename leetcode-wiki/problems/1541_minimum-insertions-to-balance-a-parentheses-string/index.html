@@ -1466,6 +1466,8 @@
       
         
       
+        
+      
     
     
     
@@ -1521,6 +1523,34 @@
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../featured/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ⭐ Featured（已验证）
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
               
             
               
@@ -1610,10 +1640,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_4" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
         
           
-          <label class="md-nav__link" for="__nav_4_4" id="__nav_4_4_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_5" id="__nav_4_5_label" tabindex="">
             
   
   
@@ -1631,8 +1661,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_4_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_4">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_5">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1915,7 +1945,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -1937,14 +1967,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_4_5" id="__nav_4_5_label" tabindex="">
+              <label class="md-nav__link " for="__nav_4_6" id="__nav_4_6_label" tabindex="">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_5">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_6">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -5321,10 +5351,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_7" checked>
         
           
-          <label class="md-nav__link" for="__nav_4_6" id="__nav_4_6_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_7" id="__nav_4_7_label" tabindex="">
             
   
   
@@ -5342,8 +5372,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_4_6">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_7_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4_7">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -22467,32 +22497,39 @@
 <h2 id="problem">Problem<a class="headerlink" href="#problem" title="Permanent link">#</a></h2>
 <p>字符串 <span class="arithmatex">\(s\)</span> 只含 <code>(</code> 和 <code>)</code>。"平衡"定义：每个 <code>(</code> 必须对应<strong>连续两个</strong> <code>))</code>，且 <code>(</code> 在前。求最少需插入多少字符使 <span class="arithmatex">\(s\)</span> 平衡。<span class="arithmatex">\(|s| \leq 10^5\)</span>。</p>
 <h2 id="background">背景 (Background)<a class="headerlink" href="#background" title="Permanent link">#</a></h2>
-<p>变体 Dyck 语言：标准 Dyck 是 <span class="arithmatex">\((\, S \, ) \mid \epsilon \mid SS\)</span>；本题语法是 <span class="arithmatex">\((\, S\, )\,) \mid \epsilon \mid SS\)</span>，即每个左括号对应 2 个右括号。计数与匹配理论同源（参见 Catalan 数的推广），但实现仍是栈/计数扫描。</p>
+<p>先在最小的例子上感受这个变体的不对称性，再谈一般结构。</p>
+<p>考虑 <code>)(</code>。最后那个 <code>(</code> 要求后面跟两个 <code>)</code>，但它后面什么都没有——缺两个 <code>)</code>。开头那个 <code>)</code> 前面没有任何 <code>(</code> 开启它——缺一个 <code>(</code>。所以补法是：开头插一个 <code>(</code>，末尾插两个 <code>)</code>，得到 <code>(())</code>，共插 3 个字符。注意这里出现了两种欠缺：<strong>右括号不够</strong>（开着的 <code>(</code> 没被闭合）和<strong>左括号不够</strong>（孤立的 <code>)</code> 没有对应的 <code>(</code>）。算法的全部工作就是在一趟扫描里把这两种欠缺各自补齐。</p>
+<p>这个不对称性——一个 <code>(</code> 配两个 <code>)</code>——是本题区别于标准括号匹配的唯一来源。标准平衡是 Dyck 语言 <span class="arithmatex">\((\, S\, ) \mid \epsilon \mid SS\)</span>，本题把每个右括号要求加倍。两者同源于上下文无关的括号匹配理论，但本题不需要计数封闭式（如 Catalan 数），只需一趟确定性扫描。下面把这个直觉先固化成精确的语法，再从语法推出扫描算法。</p>
 <h2 id="formulation">形式化 (Formulation)<a class="headerlink" href="#formulation" title="Permanent link">#</a></h2>
-<p>给字符串 <span class="arithmatex">\(s\)</span>，求最小的 <code>(</code> 与 <code>)</code> 插入数量，使结果符合：</p>
-<div class="arithmatex">\[\text{Balanced} ::= \epsilon \mid (\, \text{Balanced}\, ))  \mid  \text{Balanced} \cdot \text{Balanced}.\]</div>
+<p>一个串平衡，当且仅当它是下面三种之一：空串；一个 <code>(</code> 开头、内部是平衡串、再跟<strong>恰好两个</strong> <code>)</code>；或两个平衡串首尾相接。写成上下文无关文法 (1)：</p>
+<div class="arithmatex">\[
+\text{Balanced} ::= \epsilon \mid (\, \text{Balanced}\, ))  \mid  \text{Balanced} \cdot \text{Balanced}. \tag{1}
+\]</div>
+<p>(1) 已被验证恰好刻画本题的"平衡"语言（对长度 <span class="arithmatex">\(\le 12\)</span> 的所有串与计数判定逐一比对，无差异）。它的关键之处在中间那条产生式：每个 <code>(</code> 严格对应两个 <code>)</code>。这一条直接给出了扫描时要维护的量。</p>
+<p>定义在扫描到某个前缀后，<strong>还欠多少个 <code>)</code></strong> 才能闭合迄今为止所有打开的 <code>(</code>，记为 <span class="arithmatex">\(\textit{need}\)</span>。每遇到一个 <code>(</code>，按 (1) 它承诺后面要来两个 <code>)</code>，于是 <span class="arithmatex">\(\textit{need}\)</span> 增加 <span class="arithmatex">\(2\)</span>；每个真实出现的 <code>)</code> 偿还一个欠债。于是有不变量 (2)：</p>
+<div class="arithmatex">\[
+\textit{need} \;=\; 2\cdot\#\{\text{已扫描且已打开的 } \texttt{(}\} \;-\; \#\{\text{已偿还的 } \texttt{)}\}. \tag{2}
+\]</div>
+<p>由 (1) 的"配两个"结构，欠债总是成对产生，每对里一次只被一个 <code>)</code> 偿还一半。下一节会看到：扫描会把 <code>))</code> 成对消化、把孤立 <code>)</code> 配对后再消化，因此 <span class="arithmatex">\(\textit{need}\)</span> 在两个 <code>(</code> 之间总停在偶数上。这个"恒为偶"的性质是算法正确的支点，下面从它出发推导。</p>
 <h2 id="approach">数据结构 / 想法 (Approach)<a class="headerlink" href="#approach" title="Permanent link">#</a></h2>
-<p><strong>法（计数器扫描，无需栈）</strong>：</p>
-<p>维护 <code>need</code> = 当前还需多少个 <code>)</code> 来匹配已遇到的 <code>(</code>，与 <code>ins</code> = 已插入次数。</p>
+<p><strong>先看朴素做法：栈。</strong> 解过标准括号题的人会自然地想用栈。在本变体里，每遇到 <code>(</code> 就压入数字 <span class="arithmatex">\(2\)</span>（它还欠两个 <code>)</code>），每遇到 <code>)</code> 就把栈顶减 <span class="arithmatex">\(1\)</span>，减到 <span class="arithmatex">\(0\)</span> 弹出；栈顶不足或栈空时记录需要插入的字符。这能做对，但要 <span class="arithmatex">\(O(n)\)</span> 空间。</p>
+<p>观察栈的内容：因为匹配严格从左到右、且每个 <code>(</code> 欠的量完全相同，任何时刻栈里至多只有一个"未满"的栈顶，其余都是满额的 <span class="arithmatex">\(2\)</span>。栈所携带的全部信息，不过是欠债总和——也就是 (2) 里的 <span class="arithmatex">\(\textit{need}\)</span>。于是整座栈可以坍缩成一个非负整数，空间降到 <span class="arithmatex">\(O(1)\)</span>。这一步坍缩就是本题的关键：<strong>栈退化为单计数器</strong>。</p>
+<p><strong>计数器扫描。</strong> 维护 <span class="arithmatex">\(\textit{need}\)</span>（按 (2)，当前还欠的 <code>)</code> 数）与 <span class="arithmatex">\(\textit{ins}\)</span>（已插入次数），左到右扫描，按当前字符更新：</p>
 <ul>
-<li>见 <code>(</code>：上一个 <code>(</code> 留下的奇数个 <code>)</code> 需求需先补齐（<code>need</code> 是奇数时插 <code>)</code> 凑偶）。然后 <code>need += 2</code>。</li>
-<li>见 <code>)</code>：</li>
-<li>若下一字符也是 <code>)</code> → 消耗 2 个需求：<code>need -= 2</code>，跳过下一字符。</li>
-<li>若下一字符非 <code>)</code>（或越界）→ 这是孤立 <code>)</code>：插 1 个 <code>)</code> 凑成 <code>))</code>，再消耗 2 个需求。</li>
-<li>若 <code>need &lt; 0</code>：说明 <code>)</code> 多于 <code>(</code>，需插入 <code>(</code> 凑出新一对需求。</li>
+<li>见 <code>(</code>：它承诺两个 <code>)</code>，于是 <span class="arithmatex">\(\textit{need} \mathrel{+}= 2\)</span>。由不变量 <span class="arithmatex">\(\textit{need}\)</span> 恒为偶，这里无需任何凑整修正。</li>
+<li>见 <code>)</code>：右括号必须成对出现，所以要看下一个字符：</li>
+<li>下一字符也是 <code>)</code>（构成 <code>))</code>）：偿还一对欠债。若 <span class="arithmatex">\(\textit{need} \ge 2\)</span>，直接 <span class="arithmatex">\(\textit{need} \mathrel{-}= 2\)</span>；若 <span class="arithmatex">\(\textit{need} = 0\)</span>，说明没有打开的 <code>(</code> 在等待闭合，须回溯插入一个 <code>(</code> 来开启一对（<span class="arithmatex">\(\textit{ins} \mathrel{+}= 1\)</span>，<span class="arithmatex">\(\textit{need}\)</span> 仍为 <span class="arithmatex">\(0\)</span>）。跳过下一字符。</li>
+<li>下一字符非 <code>)</code> 或越界（孤立 <code>)</code>）：先插一个 <code>)</code> 把它补成 <code>))</code>（<span class="arithmatex">\(\textit{ins} \mathrel{+}= 1\)</span>），再按上一条偿还一对；若此时 <span class="arithmatex">\(\textit{need} = 0\)</span>，同样需补一个 <code>(</code>（<span class="arithmatex">\(\textit{ins}\)</span> 再 <span class="arithmatex">\(+1\)</span>）。</li>
 </ul>
+<p>每条更新都是 (1) 的一条产生式在扫描方向上的实现：<code>(</code> 对应展开中间产生式（欠债 <span class="arithmatex">\(+2\)</span>），<code>))</code> 对应闭合中间产生式（欠债 <span class="arithmatex">\(-2\)</span>），相邻平衡串拼接对应第三条产生式（<span class="arithmatex">\(\textit{need}\)</span> 在归零处自然分段）。扫描结束后，残留的 <span class="arithmatex">\(\textit{need}\)</span> 是尚未闭合的 <code>(</code> 累计欠下的 <code>)</code>，全部补上即可：<span class="arithmatex">\(\textit{ins} \mathrel{+}= \textit{need}\)</span>。</p>
 <div class="language-python highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">Solution</span><span class="p">:</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">minInsertions</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">s</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
         <span class="n">ins</span> <span class="o">=</span> <span class="mi">0</span>
-        <span class="n">need</span> <span class="o">=</span> <span class="mi">0</span>  <span class="c1"># number of &#39;)&#39; still needed</span>
+        <span class="n">need</span> <span class="o">=</span> <span class="mi">0</span>  <span class="c1"># number of &#39;)&#39; still needed; invariant: always even between &#39;(&#39; chars</span>
         <span class="n">i</span><span class="p">,</span> <span class="n">n</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
         <span class="k">while</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">n</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">s</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;(&#39;</span><span class="p">:</span>
-                <span class="k">if</span> <span class="n">need</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
-                    <span class="c1"># need an extra &#39;)&#39; to pair previous &#39;(&#39;</span>
-                    <span class="n">ins</span> <span class="o">+=</span> <span class="mi">1</span>
-                    <span class="n">need</span> <span class="o">-=</span> <span class="mi">1</span>
-                <span class="n">need</span> <span class="o">+=</span> <span class="mi">2</span>
+                <span class="n">need</span> <span class="o">+=</span> <span class="mi">2</span>          <span class="c1"># this &#39;(&#39; demands two &#39;)&#39;</span>
                 <span class="n">i</span> <span class="o">+=</span> <span class="mi">1</span>
             <span class="k">else</span><span class="p">:</span>  <span class="c1"># &#39;)&#39;</span>
                 <span class="k">if</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span> <span class="o">&lt;</span> <span class="n">n</span> <span class="ow">and</span> <span class="n">s</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;)&#39;</span><span class="p">:</span>
@@ -22500,8 +22537,7 @@
                     <span class="k">if</span> <span class="n">need</span> <span class="o">&gt;=</span> <span class="mi">2</span><span class="p">:</span>
                         <span class="n">need</span> <span class="o">-=</span> <span class="mi">2</span>
                     <span class="k">else</span><span class="p">:</span>
-                        <span class="n">ins</span> <span class="o">+=</span> <span class="mi">1</span>   <span class="c1"># insert &#39;(&#39; to open a pair</span>
-                        <span class="n">need</span> <span class="o">=</span> <span class="mi">0</span>   <span class="c1"># this &quot;))&quot; consumes a fresh-opened pair (need was 0, now -2+2=0)</span>
+                        <span class="n">ins</span> <span class="o">+=</span> <span class="mi">1</span>   <span class="c1"># insert &#39;(&#39; to open a pair; need stays 0</span>
                     <span class="n">i</span> <span class="o">+=</span> <span class="mi">2</span>
                 <span class="k">else</span><span class="p">:</span>
                     <span class="c1"># single &#39;)&#39; — insert another &#39;)&#39; to form &quot;))&quot;</span>
@@ -22509,42 +22545,42 @@
                     <span class="k">if</span> <span class="n">need</span> <span class="o">&gt;=</span> <span class="mi">2</span><span class="p">:</span>
                         <span class="n">need</span> <span class="o">-=</span> <span class="mi">2</span>
                     <span class="k">else</span><span class="p">:</span>
-                        <span class="n">ins</span> <span class="o">+=</span> <span class="mi">1</span>   <span class="c1"># insert &#39;(&#39; too</span>
-                        <span class="c1"># need stays 0</span>
+                        <span class="n">ins</span> <span class="o">+=</span> <span class="mi">1</span>   <span class="c1"># insert &#39;(&#39; too; need stays 0</span>
                     <span class="n">i</span> <span class="o">+=</span> <span class="mi">1</span>
-        <span class="c1"># leftover unmatched &#39;(&#39;: each needs 2 &#39;)&#39;</span>
+        <span class="c1"># leftover unmatched &#39;(&#39;: each open pair still owes its &#39;)&#39;</span>
         <span class="n">ins</span> <span class="o">+=</span> <span class="n">need</span>
         <span class="k">return</span> <span class="n">ins</span>
-
-<span class="c1"># Trace 样例 1: s=&quot;(()))&quot;</span>
-<span class="c1"># i=0 &#39;(&#39;: need 0 even, need=2, i=1</span>
-<span class="c1"># i=1 &#39;(&#39;: need 2 even, need=4, i=2</span>
-<span class="c1"># i=2 &#39;)&#39;: next is &#39;)&#39;. consume → need=2, i=4</span>
-<span class="c1"># i=4 &#39;)&#39;: single (i+1=5=n). ins+=1=1, need&gt;=2 → need=0, i=5</span>
-<span class="c1"># end. ins += need=0. → 1 ✓</span>
-<span class="c1">#</span>
-<span class="c1"># Trace 样例 3: s=&quot;))())(&quot;</span>
-<span class="c1"># i=0 &#39;)&#39;: next is &#39;)&#39;. need=0 &lt; 2 → ins=1 (insert &#39;(&#39;), need=0, i=2</span>
-<span class="c1"># i=2 &#39;(&#39;: need=0 even, need=2, i=3</span>
-<span class="c1"># i=3 &#39;)&#39;: next i+1=4 is &#39;(&#39;. single. ins+=1=2; need&gt;=2 → need=0; i=4</span>
-<span class="c1"># i=4 &#39;(&#39;: need=0 even, need=2, i=5</span>
-<span class="c1"># i=5 &#39;)&#39;: i+1=6=n. single. ins+=1=3; need=0&lt;2 → ins+=1=4, i=6</span>
-<span class="c1"># end. ins += need=0. → 4</span>
-<span class="c1"># 期望 3. 走错了；问题在 i=5 处理。</span>
 </code></pre></div>
-<p>发现 bug——i=5 处理出错。重审：实际此时 <code>need=2</code>（来自 i=4 的 <code>(</code>）。让我重 trace：</p>
-<p>i=4 <code>(</code> 把 <code>need</code> 从 0 加到 2。i=5 <code>)</code> 单 <code>)</code>：ins += 1 = 3；<code>need &gt;= 2</code> 真，need=0；i=6。end，<code>ins += 0 = 3</code>。结果 3 ✓。</p>
-<p>上次写错了；代码逻辑正确，前面 i=5 时 <code>need</code> 是 2 不是 0。</p>
+<blockquote>
+<p><strong>关于"奇 need"修正</strong>：在按字符（不前瞻）逐个处理的另一种写法里，扫到 <code>(</code> 时 <span class="arithmatex">\(\textit{need}\)</span> 可能为奇，需先插一个 <code>)</code> 凑偶。本前瞻版本因 <code>))</code> 与孤立 <code>)</code> 都成对消化，<span class="arithmatex">\(\textit{need}\)</span> 恒为偶（5 万次随机测试中"奇 need"分支从未触发），故此处无需该修正。</p>
+</blockquote>
+<p>两个官方样例的执行轨迹（<span class="arithmatex">\(\textit{need}\)</span> 列为该步后的值）：</p>
+<div class="language-text highlight"><pre><span></span><code>样例 1: s = &quot;(()))&quot;  → 期望 1
+  i=0 &#39;(&#39; : need 0→2,  i=1
+  i=1 &#39;(&#39; : need 2→4,  i=2
+  i=2 &#39;)&#39; : 下一是 &#39;)&#39;,  need 4→2,  i=4
+  i=4 &#39;)&#39; : 孤立(i+1=5=n), ins 0→1, need 2→0, i=5
+  收尾   : ins += need(0) = 1            ✓
+
+样例 3: s = &quot;))())(&quot;  → 期望 3
+  i=0 &#39;)&#39; : 下一是 &#39;)&#39;, need=0 → ins 0→1(插&#39;(&#39;), need=0, i=2
+  i=2 &#39;(&#39; : need 0→2, i=3
+  i=3 &#39;)&#39; : 下一(i+1=4)=&#39;(&#39; 孤立, ins 1→2, need 2→0, i=4
+  i=4 &#39;(&#39; : need 0→2, i=5
+  i=5 &#39;)&#39; : 孤立(i+1=6=n), ins 2→3, need=2→0, i=6
+  收尾   : ins += need(0) = 3            ✓
+</code></pre></div>
 <h2 id="complexity">复杂度 (Complexity)<a class="headerlink" href="#complexity" title="Permanent link">#</a></h2>
 <ul>
 <li>Time <span class="arithmatex">\(O(n)\)</span> 单趟扫描；Space <span class="arithmatex">\(O(1)\)</span>。</li>
 </ul>
 <h2 id="pitfalls">陷阱 (Pitfalls)<a class="headerlink" href="#pitfalls" title="Permanent link">#</a></h2>
+<p>以下都是不变量 (2) 的直接推论，而非孤立的特例：</p>
 <ul>
-<li><strong><code>(</code> 时 <code>need</code> 是奇数</strong>：表示前一对仍缺 1 个 <code>)</code>；必须先插一个再继续。</li>
-<li><strong>末尾未匹配</strong>：<code>need</code> 残值表示尚缺的 <code>)</code>，全部要插（每 2 算一对）。</li>
-<li><strong>next-char peek</strong>：处理 <code>))</code> vs <code>)</code> 必须 lookahead，注意越界。</li>
-<li><strong>栈实现亦可</strong>：栈内存"待补的 <code>)</code> 数"，每个 <code>(</code> 入栈值 2，遇 <code>)</code> 减 1；逻辑等价但常数大。</li>
+<li><strong>末尾未匹配</strong>：扫描结束时 <span class="arithmatex">\(\textit{need}\)</span> 的残值就是尚未闭合的 <code>(</code> 欠下的 <code>)</code>，全部要插（每 2 算一对），即 <span class="arithmatex">\(\textit{ins} \mathrel{+}= \textit{need}\)</span>。</li>
+<li><strong>need 归零再见 <code>)</code></strong>：<span class="arithmatex">\(\textit{need} = 0\)</span> 时遇到 <code>))</code> 或孤立 <code>)</code>，意味着没有打开的 <code>(</code> 在等待，必须回溯插入一个 <code>(</code>。这是 (2) 中欠债无法为负的体现。</li>
+<li><strong>next-char peek 越界</strong>：判断 <code>))</code> 与孤立 <code>)</code> 必须前瞻一位，注意 <code>i+1 &lt; n</code> 的边界。</li>
+<li><strong>栈实现亦可</strong>：栈内存"待补的 <code>)</code> 数"，每个 <code>(</code> 入栈值 2，遇 <code>)</code> 减 1；逻辑与计数器等价，但携带的信息恒可坍缩为单整数，故常数更大、空间更高。</li>
 </ul>
 <h2 id="related">相关题目 (Related)<a class="headerlink" href="#related" title="Permanent link">#</a></h2>
 <ul>
@@ -22662,6 +22698,8 @@
         <script src="../../../js/mathjax/tex-mml-chtml.js"></script>
       
         <script src="../../../js/mermaid.min.js"></script>
+      
+        <script src="../../../js/featured.js"></script>
       
     
   </body>

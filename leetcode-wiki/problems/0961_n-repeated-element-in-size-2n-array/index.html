@@ -1466,6 +1466,8 @@
       
         
       
+        
+      
     
     
     
@@ -1521,6 +1523,34 @@
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../featured/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ⭐ Featured（已验证）
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
               
             
               
@@ -1610,10 +1640,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_4" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
         
           
-          <label class="md-nav__link" for="__nav_4_4" id="__nav_4_4_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_5" id="__nav_4_5_label" tabindex="">
             
   
   
@@ -1631,8 +1661,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_4_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_4">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_5">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1915,7 +1945,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -1937,14 +1967,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_4_5" id="__nav_4_5_label" tabindex="">
+              <label class="md-nav__link " for="__nav_4_6" id="__nav_4_6_label" tabindex="">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_5">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_6">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -5321,10 +5351,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_7" checked>
         
           
-          <label class="md-nav__link" for="__nav_4_6" id="__nav_4_6_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_7" id="__nav_4_7_label" tabindex="">
             
   
   
@@ -5342,8 +5372,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_4_6">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_7_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4_7">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -9772,6 +9802,34 @@
       
     </span>
   </a>
+  
+    <nav class="md-nav" aria-label="数据结构 / 想法 (Approach)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#a" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        方案 A：哈希集合 + 单遍扫描
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#b" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        方案 B：常数空间扫描——碰撞一定发生在近处
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -22399,6 +22457,34 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="数据结构 / 想法 (Approach)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#a" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        方案 A：哈希集合 + 单遍扫描
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#b" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        方案 B：常数空间扫描——碰撞一定发生在近处
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -22467,32 +22553,57 @@
 <h2 id="problem">Problem<a class="headerlink" href="#problem" title="Permanent link">#</a></h2>
 <p>长度 <span class="arithmatex">\(2n\)</span> 的数组共 <span class="arithmatex">\(n+1\)</span> 个不同值，其中一个<strong>恰好</strong>出现 <span class="arithmatex">\(n\)</span> 次，其它各出现 1 次。返回该重复值。<span class="arithmatex">\(2 \le n \le 5000\)</span>。</p>
 <h2 id="background">背景 (Background)<a class="headerlink" href="#background" title="Permanent link">#</a></h2>
-<p>本题为基础重复元素查找，可视作鸽巢原理（pigeonhole）的小型应用：<span class="arithmatex">\(n+1\)</span> 个不同值放入 <span class="arithmatex">\(2n\)</span> 个槽，其中一个占 <span class="arithmatex">\(n\)</span> 槽—— 故在长度 <span class="arithmatex">\(\le 4\)</span> 的任意窗口内必有两次出现重复（除少数边界）。</p>
+<p>数组有 <span class="arithmatex">\(2n\)</span> 个位置，却只有 <span class="arithmatex">\(n+1\)</span> 个不同的值。一个值占了 <span class="arithmatex">\(n\)</span> 个位置——恰好半个数组；剩下 <span class="arithmatex">\(n\)</span> 个值各占 1 个位置。我们要找的就是这个独占半壁的值，而它的唯一可识别特征是：它是全数组里<strong>唯一重复出现</strong>的值。所以问题等价于"在一个除一个值外全部互异的数组里，找出那个重复的值"。</p>
+<p>最直接的想法是数频次：开一个计数表统计每个值出现几次，返回频次为 <span class="arithmatex">\(n\)</span> 的那个。这能解，但它没有用到"只有一个值重复"这个强约束——只要碰到第二次重复，我们就已经找到答案了，不必把整张计数表填满。下面把这个观察精确化。</p>
 <h2 id="formulation">形式化 (Formulation)<a class="headerlink" href="#formulation" title="Permanent link">#</a></h2>
-<p>返回 <span class="arithmatex">\(\arg \max_v |\{i : a_i = v\}|\)</span>，已知最大频次 = <span class="arithmatex">\(n\)</span>。</p>
+<p>设数组 <span class="arithmatex">\(a = (a_0, \dots, a_{2n-1})\)</span>，目标是
+$<span class="arithmatex">\(v^\* = \arg\max_v |\{i : a_i = v\}|.\)</span>$
+题面保证频次分布退化为两档：<span class="arithmatex">\(v^\*\)</span> 的频次为 <span class="arithmatex">\(n\)</span>，其余每个值的频次为 <span class="arithmatex">\(1\)</span>。于是 <span class="arithmatex">\(v^\*\)</span> 是<strong>唯一</strong>频次 <span class="arithmatex">\(&gt; 1\)</span> 的值，亦即
+$<span class="arithmatex">\(v^\* = \text{满足 } a_i = a_j \text{ 且 } i \ne j \text{ 的唯一值}.\)</span>$
+这把"求 argmax"降级为"求第一对相等元素"：只要找到任意一对下标 <span class="arithmatex">\(i \ne j\)</span> 使 <span class="arithmatex">\(a_i = a_j\)</span>，那个公共值必为 <span class="arithmatex">\(v^\*\)</span>。无需完整频次，无需排序——找到第一次碰撞即可停。</p>
 <h2 id="approach">数据结构 / 想法 (Approach)<a class="headerlink" href="#approach" title="Permanent link">#</a></h2>
-<p><strong>方案 A：哈希集合</strong>。一遍扫描，遇到已见值即返回。<span class="arithmatex">\(O(n)\)</span> time, <span class="arithmatex">\(O(n)\)</span> space。</p>
-<p><strong>方案 B（更聪明）：常空间扫描</strong> 鸽巢推断：<span class="arithmatex">\(n\)</span> 个重复值在 <span class="arithmatex">\(2n\)</span> 个位置，必有两次距离 <span class="arithmatex">\(\le 3\)</span>。检查每相邻 <span class="arithmatex">\(\{2, 3\}\)</span> 索引差对即可覆盖。</p>
+<h3 id="a">方案 A：哈希集合 + 单遍扫描<a class="headerlink" href="#a" title="Permanent link">#</a></h3>
+<p>直接落实上面的形式化。从左到右扫描，把见过的值放进集合；一旦当前值已在集合中，就找到了那对相等元素，立即返回。</p>
 <div class="language-python highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">Solution</span><span class="p">:</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">repeatedNTimes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">nums</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
         <span class="n">seen</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
         <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">nums</span><span class="p">:</span>
-            <span class="k">if</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">seen</span><span class="p">:</span> <span class="k">return</span> <span class="n">v</span>
+            <span class="k">if</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">seen</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">v</span>
             <span class="n">seen</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
 </code></pre></div>
 <p>样例：
 - <code>[1,2,3,3]</code>: 见 1, 2, 3 (新), 3 (重) → 3。✓
 - <code>[2,1,2,5,3,2]</code>: 见 2, 1, 2 (重) → 2。✓
 - <code>[5,1,5,2,5,3,5,4]</code>: 见 5, 1, 5 (重) → 5。✓</p>
+<p>由形式化，<span class="arithmatex">\(v^\*\)</span> 是唯一会重复的值，故第一次碰撞命中的必是它；保证存在使循环无需写末尾兜底。时间 <span class="arithmatex">\(O(n)\)</span>，空间 <span class="arithmatex">\(O(n)\)</span>。</p>
+<h3 id="b">方案 B：常数空间扫描——碰撞一定发生在近处<a class="headerlink" href="#b" title="Permanent link">#</a></h3>
+<p>方案 A 的空间来自那个集合。要去掉它，需要回答一个问题：那两个相等元素<strong>能离多远</strong>？如果能证明它们的下标差有一个小常数上界 <span class="arithmatex">\(d\)</span>，就只需对每个 <span class="arithmatex">\(i\)</span> 检查 <span class="arithmatex">\(a_i\)</span> 与其后 <span class="arithmatex">\(d\)</span> 个邻居，集合就不必要了。</p>
+<p>先看朴素的"只查相邻对"<span class="arithmatex">\(a_i = a_{i+1}\)</span> 会不会够。不够：<code>[2,1,2,...]</code> 里两个 2 隔着一个位置，相邻检查漏掉它。那就要问最坏情况下它们能隔多远。</p>
+<p>直接从数组的计数结构推。假设 <span class="arithmatex">\(v^\*\)</span> 的某两次出现之间夹着一段不含 <span class="arithmatex">\(v^\*\)</span> 的位置，这段连同两端的隔法决定了间距。考虑任意连续 4 个位置 <span class="arithmatex">\(a_i, a_{i+1}, a_{i+2}, a_{i+3}\)</span>，若其中<strong>不含</strong> <span class="arithmatex">\(v^\*\)</span>，则这 4 个值全部取自那 <span class="arithmatex">\(n\)</span> 个单次值，且互不相同（每个单次值全数组只出现一次，更不会在一个窗口里出现两次）。这要求存在 4 个互异的单次值——当 <span class="arithmatex">\(n \ge 4\)</span> 时尚有可能，但把这个"无 <span class="arithmatex">\(v^\*\)</span>"的窗口推到极致就会出矛盾：</p>
+<p>要让 <span class="arithmatex">\(v^\*\)</span> 的相邻两次出现间距 <span class="arithmatex">\(\ge 4\)</span>，需要在它们之间塞进 <span class="arithmatex">\(\ge 3\)</span> 个互异的单次值。<span class="arithmatex">\(v^\*\)</span> 出现 <span class="arithmatex">\(n\)</span> 次，把数组切成 <span class="arithmatex">\(n-1\)</span> 个内部间隔（首尾两段另算），每个内部间隔都要 <span class="arithmatex">\(\ge 3\)</span> 个单次值，总共需要 <span class="arithmatex">\(\ge 3(n-1)\)</span> 个单次值。但单次值总共只有 <span class="arithmatex">\(n\)</span> 个，而 <span class="arithmatex">\(3(n-1) &gt; n \iff n &gt; 1.5\)</span>，即 <span class="arithmatex">\(n \ge 2\)</span> 时单次值根本不够分。所以<strong>至少有一对相邻的 <span class="arithmatex">\(v^\*\)</span> 出现，其间距 <span class="arithmatex">\(\le 3\)</span></strong>。</p>
+<p>由此得上界：存在 <span class="arithmatex">\(i\)</span> 与 <span class="arithmatex">\(j \in \{i+1, i+2, i+3\}\)</span> 使 <span class="arithmatex">\(a_i = a_j = v^\*\)</span>。这个界是紧的——<span class="arithmatex">\(n=2\)</span> 时 <code>[0,1,2,0]</code> 的两个 0 间距恰为 3。注意间隔集合<strong>必须含 1</strong>：两次出现可能相邻（间距 1），如 <code>[0,0,2,1]</code>；漏掉 1 会把这类输入判错。</p>
+<p>于是只需对每个 <span class="arithmatex">\(i\)</span> 检查 <span class="arithmatex">\(a_i\)</span> 是否等于 <span class="arithmatex">\(a_{i+1}, a_{i+2}, a_{i+3}\)</span> 之一：</p>
+<div class="language-python highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">Solution</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">repeatedNTimes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">nums</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+        <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">nums</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">):</span>
+                <span class="k">if</span> <span class="n">i</span> <span class="o">+</span> <span class="n">d</span> <span class="o">&lt;</span> <span class="n">n</span> <span class="ow">and</span> <span class="n">nums</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="n">nums</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="n">d</span><span class="p">]:</span>
+                    <span class="k">return</span> <span class="n">nums</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+</code></pre></div>
+<p>每个 <span class="arithmatex">\(i\)</span> 只看常数个邻居，故时间 <span class="arithmatex">\(O(n)\)</span>，空间 <span class="arithmatex">\(O(1)\)</span>。验证：<code>[0,0,2,1]</code> 在 <span class="arithmatex">\(i=0, d=1\)</span> 命中 0；<code>[0,1,2,0]</code> 在 <span class="arithmatex">\(i=0, d=3\)</span> 命中 0。</p>
+<p>两个方案都对，方案 A 更短更直观，方案 B 用上面的计数论证换掉了集合空间。</p>
 <h2 id="complexity">复杂度 (Complexity)<a class="headerlink" href="#complexity" title="Permanent link">#</a></h2>
 <ul>
-<li>Time: <span class="arithmatex">\(O(n)\)</span></li>
-<li>Space: <span class="arithmatex">\(O(n)\)</span> for set；方案 B 可降为 <span class="arithmatex">\(O(1)\)</span>。</li>
+<li>Time: <span class="arithmatex">\(O(n)\)</span>（两个方案皆是）</li>
+<li>Space: 方案 A 用集合，<span class="arithmatex">\(O(n)\)</span>；方案 B 仅查固定邻居，<span class="arithmatex">\(O(1)\)</span>。</li>
 </ul>
 <h2 id="pitfalls">陷阱 (Pitfalls)<a class="headerlink" href="#pitfalls" title="Permanent link">#</a></h2>
 <ul>
-<li>题面保证存在唯一的 <span class="arithmatex">\(n\)</span>-重复值，不需考虑 ambiguity。</li>
-<li>用 set 即可，不需要 dict 计频。</li>
+<li><strong>方案 B 的间隔集合必须是 <span class="arithmatex">\(\{1,2,3\}\)</span>，不能只查 <span class="arithmatex">\(\{2,3\}\)</span>。</strong> 两次出现可能相邻（间距 1），如 <code>[0,0,2,1]</code>、<code>[1,0,0,2]</code>；漏掉间距 1 会对这类输入返回错误。上界 3 来自上面的计数论证（<span class="arithmatex">\(n=2\)</span> 时紧），不是凭空给的常数。</li>
+<li>题面保证恰有一个 <span class="arithmatex">\(n\)</span>-重复值，无歧义。正是这条保证让方案 A 的循环可以省去末尾的兜底返回——第一次碰撞必中答案。</li>
+<li>用 <code>set</code> 即可，不需要 <code>dict</code> 计频：形式化已说明只要"第一对相等元素"，统计完整频次是多余的。</li>
 </ul>
 <h2 id="related">相关题目 (Related)<a class="headerlink" href="#related" title="Permanent link">#</a></h2>
 <ul>
@@ -22606,6 +22717,8 @@
         <script src="../../../js/mathjax/tex-mml-chtml.js"></script>
       
         <script src="../../../js/mermaid.min.js"></script>
+      
+        <script src="../../../js/featured.js"></script>
       
     
   </body>

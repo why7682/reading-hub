@@ -1466,6 +1466,8 @@
       
         
       
+        
+      
     
     
     
@@ -1521,6 +1523,34 @@
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../featured/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ⭐ Featured（已验证）
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
               
             
               
@@ -1610,10 +1640,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_4" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
         
           
-          <label class="md-nav__link" for="__nav_4_4" id="__nav_4_4_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_5" id="__nav_4_5_label" tabindex="">
             
   
   
@@ -1631,8 +1661,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_4_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_4">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_5">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1915,7 +1945,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -1937,14 +1967,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_4_5" id="__nav_4_5_label" tabindex="">
+              <label class="md-nav__link " for="__nav_4_6" id="__nav_4_6_label" tabindex="">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_5">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_6">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -5321,10 +5351,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_7" checked>
         
           
-          <label class="md-nav__link" for="__nav_4_6" id="__nav_4_6_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_7" id="__nav_4_7_label" tabindex="">
             
   
   
@@ -5342,8 +5372,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_4_6">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_7_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4_7">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -22467,26 +22497,37 @@
 <h2 id="problem">Problem<a class="headerlink" href="#problem" title="Permanent link">#</a></h2>
 <p><code>Triangle(x, y, z)</code>，每行三条线段长度。判定能否组成三角形（"Yes"/"No"）。</p>
 <h2 id="background">背景 (Background)<a class="headerlink" href="#background" title="Permanent link">#</a></h2>
-<p><strong>三角形不等式</strong>（任两边和 &gt; 第三边）的 SQL 判定。和欧几里得几何中三角形存在条件直接对应。</p>
+<p>先看一个一定不行的行：边长 <span class="arithmatex">\((13, 15, 30)\)</span>。两条短边加起来是 <span class="arithmatex">\(13+15=28\)</span>，比第三条边 <span class="arithmatex">\(30\)</span> 还短。把这两条短边首尾接在 <span class="arithmatex">\(30\)</span> 这条边的两端，它们伸长到极限也碰不到一起——中间差了 <span class="arithmatex">\(2\)</span> 的缺口，三条边围不成一个闭合图形。</p>
+<p>这个观察直接给出判定的方向：每一条边都不能长到让另外两条边"够不着"。<span class="arithmatex">\((13, 15, 30)\)</span> 之所以失败，是因为最长边 <span class="arithmatex">\(30\)</span> 超过了另外两条边之和。把它写成一个待验证的条件：</p>
+<div class="arithmatex">\[x + y &gt; z.\]</div>
+<p>朴素的想法到此为止：只检查最长边，看它是否小于另外两条之和。</p>
 <h2 id="formulation">形式化 (Formulation)<a class="headerlink" href="#formulation" title="Permanent link">#</a></h2>
-<p>可构成三角形 <span class="arithmatex">\(\iff x + y &gt; z \land y + z &gt; x \land x + z &gt; y\)</span>。</p>
+<p>朴素条件在哪里不够？把它当成判据，考虑这一行 <span class="arithmatex">\((10, 1, 1)\)</span>。按"只看一条"来查 <span class="arithmatex">\(x + y &gt; z\)</span>，即 <span class="arithmatex">\(10 + 1 = 11 &gt; 1\)</span>，成立，于是判 Yes。但这显然不是三角形：两条长度为 <span class="arithmatex">\(1\)</span> 的边加起来才 <span class="arithmatex">\(2\)</span>，根本搭不到长度为 <span class="arithmatex">\(10\)</span> 的边的两端。</p>
+<p>失败的根源是：我们只验了"<span class="arithmatex">\(z\)</span> 不太长"，却没验"<span class="arithmatex">\(x\)</span> 不太长"。三条边的角色是对称的，每一条都可能是那条过长的边。要堵住所有情况，三个方向都得查：</p>
+<div class="arithmatex">\[\text{可构成三角形} \iff x + y &gt; z \;\land\; y + z &gt; x \;\land\; x + z &gt; y.\]</div>
+<p>其中 <span class="arithmatex">\(x, y, z\)</span> 为正整数边长。这三个不等式合起来等价于"最长边严格小于另外两边之和"——但写成对称的三条，就不必先排序找出最长边，SQL 里可以直接逐行求值。</p>
+<p>为什么是严格 <span class="arithmatex">\(&gt;\)</span> 而不是 <span class="arithmatex">\(\ge\)</span>？等号对应退化三角形：三点共线、面积为零的极限情形。例如 <span class="arithmatex">\((3, 4, 7)\)</span> 满足 <span class="arithmatex">\(3 + 4 = 7\)</span>，两条短边恰好拉直成一条线段，盖在第三边上，围出的"三角形"面积为零。<span class="arithmatex">\(\ge\)</span> 会错误接纳这种情况，严格 <span class="arithmatex">\(&gt;\)</span> 才能把它排除。边界条件由不等式的严格性直接承担，不需要额外补丁。</p>
 <h2 id="approach">数据结构 / 想法 (Approach)<a class="headerlink" href="#approach" title="Permanent link">#</a></h2>
+<p>形式化给出的是一个逐行成立或不成立的布尔条件，每行独立、互不影响。它不是一个过滤条件——我们不想删掉任何行，而是要让每一行保留下来并附上一个 'Yes'/'No' 标签。<code>WHERE</code> 会滤掉行，<code>CASE WHEN</code> 则在保留行的同时按条件赋值，正是所需。把上面的三条不等式原样填进 <code>CASE</code> 的判定即可：</p>
 <div class="language-sql highlight"><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="p">,</span><span class="w"> </span><span class="n">z</span><span class="p">,</span>
 <span class="w">       </span><span class="k">CASE</span><span class="w"> </span><span class="k">WHEN</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="n">z</span><span class="w"> </span><span class="k">AND</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">z</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="k">AND</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">z</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="n">y</span>
 <span class="w">            </span><span class="k">THEN</span><span class="w"> </span><span class="s1">&#39;Yes&#39;</span><span class="w"> </span><span class="k">ELSE</span><span class="w"> </span><span class="s1">&#39;No&#39;</span><span class="w"> </span><span class="k">END</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">triangle</span>
 <span class="k">FROM</span><span class="w"> </span><span class="n">Triangle</span><span class="p">;</span>
 </code></pre></div>
-<p><strong>Trace</strong>:
-- (13,15,30): 13+15=28 &lt; 30 → No ✓
-- (10,20,15): 10+20=30&gt;15, 20+15=35&gt;10, 10+15=25&gt;20 → Yes ✓</p>
+<p>逐行验证形式化：</p>
+<ul>
+<li><span class="arithmatex">\((13, 15, 30)\)</span>：<span class="arithmatex">\(13+15=28 &lt; 30\)</span>，第一条不等式已失败 → No ✓</li>
+<li><span class="arithmatex">\((10, 20, 15)\)</span>：<span class="arithmatex">\(10+20=30&gt;15\)</span>，<span class="arithmatex">\(20+15=35&gt;10\)</span>，<span class="arithmatex">\(10+15=25&gt;20\)</span>，三条全过 → Yes ✓</li>
+</ul>
 <h2 id="complexity">复杂度 (Complexity)<a class="headerlink" href="#complexity" title="Permanent link">#</a></h2>
 <ul>
-<li>Time: <span class="arithmatex">\(O(n)\)</span></li>
+<li>Time: <span class="arithmatex">\(O(n)\)</span>——单次全表扫描，每行做 <span class="arithmatex">\(O(1)\)</span> 次 <code>CASE</code> 求值，最好/平均/最坏均为 <span class="arithmatex">\(O(n)\)</span>。</li>
+<li>Space: <span class="arithmatex">\(O(1)\)</span> 辅助空间（输出之外不需额外存储）。</li>
 </ul>
 <h2 id="pitfalls">陷阱 (Pitfalls)<a class="headerlink" href="#pitfalls" title="Permanent link">#</a></h2>
 <ul>
-<li><strong>退化三角形</strong>：边长加等于第三边（共线）不算合法——严格 <code>&gt;</code>。本题用严格大于。</li>
-<li><strong>三个条件都要查</strong>：只查一个会通过 (1, 1, 10000)。</li>
+<li><strong>三个条件缺一不可</strong>：只查一个会让 <span class="arithmatex">\((1, 1, 10000)\)</span> 蒙混过关。这一行里 <span class="arithmatex">\(y+z=10001&gt;1=x\)</span> 和 <span class="arithmatex">\(x+z=10001&gt;1=y\)</span> 都成立，唯有 <span class="arithmatex">\(x+y=2 \not&gt; 10000=z\)</span> 失败；若只查后两条之一就会错判 Yes。三条不等式分别堵住"<span class="arithmatex">\(x\)</span> 过长 / <span class="arithmatex">\(y\)</span> 过长 / <span class="arithmatex">\(z\)</span> 过长"三种失败，互不替代。</li>
+<li><strong>退化三角形用严格大于</strong>：等号（如 <span class="arithmatex">\(3+4=7\)</span>）对应三点共线、面积为零的退化情形，不是合法三角形。判定必须用 <code>&gt;</code>，用 <code>&gt;=</code> 会错误接纳。</li>
 </ul>
 <h2 id="related">相关题目 (Related)<a class="headerlink" href="#related" title="Permanent link">#</a></h2>
 <ul>
@@ -22601,6 +22642,8 @@
         <script src="../../../js/mathjax/tex-mml-chtml.js"></script>
       
         <script src="../../../js/mermaid.min.js"></script>
+      
+        <script src="../../../js/featured.js"></script>
       
     
   </body>

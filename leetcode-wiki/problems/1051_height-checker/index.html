@@ -1466,6 +1466,8 @@
       
         
       
+        
+      
     
     
     
@@ -1521,6 +1523,34 @@
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../featured/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ⭐ Featured（已验证）
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
               
             
               
@@ -1610,10 +1640,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_4" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
         
           
-          <label class="md-nav__link" for="__nav_4_4" id="__nav_4_4_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_5" id="__nav_4_5_label" tabindex="">
             
   
   
@@ -1631,8 +1661,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_4_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_4">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_5">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1915,7 +1945,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -1937,14 +1967,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_4_5" id="__nav_4_5_label" tabindex="">
+              <label class="md-nav__link " for="__nav_4_6" id="__nav_4_6_label" tabindex="">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_5">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_6">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -5321,10 +5351,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_7" checked>
         
           
-          <label class="md-nav__link" for="__nav_4_6" id="__nav_4_6_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_7" id="__nav_4_7_label" tabindex="">
             
   
   
@@ -5342,8 +5372,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_4_6">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_7_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4_7">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -22467,25 +22497,33 @@
 <h2 id="problem">Problem<a class="headerlink" href="#problem" title="Permanent link">#</a></h2>
 <p>数组 <code>heights</code> 表示当前队伍中每人的身高，目标是非递减排列 <code>expected</code>。返回 <code>heights[i] != expected[i]</code> 的下标数。<span class="arithmatex">\(1 \leq n \leq 100\)</span>，<span class="arithmatex">\(1 \leq h_i \leq 100\)</span>。</p>
 <h2 id="background">背景 (Background)<a class="headerlink" href="#background" title="Permanent link">#</a></h2>
-<p>本题是基础"排序后比较"题。值域 <span class="arithmatex">\(\leq 100\)</span> 时可用<strong>计数排序</strong>做到 <span class="arithmatex">\(O(n + V)\)</span>（CLRS §8.2），但 <span class="arithmatex">\(n \leq 100\)</span> 下纯 <span class="arithmatex">\(O(n \log n)\)</span> 排序无差别。</p>
+<p>题目问"有多少人站错了位置"，但并未直接给出 <code>expected</code>——它只说目标是非递减排列。于是第一个要解决的不是计数，而是"站错"这个词究竟指什么。在 <code>expected</code> 缺席时，naive 的想法是就地判断：扫描相邻对，凡是 <code>heights[i] &gt; heights[i+1]</code> 的就算一处错位，累加即可，无需任何额外数组。</p>
+<p>这个想法在第一个不单调的样例上就崩。取 <code>[5,1,2,3,4]</code>：相邻逆序只有 <code>(5,1)</code> 一处，naive 计数给出 1。但正确排列是 <code>[1,2,3,4,5]</code>，逐位比较发现五个位置全不对，答案是 5。一个 <code>5</code> 排在队首，把后面每个人都顶到了错误的下标上，可"相邻逆序"只数到了它制造的第一道台阶。错位是相对全局目标序列而言的整体性质，相邻关系只能看见局部，必然漏数。</p>
+<p>崩溃点指明了修复方向：要数"站错"，必须先有一个明确的、对每个下标都定义好的参照序列，再逐位比对。naive 之所以失败，正是因为它试图绕过这个参照序列。</p>
 <h2 id="formulation">形式化 (Formulation)<a class="headerlink" href="#formulation" title="Permanent link">#</a></h2>
-<p>设 <span class="arithmatex">\(h \in \mathbb{Z}^n\)</span>，令 <span class="arithmatex">\(h^\uparrow\)</span> 为升序排列。求 <span class="arithmatex">\(\#\{i : h[i] \neq h^\uparrow[i]\}\)</span>。</p>
+<p>参照序列必须唯一，逐位比较才有意义。身高是整数，整数上的"非递减排列"在允许重复的意义下唯一确定：把多重集 <span class="arithmatex">\(\{h[0], \dots, h[n-1]\}\)</span> 按值从小到大铺开，每个位置放哪个值没有自由度。记这个唯一的升序序列为 <span class="arithmatex">\(h^\uparrow\)</span>。"第 <span class="arithmatex">\(i\)</span> 个人站错位置"于是有了精确含义——他当前的身高 <span class="arithmatex">\(h[i]\)</span> 不等于目标序列在该位置要求的身高 <span class="arithmatex">\(h^\uparrow[i]\)</span>。</p>
+<p>设 <span class="arithmatex">\(h \in \mathbb{Z}^n\)</span>，令 <span class="arithmatex">\(h^\uparrow\)</span> 为其唯一的非递减排列。所求为</p>
+<div class="arithmatex">\[\#\{\, i : h[i] \neq h^\uparrow[i] \,\}.\]</div>
+<p>这个公式就是解法的脊柱：它把"站错"还原为两个等长序列的逐位不等计数，naive 缺的正是右侧那个 <span class="arithmatex">\(h^\uparrow[i]\)</span>。注意比较的是<strong>值</strong>而非身份——若两人身高相同，他们互换不算错位，因为 <span class="arithmatex">\(h^\uparrow\)</span> 在那两个位置上的值相等，逐位比较自动忽略这种交换。</p>
 <h2 id="approach">数据结构 / 想法 (Approach)<a class="headerlink" href="#approach" title="Permanent link">#</a></h2>
-<p>排序一份副本，逐位比较。</p>
+<p>公式直接翻译成算法：构造 <span class="arithmatex">\(h^\uparrow\)</span>，然后数 <span class="arithmatex">\(h\)</span> 与 <span class="arithmatex">\(h^\uparrow\)</span> 逐位不等的个数。构造 <span class="arithmatex">\(h^\uparrow\)</span> 即对一份<strong>副本</strong>排序——副本而非原数组，因为公式右侧要 <span class="arithmatex">\(h[i]\)</span>、左侧的参照要 <span class="arithmatex">\(h^\uparrow[i]\)</span>，两者必须同时在场。</p>
 <div class="language-python highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">Solution</span><span class="p">:</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">heightChecker</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">heights</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
         <span class="n">expected</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">heights</span><span class="p">)</span>
         <span class="k">return</span> <span class="nb">sum</span><span class="p">(</span><span class="n">a</span> <span class="o">!=</span> <span class="n">b</span> <span class="k">for</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">heights</span><span class="p">,</span> <span class="n">expected</span><span class="p">))</span>
 </code></pre></div>
-<p><strong>手动 trace 样例 1</strong>：<code>[1,1,4,2,1,3]</code> → <code>[1,1,1,2,3,4]</code>，第 2,4,5 位不等，共 3。✓</p>
+<p><code>sorted</code> 返回新列表，原 <code>heights</code> 保持不动；<code>zip</code> 把两序列对齐，逐位求不等之和即公式的计数。</p>
+<p><strong>手动 trace 样例 1</strong>：<code>[1,1,4,2,1,3]</code> → <code>[1,1,1,2,3,4]</code>，第 2,4,5 位（0-based）不等，共 3。✓ 三个 <code>1</code> 的内部交换不计入，正因比较的是值。</p>
+<p>值域 <span class="arithmatex">\(V \leq 100\)</span> 给了第二条构造 <span class="arithmatex">\(h^\uparrow\)</span> 的路：计数排序用一个长度 <span class="arithmatex">\(V\)</span> 的频次数组，按值复原升序序列，把排序降到 <span class="arithmatex">\(O(n + V)\)</span>（CLRS §8.2）。它产出的 <span class="arithmatex">\(h^\uparrow\)</span> 与 <code>sorted</code> 完全相同，只是构造代价不同；在 <span class="arithmatex">\(n \leq 100\)</span> 下两者实测无差别，故上面用更短的比较排序版。</p>
 <h2 id="complexity">复杂度 (Complexity)<a class="headerlink" href="#complexity" title="Permanent link">#</a></h2>
 <ul>
-<li>Time: <span class="arithmatex">\(O(n \log n)\)</span>；计数排序版 <span class="arithmatex">\(O(n + V)\)</span>。</li>
-<li>Space: <span class="arithmatex">\(O(n)\)</span>。</li>
+<li>Time: <span class="arithmatex">\(O(n \log n)\)</span>；计数排序构造 <span class="arithmatex">\(h^\uparrow\)</span> 的版本为 <span class="arithmatex">\(O(n + V)\)</span>。</li>
+<li>Space: <span class="arithmatex">\(O(n)\)</span>，用于副本 <span class="arithmatex">\(h^\uparrow\)</span>。</li>
 </ul>
 <h2 id="pitfalls">陷阱 (Pitfalls)<a class="headerlink" href="#pitfalls" title="Permanent link">#</a></h2>
 <ul>
-<li>别原地排序后再比——会破坏原数组。</li>
+<li>别在原数组上就地排序再比。公式需要 <span class="arithmatex">\(h[i]\)</span> 和 <span class="arithmatex">\(h^\uparrow[i]\)</span> 同时在场，原数组承载着"当前状态"这一边；就地排序会用 <span class="arithmatex">\(h^\uparrow\)</span> 覆盖 <span class="arithmatex">\(h\)</span>，比较的两边坍缩成同一个序列，结果恒为 0。</li>
+<li>别用相邻逆序代替逐位比较（即背景里崩掉的 naive）——它只看局部，会漏数被全局移位顶错的人。</li>
 </ul>
 <h2 id="related">相关题目 (Related)<a class="headerlink" href="#related" title="Permanent link">#</a></h2>
 <ul>
@@ -22600,6 +22638,8 @@
         <script src="../../../js/mathjax/tex-mml-chtml.js"></script>
       
         <script src="../../../js/mermaid.min.js"></script>
+      
+        <script src="../../../js/featured.js"></script>
       
     
   </body>

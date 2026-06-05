@@ -1466,6 +1466,8 @@
       
         
       
+        
+      
     
     
     
@@ -1521,6 +1523,34 @@
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../featured/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ⭐ Featured（已验证）
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
               
             
               
@@ -1610,10 +1640,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_4" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
         
           
-          <label class="md-nav__link" for="__nav_4_4" id="__nav_4_4_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_5" id="__nav_4_5_label" tabindex="">
             
   
   
@@ -1631,8 +1661,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_4_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_4">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_5">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1915,7 +1945,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -1937,14 +1967,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_4_5" id="__nav_4_5_label" tabindex="">
+              <label class="md-nav__link " for="__nav_4_6" id="__nav_4_6_label" tabindex="">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_5">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_6">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -5321,10 +5351,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_7" checked>
         
           
-          <label class="md-nav__link" for="__nav_4_6" id="__nav_4_6_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_7" id="__nav_4_7_label" tabindex="">
             
   
   
@@ -5342,8 +5372,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_4_6">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_7_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4_7">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -22467,17 +22497,31 @@
 <h2 id="problem">Problem<a class="headerlink" href="#problem" title="Permanent link">#</a></h2>
 <p>给定 <span class="arithmatex">\(a, b, c \in [0, 100]\)</span>（<span class="arithmatex">\(a + b + c &gt; 0\)</span>）。构造尽可能长的字符串 <span class="arithmatex">\(s\)</span>，仅含 <code>'a','b','c'</code>，每个字符出现次数分别 <span class="arithmatex">\(\leq a, b, c\)</span>，且不含 <code>"aaa"</code>, <code>"bbb"</code>, <code>"ccc"</code>（连续三同字符）。返回任一最长解；不存在返回 <code>""</code>。</p>
 <h2 id="background">背景 (Background)<a class="headerlink" href="#background" title="Permanent link">#</a></h2>
-<p>经典 <strong>贪心 + 优先队列</strong> 题，与 #621 <em>Task Scheduler</em>、#767 <em>Reorganize String</em> 同族。<strong>直觉</strong>：每次取当前剩余次数最多的字符放——但若连续两次都放同一字符且还想再放，必须中断让位给次多者，否则破坏"不超 3 连"约束。</p>
-<p>数学上，可证明若贪心局部最优（每次放数最大、避免 3 连）成立，则全局最优。原因：交换论证——任何最优解中相邻同字符可至多 2 个，且最大数量类别应优先消耗，避免最后剩余无法插入。</p>
-<h2 id="formulation">形式化 (Formulation)<a class="headerlink" href="#formulation" title="Permanent link">#</a></h2>
-<p>求 <span class="arithmatex">\(s \in \{a, b, c\}^*\)</span>，<span class="arithmatex">\(|s_a| \leq a, |s_b| \leq b, |s_c| \leq c\)</span>，无 3 连同字符子串，最大化 <span class="arithmatex">\(|s|\)</span>。</p>
-<h2 id="approach">数据结构 / 想法 (Approach)<a class="headerlink" href="#approach" title="Permanent link">#</a></h2>
-<p><strong>最大堆 + 局部约束</strong>：维护 <span class="arithmatex">\((\text{-count}, \text{char})\)</span> 三元组的最大堆（Python 用负数模拟）。每步：</p>
+<p>先试最朴素的想法：每一步都追加一个当前剩余次数最多的字符。这个规则单独看是合理的——优先消耗最稀缺的"空间"。但它会撞墙。</p>
+<p>取 <span class="arithmatex">\(a=1, b=1, c=7\)</span>。按"每步放一个最多者"逐步执行：先放 <code>c</code>，再放 <code>c</code>，此时末尾已是 <code>cc</code>，再放 <code>c</code> 就违规，于是被迫放次多者；可问题是这条规则没有"末尾两连就让位"的判断，它仍只看"谁最多"。即便加上"末尾两连则放次多者"的修补，朴素版每次只放 1 个，也会过早耗尽 <code>a</code> 和 <code>b</code> 这两个分隔符，最后剩下一堆 <code>c</code> 无处安放：</p>
+<div class="language-text highlight"><pre><span></span><code>c c a c c b c c | 还剩 1 个 c，但末尾是 cc，且没有非 c 字符可插入 —— 卡死
+</code></pre></div>
+<p>失败的根源不在"取最多者"这一步，而在于<strong>它没有把约束的结构用尽</strong>。约束是"不超过 2 连"，等价说：每放 2 个同字符，就必须用 1 个<strong>不同</strong>字符把它们隔开。剩余次数最大的那个字符，正是最可能在结尾被孤立、无处插入的字符——因为插入它需要旁边有别的字符当分隔符，而分隔符总会先被耗光。</p>
+<p>这给出两条必须从结构中导出的修正规则：</p>
 <ol>
-<li>取堆顶 <span class="arithmatex">\((c_1, \text{ch}_1)\)</span>。</li>
-<li>若末尾两字符都是 <span class="arithmatex">\(\text{ch}_1\)</span>：取次大 <span class="arithmatex">\((c_2, \text{ch}_2)\)</span>；若没有次大，结束。放 <span class="arithmatex">\(\text{ch}_2\)</span> 一次，减 1，推回。</li>
-<li>否则放 <span class="arithmatex">\(\text{ch}_1\)</span> 一次（数量充足时可放 2 次以最大化输出），减相应数。</li>
+<li><strong>末尾两连时让位</strong>：若末尾两个字符相同，本步不能再放它，必须放次多者（这一步只放 1 个）。</li>
+<li><strong>平时尽量放 2 个</strong>：若末尾不与待放字符相同，且该字符剩余 <span class="arithmatex">\(\geq 2\)</span>，就放 2 个。配额不可再生——少放的 1 个无法在后面补回，而多放 1 个总是合法（放完仍只有 2 连），故能放 2 就放 2。</li>
 </ol>
+<p>下面把目标形式化，再说明为何"每步取剩余最多且不与末尾两连冲突的字符"恰好是把 <span class="arithmatex">\(|s|\)</span> 推到最大的步进选择。</p>
+<h2 id="formulation">形式化 (Formulation)<a class="headerlink" href="#formulation" title="Permanent link">#</a></h2>
+<p>设 <span class="arithmatex">\(s \in \{a, b, c\}^*\)</span>，记 <span class="arithmatex">\(|s_x|\)</span> 为字符 <span class="arithmatex">\(x\)</span> 在 <span class="arithmatex">\(s\)</span> 中的出现次数。求</p>
+<div class="arithmatex">\[\max\ |s| \quad \text{s.t.}\quad |s_a| \leq a,\ |s_b| \leq b,\ |s_c| \leq c,\ \text{且 } s \text{ 无 3 连同字符子串.}\]</div>
+<p><strong>贪心准则（从目标导出）</strong>：在每一步，已构造的前缀末尾两位确定了"哪个字符这一步禁放"。在所有当前可放（剩余 <span class="arithmatex">\(&gt;0\)</span> 且不会构成 3 连）的字符里，放剩余次数最多者；若它本身被末尾两连禁掉，则放剩余次数次多者。</p>
+<p>为什么是这个准则？目标是最大化总放置数；总放置数受限于分隔符是否够用。剩余最多的字符 <span class="arithmatex">\(m\)</span> 对分隔符的需求最大：放 <span class="arithmatex">\(k\)</span> 个 <span class="arithmatex">\(m\)</span> 至少要 <span class="arithmatex">\(\lceil k/2 \rceil - 1\)</span> 个非 <span class="arithmatex">\(m\)</span> 字符做分隔（每隔 2 个插 1 个）。若推迟消耗 <span class="arithmatex">\(m\)</span>，到末尾 <span class="arithmatex">\(m\)</span> 的占比只会更高，更难被安插。因此"优先消耗当前最大者"在每一步都保住了最多的剩余可插入余量——这正是把 <span class="arithmatex">\(|s|\)</span> 推到最大的步进选择。该贪心的全局最优性可由交换论证严格建立（见 Further Reading 中 Kleinberg &amp; Tardos §4）。</p>
+<p>这条准则也给出<strong>终止条件</strong>：当末尾两连、堆顶字符被禁，而没有次多者时，堆里剩下的全是同一种（即被禁的那种）字符——再放任何一个都是 3 连，故只能停止。</p>
+<h2 id="approach">数据结构 / 想法 (Approach)<a class="headerlink" href="#approach" title="Permanent link">#</a></h2>
+<p>准则要求"每步取剩余最多（或次多）者"，这就是最大堆的语义：维护 <span class="arithmatex">\((\text{-count}, \text{char})\)</span> 的最大堆（Python 用负数在最小堆上模拟）。堆里至多 3 个元素。每一步：</p>
+<ol>
+<li>弹出堆顶 <span class="arithmatex">\((c_1, \text{ch}_1)\)</span>，即当前剩余最多者。</li>
+<li>若末尾两字符都是 <span class="arithmatex">\(\text{ch}_1\)</span>（放它会 3 连）：弹出次多者 <span class="arithmatex">\((c_2, \text{ch}_2)\)</span>；若没有次多者，按终止条件结束。放 <span class="arithmatex">\(\text{ch}_2\)</span> 一次，减 1 后推回，再把 <span class="arithmatex">\(\text{ch}_1\)</span> 原样推回。</li>
+<li>否则放 <span class="arithmatex">\(\text{ch}_1\)</span>：剩余 <span class="arithmatex">\(\geq 2\)</span> 时放 2 个以最大化输出，但若末尾恰好已是一个 <span class="arithmatex">\(\text{ch}_1\)</span>，则只能放 1 个（否则连同末尾凑成 3 连）。减相应数量后推回。</li>
+</ol>
+<p>第 3 步里"<span class="arithmatex">\(\text{res}[-1] \neq \text{ch}_1\)</span> 才能放 2 个"这一判断不可省：若上一步刚放过 1 个 <span class="arithmatex">\(\text{ch}_1\)</span>，本步再放 2 个就是 3 连。</p>
 <div class="language-python highlight"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">heapq</span>
 
 <span class="k">class</span><span class="w"> </span><span class="nc">Solution</span><span class="p">:</span>
@@ -22516,14 +22560,15 @@
         <span class="k">return</span> <span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">res</span><span class="p">)</span>
 </code></pre></div>
 <p>样例验证：
-- <code>a=1,b=1,c=7</code>. heap: [(-7,'c'),(-1,'a'),(-1,'b')] (heap 顺序由 tie-break 决定，这里取 c 先). 
+- <code>a=1,b=1,c=7</code>. heap: [(-7,'c'),(-1,'a'),(-1,'b')]（堆序由 tie-break 决定，这里 <code>c</code> 先出）。
   - 取 c, last='', take=2, res="cc", cnt=5. heap [-5,c],[-1,a],[-1,b].
-  - 取 c, last="cc" (res[-1]==res[-2]==c=ch1), 取次大 a. res="cca", a=0. push c back.
+  - 取 c, last="cc"（res[-1]==res[-2]==c=ch1）, 取次多者 a. res="cca", a=0. push c back.
   - 取 c, last='a' ≠ c, take=2, res="ccacc", c=3. push c back.
-  - 取 c, last="cc", swap → 取 b. res="ccaccb", b=0. push c back.
+  - 取 c, last="cc", 让位 → 取 b. res="ccaccb", b=0. push c back.
   - 取 c, last='b', take=2, res="ccaccbcc", c=1. push c back.
-  - 取 c, last="cc", 取次大——heap 现仅 c, 没有次大，break. 输出 "ccaccbcc" ✓.
-- <code>a=7,b=1,c=0</code>. heap [-7,a],[-1,b]. 取 a take=2 → res="aa", a=5. push back. 取 a last="aa", swap b. res="aab", b=0. push a. 取 a last='b', take=2, res="aabaa", a=3. push a. 取 a last="aa" swap——heap 只剩 a, break. 输出 "aabaa" ✓.</p>
+  - 取 c, last="cc", 求次多者——堆里只剩 c, 无次多者, 触发终止条件 break. 输出 "ccaccbcc" ✓.
+- <code>a=7,b=1,c=0</code>. heap [-7,a],[-1,b]. 取 a take=2 → res="aa", a=5. push back. 取 a last="aa", 让位 b. res="aab", b=0. push a. 取 a last='b', take=2, res="aabaa", a=3. push a. 取 a last="aa" 让位——堆只剩 a, 触发终止 break. 输出 "aabaa" ✓.</p>
+<p>第一个样例还印证了背景里的分隔符计数：7 个 <code>c</code> 想全放下需要 <span class="arithmatex">\(\lceil 7/2 \rceil - 1 = 3\)</span> 个非 <code>c</code> 分隔符，但只有 <span class="arithmatex">\(a+b=2\)</span> 个；2 个分隔符最多隔出 <code>cc?cc?cc</code> 即 6 个 <code>c</code>，剩 1 个 <code>c</code> 无处可插。故最长 <span class="arithmatex">\(= \underbrace{2}_{\text{分隔符}} + \underbrace{6}_{\text{可放 c}} = 8\)</span>，而非朴素上界 <span class="arithmatex">\(a+b+c=9\)</span>。</p>
 <h2 id="complexity">复杂度 (Complexity)<a class="headerlink" href="#complexity" title="Permanent link">#</a></h2>
 <ul>
 <li>Time: <span class="arithmatex">\(O(a + b + c)\)</span>（每次循环输出 <span class="arithmatex">\(\geq 1\)</span> 字符，堆操作 <span class="arithmatex">\(O(\log 3) = O(1)\)</span>）</li>
@@ -22531,16 +22576,16 @@
 </ul>
 <h2 id="pitfalls">陷阱 (Pitfalls)<a class="headerlink" href="#pitfalls" title="Permanent link">#</a></h2>
 <ul>
-<li><strong>末尾两同字时</strong>必须 swap 而非"放但只放 1"——因为已经两个了，再放就 3 连。</li>
+<li><strong>末尾两同字时</strong>必须切换至次多字符，而非"放但只放 1 个"——已经两连了，再放它就是 3 连。</li>
 <li>决定 <code>take=2</code> 时还要检查 <strong><code>res[-1] != ch1</code></strong>，否则若上一步刚放了 1 个 ch1，再放 2 个会成 3 连。</li>
-<li>"次大不存在" 必须终止；继续放 ch1 必产生 3 连。</li>
-<li>经常被误算："a=1, b=1, c=7" 上界为 9 (=1+1+7) 但只能输出 8——因为放 7 个 c 至少需要 <span class="arithmatex">\(\lceil 7/2 \rceil - 1 = 3\)</span> 个非 c 字符做分隔（cc?cc?cc?c 模式），而非 c 只有 2 个；故最长 = <span class="arithmatex">\(2 + 2 \times (2 + 1) = 8\)</span>。</li>
+<li>"次多者不存在"必须终止：此时堆里只剩被禁的那种字符，继续放必产生 3 连。</li>
+<li>别用朴素上界 <span class="arithmatex">\(a+b+c\)</span> 估答案。受分隔符约束，剩余最多的字符未必全放得下：<code>a=1,b=1,c=7</code> 上界 9，实际只能 8，因为 7 个 <code>c</code> 需要 3 个分隔符而只有 2 个，最多放下 6 个 <code>c</code>。</li>
 </ul>
 <h2 id="related">相关题目 (Related)<a class="headerlink" href="#related" title="Permanent link">#</a></h2>
 <ul>
 <li><a href="../1415_the-k-th-lexicographical-string-of-all-happy-strings-of-length-n/">#1415. The k-th Lexicographical String of All Happy Strings of Length n</a> — 同 batch，"happy" 串定义类似。</li>
-<li><code>#621 Task Scheduler (off-wiki)</code> — 同模式，CPU 任务调度。</li>
-<li><code>#767 Reorganize String (off-wiki)</code> — 完全同模式的一般字母表版。</li>
+<li><code>#621 Task Scheduler (off-wiki)</code> — 相同结构：同一目标函数（最大化放置数）与同型约束（同元素不可过密），故同一贪心 + 堆策略适用。</li>
+<li><code>#767 Reorganize String (off-wiki)</code> — 一般字母表上的"不许相邻同字符"版本，是本题约束（不许 3 连）的更严格变体，可由同一推导得出。</li>
 </ul>
 <h2 id="further-reading">Further Reading<a class="headerlink" href="#further-reading" title="Permanent link">#</a></h2>
 <ul>
@@ -22652,6 +22697,8 @@
         <script src="../../../js/mathjax/tex-mml-chtml.js"></script>
       
         <script src="../../../js/mermaid.min.js"></script>
+      
+        <script src="../../../js/featured.js"></script>
       
     
   </body>

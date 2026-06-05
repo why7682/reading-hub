@@ -1466,6 +1466,8 @@
       
         
       
+        
+      
     
     
     
@@ -1521,6 +1523,34 @@
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../featured/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ⭐ Featured（已验证）
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
               
             
               
@@ -1610,10 +1640,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_4" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
         
           
-          <label class="md-nav__link" for="__nav_4_4" id="__nav_4_4_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_5" id="__nav_4_5_label" tabindex="">
             
   
   
@@ -1631,8 +1661,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_4_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_4">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_5">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1915,7 +1945,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -1937,14 +1967,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_4_5" id="__nav_4_5_label" tabindex="">
+              <label class="md-nav__link " for="__nav_4_6" id="__nav_4_6_label" tabindex="">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_5">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_6">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -5321,10 +5351,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_7" checked>
         
           
-          <label class="md-nav__link" for="__nav_4_6" id="__nav_4_6_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_7" id="__nav_4_7_label" tabindex="">
             
   
   
@@ -5342,8 +5372,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_4_6">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_7_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4_7">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -22467,32 +22497,61 @@
 <h2 id="problem">Problem<a class="headerlink" href="#problem" title="Permanent link">#</a></h2>
 <p>给两整数 <span class="arithmatex">\(x, y \in [0, 2^{31}-1]\)</span>，返回其 Hamming 距离（不同位的位置数）。</p>
 <h2 id="_1">背景<a class="headerlink" href="#_1" title="Permanent link">#</a></h2>
-<p><strong>Hamming 距离</strong> 由 Richard Hamming (1950, "Error detecting and error correcting codes", <em>Bell System Tech. J.</em>) 提出，是编码理论 (coding theory) 的最基础度量。它在 <span class="arithmatex">\(\{0,1\}^n\)</span> 上诱导一个度量（满足三角不等式），由此构成的 metric space 是线性码 (linear codes)、汉明界 (Hamming bound)、汉明球 (Hamming sphere)、纠错码 (BCH / Reed–Solomon) 的全部出发点。</p>
-<p>工程应用：CRC / 校验和 / 错误检测、机器学习中的 binary feature distance、DNA SNP 距离、感知哈希 (perceptual hash) 比较。</p>
+<p>先把问题摆清楚，再回头看它从哪来。我们要数的，是 <span class="arithmatex">\(x\)</span> 和 <span class="arithmatex">\(y\)</span> 的二进制写法中<strong>有多少个位置上的比特不一致</strong>。这就是全部的任务，下面的所有推导都从这一句出发。</p>
+<p>直接照定义做：把两个数都看成 32 位的比特串，逐位对齐，每遇到一个不相等的位置就计数加一。这一定正确，但它要求我们能把"比较第 <span class="arithmatex">\(i\)</span> 位"这件事做得既准又快。先建立对"两位何时不同"的直觉，再把它写成公式，最后从公式推出实现。</p>
 <h2 id="_2">形式化<a class="headerlink" href="#_2" title="Permanent link">#</a></h2>
-<div class="arithmatex">\[d_H(x, y) = \#\{i : x_i \neq y_i\} = \text{popcount}(x \oplus y).\]</div>
-<p>其中 <span class="arithmatex">\(x_i\)</span> 是 <span class="arithmatex">\(x\)</span> 第 <span class="arithmatex">\(i\)</span> 位，<span class="arithmatex">\(\text{popcount}\)</span> 数 1 的个数。</p>
+<p><strong>直觉</strong>：两个比特相同时它们的异或是 <span class="arithmatex">\(0\)</span>，不同时是 <span class="arithmatex">\(1\)</span>。穷举四种输入即可看清：<span class="arithmatex">\(0 \oplus 0 = 0\)</span>，<span class="arithmatex">\(1 \oplus 1 = 0\)</span>，<span class="arithmatex">\(0 \oplus 1 = 1\)</span>，<span class="arithmatex">\(1 \oplus 0 = 1\)</span>。于是 <span class="arithmatex">\(a \oplus b = 1\)</span> 当且仅当 <span class="arithmatex">\(a \neq b\)</span>。换言之，异或恰好在"两位不同"的位置上点亮一个 <span class="arithmatex">\(1\)</span>，在相同的位置上留下 <span class="arithmatex">\(0\)</span>。</p>
+<p>记 <span class="arithmatex">\(x_i\)</span> 为 <span class="arithmatex">\(x\)</span> 的第 <span class="arithmatex">\(i\)</span> 位，<span class="arithmatex">\(y_i\)</span> 为 <span class="arithmatex">\(y\)</span> 的第 <span class="arithmatex">\(i\)</span> 位。Hamming 距离的定义就是不一致位的计数：</p>
+<div class="arithmatex">\[d_H(x, y) = \#\{i : x_i \neq y_i\}. \tag{1}\]</div>
+<p>把上面的逐位直觉代入：位置 <span class="arithmatex">\(i\)</span> 满足 <span class="arithmatex">\(x_i \neq y_i\)</span>，当且仅当 <span class="arithmatex">\((x \oplus y)_i = 1\)</span>。所以"数不一致的位"就等于"数 <span class="arithmatex">\(x \oplus y\)</span> 中 <span class="arithmatex">\(1\)</span> 的个数"。引入 <span class="arithmatex">\(\text{popcount}(z)\)</span> 表示 <span class="arithmatex">\(z\)</span> 的二进制中 <span class="arithmatex">\(1\)</span> 的个数，(1) 立即化为</p>
+<div class="arithmatex">\[d_H(x, y) = \text{popcount}(x \oplus y). \tag{2}\]</div>
+<p>(2) 把整道题拆成两步互不纠缠的计算：(i) 求 <span class="arithmatex">\(z = x \oplus y\)</span>，这是单条机器指令；(ii) 返回 <span class="arithmatex">\(\text{popcount}(z)\)</span>。第一步已无可优化，于是问题完全收缩为一个子问题——<strong>如何高效计算 popcount</strong>。下面所有的实现讨论都挂在这一句上。</p>
 <h2 id="_3">数据结构 / 想法<a class="headerlink" href="#_3" title="Permanent link">#</a></h2>
-<p><strong>核心</strong>：异或后数 1 即可。
+<p>(2) 把任务变成"数 <span class="arithmatex">\(z = x \oplus y\)</span> 里有几个 <span class="arithmatex">\(1\)</span>"。最朴素的做法直接照搬定义里的"逐位"：</p>
+<div class="language-python highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">popcount_naive</span><span class="p">(</span><span class="n">z</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+    <span class="n">count</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">32</span><span class="p">):</span>          <span class="c1"># 固定 32 个位置</span>
+        <span class="n">count</span> <span class="o">+=</span> <span class="n">z</span> <span class="o">&amp;</span> <span class="mi">1</span>           <span class="c1"># 取最低位</span>
+        <span class="n">z</span> <span class="o">&gt;&gt;=</span> <span class="mi">1</span>                  <span class="c1"># 右移，看下一位</span>
+    <span class="k">return</span> <span class="n">count</span>
+</code></pre></div>
+<p>它正确，复杂度 <span class="arithmatex">\(O(w)\)</span>（<span class="arithmatex">\(w\)</span> 为字长，这里 <span class="arithmatex">\(32\)</span>）。但浪费很明显：无论 <span class="arithmatex">\(z\)</span> 里有几个 <span class="arithmatex">\(1\)</span>，它都要走满 <span class="arithmatex">\(32\)</span> 轮。若 <span class="arithmatex">\(z = 8 = 1000_2\)</span> 只有一个 <span class="arithmatex">\(1\)</span>，它仍空转 <span class="arithmatex">\(31\)</span> 次去检查那些注定是 <span class="arithmatex">\(0\)</span> 的位。一个自然的问题随之而来：<strong>能不能让循环次数只取决于 <span class="arithmatex">\(1\)</span> 的个数，而不是字长？</strong></p>
+<p><strong>Kernighan 法</strong>正面回答了这个问题。它的核心是一个恒等式：对任意 <span class="arithmatex">\(z \neq 0\)</span>，</p>
+<div class="arithmatex">\[z \mathbin{\&amp;} (z - 1) \quad\text{恰好把 } z \text{ 的最低位 } 1 \text{ 清成 } 0,\ \text{其余位不变.} \tag{3}\]</div>
+<p>为什么 (3) 成立？设 <span class="arithmatex">\(z\)</span> 的最低位 <span class="arithmatex">\(1\)</span> 在第 <span class="arithmatex">\(k\)</span> 位，则 <span class="arithmatex">\(z\)</span> 的低 <span class="arithmatex">\(k\)</span> 位全是 <span class="arithmatex">\(0\)</span>。减 <span class="arithmatex">\(1\)</span> 时借位只波及到第 <span class="arithmatex">\(k\)</span> 位：<span class="arithmatex">\(z-1\)</span> 把第 <span class="arithmatex">\(k\)</span> 位由 <span class="arithmatex">\(1\)</span> 变 <span class="arithmatex">\(0\)</span>，并把更低的 <span class="arithmatex">\(k\)</span> 位全置 <span class="arithmatex">\(1\)</span>，而第 <span class="arithmatex">\(k\)</span> 位以上完全不动。于是 <span class="arithmatex">\(z\)</span> 与 <span class="arithmatex">\(z-1\)</span> 在第 <span class="arithmatex">\(k\)</span> 位及以下处处相反、在更高位处处相同，按位与之后高位原样保留、第 <span class="arithmatex">\(k\)</span> 位及以下全部归零——正好抹掉了那个最低的 <span class="arithmatex">\(1\)</span>。</p>
+<p>把 (3) 放进循环，每执行一次就消灭一个 <span class="arithmatex">\(1\)</span>，到 <span class="arithmatex">\(z = 0\)</span> 为止：</p>
+<div class="language-python highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">popcount_kernighan</span><span class="p">(</span><span class="n">z</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+    <span class="n">count</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">while</span> <span class="n">z</span><span class="p">:</span>
+        <span class="n">z</span> <span class="o">&amp;=</span> <span class="n">z</span> <span class="o">-</span> <span class="mi">1</span>               <span class="c1"># 清掉最低位 1</span>
+        <span class="n">count</span> <span class="o">+=</span> <span class="mi">1</span>
+    <span class="k">return</span> <span class="n">count</span>
+</code></pre></div>
+<p><strong>不变量</strong>：每轮循环开始时，<code>count</code> 等于已经清掉的 <span class="arithmatex">\(1\)</span> 的个数，<code>z</code> 中剩余的 <span class="arithmatex">\(1\)</span> 等于尚未计数的个数。两者之和恒为初始 popcount，循环在 <code>z == 0</code>（无剩余 <span class="arithmatex">\(1\)</span>）时终止，故 <code>count</code> 给出正确答案。循环次数恰为 <span class="arithmatex">\(1\)</span> 的个数，复杂度 <span class="arithmatex">\(O(\text{popcount}(z))\)</span>——稀疏输入上比朴素法快得多。</p>
+<p>到这里逻辑已经完整，工程上还能更进一步。把这些方法按"用什么换速度"排成一列：</p>
+<ol>
+<li><strong>Kernighan 法</strong>（上）：循环次数 = <span class="arithmatex">\(1\)</span> 的个数，<span class="arithmatex">\(O(\text{popcount})\)</span>，无需额外空间，适合 <span class="arithmatex">\(1\)</span> 稀疏的输入。</li>
+<li><strong>查表法</strong>（lookup table）：预存 <span class="arithmatex">\(256\)</span> 个字节的 popcount，把 <span class="arithmatex">\(32\)</span> 位拆成 <span class="arithmatex">\(4\)</span> 个字节查 <span class="arithmatex">\(4\)</span> 次再相加。用 <span class="arithmatex">\(O(1)\)</span> 时间换一张表的空间，常数较大但与 <span class="arithmatex">\(1\)</span> 的密度无关。</li>
+<li><strong>硬件 / 内置</strong>：现代 CPU 直接提供单条 popcount 指令（x86 <code>POPCNT</code>，AMD K10+ / Intel Nehalem+ 起支持），单周期完成。语言层暴露为 <code>(x ^ y).bit_count()</code>（Python 3.10+）、<code>Long.bitCount</code>（Java）、<code>__builtin_popcount</code>（GCC）。这是实战首选。</li>
+<li><strong>SWAR</strong>（SIMD Within A Register）：在没有 popcount 指令的平台上，用一个寄存器并行地把相邻的比特字段两两相加——先两两、再四四、再八八地做"字段内并行求和"，<span class="arithmatex">\(\log_2 w\)</span> 步内把所有 <span class="arithmatex">\(1\)</span> 累加到一起，全程无分支。经典的 "11 步" 实现见 Hacker's Delight；它正是查表法之外、纯算术达到 <span class="arithmatex">\(O(1)\)</span> 的途径。</li>
+</ol>
+<p>最终落到题目本身，直接调内置 popcount 即可，一行写出 (2)：</p>
 <div class="language-python highlight"><pre><span></span><code><span class="k">return</span> <span class="nb">bin</span><span class="p">(</span><span class="n">x</span> <span class="o">^</span> <span class="n">y</span><span class="p">)</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="s1">&#39;1&#39;</span><span class="p">)</span>
 <span class="c1"># 或 Python 3.10+: (x ^ y).bit_count()</span>
-</code></pre></div></p>
-<p><strong>popcount 实现的三档</strong>：
-1. <strong>Kernighan's trick</strong> <code>n &amp;= n-1</code> 每次清最低位 1，循环次数 = 位数。<span class="arithmatex">\(O(\text{popcount})\)</span>。
-2. <strong>查表</strong> (lookup table)：预存 256 个字节的 popcount，分 4 字节查 4 次合并。<span class="arithmatex">\(O(1)\)</span> 但常数大。
-3. <strong>硬件 / 内置</strong>：<code>__builtin_popcount</code> (GCC)、<code>Long.bitCount</code> (Java)、<code>bit_count</code> (Py 3.10)、<code>POPCNT</code> x86 指令（AMD K10+, Intel Nehalem+）。<span class="arithmatex">\(O(1)\)</span> 单周期。
-4. <strong>SWAR</strong> (SIMD Within A Register)：经典 "11 步" 不带跳转的 trick，参 Hacker's Delight。</p>
-<p><strong>不变量</strong> (Kernighan)：循环开始时 <code>n</code> 中剩余 1 的个数 = 已计数次数。<strong>正确性</strong>：<code>n &amp; (n-1)</code> 恰好清掉 <code>n</code> 的最低位 1（因为 <code>n-1</code> 把最低位 1 变 0，更低位全变 1）。</p>
+</code></pre></div>
+<p><code>bin(x ^ y)</code> 给出形如 <code>'0b101'</code> 的字符串，<code>.count('1')</code> 数其中的 <span class="arithmatex">\(1\)</span>；前缀 <code>0b</code> 不含 <span class="arithmatex">\(1\)</span>，不影响结果。</p>
+<p>有了这条从定义到实现的链条，再看 Hamming 距离的来历就有了着落。它由 Richard Hamming (1950, "Error detecting and error correcting codes", <em>Bell System Tech. J.</em>) 提出，是编码理论 (coding theory) 最基础的度量。<span class="arithmatex">\(d_H\)</span> 在 <span class="arithmatex">\(\{0,1\}^n\)</span> 上是一个真正的度量：非负、对称、满足三角不等式。正因如此，<span class="arithmatex">\(\{0,1\}^n\)</span> 连同 <span class="arithmatex">\(d_H\)</span> 构成一个 metric space——线性码 (linear codes)、汉明界 (Hamming bound)、汉明球 (Hamming sphere)、纠错码 (BCH / Reed–Solomon) 都从这个度量空间出发。工程上它出现在 CRC / 校验和的错误检测、机器学习的 binary feature distance、DNA SNP 距离、感知哈希 (perceptual hash) 比较等场景。</p>
 <h2 id="_4">复杂度<a class="headerlink" href="#_4" title="Permanent link">#</a></h2>
 <ul>
-<li>Time: <span class="arithmatex">\(O(1)\)</span> 实际（位长固定 32）；理论 <span class="arithmatex">\(O(w)\)</span> 与字长成正比。</li>
-<li>Space: <span class="arithmatex">\(O(1)\)</span>。</li>
+<li>Time: <span class="arithmatex">\(O(1)\)</span> 实际（位长固定 <span class="arithmatex">\(32\)</span>，无论哪种实现都是常数步）；理论上朴素法与查表/硬件法分别是 <span class="arithmatex">\(O(w)\)</span> 与 <span class="arithmatex">\(O(w/8)\)</span> 或 <span class="arithmatex">\(O(1)\)</span>，Kernighan 法是 <span class="arithmatex">\(O(\text{popcount})\)</span>。</li>
+<li>Space: <span class="arithmatex">\(O(1)\)</span>（查表法额外 <span class="arithmatex">\(O(256)\)</span> 的常数表）。</li>
 </ul>
 <h2 id="_5">陷阱<a class="headerlink" href="#_5" title="Permanent link">#</a></h2>
+<p>边界与实现细节，承接上面的推导：</p>
 <ul>
-<li>Python <code>bin(n)</code> 不带前缀 <code>0b</code>？—— <code>bin(5) == '0b101'</code>，故 <code>.count('1')</code> 直接计数即可。</li>
-<li>负数：本题约束 <span class="arithmatex">\(x, y \ge 0\)</span>，不必关心 two's complement。</li>
-<li>题目同 #2220 "Minimum Bit Flips to Convert Number"。</li>
+<li><strong><code>bin(n)</code> 的前缀</strong>：Python 的 <code>bin(5)</code> 返回 <code>'0b101'</code>，前缀 <code>0b</code> 不含字符 <code>'1'</code>，故 <code>.count('1')</code> 可直接计数，无需手动剥前缀。</li>
+<li><strong>负数与补码</strong>：本题约束 <span class="arithmatex">\(x, y \ge 0\)</span>，不必处理 two's complement 下的符号位；若放开到负数，需先约定固定字长再 popcount。</li>
+<li><strong>等价问题</strong>：本题与 #2220 "Minimum Bit Flips to Convert Number" 完全等价——把 <span class="arithmatex">\(x\)</span> 变成 <span class="arithmatex">\(y\)</span> 所需的最少翻位数，正是 <span class="arithmatex">\(\text{popcount}(x \oplus y) = d_H(x, y)\)</span>。</li>
 </ul>
 <h2 id="_6">相关题目<a class="headerlink" href="#_6" title="Permanent link">#</a></h2>
 <ul>
@@ -22611,6 +22670,8 @@
         <script src="../../../js/mathjax/tex-mml-chtml.js"></script>
       
         <script src="../../../js/mermaid.min.js"></script>
+      
+        <script src="../../../js/featured.js"></script>
       
     
   </body>

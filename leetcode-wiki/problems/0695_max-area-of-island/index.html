@@ -1466,6 +1466,8 @@
       
         
       
+        
+      
     
     
     
@@ -1521,6 +1523,34 @@
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../featured/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ⭐ Featured（已验证）
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
               
             
               
@@ -1610,10 +1640,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_4" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
         
           
-          <label class="md-nav__link" for="__nav_4_4" id="__nav_4_4_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_5" id="__nav_4_5_label" tabindex="">
             
   
   
@@ -1631,8 +1661,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_4_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_4">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_5">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1915,7 +1945,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -1937,14 +1967,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_4_5" id="__nav_4_5_label" tabindex="">
+              <label class="md-nav__link " for="__nav_4_6" id="__nav_4_6_label" tabindex="">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_5">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_6">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -5321,10 +5351,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_7" checked>
         
           
-          <label class="md-nav__link" for="__nav_4_6" id="__nav_4_6_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_7" id="__nav_4_7_label" tabindex="">
             
   
   
@@ -5342,8 +5372,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_4_6">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_7_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4_7">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -22467,13 +22497,20 @@
 <h2 id="problem">Problem<a class="headerlink" href="#problem" title="Permanent link">#</a></h2>
 <p>给定 <span class="arithmatex">\(m \times n\)</span> 的 0/1 网格。1 表示陆地，4 连通定义岛屿。求最大岛屿面积（1 的格数）；若无岛屿返回 0。<span class="arithmatex">\(1 \le m, n \le 50\)</span>。</p>
 <h2 id="background">背景 (Background)<a class="headerlink" href="#background" title="Permanent link">#</a></h2>
-<p>这是 <strong>connected components</strong> 在网格图上的经典题。网格图是平面图的一种特殊子图，分量计算可以用 DFS/BFS（<span class="arithmatex">\(O(mn)\)</span>）或 Union-Find（<span class="arithmatex">\(O(mn \cdot \alpha)\)</span>）。它是 image processing 中 <strong>flood fill</strong> 与 connected component labeling 的算法对应物，也是 [#200 Number of Islands] 的"面积版"。</p>
+<p>从网格本身出发想这道题。任取一个值为 1 的格子，它向上下左右四个方向中凡是也为 1 的相邻格子，都与它"属于同一块陆地"；这些邻居的邻居同样如此。于是从一个起点格子出发，能够只经由相邻陆地格子走到的所有格子，构成一个岛屿。题目要的，是所有这样的格子集合中最大的一个的大小。</p>
+<p>这个描述把问题归约成一个纯粹的可达性问题：哪些 1 格子彼此可达，以及最大的一组可达 1 格子有多大。可达关系由网格自身的 4 邻接结构定义，不需要引入任何外部概念。下面先把"可达"形式化，再从这个形式化推导出算法。</p>
 <h2 id="formulation">形式化 (Formulation)<a class="headerlink" href="#formulation" title="Permanent link">#</a></h2>
-<p>定义图 <span class="arithmatex">\(G = (V, E)\)</span>，<span class="arithmatex">\(V = \{(i, j) : g_{ij} = 1\}\)</span>，<span class="arithmatex">\(E = \{((i,j),(i',j')) : g_{i'j'} = 1, |i-i'| + |j-j'| = 1\}\)</span>。求 <span class="arithmatex">\(G\)</span> 中最大连通分量的节点数。</p>
+<p><strong>直觉</strong>：两个陆地格子属于同一岛屿，当且仅当能从其一只踩相邻陆地格子（横向或纵向）走到另一个。岛屿就是这种相互可达关系下的一个等价类，问题即求最大等价类的大小。</p>
+<p>把这层直觉写成图。设 <span class="arithmatex">\(g_{ij}\)</span> 为第 <span class="arithmatex">\(i\)</span> 行第 <span class="arithmatex">\(j\)</span> 列的网格值。定义图 <span class="arithmatex">\(G = (V, E)\)</span>：</p>
+<div class="arithmatex">\[V = \{(i, j) : g_{ij} = 1\}, \qquad E = \{((i,j),(i',j')) : g_{i'j'} = 1,\ |i-i'| + |j-j'| = 1\}. \tag{1}\]</div>
+<p>节点是陆地格子，边连接 4 邻接的两块陆地。一个岛屿恰好是 <span class="arithmatex">\(G\)</span> 的一个连通分量：分量内任意两格相互可达，分量间不可达。记 <span class="arithmatex">\(\mathcal{C}(G)\)</span> 为 <span class="arithmatex">\(G\)</span> 的连通分量集合，所求即</p>
+<div class="arithmatex">\[\max_{C \in \mathcal{C}(G)} |C|. \tag{2}\]</div>
+<p>至此问题已是图论标准量：求最大连通分量的节点数。任何能枚举出一个分量全部节点的图遍历都能解 <span class="arithmatex">\((2)\)</span>——下一节就从这一点展开。</p>
 <h2 id="approach">数据结构 / 想法 (Approach)<a class="headerlink" href="#approach" title="Permanent link">#</a></h2>
-<p><strong>解法 1（DFS）</strong>：扫描每个 1 单元，若未访问则 DFS 整个连通块累加面积。访问可用"原地标记为 0"省 visited 数组。</p>
-<p><strong>解法 2（BFS）</strong>：与 DFS 同复杂度，队列代替递归，更安全（不会爆栈）。</p>
-<p><strong>解法 3（Union-Find）</strong>：把每个 1 与右、下邻居 union，最终用 size 数组取最大。代码量更长，但适合 multi-query 或离线动态版本。</p>
+<p><strong>先看朴素尝试在哪里断。</strong> 式 <span class="arithmatex">\((2)\)</span> 要求我们枚举每个分量并取最大。最直接的想法：外层逐格扫描，遇到一个 1 就数出它所在岛屿的大小。但"数出它所在岛屿"本身就需要沿着边走遍整个分量——不沿邻接边走，根本无法判断哪些格子和它同属一岛。所以数岛屿大小这一步，绕不开一次从该格出发的遍历。</p>
+<p><strong>遍历会重复计数，这是第二个断点。</strong> 假设我们对一个分量做遍历：从起点格子出发，访问它的 4 个邻居，再访问邻居的邻居。若不做任何记录，遍历会在分量内反复横跳——格子 <span class="arithmatex">\(a\)</span> 访问邻居 <span class="arithmatex">\(b\)</span>，<span class="arithmatex">\(b\)</span> 又把 <span class="arithmatex">\(a\)</span> 当作邻居访问回来，永不终止；即便终止，同一格也被重复计入面积。修正办法直接来自这个失败：每访问一格就把它标记为"已访问"，base case 里遇到已访问格子立即返回 0。这样每格在一次遍历里至多被计一次。</p>
+<p><strong>用 visited 数组，还是原地标记？</strong> 标准做法是开一个与网格同形的 <code>visited</code> 布尔矩阵。但观察基准检查的结构：遍历在遇到 0 时返回 0（0 不是陆地，不可走）；而我们想让"已访问的 1"也被同样对待。于是把访问过的格子直接由 1 改写成 0，就让"已访问"和"非陆地"复用了同一个判断分支——无需额外矩阵。这一改写还顺带解决了外层扫描的全局正确性：一个格子一旦被某次遍历清零，外层循环再扫到它时 <span class="arithmatex">\(g_{ij}=0\)</span>，不会从它重启第二次遍历，因此每个分量恰好被枚举一次。</p>
+<p>把以上推导合成一个过程：外层扫描每个格子，遇到仍为 1 的格子就从它发起一次深度优先遍历，遍历沿 4 邻接边递归、逐格清零并累加面积，返回该分量大小；全程取最大值即式 <span class="arithmatex">\((2)\)</span>。</p>
 <div class="language-python highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">Solution</span><span class="p">:</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">maxAreaOfIsland</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">grid</span><span class="p">):</span>
         <span class="n">m</span><span class="p">,</span> <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">grid</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">grid</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
@@ -22491,24 +22528,26 @@
                     <span class="n">best</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">best</span><span class="p">,</span> <span class="n">dfs</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">))</span>
         <span class="k">return</span> <span class="n">best</span>
 </code></pre></div>
-<p>样例 2 trace：全 0 网格 → 主循环不进入 dfs → 返回 0。✓</p>
-<p>样例 1：13 列 8 行示例的最大岛屿为 6。每次扫到新的 1 启动一次 DFS 染色，最终 best = 6。✓</p>
+<p>代码逐行对应推导：<code>dfs</code> 的第一行是 base case，把越界、非陆地、已清零三种情况合并返回 0；<code>grid[i][j] = 0</code> 是原地标记；<code>1 + 四向递归</code> 累加当前格与四个方向的分量贡献；外层 <code>if grid[i][j] == 1</code> 保证每个分量只发起一次遍历。</p>
+<p>两个边界 trace 验证逻辑：全 0 网格下，外层循环对每格都见 <span class="arithmatex">\(g_{ij}=0\)</span>，从不进入 <code>dfs</code>，<code>best</code> 保持初值 0，返回 0。官方示例 1 的 <span class="arithmatex">\(8 \times 13\)</span> 网格含多个岛屿，最大者 6 格——每扫到新的 1 发起一次清零遍历，逐分量比较后 <code>best = 6</code>。</p>
+<p><strong>BFS 变体</strong>：把递归换成显式队列，同复杂度，且不依赖调用栈，消除大网格上的栈溢出风险。式 <span class="arithmatex">\((2)\)</span> 与遍历方式无关，只要能枚举出一个分量的全部节点即可，因此 DFS 与 BFS 可互换。</p>
+<p><strong>Union-Find 变体</strong>：把每个 1 与其右、下邻居 union，最后用 size 数组取最大。它需要明显更多的实现代码，单次查询并不占优。它的价值在于摊还：DFS/BFS 每来一次新查询都要重新遍历整个网格，而 Union-Find 把分量信息维护在并查集里，多次查询或在线动态加点（逐格插入并合并）时，每步操作摊还近 <span class="arithmatex">\(O(1)\)</span>，总代价被均摊掉。</p>
 <h2 id="complexity">复杂度 (Complexity)<a class="headerlink" href="#complexity" title="Permanent link">#</a></h2>
 <ul>
-<li>Time: <span class="arithmatex">\(O(mn)\)</span>，每个单元被外层遍历 + DFS 至多 1 次访问。</li>
-<li>Space: <span class="arithmatex">\(O(mn)\)</span> 最坏（蛇形岛屿的递归栈）；BFS 队列也是 <span class="arithmatex">\(O(mn)\)</span>。</li>
-<li>不修改输入时需 <span class="arithmatex">\(O(mn)\)</span> visited 矩阵。</li>
+<li>Time: <span class="arithmatex">\(O(mn)\)</span>。关键是论证每格至多被访问一次。外层循环触碰每格一次（<span class="arithmatex">\(O(mn)\)</span>）。<code>dfs</code> 进入一格时立即把它清零，此后任何路径再到达该格都在 base case 返回；由于清零是全局的（改写的是共享的 <code>grid</code>，非某次调用的局部状态），跨所有 <code>dfs</code> 调用每格只被真正展开一次。故遍历总展开次数 <span class="arithmatex">\(O(mn)\)</span>，每次产生常数个邻居调用。</li>
+<li>Space: <span class="arithmatex">\(O(mn)\)</span> 最坏。蛇形岛屿（一条贯穿整个网格的 1 通道）使递归深度可达 <span class="arithmatex">\(mn\)</span>，栈空间 <span class="arithmatex">\(O(mn)\)</span>；BFS 队列同阶。</li>
+<li>不修改输入时需额外 <span class="arithmatex">\(O(mn)\)</span> 的 visited 矩阵代替原地标记。</li>
 </ul>
 <h2 id="pitfalls">陷阱 (Pitfalls)<a class="headerlink" href="#pitfalls" title="Permanent link">#</a></h2>
 <ul>
 <li>"原地标记"会修改输入，若题目调用者复用 grid 需先 deep-copy。</li>
-<li>Python 递归 <span class="arithmatex">\(50 \times 50 = 2500\)</span>，可能超默认 1000，需 <code>sys.setrecursionlimit(10000)</code> 或换 BFS。</li>
-<li>4 连通：不要把 8 连通误用，斜对角不算邻居。</li>
-<li>空岛屿 / 全 0 网格 → 返回 0 而非 -∞。</li>
+<li>Python 递归深度上限默认 1000，而 <span class="arithmatex">\(50 \times 50\)</span> 蛇形岛屿的递归路径深可达 2500，会触发 <code>RecursionError</code>，需 <code>sys.setrecursionlimit(10000)</code> 或改用 BFS。</li>
+<li>4 连通：不要把 8 连通误用，斜对角不算邻居（对角相邻的两个 1 在 4 连通下是两个岛屿，面积各为 1）。</li>
+<li>空岛屿 / 全 0 网格 → <code>best</code> 初值为 0，返回 0 而非 <span class="arithmatex">\(-\infty\)</span>。</li>
 </ul>
 <h2 id="related">相关题目 (Related)<a class="headerlink" href="#related" title="Permanent link">#</a></h2>
 <ul>
-<li><a href="../0733_flood-fill/">#0733 Flood Fill</a> — 本批 4 连通染色姊妹题。</li>
+<li><a href="../0733_flood-fill/">#0733 Flood Fill</a> — 本批 4 连通染色直接变体。</li>
 <li><a href="../0839_similar-string-groups/">#0839 Similar String Groups</a> — 连通分量在非网格图上的应用。</li>
 <li><code>#Number of Islands (Medium) (off-wiki)</code> — 数岛屿数量而非求最大面积。</li>
 </ul>
@@ -22622,6 +22661,8 @@
         <script src="../../../js/mathjax/tex-mml-chtml.js"></script>
       
         <script src="../../../js/mermaid.min.js"></script>
+      
+        <script src="../../../js/featured.js"></script>
       
     
   </body>

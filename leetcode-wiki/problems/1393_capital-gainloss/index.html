@@ -1466,6 +1466,8 @@
       
         
       
+        
+      
     
     
     
@@ -1521,6 +1523,34 @@
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../featured/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ⭐ Featured（已验证）
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
               
             
               
@@ -1610,10 +1640,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_4" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
         
           
-          <label class="md-nav__link" for="__nav_4_4" id="__nav_4_4_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_5" id="__nav_4_5_label" tabindex="">
             
   
   
@@ -1631,8 +1661,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_4_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_4">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_5">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1915,7 +1945,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -1937,14 +1967,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_4_5" id="__nav_4_5_label" tabindex="">
+              <label class="md-nav__link " for="__nav_4_6" id="__nav_4_6_label" tabindex="">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_5">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_6">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -5321,10 +5351,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_7" checked>
         
           
-          <label class="md-nav__link" for="__nav_4_6" id="__nav_4_6_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_7" id="__nav_4_7_label" tabindex="">
             
   
   
@@ -5342,8 +5372,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_4_6">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_7_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4_7">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -22467,30 +22497,61 @@
 <h2 id="problem">Problem<a class="headerlink" href="#problem" title="Permanent link">#</a></h2>
 <p><code>Stocks(stock_name, operation, operation_day, price)</code>，<code>operation ∈ {'Buy','Sell'}</code>。报告每个股票的总盈亏 = <span class="arithmatex">\(\sum \text{Sell.price} - \sum \text{Buy.price}\)</span>。任意顺序输出。</p>
 <h2 id="background">背景 (Background)<a class="headerlink" href="#background" title="Permanent link">#</a></h2>
-<p><strong>带符号聚合 / 条件求和</strong> 的 SQL 模板：用 <code>CASE</code> 把 Buy 当成负、Sell 当成正，再 <code>SUM</code> 一次到位。这种"加权符号汇总"在财务、资金流、净流量分析中非常常见。</p>
-<p>题目保证 Buy 与 Sell 配对（先 Buy 后 Sell，反之亦然），但<strong>计算只关心总和的差</strong>，不必匹配每对 (Buy, Sell) → 极简。</p>
+<p>每一行记录一次买入或卖出，金额是 <code>price</code>。某只股票的盈亏，就是它所有卖出额之和减去所有买入额之和。最直接的读法是把这两个和分别算出来，再相减。</p>
+<p>先按这个直接读法写。对每个 <code>stock_name</code>，需要两个量：卖出额的和、买入额的和。条件聚合最朴素的写法是各跑一遍，再把两个结果对齐相减：</p>
+<div class="language-sql highlight"><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="n">s</span><span class="p">.</span><span class="n">stock_name</span><span class="p">,</span><span class="w"> </span><span class="n">sell_total</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">buy_total</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">capital_gain_loss</span>
+<span class="k">FROM</span>
+<span class="w">  </span><span class="p">(</span><span class="k">SELECT</span><span class="w"> </span><span class="n">stock_name</span><span class="p">,</span><span class="w"> </span><span class="k">SUM</span><span class="p">(</span><span class="n">price</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">sell_total</span>
+<span class="w">   </span><span class="k">FROM</span><span class="w"> </span><span class="n">Stocks</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="k">operation</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;Sell&#39;</span><span class="w"> </span><span class="k">GROUP</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">stock_name</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">s</span>
+<span class="k">JOIN</span>
+<span class="w">  </span><span class="p">(</span><span class="k">SELECT</span><span class="w"> </span><span class="n">stock_name</span><span class="p">,</span><span class="w"> </span><span class="k">SUM</span><span class="p">(</span><span class="n">price</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">buy_total</span>
+<span class="w">   </span><span class="k">FROM</span><span class="w"> </span><span class="n">Stocks</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="k">operation</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;Buy&#39;</span><span class="w">  </span><span class="k">GROUP</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">stock_name</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">b</span>
+<span class="k">ON</span><span class="w"> </span><span class="n">s</span><span class="p">.</span><span class="n">stock_name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">b</span><span class="p">.</span><span class="n">stock_name</span><span class="p">;</span>
+</code></pre></div>
+<p>这段是对的，但代价明显：扫了两遍表，聚合做了两次，还要靠一次 <code>JOIN</code> 把两个分组结果按 <code>stock_name</code> 对齐。更糟的是这个 <code>JOIN</code> 隐含了一个错误前提——它要求每只股票既有买入又有卖出。<code>INNER JOIN</code> 会丢掉只买未卖（或只卖未买）的股票；那些股票本该有盈亏值，却整行消失。要修就得退到 <code>FULL OUTER JOIN</code> 加 <code>COALESCE</code> 补 <code>NULL</code>，进一步把查询撑大。</p>
+<p>问题出在哪里：我们把"卖出额"和"买入额"当成两个独立的量分头算，于是被迫在最后用 <code>JOIN</code> 把它们缝回同一只股票。但盈亏是单一的量，本不需要这种拆分。下面从盈亏的代数结构出发，把两遍合成一遍。</p>
 <h2 id="formulation">形式化 (Formulation)<a class="headerlink" href="#formulation" title="Permanent link">#</a></h2>
-<p>对每个 <code>stock_name</code>，输出 <span class="arithmatex">\(\sum_{op=Sell} p - \sum_{op=Buy} p\)</span>。</p>
+<p>观察盈亏的算式本身。某只股票 <span class="arithmatex">\(s\)</span> 的盈亏是</p>
+<div class="arithmatex">\[
+\text{gain}(s) \;=\; \underbrace{\sum_{i:\,op_i=\text{Sell}} p_i}_{\text{卖出额}} \;-\; \underbrace{\sum_{i:\,op_i=\text{Buy}} p_i}_{\text{买入额}},
+\]</div>
+<p>其中 <span class="arithmatex">\(i\)</span> 遍历股票 <span class="arithmatex">\(s\)</span> 的所有记录行，<span class="arithmatex">\(p_i\)</span> 是第 <span class="arithmatex">\(i\)</span> 行的 <code>price</code>，<span class="arithmatex">\(op_i\)</span> 是第 <span class="arithmatex">\(i\)</span> 行的 <code>operation</code>。</p>
+<p>减去一个和，等于加上每一项的相反数：<span class="arithmatex">\(\;-\sum_{i:\,op_i=\text{Buy}} p_i = \sum_{i:\,op_i=\text{Buy}} (-p_i)\)</span>。两个求和此时遍历的是不相交的行集合（每行的 <code>operation</code> 非 <code>Buy</code> 即 <code>Sell</code>），并集恰好是 <span class="arithmatex">\(s\)</span> 的全部行。于是可以合并成对全部行的一次求和：</p>
+<div class="arithmatex">\[
+\text{gain}(s) \;=\; \sum_{i} \sigma(op_i)\cdot p_i,
+\qquad
+\sigma(op) =
+\begin{cases}
++1, &amp; op = \text{Sell},\\
+-1, &amp; op = \text{Buy}.
+\end{cases}
+\tag{$\star$}
+\]</div>
+<p><span class="arithmatex">\((\star)\)</span> 是这道题的脊。它把"两个分头算的和"改写成"对每一行贴一个符号 <span class="arithmatex">\(\sigma(op_i)\)</span> 后的单一求和"——每行的符号完全由它自己的 <code>operation</code> 列决定，与其他行无关。一次扫描即可。</p>
+<p>这同时说明了为什么不必匹配每一对 (Buy, Sell)：加法满足交换律与结合律，<span class="arithmatex">\((p_{S_1}+p_{S_2}+\cdots) - (p_{B_1}+p_{B_2}+\cdots)\)</span> 的值与哪一笔卖出对应哪一笔买入无关，只取决于两组金额各自的和。题目给出的买卖配对保证，对本计算没有影响。</p>
 <h2 id="approach">数据结构 / 想法 (Approach)<a class="headerlink" href="#approach" title="Permanent link">#</a></h2>
+<p><span class="arithmatex">\((\star)\)</span> 直接翻译成 SQL：符号函数 <span class="arithmatex">\(\sigma\)</span> 就是 <code>CASE WHEN operation = 'Sell' THEN price ELSE -price END</code>（<code>ELSE</code> 分支对应唯一的另一种取值 <code>Buy</code>，取负），外层一个 <code>SUM</code> 完成 <span class="arithmatex">\(\sum_i \sigma(op_i) p_i\)</span>，<code>GROUP BY stock_name</code> 把求和限定在每只股票内。</p>
 <div class="language-sql highlight"><pre><span></span><code><span class="k">SELECT</span>
 <span class="w">    </span><span class="n">stock_name</span><span class="p">,</span>
 <span class="w">    </span><span class="k">SUM</span><span class="p">(</span><span class="k">CASE</span><span class="w"> </span><span class="k">WHEN</span><span class="w"> </span><span class="k">operation</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;Sell&#39;</span><span class="w"> </span><span class="k">THEN</span><span class="w"> </span><span class="n">price</span><span class="w"> </span><span class="k">ELSE</span><span class="w"> </span><span class="o">-</span><span class="n">price</span><span class="w"> </span><span class="k">END</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">capital_gain_loss</span>
 <span class="k">FROM</span><span class="w"> </span><span class="n">Stocks</span>
 <span class="k">GROUP</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">stock_name</span><span class="p">;</span>
 </code></pre></div>
-<p>样例验证：
-- Leetcode: Sell 9000 - Buy 1000 = 8000 ✓
-- Handbags: Sell 7000 - Buy 30000 = -23000 ✓
-- Corona Masks: (1010+500+10000) - (10+1000+1000) = 11510 - 2010 = 9500 ✓</p>
+<p>与背景里的双子查询版相比：一遍扫描、一次聚合、无 <code>JOIN</code>。<code>JOIN</code> 带来的"只买未卖会丢行"问题也随之消失——既然每只股票的所有行都落进同一个 <code>SUM</code>，只有买入或只有卖出的股票照样得到正确的盈亏。</p>
+<p>样例验证（直接套用 <span class="arithmatex">\((\star)\)</span>）：
+- Leetcode: Sell 9000 − Buy 1000 = 8000 ✓
+- Handbags: Sell 7000 − Buy 30000 = −23000 ✓
+- Corona Masks: (1010+500+10000) − (10+1000+1000) = 11510 − 2010 = 9500 ✓</p>
 <h2 id="complexity">复杂度 (Complexity)<a class="headerlink" href="#complexity" title="Permanent link">#</a></h2>
 <ul>
-<li>Time: <span class="arithmatex">\(O(n)\)</span> 单次扫描 + GROUP BY</li>
-<li>Space: <span class="arithmatex">\(O(\text{distinct names})\)</span></li>
+<li>Time: <span class="arithmatex">\(O(n)\)</span>，对 <span class="arithmatex">\(n\)</span> 行单次扫描完成符号求和与分组（哈希分组聚合）。若执行计划改用排序分组，则为 <span class="arithmatex">\(O(n\log n)\)</span>。</li>
+<li>Space: <span class="arithmatex">\(O(\text{distinct stock\_name})\)</span>，分组聚合只需为每个不同的股票名维护一个累加器。</li>
 </ul>
 <h2 id="pitfalls">陷阱 (Pitfalls)<a class="headerlink" href="#pitfalls" title="Permanent link">#</a></h2>
 <ul>
-<li><code>CASE</code> 中的 <code>ELSE -price</code> 必须显式带符号，初学者容易写成 <code>ELSE price</code> 然后再减——可读性差且易错。</li>
-<li>若 enum 值大小写敏感（取决于方言）注意匹配 <code>'Sell'</code> / <code>'Buy'</code>。</li>
+<li>双子查询 + <code>INNER JOIN</code> 的写法会丢掉只买未卖或只卖未买的股票。单遍 <code>SUM(CASE …)</code> 没有这个问题，这正是从 <span class="arithmatex">\((\star)\)</span> 合并求和后的直接收益。</li>
+<li><code>CASE</code> 的 <code>ELSE</code> 分支必须显式取负（<code>ELSE -price</code>）。写成 <code>ELSE price</code> 就把买入额也加成了正，等于算了卖出加买入而非卖出减买入；这是符号函数 <span class="arithmatex">\(\sigma\)</span> 在 <code>Buy</code> 上取 <span class="arithmatex">\(-1\)</span> 的直接对应。</li>
+<li>字符串比较是否区分大小写取决于 SQL 方言（如 MySQL 默认排序规则常不区分，其他引擎可能区分），匹配 <code>'Sell'</code> / <code>'Buy'</code> 时注意大小写。</li>
 </ul>
 <h2 id="related">相关题目 (Related)<a class="headerlink" href="#related" title="Permanent link">#</a></h2>
 <ul>
@@ -22607,6 +22668,8 @@
         <script src="../../../js/mathjax/tex-mml-chtml.js"></script>
       
         <script src="../../../js/mermaid.min.js"></script>
+      
+        <script src="../../../js/featured.js"></script>
       
     
   </body>

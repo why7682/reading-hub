@@ -1466,6 +1466,8 @@
       
         
       
+        
+      
     
     
     
@@ -1521,6 +1523,34 @@
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../featured/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ⭐ Featured（已验证）
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
               
             
               
@@ -1610,10 +1640,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_4" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
         
           
-          <label class="md-nav__link" for="__nav_4_4" id="__nav_4_4_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_5" id="__nav_4_5_label" tabindex="">
             
   
   
@@ -1631,8 +1661,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_4_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_4">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_5">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1915,7 +1945,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -1937,14 +1967,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_4_5" id="__nav_4_5_label" tabindex="">
+              <label class="md-nav__link " for="__nav_4_6" id="__nav_4_6_label" tabindex="">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_5">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_6">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -5321,10 +5351,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_7" checked>
         
           
-          <label class="md-nav__link" for="__nav_4_6" id="__nav_4_6_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_7" id="__nav_4_7_label" tabindex="">
             
   
   
@@ -5342,8 +5372,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_4_6">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_7_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4_7">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -22467,18 +22497,26 @@
 <h2 id="problem">Problem<a class="headerlink" href="#problem" title="Permanent link">#</a></h2>
 <p>二叉树 <span class="arithmatex">\(n\)</span> 个节点（<span class="arithmatex">\(n\)</span> 奇，值 <span class="arithmatex">\(1..n\)</span> 唯一）。玩家 1 先选 <span class="arithmatex">\(x\)</span> 染红；你（玩家 2）选 <span class="arithmatex">\(y \neq x\)</span> 染蓝。轮流把己色节点的未染色相邻（左/右/父）节点染己色，无法染就 pass；两人都 pass 时按节点数多者胜。判定是否存在 <span class="arithmatex">\(y\)</span> 让玩家 2 必胜。</p>
 <h2 id="background">背景 (Background)<a class="headerlink" href="#background" title="Permanent link">#</a></h2>
-<p><strong>贪心 + 图论控制论</strong>：游戏的胜负完全由起手 <span class="arithmatex">\(y\)</span> 的位置决定，因为后续扩张就是在 <span class="arithmatex">\(x\)</span> 与 <span class="arithmatex">\(y\)</span> 的"边界"竞速。把树看作以 <span class="arithmatex">\(x\)</span> 为根，三个独立"出口"区域：左子树、右子树、父侧（含其它分支）。最佳 <span class="arithmatex">\(y\)</span> 必定是 <span class="arithmatex">\(x\)</span> 的某个邻居——它能直接锁掉一整个区域。若三块之一 <span class="arithmatex">\(&gt; n/2\)</span> 则可必胜（<span class="arithmatex">\(n\)</span> 奇，<span class="arithmatex">\(&gt; n/2 \Leftrightarrow \geq (n+1)/2\)</span>）。这种"图染色控制 / propagation race"思想与传染病模型、并查集动态分裂同源。</p>
+<p>玩家 2 唯一的自由就是 <span class="arithmatex">\(y\)</span> 的位置；之后双方都被规则牵着走，只能沿邻边扩张。所以问题是：<strong>胜负是否只由 <span class="arithmatex">\(y\)</span> 的初始位置决定，还是后续扩张过程也会左右结果？</strong></p>
+<p>先看最朴素的想法：玩家 2 在棋盘上随便挑一个未染色节点 <span class="arithmatex">\(y\)</span>，期望它能多抢一些地盘。这个想法马上撞墙——若 <span class="arithmatex">\(y\)</span> 离 <span class="arithmatex">\(x\)</span> 很远，会发生什么？设 <span class="arithmatex">\(y\)</span> 想去染某个目标节点 <span class="arithmatex">\(t\)</span>。在树里任意两点之间的路径<strong>唯一</strong>。若 <span class="arithmatex">\(x\)</span> 不在 <span class="arithmatex">\(y \to t\)</span> 这条唯一路径上，那么玩家 1 从 <span class="arithmatex">\(x\)</span> 出发、玩家 2 从 <span class="arithmatex">\(y\)</span> 出发，是在各自一侧独立推进，<span class="arithmatex">\(x\)</span> 完全挡不住 <span class="arithmatex">\(y\)</span>；反过来，<span class="arithmatex">\(x\)</span> 也能沿自己的路径抢到那些既不被 <span class="arithmatex">\(y\)</span> 挡住的节点。换句话说，<strong>只有落在「<span class="arithmatex">\(x\)</span> 到某节点的唯一路径」上的 <span class="arithmatex">\(y\)</span>，才能真正封死 <span class="arithmatex">\(x\)</span> 通往那批节点的去路。</strong> 而能挡住 <span class="arithmatex">\(x\)</span> 所有出路的位置，恰恰是 <span class="arithmatex">\(x\)</span> 紧邻的那几个邻居。</p>
+<p>这把候选 <span class="arithmatex">\(y\)</span> 从「任意节点」收缩到「<span class="arithmatex">\(x\)</span> 的邻居」。下一节把这个结构事实形式化，并由它推出胜负判据。</p>
 <h2 id="formulation">形式化 (Formulation)<a class="headerlink" href="#formulation" title="Permanent link">#</a></h2>
-<p>设节点 <span class="arithmatex">\(x\)</span> 把树分为三块：</p>
+<p><strong>直觉</strong>：把已染红的 <span class="arithmatex">\(x\)</span> 从树中删去。树是无环连通图，删一个度为 <span class="arithmatex">\(d\)</span> 的点会把它裂成恰好 <span class="arithmatex">\(d\)</span> 个连通块，块与块之间再无任何路径（否则原图有环）。<span class="arithmatex">\(x\)</span> 在二叉树里最多有三个邻居——左孩子、右孩子、父亲——所以删去 <span class="arithmatex">\(x\)</span> 后最多三块。玩家 2 把 <span class="arithmatex">\(y\)</span> 放进某一块，就独占了那一整块：块内任何节点到块外的唯一路径都要过 <span class="arithmatex">\(x\)</span>，而 <span class="arithmatex">\(x\)</span> 已是红色的墙，玩家 1 进不来，玩家 2 也出不去。这就是「三块」的来历——它是 <span class="arithmatex">\(x\)</span> 在树中度数的直接结果，不是外加的分类。</p>
+<p><strong>形式化</strong>：设节点 <span class="arithmatex">\(x\)</span> 把树分为三块：</p>
 <ul>
-<li><span class="arithmatex">\(L\)</span>：<span class="arithmatex">\(x\)</span> 的左子树（不含 <span class="arithmatex">\(x\)</span>），大小 <span class="arithmatex">\(|L|\)</span></li>
-<li><span class="arithmatex">\(R\)</span>：<span class="arithmatex">\(x\)</span> 的右子树，大小 <span class="arithmatex">\(|R|\)</span></li>
-<li><span class="arithmatex">\(P = n - 1 - |L| - |R|\)</span>：<span class="arithmatex">\(x\)</span> 的父侧剩余（除去 <span class="arithmatex">\(x\)</span> 和左右子树）</li>
+<li><span class="arithmatex">\(L\)</span>：<span class="arithmatex">\(x\)</span> 的左子树（不含 <span class="arithmatex">\(x\)</span>），大小 <span class="arithmatex">\(|L|\)</span>；</li>
+<li><span class="arithmatex">\(R\)</span>：<span class="arithmatex">\(x\)</span> 的右子树，大小 <span class="arithmatex">\(|R|\)</span>；</li>
+<li><span class="arithmatex">\(P = n - 1 - |L| - |R|\)</span>：<span class="arithmatex">\(x\)</span> 的父侧剩余（删去 <span class="arithmatex">\(x\)</span>、左右子树后的所有节点）。</li>
 </ul>
-<p>判定 <span class="arithmatex">\(\max(|L|, |R|, P) &gt; n / 2\)</span>，即 <span class="arithmatex">\(&gt; \lfloor n / 2 \rfloor\)</span>（因 <span class="arithmatex">\(n\)</span> 奇）。</p>
+<p>三块两两无路径相连，且 <span class="arithmatex">\(|L| + |R| + P = n - 1\)</span>（除 <span class="arithmatex">\(x\)</span> 外的全部节点）。</p>
+<p><strong>推出判据</strong>：玩家 2 把 <span class="arithmatex">\(y\)</span> 放进哪一块，就只能染那一块，其最大地盘是 <span class="arithmatex">\(\max(|L|, |R|, P)\)</span> 中对应的那一项；剩下两块加上 <span class="arithmatex">\(x\)</span> 自己全归玩家 1。设玩家 2 占据的块大小为 <span class="arithmatex">\(s\)</span>，则玩家 1 占 <span class="arithmatex">\(n - s\)</span>。玩家 2 胜当且仅当</p>
+<div class="arithmatex">\[s &gt; n - s \iff s &gt; \frac{n}{2}.\]</div>
+<p>要让 <span class="arithmatex">\(s\)</span> 尽可能大，就取 <span class="arithmatex">\(s = \max(|L|, |R|, P)\)</span>。于是判据为</p>
+<div class="arithmatex">\[\max(|L|, |R|, P) &gt; \frac{n}{2}.\]</div>
+<p>因 <span class="arithmatex">\(n\)</span> 为奇数，<span class="arithmatex">\(\frac{n}{2}\)</span> 不是整数，故 <span class="arithmatex">\(&gt; \frac{n}{2} \iff \geq \frac{n+1}{2} \iff &gt; \lfloor n/2 \rfloor\)</span>，代码里写成 <code>&gt; n // 2</code>。两块恰好相等的平局不可能出现（那要求 <span class="arithmatex">\(n\)</span> 偶）。</p>
 <h2 id="approach">数据结构 / 想法 (Approach)<a class="headerlink" href="#approach" title="Permanent link">#</a></h2>
-<p>DFS 求子树大小，找到值为 <span class="arithmatex">\(x\)</span> 的节点时记录 <span class="arithmatex">\(|L|\)</span> 与 <span class="arithmatex">\(|R|\)</span>，最后比较三块。</p>
-<p><strong>关键不变量</strong>：若玩家 2 选 <span class="arithmatex">\(x\)</span> 的邻居 <span class="arithmatex">\(y\)</span>，则从 <span class="arithmatex">\(y\)</span> 出发可扩张的区域恰为 <span class="arithmatex">\(y\)</span> 那一边（<span class="arithmatex">\(L\)</span>、<span class="arithmatex">\(R\)</span> 或 <span class="arithmatex">\(P\)</span>），因为 <span class="arithmatex">\(x\)</span> 的染色形成屏障；玩家 1 不能进入 <span class="arithmatex">\(y\)</span> 区域。所以玩家 2 最大可染 = 三块之一；玩家 1 最大 = 剩下两块之和 + 1（含 <span class="arithmatex">\(x\)</span>）。玩家 2 胜 iff 单块 &gt; 总数一半。</p>
+<p>判据只依赖三个数 <span class="arithmatex">\(|L|, |R|, P\)</span>。一次 DFS 求每棵子树大小：递归到值为 <span class="arithmatex">\(x\)</span> 的节点时，左右递归返回值就是 <span class="arithmatex">\(|L|, |R|\)</span>；父侧 <span class="arithmatex">\(P = n - 1 - |L| - |R|\)</span> 由总数反推，无需显式找父亲。最后比较三块与 <span class="arithmatex">\(n/2\)</span>。</p>
+<p><strong>关键不变量</strong>（即上一节那堵墙的精确陈述）：<span class="arithmatex">\(y\)</span> 放进块 <span class="arithmatex">\(C\)</span> 后，玩家 2 能染的恰为 <span class="arithmatex">\(C\)</span>，玩家 1 永远进不了 <span class="arithmatex">\(C\)</span>。证明：<span class="arithmatex">\(C\)</span> 中任一节点到 <span class="arithmatex">\(C\)</span> 外任一节点的唯一路径必过 <span class="arithmatex">\(x\)</span>（删 <span class="arithmatex">\(x\)</span> 才使 <span class="arithmatex">\(C\)</span> 与外界断开），而 <span class="arithmatex">\(x\)</span> 一开始就是红色，玩家 1 即便想进 <span class="arithmatex">\(C\)</span> 也得先经过一个已被占的节点，无路可走。对称地玩家 2 也出不了 <span class="arithmatex">\(C\)</span>。所以 <span class="arithmatex">\(s = |C|\)</span>、对方 <span class="arithmatex">\(= n - s\)</span>，判据严格成立。</p>
 <div class="language-python highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">Solution</span><span class="p">:</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">btreeGameWinningMove</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">root</span><span class="p">,</span> <span class="n">n</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">x</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">left_sz</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">right_sz</span> <span class="o">=</span> <span class="mi">0</span>
@@ -22505,9 +22543,9 @@
 </ul>
 <h2 id="pitfalls">陷阱 (Pitfalls)<a class="headerlink" href="#pitfalls" title="Permanent link">#</a></h2>
 <ul>
-<li>必胜判定是<strong>严格大于</strong> <span class="arithmatex">\(n/2\)</span>，不是 <span class="arithmatex">\(\geq\)</span>；<span class="arithmatex">\(n\)</span> 奇时 <span class="arithmatex">\(&gt; n/2 \Leftrightarrow \geq (n+1)/2\)</span>。两人都恰好 <span class="arithmatex">\(n/2\)</span> 不可能（<span class="arithmatex">\(n\)</span> 奇）但理论上"平局/对方多 1"算输。</li>
-<li><span class="arithmatex">\(y\)</span> 必须是 <span class="arithmatex">\(x\)</span> 的<strong>邻居</strong>才有效屏障——若选远处节点，玩家 1 可绕过它扩张。证明需要论证"最优策略必是邻居"，本结论是题目核心 lemma。</li>
-<li>不要尝试模拟博弈过程，状态空间 <span class="arithmatex">\(O(2^n)\)</span> 不可行。</li>
+<li>必胜判定是<strong>严格大于</strong> <span class="arithmatex">\(n/2\)</span>，不是 <span class="arithmatex">\(\geq\)</span>；<span class="arithmatex">\(n\)</span> 奇时 <span class="arithmatex">\(&gt; n/2 \Leftrightarrow \geq (n+1)/2\)</span>。两人恰好各 <span class="arithmatex">\(n/2\)</span> 不可能（<span class="arithmatex">\(n\)</span> 奇），但若某块恰等于 <span class="arithmatex">\(n/2\)</span>（<span class="arithmatex">\(n\)</span> 偶才会发生）则不算赢——本题 <span class="arithmatex">\(n\)</span> 奇可忽略，但判据用 <code>&gt;</code> 而非 <code>&gt;=</code> 是因为占一半不够赢。</li>
+<li>候选 <span class="arithmatex">\(y\)</span> 已在「背景」收缩到 <span class="arithmatex">\(x\)</span> 的邻居：若选远处节点，<span class="arithmatex">\(x\)</span> 不在拦截路径上，玩家 1 可绕过它，故只需检验三块。这不是事后补丁，而是判据成立的前提。</li>
+<li>不要尝试模拟博弈过程，状态空间 <span class="arithmatex">\(O(2^n)\)</span> 不可行；树路径唯一性已把它压成一次线性扫描。</li>
 </ul>
 <h2 id="related">相关题目 (Related)<a class="headerlink" href="#related" title="Permanent link">#</a></h2>
 <ul>
@@ -22624,6 +22662,8 @@
         <script src="../../../js/mathjax/tex-mml-chtml.js"></script>
       
         <script src="../../../js/mermaid.min.js"></script>
+      
+        <script src="../../../js/featured.js"></script>
       
     
   </body>

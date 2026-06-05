@@ -1466,6 +1466,8 @@
       
         
       
+        
+      
     
     
     
@@ -1521,6 +1523,34 @@
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../featured/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ⭐ Featured（已验证）
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
               
             
               
@@ -1610,10 +1640,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_4" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
         
           
-          <label class="md-nav__link" for="__nav_4_4" id="__nav_4_4_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_5" id="__nav_4_5_label" tabindex="">
             
   
   
@@ -1631,8 +1661,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_4_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_4">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_5">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1915,7 +1945,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -1937,14 +1967,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_4_5" id="__nav_4_5_label" tabindex="">
+              <label class="md-nav__link " for="__nav_4_6" id="__nav_4_6_label" tabindex="">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_5">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_6">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -5321,10 +5351,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_7" checked>
         
           
-          <label class="md-nav__link" for="__nav_4_6" id="__nav_4_6_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_7" id="__nav_4_7_label" tabindex="">
             
   
   
@@ -5342,8 +5372,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_4_6">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_7_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4_7">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -22467,37 +22497,48 @@
 <h2 id="problem">Problem<a class="headerlink" href="#problem" title="Permanent link">#</a></h2>
 <p>给整数数组 <code>nums</code>，从中选三个能组成<strong>非退化三角形</strong>的边长，求最大周长；无则返回 0。<span class="arithmatex">\(3 \le n \le 10^4\)</span>。</p>
 <h2 id="_1">背景<a class="headerlink" href="#_1" title="Permanent link">#</a></h2>
-<p>此题基于初等几何的<strong>三角不等式 (triangle inequality)</strong>：三条边 <span class="arithmatex">\(a \le b \le c\)</span> 能组成非退化三角形当且仅当 <span class="arithmatex">\(a + b &gt; c\)</span>。这个不等式在欧氏空间是公理性的（实际上正是度量空间的定义之一），但本题要找的是"边长选三个" 的存在性 + 优化。</p>
-<p><strong>贪心观察</strong>：若按降序排，固定 <span class="arithmatex">\(c = \text{nums}[i]\)</span>，最优的"另外两边"是紧挨着的次大两个 <span class="arithmatex">\(a, b\)</span>。理由：若它们不满足 <span class="arithmatex">\(a + b &gt; c\)</span>，则任何<strong>更小</strong>的两条边 <span class="arithmatex">\(a', b' \le a, b\)</span> 仍不满足 → 这一固定 <span class="arithmatex">\(c\)</span> 下无解，跳到下一个 <span class="arithmatex">\(c\)</span>。这避免了 <span class="arithmatex">\(O(n^3)\)</span> 枚举。</p>
+<p>先把唯一的判定工具讲清楚，再考虑怎么从 <span class="arithmatex">\(n\)</span> 条边里挑。</p>
+<p>给定三条边，怎么判断它们能否围成三角形？取三条边里<strong>最长</strong>的那条为 <span class="arithmatex">\(c\)</span>，另两条为 <span class="arithmatex">\(a, b\)</span>。要让三条边首尾相接合拢成一个有面积的三角形，<span class="arithmatex">\(a\)</span> 和 <span class="arithmatex">\(b\)</span> 必须"够长"——它们摊平在一条线上时的总长 <span class="arithmatex">\(a + b\)</span> 要超过 <span class="arithmatex">\(c\)</span>，否则两条短边再怎么张开也搭不到 <span class="arithmatex">\(c\)</span> 的两端。试一组反例 <span class="arithmatex">\([1, 2, 10]\)</span>：最长边 <span class="arithmatex">\(10\)</span>，另两条之和 <span class="arithmatex">\(1 + 2 = 3 &lt; 10\)</span>，两条短边合起来都不到最长边一半，永远合不拢。于是判定条件是</p>
+<div class="arithmatex">\[a + b &gt; c \quad (a \le b \le c). \tag{1}\]</div>
+<p>注意只需检查这<strong>一个</strong>不等式：既然 <span class="arithmatex">\(c\)</span> 是最长边，<span class="arithmatex">\(a + c &gt; b\)</span> 与 <span class="arithmatex">\(b + c &gt; a\)</span> 自动成立，三角不等式只在最长边这一侧才可能被违反。严格大于不可省：<span class="arithmatex">\(a + b = c\)</span> 时三点共线，面积为 0，是被排除的退化情形。</p>
+<p>有了判定 (1)，原问题变成：在所有三元组里，找满足 (1) 且三边之和最大的那一组。</p>
 <h2 id="_2">形式化<a class="headerlink" href="#_2" title="Permanent link">#</a></h2>
-<p>设排序后 <span class="arithmatex">\(a_1 \le a_2 \le \dots \le a_n\)</span>。返回 <span class="arithmatex">\(\max\{a_i + a_{i-1} + a_{i-2} : a_{i-2} + a_{i-1} &gt; a_i,\, i \ge 3\}\)</span>，无则 0。</p>
+<p>最直接的做法是枚举：对所有 <span class="arithmatex">\(\binom{n}{3}\)</span> 个三元组逐一用 (1) 判定，取合法者中周长最大的。这是 <span class="arithmatex">\(O(n^3)\)</span>，<span class="arithmatex">\(n = 10^4\)</span> 时约 <span class="arithmatex">\(10^{11}\)</span> 次判定，太慢。要加速，必须找到结构，把绝大多数三元组<strong>不检查</strong>就丢掉。</p>
+<p>结构从两处入手。其一，周长 <span class="arithmatex">\(a + b + c\)</span> 要大，三条边都要尽量大，自然先把数组排序，让候选的大边彼此相邻。其二，固定最长边 <span class="arithmatex">\(c\)</span> 后，判定 (1) 只对 <span class="arithmatex">\(a + b\)</span> 提要求，而要让 <span class="arithmatex">\(a + b\)</span> 最大、最容易满足 (1)，应取<strong>不超过 <span class="arithmatex">\(c\)</span> 的两条最大边</strong>——也就是排序后紧挨在 <span class="arithmatex">\(c\)</span> 前面的两个。</p>
+<p>把这两点写成精确命题。设排序后 <span class="arithmatex">\(a_1 \le a_2 \le \dots \le a_n\)</span>。对固定的最长边 <span class="arithmatex">\(a_i\)</span>（<span class="arithmatex">\(i \ge 3\)</span>），在它前面的所有边里，使 <span class="arithmatex">\(a + b\)</span> 最大的一对就是 <span class="arithmatex">\(a_{i-1}, a_{i-2}\)</span>。因此：<strong>若相邻这对都不满足 (1)，则以 <span class="arithmatex">\(a_i\)</span> 为最长边的任何三元组都不满足</strong>——更小的一对 <span class="arithmatex">\(a', b' \le a_{i-1}, a_{i-2}\)</span> 只会让和更小。于是固定 <span class="arithmatex">\(a_i\)</span> 时，只需检查唯一的相邻三元组 <span class="arithmatex">\((a_{i-2}, a_{i-1}, a_i)\)</span>，其余全部丢弃。原本对每个 <span class="arithmatex">\(a_i\)</span> 有 <span class="arithmatex">\(O(n^2)\)</span> 对候选，现在降到 <span class="arithmatex">\(1\)</span> 对。</p>
+<p>由此，合法三元组的周长全体被精确刻画为只检查相邻三元组的集合，答案为</p>
+<div class="arithmatex">\[\max\{\, a_{i-2} + a_{i-1} + a_i \;:\; a_{i-2} + a_{i-1} &gt; a_i,\ 3 \le i \le n \,\}, \tag{2}\]</div>
+<p>集合为空时返回 0。式 (2) 就是后续算法的脊柱：它把搜索空间从 <span class="arithmatex">\(\binom{n}{3}\)</span> 收缩到 <span class="arithmatex">\(n - 2\)</span> 个相邻三元组。</p>
 <h2 id="_3">数据结构 / 想法<a class="headerlink" href="#_3" title="Permanent link">#</a></h2>
-<p><strong>排序 + 贪心</strong>：
+<p>式 (2) 把答案定成对 <span class="arithmatex">\(n - 2\)</span> 个相邻三元组取最大。下一步是：求这个最大值，连这 <span class="arithmatex">\(n - 2\)</span> 个也不必全算。</p>
+<p>直接观察 (2) 中被取 <span class="arithmatex">\(\max\)</span> 的量 <span class="arithmatex">\(a_{i-2} + a_{i-1} + a_i\)</span>：三个加数都随 <span class="arithmatex">\(i\)</span> 单调不减，所以<strong>整个周长随 <span class="arithmatex">\(i\)</span> 单调不减</strong>。于是若从最大的 <span class="arithmatex">\(i\)</span> 往小扫，第一个满足 <span class="arithmatex">\(a_{i-2} + a_{i-1} &gt; a_i\)</span> 的相邻三元组，其周长就已经压过所有更小 <span class="arithmatex">\(i\)</span> 的三元组——它就是 (2) 的最大值，可以立即返回。换句话说，扫描方向不是随意的：从大到小扫，是为了让第一个命中即最优。</p>
+<p><strong>循环不变量</strong>：进入第 <span class="arithmatex">\(i\)</span> 步时，所有更大下标对应的最长边都已检查且不合法。由单调性，它们即便合法周长也不超过当前；既然都不合法，当前找到的第一个合法三元组必为全局最大。这条不变量是正确性的全部依据，代码只是在维护它。</p>
+<p>据此，算法是排序后从大到小的一趟扫描：</p>
 <div class="language-python highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">largestPerimeter</span><span class="p">(</span><span class="n">nums</span><span class="p">):</span>
     <span class="n">nums</span><span class="o">.</span><span class="n">sort</span><span class="p">()</span>
     <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">nums</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">):</span>
         <span class="k">if</span> <span class="n">nums</span><span class="p">[</span><span class="n">i</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span> <span class="o">+</span> <span class="n">nums</span><span class="p">[</span><span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">nums</span><span class="p">[</span><span class="n">i</span><span class="p">]:</span>
             <span class="k">return</span> <span class="n">nums</span><span class="p">[</span><span class="n">i</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span> <span class="o">+</span> <span class="n">nums</span><span class="p">[</span><span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">nums</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
     <span class="k">return</span> <span class="mi">0</span>
-</code></pre></div></p>
-<p><strong>为何"相邻三元组"足够</strong>：对固定 <span class="arithmatex">\(c = \text{nums}[i]\)</span>，若 <span class="arithmatex">\(\text{nums}[i-1] + \text{nums}[i-2] \le \text{nums}[i]\)</span>，那么任意其他更小的两条边 <span class="arithmatex">\(a', b' \le \text{nums}[i-1], \text{nums}[i-2]\)</span> 仍然不够。所以固定 <span class="arithmatex">\(c\)</span> 时若相邻两条都不够，整个含 <span class="arithmatex">\(c\)</span> 的方案集都失败 → 应换更小的 <span class="arithmatex">\(c\)</span>。</p>
-<p><strong>不变量</strong>：循环（从大 <span class="arithmatex">\(i\)</span> 向小扫描）开始时，所有更大的 <span class="arithmatex">\(c\)</span> 都已尝试且失败。<strong>正确性</strong>：贪心选最大 <span class="arithmatex">\(c\)</span> 让周长最大，配对相邻次大两边检测可行性。</p>
+</code></pre></div>
+<p>代码用 0 索引，<code>nums[i]</code> 对应形式化中的 <span class="arithmatex">\(a_{i+1}\)</span>；循环从 <code>i = n-1</code> 递减到 <code>i = 2</code>，正好遍历 (2) 中 <span class="arithmatex">\(i\)</span> 从 <span class="arithmatex">\(n\)</span> 到 <span class="arithmatex">\(3\)</span> 的相邻三元组。<code>if</code> 就是判定 (1)，命中即按不变量返回最优，扫完无命中返回 0。</p>
+<p>举例验证扫描逻辑：排序后 <span class="arithmatex">\([1, 2, 3, 5, 7]\)</span>。最大的最长边 <span class="arithmatex">\(7\)</span>，相邻对 <span class="arithmatex">\((3,5)\)</span> 和 <span class="arithmatex">\(3+5 = 8 &gt; 7\)</span>，命中，返回 <span class="arithmatex">\(15\)</span>。若此处不取相邻对而误取 <span class="arithmatex">\((1,5)\)</span>，<span class="arithmatex">\(1+5 = 6 &lt; 7\)</span> 会判为不可行——这正说明对固定 <span class="arithmatex">\(c\)</span> 必须取相邻的最大一对，相邻对失败才是真失败。</p>
 <h2 id="_4">复杂度<a class="headerlink" href="#_4" title="Permanent link">#</a></h2>
 <ul>
-<li>Time: <span class="arithmatex">\(O(n \log n)\)</span> — 排序主导。</li>
+<li>Time: <span class="arithmatex">\(O(n \log n)\)</span> — 排序主导；扫描本身 <span class="arithmatex">\(O(n)\)</span>。</li>
 <li>Space: <span class="arithmatex">\(O(1)\)</span>（原地排序）/ <span class="arithmatex">\(O(\log n)\)</span> 递归栈。</li>
 </ul>
 <h2 id="_5">陷阱<a class="headerlink" href="#_5" title="Permanent link">#</a></h2>
 <ul>
 <li><strong>严格大于</strong>而非 <span class="arithmatex">\(\ge\)</span>：<span class="arithmatex">\(a + b = c\)</span> 时三点共线，退化三角形（面积 0），题目排除。</li>
 <li>"无解" 必须返回 0，不是抛异常。</li>
-<li>排序后从大到小扫，避免双层枚举。</li>
+<li>扫描方向（从大到小）不是可选优化，而是单调性不变量的直接后果：换成从小到大，找到合法三元组也无法确定它最优，得继续扫完。</li>
 <li>浮点数据不应出现（约束保证整数），无须考虑精度。</li>
 </ul>
 <h2 id="_6">相关题目<a class="headerlink" href="#_6" title="Permanent link">#</a></h2>
 <ul>
 <li><code>#611. Valid Triangle Number (off-wiki)</code> — 数能组三角形的三元组数量，同样排序 + 三角不等式 + 双指针。</li>
-<li><code>#1492. The kth Factor of n (off-wiki)</code> — 同类"数学性质 + 排序后局部检查"。</li>
+<li><code>#1502. Can Make Arithmetic Progression From Sequence (off-wiki)</code> — 同属"排序后只检查相邻元素即可定论"的结构。</li>
 <li><a href="../3588_find-maximum-area-of-a-triangle/">#3588. Find Maximum Area of a Triangle</a> — 三角形进阶变体。</li>
 </ul>
 <h2 id="further-reading">Further Reading<a class="headerlink" href="#further-reading" title="Permanent link">#</a></h2>
@@ -22610,6 +22651,8 @@
         <script src="../../../js/mathjax/tex-mml-chtml.js"></script>
       
         <script src="../../../js/mermaid.min.js"></script>
+      
+        <script src="../../../js/featured.js"></script>
       
     
   </body>

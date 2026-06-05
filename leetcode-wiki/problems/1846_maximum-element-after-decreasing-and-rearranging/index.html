@@ -1466,6 +1466,8 @@
       
         
       
+        
+      
     
     
     
@@ -1521,6 +1523,34 @@
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../featured/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ⭐ Featured（已验证）
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
               
             
               
@@ -1610,10 +1640,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_4" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
         
           
-          <label class="md-nav__link" for="__nav_4_4" id="__nav_4_4_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_5" id="__nav_4_5_label" tabindex="">
             
   
   
@@ -1631,8 +1661,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_4_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_4">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_5">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1915,7 +1945,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -1937,14 +1967,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_4_5" id="__nav_4_5_label" tabindex="">
+              <label class="md-nav__link " for="__nav_4_6" id="__nav_4_6_label" tabindex="">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_5">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_6">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -5321,10 +5351,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_7" checked>
         
           
-          <label class="md-nav__link" for="__nav_4_6" id="__nav_4_6_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_7" id="__nav_4_7_label" tabindex="">
             
   
   
@@ -5342,8 +5372,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_4_6">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_7_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4_7">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -22467,17 +22497,19 @@
 <h2 id="problem">Problem<a class="headerlink" href="#problem" title="Permanent link">#</a></h2>
 <p>正整数数组 <code>arr</code> 任意重排、任意正向<strong>减小</strong>元素。要求最终 <code>arr[0] = 1</code> 且 <span class="arithmatex">\(|arr[i] - arr[i-1]| \le 1\)</span>。求最终数组中可能的最大元素值。约束 <span class="arithmatex">\(1 \le n \le 10^5\)</span>，<span class="arithmatex">\(1 \le arr[i] \le 10^9\)</span>。</p>
 <h2 id="background">背景 (Background)<a class="headerlink" href="#background" title="Permanent link">#</a></h2>
-<p>本题是<strong>排序后贪心 (sort + greedy)</strong> 的经典练习：当满足约束的"最佳构造"具有明显单调结构时，排序把约束局部化。</p>
-<p>更深的视角：题目等价于"用 <span class="arithmatex">\(n\)</span> 个砝码，每个不超过原值，构造从 <span class="arithmatex">\(1\)</span> 起、相邻差 <span class="arithmatex">\(\le 1\)</span> 的序列的最大值"。最优策略下序列必形如 <span class="arithmatex">\(1, 2, 3, \dots\)</span>（一直递增），因为递减不会增加最大值。所以问题简化成"排序后第 <span class="arithmatex">\(i\)</span> 位至多比第 <span class="arithmatex">\(i-1\)</span> 位大 1"。</p>
+<p>约束本身就限定了答案的天花板。终值序列记作 <span class="arithmatex">\(c\)</span>，约束要求 <span class="arithmatex">\(c_0 = 1\)</span>，且相邻两位之差不超过 <span class="arithmatex">\(1\)</span>，即每一步至多增长 <span class="arithmatex">\(1\)</span>。于是第 <span class="arithmatex">\(i\)</span> 位（0-indexed）满足 <span class="arithmatex">\(c_i \le c_0 + i = i + 1\)</span>。无论原始元素多大（可达 <span class="arithmatex">\(10^9\)</span>），位置 <span class="arithmatex">\(i\)</span> 上的终值都被这个增长速度卡死，最大值不会超过 <span class="arithmatex">\(n\)</span>。</p>
+<p>天花板已知，剩下的是能否触到它。最朴素的想法是不重排、直接在原顺序上逐位削减，但这会失败：若 <code>arr = [1, 1000, 2]</code>，第 1 位填到 <span class="arithmatex">\(2\)</span>（受 <span class="arithmatex">\(c_0+1\)</span> 限制），第 2 位的原值只有 <span class="arithmatex">\(2\)</span>，仍能填 <span class="arithmatex">\(2\)</span>，但它本可以更高——问题出在大值 <span class="arithmatex">\(1000\)</span> 被放在了序列还涨不上去的早位置，而真正需要大值的后位置却只剩小元素。这说明哪个元素放哪个位置是关键，而由于 <span class="arithmatex">\(c_i \le i+1\)</span> 这条上界随 <span class="arithmatex">\(i\)</span> 单调放宽，把大元素留给后位置永远不亏。按值升序排列正是这个分配：第 <span class="arithmatex">\(i\)</span> 小的元素配第 <span class="arithmatex">\(i\)</span> 个位置，让供给与位置能用上的额度对齐。排序把"重排"这一自由度一次性定死，下面的形式化在排序后的数组上展开。</p>
 <h2 id="formulation">形式化 (Formulation)<a class="headerlink" href="#formulation" title="Permanent link">#</a></h2>
-<p>设排序后 <span class="arithmatex">\(b_1 \le b_2 \le \dots \le b_n\)</span>（即 sorted <code>arr</code>）。构造 <span class="arithmatex">\(c_i\)</span> 满足 <span class="arithmatex">\(c_1 = 1\)</span>，<span class="arithmatex">\(|c_i - c_{i-1}| \le 1\)</span>，<span class="arithmatex">\(c_i \le b_i\)</span>（每个 <span class="arithmatex">\(c_i\)</span> 由 <span class="arithmatex">\(b_i\)</span> 减得）。求</p>
-<div class="arithmatex">\[\max \max_i c_i\]</div>
+<p>设排序后 <span class="arithmatex">\(b_1 \le b_2 \le \dots \le b_n\)</span>（即 sorted <code>arr</code>，1-indexed）。在排序后的位置上构造终值序列 <span class="arithmatex">\(c_1, \dots, c_n\)</span>，需同时满足三条约束：</p>
+<div class="arithmatex">\[c_1 = 1, \qquad |c_i - c_{i-1}| \le 1, \qquad c_i \le b_i.\]</div>
+<p>前两条来自题目（起点为 <span class="arithmatex">\(1\)</span>、相邻差 <span class="arithmatex">\(\le 1\)</span>），第三条 <span class="arithmatex">\(c_i \le b_i\)</span> 编码"只能减不能增"：第 <span class="arithmatex">\(i\)</span> 位的终值不得超过分给它的原始元素。目标是在所有满足约束的构造 <span class="arithmatex">\(c\)</span> 中最大化 <span class="arithmatex">\(\max_i c_i\)</span>：</p>
+<div class="arithmatex">\[\max_{c \text{ valid}} \; \max_{1 \le i \le n} c_i.\]</div>
 <h2 id="approach">数据结构 / 想法 (Approach)<a class="headerlink" href="#approach" title="Permanent link">#</a></h2>
-<p><strong>贪心</strong>：排序后从左往右把每个 <span class="arithmatex">\(c_i\)</span> 取尽可能大。
-- <span class="arithmatex">\(c_1 = 1\)</span>（强制）。
-- <span class="arithmatex">\(c_i = \min(b_i,\ c_{i-1} + 1)\)</span>（不超过当前砝码，且与前者差 <span class="arithmatex">\(\le 1\)</span>）。</p>
-<p>最终答案 <span class="arithmatex">\(c_n\)</span>。</p>
-<p><strong>正确性论证</strong>：因为目标是最大化 <span class="arithmatex">\(\max c_i\)</span> 而单调非降序列的 <span class="arithmatex">\(\max\)</span> 就是 <span class="arithmatex">\(c_n\)</span>，所以"每一步都贪到最大上界"严格不劣于任何其它策略——若中途主动放小一步，后续 <span class="arithmatex">\(c\)</span> 也都受限。</p>
+<p><strong>从约束推出贪心规则。</strong> 单看第 <span class="arithmatex">\(i\)</span> 位，约束施加两条独立上界：<span class="arithmatex">\(c_i \le b_i\)</span>（不超过元素值），以及 <span class="arithmatex">\(c_i \le c_{i-1} + 1\)</span>（不超过前一位加一）。两者同时成立，<span class="arithmatex">\(c_i\)</span> 能取的最大值就是二者中较紧的那个：</p>
+<div class="arithmatex">\[c_i = \min(b_i,\ c_{i-1} + 1).\]</div>
+<p>这不是"取尽可能大"的口号，而是两条上界取交后唯一的最紧取值。起点 <span class="arithmatex">\(c_1 = 1\)</span> 也由此式自然给出：约定 <span class="arithmatex">\(c_0 = 0\)</span>，则 <span class="arithmatex">\(c_1 = \min(b_1, 1) = 1\)</span>，因为 <span class="arithmatex">\(b_1 \ge 1\)</span>。</p>
+<p><strong>为什么逐位贪到上界是全局最优。</strong> 直觉是：任何一步主动取小，都只会收紧之后每一位的上界，不可能换来更大的最大值。把这句话写成不等式链即为证明。设贪心序列为 <span class="arithmatex">\(c\)</span>，另有一个合法序列 <span class="arithmatex">\(c'\)</span> 在某位先于贪心变小，取最早的这种位置 <span class="arithmatex">\(k\)</span>，即 <span class="arithmatex">\(c'_j = c_j\)</span>（<span class="arithmatex">\(j &lt; k\)</span>）而 <span class="arithmatex">\(c'_k &lt; c_k\)</span>。由约束 <span class="arithmatex">\(c'_{k+1} \le \min(b_{k+1},\ c'_k + 1) \le \min(b_{k+1},\ c_k + 1) = c_{k+1}\)</span>，归纳得 <span class="arithmatex">\(c'_i \le c_i\)</span> 对所有 <span class="arithmatex">\(i \ge k\)</span> 成立。于是 <span class="arithmatex">\(\max_i c'_i \le \max_i c_i\)</span>：任何提前变小的策略都不优于贪心。</p>
+<p><strong>为什么答案是 <span class="arithmatex">\(c_n\)</span>。</strong> 由 <span class="arithmatex">\(c_i = \min(b_i, c_{i-1}+1)\)</span> 知 <span class="arithmatex">\(c_i \le c_{i-1} + 1\)</span>，看似可能下降；但只要 <span class="arithmatex">\(b_i \ge c_{i-1}\)</span> 就有 <span class="arithmatex">\(c_i \ge c_{i-1}\)</span>，而排序保证 <span class="arithmatex">\(b_i \ge b_{i-1} \ge c_{i-1}\)</span>（因 <span class="arithmatex">\(c_{i-1} \le b_{i-1}\)</span>），故序列非降，最大值落在末位 <span class="arithmatex">\(c_n\)</span>。</p>
 <div class="language-python highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">Solution</span><span class="p">:</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">maximumElementAfterDecrementingAndRearranging</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">arr</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
         <span class="n">arr</span><span class="o">.</span><span class="n">sort</span><span class="p">()</span>
@@ -22486,13 +22518,13 @@
             <span class="n">prev</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">prev</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">prev</span>
 </code></pre></div>
+<p>代码以 <code>prev = 0</code> 起手，对应 <span class="arithmatex">\(c_0 = 0\)</span> 的约定，首个元素自动得到 <span class="arithmatex">\(\min(b_1, 1) = 1\)</span>。</p>
 <p>Trace 例 2：<code>arr=[100,1,1000]</code> → sort → <code>[1,100,1000]</code> → prev: 0→1→2→3 → 答案 3。✓</p>
-<p><strong>等价 <span class="arithmatex">\(O(n)\)</span> 计数排序解法</strong>：由于答案上界为 <span class="arithmatex">\(n\)</span>（<span class="arithmatex">\(c_i \le i\)</span>），可把所有 <span class="arithmatex">\(arr[i] &gt; n\)</span> 截断为 <span class="arithmatex">\(n\)</span>，再用计数桶代替排序，得到 <span class="arithmatex">\(O(n)\)</span>。比赛时通常 <span class="arithmatex">\(O(n \log n)\)</span> 足够。</p>
+<p><strong>等价 <span class="arithmatex">\(O(n)\)</span> 计数排序解法</strong>：由背景已知答案上界为 <span class="arithmatex">\(n\)</span>（<span class="arithmatex">\(c_i \le i\)</span>），可把所有 <span class="arithmatex">\(arr[i] &gt; n\)</span> 截断为 <span class="arithmatex">\(n\)</span>，再用计数桶代替排序，得到 <span class="arithmatex">\(O(n)\)</span>。比赛时通常 <span class="arithmatex">\(O(n \log n)\)</span> 足够。</p>
 <h2 id="complexity">复杂度 (Complexity)<a class="headerlink" href="#complexity" title="Permanent link">#</a></h2>
-<ul>
-<li>Time: <span class="arithmatex">\(O(n \log n)\)</span>（排序）；计数桶版本 <span class="arithmatex">\(O(n)\)</span>。</li>
-<li>Space: <span class="arithmatex">\(O(1)\)</span> 额外（不计排序栈）。</li>
-</ul>
+<p>主导开销是入口处的排序。
+- Time: <span class="arithmatex">\(O(n \log n)\)</span>（排序）；计数桶版本 <span class="arithmatex">\(O(n)\)</span>。
+- Space: <span class="arithmatex">\(O(1)\)</span> 额外（不计排序栈）。</p>
 <h2 id="pitfalls">陷阱 (Pitfalls)<a class="headerlink" href="#pitfalls" title="Permanent link">#</a></h2>
 <ul>
 <li><strong>不要强制 <code>c[0] = 1</code> 然后跳过它</strong>——必须从 <code>prev = 0</code>，让 <code>min(arr[0], 1)</code> 自然给出 <code>c[0] = 1</code>（因为 <span class="arithmatex">\(arr[0] \ge 1\)</span>）。</li>
@@ -22615,6 +22647,8 @@
         <script src="../../../js/mathjax/tex-mml-chtml.js"></script>
       
         <script src="../../../js/mermaid.min.js"></script>
+      
+        <script src="../../../js/featured.js"></script>
       
     
   </body>

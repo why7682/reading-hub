@@ -8,3 +8,24 @@
 .md-typeset table:not([class]) {
   font-size: 0.82rem;
 }
+
+/* featured 徽章 —— 由 js/featured.js 注入到已验证题的 H1 末尾 */
+.featured-badge {
+  display: inline-block;
+  margin-left: 0.6em;
+  padding: 0.08em 0.5em;
+  font-size: 0.62em;
+  font-weight: 600;
+  vertical-align: middle;
+  color: #7a5b00;
+  background: linear-gradient(180deg, #fff3c4, #ffe08a);
+  border: 1px solid #e6b800;
+  border-radius: 1em;
+  white-space: nowrap;
+  cursor: default;
+}
+[data-md-color-scheme="slate"] .featured-badge {
+  color: #ffe08a;
+  background: rgba(230, 184, 0, 0.16);
+  border-color: rgba(230, 184, 0, 0.5);
+}

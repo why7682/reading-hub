@@ -1466,6 +1466,8 @@
       
         
       
+        
+      
     
     
     
@@ -1521,6 +1523,34 @@
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../featured/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ⭐ Featured（已验证）
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
               
             
               
@@ -1610,10 +1640,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_4" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
         
           
-          <label class="md-nav__link" for="__nav_4_4" id="__nav_4_4_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_5" id="__nav_4_5_label" tabindex="">
             
   
   
@@ -1631,8 +1661,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_4_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_4">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_5">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1915,7 +1945,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -1937,14 +1967,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_4_5" id="__nav_4_5_label" tabindex="">
+              <label class="md-nav__link " for="__nav_4_6" id="__nav_4_6_label" tabindex="">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_5">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_6">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -5321,10 +5351,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_7" checked>
         
           
-          <label class="md-nav__link" for="__nav_4_6" id="__nav_4_6_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_7" id="__nav_4_7_label" tabindex="">
             
   
   
@@ -5342,8 +5372,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_4_6">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_7_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4_7">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -22467,16 +22497,33 @@
 <h2 id="problem">Problem<a class="headerlink" href="#problem" title="Permanent link">#</a></h2>
 <p>给整数数组 <code>nums</code>（<span class="arithmatex">\(2 \leq \text{nums}[i] \leq 1000\)</span>），相邻数做浮点除法。插入括号最大化表达式值，返回不冗余的最优表达式字符串。<span class="arithmatex">\(|\text{nums}| \leq 10\)</span>。保证最优唯一。</p>
 <h2 id="background">背景 (Background)<a class="headerlink" href="#background" title="Permanent link">#</a></h2>
-<p>题面似 DP（区间 DP 套表达式优化，类似矩阵链乘 CLRS §15.2），但本题有简洁的<strong>数学闭式解</strong>：对 <span class="arithmatex">\(a_1 / a_2 / \cdots / a_n\)</span>，最大值恒等于 <span class="arithmatex">\(a_1 / (a_2 / a_3 / \cdots / a_n)\)</span>。这是因为 <span class="arithmatex">\(a_1\)</span> 在分子位置不可动（出现在最外层左侧）、<span class="arithmatex">\(a_2\)</span> 必须在分母（紧跟第一个 <code>/</code>），而 <span class="arithmatex">\(a_3 \ldots a_n\)</span> 可被括号变成总是上乘——所以最优化等价于"把 <span class="arithmatex">\(a_2\)</span> 之后全包起来当一个总分母"。这是一道"看起来该 DP 实则有 closed-form"的典型题。</p>
+<p>先动手试一个最小的有歧义例子。对 <span class="arithmatex">\(a_1 / a_2 / a_3\)</span>，只有两种加括号方式：</p>
+<div class="arithmatex">\[
+(a_1 / a_2) / a_3 = \frac{a_1}{a_2 a_3}, \qquad a_1 / (a_2 / a_3) = \frac{a_1 a_3}{a_2}.
+\]</div>
+<p>两者不同，所以括号确实改变结果。第二种把 <span class="arithmatex">\(a_3\)</span> 从分母移到了分子。由于题目保证 <span class="arithmatex">\(a_i \geq 2\)</span>，分子里多一个因子总是把值变大，第二种更优。</p>
+<p>这一步暴露了问题的真正自由度：<strong>每个 <span class="arithmatex">\(a_i\)</span> 落在分子还是分母，由括号决定</strong>。于是自然的想法是枚举所有括号方案——这正是区间 DP 的入口。设 <span class="arithmatex">\(f(i, j)\)</span> 为子段 <span class="arithmatex">\(a_i / \cdots / a_j\)</span> 在任意括号下的取值集合（或其极值），在分裂点 <span class="arithmatex">\(k\)</span> 处把段拆成 <span class="arithmatex">\(a_i / \cdots / a_k\)</span> 与 <span class="arithmatex">\(a_{k+1} / \cdots / a_j\)</span>，左段做被除数、右段做除数。问题在于：除法不像加法那样对子结果单调——右段取最小值才让商最大，于是要同时维护每段的 <span class="arithmatex">\((\min, \max)\)</span>，状态转移在 <span class="arithmatex">\(O(n^3)\)</span> 量级。</p>
+<p>但在真正写 DP 之前，值得先看清这个特定表达式的结构。下面会发现，除法链的“从左到右”优先级把每个 <span class="arithmatex">\(a_i\)</span> 能去的位置卡得很死，自由度远没有枚举所暗示的那么大，最优解可以直接写出闭式。</p>
 <h2 id="formulation">形式化 (Formulation)<a class="headerlink" href="#formulation" title="Permanent link">#</a></h2>
-<p>表达式 <span class="arithmatex">\(E = a_1 / a_2 / a_3 / \cdots / a_n\)</span>（带任意括号），求其最大可能浮点值。</p>
-<p><strong>定理</strong>：<span class="arithmatex">\(\max E = \dfrac{a_1}{a_2 / (a_3 / (a_4 / \cdots))} = \dfrac{a_1 \cdot a_3 \cdot a_4 \cdots a_n}{a_2}\)</span>（<span class="arithmatex">\(n \geq 3\)</span> 时）。</p>
-<p><strong>证明草图</strong>：
-- <span class="arithmatex">\(a_1\)</span> 不在任何分母中（否则就出现在某子表达式分母里，使整体被除）；
-- <span class="arithmatex">\(a_2\)</span> 紧跟第一个 <code>/</code>，必出现在最外层分母位置，无法到分子；
-- 其余 <span class="arithmatex">\(a_i\)</span> (<span class="arithmatex">\(i \geq 3\)</span>) 可通过括号控制：把 <span class="arithmatex">\((a_3 / a_4 / \cdots / a_n)\)</span> 整体放进 <span class="arithmatex">\(a_2\)</span> 之后的括号内，则 <span class="arithmatex">\(a_2 / (a_3 / a_4 / \cdots) = a_2 \cdot \text{stuff}\)</span>，里面 <span class="arithmatex">\(a_3\)</span> 在分母、<span class="arithmatex">\(a_4\)</span> 在分子、<span class="arithmatex">\(a_5\)</span> 在分母……再嵌一层括号又翻转。最优控制让 <span class="arithmatex">\(a_2\)</span> 单独作分母，其余都上分子。
-- 由于 <span class="arithmatex">\(a_i \geq 2\)</span>（题目约束），分子越大越好，结论唯一。</p>
+<p>设输入为 <span class="arithmatex">\(a_1, a_2, \ldots, a_n\)</span>（即 <code>nums</code>），每个 <span class="arithmatex">\(a_i \geq 2\)</span>。任意合法括号下的表达式记作 <span class="arithmatex">\(E\)</span>，目标是 <span class="arithmatex">\(\max E\)</span>。</p>
+<p><strong>直觉.</strong> 表达式以 <span class="arithmatex">\(a_1 / \cdots\)</span> 开头。无论怎么加括号，<span class="arithmatex">\(a_1\)</span> 都是最外层那个除法的被除数——它前面没有运算符，不可能被任何东西除。所以 <span class="arithmatex">\(a_1\)</span> 永远在分子。紧跟其后的 <span class="arithmatex">\(a_2\)</span> 恰好相反：它是第一个 <code>/</code> 右边的操作数，落在分母。剩下的 <span class="arithmatex">\(a_3, \ldots, a_n\)</span> 才是真正可调的。既然 <span class="arithmatex">\(a_i \geq 2\)</span> 让“分子越多越大”成立，最优解就是把 <span class="arithmatex">\(a_3\)</span> 之后的全部塞进分子、只留 <span class="arithmatex">\(a_2\)</span> 在分母。</p>
+<p>把这个直觉固定成命题。</p>
+<p><strong>引理（位置约束）.</strong> 在任意合法括号下，<span class="arithmatex">\(a_1\)</span> 出现在分子，<span class="arithmatex">\(a_2\)</span> 出现在分母。</p>
+<p><em>证明.</em> 整个表达式是一串左结合除法加括号。最外层运算是某个 <code>/</code>，其被除数子表达式包含起始的 <span class="arithmatex">\(a_1\)</span> 且不含任何更左的运算符，故 <span class="arithmatex">\(a_1\)</span> 不被任何数除——它在分子。<span class="arithmatex">\(a_2\)</span> 紧跟第一个 <code>/</code>：它要么本身就是该 <code>/</code> 的除数，要么处在该 <code>/</code> 除数子表达式的最左端（同样不被更左的运算符作用）。无论哪种，<span class="arithmatex">\(a_2\)</span> 都被 <span class="arithmatex">\(a_1\)</span> 所在子表达式除，即落在分母。 <span class="arithmatex">\(\square\)</span></p>
+<p><strong>引理（其余项可全入分子）.</strong> 对 <span class="arithmatex">\(n \geq 3\)</span>，括号方案 <span class="arithmatex">\(a_1 / (a_2 / a_3 / \cdots / a_n)\)</span> 使 <span class="arithmatex">\(a_3, \ldots, a_n\)</span> 全部进入分子，其值为</p>
+<div class="arithmatex">\[
+\frac{a_1}{\,a_2 / a_3 / \cdots / a_n\,}
+= \frac{a_1}{\;a_2 / (a_3 a_4 \cdots a_n)\;}
+= \frac{a_1 \, a_3 \, a_4 \cdots a_n}{a_2}. \tag{1}
+\]</div>
+<p><em>证明.</em> 内层 <span class="arithmatex">\(a_2 / a_3 / \cdots / a_n\)</span> 是<strong>纯左结合、无内部括号</strong>的除法链，等于 <span class="arithmatex">\(a_2 / (a_3 a_4 \cdots a_n)\)</span>：第一个数作分子，其后每个数顺次作分母。把它整体作为 <span class="arithmatex">\(a_1\)</span> 的除数，分子分母翻转，<span class="arithmatex">\(a_2\)</span> 回到分母、<span class="arithmatex">\(a_3 \cdots a_n\)</span> 升到分子，得到 <span class="arithmatex">\((1)\)</span>。 <span class="arithmatex">\(\square\)</span></p>
+<p><strong>定理.</strong> 对 <span class="arithmatex">\(n \geq 3\)</span>，<span class="arithmatex">\(\displaystyle \max E = \frac{a_1 \, a_3 \, a_4 \cdots a_n}{a_2}\)</span>，由 <span class="arithmatex">\(a_1 / (a_2 / a_3 / \cdots / a_n)\)</span> 唯一达到。</p>
+<p><em>证明.</em> 由位置约束引理，<span class="arithmatex">\(a_1\)</span> 必在分子、<span class="arithmatex">\(a_2\)</span> 必在分母，无论何种括号都不可改变。任一表达式的值形如 <span class="arithmatex">\(a_1 \cdot \big(\prod_{i \in S} a_i\big) \big/ \big(a_2 \cdot \prod_{i \notin S \cup\{1,2\}} a_i\big)\)</span>，其中 <span class="arithmatex">\(S \subseteq \{3,\ldots,n\}\)</span> 是落在分子的下标集。因每个 <span class="arithmatex">\(a_i \geq 2\)</span>，把任一 <span class="arithmatex">\(a_i\)</span> 从分母移到分子都严格增大该值，故最优取 <span class="arithmatex">\(S = \{3,\ldots,n\}\)</span>——所有可调项全入分子。<span class="arithmatex">\((1)\)</span> 恰好实现这一配置，且达到上界，故为唯一最优。 <span class="arithmatex">\(\square\)</span></p>
+<blockquote>
+<p>注意，最优表达式是<strong>单层括号</strong> <span class="arithmatex">\(a_1/(a_2/a_3/\cdots/a_n)\)</span>，内部不再嵌套。常见的错误是写成右嵌套 <span class="arithmatex">\(a_1/(a_2/(a_3/(a_4/\cdots)))\)</span>：那会让 <span class="arithmatex">\(a_4\)</span> 重新回到分母（每多一层括号翻转一次符号），对 <span class="arithmatex">\([1000,100,10,2]\)</span> 给出 <span class="arithmatex">\(1000/(100/(10/2)) = 50\)</span>，而非最优的 <span class="arithmatex">\(200\)</span>。闭式的关键正是内层<strong>不</strong>嵌套。</p>
+</blockquote>
 <h2 id="approach">数据结构 / 想法 (Approach)<a class="headerlink" href="#approach" title="Permanent link">#</a></h2>
+<p>定理把算法压成一次字符串拼接：<span class="arithmatex">\(a_1\)</span>，加 <code>/</code>，把 <span class="arithmatex">\(a_2 \ldots a_n\)</span> 用 <code>/</code> 连起来并整体括起来。<span class="arithmatex">\(n = 1, 2\)</span> 不存在可调项，单独处理以避免冗余括号。</p>
 <div class="language-python highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">Solution</span><span class="p">:</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">optimalDivision</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">nums</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
         <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">nums</span><span class="p">)</span>
@@ -22484,28 +22531,29 @@
             <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="n">nums</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
         <span class="k">if</span> <span class="n">n</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
             <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">nums</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">nums</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span>
-        <span class="c1"># n &gt;= 3: a1 / (a2 / a3 / ... / an)</span>
+        <span class="c1"># n &gt;= 3: 单层括号 a1 / (a2 / a3 / ... / an)，对应定理式 (1)</span>
         <span class="n">rest</span> <span class="o">=</span> <span class="s2">&quot;/&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">nums</span><span class="p">[</span><span class="mi">1</span><span class="p">:]))</span>
         <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">nums</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2">/(</span><span class="si">{</span><span class="n">rest</span><span class="si">}</span><span class="s2">)&quot;</span>
 </code></pre></div>
-<p><strong>Trace <code>[1000,100,10,2]</code></strong> (n=4)：返回 <code>"1000/(100/10/2)"</code>，值 = 1000 / (100/10/2) = 1000 / 5 = 200 ✓
-<strong>Trace <code>[2,3,4]</code></strong> (n=3)：返回 <code>"2/(3/4)"</code>，值 = 8/3 ≈ 2.667 ✓
+<p><strong>Trace <code>[1000,100,10,2]</code></strong> (n=4)：返回 <code>"1000/(100/10/2)"</code>，值 <span class="arithmatex">\(= 1000 / (100/10/2) = 1000 / 5 = 200\)</span> ✓（与式 <span class="arithmatex">\((1)\)</span> 的 <span class="arithmatex">\(1000\cdot10\cdot2/100 = 200\)</span> 一致）
+<strong>Trace <code>[2,3,4]</code></strong> (n=3)：返回 <code>"2/(3/4)"</code>，值 <span class="arithmatex">\(= 2 \cdot 4 / 3 = 8/3 \approx 2.667\)</span> ✓
 <strong>Trace 单元素 <code>[5]</code></strong>：返回 <code>"5"</code>。
-<strong>Trace 双元素 <code>[5, 2]</code></strong>：返回 <code>"5/2"</code>，括号无意义。</p>
+<strong>Trace 双元素 <code>[5, 2]</code></strong>：返回 <code>"5/2"</code>，无可调项，不加括号。</p>
 <h2 id="complexity">复杂度 (Complexity)<a class="headerlink" href="#complexity" title="Permanent link">#</a></h2>
 <ul>
-<li>Time: <span class="arithmatex">\(O(n)\)</span>（仅字符串拼接）</li>
+<li>Time: <span class="arithmatex">\(O(n)\)</span>（一次 <code>join</code> + 一次格式化，无依赖输入的循环；best/avg/worst 同为 <span class="arithmatex">\(O(n)\)</span>）</li>
 <li>Space: <span class="arithmatex">\(O(n)\)</span>（输出串长度）</li>
 </ul>
 <h2 id="pitfalls">陷阱 (Pitfalls)<a class="headerlink" href="#pitfalls" title="Permanent link">#</a></h2>
 <ul>
-<li><strong>n=1, n=2 必须特判</strong>：否则会生成 <code>"x/()"</code> 或 <code>"x/(y)"</code>（后者有冗余括号，违反题目要求）。</li>
-<li><strong>题目约束 <span class="arithmatex">\(a_i \geq 2\)</span> 不可忽视</strong>：若允许 <span class="arithmatex">\(a_i = 1\)</span>，最优结构仍同（不影响相对大小），但若允许小于 1 或 0 会破坏证明。这里安全。</li>
-<li><strong>DP 替代解</strong>：区间 DP 维护 <code>(min, max)</code> per range 也可解（处理分母翻转），但复杂度 <span class="arithmatex">\(O(n^3)\)</span> 且代码长，没必要。</li>
+<li><strong>内层不能嵌套</strong>：最优形是单层括号式 <span class="arithmatex">\((1)\)</span>，即 <code>a1/(a2/.../an)</code>。误写成右嵌套 <code>a1/(a2/(a3/...))</code> 会让从 <span class="arithmatex">\(a_4\)</span> 起的项符号交替翻转，对 <span class="arithmatex">\(n \geq 4\)</span> 给出偏小的值（如 <code>[1000,100,10,2]</code> 得 <span class="arithmatex">\(50\)</span> 而非 <span class="arithmatex">\(200\)</span>）。</li>
+<li><strong><span class="arithmatex">\(n=1, n=2\)</span> 必须特判</strong>：否则 <span class="arithmatex">\(n=2\)</span> 输出 <code>"5/(2)"</code>（冗余单括号，违反不冗余约束），<span class="arithmatex">\(n=1\)</span> 更会生成 <code>"5/()"</code> 之类垃圾串。</li>
+<li><strong>约束 <span class="arithmatex">\(a_i \geq 2\)</span> 是定理的支点</strong>：它保证“把项移入分子严格增大值”，从而最优目标确为分子最大化。若允许 <span class="arithmatex">\(a_i \in (0,1)\)</span> 或 <span class="arithmatex">\(a_i = 0\)</span>，单调性失效，闭式不再成立。题目约束下安全。</li>
+<li><strong>DP 替代解</strong>：区间 DP 维护每段 <span class="arithmatex">\((\min, \max)\)</span> 可解一般括号优化问题，复杂度 <span class="arithmatex">\(O(n^3)\)</span>；本题位置约束把解锁死成闭式，<span class="arithmatex">\(O(n)\)</span> 严格支配前者，故无需 DP。</li>
 </ul>
 <h2 id="related">相关题目 (Related)<a class="headerlink" href="#related" title="Permanent link">#</a></h2>
 <ul>
-<li><code>#241. Different Ways to Add Parentheses (off-wiki)</code> — 真的需要区间 DP 列出所有结果</li>
+<li><a href="../0241_different-ways-to-add-parentheses/">#241. Different Ways to Add Parentheses</a> — 真的需要区间 DP 列出所有结果</li>
 <li><a href="../3599_partition-array-to-minimize-xor/">#3599. Partition Array to Minimize XOR</a> — 同 batch，区间分割 DP 题</li>
 </ul>
 <h2 id="further-reading">Further Reading<a class="headerlink" href="#further-reading" title="Permanent link">#</a></h2>
@@ -22617,6 +22665,8 @@
         <script src="../../../js/mathjax/tex-mml-chtml.js"></script>
       
         <script src="../../../js/mermaid.min.js"></script>
+      
+        <script src="../../../js/featured.js"></script>
       
     
   </body>

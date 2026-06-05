@@ -1466,6 +1466,8 @@
       
         
       
+        
+      
     
     
     
@@ -1521,6 +1523,34 @@
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../featured/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ⭐ Featured（已验证）
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
               
             
               
@@ -1610,10 +1640,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_4" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
         
           
-          <label class="md-nav__link" for="__nav_4_4" id="__nav_4_4_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_5" id="__nav_4_5_label" tabindex="">
             
   
   
@@ -1631,8 +1661,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_4_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_4">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_5">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1915,7 +1945,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -1937,14 +1967,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_4_5" id="__nav_4_5_label" tabindex="">
+              <label class="md-nav__link " for="__nav_4_6" id="__nav_4_6_label" tabindex="">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_5">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_6">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -5321,10 +5351,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_7" checked>
         
           
-          <label class="md-nav__link" for="__nav_4_6" id="__nav_4_6_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_7" id="__nav_4_7_label" tabindex="">
             
   
   
@@ -5342,8 +5372,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_4_6">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_7_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4_7">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -22467,42 +22497,146 @@
 <h2 id="problem">Problem<a class="headerlink" href="#problem" title="Permanent link">#</a></h2>
 <p>给定 <span class="arithmatex">\(9 \times 9\)</span> 数独棋盘 <code>board</code>（<code>'.'</code> 表示空格），原地填入唯一合法解。需满足行/列/<span class="arithmatex">\(3 \times 3\)</span> 宫均含 <span class="arithmatex">\(1\)</span>–<span class="arithmatex">\(9\)</span> 各一次。题目保证存在唯一解。</p>
 <h2 id="_1">背景<a class="headerlink" href="#_1" title="Permanent link">#</a></h2>
-<p>数独是 <strong>精确覆盖 (exact cover)</strong> 问题的小型实例。把每个空格的"填某数字"视为候选项，行/列/宫约束视为待覆盖列，问题等价于在 <span class="arithmatex">\(0/1\)</span> 矩阵中选若干行使每列恰被覆盖一次 — 这正是 Knuth 的 <strong>Algorithm X</strong> 与 <strong>Dancing Links (DLX)</strong> 论文的开场范例 (Knuth 2000, "Dancing Links")。一般 <span class="arithmatex">\(n \times n\)</span> 数独被证明 <strong>NP-Complete</strong> (Yato &amp; Seta 2003)，所以期望多项式算法不存在；但 <span class="arithmatex">\(n=9\)</span> 实例小，搜索 + 启发式即可秒杀。</p>
+<p>先看求解过程中棋盘处于什么状态。任意时刻，部分格子已填、其余为空，构成一个<strong>部分赋值</strong>。一次填数是否合法，只取决于它所在的行、列、宫里已有哪些数字；这是一个<strong>局部约束</strong>。空格的取值域是有限的（最多 <span class="arithmatex">\(\{1,\dots,9\}\)</span>），且每填一个数，相邻空格的取值域只会缩小、不会扩大。</p>
+<p>这三条性质——有限取值域、局部约束、填数单调收缩取值域——决定了求解的形态：从某个空格出发逐格试填，填到无路可走就退回上一格换一个数。状态空间是一棵树，深度等于空格数，每个结点的分支是该空格的合法候选数。这就是回溯搜索；它的合理性完全由棋盘的约束结构给出，不依赖任何外部理论。</p>
+<p>剩下两个问题决定效率：每个空格的合法候选数怎么<strong>快速</strong>算出来，以及该<strong>先填哪个空格</strong>。下面从最朴素的写法出发，让这两个问题自己暴露出来。</p>
 <h2 id="_2">形式化<a class="headerlink" href="#_2" title="Permanent link">#</a></h2>
-<p>令决策变量 <span class="arithmatex">\(x_{r,c} \in \{1, \dots, 9\}\)</span>。约束集 <span class="arithmatex">\(\mathcal{C}\)</span>：</p>
-<div class="arithmatex">\[\forall r:\; \{x_{r,c}\}_{c=1}^9 \text{ 互不相同}; \quad \forall c:\; \{x_{r,c}\}_r \text{ 互不相同}; \quad \forall \text{宫}\; B:\; \{x_{r,c}\}_{(r,c)\in B} \text{ 互不相同}.\]</div>
-<p>求 <span class="arithmatex">\(\{x_{r,c}\}\)</span> 的赋值使得所有约束满足且预填位置一致。</p>
+<p>令决策变量 <span class="arithmatex">\(x_{r,c} \in \{1, \dots, 9\}\)</span>（<span class="arithmatex">\(0 \le r, c \le 8\)</span>）。把每格所属的宫记为</p>
+<div class="arithmatex">\[b(r,c) = \lfloor r/3 \rfloor \cdot 3 + \lfloor c/3 \rfloor \in \{0, \dots, 8\}.\]</div>
+<p>约束集 <span class="arithmatex">\(\mathcal{C}\)</span> 要求行、列、宫三类格子各自取值互不相同：</p>
+<div class="arithmatex">\[\forall r:\; \{x_{r,c}\}_{c=0}^{8} \text{ 互不相同}; \quad \forall c:\; \{x_{r,c}\}_{r=0}^{8} \text{ 互不相同}; \quad \forall b:\; \{x_{r,c}\}_{b(r,c)=b} \text{ 互不相同}. \tag{$\ast$}\]</div>
+<p>由鸽巢原理，<span class="arithmatex">\(9\)</span> 个域为 <span class="arithmatex">\(\{1,\dots,9\}\)</span> 的变量两两不同，等价于它们恰好是 <span class="arithmatex">\(1\)</span>–<span class="arithmatex">\(9\)</span> 的一个排列，故 <span class="arithmatex">\((\ast)\)</span> 与题面"每行/列/宫含 <span class="arithmatex">\(1\)</span>–<span class="arithmatex">\(9\)</span> 各一次"等价。求解即给出满足 <span class="arithmatex">\((\ast)\)</span> 且与预填位置一致的赋值。</p>
+<p>约束 <span class="arithmatex">\((\ast)\)</span> 是后文的脊柱。它直接给出每个空格的<strong>候选集</strong>：</p>
+<div class="arithmatex">\[\mathrm{cand}(r,c) = \{\, d \in \{1,\dots,9\} : x_{r,c}=d \text{ 不违反 } \mathcal{C} \,\} = \{1,\dots,9\} \setminus \big(R_r \cup C_c \cup B_{b(r,c)}\big), \tag{1}\]</div>
+<p>其中 <span class="arithmatex">\(R_r, C_c, B_b\)</span> 分别是当前部分赋值下，第 <span class="arithmatex">\(r\)</span> 行、第 <span class="arithmatex">\(c\)</span> 列、第 <span class="arithmatex">\(b\)</span> 宫已占用的数字集合。回溯搜索每一步都要算 <span class="arithmatex">\((1)\)</span>，所以它算得快不快，直接决定整体快不快。</p>
 <h2 id="_3">数据结构 / 想法<a class="headerlink" href="#_3" title="Permanent link">#</a></h2>
-<p><strong>朴素回溯</strong>：按行列扫描第一个空格，枚举 <span class="arithmatex">\(1\)</span>–<span class="arithmatex">\(9\)</span>，递归。
-<strong>核心加速 — 位掩码 + MRV (Most Constrained Variable) 启发式</strong>：
-1. 用三组 9 个 bitmask <code>row[r]</code>, <code>col[c]</code>, <code>box[b]</code>，第 <span class="arithmatex">\(d-1\)</span> 位表示数字 <span class="arithmatex">\(d\)</span> 已被占用。<code>b = (r//3)*3 + c//3</code>。
-2. <strong>候选集合</strong> = <code>~(row[r] | col[c] | box[b]) &amp; 0x1FF</code>。<code>__builtin_popcount</code> (Python: <code>int.bit_count()</code>) 给候选数。
-3. <strong>MRV</strong>：在所有空格中优先选<strong>候选最少</strong>的填，能把搜索树砍下数个数量级。
-4. 试填 <span class="arithmatex">\(d\)</span> 时同时 set 三个 bitmask，回溯时清掉（XOR）。</p>
-<p><strong>不变量</strong>：三组 bitmask 始终精确反映"当前部分赋值下，行/列/宫已占用的数字集"。<strong>正确性</strong>：等价于 DFS over 部分解空间，深度受限于空格数 (<span class="arithmatex">\(\le 81\)</span>)，剪枝不丢失合法解。</p>
-<p>进阶可上 DLX，将搜索向量化、共享 cover 撤销逻辑，速度再上一个量级（但实际 9×9 不必）。</p>
+<p>约束 <span class="arithmatex">\((\ast)\)</span> 与候选集 <span class="arithmatex">\((1)\)</span> 已把"该填什么数"说清楚；接下来由它们推出算法。候选集 <span class="arithmatex">\((1)\)</span> 直接给出搜索骨架：在某个空格枚举 <span class="arithmatex">\(\mathrm{cand}(r,c)\)</span> 中的每个值、试填、递归、失败回退——这就是对满足 <span class="arithmatex">\((\ast)\)</span> 的部分赋值空间的深度优先搜索。骨架既定，效率全压在两个由 <span class="arithmatex">\((1)\)</span> 暴露出来的选择上：候选集 <span class="arithmatex">\((1)\)</span> 用什么表示才能算得快，以及空格按什么顺序填。下面从最朴素的写法出发，让这两处浪费自己暴露，再各用一个修复对上。</p>
+<p><strong>朴素回溯。</strong> 按行列顺序扫到第一个空格，对照行/列/宫逐一检查 <span class="arithmatex">\(1\)</span>–<span class="arithmatex">\(9\)</span> 哪些可填，逐个递归，失败回退。这能解出来，但有两处明显浪费。</p>
+<p>其一，每算一次 <span class="arithmatex">\((1)\)</span> 都要遍历该格所在行、列、宫共约 <span class="arithmatex">\(20\)</span> 个格子去收集已用数字，是一次线性扫描。其二也更致命：扫描顺序固定，搜索可能一头扎进一个有 <span class="arithmatex">\(7\)</span> 个候选的空格、连试 <span class="arithmatex">\(7\)</span> 个分支，而棋盘另一处其实有个<strong>只剩 <span class="arithmatex">\(1\)</span> 个候选</strong>的空格——那个格子没得选，填它不产生任何分支。先填多候选格，等于在树的浅层就把分支因子撑到最大，子树规模随深度指数膨胀。对 Arto Inkala 设计的 "AI Escargot" 这类刻意稀疏的棋盘，固定顺序的朴素 DFS 可能要搜到秒级。</p>
+<p>两处浪费各对应一个修复。</p>
+<p><strong>修复一：用位掩码让 <span class="arithmatex">\((1)\)</span> 变成 <span class="arithmatex">\(O(1)\)</span>。</strong> 候选集 <span class="arithmatex">\((1)\)</span> 的核心是三个集合的并 <span class="arithmatex">\(R_r \cup C_c \cup B_b\)</span>，再取补。集合并、补、求势在朴素写法里是线性操作；但这些集合都是 <span class="arithmatex">\(\{1,\dots,9\}\)</span> 的子集，<span class="arithmatex">\(9\)</span> 个元素恰好塞进一个整数的低 <span class="arithmatex">\(9\)</span> 位。于是把每个集合编码成位掩码：第 <span class="arithmatex">\(d-1\)</span> 位为 <span class="arithmatex">\(1\)</span> 表示数字 <span class="arithmatex">\(d\)</span> 已被占用。维护三组各 <span class="arithmatex">\(9\)</span> 个掩码 <code>row[r]</code>、<code>col[c]</code>、<code>box[b]</code>。此时</p>
+<div class="arithmatex">\[R_r \cup C_c \cup B_b \;\longleftrightarrow\; \texttt{row[r] | col[c] | box[b]},\]</div>
+<p>一次按位或就是三集合的并；按位取反得到"未占用"的位，再与 <code>0x1FF</code>（即 <span class="arithmatex">\(511\)</span>，低 <span class="arithmatex">\(9\)</span> 位全 <span class="arithmatex">\(1\)</span>）相与，丢掉第 <span class="arithmatex">\(9\)</span> 位以上的高位，就得到候选集 <span class="arithmatex">\((1)\)</span> 的掩码：</p>
+<div class="arithmatex">\[\mathrm{cand}(r,c) \;\longleftrightarrow\; \texttt{\textasciitilde(row[r] | col[c] | box[b]) \&amp; 0x1FF}.\]</div>
+<p>候选<strong>个数</strong> <span class="arithmatex">\(|\mathrm{cand}(r,c)|\)</span> 就是这个掩码里 <span class="arithmatex">\(1\)</span> 的位数，用 <code>int.bit_count()</code>（Python 3.10+，对应 C 的 <code>__builtin_popcount</code>）一条指令取得。集合操作从线性降到常数，这正是 MRV 所需要的——下面就用得到。</p>
+<p><strong>修复二：MRV 启发式选最受限的空格。</strong> 既然 <span class="arithmatex">\((1)\)</span> 现在 <span class="arithmatex">\(O(1)\)</span> 可算，就能在每一步<strong>遍历所有空格</strong>、挑候选最少的那个先填。这是 MRV（Minimum Remaining Values，又称 Most Constrained Variable，"最受限变量"）：选 <span class="arithmatex">\(|\mathrm{cand}(r,c)|\)</span> 最小的空格。理由直接来自树形：分支因子等于所填空格的候选数，先填候选最少的格，就把树浅层的分支因子压到最小；候选为 <span class="arithmatex">\(1\)</span> 的格更是零分支的"强制填"，应当立刻消化。一旦某空格 <span class="arithmatex">\(|\mathrm{cand}|=0\)</span>，说明当前分支已死，立即回退。注意 MRV 只改变<strong>选哪个格</strong>，不限制<strong>填什么值</strong>——被选中的格仍会枚举它的全部候选——所以不会剪掉任何相容的部分赋值，搜索仍然完备。</p>
+<p><strong>不变量与正确性。</strong> 算法全程维持一条不变量：</p>
+<blockquote>
+<p>三组掩码 <code>row</code>、<code>col</code>、<code>box</code> 始终精确反映当前部分赋值下，各行/列/宫已占用的数字集 <span class="arithmatex">\(R_r, C_c, B_b\)</span>。</p>
+</blockquote>
+<p>它在三处维护，缺一不可：</p>
+<ol>
+<li><strong>初始化</strong>：扫描预填格，对每个已填数字 <span class="arithmatex">\(d\)</span> 在对应的 <code>row[r]</code>、<code>col[c]</code>、<code>box[b]</code> 上置位。</li>
+<li><strong>填入</strong>：在格 <span class="arithmatex">\((r,c)\)</span> 试填 <span class="arithmatex">\(d\)</span> 时，对三个掩码做按位或置位 <code>|= bit</code>。</li>
+<li><strong>撤销</strong>：回溯时用异或 <code>^= bit</code> 把刚置的位清掉。<code>bit</code> 此刻必为 <span class="arithmatex">\(1\)</span>，<span class="arithmatex">\(1 \oplus 1 = 0\)</span>，于是精确清除这一位、且只清这一位，把掩码还原到填入前——这是第 2 步的严格逆操作。</li>
+</ol>
+<p>不变量成立时，<span class="arithmatex">\((1)\)</span> 算出的候选恒为真正合法的数，搜索是对满足 <span class="arithmatex">\((\ast)\)</span> 的部分赋值空间的 DFS，深度不超过空格数（<span class="arithmatex">\(\le 81\)</span>），剪枝不丢失任何合法解。题目保证唯一解，故搜到首个完整赋值即可返回。</p>
+<div class="language-python highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">List</span>
+
+<span class="k">class</span><span class="w"> </span><span class="nc">Solution</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">solveSudoku</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">board</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="c1"># Time: 最坏 O(9^E)，E 为空格数；MRV+bitmask 后标准 9x9 实例近似瞬时</span>
+        <span class="c1"># Space: O(E) 递归栈 + O(1) 掩码表（27 个 int）</span>
+        <span class="n">FULL</span> <span class="o">=</span> <span class="mh">0x1FF</span>  <span class="c1"># 低 9 位 -&gt; 数字 1..9</span>
+        <span class="n">row</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="mi">9</span>
+        <span class="n">col</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="mi">9</span>
+        <span class="n">box</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="mi">9</span>
+        <span class="n">empties</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="c1"># 初始化：用预填格建立不变量</span>
+        <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">9</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">9</span><span class="p">):</span>
+                <span class="n">ch</span> <span class="o">=</span> <span class="n">board</span><span class="p">[</span><span class="n">r</span><span class="p">][</span><span class="n">c</span><span class="p">]</span>
+                <span class="k">if</span> <span class="n">ch</span> <span class="o">==</span> <span class="s1">&#39;.&#39;</span><span class="p">:</span>
+                    <span class="n">empties</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">r</span><span class="p">,</span> <span class="n">c</span><span class="p">))</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">bit</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">ch</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+                    <span class="n">row</span><span class="p">[</span><span class="n">r</span><span class="p">]</span> <span class="o">|=</span> <span class="n">bit</span>
+                    <span class="n">col</span><span class="p">[</span><span class="n">c</span><span class="p">]</span> <span class="o">|=</span> <span class="n">bit</span>
+                    <span class="n">box</span><span class="p">[(</span><span class="n">r</span> <span class="o">//</span> <span class="mi">3</span><span class="p">)</span> <span class="o">*</span> <span class="mi">3</span> <span class="o">+</span> <span class="n">c</span> <span class="o">//</span> <span class="mi">3</span><span class="p">]</span> <span class="o">|=</span> <span class="n">bit</span>
+
+        <span class="k">def</span><span class="w"> </span><span class="nf">dfs</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">empties</span><span class="p">:</span>
+                <span class="k">return</span> <span class="kc">True</span>
+            <span class="c1"># MRV：选候选最少的空格</span>
+            <span class="n">best_i</span><span class="p">,</span> <span class="n">best_mask</span><span class="p">,</span> <span class="n">best_cnt</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">10</span>
+            <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="n">c</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">empties</span><span class="p">):</span>
+                <span class="n">mask</span> <span class="o">=</span> <span class="o">~</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="n">r</span><span class="p">]</span> <span class="o">|</span> <span class="n">col</span><span class="p">[</span><span class="n">c</span><span class="p">]</span> <span class="o">|</span> <span class="n">box</span><span class="p">[(</span><span class="n">r</span> <span class="o">//</span> <span class="mi">3</span><span class="p">)</span> <span class="o">*</span> <span class="mi">3</span> <span class="o">+</span> <span class="n">c</span> <span class="o">//</span> <span class="mi">3</span><span class="p">])</span> <span class="o">&amp;</span> <span class="n">FULL</span>
+                <span class="n">cnt</span> <span class="o">=</span> <span class="n">mask</span><span class="o">.</span><span class="n">bit_count</span><span class="p">()</span>          <span class="c1"># Python 3.10+</span>
+                <span class="k">if</span> <span class="n">cnt</span> <span class="o">&lt;</span> <span class="n">best_cnt</span><span class="p">:</span>
+                    <span class="n">best_i</span><span class="p">,</span> <span class="n">best_mask</span><span class="p">,</span> <span class="n">best_cnt</span> <span class="o">=</span> <span class="n">i</span><span class="p">,</span> <span class="n">mask</span><span class="p">,</span> <span class="n">cnt</span>
+                    <span class="k">if</span> <span class="n">cnt</span> <span class="o">&lt;=</span> <span class="mi">1</span><span class="p">:</span>                <span class="c1"># 候选 &lt;=1 已最优，提前停</span>
+                        <span class="k">break</span>
+            <span class="k">if</span> <span class="n">best_cnt</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>                   <span class="c1"># 死分支，回退</span>
+                <span class="k">return</span> <span class="kc">False</span>
+
+            <span class="n">r</span><span class="p">,</span> <span class="n">c</span> <span class="o">=</span> <span class="n">empties</span><span class="p">[</span><span class="n">best_i</span><span class="p">]</span>
+            <span class="n">b</span> <span class="o">=</span> <span class="p">(</span><span class="n">r</span> <span class="o">//</span> <span class="mi">3</span><span class="p">)</span> <span class="o">*</span> <span class="mi">3</span> <span class="o">+</span> <span class="n">c</span> <span class="o">//</span> <span class="mi">3</span>
+            <span class="c1"># 把选中格移出 empties（与末尾交换后弹出，O(1)）</span>
+            <span class="n">empties</span><span class="p">[</span><span class="n">best_i</span><span class="p">],</span> <span class="n">empties</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">empties</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">empties</span><span class="p">[</span><span class="n">best_i</span><span class="p">]</span>
+            <span class="n">empties</span><span class="o">.</span><span class="n">pop</span><span class="p">()</span>
+
+            <span class="n">mask</span> <span class="o">=</span> <span class="n">best_mask</span>
+            <span class="k">while</span> <span class="n">mask</span><span class="p">:</span>
+                <span class="n">bit</span> <span class="o">=</span> <span class="n">mask</span> <span class="o">&amp;</span> <span class="p">(</span><span class="o">-</span><span class="n">mask</span><span class="p">)</span>            <span class="c1"># 取最低位的候选</span>
+                <span class="n">mask</span> <span class="o">&amp;=</span> <span class="n">mask</span> <span class="o">-</span> <span class="mi">1</span>
+                <span class="n">row</span><span class="p">[</span><span class="n">r</span><span class="p">]</span> <span class="o">|=</span> <span class="n">bit</span><span class="p">;</span> <span class="n">col</span><span class="p">[</span><span class="n">c</span><span class="p">]</span> <span class="o">|=</span> <span class="n">bit</span><span class="p">;</span> <span class="n">box</span><span class="p">[</span><span class="n">b</span><span class="p">]</span> <span class="o">|=</span> <span class="n">bit</span>      <span class="c1"># 填入</span>
+                <span class="n">board</span><span class="p">[</span><span class="n">r</span><span class="p">][</span><span class="n">c</span><span class="p">]</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">bit</span><span class="o">.</span><span class="n">bit_length</span><span class="p">())</span>              <span class="c1"># 位 -&gt; 数字</span>
+                <span class="k">if</span> <span class="n">dfs</span><span class="p">():</span>
+                    <span class="k">return</span> <span class="kc">True</span>
+                <span class="n">row</span><span class="p">[</span><span class="n">r</span><span class="p">]</span> <span class="o">^=</span> <span class="n">bit</span><span class="p">;</span> <span class="n">col</span><span class="p">[</span><span class="n">c</span><span class="p">]</span> <span class="o">^=</span> <span class="n">bit</span><span class="p">;</span> <span class="n">box</span><span class="p">[</span><span class="n">b</span><span class="p">]</span> <span class="o">^=</span> <span class="n">bit</span>      <span class="c1"># 撤销（XOR 逆操作）</span>
+                <span class="n">board</span><span class="p">[</span><span class="n">r</span><span class="p">][</span><span class="n">c</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;.&#39;</span>
+
+            <span class="c1"># 全部候选失败，复原 empties 后回退</span>
+            <span class="n">empties</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">r</span><span class="p">,</span> <span class="n">c</span><span class="p">))</span>
+            <span class="n">empties</span><span class="p">[</span><span class="n">best_i</span><span class="p">],</span> <span class="n">empties</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">empties</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">empties</span><span class="p">[</span><span class="n">best_i</span><span class="p">]</span>
+            <span class="k">return</span> <span class="kc">False</span>
+
+        <span class="n">dfs</span><span class="p">()</span>
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="n">board</span> <span class="o">=</span> <span class="p">[[</span><span class="s2">&quot;5&quot;</span><span class="p">,</span><span class="s2">&quot;3&quot;</span><span class="p">,</span><span class="s2">&quot;.&quot;</span><span class="p">,</span><span class="s2">&quot;.&quot;</span><span class="p">,</span><span class="s2">&quot;7&quot;</span><span class="p">,</span><span class="s2">&quot;.&quot;</span><span class="p">,</span><span class="s2">&quot;.&quot;</span><span class="p">,</span><span class="s2">&quot;.&quot;</span><span class="p">,</span><span class="s2">&quot;.&quot;</span><span class="p">],</span>
+             <span class="p">[</span><span class="s2">&quot;6&quot;</span><span class="p">,</span><span class="s2">&quot;.&quot;</span><span class="p">,</span><span class="s2">&quot;.&quot;</span><span class="p">,</span><span class="s2">&quot;1&quot;</span><span class="p">,</span><span class="s2">&quot;9&quot;</span><span class="p">,</span><span class="s2">&quot;5&quot;</span><span class="p">,</span><span class="s2">&quot;.&quot;</span><span class="p">,</span><span class="s2">&quot;.&quot;</span><span class="p">,</span><span class="s2">&quot;.&quot;</span><span class="p">],</span>
+             <span class="p">[</span><span class="s2">&quot;.&quot;</span><span class="p">,</span><span class="s2">&quot;9&quot;</span><span class="p">,</span><span class="s2">&quot;8&quot;</span><span class="p">,</span><span class="s2">&quot;.&quot;</span><span class="p">,</span><span class="s2">&quot;.&quot;</span><span class="p">,</span><span class="s2">&quot;.&quot;</span><span class="p">,</span><span class="s2">&quot;.&quot;</span><span class="p">,</span><span class="s2">&quot;6&quot;</span><span class="p">,</span><span class="s2">&quot;.&quot;</span><span class="p">],</span>
+             <span class="p">[</span><span class="s2">&quot;8&quot;</span><span class="p">,</span><span class="s2">&quot;.&quot;</span><span class="p">,</span><span class="s2">&quot;.&quot;</span><span class="p">,</span><span class="s2">&quot;.&quot;</span><span class="p">,</span><span class="s2">&quot;6&quot;</span><span class="p">,</span><span class="s2">&quot;.&quot;</span><span class="p">,</span><span class="s2">&quot;.&quot;</span><span class="p">,</span><span class="s2">&quot;.&quot;</span><span class="p">,</span><span class="s2">&quot;3&quot;</span><span class="p">],</span>
+             <span class="p">[</span><span class="s2">&quot;4&quot;</span><span class="p">,</span><span class="s2">&quot;.&quot;</span><span class="p">,</span><span class="s2">&quot;.&quot;</span><span class="p">,</span><span class="s2">&quot;8&quot;</span><span class="p">,</span><span class="s2">&quot;.&quot;</span><span class="p">,</span><span class="s2">&quot;3&quot;</span><span class="p">,</span><span class="s2">&quot;.&quot;</span><span class="p">,</span><span class="s2">&quot;.&quot;</span><span class="p">,</span><span class="s2">&quot;1&quot;</span><span class="p">],</span>
+             <span class="p">[</span><span class="s2">&quot;7&quot;</span><span class="p">,</span><span class="s2">&quot;.&quot;</span><span class="p">,</span><span class="s2">&quot;.&quot;</span><span class="p">,</span><span class="s2">&quot;.&quot;</span><span class="p">,</span><span class="s2">&quot;2&quot;</span><span class="p">,</span><span class="s2">&quot;.&quot;</span><span class="p">,</span><span class="s2">&quot;.&quot;</span><span class="p">,</span><span class="s2">&quot;.&quot;</span><span class="p">,</span><span class="s2">&quot;6&quot;</span><span class="p">],</span>
+             <span class="p">[</span><span class="s2">&quot;.&quot;</span><span class="p">,</span><span class="s2">&quot;6&quot;</span><span class="p">,</span><span class="s2">&quot;.&quot;</span><span class="p">,</span><span class="s2">&quot;.&quot;</span><span class="p">,</span><span class="s2">&quot;.&quot;</span><span class="p">,</span><span class="s2">&quot;.&quot;</span><span class="p">,</span><span class="s2">&quot;2&quot;</span><span class="p">,</span><span class="s2">&quot;8&quot;</span><span class="p">,</span><span class="s2">&quot;.&quot;</span><span class="p">],</span>
+             <span class="p">[</span><span class="s2">&quot;.&quot;</span><span class="p">,</span><span class="s2">&quot;.&quot;</span><span class="p">,</span><span class="s2">&quot;.&quot;</span><span class="p">,</span><span class="s2">&quot;4&quot;</span><span class="p">,</span><span class="s2">&quot;1&quot;</span><span class="p">,</span><span class="s2">&quot;9&quot;</span><span class="p">,</span><span class="s2">&quot;.&quot;</span><span class="p">,</span><span class="s2">&quot;.&quot;</span><span class="p">,</span><span class="s2">&quot;5&quot;</span><span class="p">],</span>
+             <span class="p">[</span><span class="s2">&quot;.&quot;</span><span class="p">,</span><span class="s2">&quot;.&quot;</span><span class="p">,</span><span class="s2">&quot;.&quot;</span><span class="p">,</span><span class="s2">&quot;.&quot;</span><span class="p">,</span><span class="s2">&quot;8&quot;</span><span class="p">,</span><span class="s2">&quot;.&quot;</span><span class="p">,</span><span class="s2">&quot;.&quot;</span><span class="p">,</span><span class="s2">&quot;7&quot;</span><span class="p">,</span><span class="s2">&quot;9&quot;</span><span class="p">]]</span>
+    <span class="n">Solution</span><span class="p">()</span><span class="o">.</span><span class="n">solveSudoku</span><span class="p">(</span><span class="n">board</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="nb">all</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">sorted</span><span class="p">(</span><span class="n">r</span><span class="p">))</span> <span class="o">==</span> <span class="s2">&quot;123456789&quot;</span> <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">board</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="n">board</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="p">[</span><span class="s2">&quot;5&quot;</span><span class="p">,</span><span class="s2">&quot;3&quot;</span><span class="p">,</span><span class="s2">&quot;4&quot;</span><span class="p">,</span><span class="s2">&quot;6&quot;</span><span class="p">,</span><span class="s2">&quot;7&quot;</span><span class="p">,</span><span class="s2">&quot;8&quot;</span><span class="p">,</span><span class="s2">&quot;9&quot;</span><span class="p">,</span><span class="s2">&quot;1&quot;</span><span class="p">,</span><span class="s2">&quot;2&quot;</span><span class="p">]</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;All tests passed!&quot;</span><span class="p">)</span>
+</code></pre></div>
+<blockquote>
+<p><strong>一个精确对应：精确覆盖。</strong> 上述约束结构可以无损翻译成另一个经典问题。把"在格 <span class="arithmatex">\((r,c)\)</span> 填 <span class="arithmatex">\(d\)</span>"看作一个候选行、把行/列/宫的每条 <span class="arithmatex">\((\ast)\)</span> 约束看作一个待覆盖的列，求解即在一个 <span class="arithmatex">\(0/1\)</span> 矩阵中选若干行使每列恰被覆盖一次——这就是<strong>精确覆盖 (exact cover)</strong>，Knuth 的 Algorithm X 与 Dancing Links (DLX) 正是为它设计的通用框架；数独是 DLX 的经典应用（而非 Knuth 论文中的范例，论文以多联骨牌与 <span class="arithmatex">\(N\)</span> 皇后为例）。DLX 把候选枚举与撤销逻辑系统地结构化，常数因子更小、速度更快。对 <span class="arithmatex">\(9\times9\)</span> 这一固定小规模，本节的位掩码 + MRV 已足够，不必引入 DLX。</p>
+</blockquote>
 <h2 id="_4">复杂度<a class="headerlink" href="#_4" title="Permanent link">#</a></h2>
+<p>复杂度由搜索树的形状决定。</p>
 <ul>
-<li>朴素回溯最坏 <span class="arithmatex">\(O(9^E)\)</span>，<span class="arithmatex">\(E\)</span> 为空格数；实际剪枝后远低于。</li>
-<li>MRV + bitmask 在标准 9×9 实例上几乎瞬时（&lt;1ms）。</li>
-<li>Space: <span class="arithmatex">\(O(E)\)</span> 递归栈 + <span class="arithmatex">\(O(1)\)</span> bitmask 表（27 个 int）。</li>
+<li><strong>朴素回溯</strong>最坏 <span class="arithmatex">\(O(9^E)\)</span>，<span class="arithmatex">\(E\)</span> 为空格数（每格至多 <span class="arithmatex">\(9\)</span> 个分支、树深 <span class="arithmatex">\(E\)</span>）；这是松弛上界，实际剪枝后远低于此。</li>
+<li><strong>MRV + 位掩码</strong>把每步候选计算降到 <span class="arithmatex">\(O(1)\)</span>、并把浅层分支因子压到最小，在标准 <span class="arithmatex">\(9 \times 9\)</span> 实例上近乎瞬时（实测 "AI Escargot" 约 <span class="arithmatex">\(2\text{ ms}\)</span>）。</li>
+<li><strong>空间</strong>：<span class="arithmatex">\(O(E)\)</span> 递归栈 + <span class="arithmatex">\(O(1)\)</span> 掩码表（<span class="arithmatex">\(27\)</span> 个 int <span class="arithmatex">\(= 9\)</span> 行 <span class="arithmatex">\(+ 9\)</span> 列 <span class="arithmatex">\(+ 9\)</span> 宫）。</li>
 </ul>
+<p>理论上 <span class="arithmatex">\(n \times n\)</span> 一般数独是 NP-complete（Yato &amp; Seta 2003），不存在期望多项式算法；但 <span class="arithmatex">\(n=9\)</span> 规模固定，搜索加启发式即可在毫秒级求解，与该困难性结论并不冲突。</p>
 <h2 id="_5">陷阱<a class="headerlink" href="#_5" title="Permanent link">#</a></h2>
 <ul>
-<li>忘记回溯时清 bitmask → 状态污染。</li>
-<li>用 set 而非 bitmask 慢 5–10×；位运算是关键常数因子。</li>
-<li>"最难九宫"（如 Arto Inkala 设计的）依赖 MRV 才能秒解，朴素 DFS 可能秒级才出。</li>
-<li>题面保证唯一解，故找到首个解即可返回；不要继续搜（多解时间炸）。</li>
+<li><strong>回溯时忘记清掩码</strong> → 状态污染，不变量被破坏，后续候选计算全错。撤销必须是填入的严格逆：<code>^= bit</code> 对应 <code>|= bit</code>。</li>
+<li><strong>用 <code>set</code> 而非位掩码</strong>：逻辑正确但慢 <span class="arithmatex">\(5\)</span>–<span class="arithmatex">\(10\times\)</span>，因为集合的并/补/求势退化为线性操作，而 MRV 每步要对所有空格算候选，常数因子被放大。</li>
+<li><strong>去掉 MRV 退回固定顺序</strong>：在稀疏难局（如 "AI Escargot"）上搜索树暴涨，可能慢到秒级。</li>
+<li><strong>找到首个解后继续搜</strong>：题面保证唯一解，搜到即返回；继续搜在多解输入上时间会炸。</li>
 </ul>
 <h2 id="_6">相关题目<a class="headerlink" href="#_6" title="Permanent link">#</a></h2>
 <ul>
 <li><code>#52. N-Queens II (off-wiki)</code> — 同款 bitmask 回溯，约束更对称。</li>
-<li><code>#Valid Sudoku (off-wiki)</code> — 仅校验合法性，是本题的基础前置。</li>
+<li><a href="../0036_valid-sudoku/">#36. Valid Sudoku</a> — 仅校验合法性（同款行/列/宫已占用集合），是本题的基础前置。</li>
 <li><a href="../0839_similar-string-groups/">#839. Similar String Groups</a> — 不直接相关，但同样可用 "约束图建模 + 经典算法" 框架理解。</li>
 </ul>
 <h2 id="further-reading">Further Reading<a class="headerlink" href="#further-reading" title="Permanent link">#</a></h2>
 <ul>
-<li>Knuth (2000). <em>Dancing Links</em>. arXiv:cs/0011047. ⭐⭐ — Algorithm X / DLX 原论文，数独求解器经典案例。</li>
+<li>Knuth (2000). <em>Dancing Links</em>. arXiv:cs/0011047. ⭐⭐ — Algorithm X / DLX 原论文，精确覆盖的通用框架；数独是其经典应用。</li>
 <li>Yato &amp; Seta (2003). <em>Complexity and completeness of finding another solution and its application to puzzles</em>. IEICE Trans. — 证明 <span class="arithmatex">\(n \times n\)</span> 数独 NP-complete。</li>
 <li>Norvig, P. <em>Solving Every Sudoku Puzzle</em>. norvig.com/sudoku.html ⭐ — Python 实现 + 约束传播解读，工程化范本。</li>
 <li>Russell &amp; Norvig, <em>AIMA</em> 3e §6.2 "Constraint Propagation" — AC-3、MRV 启发式系统化讲解。</li>
@@ -22612,6 +22746,8 @@
         <script src="../../../js/mathjax/tex-mml-chtml.js"></script>
       
         <script src="../../../js/mermaid.min.js"></script>
+      
+        <script src="../../../js/featured.js"></script>
       
     
   </body>

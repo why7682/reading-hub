@@ -1466,6 +1466,8 @@
       
         
       
+        
+      
     
     
     
@@ -1521,6 +1523,34 @@
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../featured/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ⭐ Featured（已验证）
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
               
             
               
@@ -1610,10 +1640,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_4" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
         
           
-          <label class="md-nav__link" for="__nav_4_4" id="__nav_4_4_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_5" id="__nav_4_5_label" tabindex="">
             
   
   
@@ -1631,8 +1661,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_4_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_4">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_5">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1915,7 +1945,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -1937,14 +1967,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_4_5" id="__nav_4_5_label" tabindex="">
+              <label class="md-nav__link " for="__nav_4_6" id="__nav_4_6_label" tabindex="">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_5">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_6">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -5321,10 +5351,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_7" checked>
         
           
-          <label class="md-nav__link" for="__nav_4_6" id="__nav_4_6_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_7" id="__nav_4_7_label" tabindex="">
             
   
   
@@ -5342,8 +5372,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_4_6">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_7_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4_7">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -22467,14 +22497,24 @@
 <h2 id="problem">Problem<a class="headerlink" href="#problem" title="Permanent link">#</a></h2>
 <p>字符串 <span class="arithmatex">\(s\)</span> 仅含字符 <code>'a'</code>, <code>'b'</code>（<span class="arithmatex">\(1 \leq |s| \leq 1000\)</span>）。一步可删除 <span class="arithmatex">\(s\)</span> 的一个<strong>回文子序列</strong>（不必连续）。求把 <span class="arithmatex">\(s\)</span> 删空的最少步数。</p>
 <h2 id="background">背景 (Background)<a class="headerlink" href="#background" title="Permanent link">#</a></h2>
-<p>陷阱型 Easy。关键观察：<strong>任何全为同字符的子序列必是回文</strong>。由于字母表只有 2 种，可一步删掉所有 <code>'a'</code>、再一步删掉所有 <code>'b'</code>——上界 2。若 <span class="arithmatex">\(s\)</span> 本身已是回文，1 步即可；空串 0 步。所以答案只能是 0/1/2，由 <span class="arithmatex">\(s\)</span> 的回文性决定。</p>
-<p>这道题考察"子序列 vs 子串"的区别，以及对回文性质的基本理解。</p>
+<p>先确定我们到底在优化什么。每一步删除一个回文子序列，目标是用最少的步数把 <span class="arithmatex">\(s\)</span> 清空。一个自然的贪心是：每步删掉当前<strong>最长</strong>的回文子序列，反复进行直到串空。</p>
+<p>这个策略的问题在于它没有给出步数的上界。最长回文子序列删完后会留下残余字符，残余的结构难以预测，于是步数随 <span class="arithmatex">\(s\)</span> 的内容波动——我们无法在不真正模拟的情况下回答"几步"。换言之，贪心把问题留在了"依赖具体输入"的层面。</p>
+<p>要跳出这一层，需要问一个与具体 <span class="arithmatex">\(s\)</span> 无关的问题：<strong>是否存在一个对所有输入都成立的步数上界？</strong> 一旦上界足够小，最优步数就只能在少数几个值之间取，问题就从模拟坍缩为判定。</p>
+<p>关键限制是字母表只有 <span class="arithmatex">\(\{\)</span> <code>'a'</code>, <code>'b'</code> <span class="arithmatex">\(\}\)</span> 两个字符。回到回文的定义：子序列 <span class="arithmatex">\(t\)</span> 是回文当且仅当 <span class="arithmatex">\(t_i = t_{|t|-1-i}\)</span> 对所有 <span class="arithmatex">\(i\)</span> 成立。若 <span class="arithmatex">\(t\)</span> 的所有字符都相同，这个等式<strong>恒成立</strong>——单字符串退化地满足回文条件。而子序列允许跳过任意位置，所以"<span class="arithmatex">\(s\)</span> 中所有取值为 <code>'a'</code> 的位置"本身就构成一个合法子序列，且它全由 <code>'a'</code> 组成，必是回文。</p>
+<p>于是对任意非空 <span class="arithmatex">\(s\)</span>，至多两步即可清空：第一步删掉所有 <code>'a'</code>（一个全 <code>'a'</code> 的回文子序列），第二步删掉剩下的全 <code>'b'</code>（同理是回文）。这就是与输入无关的上界 <span class="arithmatex">\(2\)</span>，正是两字符字母表赋予的结构。贪心的不确定性被这个上界一举消除。</p>
 <h2 id="formulation">形式化 (Formulation)<a class="headerlink" href="#formulation" title="Permanent link">#</a></h2>
+<p>设 <span class="arithmatex">\(\text{ans}(s)\)</span> 为把 <span class="arithmatex">\(s\)</span> 删空的最少步数。由背景给出的上界 <span class="arithmatex">\(2\)</span>，外加两个显然的下界情形（空串无需操作；<span class="arithmatex">\(s\)</span> 已是回文则一步删掉整串），答案被压缩为三种取值：</p>
 <div class="arithmatex">\[
-\text{ans}(s) = \begin{cases} 0 &amp; s = \text{empty} \\ 1 &amp; s \text{ is a palindrome} \\ 2 &amp; \text{otherwise} \end{cases}
+\text{ans}(s) = \begin{cases} 0 &amp; s = \varepsilon \\ 1 &amp; s \text{ 是回文} \\ 2 &amp; \text{否则} \end{cases} \tag{1}
 \]</div>
+<p>式 (1) 是本题的脊梁：下面的所有推导都在证明它的每一支取值都恰当（既可达、又无法更小）。</p>
 <h2 id="approach">数据结构 / 想法 (Approach)<a class="headerlink" href="#approach" title="Permanent link">#</a></h2>
-<p>判回文用双指针 <span class="arithmatex">\(O(n)\)</span> 即可。</p>
+<p>逐支验证式 (1)。</p>
+<p><strong><span class="arithmatex">\(s = \varepsilon\)</span>（空串）。</strong> 已经为空，零步，<span class="arithmatex">\(\text{ans} = 0\)</span>。本题约束 <span class="arithmatex">\(|s| \geq 1\)</span> 排除了这一支，但形式化保留它以保持完整。</p>
+<p><strong><span class="arithmatex">\(s\)</span> 是回文。</strong> 整个 <span class="arithmatex">\(s\)</span> 自身就是一个回文子序列，一步删掉它，<span class="arithmatex">\(\text{ans} \leq 1\)</span>。又因 <span class="arithmatex">\(s\)</span> 非空必须至少一步，故 <span class="arithmatex">\(\text{ans} = 1\)</span>。这一支恰好可达。</p>
+<p><strong><span class="arithmatex">\(s\)</span> 非回文。</strong> 背景中的两步构造给出 <span class="arithmatex">\(\text{ans} \leq 2\)</span>。同时 <span class="arithmatex">\(\text{ans} \neq 1\)</span>：一步只能删一个回文子序列，若一步可清空则该子序列就是 <span class="arithmatex">\(s\)</span> 全体，意味着 <span class="arithmatex">\(s\)</span> 本身回文，与假设矛盾。故 <span class="arithmatex">\(\text{ans} = 2\)</span>，下界与上界吻合。</p>
+<p>三支证毕，式 (1) 成立。注意它唯一的分支点是"<strong><span class="arithmatex">\(s\)</span> 是否为回文</strong>"——空串可由长度直接排除，非空时只需这一个判定。于是算法的全部工作就是判回文。</p>
+<p>判回文等价于检验 <span class="arithmatex">\(s\)</span> 是否等于其逆序，即 <span class="arithmatex">\(s_l = s_r\)</span> 对所有镜像下标对 <span class="arithmatex">\((l, r)\)</span> 成立。双指针从两端向中间逐对比较，一旦失配即非回文（返回 <span class="arithmatex">\(2\)</span>），扫到中点未失配即回文（返回 <span class="arithmatex">\(1\)</span>），<span class="arithmatex">\(O(n)\)</span> 时间、<span class="arithmatex">\(O(1)\)</span> 空间。</p>
 <div class="language-python highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">Solution</span><span class="p">:</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">removePalindromeSub</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">s</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
         <span class="c1"># Time: O(n), Space: O(1)</span>
@@ -22489,18 +22529,19 @@
         <span class="k">return</span> <span class="mi">1</span>
 </code></pre></div>
 <p>样例验证：
-- <code>"ababa"</code> 回文 → 1 ✓。
-- <code>"abb"</code>：s[0]='a' ≠ s[2]='b' → 2 ✓。
-- <code>"baabb"</code>：s[0]='b' ≠ s[4]='b'? wait b=b. l=1,r=3: s[1]='a', s[3]='b' → 2 ✓。</p>
+- <code>"ababa"</code>：镜像对 (a,a)、(b,b) 均匹配，中点收束，回文 → 1 ✓。
+- <code>"abb"</code>：$s_0 = $ <code>'a'</code> $\neq s_2 = $ <code>'b'</code>，首对即失配 → 2 ✓。
+- <code>"baabb"</code>：$s_0 = $ <code>'b'</code> $= s_4 = $ <code>'b'</code> 匹配；$s_1 = $ <code>'a'</code> $\neq s_3 = $ <code>'b'</code> 失配 → 2 ✓。</p>
 <h2 id="complexity">复杂度 (Complexity)<a class="headerlink" href="#complexity" title="Permanent link">#</a></h2>
 <ul>
 <li>Time: <span class="arithmatex">\(O(n)\)</span></li>
 <li>Space: <span class="arithmatex">\(O(1)\)</span></li>
 </ul>
+<p>双指针最坏情形（真回文）扫满全串，失配提前返回只会更快，故 <span class="arithmatex">\(O(n)\)</span> 是紧的最坏界。</p>
 <h2 id="pitfalls">陷阱 (Pitfalls)<a class="headerlink" href="#pitfalls" title="Permanent link">#</a></h2>
 <ul>
-<li><strong>子序列不是子串</strong>——子序列允许跳过任意字符。"全 a" 是子序列必回文，这是 2 的上界来源。若题目改为子串就完全不同（答案与最长回文子串结构相关）。</li>
-<li>不要去做 DP <code>dp[i][j]</code> = 区间最少操作数——那是子串版本的题型，本题用不上。</li>
+<li><strong>子序列不是子串。</strong> 子序列允许跳过任意位置，正是这种自由让"全 <code>'a'</code>"成为合法子序列、从而保证两步上界。若题目改成删<strong>回文子串</strong>（必须连续），全 <code>'a'</code> 的位置一般不连续，两步上界即告失效，答案转而依赖最长回文子串的结构，是完全不同的题型。</li>
+<li><strong>不要套用区间 DP <code>dp[i][j]</code>。</strong> 区间 DP 是子串版本的工具：它枚举连续区间的最优拆分。本题中子序列的无界跳跃把答案直接压到 <span class="arithmatex">\(\leq 2\)</span>，与区间结构无关——上式 (1) 已是闭式解，无需任何 DP。</li>
 </ul>
 <h2 id="related">相关题目 (Related)<a class="headerlink" href="#related" title="Permanent link">#</a></h2>
 <ul>
@@ -22617,6 +22658,8 @@
         <script src="../../../js/mathjax/tex-mml-chtml.js"></script>
       
         <script src="../../../js/mermaid.min.js"></script>
+      
+        <script src="../../../js/featured.js"></script>
       
     
   </body>

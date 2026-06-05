@@ -1466,6 +1466,8 @@
       
         
       
+        
+      
     
     
     
@@ -1521,6 +1523,34 @@
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../featured/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ⭐ Featured（已验证）
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
               
             
               
@@ -1610,10 +1640,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_4" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
         
           
-          <label class="md-nav__link" for="__nav_4_4" id="__nav_4_4_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_5" id="__nav_4_5_label" tabindex="">
             
   
   
@@ -1631,8 +1661,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_4_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_4">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_5">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1915,7 +1945,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -1937,14 +1967,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_4_5" id="__nav_4_5_label" tabindex="">
+              <label class="md-nav__link " for="__nav_4_6" id="__nav_4_6_label" tabindex="">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_5">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_6">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -5321,10 +5351,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_7" checked>
         
           
-          <label class="md-nav__link" for="__nav_4_6" id="__nav_4_6_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_7" id="__nav_4_7_label" tabindex="">
             
   
   
@@ -5342,8 +5372,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_4_6">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_7_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4_7">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -22467,11 +22497,14 @@
 <h2 id="problem">Problem<a class="headerlink" href="#problem" title="Permanent link">#</a></h2>
 <p>给字符串 <code>s</code>（小写英文字母），返回长度为 3 且 3 个字符两两不同的子串个数（重复出现的子串按出现次数计）。约束 <span class="arithmatex">\(1 \le |s| \le 100\)</span>。</p>
 <h2 id="background">背景 (Background)<a class="headerlink" href="#background" title="Permanent link">#</a></h2>
-<p>固定窗口大小的滑动窗口最小实例。一般 sliding-window-with-distinct-chars 用 hash/计数数组维护窗内字符频次；这里窗大小 3 小到甚至可以直接判等。</p>
+<p>题目问的是：在 <code>s</code> 中，有多少个<strong>连续的三元组</strong>，其三个字符互不相同？关键词是"连续"——每一个合法子串都恰好对应一个起始下标 <span class="arithmatex">\(i\)</span>，由 <span class="arithmatex">\(s[i], s[i+1], s[i+2]\)</span> 构成。于是问题退化为：逐个枚举所有起始下标，对每个三元组判断"是否三字符互不相同"，把通过的计数。</p>
+<p>剩下的唯一问题是如何判断一个三元组"三字符互不相同"。先看最朴素的做法：把三个字符塞进一个频次计数器（或哈希表），检查是否每个字符的计数都恰为 1，等价地检查"不同字符的种数是否为 3"。这能工作，但对一个<strong>固定长度为 3</strong> 的窗口来说，计数器是多余的：种数为 3 当且仅当三个字符没有任何一对相等。三个位置之间共有 <span class="arithmatex">\(\binom{3}{2}=3\)</span> 对，因此"互不相同"就等价于 3 个标量比较 <span class="arithmatex">\(s[i]\ne s[i+1]\)</span>、<span class="arithmatex">\(s[i+1]\ne s[i+2]\)</span>、<span class="arithmatex">\(s[i]\ne s[i+2]\)</span> 同时成立。窗口大小固定且小，所以不需要任何数据结构，直接判等即可。</p>
+<p>这三个不等式缺一不可。漏掉 <span class="arithmatex">\(s[i]\ne s[i+2]\)</span> 会把 <code>"aba"</code> 误判为合法（首尾都是 <code>a</code>）；漏掉相邻那两个则会放过 <code>"aab"</code> 这类。三对都查，才精确刻画了"无重复"。</p>
 <h2 id="formulation">形式化 (Formulation)<a class="headerlink" href="#formulation" title="Permanent link">#</a></h2>
+<p>承上：一个起始于下标 <span class="arithmatex">\(i\)</span> 的窗口是"好窗口"，当且仅当其三个字符 <span class="arithmatex">\(s[i], s[i+1], s[i+2]\)</span> 两两不等，即三个成对不等式同时成立。合法起始下标的范围是 <span class="arithmatex">\(0 \le i \le |s|-3\)</span>（最后一个完整窗口起始于 <span class="arithmatex">\(|s|-3\)</span>）。所求即满足条件的下标个数：</p>
 <div class="arithmatex">\[\#\{i : 0 \le i \le |s|-3,\ s[i] \ne s[i+1] \land s[i+1] \ne s[i+2] \land s[i] \ne s[i+2]\}\]</div>
 <h2 id="approach">数据结构 / 想法 (Approach)<a class="headerlink" href="#approach" title="Permanent link">#</a></h2>
-<p><strong>直接判等</strong>（最简）：</p>
+<p>公式直接转写为代码：外层遍历起始下标 <span class="arithmatex">\(i\)</span>，遍历范围 <code>range(len(s) - 2)</code> 恰好让 <span class="arithmatex">\(i\)</span> 取 <span class="arithmatex">\(0\)</span> 到 <span class="arithmatex">\(|s|-3\)</span>（因为 <code>range</code> 右端开区间，上界 <span class="arithmatex">\(|s|-2\)</span> 对应最后一个 <span class="arithmatex">\(i=|s|-3\)</span>）；内层是公式里那三个成对不等式的逐字转写。</p>
 <div class="language-python highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">Solution</span><span class="p">:</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">countGoodSubstrings</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">s</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
         <span class="n">cnt</span> <span class="o">=</span> <span class="mi">0</span>
@@ -22481,7 +22514,78 @@
                 <span class="n">cnt</span> <span class="o">+=</span> <span class="mi">1</span>
         <span class="k">return</span> <span class="n">cnt</span>
 </code></pre></div>
-<p>Trace 例 2 <code>"aababcabc"</code>：窗口 aab(✗), aba(✓), bab(✗), abc(✓), bca(✓), cab(✓), abc(✓) → 4 ✓</p>
+<p>逐窗口验证公式谓词，以例 2 <code>"aababcabc"</code> 为例（标注每个窗口三对不等式是否全部成立）：</p>
+<table>
+<thead>
+<tr>
+<th><span class="arithmatex">\(i\)</span></th>
+<th>窗口</th>
+<th><span class="arithmatex">\(s[i]\ne s[i+1]\)</span></th>
+<th><span class="arithmatex">\(s[i+1]\ne s[i+2]\)</span></th>
+<th><span class="arithmatex">\(s[i]\ne s[i+2]\)</span></th>
+<th>好窗口</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td><code>aab</code></td>
+<td>a≠a 假</td>
+<td>—</td>
+<td>—</td>
+<td>否</td>
+</tr>
+<tr>
+<td>1</td>
+<td><code>aba</code></td>
+<td>真</td>
+<td>真</td>
+<td>a≠a 假</td>
+<td>否</td>
+</tr>
+<tr>
+<td>2</td>
+<td><code>bab</code></td>
+<td>真</td>
+<td>真</td>
+<td>b≠b 假</td>
+<td>否</td>
+</tr>
+<tr>
+<td>3</td>
+<td><code>abc</code></td>
+<td>真</td>
+<td>真</td>
+<td>真</td>
+<td>是</td>
+</tr>
+<tr>
+<td>4</td>
+<td><code>bca</code></td>
+<td>真</td>
+<td>真</td>
+<td>真</td>
+<td>是</td>
+</tr>
+<tr>
+<td>5</td>
+<td><code>cab</code></td>
+<td>真</td>
+<td>真</td>
+<td>真</td>
+<td>是</td>
+</tr>
+<tr>
+<td>6</td>
+<td><code>abc</code></td>
+<td>真</td>
+<td>真</td>
+<td>真</td>
+<td>是</td>
+</tr>
+</tbody>
+</table>
+<p>合计 4 个好窗口，与期望输出一致。注意 <code>aba</code> 正是被第三个不等式 <span class="arithmatex">\(s[i]\ne s[i+2]\)</span> 拦下的窗口——这印证了为何三对都要查。</p>
 <h2 id="complexity">复杂度 (Complexity)<a class="headerlink" href="#complexity" title="Permanent link">#</a></h2>
 <ul>
 <li>Time: <span class="arithmatex">\(O(|s|)\)</span></li>
@@ -22489,8 +22593,8 @@
 </ul>
 <h2 id="pitfalls">陷阱 (Pitfalls)<a class="headerlink" href="#pitfalls" title="Permanent link">#</a></h2>
 <ul>
-<li><span class="arithmatex">\(|s| &lt; 3\)</span> 时直接返回 0（循环不执行，自然处理）。</li>
-<li>"3 个字符两两不同"需要 3 个不等式（a≠b, b≠c, a≠c），漏一个会错（如 "aba"）。</li>
+<li><span class="arithmatex">\(|s| &lt; 3\)</span> 时直接返回 0（<code>range(len(s) - 2)</code> 在 <span class="arithmatex">\(|s|\le 2\)</span> 时为空，循环不执行，自然处理）。</li>
+<li>"3 个字符两两不同"需要全部三个不等式（<span class="arithmatex">\(a\ne b\)</span>, <span class="arithmatex">\(b\ne c\)</span>, <span class="arithmatex">\(a\ne c\)</span>）；漏掉 <span class="arithmatex">\(a\ne c\)</span> 会错判 <code>"aba"</code>，漏掉相邻不等式会错判 <code>"aab"</code>。</li>
 </ul>
 <h2 id="related">相关题目 (Related)<a class="headerlink" href="#related" title="Permanent link">#</a></h2>
 <ul>
@@ -22604,6 +22708,8 @@
         <script src="../../../js/mathjax/tex-mml-chtml.js"></script>
       
         <script src="../../../js/mermaid.min.js"></script>
+      
+        <script src="../../../js/featured.js"></script>
       
     
   </body>

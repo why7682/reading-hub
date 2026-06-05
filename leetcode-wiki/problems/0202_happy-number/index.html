@@ -1466,6 +1466,8 @@
       
         
       
+        
+      
     
     
     
@@ -1521,6 +1523,34 @@
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../featured/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ⭐ Featured（已验证）
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
               
             
               
@@ -1610,10 +1640,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_4" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
         
           
-          <label class="md-nav__link" for="__nav_4_4" id="__nav_4_4_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_5" id="__nav_4_5_label" tabindex="">
             
   
   
@@ -1631,8 +1661,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_4_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_4">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_5">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1915,7 +1945,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -1937,14 +1967,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_4_5" id="__nav_4_5_label" tabindex="">
+              <label class="md-nav__link " for="__nav_4_6" id="__nav_4_6_label" tabindex="">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_5">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_6">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -5321,10 +5351,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_7" checked>
         
           
-          <label class="md-nav__link" for="__nav_4_6" id="__nav_4_6_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_7" id="__nav_4_7_label" tabindex="">
             
   
   
@@ -5342,8 +5372,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_4_6">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_7_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4_7">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -22467,16 +22497,37 @@
 <h2 id="problem">Problem<a class="headerlink" href="#problem" title="Permanent link">#</a></h2>
 <p>对正整数 <span class="arithmatex">\(n\)</span> 反复执行 <span class="arithmatex">\(n \leftarrow\)</span> "各位平方和"。若最终到 <span class="arithmatex">\(1\)</span> 则 happy；若进入不含 <span class="arithmatex">\(1\)</span> 的循环则非 happy。判定。<span class="arithmatex">\(1 \le n \le 2^{31}-1\)</span>。</p>
 <h2 id="background">背景 (Background)<a class="headerlink" href="#background" title="Permanent link">#</a></h2>
-<p>这是 <strong>数论迭代函数 (iterated digit function)</strong> 的经典例子。设 <span class="arithmatex">\(S_2(n) = \sum_i d_i^2\)</span>（<span class="arithmatex">\(d_i\)</span> 为 <span class="arithmatex">\(n\)</span> 的十进制位），关键事实：<span class="arithmatex">\(S_2\)</span> 将任意正整数最终映入 <strong>集合 <span class="arithmatex">\(\{1\} \cup C\)</span></strong>，其中 <span class="arithmatex">\(C\)</span> 是唯一的 8-循环 <span class="arithmatex">\(4 \to 16 \to 37 \to 58 \to 89 \to 145 \to 42 \to 20 \to 4\)</span>。证明：对 <span class="arithmatex">\(n \ge 1000\)</span>，<span class="arithmatex">\(S_2(n) &lt; n\)</span>（位数 <span class="arithmatex">\(k\)</span> 时 <span class="arithmatex">\(S_2(n) \le 81k &lt; n\)</span>），故序列必下降至 <span class="arithmatex">\(\le 999\)</span>，在有限集内必形成循环——再穷举可证只有上述两个吸引子。</p>
-<p>从 CS 角度，这是 <strong>functional graph 上的环检测</strong>——每个节点恰一条出边 <span class="arithmatex">\(n \to S_2(n)\)</span>，问从起点出发的轨迹是否进入包含 <span class="arithmatex">\(1\)</span> 的环（仅 <span class="arithmatex">\(1 \to 1\)</span> 自环算 happy）。</p>
+<p>先把题目当作一段程序照着跑。给定 <span class="arithmatex">\(n\)</span>，我们一遍遍地用"各位平方和"替换它，看是否撞上 <span class="arithmatex">\(1\)</span>：</p>
+<div class="language-python highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">is_happy_naive</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+    <span class="k">while</span> <span class="n">n</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="n">n</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">d</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span> <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="nb">str</span><span class="p">(</span><span class="n">n</span><span class="p">))</span>
+    <span class="k">return</span> <span class="kc">True</span>   <span class="c1"># ← 问题在这里</span>
+</code></pre></div>
+<p>这段代码有一个明显的缺陷：循环条件只检查 <span class="arithmatex">\(n = 1\)</span>，一旦序列永远碰不到 <span class="arithmatex">\(1\)</span>，<code>while</code> 就不会停。于是真正要回答的第一个问题不是"何时到 <span class="arithmatex">\(1\)</span>"，而是<strong>这个序列到底会不会停</strong>——它会发散到无穷，还是被困在某个不含 <span class="arithmatex">\(1\)</span> 的圈里？在能回答这一点之前，naive 版本既给不出 <code>False</code>，也无法保证终止。</p>
+<p>要看清序列的走向，先观察一步替换能把数字推到多大。设 <span class="arithmatex">\(n\)</span> 有 <span class="arithmatex">\(k\)</span> 位十进制数字，每位至多是 <span class="arithmatex">\(9\)</span>，平方至多 <span class="arithmatex">\(81\)</span>，于是各位平方和至多 <span class="arithmatex">\(81k\)</span>。这个上界与 <span class="arithmatex">\(n\)</span> 本身（至少 <span class="arithmatex">\(10^{k-1}\)</span>）的对比立刻给出结论：</p>
+<div class="arithmatex">\[\text{当 } k \ge 4 \text{ 时}, \quad S_2(n) \le 81k &lt; 10^{k-1} \le n.\]</div>
+<p>具体感受一下：任意四位数 <span class="arithmatex">\(n \ge 1000\)</span>，但 <span class="arithmatex">\(S_2(n) \le 4 \times 81 = 324 &lt; 1000\)</span>。所以只要 <span class="arithmatex">\(n \ge 1000\)</span>，下一步必定严格变小。序列不可能发散——它会单调地被压回 <span class="arithmatex">\([1, 999]\)</span> 区间，此后再也出不去。</p>
+<p>这一步排除了"发散"的可能，于是只剩"被困在圈里"。但圈是必然出现的，理由不需要任何外部技巧：替换是<strong>确定性</strong>的（每个 <span class="arithmatex">\(n\)</span> 唯一决定下一个 <span class="arithmatex">\(S_2(n)\)</span>），而状态又被限制在有限集 <span class="arithmatex">\([1, 999]\)</span> 内。有限多个状态加上确定性的演化，序列必然在某一步重复一个先前出现过的值，从那一刻起永远沿同一段循环往复。换句话说，从任意起点出发的轨迹，最终要么停在 <span class="arithmatex">\(1\)</span>（自环 <span class="arithmatex">\(1 \to 1\)</span>），要么落入某个不含 <span class="arithmatex">\(1\)</span> 的循环——二者必居其一，没有第三种可能。</p>
+<p>于是问题被精确地化简为：轨迹落入的那个循环里有没有 <span class="arithmatex">\(1\)</span>。穷举 <span class="arithmatex">\([1, 999]\)</span> 上的所有轨迹（这个集合足够小，可以逐个跑完）会发现，不含 <span class="arithmatex">\(1\)</span> 的循环只有唯一一个 8-循环</p>
+<div class="arithmatex">\[C : \; 4 \to 16 \to 37 \to 58 \to 89 \to 145 \to 42 \to 20 \to 4,\]</div>
+<p>所有非 happy 数最终都掉进 <span class="arithmatex">\(C\)</span>。这就是 naive 代码缺失的"另一半"：happy 当且仅当轨迹到达 <span class="arithmatex">\(1\)</span>，否则它一定到达 <span class="arithmatex">\(C\)</span>。</p>
 <h2 id="formulation">形式化 (Formulation)<a class="headerlink" href="#formulation" title="Permanent link">#</a></h2>
+<p>把上面的替换写成一个映射，再把轨迹写成它的迭代。直觉是：我们在一个有限状态集上做确定性行走，问这条行走是停在不动点 <span class="arithmatex">\(1\)</span> 还是被另一个循环捕获。</p>
 <p>定义 <span class="arithmatex">\(S_2 : \mathbb{Z}_{\ge 1} \to \mathbb{Z}_{\ge 1}\)</span>，</p>
-<div class="arithmatex">\[S_2(n) = \sum_{i} \left(\left\lfloor n/10^i \right\rfloor \bmod 10\right)^2.\]</div>
-<p>考察轨迹 <span class="arithmatex">\(n_0 = n, n_{k+1} = S_2(n_k)\)</span>。问：是否存在 <span class="arithmatex">\(k\)</span> 使 <span class="arithmatex">\(n_k = 1\)</span>？</p>
+<div class="arithmatex">\[S_2(n) = \sum_{i} \left(\left\lfloor n/10^i \right\rfloor \bmod 10\right)^2. \tag{1}\]</div>
+<p>考察由 <span class="arithmatex">\((1)\)</span> 生成的轨迹</p>
+<div class="arithmatex">\[n_0 = n, \qquad n_{k+1} = S_2(n_k). \tag{2}\]</div>
+<p>判定问题即：<strong>是否存在 <span class="arithmatex">\(k\)</span> 使得 <span class="arithmatex">\(n_k = 1\)</span>？</strong></p>
+<p>由背景中的两步论证，轨迹 <span class="arithmatex">\((2)\)</span> 必落入 <span class="arithmatex">\(\{1\}\)</span> 或循环 <span class="arithmatex">\(C\)</span>，二者互斥。因此该判定等价于检测轨迹是否进入一个含 <span class="arithmatex">\(1\)</span> 的循环。这正是在出度恒为 <span class="arithmatex">\(1\)</span> 的有向图（每个状态 <span class="arithmatex">\(n\)</span> 恰有一条边 <span class="arithmatex">\(n \to S_2(n)\)</span>）上做环检测：起点确定，沿唯一出边前进，问最终落在哪个环。下面两种解法都在这个图上工作，区别只在于"如何判断已经入环"。</p>
 <h2 id="approach">数据结构 / 想法 (Approach)<a class="headerlink" href="#approach" title="Permanent link">#</a></h2>
-<p><strong>解法 A — 哈希集记录已访问</strong>：每步将当前值加入 set，若再次遇到说明入环且未碰到 <span class="arithmatex">\(1\)</span>，返回 false。
-- 不变量：set 中元素是从 <span class="arithmatex">\(n_0\)</span> 起的所有前缀；遇 <span class="arithmatex">\(1\)</span> 立即返回 true。</p>
-<p><strong>解法 B — Floyd 龟兔双指针</strong>：本题是 functional graph 上的环检测，可用 <span class="arithmatex">\(O(1)\)</span> 空间 Floyd 算法。慢指针每步 <span class="arithmatex">\(S_2\)</span>，快指针每步 <span class="arithmatex">\(S_2 \circ S_2\)</span>；二者相遇时检查是否为 <span class="arithmatex">\(1\)</span>。</p>
+<p><strong>解法 A — 哈希集记录已访问（直接修复 naive 版本）</strong>：naive 代码的唯一漏洞是没有终止判据。既然轨迹要么到 <span class="arithmatex">\(1\)</span> 要么重复某个旧值，那就把见过的值都存进一个 set：每步先看是否为 <span class="arithmatex">\(1\)</span>（是则 happy），再看是否已在 set 中（是则说明入了不含 <span class="arithmatex">\(1\)</span> 的环，返回 false），否则加入 set 继续。</p>
+<ul>
+<li>不变量：set 恰好是从 <span class="arithmatex">\(n_0\)</span> 起、当前步之前出现过的所有值；第一次重复必定意味着进入了某个不经过 <span class="arithmatex">\(1\)</span> 的循环。</li>
+<li>代价：需要存储整条路径，最坏长度为路径在落入吸引子前的步数（下面复杂度一节给出它是常数级，但非零）。</li>
+</ul>
+<p><strong>解法 B — Floyd 龟兔双指针（把空间降到 <span class="arithmatex">\(O(1)\)</span>）</strong>：解法 A 唯一的开销是那个 set。能不能不存历史也判断出"是否入环"？可以——这恰是 functional graph 上的环检测，存在 <span class="arithmatex">\(O(1)\)</span> 空间的经典办法。</p>
+<p>直觉先于操作：若慢、快两个指针都已进入同一个长度为 <span class="arithmatex">\(L\)</span> 的环，慢指针每步走 <span class="arithmatex">\(1\)</span>、快指针每步走 <span class="arithmatex">\(2\)</span>，则二者之间的环上距离每步缩短 <span class="arithmatex">\(1\)</span>，至多 <span class="arithmatex">\(L\)</span> 步后必然对齐重合。反之，若轨迹通向 <span class="arithmatex">\(1\)</span>（即落入自环 <span class="arithmatex">\(1 \to 1\)</span>），快指针先到 <span class="arithmatex">\(1\)</span> 并停在那里。于是"快指针追上慢指针"当且仅当二者落入了同一个非平凡环。</p>
+<p>据此：慢指针每步做一次 <span class="arithmatex">\(S_2\)</span>，快指针每步做两次 <span class="arithmatex">\(S_2 \circ S_2\)</span>；当快指针到 <span class="arithmatex">\(1\)</span> 或两指针相遇时停止，再看停在哪个值。</p>
 <div class="language-python highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">Solution</span><span class="p">:</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">isHappy</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
         <span class="k">def</span><span class="w"> </span><span class="nf">step</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
@@ -22491,17 +22542,16 @@
             <span class="n">fast</span> <span class="o">=</span> <span class="n">step</span><span class="p">(</span><span class="n">step</span><span class="p">(</span><span class="n">fast</span><span class="p">))</span>
         <span class="k">return</span> <span class="n">fast</span> <span class="o">==</span> <span class="mi">1</span>
 </code></pre></div>
-<p>Trace n=19: step(19)=82; slow=19, fast=82. iter1: slow=82, fast=step(step(82))=step(68)=100. iter2: slow=68, fast=step(step(100))=step(1)=1. fast==1 → True. ✓
-Trace n=2: 2→4→16→37→58→89→145→42→20→4，进入 4-环。慢快必在某点相遇且 ≠1 → False. ✓</p>
+<p>两个轨迹验证它确实区分了两种结局。<span class="arithmatex">\(n = 19\)</span>（happy）：<span class="arithmatex">\(\text{step}(19)=82\)</span>，初始 <span class="arithmatex">\(slow=19, fast=82\)</span>。第一轮 <span class="arithmatex">\(slow=82\)</span>，<span class="arithmatex">\(fast=\text{step}(\text{step}(82))=\text{step}(68)=100\)</span>。第二轮 <span class="arithmatex">\(slow=68\)</span>，<span class="arithmatex">\(fast=\text{step}(\text{step}(100))=\text{step}(1)=1\)</span>，循环因 <code>fast == 1</code> 退出，返回 <code>True</code>。<span class="arithmatex">\(n = 2\)</span>（非 happy）：<span class="arithmatex">\(2 \to 4 \to 16 \to 37 \to 58 \to 89 \to 145 \to 42 \to 20 \to 4\)</span>，落入 8-循环 <span class="arithmatex">\(C\)</span>；快指针永不触及 <span class="arithmatex">\(1\)</span>，必在环上某点追上慢指针，返回 <code>False</code>。</p>
 <h2 id="complexity">复杂度 (Complexity)<a class="headerlink" href="#complexity" title="Permanent link">#</a></h2>
 <ul>
-<li>Time: <span class="arithmatex">\(O(\log n)\)</span> 每步（位数级别），总步数有界——可证从任意起点 <span class="arithmatex">\(\le 7\)</span> 步即落入 <span class="arithmatex">\(\{1\} \cup \{4,16,37,58,89,145,42,20\}\)</span>，故全程 <span class="arithmatex">\(O(\log n)\)</span>。</li>
-<li>Space: 哈希集法 <span class="arithmatex">\(O(K)\)</span>（<span class="arithmatex">\(K\)</span> 为路径长，常数级）；Floyd 法 <span class="arithmatex">\(O(1)\)</span>。</li>
+<li>Time: 单步 <span class="arithmatex">\(S_2\)</span> 与位数成正比，即 <span class="arithmatex">\(O(\log n)\)</span>。总步数有界——由背景的论证，<span class="arithmatex">\(n \ge 1000\)</span> 时每步严格变小，至多一步后即落入 <span class="arithmatex">\([1, 999]\)</span>；而在 <span class="arithmatex">\([1, 999]\)</span> 内，到达吸引子（<span class="arithmatex">\(1\)</span> 或 <span class="arithmatex">\(C\)</span>）所需步数最多为 <span class="arithmatex">\(11\)</span> 步（最坏起点 <span class="arithmatex">\(n = 269\)</span>）。故任意起点至多 <span class="arithmatex">\(12\)</span> 步进入吸引子，总步数是常数，整体仍为 <span class="arithmatex">\(O(\log n)\)</span>。</li>
+<li>Space: 哈希集法 <span class="arithmatex">\(O(K)\)</span>（<span class="arithmatex">\(K\)</span> 为入环前路径长，常数级）；Floyd 法 <span class="arithmatex">\(O(1)\)</span>。</li>
 </ul>
 <h2 id="pitfalls">陷阱 (Pitfalls)<a class="headerlink" href="#pitfalls" title="Permanent link">#</a></h2>
 <ul>
-<li><strong>不能只判断 <span class="arithmatex">\(n_k\)</span> 是否等于初始 <span class="arithmatex">\(n\)</span></strong>——非 happy 数未必回到自身，而是落入 4-环。</li>
-<li>整数溢出在 Python 中不成立，但 C++/Java 中 <span class="arithmatex">\(n \le 2^{31}-1\)</span>，<span class="arithmatex">\(S_2(n) \le 81 \times 10 = 810\)</span> 不会溢，但仍要注意中间乘法。</li>
+<li><strong>不能只判断 <span class="arithmatex">\(n_k\)</span> 是否等于初始 <span class="arithmatex">\(n\)</span></strong>——这正是 naive 思路最容易犯的错。非 happy 数并不会回到自身，而是落入 8-循环 <span class="arithmatex">\(C\)</span>；只比对起点会漏掉所有这类情况。检测入环必须比对<strong>全部历史值</strong>（解法 A）或用龟兔相遇（解法 B）。</li>
+<li>整数溢出在 Python 中不成立，但在 C++/Java 中需留意：<span class="arithmatex">\(n \le 2^{31}-1\)</span> 至多 <span class="arithmatex">\(10\)</span> 位，<span class="arithmatex">\(S_2(n) \le 81 \times 10 = 810\)</span> 不会溢，但仍要注意中间乘法。</li>
 <li>不要把 <span class="arithmatex">\(0\)</span> 当输入：题目保证 <span class="arithmatex">\(n \ge 1\)</span>。</li>
 </ul>
 <h2 id="related">相关题目 (Related)<a class="headerlink" href="#related" title="Permanent link">#</a></h2>
@@ -22621,6 +22671,8 @@ Trace n=2: 2→4→16→37→58→89→145→42→20→4，进入 4-环。慢快
         <script src="../../../js/mathjax/tex-mml-chtml.js"></script>
       
         <script src="../../../js/mermaid.min.js"></script>
+      
+        <script src="../../../js/featured.js"></script>
       
     
   </body>

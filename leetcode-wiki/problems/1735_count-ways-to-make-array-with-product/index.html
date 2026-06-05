@@ -1466,6 +1466,8 @@
       
         
       
+        
+      
     
     
     
@@ -1521,6 +1523,34 @@
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../featured/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ⭐ Featured（已验证）
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
               
             
               
@@ -1610,10 +1640,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_4" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
         
           
-          <label class="md-nav__link" for="__nav_4_4" id="__nav_4_4_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_5" id="__nav_4_5_label" tabindex="">
             
   
   
@@ -1631,8 +1661,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_4_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_4">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_5">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1915,7 +1945,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -1937,14 +1967,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_4_5" id="__nav_4_5_label" tabindex="">
+              <label class="md-nav__link " for="__nav_4_6" id="__nav_4_6_label" tabindex="">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_5">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_6">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -5321,10 +5351,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_7" checked>
         
           
-          <label class="md-nav__link" for="__nav_4_6" id="__nav_4_6_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_7" id="__nav_4_7_label" tabindex="">
             
   
   
@@ -5342,8 +5372,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_4_6">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_7_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4_7">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -22467,16 +22497,29 @@
 <h2 id="problem">Problem<a class="headerlink" href="#problem" title="Permanent link">#</a></h2>
 <p>查询数组 <code>queries[i] = [n_i, k_i]</code>，求长 <span class="arithmatex">\(n_i\)</span> 的正整数数组、元素积为 <span class="arithmatex">\(k_i\)</span> 的方案数（mod <span class="arithmatex">\(10^9 + 7\)</span>）。约束 <span class="arithmatex">\(|Q| \le 10^4\)</span>，<span class="arithmatex">\(1 \le n_i, k_i \le 10^4\)</span>。</p>
 <h2 id="background">背景 (Background)<a class="headerlink" href="#background" title="Permanent link">#</a></h2>
-<p>本题是<strong>素因数分配 + 组合恒等式 (stars and bars)</strong> 的组合数论应用。每个 <span class="arithmatex">\(k\)</span> 的素分解 <span class="arithmatex">\(k = \prod p_i^{e_i}\)</span> 在 <span class="arithmatex">\(n\)</span> 个位置上独立分配（不同素数互不干扰，<strong>积性函数</strong>思想）。每个素数 <span class="arithmatex">\(p_i\)</span> 的 <span class="arithmatex">\(e_i\)</span> 个相同因子分配到 <span class="arithmatex">\(n\)</span> 位置：<strong>多重组合</strong> <span class="arithmatex">\(\binom{e_i + n - 1}{n - 1}\)</span>。最终：</p>
-<div class="arithmatex">\[\text{Ways}(n, k) = \prod_{p^e \| k} \binom{e + n - 1}{n - 1}\]</div>
-<p>这条思路源于 <strong>OEIS A007425</strong> (Dirichlet 卷积 <span class="arithmatex">\(\tau_n\)</span> = <span class="arithmatex">\(d \star d \star \dots\)</span> 共 <span class="arithmatex">\(n\)</span> 次)：<span class="arithmatex">\(\tau_n(k)\)</span> 恰为有序 <span class="arithmatex">\(n\)</span>-分拆数。<strong>Euler 积性</strong>贯穿数论：<span class="arithmatex">\(f\)</span> 积性 <span class="arithmatex">\(\implies f(mn) = f(m)f(n)\)</span> when <span class="arithmatex">\(\gcd = 1\)</span>。</p>
+<p>先把问题摆到最直白的位置：固定一个查询 <span class="arithmatex">\((n, k)\)</span>，我们要数的是有序正整数元组
+$<span class="arithmatex">\((a_1, a_2, \dots, a_n), \qquad a_i \ge 1, \quad a_1 a_2 \cdots a_n = k.\)</span>$
+最朴素的做法就是枚举：让 <span class="arithmatex">\(a_1\)</span> 跑遍 <span class="arithmatex">\(k\)</span> 的每个约数，对每个 <span class="arithmatex">\(a_1\)</span> 把问题缩成"长 <span class="arithmatex">\(n-1\)</span>、积 <span class="arithmatex">\(k/a_1\)</span>"，递归下去。</p>
+<p>这套枚举立刻撞墙。元组数量本身可能很大——例如 <span class="arithmatex">\((n, k) = (73, 660)\)</span> 的答案就有五千万量级——逐个枚举不可能在 <span class="arithmatex">\(|Q| \le 10^4\)</span> 个查询内完成。我们需要的不是枚举，而是一个<strong>闭式计数</strong>：不列出元组，直接算出它们有多少个。</p>
+<p>要找闭式，先看约束 <span class="arithmatex">\(a_1 \cdots a_n = k\)</span> 的内部结构。把 <span class="arithmatex">\(k\)</span> 做素分解 <span class="arithmatex">\(k = \prod_j p_j^{e_j}\)</span>，并把每个 <span class="arithmatex">\(a_i\)</span> 也按素数记其指数 <span class="arithmatex">\(v_{p}(a_i)\)</span>（<span class="arithmatex">\(a_i\)</span> 中素数 <span class="arithmatex">\(p\)</span> 的幂次）。乘积取指数后，约束 <span class="arithmatex">\(a_1 \cdots a_n = k\)</span> 等价于：对<strong>每个</strong>素数 <span class="arithmatex">\(p_j\)</span>，
+$<span class="arithmatex">\(v_{p_j}(a_1) + v_{p_j}(a_2) + \dots + v_{p_j}(a_n) = e_j.\)</span>$
+这一步是整篇的支点。它说明原本耦合的一个乘积约束，被拆成了一组<strong>各自独立</strong>的加法约束——每个素数一条，且不同素数的约束作用在互不相干的指数坐标上。选择如何在 <span class="arithmatex">\(n\)</span> 个位置间分配素数 <span class="arithmatex">\(p_1\)</span> 的幂次，完全不影响如何分配 <span class="arithmatex">\(p_2\)</span> 的幂次。</p>
+<p>于是计数按乘法原理分解。先看单个素数 <span class="arithmatex">\(p_j\)</span>：要把 <span class="arithmatex">\(e_j\)</span> 个相同的指数单位放进 <span class="arithmatex">\(n\)</span> 个有标号的位置（位置就是数组下标，彼此可区分），允许某些位置放 <span class="arithmatex">\(0\)</span> 个。这正是方程
+$<span class="arithmatex">\(x_1 + x_2 + \dots + x_n = e_j, \qquad x_i \ge 0\)</span>$
+的非负整数解数，即 stars and bars 计数 <span class="arithmatex">\(\binom{e_j + n - 1}{n - 1}\)</span>。各素数独立，总方案数为这些计数之积：</p>
+<div class="arithmatex">\[\text{Ways}(n, k) \;=\; \prod_{j} \binom{e_j + n - 1}{n - 1} \pmod{10^9 + 7}. \tag{$\ast$}\]</div>
+<p>值得一记的是，固定 <span class="arithmatex">\(n\)</span> 时 <span class="arithmatex">\(k \mapsto \text{Ways}(n, k)\)</span> 是<strong>积性函数</strong>：上面的独立性正是积性的来源（<span class="arithmatex">\(\gcd(m, m') = 1\)</span> 时素因子集合不交，约束不交，故计数相乘）。这个函数就是约数函数的 <span class="arithmatex">\(n\)</span> 重 Dirichlet 卷积 <span class="arithmatex">\(\tau_n = d \star d \star \cdots \star d\)</span>，它数的恰是 <span class="arithmatex">\(k\)</span> 的有序 <span class="arithmatex">\(n\)</span>-分解数（OEIS A007425）。这层数论身份不参与上面的推导，仅作为对结果的旁证与延伸入口。</p>
 <h2 id="formulation">形式化 (Formulation)<a class="headerlink" href="#formulation" title="Permanent link">#</a></h2>
-<p>设 <span class="arithmatex">\(k = \prod_j p_j^{e_j}\)</span>。答案：</p>
-<div class="arithmatex">\[\prod_j \binom{e_j + n - 1}{n - 1} \pmod{10^9 + 7}\]</div>
+<p>设 <span class="arithmatex">\(k = \prod_j p_j^{e_j}\)</span> 为 <span class="arithmatex">\(k\)</span> 的素分解。由背景中的指数分解论证，答案为公式 <span class="arithmatex">\((\ast)\)</span>：</p>
+<div class="arithmatex">\[\prod_j \binom{e_j + n - 1}{n - 1} \pmod{10^9 + 7}.\]</div>
+<p>约定空积为 <span class="arithmatex">\(1\)</span>：当 <span class="arithmatex">\(k = 1\)</span> 时无素因子，乘积为空，<span class="arithmatex">\(\text{Ways}(n, 1) = 1\)</span>。</p>
 <h2 id="approach">数据结构 / 想法 (Approach)<a class="headerlink" href="#approach" title="Permanent link">#</a></h2>
-<p><strong>预处理</strong>：
-- 阶乘 + 阶乘逆元到上限 <span class="arithmatex">\(\approx n + \log_2 k\)</span>。<span class="arithmatex">\(n \le 10^4\)</span>，<span class="arithmatex">\(k \le 10^4\)</span>，<span class="arithmatex">\(e_j \le \log_2 10^4 \approx 14\)</span>；上限取 <span class="arithmatex">\(10^4 + 20 \approx 10^4\)</span>。
-- <strong>最小素因子表 (smallest prime factor, SPF)</strong> 到 <span class="arithmatex">\(10^4\)</span>，便于 <span class="arithmatex">\(O(\log k)\)</span> 分解。</p>
+<p>整个实现就是把公式 <span class="arithmatex">\((\ast)\)</span> 算出来，每个量都从公式直接读出需求。</p>
+<p>公式只用到两件事：<strong>分解 <span class="arithmatex">\(k\)</span></strong> 得到各 <span class="arithmatex">\((p_j, e_j)\)</span>，以及<strong>计算二项式</strong> <span class="arithmatex">\(\binom{e_j + n - 1}{n - 1}\)</span> 在模 <span class="arithmatex">\(10^9 + 7\)</span> 下的值。两件事都可借预处理摊薄到所有查询。</p>
+<ul>
+<li><strong>二项式 → 阶乘 + 阶乘逆元</strong>。<span class="arithmatex">\(\binom{a}{b} = \frac{a!}{b!\,(a-b)!}\)</span>，模素数下用 Fermat 小定理求逆元（<span class="arithmatex">\(10^9+7\)</span> 是素数，<span class="arithmatex">\(x^{-1} \equiv x^{p-2}\)</span>）。<span class="arithmatex">\((\ast)\)</span> 中最大上标为 <span class="arithmatex">\(e_j + n - 1\)</span>，由约束 <span class="arithmatex">\(n \le 10^4\)</span>、<span class="arithmatex">\(e_j \le \log_2 10^4 \approx 14\)</span>，上界约 <span class="arithmatex">\(10^4 + 14\)</span>；预分配 <span class="arithmatex">\(N = 10^4 + 20\)</span> 足够。</li>
+<li><strong>分解 <span class="arithmatex">\(k\)</span> → 最小素因子表 (smallest prime factor, SPF)</strong>。线性筛出每个数的最小素因子后，反复除以 <span class="arithmatex">\(\text{spf}[k]\)</span> 即可在 <span class="arithmatex">\(O(\log k)\)</span> 内分解，无需试除。</li>
+</ul>
 <div class="language-python highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">Solution</span><span class="p">:</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">waysToFillArray</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">queries</span><span class="p">):</span>
         <span class="n">MOD</span> <span class="o">=</span> <span class="mi">10</span><span class="o">**</span><span class="mi">9</span> <span class="o">+</span> <span class="mi">7</span>
@@ -22518,29 +22561,29 @@
             <span class="n">ans</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">res</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">ans</span>
 </code></pre></div>
-<p><strong>心算 trace 示例 1</strong>: queries=[[2,6],[5,1],[73,660]]
-- (2, 6=2·3): C(1+1, 1)·C(1+1, 1) = 2·2 = 4 ✓
-- (5, 1): k=1 直接返回 1（空积） ✓
-- (73, 660=2²·3·5·11): C(2+72,72)·C(1+72,72)·C(1+72,72)·C(1+72,72) = C(74,72)·73³ = (74·73/2)·73³ = 2701·73³ = 2701·389017 = ...; mod = 50734910 (题目给的) — 数值我不验，结构正确。</p>
-<p><strong>为何独立</strong>：方案 = 对每个素数选 <span class="arithmatex">\(n\)</span> 个非负幂指数和为 <span class="arithmatex">\(e\)</span>。不同素数分配相互独立 → 乘法原理。</p>
+<p>主循环逐查询分解 <span class="arithmatex">\(k\)</span>，每遇到一个素数幂 <span class="arithmatex">\(p^e\)</span> 就乘上一个 <span class="arithmatex">\(\binom{e+n-1}{n-1}\)</span>，正是 <span class="arithmatex">\((\ast)\)</span> 逐因子相乘。<span class="arithmatex">\(k = 1\)</span> 时 <code>while k &gt; 1</code> 不进入，<code>res</code> 保持初值 <span class="arithmatex">\(1\)</span>，对应空积。</p>
+<p><strong>Example verification</strong>（验证公式 <span class="arithmatex">\((\ast)\)</span> 与代码一致）：<code>queries=[[2,6],[5,1],[73,660]]</code>
+- <span class="arithmatex">\((2,\ 6 = 2 \cdot 3)\)</span>：<span class="arithmatex">\(\binom{1+1}{1}\binom{1+1}{1} = 2 \cdot 2 = 4\)</span>。直接枚举 <span class="arithmatex">\(a_1 a_2 = 6\)</span> 的有序对——<span class="arithmatex">\((1,6),(2,3),(3,2),(6,1)\)</span>——恰 <span class="arithmatex">\(4\)</span> 个，与公式吻合。
+- <span class="arithmatex">\((5,\ 1)\)</span>：<span class="arithmatex">\(k = 1\)</span>，空积返回 <span class="arithmatex">\(1\)</span>（长 <span class="arithmatex">\(5\)</span> 全 <span class="arithmatex">\(1\)</span> 数组是唯一解）。
+- <span class="arithmatex">\((73,\ 660 = 2^2 \cdot 3 \cdot 5 \cdot 11)\)</span>：<span class="arithmatex">\(\binom{74}{72}\binom{73}{72}\binom{73}{72}\binom{73}{72} = \binom{74}{72}\cdot 73^3\)</span>。其中 <span class="arithmatex">\(\binom{74}{72} = \tfrac{74 \cdot 73}{2} = 2701\)</span>，<span class="arithmatex">\(73^3 = 389017\)</span>，故 <span class="arithmatex">\(2701 \cdot 389017 = 1050734917\)</span>，<span class="arithmatex">\(\bmod\ (10^9+7) = 50734910\)</span>，与题目答案一致。</p>
 <h2 id="complexity">复杂度 (Complexity)<a class="headerlink" href="#complexity" title="Permanent link">#</a></h2>
 <ul>
 <li>预处理：<span class="arithmatex">\(O(N \log \log N)\)</span> 筛 + <span class="arithmatex">\(O(N)\)</span> 阶乘。</li>
-<li>每查询：<span class="arithmatex">\(O(\log k)\)</span> 分解 + <span class="arithmatex">\(O(\omega(k))\)</span> 二项式（<span class="arithmatex">\(\omega(k) \le 5\)</span> 对 <span class="arithmatex">\(k \le 10^4\)</span>）。</li>
+<li>每查询：<span class="arithmatex">\(O(\log k)\)</span> 分解 + <span class="arithmatex">\(O(\omega(k))\)</span> 二项式（<span class="arithmatex">\(\omega(k) \le 5\)</span> 对 <span class="arithmatex">\(k \le 10^4\)</span>，因 <span class="arithmatex">\(2\cdot3\cdot5\cdot7\cdot11 = 2310 \le 10^4 &lt; 30030\)</span>）。</li>
 <li>总：<span class="arithmatex">\(O(N + |Q| \log k)\)</span>。</li>
 </ul>
 <h2 id="pitfalls">陷阱 (Pitfalls)<a class="headerlink" href="#pitfalls" title="Permanent link">#</a></h2>
 <ul>
-<li><strong><span class="arithmatex">\(k = 1\)</span> 边界</strong>：素分解为空积；返回 1（任何长 <span class="arithmatex">\(n\)</span> 全 1 数组都满足）。<code>while k &gt; 1</code> 直接跳过即可。</li>
-<li><strong>stars and bars 形式</strong>：方程 <span class="arithmatex">\(x_1 + \dots + x_n = e\)</span> 非负整数解数 = <span class="arithmatex">\(\binom{e + n - 1}{n - 1}\)</span>，不是 <span class="arithmatex">\(\binom{e + n}{n}\)</span>（虽等价，注意上下标）。</li>
+<li><strong><span class="arithmatex">\(k = 1\)</span> 边界</strong>：素分解为空积；由公式 <span class="arithmatex">\((\ast)\)</span> 约定空积为 <span class="arithmatex">\(1\)</span>，对应长 <span class="arithmatex">\(n\)</span> 全 <span class="arithmatex">\(1\)</span> 数组。代码中 <code>while k &gt; 1</code> 不进入循环、<code>res</code> 保持 <span class="arithmatex">\(1\)</span> 即可。</li>
+<li><strong>stars and bars 上下标</strong>：方程 <span class="arithmatex">\(x_1 + \dots + x_n = e\)</span> 的非负整数解数为 <span class="arithmatex">\(\binom{e + n - 1}{n - 1}\)</span>。等价写法 <span class="arithmatex">\(\binom{e+n-1}{e}\)</span> 同值（<span class="arithmatex">\(\binom{m}{r} = \binom{m}{m-r}\)</span>），但 <span class="arithmatex">\(\binom{e+n}{n}\)</span> 是另一个数，不要混用。组合对象是"<span class="arithmatex">\(e\)</span> 个相同球放进 <span class="arithmatex">\(n\)</span> 个有标号桶"，分隔板 <span class="arithmatex">\(n-1\)</span> 个，故下标取 <span class="arithmatex">\(n-1\)</span>。</li>
 <li><strong>逆元用 Fermat</strong>：<span class="arithmatex">\(10^9 + 7\)</span> 是素数，<span class="arithmatex">\(a^{-1} \equiv a^{p-2} \pmod p\)</span>。</li>
-<li><strong>factorial 上界</strong>：需要 <span class="arithmatex">\(e + n - 1 \le 10^4 + 14\)</span>，预分配 <span class="arithmatex">\(10^4 + 20\)</span> 足够。</li>
-<li><strong>不同有序分拆</strong>：题目要求顺序敏感数组 → 用多重组合（隐含 <span class="arithmatex">\(n\)</span> 个 <em>有标号</em> 位置）。</li>
+<li><strong>factorial 上界</strong>：<span class="arithmatex">\((\ast)\)</span> 最大上标 <span class="arithmatex">\(e + n - 1 \le 10^4 + 14\)</span>，预分配 <span class="arithmatex">\(10^4 + 20\)</span> 足够。</li>
+<li><strong>有序而非无序</strong>：约束作用在 <span class="arithmatex">\(n\)</span> 个<em>有标号</em>位置上（数组下标可区分），故用 stars and bars 的有标号桶计数，而非无序分拆。</li>
 </ul>
 <h2 id="related">相关题目 (Related)<a class="headerlink" href="#related" title="Permanent link">#</a></h2>
 <ul>
 <li><a href="../1641_count-sorted-vowel-strings/">#1641. Count Sorted Vowel Strings</a> — 同样 stars and bars 推导（多重组合）。</li>
-<li><code>#2338. Count the Number of Ideal Arrays (off-wiki)</code> — 进一步推广：要单调 + 整除链。</li>
+<li><a href="../2338_count-the-number-of-ideal-arrays/">#2338. Count the Number of Ideal Arrays</a> — 进一步推广：要单调 + 整除链。</li>
 </ul>
 <h2 id="further-reading">Further Reading<a class="headerlink" href="#further-reading" title="Permanent link">#</a></h2>
 <ul>
@@ -22654,6 +22697,8 @@
         <script src="../../../js/mathjax/tex-mml-chtml.js"></script>
       
         <script src="../../../js/mermaid.min.js"></script>
+      
+        <script src="../../../js/featured.js"></script>
       
     
   </body>

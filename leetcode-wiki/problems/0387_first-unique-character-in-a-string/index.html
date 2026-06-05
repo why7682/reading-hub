@@ -1466,6 +1466,8 @@
       
         
       
+        
+      
     
     
     
@@ -1521,6 +1523,34 @@
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../featured/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ⭐ Featured（已验证）
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
               
             
               
@@ -1610,10 +1640,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_4" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
         
           
-          <label class="md-nav__link" for="__nav_4_4" id="__nav_4_4_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_5" id="__nav_4_5_label" tabindex="">
             
   
   
@@ -1631,8 +1661,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_4_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_4">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_5">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1915,7 +1945,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -1937,14 +1967,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_4_5" id="__nav_4_5_label" tabindex="">
+              <label class="md-nav__link " for="__nav_4_6" id="__nav_4_6_label" tabindex="">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_5">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_6">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -5321,10 +5351,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_7" checked>
         
           
-          <label class="md-nav__link" for="__nav_4_6" id="__nav_4_6_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_7" id="__nav_4_7_label" tabindex="">
             
   
   
@@ -5342,8 +5372,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_4_6">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_7_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4_7">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -22467,34 +22497,48 @@
 <h2 id="problem">Problem<a class="headerlink" href="#problem" title="Permanent link">#</a></h2>
 <p>给小写英文字母串 <code>s</code>，返回第一个仅出现一次的字符下标；不存在返回 <span class="arithmatex">\(-1\)</span>。<span class="arithmatex">\(|s| \le 10^5\)</span>。</p>
 <h2 id="_1">背景<a class="headerlink" href="#_1" title="Permanent link">#</a></h2>
-<p>经典 <strong>"flow with frequency table"</strong> 模式：用两次扫描——第一遍统计频次，第二遍扫描找首个频次 1 的位置。本题字符集固定为 26 → 可用定长数组，复杂度比一般哈希更优。</p>
-<p>工业场景中，类似 "first unique" 出现在 stream deduplication（首个独特事件）、log analysis（首个 unique session）等，常需 <strong>online</strong> 算法（见 follow-up 类问题 #1429）。</p>
+<p>这道题的难点不在"找下标"，而在"唯一"这个词的含义。判断 <span class="arithmatex">\(s_i\)</span> 是否唯一，要求知道 <span class="arithmatex">\(s_i\)</span> 在<strong>整个串</strong>中出现了几次——这是一个全局属性。而我们要返回的是满足该属性的<strong>最左</strong>位置，这是一个局部、按顺序的查询。</p>
+<p>这两件事方向相反。全局计数要求看完整个串才能下结论；最左查询则希望从左往右一遇到答案就停。先尝试把它们合在一次遍历里，看看在哪里卡住。</p>
+<p>最朴素的写法：对每个 <span class="arithmatex">\(i\)</span>，重新扫一遍 <span class="arithmatex">\(s\)</span> 数 <span class="arithmatex">\(s_i\)</span> 出现几次，等于 1 就返回。</p>
+<div class="language-python highlight"><pre><span></span><code><span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">c</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">s</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">s</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="n">c</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>   <span class="c1"># 每次 count 都重扫整串</span>
+        <span class="k">return</span> <span class="n">i</span>
+<span class="k">return</span> <span class="o">-</span><span class="mi">1</span>
+</code></pre></div>
+<p>这是正确的，但 <code>s.count(c)</code> 自身是 <span class="arithmatex">\(O(n)\)</span>，套在 <span class="arithmatex">\(O(n)\)</span> 的循环里就是 <span class="arithmatex">\(O(n^2)\)</span>，<span class="arithmatex">\(n = 10^5\)</span> 必然 TLE。它慢的原因很具体：同一个字符的频次被反复重算。<code>s</code> 里若有大量重复的 <code>'a'</code>，每遇到一个 <code>'a'</code> 就把全串的 <code>'a'</code> 重数一遍。</p>
+<p>那能不能只扫一遍、边走边判？不能。走到位置 <span class="arithmatex">\(i\)</span> 时，<span class="arithmatex">\(s_i\)</span> 之后的字符还没看到，无法确定 <span class="arithmatex">\(s_i\)</span> 的总频次——这正是"唯一是全局属性"的直接后果。单次从左到右的遍历，在尚未读完串时无法回答任何关于总频次的问题。</p>
+<p>于是结构本身指明了出路：把"算频次"和"找位置"拆成两件独立的事。第一遍把所有频次一次性算清并存下来，第二遍再按原顺序查这张表。朴素法的浪费是反复重算频次；只要算一次、存起来供查，浪费就消失了。</p>
 <h2 id="_2">形式化<a class="headerlink" href="#_2" title="Permanent link">#</a></h2>
-<p>设字符串 <span class="arithmatex">\(s = s_0 s_1 \dots s_{n-1}\)</span>。返回 <span class="arithmatex">\(\min \{i : \#\{j : s_j = s_i\} = 1\}\)</span>，若集合为空返回 <span class="arithmatex">\(-1\)</span>。</p>
+<p>把上面的观察写成定义。记串 <span class="arithmatex">\(s = s_0 s_1 \dots s_{n-1}\)</span>，所求是"出现恰好一次的字符中下标最小者"：</p>
+<div class="arithmatex">\[\min \{i : \#\{j : s_j = s_i\} = 1\}\]</div>
+<p>其中 <span class="arithmatex">\(\#\)</span> 表示集合的基数（这里即字符 <span class="arithmatex">\(s_i\)</span> 在 <span class="arithmatex">\(s\)</span> 中的总出现次数）；若该集合为空则返回 <span class="arithmatex">\(-1\)</span>。</p>
+<p>这个式子直接给出算法的两段结构。要对任意 <span class="arithmatex">\(i\)</span> 判断条件 <span class="arithmatex">\(\#\{j : s_j = s_i\} = 1\)</span>，必须先有每个字符的总计数 <span class="arithmatex">\(\operatorname{cnt}[c] = \#\{j : s_j = c\}\)</span>——这就是第一遍。算出 <span class="arithmatex">\(\operatorname{cnt}\)</span> 后，外层的 <span class="arithmatex">\(\min_i\)</span> 就是按 <span class="arithmatex">\(i\)</span> 递增顺序找首个满足 <span class="arithmatex">\(\operatorname{cnt}[s_i] = 1\)</span> 的位置——这就是第二遍。两遍各对应公式里的一层量词。</p>
 <h2 id="_3">数据结构 / 想法<a class="headerlink" href="#_3" title="Permanent link">#</a></h2>
-<p><strong>两次扫描 + 计数数组</strong>（标准）：
+<p>频次存哪里？字符集固定为 26 个小写字母，所以一个定长数组 <code>cnt[26]</code> 就够，用 <code>ord(c) - ord('a')</code> 把字符映射到下标。表的大小与 <span class="arithmatex">\(n\)</span> 无关，是这道题能做到 <span class="arithmatex">\(O(1)\)</span> 额外空间的关键（一般哈希表也行，但常数更大、且不享受这个固定上界）。</p>
+<p>照公式的两段结构直接落地：</p>
 <div class="language-python highlight"><pre><span></span><code><span class="n">cnt</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="mi">26</span>
 <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">s</span><span class="p">:</span> <span class="n">cnt</span><span class="p">[</span><span class="nb">ord</span><span class="p">(</span><span class="n">c</span><span class="p">)</span><span class="o">-</span><span class="nb">ord</span><span class="p">(</span><span class="s1">&#39;a&#39;</span><span class="p">)]</span> <span class="o">+=</span> <span class="mi">1</span>
 <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">c</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">s</span><span class="p">):</span>
     <span class="k">if</span> <span class="n">cnt</span><span class="p">[</span><span class="nb">ord</span><span class="p">(</span><span class="n">c</span><span class="p">)</span><span class="o">-</span><span class="nb">ord</span><span class="p">(</span><span class="s1">&#39;a&#39;</span><span class="p">)]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span> <span class="k">return</span> <span class="n">i</span>
 <span class="k">return</span> <span class="o">-</span><span class="mi">1</span>
-</code></pre></div></p>
-<p><strong>一次扫描 + 有序字典</strong>：可以用 <code>OrderedDict</code> 维护"目前为止首次出现的字符"，遇到重复时删除。最后取第一个 key 即为答案。<span class="arithmatex">\(O(n)\)</span> 但常数大，且不是答案下标而是字符。</p>
-<p><strong>Online 变体</strong>（#1429 思路）：维护一个 deque 存"候选 unique 字符"，加上 frequency map。流式来字符时更新 frequency，并把 deque 头部"已不再 unique"的元素 pop。任意时刻 <code>deque[0]</code> 即首个 unique。摊销 <span class="arithmatex">\(O(1)\)</span> per query。</p>
-<p><strong>不变量</strong>（两次扫描）：第二遍循环到 <span class="arithmatex">\(i\)</span> 时，<code>cnt[s[i]]</code> 即 <span class="arithmatex">\(s\)</span> 中字符 <span class="arithmatex">\(s[i]\)</span> 的总出现次数。<strong>正确性</strong>：第一遍统计完所有频次，第二遍按原顺序查表。</p>
+</code></pre></div>
+<p><strong>不变量与正确性</strong>：第一遍结束后，对每个字符 <span class="arithmatex">\(c\)</span> 有 <span class="arithmatex">\(\operatorname{cnt}[c] = \#\{j : s_j = c\}\)</span>，即 <span class="arithmatex">\(c\)</span> 在 <span class="arithmatex">\(s\)</span> 中的总出现次数——因为第一遍读完了整串才进入第二遍。第二遍按 <span class="arithmatex">\(i\)</span> 从小到大遍历，遇到的首个 <span class="arithmatex">\(\operatorname{cnt}[s_i] = 1\)</span> 的位置即 <span class="arithmatex">\(\min \{i : \operatorname{cnt}[s_i] = 1\}\)</span>：顺序遍历保证首个命中就是下标最小的命中，恰为公式所求。无命中则集合为空，返回 <span class="arithmatex">\(-1\)</span>。</p>
+<p><strong>为什么这是规范解</strong>：它的时间是 <span class="arithmatex">\(O(n)\)</span>、空间 <span class="arithmatex">\(O(1)\)</span>，已达下界——任何算法都必须至少读完整串才能确认某字符全局唯一，所以 <span class="arithmatex">\(O(n)\)</span> 不可再降。下面两个变体不是为了更快，而是为了换一种查询接口。</p>
+<p><strong>一次扫描 + 有序字典</strong>：用 <code>OrderedDict</code> 维护"目前为止首次出现的字符"，遇到重复时删除该 key，最后第一个 key 即答案字符。仍是 <span class="arithmatex">\(O(n)\)</span> 但常数更大，且返回的是<strong>字符</strong>而非下标——若题目只要字符可用，要下标则还得回查。</p>
+<p><strong>Online 变体</strong>（见相关题目 #1429）：当字符以数据流形式陆续到达、且需随时查询当前首个唯一字符时，两遍扫描不适用，因为没有"读完整串"这一刻。改用一个 deque 存候选唯一字符，配一张 frequency map：来一个字符就更新频次，并把 deque 头部"已不再唯一"的元素弹出；任意时刻 <code>deque[0]</code> 即当前首个唯一字符，每次查询摊销 <span class="arithmatex">\(O(1)\)</span>。这正是"全局属性无法在单遍中确定"在流式设定下的应对——用额外结构把已确定和待定分开维护。</p>
 <h2 id="_4">复杂度<a class="headerlink" href="#_4" title="Permanent link">#</a></h2>
 <ul>
-<li>Time: <span class="arithmatex">\(O(n)\)</span></li>
-<li>Space: <span class="arithmatex">\(O(\Sigma)\)</span>，<span class="arithmatex">\(\Sigma = 26\)</span>。</li>
+<li>Time: <span class="arithmatex">\(O(n)\)</span>——两遍线性扫描。</li>
+<li>Space: <span class="arithmatex">\(O(\Sigma)\)</span>，<span class="arithmatex">\(\Sigma = 26\)</span> 为字母表大小；因 <span class="arithmatex">\(\Sigma\)</span> 固定，实际为 <span class="arithmatex">\(O(1)\)</span> 额外空间。</li>
 </ul>
 <h2 id="_5">陷阱<a class="headerlink" href="#_5" title="Permanent link">#</a></h2>
 <ul>
-<li>字符到下标的映射用 <code>ord(c) - ord('a')</code>，确保只处理小写字母。</li>
-<li>使用 <code>s.count(c)</code> 内层调用是 <span class="arithmatex">\(O(n^2)\)</span>，提交一定 TLE。</li>
+<li>朴素的 <code>s.count(c)</code> 写在循环内是 <span class="arithmatex">\(O(n^2)\)</span>，<span class="arithmatex">\(n = 10^5\)</span> 必 TLE——这正是上文"反复重算频次"的浪费，预计算频次表即为消除它而生。</li>
+<li>字符到下标用 <code>ord(c) - ord('a')</code>，依赖输入只含小写字母（题目已保证）；若字符集放宽，需改回哈希表。</li>
 </ul>
 <h2 id="_6">相关题目<a class="headerlink" href="#_6" title="Permanent link">#</a></h2>
 <ul>
-<li><code>#451. Sort Characters By Frequency (off-wiki)</code> — 频次表 + 排序。</li>
+<li><a href="../0451_sort-characters-by-frequency/">#451. Sort Characters By Frequency</a> — 频次表 + 排序。</li>
 <li><code>#1429. First Unique Number (off-wiki)</code> — Online 版本，需 deque + counter。</li>
 <li><a href="../0697_degree-of-an-array/">#697. Degree of an Array</a> — 同样"两遍扫描 + 频次表"模式。</li>
 </ul>
@@ -22607,6 +22651,8 @@
         <script src="../../../js/mathjax/tex-mml-chtml.js"></script>
       
         <script src="../../../js/mermaid.min.js"></script>
+      
+        <script src="../../../js/featured.js"></script>
       
     
   </body>

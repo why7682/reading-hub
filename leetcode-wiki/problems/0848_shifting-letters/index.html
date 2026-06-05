@@ -1466,6 +1466,8 @@
       
         
       
+        
+      
     
     
     
@@ -1521,6 +1523,34 @@
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../featured/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ⭐ Featured（已验证）
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
               
             
               
@@ -1610,10 +1640,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_4" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
         
           
-          <label class="md-nav__link" for="__nav_4_4" id="__nav_4_4_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_5" id="__nav_4_5_label" tabindex="">
             
   
   
@@ -1631,8 +1661,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_4_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_4">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_5">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1915,7 +1945,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -1937,14 +1967,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_4_5" id="__nav_4_5_label" tabindex="">
+              <label class="md-nav__link " for="__nav_4_6" id="__nav_4_6_label" tabindex="">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_5">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_6">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -5321,10 +5351,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_7" checked>
         
           
-          <label class="md-nav__link" for="__nav_4_6" id="__nav_4_6_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_7" id="__nav_4_7_label" tabindex="">
             
   
   
@@ -5342,8 +5372,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_4_6">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_7_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4_7">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -22467,15 +22497,26 @@
 <h2 id="problem">Problem<a class="headerlink" href="#problem" title="Permanent link">#</a></h2>
 <p>给字符串 <span class="arithmatex">\(s\)</span> 和等长整型数组 <code>shifts</code>。<code>shifts[i] = x</code> 表示把 <span class="arithmatex">\(s\)</span> 的前 <span class="arithmatex">\(i+1\)</span> 个字符各向后循环移动 <span class="arithmatex">\(x\)</span> 位（<code>'z' → 'a'</code>）。返回所有操作完成后的字符串。<span class="arithmatex">\(1 \le |s| \le 10^5\)</span>，<span class="arithmatex">\(0 \le \text{shifts}[i] \le 10^9\)</span>。</p>
 <h2 id="background">背景 (Background)<a class="headerlink" href="#background" title="Permanent link">#</a></h2>
-<p>本题是 <strong>后缀和 (suffix sum)</strong> 的标准应用。把"对前缀施加操作 <span class="arithmatex">\(x\)</span>"重新解读为"每个位置承受的总位移 = 该位置及其右侧 <code>shifts</code> 值之和"，是差分/前缀和思维的一种镜像形式。在数值算法、信号处理（累加滤波器）以及增量计算中频繁出现。模 26 同余环 <span class="arithmatex">\(\mathbb{Z}/26\mathbb{Z}\)</span> 是 Caesar cipher 的代数模型。</p>
+<p>每个操作作用在一个<strong>前缀</strong>上：操作 <span class="arithmatex">\(j\)</span> 把位置 <span class="arithmatex">\(0\)</span> 到 <span class="arithmatex">\(j\)</span> 的字符各移动 <code>shifts[j]</code> 位。一个位置会被多个操作触及，最终它移动的总量是这些操作量之和。于是真正要回答的问题是：每个位置 <span class="arithmatex">\(i\)</span> 累计被移动了多少位？</p>
+<p>字母表只有 26 个字符且循环回绕，因此所有移动量都在模 26 意义下计算——只有 <span class="arithmatex">\(\bmod 26\)</span> 的余数影响最终字符。这把每个位置的移动量约化到环 <span class="arithmatex">\(\mathbb{Z}/26\mathbb{Z}\)</span> 中，也是为什么 <span class="arithmatex">\(10^9\)</span> 量级的 <code>shifts[i]</code> 不会真的让结果变复杂。</p>
 <h2 id="formulation">形式化 (Formulation)<a class="headerlink" href="#formulation" title="Permanent link">#</a></h2>
-<p>位置 <span class="arithmatex">\(i\)</span> 的总位移为</p>
-<div class="arithmatex">\[T_i = \sum_{j \ge i} \text{shifts}[j].\]</div>
-<p>输出字符 $s'_i = \big( (s_i - \text{<code>a'}) + T_i \big) \bmod 26 + \text{</code>a'}$。</p>
+<p>先看哪些操作触及一个给定位置。操作 <span class="arithmatex">\(j\)</span> 作用于前缀 <span class="arithmatex">\(0..j\)</span>，所以位置 <span class="arithmatex">\(i\)</span> 被操作 <span class="arithmatex">\(j\)</span> 触及当且仅当 <span class="arithmatex">\(i \le j\)</span>。换言之，触及位置 <span class="arithmatex">\(i\)</span> 的操作恰好是下标 <span class="arithmatex">\(\ge i\)</span> 的那些。把它们的移动量加起来，就得到位置 <span class="arithmatex">\(i\)</span> 的总移动量。</p>
+<p>记 <span class="arithmatex">\(a_j = \text{shifts}[j]\)</span>。位置 <span class="arithmatex">\(i\)</span> 的总位移为</p>
+<div class="arithmatex">\[T_i = \sum_{j \ge i} a_j. \tag{1}\]</div>
+<p>这是 <code>shifts</code> 数组的一个<strong>后缀和</strong>：从 <span class="arithmatex">\(i\)</span> 到末尾求和，而非从开头到 <span class="arithmatex">\(i\)</span>。输出字符为</p>
+<div class="arithmatex">\[s'_i = \big( (s_i - \text{`a'}) + T_i \big) \bmod 26 + \text{`a'}. \tag{2}\]</div>
+<p>模 26 可以增量地施加：因为 <span class="arithmatex">\(\bmod 26\)</span> 是环同态，每步先取余与最后一次性取余等价，这一点稍后让我们把 <span class="arithmatex">\(T_i\)</span> 始终保持在 <span class="arithmatex">\([0, 26)\)</span> 内。</p>
 <h2 id="approach">数据结构 / 想法 (Approach)<a class="headerlink" href="#approach" title="Permanent link">#</a></h2>
-<p><strong>朴素法</strong>：对每个 <span class="arithmatex">\(i\)</span> 重复施加位移，<span class="arithmatex">\(O(n^2)\)</span>，<span class="arithmatex">\(n = 10^5\)</span> 时超时。</p>
-<p><strong>后缀和扫描</strong>：从右往左累加 <code>shifts</code>，对每个位置只做一次模 26 计算。本题是"前缀操作 → 后缀贡献"的对偶视角：第 <span class="arithmatex">\(j\)</span> 个操作影响位置 <span class="arithmatex">\(0, 1, \dots, j\)</span>，所以位置 <span class="arithmatex">\(i\)</span> 收到的总贡献是 <span class="arithmatex">\(\sum_{j \ge i} \text{shifts}[j]\)</span>。</p>
-<p><strong>不变量</strong>：从右扫描到 <span class="arithmatex">\(i\)</span> 时，累加器 <code>total</code> 等于 <span class="arithmatex">\(\sum_{j \ge i} \text{shifts}[j] \bmod 26\)</span>。</p>
+<p><strong>朴素法。</strong> 直接照 <span class="arithmatex">\((1)\)</span> 算：对每个位置 <span class="arithmatex">\(i\)</span>，从 <span class="arithmatex">\(j = i\)</span> 扫到 <span class="arithmatex">\(j = n-1\)</span> 把 <code>shifts[j]</code> 累加起来得到 <span class="arithmatex">\(T_i\)</span>，再代入 <span class="arithmatex">\((2)\)</span> 输出字符。这是正确的，但位置 <span class="arithmatex">\(i\)</span> 的求和长度是 <span class="arithmatex">\(n - i\)</span>，所有位置的总工作量是 <span class="arithmatex">\(\sum_{i} (n-i) = \Theta(n^2)\)</span>。<span class="arithmatex">\(n = 10^5\)</span> 时约 <span class="arithmatex">\(10^{10}\)</span> 次加法，超时。</p>
+<p>浪费在哪里？计算 <span class="arithmatex">\(T_i\)</span> 时把 <span class="arithmatex">\(a_i, a_{i+1}, \dots, a_{n-1}\)</span> 全加了一遍；紧接着计算 <span class="arithmatex">\(T_{i-1}\)</span> 时又把 <span class="arithmatex">\(a_i, \dots, a_{n-1}\)</span> 重加一遍——只比上次多了一个 <span class="arithmatex">\(a_{i-1}\)</span>。相邻两个后缀和差一项，朴素法却每次从头重算整段后缀。</p>
+<p><strong>消除重复。</strong> 把这个观察写成等式。由定义 <span class="arithmatex">\((1)\)</span>，</p>
+<div class="arithmatex">\[T_i - T_{i+1} = a_i, \qquad T_n = 0,\]</div>
+<p>即</p>
+<div class="arithmatex">\[T_i = T_{i+1} + a_i. \tag{3}\]</div>
+<p>递推 <span class="arithmatex">\((3)\)</span> 说：只要已知右邻 <span class="arithmatex">\(T_{i+1}\)</span>，再加一个 <span class="arithmatex">\(a_i\)</span> 就得到 <span class="arithmatex">\(T_i\)</span>，每个位置 <span class="arithmatex">\(O(1)\)</span>。这要求从右向左扫描——因为 <span class="arithmatex">\(T_i\)</span> 依赖 <span class="arithmatex">\(T_{i+1}\)</span>，必须先算出右边的值。反方向（从左向右）做不到，因为位置 <span class="arithmatex">\(i\)</span> 需要的是尚未算出的右侧信息。</p>
+<p><strong>不变量。</strong> 把递推 <span class="arithmatex">\((3)\)</span> 和"每步取余"合起来维护一个累加器 <code>total</code>：从右扫描处理完下标 <span class="arithmatex">\(i\)</span> 后，</p>
+<div class="arithmatex">\[\texttt{total} = \Big( \sum_{j \ge i} a_j \Big) \bmod 26 = T_i \bmod 26.\]</div>
+<p>每到一个位置，<code>total</code> 加上 <code>shifts[i]</code> 并取余，即得该位置代入 <span class="arithmatex">\((2)\)</span> 所需的位移，随即写出输出字符。代码直接照抄递推：</p>
 <div class="language-python highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">Solution</span><span class="p">:</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">shiftingLetters</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">s</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">shifts</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
         <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
@@ -22486,17 +22527,17 @@
             <span class="n">out</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="nb">chr</span><span class="p">((</span><span class="nb">ord</span><span class="p">(</span><span class="n">s</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="o">-</span> <span class="mi">97</span> <span class="o">+</span> <span class="n">total</span><span class="p">)</span> <span class="o">%</span> <span class="mi">26</span> <span class="o">+</span> <span class="mi">97</span><span class="p">)</span>
         <span class="k">return</span> <span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">out</span><span class="p">)</span>
 </code></pre></div>
-<p>样例 1：<code>s="abc", shifts=[3,5,9]</code>。从右扫描：<span class="arithmatex">\(i=2\)</span>，total = 9；<span class="arithmatex">\(i=1\)</span>，total = 14；<span class="arithmatex">\(i=0\)</span>，total = 17。结果：<code>(0+17)%26=17→'r'</code>，<code>(1+14)%26=15→'p'</code>，<code>(2+9)%26=11→'l'</code> → <code>"rpl"</code>。</p>
+<p>样例 <code>s="abc", shifts=[3,5,9]</code>，从右扫描，<code>total</code> 按 <span class="arithmatex">\((3)\)</span> 累加并取余：<span class="arithmatex">\(i=2\)</span> 时 <span class="arithmatex">\(\texttt{total}=9\)</span>，<span class="arithmatex">\(i=1\)</span> 时 <span class="arithmatex">\(\texttt{total}=14\)</span>，<span class="arithmatex">\(i=0\)</span> 时 <span class="arithmatex">\(\texttt{total}=17\)</span>。代入 <span class="arithmatex">\((2)\)</span>：<code>(0+17)%26=17→'r'</code>，<code>(1+14)%26=15→'p'</code>，<code>(2+9)%26=11→'l'</code>，得 <code>"rpl"</code>。</p>
 <h2 id="complexity">复杂度 (Complexity)<a class="headerlink" href="#complexity" title="Permanent link">#</a></h2>
 <ul>
-<li>Time: <span class="arithmatex">\(O(n)\)</span></li>
-<li>Space: <span class="arithmatex">\(O(n)\)</span>（输出），就地修改可降至 <span class="arithmatex">\(O(1)\)</span> 额外空间</li>
+<li>Time: <span class="arithmatex">\(O(n)\)</span>——单趟扫描，每位置一次 <span class="arithmatex">\(O(1)\)</span> 取余。<code>total</code> 始终在 <span class="arithmatex">\([0,26)\)</span>，与 <code>shifts[i]</code> 的量级无关。</li>
+<li>Space: <span class="arithmatex">\(O(n)\)</span>（输出列表）。Python 字符串不可变，故本代码需要 <code>out</code> 数组；若在可变缓冲区上原地修改，额外空间可降至 <span class="arithmatex">\(O(1)\)</span>。</li>
 </ul>
 <h2 id="pitfalls">陷阱 (Pitfalls)<a class="headerlink" href="#pitfalls" title="Permanent link">#</a></h2>
 <ul>
-<li><code>shifts[i]</code> 可达 <span class="arithmatex">\(10^9\)</span>，单步累加后必须 <code>% 26</code>，否则即使没溢出也浪费精度；Python 大整数会拖慢运算。</li>
-<li>容易把"前缀操作"误算为"前缀和"：注意是后缀和，方向相反。</li>
-<li>字符与整型转换：<code>ord('a') = 97</code>，先减 97 再 mod 26 再加 97。</li>
+<li>把"前缀操作"误算成"前缀和"。触及位置 <span class="arithmatex">\(i\)</span> 的是下标 <span class="arithmatex">\(\ge i\)</span> 的操作，所以 <span class="arithmatex">\(T_i\)</span> 是<strong>后缀和</strong>，方向与前缀和相反。这是本题的核心区分点。</li>
+<li>不每步取余也不会溢出（Python 是任意精度整数），但放任 <code>total</code> 累加到 <span class="arithmatex">\(\sim 10^{14}\)</span> 量级会让大整数运算变慢；每步 <code>% 26</code> 把它锁在 <span class="arithmatex">\([0,26)\)</span>，是性能与清晰度上的正确写法，而非正确性要求。</li>
+<li>字符与整型转换次序：<code>ord('a') = 97</code>，必须先减 97、再 mod 26、最后加 97，否则回绕错位。</li>
 </ul>
 <h2 id="related">相关题目 (Related)<a class="headerlink" href="#related" title="Permanent link">#</a></h2>
 <ul>
@@ -22614,6 +22655,8 @@
         <script src="../../../js/mathjax/tex-mml-chtml.js"></script>
       
         <script src="../../../js/mermaid.min.js"></script>
+      
+        <script src="../../../js/featured.js"></script>
       
     
   </body>

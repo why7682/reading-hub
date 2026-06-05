@@ -1466,6 +1466,8 @@
       
         
       
+        
+      
     
     
     
@@ -1521,6 +1523,34 @@
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../featured/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ⭐ Featured（已验证）
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
               
             
               
@@ -1610,10 +1640,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_4" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
         
           
-          <label class="md-nav__link" for="__nav_4_4" id="__nav_4_4_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_5" id="__nav_4_5_label" tabindex="">
             
   
   
@@ -1631,8 +1661,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_4_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_4">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_5">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1915,7 +1945,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -1937,14 +1967,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_4_5" id="__nav_4_5_label" tabindex="">
+              <label class="md-nav__link " for="__nav_4_6" id="__nav_4_6_label" tabindex="">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_5">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_6">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -5321,10 +5351,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_7" checked>
         
           
-          <label class="md-nav__link" for="__nav_4_6" id="__nav_4_6_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_7" id="__nav_4_7_label" tabindex="">
             
   
   
@@ -5342,8 +5372,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_4_6">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_7_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4_7">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -22467,41 +22497,76 @@
 <h2 id="problem">Problem<a class="headerlink" href="#problem" title="Permanent link">#</a></h2>
 <p>SQL 题。<code>Customer(id, name, referee_id)</code>，查询满足 (<code>referee_id != 2</code>) 或 (<code>referee_id IS NULL</code>) 的客户姓名。</p>
 <h2 id="_1">背景<a class="headerlink" href="#_1" title="Permanent link">#</a></h2>
-<p>本题考的核心是 SQL 的<strong>三值逻辑 (three-valued logic)</strong>：<code>NULL</code> 不等于任何值（包括它自己）—— <code>NULL = NULL</code> 结果是 <code>UNKNOWN</code>，不是 <code>TRUE</code>。这是 SQL 与传统布尔逻辑分歧最大的地方，也是新手最常踩的坑。同样的语义出现在 <code>NULL != 2</code>：结果不是 <code>TRUE</code> 而是 <code>UNKNOWN</code>，因此该行会被 <code>WHERE</code> 过滤掉，与"包括 referee_id 为空的人"的题意相悖。</p>
-<p>Codd 在 1979 年正式引入 NULL；多年来争议不断（C.J. Date 主张废弃，提出 D&amp;D Manifesto），但已成事实标准。</p>
+<p>先按直觉写。题意是"被 2 号推荐的人不要，其余都要"，最直接的翻译就是：</p>
+<div class="language-sql highlight"><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="n">name</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">Customer</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">referee_id</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="mi">2</span><span class="p">;</span>
+</code></pre></div>
+<p>把它放到一张含空值的表上看会发生什么。设表中有三行：</p>
+<table>
+<thead>
+<tr>
+<th>id</th>
+<th>name</th>
+<th>referee_id</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>Will</td>
+<td>NULL</td>
+</tr>
+<tr>
+<td>2</td>
+<td>Jane</td>
+<td>1</td>
+</tr>
+<tr>
+<td>3</td>
+<td>Alex</td>
+<td>2</td>
+</tr>
+</tbody>
+</table>
+<p>我们期望结果是 <code>Will</code> 和 <code>Jane</code>（Alex 被 2 推荐，排除）。但上面的查询只返回 <code>Jane</code>：<code>Will</code> 那一行<strong>凭空消失了</strong>。它的 <code>referee_id</code> 是 <code>NULL</code>，按朴素布尔逻辑 <code>NULL != 2</code> 显然应为真——人没有推荐人，当然"推荐人不是 2"——可 <code>WHERE</code> 偏偏没留下它。</p>
+<p>问题出在 <code>NULL != 2</code> 的求值结果上。在 SQL 里它既不是 <code>TRUE</code> 也不是 <code>FALSE</code>，而是第三个值 <code>UNKNOWN</code>。这就是 SQL 的<strong>三值逻辑 (three-valued logic)</strong>：任何与 <code>NULL</code> 的比较都返回 <code>UNKNOWN</code>，而不是 <code>TRUE</code> 或 <code>FALSE</code>——包括 <code>NULL = NULL</code>、<code>NULL != 2</code>、<code>NULL &gt; 0</code> 全都如此。语义上，<code>NULL</code> 表示"值未知"，所以"未知是否等于 2"也只能回答"未知"。</p>
+<p><code>UNKNOWN</code> 为什么会让该行被丢掉？这可以从 <code>WHERE</code> 自身的语义推出来，无需额外约定。<code>WHERE</code> 是一个过滤器，它保留的是<strong>能确认满足条件的行</strong>；无法确认（<code>UNKNOWN</code>）就等同于未通过。于是 <code>Will</code> 这一行——谓词求值为 <code>UNKNOWN</code>、既没被确认满足也没被确认违反——被排除。</p>
+<p>结论：朴素查询漏掉 <code>NULL</code> 行，不是因为写错了比较运算，而是因为 <code>!=</code> 这个比较运算在 <code>NULL</code> 操作数上根本不产生 <code>TRUE</code>。要把这些行捞回来，必须用一个能正面识别 <code>NULL</code> 的谓词。这正是下文形式化要精确刻画、并据以推导解法的地方。</p>
 <h2 id="_2">形式化<a class="headerlink" href="#_2" title="Permanent link">#</a></h2>
-<p>返回 <span class="arithmatex">\(\{e.\text{name} : e \in \text{Customer},\, e.\text{referee\_id} \neq 2 \lor e.\text{referee\_id} \text{ IS NULL}\}\)</span>。</p>
+<p>把过滤条件写成一个作用在每行 <span class="arithmatex">\(e\)</span> 上的谓词 <span class="arithmatex">\(p(e)\)</span>。题意要求的结果集是</p>
+<div class="arithmatex">\[\{\, e.\text{name} : e \in \text{Customer},\ p(e) \,\}, \qquad p(e) \equiv \big(e.\text{referee\_id} \neq 2\big) \ \lor\ \big(e.\text{referee\_id} \text{ IS NULL}\big).\]</div>
+<p>这里 <span class="arithmatex">\(\neq\)</span> 是数学上的两值不等式（要求两个操作数都是已定义的值）。形式化的关键在于：朴素查询试图只用 <span class="arithmatex">\(e.\text{referee\_id} \neq 2\)</span> 来实现 <span class="arithmatex">\(p\)</span>，但 SQL 的 <code>!=</code> 在 <span class="arithmatex">\(e.\text{referee\_id}\)</span> 为 <code>NULL</code> 时落在 <span class="arithmatex">\(\neq\)</span> 的定义域之外——此时 SQL 返回 <code>UNKNOWN</code>，而数学的 <span class="arithmatex">\(\neq\)</span> 在该处无定义。所以 <span class="arithmatex">\(p\)</span> 必须显式补上析取项 <span class="arithmatex">\(e.\text{referee\_id} \text{ IS NULL}\)</span>，把"未知推荐人"这一情形单独正面承认下来。</p>
+<p>下一节的两种正确解法，都是对这同一个 <span class="arithmatex">\(p(e)\)</span> 的不同实现：一种照搬析取式，一种把 <code>NULL</code> 消去后回到两值比较。</p>
 <h2 id="_3">数据结构 / 想法<a class="headerlink" href="#_3" title="Permanent link">#</a></h2>
-<p><strong>标准解</strong>：
+<p><strong>标准解</strong>——直接照 <span class="arithmatex">\(p(e)\)</span> 的两个析取项写：</p>
 <div class="language-sql highlight"><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="n">name</span>
 <span class="k">FROM</span><span class="w"> </span><span class="n">Customer</span>
 <span class="k">WHERE</span><span class="w"> </span><span class="n">referee_id</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="k">OR</span><span class="w"> </span><span class="n">referee_id</span><span class="w"> </span><span class="k">IS</span><span class="w"> </span><span class="k">NULL</span><span class="p">;</span>
-</code></pre></div></p>
-<p><strong>等价解</strong>（用 <code>COALESCE</code> / <code>IFNULL</code> 把 NULL 视为 0）：
+</code></pre></div>
+<p>第一项 <code>referee_id != 2</code> 处理有具体推荐人的行；第二项 <code>referee_id IS NULL</code> 正面捞回上一节中消失的 <code>NULL</code> 行。<code>IS NULL</code> 是少数能直接判定 <code>NULL</code> 而不返回 <code>UNKNOWN</code> 的运算之一。</p>
+<p><strong>等价解</strong>（用 <code>COALESCE</code> / <code>IFNULL</code> 把 <code>NULL</code> 视为 0）：</p>
 <div class="language-sql highlight"><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="n">name</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">Customer</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">IFNULL</span><span class="p">(</span><span class="n">referee_id</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="mi">2</span><span class="p">;</span>
 </code></pre></div>
-（MySQL 写法；PostgreSQL 用 <code>COALESCE</code>。）</p>
-<p><strong>错误解</strong>：
-<div class="language-sql highlight"><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="n">name</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">Customer</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">referee_id</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="mi">2</span><span class="p">;</span><span class="w">  </span><span class="c1">-- ❌ 漏掉 NULL 行</span>
-</code></pre></div></p>
-<p><strong>为什么必须显式 <code>IS NULL</code></strong>：根据 SQL 标准，比较运算遇到 NULL 操作数一律返回 UNKNOWN；UNKNOWN 在 WHERE 中视为不匹配。除非用 <code>IS [NOT] NULL</code>、<code>IS [NOT] DISTINCT FROM</code>（PostgreSQL）、或 <code>&lt;=&gt;</code>（MySQL 的 NULL-safe equal），都无法直接判 NULL。</p>
+<p>这是对 <span class="arithmatex">\(p(e)\)</span> 的另一种实现思路：与其在谓词里额外处理 <code>NULL</code>，不如在比较之前就把 <code>NULL</code> 替换成一个<strong>已知不等于 2</strong> 的具体值（这里取 0）。替换后比较的两个操作数都已定义，结果回到 <code>TRUE</code>/<code>FALSE</code>，不再走 <code>UNKNOWN</code> 那条路，于是 <code>NULL</code> 行自然作为"不等于 2"被保留。（MySQL 写法用 <code>IFNULL</code>，PostgreSQL 用 <code>COALESCE</code>。）</p>
+<p><strong>为什么必须显式处理 <code>NULL</code></strong>：回到背景里推出的规则——任何带 <code>NULL</code> 操作数的比较一律返回 <code>UNKNOWN</code>，而 <code>UNKNOWN</code> 在 <code>WHERE</code> 中视为不匹配。因此除非用 <code>IS [NOT] NULL</code>、<code>IS [NOT] DISTINCT FROM</code>（PostgreSQL）、或 <code>&lt;=&gt;</code>（MySQL 的 NULL-safe equal）这类专门为 <code>NULL</code> 设计的运算，普通比较符都无法把 <code>NULL</code> 行判进结果。标准解走第一条路（显式 <code>IS NULL</code>），等价解走另一条路（先消去 <code>NULL</code> 再比较），两者殊途同归。</p>
+<blockquote>
+<p><strong>历史注记.</strong> <code>NULL</code> 由 Codd 于 1979 年正式引入关系模型，用以表达"信息缺失"。这一设计长期存在争议：C.J. Date 主张废弃它，并在 Third Manifesto 中给出替代方案。但三值逻辑已成为 SQL 标准的既定语义，是必须正面理解、而非绕开的部分。</p>
+</blockquote>
 <h2 id="_4">复杂度<a class="headerlink" href="#_4" title="Permanent link">#</a></h2>
 <ul>
-<li>取决于索引；若 <code>referee_id</code> 上有索引，可走 range scan + bitmap-or NULL scan。</li>
+<li>取决于索引；若 <code>referee_id</code> 上有索引，可走 range scan + bitmap-or <code>NULL</code> scan。</li>
 <li>表小时全表扫即可。</li>
 </ul>
 <h2 id="_5">陷阱<a class="headerlink" href="#_5" title="Permanent link">#</a></h2>
 <ul>
-<li><code>WHERE referee_id &lt;&gt; 2</code> 与 <code>WHERE NOT referee_id = 2</code> 都漏 NULL。</li>
-<li><code>WHERE referee_id IN (SELECT id FROM ... WHERE id != 2)</code> 在子查询返回 NULL 时也会"莫名"过滤——子查询 NULL 让 <code>IN</code> 结果不确定。</li>
-<li>MySQL 的 <code>&lt;=&gt;</code> 是 NULL-safe <code>=</code>；可写 <code>WHERE NOT (referee_id &lt;=&gt; 2)</code>。</li>
-<li>若需要保证大小写不敏感或 trim 空格，name 上还要 <code>LOWER(TRIM(...))</code>。</li>
+<li><code>WHERE referee_id &lt;&gt; 2</code> 与 <code>WHERE NOT referee_id = 2</code> 都漏 <code>NULL</code>：两者在 <code>NULL</code> 行上都归约为 <code>UNKNOWN</code>，与朴素查询同病同源。</li>
+<li><code>WHERE referee_id NOT IN (SELECT id FROM ...)</code>：若子查询结果集<strong>含 <code>NULL</code></strong>，则对每一个原本应保留的行，比较都会产生一个 <code>UNKNOWN</code> 项，使整个 <code>NOT IN</code> 谓词变为 <code>UNKNOWN</code>，结果集"莫名"变空。机制仍是同一个三值逻辑：<code>x NOT IN (a, NULL)</code> 在 <code>x != a</code> 时退化为 <code>UNKNOWN</code>，于是该行被过滤。注意这是 <code>NOT IN</code> 特有的坑——正向 <code>IN</code> 不受影响：<code>x IN (a, NULL)</code> 在 <code>x = a</code> 时仍为 <code>TRUE</code>，<code>NULL</code> 项产生的 <code>UNKNOWN</code> 不会盖过一个已成立的 <code>TRUE</code>。</li>
+<li>MySQL 的 <code>&lt;=&gt;</code> 是 NULL-safe <code>=</code>；可写 <code>WHERE NOT (referee_id &lt;=&gt; 2)</code>，它对 <code>NULL</code> 行也返回确定的真/假，不落入 <code>UNKNOWN</code>。</li>
 </ul>
 <h2 id="_6">相关题目<a class="headerlink" href="#_6" title="Permanent link">#</a></h2>
 <ul>
 <li><a href="../0177_nth-highest-salary/">#177. Nth Highest Salary</a> — 同 SQL 入门题，关注 <code>LIMIT-OFFSET</code>。</li>
 <li><code>#181. Employees Earning More Than Their Managers (off-wiki)</code> — <code>JOIN</code> 入门。</li>
-<li><code>#262. Trips and Users (off-wiki)</code> — NULL 与 outer join 的高级运用。</li>
+<li><a href="../0262_trips-and-users/">#262. Trips and Users</a> — NULL 与 outer join 的高级运用。</li>
 </ul>
 <h2 id="further-reading">Further Reading<a class="headerlink" href="#further-reading" title="Permanent link">#</a></h2>
 <ul>
@@ -22615,6 +22680,8 @@
         <script src="../../../js/mathjax/tex-mml-chtml.js"></script>
       
         <script src="../../../js/mermaid.min.js"></script>
+      
+        <script src="../../../js/featured.js"></script>
       
     
   </body>

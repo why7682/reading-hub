@@ -1466,6 +1466,8 @@
       
         
       
+        
+      
     
     
     
@@ -1521,6 +1523,34 @@
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../featured/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ⭐ Featured（已验证）
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
               
             
               
@@ -1610,10 +1640,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_4" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
         
           
-          <label class="md-nav__link" for="__nav_4_4" id="__nav_4_4_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_5" id="__nav_4_5_label" tabindex="">
             
   
   
@@ -1631,8 +1661,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_4_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_4">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_5">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1915,7 +1945,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -1937,14 +1967,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_4_5" id="__nav_4_5_label" tabindex="">
+              <label class="md-nav__link " for="__nav_4_6" id="__nav_4_6_label" tabindex="">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_5">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_6">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -5321,10 +5351,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_7" checked>
         
           
-          <label class="md-nav__link" for="__nav_4_6" id="__nav_4_6_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_7" id="__nav_4_7_label" tabindex="">
             
   
   
@@ -5342,8 +5372,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_4_6">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_7_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4_7">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -22467,62 +22497,61 @@
 <h2 id="problem">Problem<a class="headerlink" href="#problem" title="Permanent link">#</a></h2>
 <p>0/1 数组 <code>nums</code> 与 <span class="arithmatex">\(k\)</span>。每次可交换相邻元素，求让某 <span class="arithmatex">\(k\)</span> 个 1 连续的最少操作次数。约束 <span class="arithmatex">\(|n| \le 10^5\)</span>，<span class="arithmatex">\(1 \le k \le \sum \text{nums}\)</span>。</p>
 <h2 id="background">背景 (Background)<a class="headerlink" href="#background" title="Permanent link">#</a></h2>
-<p>本题是<strong>绝对差中位数极小化</strong>的非平凡推广。基本子问题："给定 <span class="arithmatex">\(k\)</span> 个点的坐标 <span class="arithmatex">\(p_1 &lt; p_2 &lt; \dots &lt; p_k\)</span>，把它们移到连续 <span class="arithmatex">\(k\)</span> 个整数位置上的最小总位移"。经典结论：最优"目标中心"是中位数；进一步<strong>消去等差偏移</strong>得纯绝对差和形式。结合滑动窗口可做到 <span class="arithmatex">\(O(n)\)</span>。</p>
-<p>数学背景：<strong><span class="arithmatex">\(\ell_1\)</span> 中心 (Weber point on a line)</strong> 是中位数（Fermat-Weber 一维退化）；移动 <span class="arithmatex">\(k\)</span> 个 1 到 <em>连续</em> 位置等价于先减去 <span class="arithmatex">\(0, 1, \dots, k-1\)</span> 偏移把"连续目标"化为"同一目标"。</p>
+<p>先把"交换"翻译成可以求和的量。只有 1 需要移动；把某个 1 从位置 <span class="arithmatex">\(p\)</span> 搬到位置 <span class="arithmatex">\(t\)</span>，途中每跨过一格就是一次相邻交换，所以单个 1 的移动代价恰是 <span class="arithmatex">\(|p - t|\)</span>。如果我们按从左到右的顺序把第 <span class="arithmatex">\(j\)</span> 个 1 指派给从左数第 <span class="arithmatex">\(j\)</span> 个目标格，指派之间不会交叉，谁也不挡谁，于是总代价就是各 1 到各自目标的位移之和——一个可以直接相加的量，而不是需要模拟的过程。</p>
+<p>于是问题变成：在所有 1 里挑出连续的 <span class="arithmatex">\(k\)</span> 个（设下标 <span class="arithmatex">\(p_1 &lt; \dots &lt; p_k\)</span>），把它们搬到某段连续整数位置 <span class="arithmatex">\(t, t+1, \dots, t+k-1\)</span> 上，使</p>
+<div class="arithmatex">\[\sum_{j=1}^k \bigl|\,p_j - (t + j - 1)\,\bigr| \tag{1}\]</div>
+<p>最小。两件事待定：选哪 <span class="arithmatex">\(k\)</span> 个 1（哪个窗口），以及目标段起点 <span class="arithmatex">\(t\)</span>。</p>
+<p><strong>朴素做法在哪里卡住。</strong> 固定一个窗口后，式 (1) 里 <span class="arithmatex">\(t\)</span> 是连续变量，目标 <span class="arithmatex">\(t + j - 1\)</span> 随 <span class="arithmatex">\(j\)</span> 平移。它不是"把 <span class="arithmatex">\(k\)</span> 个点都搬到同一点"那种标准形式——每个点的目标各不相同——所以没法立刻套用任何已知的一维聚合结论。若对每个窗口暴力扫所有可能的 <span class="arithmatex">\(t\)</span>，单窗口就 <span class="arithmatex">\(O(n)\)</span>，<span class="arithmatex">\(O(n)\)</span> 个窗口合计 <span class="arithmatex">\(O(n^2)\)</span>，在 <span class="arithmatex">\(n \le 10^5\)</span> 下太慢。要变快，先得把式 (1) 里随 <span class="arithmatex">\(j\)</span> 平移的目标消掉，让它退化成"搬到同一点"。</p>
 <h2 id="formulation">形式化 (Formulation)<a class="headerlink" href="#formulation" title="Permanent link">#</a></h2>
-<p>设 1 的下标为 <span class="arithmatex">\(p_1 &lt; \dots &lt; p_m\)</span>。对每窗口 <span class="arithmatex">\(\{p_i, \dots, p_{i+k-1}\}\)</span>，定义 <span class="arithmatex">\(q_j = p_{i+j-1} - (j - 1)\)</span>（消去等差），<span class="arithmatex">\(j = 1, \dots, k\)</span>。最优代价：</p>
-<div class="arithmatex">\[C(i) = \sum_{j=1}^k |q_j - q_{\text{med}}|\]</div>
-<p>其中 <span class="arithmatex">\(q_{\text{med}} = q_{\lceil k/2 \rceil}\)</span>。答案 <span class="arithmatex">\(= \min_i C(i)\)</span>。</p>
+<p><strong>直觉：消去平移。</strong> 式 (1) 中第 <span class="arithmatex">\(j\)</span> 项的目标是 <span class="arithmatex">\(t + (j-1)\)</span>，那个 <span class="arithmatex">\((j-1)\)</span> 只跟序号有关、跟 <span class="arithmatex">\(t\)</span> 无关。把它从 <span class="arithmatex">\(p_j\)</span> 一侧提前减掉，平移就被抵消：令</p>
+<div class="arithmatex">\[q_j = p_j - (j - 1),\]</div>
+<p>则 <span class="arithmatex">\(|p_j - (t + j - 1)| = |(p_j - (j-1)) - t| = |q_j - t|\)</span>。代入式 (1)：</p>
+<div class="arithmatex">\[\sum_{j=1}^k \bigl|p_j - (t+j-1)\bigr| \;=\; \sum_{j=1}^k |q_j - t|. \tag{2}\]</div>
+<p>右端每一项的目标都是同一个 <span class="arithmatex">\(t\)</span>。换言之，减去 <span class="arithmatex">\((j-1)\)</span> 把"搬到连续 <span class="arithmatex">\(k\)</span> 格"严格等价地化成了"把 <span class="arithmatex">\(q_1, \dots, q_k\)</span> 全搬到同一点 <span class="arithmatex">\(t\)</span>"。注意 <span class="arithmatex">\(p_j\)</span> 严格递增、<span class="arithmatex">\((j-1)\)</span> 步长为 1，故 <span class="arithmatex">\(q_j\)</span> 单调不减——后面用前缀和时这一点有用。</p>
+<p><strong>直觉：最优 <span class="arithmatex">\(t\)</span> 在中位数。</strong> 现在的目标 <span class="arithmatex">\(\sum_j |q_j - t|\)</span> 是 <span class="arithmatex">\(t\)</span> 的分段线性函数。从某个 <span class="arithmatex">\(t\)</span> 把它右移一小步 <span class="arithmatex">\(\delta\)</span>：在 <span class="arithmatex">\(t\)</span> 左边的 <span class="arithmatex">\(q_j\)</span>（共 <span class="arithmatex">\(L\)</span> 个）每个代价 <span class="arithmatex">\(+\delta\)</span>，右边的（共 <span class="arithmatex">\(R\)</span> 个）每个 <span class="arithmatex">\(-\delta\)</span>，净变化 <span class="arithmatex">\((L - R)\delta\)</span>。只要左右数目不等，朝人多的一侧移动就严格降低代价；当且仅当 <span class="arithmatex">\(t\)</span> 取到中位数，左右各半，再动任何一侧都不再划算。所以最优 <span class="arithmatex">\(t\)</span> 是 <span class="arithmatex">\(q\)</span> 的中位数 <span class="arithmatex">\(M = q_{\lceil k/2 \rceil}\)</span>，这是从代价本身的增减推出来的，无需外部定理。</p>
+<p>把最优 <span class="arithmatex">\(t = M\)</span> 代回，单个窗口（起点为全局第 <span class="arithmatex">\(i\)</span> 个 1）的最小代价定为</p>
+<div class="arithmatex">\[C(i) = \sum_{j=1}^k |q_{i+j-1} - M|, \qquad M = q_{i + \lceil k/2 \rceil - 1}. \tag{3}\]</div>
+<p>最终答案 <span class="arithmatex">\(= \min_i C(i)\)</span>。下面只剩两个工程问题：对每个窗口 <span class="arithmatex">\(O(1)\)</span> 算出式 (3)，以及在 <span class="arithmatex">\(O(n)\)</span> 内扫完所有窗口。</p>
+<p><strong>先验证式 (3)。</strong> 取 <code>nums=[1,0,0,0,0,0,1,1], k=3</code>：1 的下标 <span class="arithmatex">\(p=[0,6,7]\)</span>，减去 <span class="arithmatex">\((j-1)=[0,1,2]\)</span> 得 <span class="arithmatex">\(q=[0,5,5]\)</span>。唯一窗口取中位数 <span class="arithmatex">\(M=q_1=5\)</span>，代价 <span class="arithmatex">\(|0-5|+|5-5|+|5-5| = 5\)</span>，与官方答案一致。若漏掉减平移、直接对 <span class="arithmatex">\(p=[0,6,7]\)</span> 求中位数距离和，会得到 <span class="arithmatex">\(6+0+1=7\)</span>——那是"挤到一点"的代价，不是"连续三格"，可见消平移这一步不可省。</p>
 <h2 id="approach">数据结构 / 想法 (Approach)<a class="headerlink" href="#approach" title="Permanent link">#</a></h2>
-<p><strong>双步骤</strong>：
-1. <strong>提取 1 位置 + 消等差</strong>：<span class="arithmatex">\(q_j = p_j - j\)</span>（用 0-index 或 1-index 一致即可）。
-2. <strong>滑窗中位数 + 前缀和</strong>：对 <span class="arithmatex">\(q\)</span> 序列窗口长 <span class="arithmatex">\(k\)</span>，每窗口取中位数 <span class="arithmatex">\(M\)</span>，代价为 <span class="arithmatex">\(\sum (M - q_j)_{j &lt; \text{mid}} + \sum (q_j - M)_{j \ge \text{mid}}\)</span>。用前缀和 <span class="arithmatex">\(S\)</span> 可以 <span class="arithmatex">\(O(1)\)</span> 算每窗：</p>
-<div class="arithmatex">\[C = (M \cdot \text{left\_cnt} - S_{\text{left}}) + (S_{\text{right}} - M \cdot \text{right\_cnt})\]</div>
+<p>把式 (3) 拆成中位数左右两段，绝对值就能去掉。设窗口内中位数下标为 <code>mid</code>，左段是它前面 <code>left_cnt</code> 个、右段是后面 <code>right_cnt</code> 个（中位数自身代价为 0）。左段每个 <span class="arithmatex">\(q_j \le M\)</span>，右段每个 <span class="arithmatex">\(q_j \ge M\)</span>，故</p>
+<div class="arithmatex">\[C(i) = \underbrace{(M \cdot \text{left\_cnt} - S_{\text{left}})}_{\sum_{q_j \le M}(M - q_j)} + \underbrace{(S_{\text{right}} - M \cdot \text{right\_cnt})}_{\sum_{q_j \ge M}(q_j - M)}, \tag{4}\]</div>
+<p>其中 <span class="arithmatex">\(S_{\text{left}}, S_{\text{right}}\)</span> 是左右两段 <span class="arithmatex">\(q\)</span> 的区间和。用前缀和 <span class="arithmatex">\(S\)</span> 预处理后，每段和 <span class="arithmatex">\(O(1)\)</span> 可取，于是每个窗口 <span class="arithmatex">\(O(1)\)</span>，滑窗整体 <span class="arithmatex">\(O(n)\)</span>。</p>
 <div class="language-python highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">Solution</span><span class="p">:</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">minMoves</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">nums</span><span class="p">,</span> <span class="n">k</span><span class="p">):</span>
         <span class="n">ones</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">nums</span><span class="p">)</span> <span class="k">if</span> <span class="n">v</span> <span class="o">==</span> <span class="mi">1</span><span class="p">]</span>
         <span class="n">m</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">ones</span><span class="p">)</span>
-        <span class="c1"># transform: q[j] = ones[j] - j</span>
+        <span class="c1"># transform: q[j] = ones[j] - j  (消平移，对应式 (2))</span>
         <span class="n">q</span> <span class="o">=</span> <span class="p">[</span><span class="n">ones</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">-</span> <span class="n">j</span> <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">m</span><span class="p">)]</span>
-        <span class="c1"># prefix sums</span>
+        <span class="c1"># prefix sums of q</span>
         <span class="n">S</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="n">m</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
         <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">m</span><span class="p">):</span>
             <span class="n">S</span><span class="p">[</span><span class="n">j</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">S</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">+</span> <span class="n">q</span><span class="p">[</span><span class="n">j</span><span class="p">]</span>
         <span class="n">ans</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="s1">&#39;inf&#39;</span><span class="p">)</span>
         <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">m</span> <span class="o">-</span> <span class="n">k</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
-            <span class="n">mid</span> <span class="o">=</span> <span class="n">i</span> <span class="o">+</span> <span class="n">k</span> <span class="o">//</span> <span class="mi">2</span>
+            <span class="n">mid</span> <span class="o">=</span> <span class="n">i</span> <span class="o">+</span> <span class="n">k</span> <span class="o">//</span> <span class="mi">2</span>            <span class="c1"># 窗口中位数下标</span>
             <span class="n">M</span> <span class="o">=</span> <span class="n">q</span><span class="p">[</span><span class="n">mid</span><span class="p">]</span>
             <span class="n">left_cnt</span> <span class="o">=</span> <span class="n">k</span> <span class="o">//</span> <span class="mi">2</span>
-            <span class="n">right_cnt</span> <span class="o">=</span> <span class="n">k</span> <span class="o">-</span> <span class="n">k</span> <span class="o">//</span> <span class="mi">2</span> <span class="o">-</span> <span class="mi">1</span>  <span class="c1"># exclude median itself</span>
-            <span class="c1"># left part: q[i..mid-1]</span>
-            <span class="n">left_sum</span> <span class="o">=</span> <span class="n">S</span><span class="p">[</span><span class="n">mid</span><span class="p">]</span> <span class="o">-</span> <span class="n">S</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
-            <span class="c1"># right part: q[mid+1..i+k-1]</span>
-            <span class="n">right_sum</span> <span class="o">=</span> <span class="n">S</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="n">k</span><span class="p">]</span> <span class="o">-</span> <span class="n">S</span><span class="p">[</span><span class="n">mid</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span>
-            <span class="n">cost</span> <span class="o">=</span> <span class="p">(</span><span class="n">M</span> <span class="o">*</span> <span class="n">left_cnt</span> <span class="o">-</span> <span class="n">left_sum</span><span class="p">)</span> <span class="o">+</span> <span class="p">(</span><span class="n">right_sum</span> <span class="o">-</span> <span class="n">M</span> <span class="o">*</span> <span class="n">right_cnt</span><span class="p">)</span>
+            <span class="n">right_cnt</span> <span class="o">=</span> <span class="n">k</span> <span class="o">-</span> <span class="n">k</span> <span class="o">//</span> <span class="mi">2</span> <span class="o">-</span> <span class="mi">1</span>  <span class="c1"># 不含中位数自身</span>
+            <span class="n">left_sum</span> <span class="o">=</span> <span class="n">S</span><span class="p">[</span><span class="n">mid</span><span class="p">]</span> <span class="o">-</span> <span class="n">S</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>            <span class="c1"># q[i .. mid-1] 之和</span>
+            <span class="n">right_sum</span> <span class="o">=</span> <span class="n">S</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="n">k</span><span class="p">]</span> <span class="o">-</span> <span class="n">S</span><span class="p">[</span><span class="n">mid</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span>       <span class="c1"># q[mid+1 .. i+k-1] 之和</span>
+            <span class="n">cost</span> <span class="o">=</span> <span class="p">(</span><span class="n">M</span> <span class="o">*</span> <span class="n">left_cnt</span> <span class="o">-</span> <span class="n">left_sum</span><span class="p">)</span> <span class="o">+</span> <span class="p">(</span><span class="n">right_sum</span> <span class="o">-</span> <span class="n">M</span> <span class="o">*</span> <span class="n">right_cnt</span><span class="p">)</span>  <span class="c1"># 式 (4)</span>
             <span class="k">if</span> <span class="n">cost</span> <span class="o">&lt;</span> <span class="n">ans</span><span class="p">:</span>
                 <span class="n">ans</span> <span class="o">=</span> <span class="n">cost</span>
         <span class="k">return</span> <span class="n">ans</span>
 </code></pre></div>
-<p><strong>心算 trace 示例 2</strong>: nums=[1,0,0,0,0,0,1,1], k=3
-- ones = [0, 6, 7]; m=3
-- q = [0-0, 6-1, 7-2] = [0, 5, 5]
-- S = [0, 0, 5, 10]
-- 唯一窗口 i=0: mid=1, M=5, left_cnt=1, right_cnt=1
-  - left_sum = S[1]-S[0] = 0; right_sum = S[3]-S[2] = 5
-  - cost = (5<em>1 - 0) + (5 - 5</em>1) = 5 + 0 = 5 ✓</p>
-<p><strong>为何中位数最优</strong>：对一维 <span class="arithmatex">\(\ell_1\)</span> 损失 <span class="arithmatex">\(\sum |q_j - M|\)</span>，梯度 <span class="arithmatex">\(\sum \text{sgn}(M - q_j)\)</span> 零点在中位数处。</p>
-<p><strong>为何要消等差</strong>：<span class="arithmatex">\(k\)</span> 个 1 最终落在 <span class="arithmatex">\([t, t+1, \dots, t+k-1]\)</span> 上。把第 <span class="arithmatex">\(j\)</span> 个 1 移到 <span class="arithmatex">\(t + (j-1)\)</span> 的代价为 <span class="arithmatex">\(|p_j - (t + j - 1)| = |q_j - t|\)</span>。问题变成"把 <span class="arithmatex">\(q_1, \dots, q_k\)</span> 都搬到同一点 <span class="arithmatex">\(t\)</span>"，最优 <span class="arithmatex">\(t\)</span> 就是 <span class="arithmatex">\(q\)</span> 的中位数。</p>
+<p>代码用 0-index：<code>q[j] = ones[j] - j</code> 与式 (2) 的 <span class="arithmatex">\(p_j - (j-1)\)</span> 只差一个全局常数偏移，不影响任何窗口内的 <span class="arithmatex">\(|q_j - t|\)</span> 差值，故等价。对偶数 <span class="arithmatex">\(k\)</span>，代码取上中位数 <code>q[i + k//2]</code>；式 (3) 写的是下中位数。两者对 <span class="arithmatex">\(\sum |q_j - M|\)</span> 给出相同的值（中位数区间上目标函数为常数），只要 <code>left_cnt</code>/<code>right_cnt</code> 与所取中位数一致即可，代码这一点是自洽的。</p>
 <h2 id="complexity">复杂度 (Complexity)<a class="headerlink" href="#complexity" title="Permanent link">#</a></h2>
 <ul>
-<li>Time: <span class="arithmatex">\(O(n)\)</span> — 提取 1 + 前缀和 + 滑窗各 <span class="arithmatex">\(O(n)\)</span>。</li>
+<li>Time: <span class="arithmatex">\(O(n)\)</span> — 提取 1、前缀和、滑窗各 <span class="arithmatex">\(O(n)\)</span>（<span class="arithmatex">\(m \le n\)</span>）。</li>
 <li>Space: <span class="arithmatex">\(O(m)\)</span>，$m = $ 1 的数量。</li>
 </ul>
 <h2 id="pitfalls">陷阱 (Pitfalls)<a class="headerlink" href="#pitfalls" title="Permanent link">#</a></h2>
 <ul>
-<li><strong>必须消等差</strong>：直接对 <span class="arithmatex">\(p\)</span> 求中位数距离和会得到"汇聚到一点"而非"连续 k 个位置"的代价。</li>
-<li><strong>中位数取法（k 偶数）</strong>：取下中位数 (<code>k // 2</code>) 还是上中位数都可，但 <code>left_cnt</code> 与 <code>right_cnt</code> 划分要一致。本实现取 <code>q[i + k//2]</code>，左边 <code>k//2</code> 个，右边 <code>k - k//2 - 1</code> 个。</li>
-<li><strong>不要"实际模拟交换"</strong>：那是 <span class="arithmatex">\(O(n^2)\)</span>。中位数原理直接给最优代价。</li>
-<li><strong>当 <span class="arithmatex">\(k \ge \sum \text{nums}\)</span></strong>：本题约束保证 <span class="arithmatex">\(k \le \sum\)</span>，否则无解。</li>
+<li><strong>必须消平移</strong>：直接对原下标 <span class="arithmatex">\(p\)</span> 求中位数距离和，得到的是"全挤到一点"的代价（如背景例子里的 7），而非"连续 <span class="arithmatex">\(k\)</span> 格"的代价（5）。式 (2) 的减 <span class="arithmatex">\((j-1)\)</span> 不可省。</li>
+<li><strong>中位数取法（<span class="arithmatex">\(k\)</span> 偶数）</strong>：下中位数 (<code>k // 2</code>) 或上中位数都行，但 <code>left_cnt</code> 与 <code>right_cnt</code> 的划分必须与所取下标一致。本实现取 <code>q[i + k//2]</code>，左 <code>k//2</code> 个、右 <code>k - k//2 - 1</code> 个，三段相加恰为 <span class="arithmatex">\(k\)</span>。</li>
+<li><strong>不要真的模拟交换</strong>：逐次交换是 <span class="arithmatex">\(O(n^2)\)</span>。式 (1)→(2)→(3) 已把最优代价化成可直接求和的闭式，无需模拟。</li>
+<li><strong>窗口非空</strong>：约束保证 <span class="arithmatex">\(k \le \sum \text{nums}\)</span>，故 <code>range(m - k + 1)</code> 至少有一个窗口；若 <span class="arithmatex">\(k &gt; \sum \text{nums}\)</span> 则无解。</li>
 </ul>
 <h2 id="related">相关题目 (Related)<a class="headerlink" href="#related" title="Permanent link">#</a></h2>
 <ul>
@@ -22641,6 +22670,8 @@
         <script src="../../../js/mathjax/tex-mml-chtml.js"></script>
       
         <script src="../../../js/mermaid.min.js"></script>
+      
+        <script src="../../../js/featured.js"></script>
       
     
   </body>

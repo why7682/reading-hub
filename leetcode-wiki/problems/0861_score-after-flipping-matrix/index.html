@@ -1466,6 +1466,8 @@
       
         
       
+        
+      
     
     
     
@@ -1521,6 +1523,34 @@
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../featured/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ⭐ Featured（已验证）
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
               
             
               
@@ -1610,10 +1640,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_4" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
         
           
-          <label class="md-nav__link" for="__nav_4_4" id="__nav_4_4_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_5" id="__nav_4_5_label" tabindex="">
             
   
   
@@ -1631,8 +1661,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_4_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_4">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_5">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1915,7 +1945,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -1937,14 +1967,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_4_5" id="__nav_4_5_label" tabindex="">
+              <label class="md-nav__link " for="__nav_4_6" id="__nav_4_6_label" tabindex="">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_5">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_6">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -5321,10 +5351,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_7" checked>
         
           
-          <label class="md-nav__link" for="__nav_4_6" id="__nav_4_6_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_7" id="__nav_4_7_label" tabindex="">
             
   
   
@@ -5342,8 +5372,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_4_6">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_7_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4_7">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -22467,16 +22497,29 @@
 <h2 id="problem">Problem<a class="headerlink" href="#problem" title="Permanent link">#</a></h2>
 <p><span class="arithmatex">\(m \times n\)</span> 二进制矩阵 <span class="arithmatex">\(G\)</span>。一次操作可翻转任意一整行或一整列（0↔1）。把每行视为二进制数（MSB 在左），求所有行数之和的最大值。<span class="arithmatex">\(1 \le m, n \le 20\)</span>，<span class="arithmatex">\(G_{ij} \in \{0,1\}\)</span>。</p>
 <h2 id="background">背景 (Background)<a class="headerlink" href="#background" title="Permanent link">#</a></h2>
-<p>属于<strong>贪心 + 位贡献分离</strong>的经典题型。核心思想是按位贡献分解：每一列贡献为 <span class="arithmatex">\(\text{count of 1's} \cdot 2^{n-1-j}\)</span>，于是问题分解为列独立优化，再加上"先固定行操作再优化列"这一双层贪心结构。和 Karatsuba / FFT 中按位分离的思想同构。</p>
+<p>最直接的想法是枚举所有翻转方案。每行可翻或不翻，每列可翻或不翻，共 <span class="arithmatex">\(2^m \cdot 2^n = 2^{m+n}\)</span> 种组合；对每种组合 <span class="arithmatex">\(O(mn)\)</span> 求分。在 <span class="arithmatex">\(m=n=20\)</span> 时 <span class="arithmatex">\(2^{40} \approx 1.1\times 10^{12}\)</span> 种组合，不可行。</p>
+<p>枚举之所以爆炸，是因为它把"翻哪些行"和"翻哪些列"当作 <span class="arithmatex">\(m+n\)</span> 个互相纠缠的二元变量。要打破这种纠缠，先把目标函数写清楚，看它对这些变量的依赖到底有多强——这是下一节要做的事，也是整个解法的起点。</p>
 <h2 id="formulation">形式化 (Formulation)<a class="headerlink" href="#formulation" title="Permanent link">#</a></h2>
-<p>最大化</p>
-<div class="arithmatex">\[S = \sum_{i=0}^{m-1} \sum_{j=0}^{n-1} G'_{ij} \cdot 2^{n-1-j}\]</div>
-<p>其中 <span class="arithmatex">\(G'\)</span> 由 <span class="arithmatex">\(G\)</span> 经行/列翻转得到。注意：交换操作顺序等价（行翻转与列翻转互换不影响最终结果），故可枚举先做哪些行翻转，再按列独立决定。</p>
+<p>设行翻转指示向量 <span class="arithmatex">\(r \in \{0,1\}^m\)</span>，列翻转指示向量 <span class="arithmatex">\(c \in \{0,1\}^n\)</span>（<span class="arithmatex">\(r_i=1\)</span> 表示翻第 <span class="arithmatex">\(i\)</span> 行，<span class="arithmatex">\(c_j=1\)</span> 表示翻第 <span class="arithmatex">\(j\)</span> 列）。一个格子被翻偶数次还原、奇数次取反，故翻转后的值是</p>
+<div class="arithmatex">\[G'_{ij} = G_{ij} \oplus r_i \oplus c_j. \tag{1}\]</div>
+<p>这里行翻转与列翻转<strong>可交换</strong>：式 (1) 只依赖各自被翻的奇偶次数，与操作先后顺序无关（XOR 满足交换律与结合律）。所以"先翻哪些行、后翻哪些列"这一顺序无须枚举，只需确定最终的 <span class="arithmatex">\(r\)</span> 与 <span class="arithmatex">\(c\)</span>。</p>
+<p>目标是最大化</p>
+<div class="arithmatex">\[S = \sum_{i=0}^{m-1} \sum_{j=0}^{n-1} G'_{ij} \cdot 2^{n-1-j}
+   = \sum_{j=0}^{n-1} 2^{n-1-j} \sum_{i=0}^{m-1} G'_{ij}. \tag{2}\]</div>
+<p>式 (2) 右端把求和按列拆开：第 <span class="arithmatex">\(j\)</span> 列贡献 <span class="arithmatex">\(2^{n-1-j} \cdot (\text{该列 1 的个数})\)</span>，<strong>列与列之间没有耦合项</strong>。这就是打破纠缠的关键——一旦固定行向量 <span class="arithmatex">\(r\)</span>，每个 <span class="arithmatex">\(c_j\)</span> 只影响第 <span class="arithmatex">\(j\)</span> 列的那一个内层和，可以独立选择。下面据此逐层求解。</p>
 <h2 id="approach">数据结构 / 想法 (Approach)<a class="headerlink" href="#approach" title="Permanent link">#</a></h2>
-<p><strong>关键观察 1</strong>：第 <span class="arithmatex">\(j=0\)</span> 列（MSB，权重 <span class="arithmatex">\(2^{n-1}\)</span>）的每个 1 贡献是任何其它列贡献之和上界的 2 倍多（<span class="arithmatex">\(2^{n-1} &gt; \sum_{j&gt;0} 2^{n-1-j}\)</span>）。所以<strong>最优策略首先把所有 <span class="arithmatex">\(G_{i,0} = 0\)</span> 的行翻转</strong>，使每行 MSB 都是 1。</p>
-<p><strong>关键观察 2</strong>：行操作做完后，每列<strong>独立</strong>优化。对列 <span class="arithmatex">\(j\)</span>，若该列 1 的个数 <span class="arithmatex">\(\ge \lceil m/2 \rceil\)</span> 就不翻；否则翻（翻后变为 <span class="arithmatex">\(m - c\)</span>）。两种情况下贡献 <span class="arithmatex">\(\max(c, m-c) \cdot 2^{n-1-j}\)</span>。</p>
-<p><strong>不变量</strong>：先翻行让首列全 1 后，"首列贡献" <span class="arithmatex">\(= m \cdot 2^{n-1}\)</span> 不再因列翻转改变（列翻转会同时翻全部行该列）—— 错！列翻转会改变首列。需要更精细的论证：</p>
-<p>正确论证：列操作 = 翻转一整列。所以"先行后列"枚举完毕的最优解，等价于"任何行先翻使首列为 1，再对每列单独选择翻不翻"。证明：若首列存在 0，将含 0 的那行翻转，单是首列就增加 <span class="arithmatex">\(2^{n-1}\)</span>；其它列变化最多 <span class="arithmatex">\(\sum_{j&gt;0}2^{n-1-j} = 2^{n-1} - 1\)</span>，净改善 <span class="arithmatex">\(\ge 1\)</span>。</p>
+<p><strong>先定行，再定列。</strong> 式 (2) 告诉我们：给定 <span class="arithmatex">\(r\)</span> 后，列彼此独立。那能不能反过来——先贪心定列、再定行？不行。若先把第 0 列（MSB）翻成全 1，列翻转 <span class="arithmatex">\(c_0\)</span> 会改变<strong>每一行</strong>第 0 位，行与行的结构随之被搅乱，后续无法再对各行独立地谈"翻不翻"。耦合来自行：<span class="arithmatex">\(r_i\)</span> 同时出现在第 <span class="arithmatex">\(i\)</span> 行的所有列里（式 (1)）。所以必须先把行翻转 <span class="arithmatex">\(r\)</span> 定下来，列才真正解耦。</p>
+<p><strong>第 0 列（MSB）应当全为 1。</strong> 第 0 列权重 <span class="arithmatex">\(2^{n-1}\)</span>，其余各列权重之和为</p>
+<div class="arithmatex">\[\sum_{j=1}^{n-1} 2^{n-1-j} = \sum_{k=0}^{n-2} 2^{k} = 2^{n-1} - 1 &lt; 2^{n-1}. \tag{3}\]</div>
+<p>由式 (3)，单个 MSB 位胜过其它所有列的全部贡献之和。直观上，任何让 MSB 多出一个 1 的操作都值得做，哪怕它把其它每一列都改坏。这把 <span class="arithmatex">\(r\)</span> 的选择钉死：</p>
+<blockquote>
+<p><strong>引理（行翻转策略）.</strong> 最优解中可令每行第 0 位都为 1，即对所有 <span class="arithmatex">\(G_{i,0}=0\)</span> 的行取 <span class="arithmatex">\(r_i=1\)</span>。</p>
+</blockquote>
+<p><em>证明（交换论证）.</em> 设某最优解里第 <span class="arithmatex">\(i\)</span> 行第 0 位仍为 0。翻转该行：第 0 列贡献增加 <span class="arithmatex">\(2^{n-1}\)</span>；该行其余各位被取反，由式 (3) 损失至多 <span class="arithmatex">\(2^{n-1}-1\)</span>。净变化 <span class="arithmatex">\(\ge 2^{n-1} - (2^{n-1}-1) = 1 &gt; 0\)</span>，与最优性矛盾。故最优解可取每行 MSB 为 1。<span class="arithmatex">\(\quad\blacksquare\)</span></p>
+<p>固定 <span class="arithmatex">\(r\)</span> 使第 0 列全为 1 后，记此时格子值 <span class="arithmatex">\(b_{ij} = G_{ij} \oplus r_i\)</span>（一个常量）。第 0 列贡献固定为 <span class="arithmatex">\(m \cdot 2^{n-1}\)</span>，且不会再去翻第 0 列（翻它只会把全 1 变全 0）。</p>
+<p><strong>每列独立取较大者。</strong> 对 <span class="arithmatex">\(j \ge 1\)</span>，列翻转把 <span class="arithmatex">\(b_{ij}\)</span> 全部取反，故该列 1 的个数从 <span class="arithmatex">\(c_j = \sum_i b_{ij}\)</span> 变为 <span class="arithmatex">\(m - c_j\)</span>。二者取大：</p>
+<div class="arithmatex">\[\text{第 } j \text{ 列最优贡献} = \max(c_j,\, m - c_j)\cdot 2^{n-1-j}. \tag{4}\]</div>
+<p>合并即得总分 <span class="arithmatex">\(S = m\cdot 2^{n-1} + \sum_{j=1}^{n-1}\max(c_j, m-c_j)\cdot 2^{n-1-j}\)</span>。代码里 <span class="arithmatex">\(b_{ij}\)</span> 不显式构造：当 <span class="arithmatex">\(G_{i,0}=1\)</span> 时 <span class="arithmatex">\(r_i=0\)</span>，取 <span class="arithmatex">\(G_{ij}\)</span>；当 <span class="arithmatex">\(G_{i,0}=0\)</span> 时 <span class="arithmatex">\(r_i=1\)</span>，取 <span class="arithmatex">\(1-G_{ij}\)</span>。</p>
 <div class="language-python highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">Solution</span><span class="p">:</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">matrixScore</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">grid</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]])</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
         <span class="n">m</span><span class="p">,</span> <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">grid</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">grid</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
@@ -22487,11 +22530,11 @@
             <span class="n">score</span> <span class="o">+=</span> <span class="nb">max</span><span class="p">(</span><span class="n">ones</span><span class="p">,</span> <span class="n">m</span> <span class="o">-</span> <span class="n">ones</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="p">(</span><span class="n">n</span> <span class="o">-</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">j</span><span class="p">))</span>
         <span class="k">return</span> <span class="n">score</span>
 </code></pre></div>
-<p>样例 1：<code>grid=[[0,0,1,1],[1,0,1,0],[1,1,0,0]]</code>，<span class="arithmatex">\(m=3, n=4\)</span>。
-- 首列贡献：<span class="arithmatex">\(3 \cdot 8 = 24\)</span>。
-- <span class="arithmatex">\(j=1\)</span>：考虑首列翻转后每行的实际值。row 0 首列 0 → 整行翻为 <code>[1,1,0,0]</code>；row 1, 2 首列已 1 不变。列 1 = <span class="arithmatex">\([1,0,1]\)</span>，ones=2，<span class="arithmatex">\(\max(2,1)=2\)</span>，贡献 <span class="arithmatex">\(2 \cdot 4 = 8\)</span>。
-- <span class="arithmatex">\(j=2\)</span>：row 0 翻后第 2 列 = 0；row 1 = 1；row 2 = 0。ones=1, <span class="arithmatex">\(\max(1,2)=2\)</span>，贡献 <span class="arithmatex">\(2 \cdot 2 = 4\)</span>。
-- <span class="arithmatex">\(j=3\)</span>：row 0 翻后第 3 列 = 0；row 1 = 0；row 2 = 0。ones=0, <span class="arithmatex">\(\max(0,3)=3\)</span>，贡献 <span class="arithmatex">\(3 \cdot 1 = 3\)</span>。
+<p>样例 1：<code>grid=[[0,0,1,1],[1,0,1,0],[1,1,0,0]]</code>，<span class="arithmatex">\(m=3, n=4\)</span>。按引理把首列为 0 的 row 0 整行翻转，矩阵规整为 <span class="arithmatex">\([[1,1,0,0],[1,0,1,0],[1,1,0,0]]\)</span>。
+- 首列贡献：<span class="arithmatex">\(m\cdot 2^{n-1}=3 \cdot 8 = 24\)</span>。
+- <span class="arithmatex">\(j=1\)</span>：列 <span class="arithmatex">\(= [1,0,1]\)</span>，<span class="arithmatex">\(c_1=2\)</span>，<span class="arithmatex">\(\max(2,1)=2\)</span>，贡献 <span class="arithmatex">\(2 \cdot 4 = 8\)</span>。
+- <span class="arithmatex">\(j=2\)</span>：列 <span class="arithmatex">\(= [0,1,0]\)</span>，<span class="arithmatex">\(c_2=1\)</span>，<span class="arithmatex">\(\max(1,2)=2\)</span>，贡献 <span class="arithmatex">\(2 \cdot 2 = 4\)</span>。
+- <span class="arithmatex">\(j=3\)</span>：列 <span class="arithmatex">\(= [0,0,0]\)</span>，<span class="arithmatex">\(c_3=0\)</span>，<span class="arithmatex">\(\max(0,3)=3\)</span>，贡献 <span class="arithmatex">\(3 \cdot 1 = 3\)</span>。
 - 合计 <span class="arithmatex">\(24+8+4+3 = 39\)</span>。✓</p>
 <h2 id="complexity">复杂度 (Complexity)<a class="headerlink" href="#complexity" title="Permanent link">#</a></h2>
 <ul>
@@ -22500,14 +22543,14 @@
 </ul>
 <h2 id="pitfalls">陷阱 (Pitfalls)<a class="headerlink" href="#pitfalls" title="Permanent link">#</a></h2>
 <ul>
-<li>不要试图枚举行/列翻转组合（<span class="arithmatex">\(2^{m+n}\)</span> 太大，但 <span class="arithmatex">\(m,n\le20\)</span> 也尚可，仍不如贪心）。</li>
-<li>计算 ones 时必须考虑"该行首列原本为 0"等价行翻转后该列值取反；否则会错算。</li>
+<li>不要枚举全部行/列翻转组合：<span class="arithmatex">\(2^{m+n}\)</span> 在 <span class="arithmatex">\(m=n=20\)</span> 时约 <span class="arithmatex">\(1.1\times 10^{12}\)</span>，不可行。即便退一步只枚举行翻转、列上贪心（<span class="arithmatex">\(2^m \cdot mn \approx 4\times 10^8\)</span>）也远逊于本题 <span class="arithmatex">\(O(mn)\)</span> 的贪心。</li>
+<li>计算 ones 时必须考虑"该行首列原本为 0"等价于行翻转、该列值取反；否则会错算（对应代码中的 <code>1 - grid[i][j]</code>）。</li>
 <li>移位 <code>1 &lt;&lt; (n-1)</code> 当 <span class="arithmatex">\(n=20\)</span> 时仍在 Python int 范围内，但若用 C++ 注意用 <code>long long</code>。</li>
 </ul>
 <h2 id="related">相关题目 (Related)<a class="headerlink" href="#related" title="Permanent link">#</a></h2>
 <ul>
 <li><a href="../1072_flip-columns-for-maximum-number-of-equal-rows/">#1072. Flip Columns For Maximum Number of Equal Rows</a> — 同属"行/列翻转下的矩阵优化"，但目标是相等行数。</li>
-<li><code>#1284. Minimum Number of Flips to Convert Binary Matrix to Zero Matrix (off-wiki)</code> — XOR 矩阵变换问题。</li>
+<li><a href="../1284_minimum-number-of-flips-to-convert-binary-matrix-to-zero-matrix/">#1284. Minimum Number of Flips to Convert Binary Matrix to Zero Matrix</a> — XOR 矩阵变换问题。</li>
 </ul>
 <h2 id="further-reading">Further Reading<a class="headerlink" href="#further-reading" title="Permanent link">#</a></h2>
 <ul>
@@ -22619,6 +22662,8 @@
         <script src="../../../js/mathjax/tex-mml-chtml.js"></script>
       
         <script src="../../../js/mermaid.min.js"></script>
+      
+        <script src="../../../js/featured.js"></script>
       
     
   </body>

@@ -1466,6 +1466,8 @@
       
         
       
+        
+      
     
     
     
@@ -1521,6 +1523,34 @@
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../featured/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ⭐ Featured（已验证）
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
               
             
               
@@ -1610,10 +1640,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_4" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
         
           
-          <label class="md-nav__link" for="__nav_4_4" id="__nav_4_4_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_5" id="__nav_4_5_label" tabindex="">
             
   
   
@@ -1631,8 +1661,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_4_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_4">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_5">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1915,7 +1945,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -1937,14 +1967,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_4_5" id="__nav_4_5_label" tabindex="">
+              <label class="md-nav__link " for="__nav_4_6" id="__nav_4_6_label" tabindex="">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_5">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_6">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -5321,10 +5351,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_7" checked>
         
           
-          <label class="md-nav__link" for="__nav_4_6" id="__nav_4_6_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_7" id="__nav_4_7_label" tabindex="">
             
   
   
@@ -5342,8 +5372,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_4_6">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_7_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4_7">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -22467,23 +22497,30 @@
 <h2 id="problem">Problem<a class="headerlink" href="#problem" title="Permanent link">#</a></h2>
 <p>给正整数 <code>primeFactors = P</code>。构造正整数 <span class="arithmatex">\(n\)</span>，使其素因子（按重数计）总数 <span class="arithmatex">\(\le P\)</span> 且 <strong>nice divisor</strong> 数最大。一个 <span class="arithmatex">\(n\)</span> 的因子 <span class="arithmatex">\(d\)</span> 称为 nice 当且仅当 <span class="arithmatex">\(d\)</span> 被 <span class="arithmatex">\(n\)</span> 的每个不同素因子整除。返回最大 nice divisor 数 mod <span class="arithmatex">\(10^9 + 7\)</span>。约束 <span class="arithmatex">\(1 \le P \le 10^9\)</span>。</p>
 <h2 id="background">背景 (Background)<a class="headerlink" href="#background" title="Permanent link">#</a></h2>
-<p>本题是经典的<strong>整数分拆求积最大化</strong>（"Integer Break"，#343）问题的伪装：</p>
-<ul>
-<li>设 <span class="arithmatex">\(n = p_1^{e_1} \cdots p_k^{e_k}\)</span>（每个 <span class="arithmatex">\(e_i \ge 1\)</span>）。nice divisor 必须含全部 <span class="arithmatex">\(p_i\)</span> 至少一次，因此 nice divisor 数等于 <span class="arithmatex">\(\prod_{i=1}^{k} e_i\)</span>（每个 <span class="arithmatex">\(p_i\)</span> 的指数从 <span class="arithmatex">\(1\)</span> 到 <span class="arithmatex">\(e_i\)</span> 自由选）。</li>
-<li>约束 <span class="arithmatex">\(\sum e_i \le P\)</span>。目标 <span class="arithmatex">\(\max \prod e_i\)</span>。素数本身可以任选不同的，所以只需关心如何把 <span class="arithmatex">\(P\)</span> 分成正整数 <span class="arithmatex">\(e_i\)</span> 之和使乘积最大。</li>
-</ul>
-<p>这是数论 / 离散优化的小经典题。"<span class="arithmatex">\(3\)</span> 是最优分拆基"的事实可以从 <span class="arithmatex">\(\ln(x)/x\)</span> 在 <span class="arithmatex">\(x = e\)</span> 取最大用连续松弛得到，再因为只允许整数得到 <span class="arithmatex">\(3 &gt; 2 &gt; 4\)</span> 的偏好顺序。</p>
+<p>我们手上唯一能调的旋钮，是如何挑选 <span class="arithmatex">\(n\)</span> 的素因子分解。写 <span class="arithmatex">\(n = p_1^{e_1} \cdots p_k^{e_k}\)</span>，其中每个 <span class="arithmatex">\(p_i\)</span> 是不同的素数、<span class="arithmatex">\(e_i \ge 1\)</span>。约束「素因子按重数计总数 <span class="arithmatex">\(\le P\)</span>」就是 <span class="arithmatex">\(\sum_{i=1}^{k} e_i \le P\)</span>。</p>
+<p>先问最朴素的问题：固定一组指数 <span class="arithmatex">\((e_1, \dots, e_k)\)</span>，能数出多少个 nice divisor？</p>
+<p>一个因子 <span class="arithmatex">\(d\)</span> 是 nice，当且仅当它被每个 <span class="arithmatex">\(p_i\)</span> 整除，也就是 <span class="arithmatex">\(d\)</span> 中每个 <span class="arithmatex">\(p_i\)</span> 的指数至少为 <span class="arithmatex">\(1\)</span>。同时 <span class="arithmatex">\(d \mid n\)</span> 要求该指数不超过 <span class="arithmatex">\(e_i\)</span>。于是 <span class="arithmatex">\(d\)</span> 形如 <span class="arithmatex">\(p_1^{j_1} \cdots p_k^{j_k}\)</span>，其中 <span class="arithmatex">\(j_i \in \{1, 2, \dots, e_i\}\)</span>，各分量独立选取。</p>
+<p>举一个具体例子把这件事看实。取 <span class="arithmatex">\(n = p^2 q^3\)</span>，nice divisor 必须同时含 <span class="arithmatex">\(p\)</span> 和 <span class="arithmatex">\(q\)</span>，逐个列出：</p>
+<div class="arithmatex">\[p\,q,\quad p\,q^2,\quad p\,q^3,\quad p^2 q,\quad p^2 q^2,\quad p^2 q^3.\]</div>
+<p>恰好 <span class="arithmatex">\(6\)</span> 个，即 <span class="arithmatex">\(2 \times 3 = e_1 e_2\)</span>。一般地，第 <span class="arithmatex">\(i\)</span> 个素数贡献 <span class="arithmatex">\(e_i\)</span> 种选择，彼此独立，故</p>
+<div class="arithmatex">\[\#\{\text{nice divisors}\} = \prod_{i=1}^{k} e_i. \tag{1}\]</div>
+<p>注意 (1) 的右边<strong>完全不依赖</strong>具体选了哪些素数 <span class="arithmatex">\(p_i\)</span>，只依赖指数序列 <span class="arithmatex">\((e_1, \dots, e_k)\)</span>。素数本身随便取 <span class="arithmatex">\(k\)</span> 个不同的即可。于是原问题被剥离成一个纯粹的整数优化：把预算 <span class="arithmatex">\(P\)</span> 拆成若干正整数 <span class="arithmatex">\(e_i\)</span>，使它们的乘积最大。</p>
 <h2 id="formulation">形式化 (Formulation)<a class="headerlink" href="#formulation" title="Permanent link">#</a></h2>
-<p>设 <span class="arithmatex">\(P \ge 1\)</span>。求</p>
-<div class="arithmatex">\[f(P) = \max\left\{ \prod_{i=1}^{k} e_i \;\middle|\; k \ge 1,\; e_i \in \mathbb{Z}_{\ge 1},\; \sum_{i=1}^{k} e_i = P \right\} \pmod{10^9 + 7}\]</div>
-<p>边界：<span class="arithmatex">\(f(1) = 1\)</span>。</p>
+<p>上一节把目标化简成：在 <span class="arithmatex">\(\sum e_i \le P\)</span> 下最大化 <span class="arithmatex">\(\prod e_i\)</span>。由于每个 <span class="arithmatex">\(e_i \ge 1\)</span>，多留预算只会浪费——把任意 <span class="arithmatex">\(e_i\)</span> 加 <span class="arithmatex">\(1\)</span> 不会让乘积变小，所以最优解必然用满 <span class="arithmatex">\(P\)</span>，约束取等号。于是定义</p>
+<div class="arithmatex">\[f(P) = \max\left\{ \prod_{i=1}^{k} e_i \;\middle|\; k \ge 1,\; e_i \in \mathbb{Z}_{\ge 1},\; \sum_{i=1}^{k} e_i = P \right\} \pmod{10^9 + 7}, \tag{2}\]</div>
+<p>其中 <span class="arithmatex">\(k\)</span> 是分拆的份数（也自由可变）。边界 <span class="arithmatex">\(f(1) = 1\)</span>：<span class="arithmatex">\(P=1\)</span> 的唯一分拆是 <span class="arithmatex">\(\{1\}\)</span>，乘积为 <span class="arithmatex">\(1\)</span>。</p>
+<p>公式 (2) 是后续全部推导的脊柱。下面要回答它提出的核心问题：<strong>最优分拆里，每一份应该多大？</strong></p>
 <h2 id="approach">数据结构 / 想法 (Approach)<a class="headerlink" href="#approach" title="Permanent link">#</a></h2>
-<p><strong>关键引理</strong>：最优分拆只含 <span class="arithmatex">\(2\)</span> 和 <span class="arithmatex">\(3\)</span>，且至多两个 <span class="arithmatex">\(2\)</span>。</p>
-<p>证明草图：
-1. 若分拆含 <span class="arithmatex">\(x \ge 5\)</span>，把 <span class="arithmatex">\(x\)</span> 换成 <span class="arithmatex">\(3\)</span> 和 <span class="arithmatex">\(x-3\)</span>：<span class="arithmatex">\(3(x-3) &gt; x \iff x &gt; 4.5\)</span>。
-2. 若含 <span class="arithmatex">\(4\)</span>，等价于两个 <span class="arithmatex">\(2\)</span>（<span class="arithmatex">\(2 \cdot 2 = 4\)</span>），不变。
-3. 若含三个 <span class="arithmatex">\(2\)</span>：<span class="arithmatex">\(2+2+2 = 6 = 3+3\)</span>，但 <span class="arithmatex">\(3 \cdot 3 = 9 &gt; 2 \cdot 2 \cdot 2 = 8\)</span>，所以换成两个 <span class="arithmatex">\(3\)</span> 更优。</p>
-<p>因此最优解：尽量多用 <span class="arithmatex">\(3\)</span>，剩余 <span class="arithmatex">\(P \bmod 3\)</span> 的处理如下：</p>
+<p>朴素地按 (2) 做：用 DP，<span class="arithmatex">\(g[s]\)</span> 表示和为 <span class="arithmatex">\(s\)</span> 的最大乘积，转移 <span class="arithmatex">\(g[s] = \max_{1 \le t \le s} t \cdot g[s-t]\)</span>，<span class="arithmatex">\(O(P^2)\)</span> 或优化到 <span class="arithmatex">\(O(P\log P)\)</span>。但 <span class="arithmatex">\(P\)</span> 可达 <span class="arithmatex">\(10^9\)</span>，任何 <span class="arithmatex">\(O(P)\)</span> 规模的循环都会超时。我们需要一个闭式分拆结构，而不是逐项枚举。</p>
+<p><strong>先建立直觉。</strong> 拆份的收益来自「同样的预算，分成多份相乘比留成一份大」。把预算 <span class="arithmatex">\(t\)</span> 切成 <span class="arithmatex">\(a\)</span> 和 <span class="arithmatex">\(t-a\)</span>，乘积 <span class="arithmatex">\(a(t-a)\)</span> 在 <span class="arithmatex">\(a = t/2\)</span> 时最大——所以总会想往「均匀切小块」走。但块不能无限小：每份至少是 <span class="arithmatex">\(1\)</span>，而 <span class="arithmatex">\(1\)</span> 是乘法单位元，放进乘积纯属浪费一格预算。问题于是变成：在「不能用 <span class="arithmatex">\(1\)</span>」的前提下，单份的<strong>最优大小</strong>是几？</p>
+<p>把份的大小当连续变量考察。若所有份都等于 <span class="arithmatex">\(x\)</span>，份数约 <span class="arithmatex">\(P/x\)</span>，乘积约 <span class="arithmatex">\(x^{P/x} = \exp\!\big(P \cdot \tfrac{\ln x}{x}\big)\)</span>。要最大化乘积，只需最大化 <span class="arithmatex">\(\tfrac{\ln x}{x}\)</span>。</p>
+<p>求导 <span class="arithmatex">\(\tfrac{d}{dx}\tfrac{\ln x}{x} = \tfrac{1 - \ln x}{x^2}\)</span>，零点在 <span class="arithmatex">\(x = e \approx 2.718\)</span>。这是连续松弛下的最优单份大小。但 <span class="arithmatex">\(e\)</span> 不是整数，最近的两个候选是 <span class="arithmatex">\(2\)</span> 和 <span class="arithmatex">\(3\)</span>；逐一比较 <span class="arithmatex">\(\tfrac{\ln x}{x}\)</span> 知 <span class="arithmatex">\(3\)</span> 略优于 <span class="arithmatex">\(2\)</span>。这就解释了为什么我们会<strong>预期 <span class="arithmatex">\(3\)</span> 主导最优分拆</strong>，并由此给出下面的引理。</p>
+<p><strong>关键引理（Key Lemma）</strong>：最优分拆只含 <span class="arithmatex">\(2\)</span> 和 <span class="arithmatex">\(3\)</span>，且至多含两个 <span class="arithmatex">\(2\)</span>。</p>
+<p>证明（用 (2) 中份数与份大小均可调这一点，对任意分拆做局部替换，乘积不减则原分拆非严格更优）：
+1. <strong>不含 <span class="arithmatex">\(\ge 5\)</span> 的份</strong>：若某份为 <span class="arithmatex">\(x \ge 5\)</span>，把它换成 <span class="arithmatex">\(3\)</span> 与 <span class="arithmatex">\(x-3\)</span> 两份（仍 <span class="arithmatex">\(\ge 1\)</span>，和不变）。乘积之比为 <span class="arithmatex">\(3(x-3)\)</span> 比 <span class="arithmatex">\(x\)</span>，而 <span class="arithmatex">\(3(x-3) &gt; x \iff x &gt; 4.5\)</span>，故 <span class="arithmatex">\(x \ge 5\)</span> 时替换严格变大。
+2. <strong>不必含 <span class="arithmatex">\(4\)</span></strong>：<span class="arithmatex">\(4 = 2+2\)</span> 且 <span class="arithmatex">\(2 \cdot 2 = 4\)</span>，把一个 <span class="arithmatex">\(4\)</span> 拆成两个 <span class="arithmatex">\(2\)</span> 乘积不变；故可假设无 <span class="arithmatex">\(4\)</span>，所有份 <span class="arithmatex">\(\in \{2, 3\}\)</span>。
+3. <strong>至多两个 <span class="arithmatex">\(2\)</span></strong>：若含三个 <span class="arithmatex">\(2\)</span>，其和 <span class="arithmatex">\(2+2+2 = 6 = 3+3\)</span>，但 <span class="arithmatex">\(3 \cdot 3 = 9 &gt; 2 \cdot 2 \cdot 2 = 8\)</span>，换成两个 <span class="arithmatex">\(3\)</span> 严格变大。</p>
+<p>综合：最优分拆尽量多用 <span class="arithmatex">\(3\)</span>，余数 <span class="arithmatex">\(P \bmod 3\)</span> 决定剩余结构。</p>
 <table>
 <thead>
 <tr>
@@ -22510,7 +22547,8 @@
 </tr>
 </tbody>
 </table>
-<p>特殊小情况：<span class="arithmatex">\(P = 1\)</span> 答案 <span class="arithmatex">\(1\)</span>（只能用一个素因子，<span class="arithmatex">\(e_1 = 1\)</span>，乘积 = 1）。</p>
+<p>余数为 <span class="arithmatex">\(1\)</span> 时不能留一个孤立的 <span class="arithmatex">\(1\)</span>（乘 <span class="arithmatex">\(1\)</span> 浪费预算），而是借一个 <span class="arithmatex">\(3\)</span> 与之合并成 <span class="arithmatex">\(4 = 2+2\)</span>，即引理允许的「两个 <span class="arithmatex">\(2\)</span>」情形；这正对应表中 <span class="arithmatex">\((P-4)/3 = q-1\)</span> 的指数。</p>
+<p>特殊小情况：<span class="arithmatex">\(P \le 3\)</span> 时分拆只能是单份 <span class="arithmatex">\(\{P\}\)</span>（拆成两份会引入 <span class="arithmatex">\(1\)</span>，乘积反而变小），故 <span class="arithmatex">\(f(P) = P\)</span>。这统一了 <span class="arithmatex">\(f(1)=1,\ f(2)=2,\ f(3)=3\)</span>，并保证 <span class="arithmatex">\(P=1\)</span> 不会落入余数为 <span class="arithmatex">\(1\)</span> 的公式去算 <span class="arithmatex">\(3^{-1}\)</span>。</p>
 <p><strong>实现</strong>：用快速幂（binary exponentiation）算 <span class="arithmatex">\(3^k \bmod (10^9 + 7)\)</span>。</p>
 <div class="language-python highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">Solution</span><span class="p">:</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">maxNiceDivisors</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">primeFactors</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
@@ -22535,14 +22573,14 @@ Trace 例 2：<span class="arithmatex">\(P = 8\)</span>，<span class="arithmate
 </ul>
 <h2 id="pitfalls">陷阱 (Pitfalls)<a class="headerlink" href="#pitfalls" title="Permanent link">#</a></h2>
 <ul>
-<li><strong>小 <span class="arithmatex">\(P\)</span> 边界</strong>：<span class="arithmatex">\(P=1\)</span> 答案 <span class="arithmatex">\(1\)</span>（不是 <span class="arithmatex">\(0\)</span>）；<span class="arithmatex">\(P=2\)</span> 答案 <span class="arithmatex">\(2\)</span>；<span class="arithmatex">\(P=3\)</span> 答案 <span class="arithmatex">\(3\)</span>。直接套公式会算成 <span class="arithmatex">\(3\)</span> / <span class="arithmatex">\(4\)</span>，错。必须特判 <span class="arithmatex">\(P \le 3\)</span>。</li>
-<li><strong>取模时机</strong>：<span class="arithmatex">\(4 \cdot 3^{q-1}\)</span> 与 <span class="arithmatex">\(2 \cdot 3^q\)</span> 都要在乘法后再取模。</li>
-<li><strong>不要使用 BFS / DP</strong>：<span class="arithmatex">\(P\)</span> 高达 <span class="arithmatex">\(10^9\)</span>，朴素 DP <span class="arithmatex">\(O(P)\)</span> 超时。</li>
+<li><strong>小 <span class="arithmatex">\(P\)</span> 边界</strong>：<span class="arithmatex">\(P=1\)</span> 答案 <span class="arithmatex">\(1\)</span>（不是 <span class="arithmatex">\(0\)</span>，因为 <span class="arithmatex">\(f(1)\)</span> 取自唯一分拆 <span class="arithmatex">\(\{1\}\)</span>）；<span class="arithmatex">\(P=2\)</span> 答案 <span class="arithmatex">\(2\)</span>；<span class="arithmatex">\(P=3\)</span> 答案 <span class="arithmatex">\(3\)</span>。直接套余数公式会把 <span class="arithmatex">\(P=3\)</span> 当成「全是 <span class="arithmatex">\(3\)</span>」算成 <span class="arithmatex">\(3\)</span> 没错，但 <span class="arithmatex">\(P=1\)</span> 会落入 <span class="arithmatex">\(r=1\)</span> 路径去算 <span class="arithmatex">\(3^{q-1}=3^{-1}\)</span>。必须特判 <span class="arithmatex">\(P \le 3\)</span>。</li>
+<li><strong>取模时机</strong>：<span class="arithmatex">\(4 \cdot 3^{q-1}\)</span> 与 <span class="arithmatex">\(2 \cdot 3^q\)</span> 都要在乘法<strong>之后</strong>再取模，否则 <span class="arithmatex">\(4\)</span>、<span class="arithmatex">\(2\)</span> 这两个小系数会被错误地提前约掉。</li>
+<li><strong>不要使用 BFS / DP</strong>：<span class="arithmatex">\(P\)</span> 高达 <span class="arithmatex">\(10^9\)</span>，朴素 DP <span class="arithmatex">\(O(P)\)</span> 超时；正是为此我们才在 Approach 一节求闭式分拆而非逐项枚举。</li>
 </ul>
 <h2 id="related">相关题目 (Related)<a class="headerlink" href="#related" title="Permanent link">#</a></h2>
 <ul>
-<li><code>#343. Integer Break (off-wiki)</code> — 完全相同的"分拆求积"问题，约束更小（<span class="arithmatex">\(n \le 58\)</span>）允许 DP。</li>
-<li><code>#1799. Maximize Score After N Operations (off-wiki)</code> — 同样涉及"分拆 + 最大乘积/分数"思想，但用状压 DP。</li>
+<li><code>#343. Integer Break (off-wiki)</code> — 同一个「分拆求积最大化」结构，但要求把 <span class="arithmatex">\(n\)</span> 拆成<strong>至少两份</strong>（<span class="arithmatex">\(k \ge 2\)</span>），故小输入答案不同：那里 <span class="arithmatex">\(n=2 \to 1\)</span>、<span class="arithmatex">\(n=3 \to 2\)</span>，而本题 <span class="arithmatex">\(f(2)=2\)</span>、<span class="arithmatex">\(f(3)=3\)</span>。技术核心相同，约束更小（<span class="arithmatex">\(n \le 58\)</span>）允许直接 DP。</li>
+<li><code>#1799. Maximize Score After N Operations (off-wiki)</code> — 同样涉及「分拆 + 最大乘积/分数」思想，但用状压 DP。</li>
 </ul>
 <h2 id="further-reading">Further Reading<a class="headerlink" href="#further-reading" title="Permanent link">#</a></h2>
 <ul>
@@ -22655,6 +22693,8 @@ Trace 例 2：<span class="arithmatex">\(P = 8\)</span>，<span class="arithmate
         <script src="../../../js/mathjax/tex-mml-chtml.js"></script>
       
         <script src="../../../js/mermaid.min.js"></script>
+      
+        <script src="../../../js/featured.js"></script>
       
     
   </body>

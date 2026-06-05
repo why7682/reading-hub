@@ -1466,6 +1466,8 @@
       
         
       
+        
+      
     
     
     
@@ -1521,6 +1523,34 @@
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../featured/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ⭐ Featured（已验证）
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
               
             
               
@@ -1610,10 +1640,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_4" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
         
           
-          <label class="md-nav__link" for="__nav_4_4" id="__nav_4_4_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_5" id="__nav_4_5_label" tabindex="">
             
   
   
@@ -1631,8 +1661,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_4_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_4">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_5">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1915,7 +1945,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -1937,14 +1967,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_4_5" id="__nav_4_5_label" tabindex="">
+              <label class="md-nav__link " for="__nav_4_6" id="__nav_4_6_label" tabindex="">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_5">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_6">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -5321,10 +5351,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_7" checked>
         
           
-          <label class="md-nav__link" for="__nav_4_6" id="__nav_4_6_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_7" id="__nav_4_7_label" tabindex="">
             
   
   
@@ -5342,8 +5372,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_4_6">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_7_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4_7">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -22467,20 +22497,34 @@
 <h2 id="problem">Problem<a class="headerlink" href="#problem" title="Permanent link">#</a></h2>
 <p>正方形字符棋盘 <code>board</code>（<span class="arithmatex">\(2 \leq n \leq 100\)</span>）：起点 <code>'S'</code> 在右下角，终点 <code>'E'</code> 在左上角，其它格为数字 <code>'1'..'9'</code> 或障碍 <code>'X'</code>。每步可向<strong>上 / 左 / 左上</strong>移动。求从 S 到 E 能获得的最大分数（沿途数字字符之和，S/E 计为 0）以及达到该最大分数的路径数（模 <span class="arithmatex">\(10^9 + 7\)</span>）。不可达返回 <code>[0, 0]</code>。</p>
 <h2 id="background">背景 (Background)<a class="headerlink" href="#background" title="Permanent link">#</a></h2>
-<p>经典 <strong>DAG 上的双 DP</strong>：先求最优值，再求"达到最优值的路径数"。这是 max-plus 半环 <span class="arithmatex">\((\max, +)\)</span> 与计数半环 <span class="arithmatex">\((+, \times)\)</span> 的同步聚合，等价于 <em>probabilistic shortest-path counting</em>：在 tropical 半环上做 Bellman 风格 DP，同时维护"达到 argmax 的多重性"。</p>
-<p>向上/向左/左上的 3 个转移使得格点构成 DAG（拓扑序即从左上到右下，本题反向遍历从右下到左上）。</p>
+<p>这道题问两件事：从 S 到 E 的<strong>最大分数</strong>，以及<strong>达到该最大分数的路径数</strong>。第一问是标准的网格路径 DP，先把它做出来，再看第二问在哪里逼着我们扩展状态。</p>
+<p>只求最大分数时，单张表就够了。设 <span class="arithmatex">\(\text{best}[i][j]\)</span> 是从 S 走到格 <span class="arithmatex">\((i,j)\)</span> 的最大分数。允许的移动是"上 / 左 / 左上"，所以站在 <span class="arithmatex">\((i,j)\)</span> 时，上一步只可能来自 <span class="arithmatex">\((i+1,j)\)</span>、<span class="arithmatex">\((i,j+1)\)</span>、<span class="arithmatex">\((i+1,j+1)\)</span> 三个格之一。于是</p>
+<div class="arithmatex">\[
+\text{best}[i][j] = \text{val}(i,j) + \max\big\{\text{best}[i+1][j],\ \text{best}[i][j+1],\ \text{best}[i+1][j+1]\big\},
+\]</div>
+<p>边界 <span class="arithmatex">\(\text{best}[n-1][n-1]=0\)</span>（S 自身不计分）。这一步没有任何技巧，就是取三个来源里最大的那个再加上当前格的数字。</p>
+<p>现在加上第二问：有多少条路径达到这个最大值？很自然的想法是"做完 best 表，再回头数路径"。但只凭 <span class="arithmatex">\(\text{best}\)</span> 表数不出来。问题出在<strong>并列</strong>：当 <span class="arithmatex">\((i,j)\)</span> 的三个来源里有不止一个取到了那个最大值，每个并列来源都各自贡献若干条最优路径，而 <span class="arithmatex">\(\text{best}[i][j]\)</span> 只记下了那个最大数值，把"有几个来源、各自带来几条路径"全部抹掉了。一个数值无法区分"一个来源贡献 1 条"和"两个来源各贡献 1 条"——它们对应的最大分数完全相同，事后无从恢复。</p>
+<p>这就是扩展状态的理由：<strong>最大分数和路径数必须同步传播</strong>。每个格除了记最大分数 <span class="arithmatex">\(\text{best}[i][j]\)</span>，再记一个 <span class="arithmatex">\(\text{cnt}[i][j]\)</span> = 达到该最大分数的路径数，让二者在同一次扫描里一起更新。下面把这条结构精确化。</p>
+<p>附带一点：三个移动方向 <span class="arithmatex">\((i+1,j),(i,j+1),(i+1,j+1)\)</span> 的行号或列号都严格大于 <span class="arithmatex">\((i,j)\)</span>，所以子问题依赖永远指向"行列下标更大"的格，不存在环。这保证了 DP 有合法的计算顺序——按 <span class="arithmatex">\((i,j)\)</span> 从大到小（从右下到左上）填表，每个格用到的三个来源都已算好。</p>
 <h2 id="formulation">形式化 (Formulation)<a class="headerlink" href="#formulation" title="Permanent link">#</a></h2>
-<p>设 <span class="arithmatex">\(\text{val}(i,j) \in \{0, 1, \dots, 9\}\)</span>（S/E/数字字符）或 <span class="arithmatex">\(-\infty\)</span>（障碍）。定义两个数组：</p>
+<p>直觉是：单数值丢掉了并列信息，所以把状态扩成 (最大分数, 路径数) 这一对，让它们沿同一组转移一起走。下面给出形式化。</p>
+<p>设 <span class="arithmatex">\(\text{val}(i,j) \in \{0, 1, \dots, 9\}\)</span>（S/E 计 0，数字字符取其数值），障碍格记 <span class="arithmatex">\(\text{val} = -\infty\)</span>。设三个来源邻居的集合</p>
 <div class="arithmatex">\[
-\text{best}[i][j] = \max\text{(score from S to } (i,j)\text{)}, \qquad \text{cnt}[i][j] = \#\{\text{paths achieving best}\}.
+N(i,j) = \{(i+1,j),\ (i,j+1),\ (i+1,j+1)\} \cap \{\text{在界内且可达}\}.
 \]</div>
-<p>转移（<span class="arithmatex">\(i, j\)</span> 从右下角 <span class="arithmatex">\((n-1, n-1)\)</span> 反向走到 <span class="arithmatex">\((0,0)\)</span>）：源 <span class="arithmatex">\((i,j)\)</span> 来自三个邻居 <span class="arithmatex">\((i+1, j), (i, j+1), (i+1, j+1)\)</span> 中 <span class="arithmatex">\(\text{best}\)</span> 最大的那个集合：</p>
+<p>定义两张表：</p>
 <div class="arithmatex">\[
-\text{best}[i][j] = \text{val}(i,j) + \max_{(i',j')} \text{best}[i'][j'], \qquad \text{cnt}[i][j] = \sum_{(i',j') \in \arg\max} \text{cnt}[i'][j'] \pmod{10^9 + 7}.
+\text{best}[i][j] = \max\big(\text{S 到 } (i,j)\text{ 的分数}\big), \qquad \text{cnt}[i][j] = \#\{\text{达到 best 的路径}\}.
 \]</div>
-<p>边界：<span class="arithmatex">\(\text{best}[n-1][n-1] = 0\)</span>，<span class="arithmatex">\(\text{cnt}[n-1][n-1] = 1\)</span>；障碍 <span class="arithmatex">\((i,j)\)</span> 直接置 <span class="arithmatex">\(\text{best} = -\infty, \text{cnt} = 0\)</span>。</p>
+<p>记 <span class="arithmatex">\(M = \max_{(i',j') \in N(i,j)} \text{best}[i'][j']\)</span>，并令并列集合 <span class="arithmatex">\(A = \{(i',j') \in N(i,j) : \text{best}[i'][j'] = M\}\)</span>。转移为：</p>
+<div class="arithmatex">\[
+\text{best}[i][j] = \text{val}(i,j) + M, \qquad \text{cnt}[i][j] = \sum_{(i',j') \in A} \text{cnt}[i'][j'] \pmod{10^9 + 7}. \tag{1}
+\]</div>
+<p>边界：<span class="arithmatex">\(\text{best}[n-1][n-1] = 0,\ \text{cnt}[n-1][n-1] = 1\)</span>；障碍格 <span class="arithmatex">\((i,j)\)</span> 直接置 <span class="arithmatex">\(\text{best} = -\infty,\ \text{cnt} = 0\)</span>；若 <span class="arithmatex">\(N(i,j) = \varnothing\)</span>（三个来源全不可达），则 <span class="arithmatex">\((i,j)\)</span> 也不可达。</p>
+<p>为什么 <span class="arithmatex">\(\text{cnt}\)</span> 只对并列集合 <span class="arithmatex">\(A\)</span>（即 argmax）求和，而不是对全部来源求和？因为一条途经次优来源 <span class="arithmatex">\((i',j')\)</span>（<span class="arithmatex">\(\text{best}[i'][j'] &lt; M\)</span>）的路径，到了 <span class="arithmatex">\((i,j)\)</span> 总分必然小于 <span class="arithmatex">\(M + \text{val}(i,j)\)</span>，它根本不是经过 <span class="arithmatex">\((i,j)\)</span> 的最优路径，计入就会高估。只有取到 <span class="arithmatex">\(M\)</span> 的来源所携带的路径，延伸到 <span class="arithmatex">\((i,j)\)</span> 后仍是最优，才该被数进来。这正是式 (1) 里把求和限制在 <span class="arithmatex">\(A\)</span> 上的原因。</p>
 <h2 id="approach">数据结构 / 想法 (Approach)<a class="headerlink" href="#approach" title="Permanent link">#</a></h2>
-<p>从右下到左上 DP。对每个 <span class="arithmatex">\((i,j)\)</span> 收集三个后继的 best 取最大；若所有后继都不可达（best <span class="arithmatex">\(= -\infty\)</span>）则当前也不可达。注意 S 与 E 自身字符不加分（特殊处理）。</p>
+<p>代码是式 (1) 的直接实现。按 <span class="arithmatex">\((i,j)\)</span> 从右下 <span class="arithmatex">\((n-1,n-1)\)</span> 到左上 <span class="arithmatex">\((0,0)\)</span> 扫描（上一节论证过这是合法的计算顺序）；对每个格遍历三个来源邻居，在一次遍历里同时算出 <span class="arithmatex">\(M\)</span> 和并列集合的计数和——严格大于当前最大值时重置计数，相等时累加计数。</p>
+<p>下面把式 (1) 的每个部件映射到代码：哨兵 <code>NEG = -1</code> 表示不可达（对应 <span class="arithmatex">\(N(i,j)\)</span> 里的"可达"过滤）；<code>best[ni][nj] &gt; bestNext</code> 分支对应"刷新 <span class="arithmatex">\(M\)</span> 并重置计数"，<code>== bestNext</code> 分支对应"累加并列计数"<span class="arithmatex">\(\sum_{A}\)</span>；末尾 <code>add = 0 if board[i][j] in 'ES' else int(...)</code> 对应 <span class="arithmatex">\(\text{val}(i,j)\)</span>（S/E 计 0）。注意形式化里写 <span class="arithmatex">\(\text{val}(i,j)\)</span>，代码里直接读 <code>board[i][j]</code>，二者是同一个量。</p>
 <div class="language-python highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">Solution</span><span class="p">:</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">pathsWithMaxScore</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">board</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]:</span>
         <span class="c1"># Time: O(n^2), Space: O(n^2)</span>
@@ -22516,28 +22560,30 @@
             <span class="k">return</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
         <span class="k">return</span> <span class="p">[</span><span class="n">best</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span> <span class="n">cnt</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]]</span>
 </code></pre></div>
-<p>样例 1 验证：<code>["E23","2X2","12S"]</code>。S=(2,2). 从右下扫：
-- (2,2)=S: best=0, cnt=1.
-- (2,1)='2': 后继(2,2) best=0 → best=0+2=2, cnt=1.
-- (2,0)='1': 后继(2,1) best=2 → best=2+1=3, cnt=1.
-- (1,2)='2': 后继(2,2) best=0 → best=0+2=2, cnt=1.
-- (1,1)='X': 跳过.
-- (1,0)='2': 后继(2,0) best=3, (1,1) X 跳过, (2,1) best=2 → max=3@(2,0) → best=3+2=5, cnt=1.
-- (0,2)='3': 后继(1,2) best=2, (0,1)? 还没算 → 只有 (1,2). best=2+3=5, cnt=1. (注意：(0,1)和(1,1)是后继中的(0,2)的"左","左下"——但本题转移是去左上方向，所以来源是右下三个邻居 = (1,2), (0,3)/越界, (1,3)/越界。只有(1,2)有效)
-- (0,1)='2': 后继(1,1)='X' 跳过, (0,2) best=5, (1,2) best=2. max=5 @ (0,2). best=5+2=7, cnt=1.
-- (0,0)='E': 后继(1,0) best=5, (0,1) best=7, (1,1) X. max=7 @ (0,1). best=7+0=7, cnt=1.</p>
-<p>输出 [7, 1] ✓。</p>
+<p><strong>样例验证</strong>：<code>["E23","2X2","12S"]</code>，S=(2,2)，要看的是每个格 <span class="arithmatex">\((\text{best},\text{cnt})\)</span> 是否如式 (1) 那样从右下逐格累积，并在 (0,0) 得到 [7,1]。从右下扫：</p>
+<ul>
+<li>(2,2)=S：best=0, cnt=1（边界）。</li>
+<li>(2,1)='2'：来源仅 (2,2)，best=0 → best=2, cnt=1。</li>
+<li>(2,0)='1'：来源仅 (2,1)，best=2 → best=3, cnt=1。</li>
+<li>(1,2)='2'：来源仅 (2,2)，best=0 → best=2, cnt=1。</li>
+<li>(1,1)='X'：障碍，跳过。</li>
+<li>(1,0)='2'：三来源 (2,0)best=3、(1,1)='X'不可达、(2,1)best=2 → <span class="arithmatex">\(M\)</span>=3 取自 (2,0) → best=5, cnt=1。</li>
+<li>(0,2)='3'：三来源中 (1,2)在界内 best=2，另两个 (0,3)/(1,3) 越界 → 仅 (1,2)有效 → best=5, cnt=1。</li>
+<li>(0,1)='2'：三来源 (1,1)='X'不可达、(0,2)best=5、(1,2)best=2 → <span class="arithmatex">\(M\)</span>=5 取自 (0,2) → best=7, cnt=1。</li>
+<li>(0,0)='E'：三来源 (1,0)best=5、(0,1)best=7、(1,1)='X' → <span class="arithmatex">\(M\)</span>=7 取自 (0,1) → best=7+0=7, cnt=1。</li>
+</ul>
+<p>本例没有出现并列（<span class="arithmatex">\(|A|=1\)</span> 始终成立），所以 cnt 恒为 1。输出 [7, 1] ✓。要看并列累加生效，可换 <code>["E12","1X1","21S"]</code>，答案 [4, 2]：两条不同路径在 (0,0) 处并列取到最大分 4，cnt 在某个格触发 <code>== bestNext</code> 分支累加为 2。</p>
 <h2 id="complexity">复杂度 (Complexity)<a class="headerlink" href="#complexity" title="Permanent link">#</a></h2>
 <ul>
-<li>Time: <span class="arithmatex">\(O(n^2)\)</span></li>
-<li>Space: <span class="arithmatex">\(O(n^2)\)</span></li>
+<li>Time: <span class="arithmatex">\(O(n^2)\)</span>——外层 <span class="arithmatex">\(n \times n\)</span> 个格，内层固定 3 个方向（常数）。</li>
+<li>Space: <span class="arithmatex">\(O(n^2)\)</span>——两张 <span class="arithmatex">\(n \times n\)</span> 表。</li>
 </ul>
 <h2 id="pitfalls">陷阱 (Pitfalls)<a class="headerlink" href="#pitfalls" title="Permanent link">#</a></h2>
 <ul>
-<li><strong>S 与 E 自身字符不计分</strong>：转换 <code>int(board[i][j])</code> 前要排除这两个，否则 <code>int('E')</code> 抛 ValueError。</li>
-<li><strong>多源等值时计数累加</strong>，不要只取其中一个的 cnt——这是本题易错点（贪心选其中一支就只数一条路径）。</li>
-<li><strong>不可达</strong>用 <code>-1</code> 或 sentinel 表示，不要用 <code>0</code>（0 是合法 best）。</li>
-<li>答案对 <span class="arithmatex">\(10^9+7\)</span> 取模，但 <code>best</code> 不要取模（取模会破坏比较）。</li>
+<li><strong>S 与 E 自身字符不计分</strong>：转换 <code>int(board[i][j])</code> 前要排除这两个，否则 <code>int('E')</code> / <code>int('S')</code> 抛 ValueError。代码用 <code>0 if board[i][j] in 'ES' else int(...)</code> 守住（<code>'X'</code> 已在更早处过滤，故 <code>in 'ES'</code> 的子串匹配在此安全）。</li>
+<li><strong>并列时计数累加，不要只取其一</strong>：当多个来源在 <span class="arithmatex">\(M\)</span> 上并列（式 (1) 中 <span class="arithmatex">\(|A|&gt;1\)</span>），它们的 cnt 必须求和；贪心选其中一支只会数到一条路径。<code>["E12","1X1","21S"]→[4,2]</code> 正是为此设计的用例。</li>
+<li><strong>不可达</strong>用哨兵 <code>-1</code> 表示，不要用 <code>0</code>——<code>0</code> 是合法的 best（S 自身）。可达性判断 <code>best[ni][nj] != NEG</code> 因此不可省。</li>
+<li><strong><code>best</code> 不取模</strong>：取模会破坏 <code>max</code> 比较。本题数据下 best 至多 <span class="arithmatex">\(99 \times 9 = 891\)</span>，远小于模数，不会真的溢出；但作为通用习惯，只对 cnt 取模、保持 best 为真值更稳妥。</li>
 </ul>
 <h2 id="related">相关题目 (Related)<a class="headerlink" href="#related" title="Permanent link">#</a></h2>
 <ul>
@@ -22655,6 +22701,8 @@
         <script src="../../../js/mathjax/tex-mml-chtml.js"></script>
       
         <script src="../../../js/mermaid.min.js"></script>
+      
+        <script src="../../../js/featured.js"></script>
       
     
   </body>

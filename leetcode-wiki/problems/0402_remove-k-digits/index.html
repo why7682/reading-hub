@@ -1466,6 +1466,8 @@
       
         
       
+        
+      
     
     
     
@@ -1521,6 +1523,34 @@
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../featured/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ⭐ Featured（已验证）
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
               
             
               
@@ -1610,10 +1640,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_4" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
         
           
-          <label class="md-nav__link" for="__nav_4_4" id="__nav_4_4_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_5" id="__nav_4_5_label" tabindex="">
             
   
   
@@ -1631,8 +1661,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_4_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_4">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_5">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1915,7 +1945,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -1937,14 +1967,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_4_5" id="__nav_4_5_label" tabindex="">
+              <label class="md-nav__link " for="__nav_4_6" id="__nav_4_6_label" tabindex="">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_5">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_6">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -5321,10 +5351,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_7" checked>
         
           
-          <label class="md-nav__link" for="__nav_4_6" id="__nav_4_6_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_7" id="__nav_4_7_label" tabindex="">
             
   
   
@@ -5342,8 +5372,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_4_6">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_7_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4_7">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -22467,20 +22497,27 @@
 <h2 id="problem">Problem<a class="headerlink" href="#problem" title="Permanent link">#</a></h2>
 <p>给数字串 <code>num</code>（无前导零）与整数 <code>k</code>，删除 <code>k</code> 位字符使剩余字符（按原顺序）组成的<strong>整数</strong>最小，作为字符串返回（<strong>无前导零</strong>，全删后返回 "0"）。<span class="arithmatex">\(1 \le k \le |num| \le 10^5\)</span>。</p>
 <h2 id="background">背景 (Background)<a class="headerlink" href="#background" title="Permanent link">#</a></h2>
-<p>本题是 <strong>单调栈 (monotonic stack)</strong> 的经典应用，与 <strong>#321 Create Maximum Number</strong>、<strong>#316 Remove Duplicate Letters</strong> 共享同一贪心结构。</p>
-<p>直觉：使整数最小 ⟺ <strong>高位优先小</strong>（字典序在等长串上等价数值序，本题保证等长）。从左扫描，若新位比栈顶小，弹掉栈顶（删除一个 k）——因为留下"前面的大数 + 后面的小数"必劣于"前面的小数 + 后面的小数"。</p>
-<p>该问题数学上对应 <strong>lex-min subsequence of length <span class="arithmatex">\(n - k\)</span></strong>，在 NLP / 工业问题中常出现（如 "best <span class="arithmatex">\(k\)</span>-window" 排名）。</p>
+<p>删除恰好 <span class="arithmatex">\(k\)</span> 位、保留原顺序，留下的是 <span class="arithmatex">\(num\)</span> 的一个长度 <span class="arithmatex">\(n-k\)</span> 的<strong>子序列</strong>。这样的子序列共有 <span class="arithmatex">\(\binom{n}{n-k}\)</span> 个，枚举全部并取数值最小者即为答案——但当 <span class="arithmatex">\(n = 10^5\)</span> 时该数量是天文数字，逐一枚举不可行。需要一个不枚举就能定位最优子序列的判据。</p>
+<p>关键约束是：所有候选子序列<strong>等长</strong>（都是 <span class="arithmatex">\(n-k\)</span> 位）。两个等长数字串比较数值大小，等价于从最高位起逐位比较字符大小（字典序）。所以"使整数最小"可以转写为"使等长字符串字典序最小"——这把数值问题化为可以逐位贪心的字符问题。先把这一步说清楚，它是后面所有推导的支点。</p>
+<p><strong>等长则字典序即数值序。</strong> 设 <span class="arithmatex">\(a = a_0 a_1 \dots a_{m-1}\)</span> 与 <span class="arithmatex">\(b = b_0 b_1 \dots b_{m-1}\)</span> 为两个 <span class="arithmatex">\(m\)</span> 位数字串，<span class="arithmatex">\(p\)</span> 是它们第一个不同的位置（即 <span class="arithmatex">\(a_j = b_j\)</span> 对 <span class="arithmatex">\(j &lt; p\)</span>，<span class="arithmatex">\(a_p \ne b_p\)</span>）。按十进制定义
+$<span class="arithmatex">\(\text{int}(a) - \text{int}(b) = (a_p - b_p)\,10^{\,m-1-p} + \sum_{j&gt;p}(a_j - b_j)\,10^{\,m-1-j}.\)</span>$
+首项的权重 <span class="arithmatex">\(10^{m-1-p}\)</span> 严格大于其后所有项权重之和（因 <span class="arithmatex">\(\sum_{j&gt;p} 9\cdot 10^{m-1-j} &lt; 10^{m-1-p}\)</span>），所以差的符号由 <span class="arithmatex">\(a_p - b_p\)</span> 决定。于是 <span class="arithmatex">\(\text{int}(a) &lt; \text{int}(b) \iff a_p &lt; b_p\)</span>，即数值序由最高的不同位单独决定。这条结论之所以成立，全靠两串等长——一旦长度不同，权重对齐被破坏，结论失效；前导零的处理也因此只能放到选定等长串之后，而非选择过程之中。</p>
 <h2 id="formulation">形式化 (Formulation)<a class="headerlink" href="#formulation" title="Permanent link">#</a></h2>
-<p>设 <span class="arithmatex">\(s = s_0 s_1 \dots s_{n-1}\)</span>，<span class="arithmatex">\(k &lt; n\)</span>。求</p>
-<div class="arithmatex">\[\min_{|I| = n - k,\ I = \{i_1 &lt; i_2 &lt; \dots\}} \text{int}(s_{i_1} s_{i_2} \dots),\]</div>
-<p>去除前导零后返回（特殊：全零则 "0"）。</p>
+<p>直觉上，既然数值序由最高的不同位决定，最优子序列应当在每个位置都尽量小、且越靠前越优先。把它写成精确的优化问题。设 <span class="arithmatex">\(s = s_0 s_1 \dots s_{n-1}\)</span>，<span class="arithmatex">\(0 \le k \le n\)</span>，记 <span class="arithmatex">\(\mathcal{S}\)</span> 为 <span class="arithmatex">\(s\)</span> 的全部长度 <span class="arithmatex">\(n-k\)</span> 的子序列。求</p>
+<div class="arithmatex">\[\tag{1} I^\star = \arg\min_{I \in \mathcal{S}}\ \text{lex}\big(s_{i_1} s_{i_2} \dots s_{i_{n-k}}\big),\qquad I = \{i_1 &lt; i_2 &lt; \dots &lt; i_{n-k}\},\]</div>
+<p>其中 <span class="arithmatex">\(\text{lex}(\cdot)\)</span> 表示字典序，由上一节它在等长串上等价于数值序。返回 <span class="arithmatex">\(\text{int}(s_{I^\star})\)</span> 去前导零后的字符串（若 <span class="arithmatex">\(n-k=0\)</span> 或结果为空则返回 "0"）。注意取 <span class="arithmatex">\(0 \le k \le n\)</span> 而非 <span class="arithmatex">\(k &lt; n\)</span>：<span class="arithmatex">\(k = n\)</span> 时子序列为空串，对应特判 "0"，代码确实处理这一情形。</p>
+<p>下面从 (1) 推导算法。不直接枚举 <span class="arithmatex">\(I\)</span>，而是问一个局部问题：<strong>相邻两位中该删哪个？</strong></p>
+<p><strong>局部交换判据。</strong> 设当前还允许删除，且存在相邻位 <span class="arithmatex">\(s_i &gt; s_{i+1}\)</span>。比较"删 <span class="arithmatex">\(s_i\)</span>、保留 <span class="arithmatex">\(s_{i+1}\)</span>"与"删 <span class="arithmatex">\(s_{i+1}\)</span>、保留 <span class="arithmatex">\(s_i\)</span>"两种选择：除被删位外其余位置完全相同，差别只在这一位上留下的是 <span class="arithmatex">\(s_{i+1}\)</span> 还是 <span class="arithmatex">\(s_i\)</span>。由等长字典序判据，该位更小者给出更小的结果，而 <span class="arithmatex">\(s_{i+1} &lt; s_i\)</span>，故<strong>删 <span class="arithmatex">\(s_i\)</span>（较大的左邻）严格更优</strong>。反过来若 <span class="arithmatex">\(s_i \le s_{i+1}\)</span>，删左邻不会让这一位变小（反而可能变大），此时不该删。</p>
+<p>这条判据把 (1) 的全局最优归约为一个可逐位执行的规则：<strong>从左向右扫描，只要当前位比它左边刚保留的位小、且删除额度未用尽，就删掉那个左邻。</strong> 删除是对"已保留的、最靠右的"那一位进行的——这种"后进先出"的访问模式正是栈。于是栈不是外部技巧，而是判据的直接产物。</p>
 <h2 id="approach">数据结构 / 想法 (Approach)<a class="headerlink" href="#approach" title="Permanent link">#</a></h2>
-<p><strong>单调（非降）栈</strong>：维护字符栈。扫描每位 <span class="arithmatex">\(c\)</span>：
-- 当栈非空、栈顶 &gt; <span class="arithmatex">\(c\)</span> 且 <span class="arithmatex">\(k &gt; 0\)</span>：pop 栈顶（用掉一次删除），<span class="arithmatex">\(k \mathrel{-}= 1\)</span>。
-- 把 <span class="arithmatex">\(c\)</span> push。
-扫完若仍 <span class="arithmatex">\(k &gt; 0\)</span>（如串严格非降），从栈尾再删 <span class="arithmatex">\(k\)</span> 个（删大的）。
-最后处理前导零，并把空串变 "0"。</p>
-<p><strong>不变量</strong>：栈中字符按非降序排列 (<code>stack[i] &lt;= stack[i+1]</code>)；任意一步栈反映了"目前为止删除选择下能达到的最优前缀"。</p>
+<p><strong>不变量（先于算法陈述）。</strong> 维护一个字符栈。扫描完前缀 <span class="arithmatex">\(s_0 \dots s_{t-1}\)</span>、已用去 <span class="arithmatex">\(d\)</span> 次删除后，栈中内容恰为：在"从该前缀中删 <span class="arithmatex">\(d\)</span> 位"的所有方案里，字典序最小的那个长度 <span class="arithmatex">\((t-d)\)</span> 串；并且栈自底向顶<strong>非降</strong>（<code>stack[i] &lt;= stack[i+1]</code>）。非降性是局部交换判据的直接后果：若栈中出现降序相邻对，按判据本应删掉较大的左邻，与"已最优"矛盾。</p>
+<p><strong>算法。</strong> 逐位读入字符 <span class="arithmatex">\(c\)</span>：</p>
+<ul>
+<li>当栈非空、栈顶 <span class="arithmatex">\(&gt; c\)</span> 且仍有删除额度（<span class="arithmatex">\(k&gt;0\)</span>）：pop 栈顶并令 <span class="arithmatex">\(k \mathrel{-}= 1\)</span>。这正是对相邻降序对执行局部交换判据——删掉较大的左邻。</li>
+<li>然后 push <span class="arithmatex">\(c\)</span>。</li>
+</ul>
+<p><strong>为何维护不变量。</strong> 入栈前的 while 循环把所有"栈顶 <span class="arithmatex">\(&gt;c\)</span>"的降序对消除，故 push 后栈仍非降，不变量保持。归纳到扫描结束，栈即整个串删去若干位后的字典序最小串。</p>
+<p><strong>收尾。</strong> 若扫完仍有 <span class="arithmatex">\(k&gt;0\)</span>（发生在输入<strong>非降</strong>时，如 "1234"，扫描中从未触发 pop），此时栈整体非降，最大的几位在尾部，故从栈尾再删 <span class="arithmatex">\(k\)</span> 个最优。最后去前导零；若结果为空串则返回 "0"（对应 <span class="arithmatex">\(n-k=0\)</span> 或全为前导零被删空）。</p>
 <div class="language-python highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">Solution</span><span class="p">:</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">removeKdigits</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">num</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">k</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
         <span class="n">stack</span> <span class="o">=</span> <span class="p">[]</span>
@@ -22497,38 +22534,65 @@
         <span class="n">result</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">stack</span><span class="p">)</span><span class="o">.</span><span class="n">lstrip</span><span class="p">(</span><span class="s1">&#39;0&#39;</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">result</span> <span class="k">if</span> <span class="n">result</span> <span class="k">else</span> <span class="s2">&quot;0&quot;</span>
 </code></pre></div>
-<p><strong>摊销分析</strong>：每个字符最多入栈一次、出栈一次 → 总操作 <span class="arithmatex">\(O(n)\)</span>。</p>
-<p>Trace num="1432219", k=3:
-- '1': stack=['1']
-- '4': 4&gt;1, push. stack=['1','4']
-- '3': 3&lt;4, pop '4' (k=2), 3&gt;1, push. stack=['1','3']
-- '2': 2&lt;3, pop '3' (k=1), 2&gt;1, push. stack=['1','2']
-- '2': 2==2, push. stack=['1','2','2']
-- '1': 1&lt;2, pop '2' (k=0), 现 k=0 终止 while. push. stack=['1','2','2','1']
-- '9': push. stack=['1','2','2','1','9']
-- k=0, lstrip: "12219". 等等，答应是 "1219" 长度 4.</p>
-<p>让我重 trace: n=7, k=3, 剩 4 位。我上面得到 5 位 "12219"，错了——再看：扫到第二个 '2' 时 k=1 (已用 2 次)。然后 '1': 1&lt;2 pop → k=0; 但栈还有 '2' (栈现 ['1','2','2'] → pop → ['1','2']). 再 push '1'. stack=['1','2','1']. 然后 '9' push → ['1','2','1','9']. 结果 "1219" ✓. 我之前漏了 pop 一次。重做：</p>
-<p>正确 trace num="1432219", k=3:
-- '1' → ['1']
-- '4' → ['1','4']
-- '3': pop '4' (k=2) → ['1']; 3&gt;1 → ['1','3']
-- '2': pop '3' (k=1) → ['1']; 2&gt;1 → ['1','2']
-- '2': 2==2 → ['1','2','2']
-- '1': pop '2' (k=0) → ['1','2']; k=0 停 while; push → ['1','2','1']
-- '9': 9&gt;1 → ['1','2','1','9']
-- k=0, 无尾部删除. lstrip → "1219" ✓</p>
-<p>Trace num="10200", k=1:
-- '1' → ['1']
-- '0': 0&lt;1, pop (k=0) → []; push → ['0']
-- '2': push → ['0','2']
-- '0' → ['0','2','0']
-- '0' → ['0','2','0','0']
-- lstrip '0' → "200" ✓</p>
-<p>Trace num="10", k=2:
-- '1' → ['1']
-- '0': pop (k=1) → []; push → ['0']
-- 还有 k=1: pop tail → []
-- lstrip → "" → return "0" ✓</p>
+<p><strong>摊销分析。</strong> 每个字符最多入栈一次、出栈一次 → 总操作 <span class="arithmatex">\(O(n)\)</span>。</p>
+<p><strong>worked example.</strong> num="1432219", k=3，最终保留 <span class="arithmatex">\(7-3=4\)</span> 位。每行给出读入字符、触发的 pop、栈状态：</p>
+<table>
+<thead>
+<tr>
+<th>读入</th>
+<th>动作</th>
+<th>栈</th>
+<th>已用 <span class="arithmatex">\(k\)</span></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>push</td>
+<td><code>1</code></td>
+<td>0</td>
+</tr>
+<tr>
+<td>4</td>
+<td>push（4 不小于 1）</td>
+<td><code>14</code></td>
+<td>0</td>
+</tr>
+<tr>
+<td>3</td>
+<td>pop 4，push 3</td>
+<td><code>13</code></td>
+<td>1</td>
+</tr>
+<tr>
+<td>2</td>
+<td>pop 3，push 2</td>
+<td><code>12</code></td>
+<td>2</td>
+</tr>
+<tr>
+<td>2</td>
+<td>push（2 不小于 2）</td>
+<td><code>122</code></td>
+<td>2</td>
+</tr>
+<tr>
+<td>1</td>
+<td>pop 2，push 1（<span class="arithmatex">\(k\)</span> 用尽，停止再 pop）</td>
+<td><code>121</code></td>
+<td>3</td>
+</tr>
+<tr>
+<td>9</td>
+<td>push</td>
+<td><code>1219</code></td>
+<td>3</td>
+</tr>
+</tbody>
+</table>
+<p>扫完 <span class="arithmatex">\(k=0\)</span>，无尾部删除，无前导零，返回 "1219"。</p>
+<p>第二例 num="10200", k=1：读 1 入栈；读 0 时 <span class="arithmatex">\(0&lt;1\)</span> 删 1（<span class="arithmatex">\(k=0\)</span>）入 0，栈 <code>0</code>；后续 2、0、0 均 push，栈 <code>0200</code>；<code>lstrip('0')</code> 得 "200"。</p>
+<p>第三例 num="10", k=2：读 1 入栈；读 0 删 1 入 0，栈 <code>0</code>，<span class="arithmatex">\(k=1\)</span>；扫完仍 <span class="arithmatex">\(k=1\)</span>，从尾删 0，栈空；结果空串返回 "0"。</p>
 <h2 id="complexity">复杂度 (Complexity)<a class="headerlink" href="#complexity" title="Permanent link">#</a></h2>
 <ul>
 <li>Time: <span class="arithmatex">\(O(n)\)</span> 摊销，每字符 <span class="arithmatex">\(\le 2\)</span> 次操作。</li>
@@ -22539,13 +22603,14 @@
 <li><strong>剩余 k 的尾部清理</strong>：当输入"非降"序列（如 "1234"），扫描中无 pop 发生，必须从尾删 k 个。常见错误：忘记此步导致返回过长字符串。</li>
 <li><strong>前导零</strong>：例 "10200" k=1 → "200"，必须 <code>lstrip('0')</code>。<strong>整体被删空</strong>：返回 "0" 而非空串。</li>
 <li><strong>不要把字符与数值混淆</strong>：比较 <code>stack[-1] &gt; c</code> 是字符比较（ASCII 顺序），与数字大小一致（'0' &lt; '1' &lt; ... &lt; '9'）。</li>
-<li><strong>构造非数字串</strong>："0" 是合法输出（全删情形）。</li>
+<li><strong>构造非数字串</strong>："0" 是合法输出（全删情形，即 <span class="arithmatex">\(k=n\)</span>）。</li>
+<li><strong>等长才能逐位贪心</strong>：去前导零必须发生在选定等长子序列之后，否则破坏"字典序即数值序"的前提（见背景节）。</li>
 </ul>
 <h2 id="related">相关题目 (Related)<a class="headerlink" href="#related" title="Permanent link">#</a></h2>
 <ul>
 <li><code>#321. Create Maximum Number (off-wiki)</code> — 同思想求最大。</li>
 <li><code>#316. Remove Duplicate Letters (off-wiki)</code> — 单调栈 + 字符约束。</li>
-<li><code>#496. Next Greater Element I (off-wiki)</code> — 单调栈基础。</li>
+<li><a href="../0496_next-greater-element-i/">#496. Next Greater Element I</a> — 单调栈基础。</li>
 <li><a href="../3796_find-maximum-value-in-a-constrained-sequence/">#3796. Find Maximum Value in a Constrained Sequence</a> — 贪心选择。</li>
 <li><a href="../0218_the-skyline-problem/">#0218. The Skyline Problem</a> — 单调结构的另一应用。</li>
 </ul>
@@ -22660,6 +22725,8 @@
         <script src="../../../js/mathjax/tex-mml-chtml.js"></script>
       
         <script src="../../../js/mermaid.min.js"></script>
+      
+        <script src="../../../js/featured.js"></script>
       
     
   </body>

@@ -1466,6 +1466,8 @@
       
         
       
+        
+      
     
     
     
@@ -1521,6 +1523,34 @@
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../featured/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ⭐ Featured（已验证）
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
               
             
               
@@ -1610,10 +1640,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_4" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
         
           
-          <label class="md-nav__link" for="__nav_4_4" id="__nav_4_4_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_5" id="__nav_4_5_label" tabindex="">
             
   
   
@@ -1631,8 +1661,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_4_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_4">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_5">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1915,7 +1945,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -1937,14 +1967,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_4_5" id="__nav_4_5_label" tabindex="">
+              <label class="md-nav__link " for="__nav_4_6" id="__nav_4_6_label" tabindex="">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_5">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_6">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -5321,10 +5351,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_7" checked>
         
           
-          <label class="md-nav__link" for="__nav_4_6" id="__nav_4_6_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_7" id="__nav_4_7_label" tabindex="">
             
   
   
@@ -5342,8 +5372,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_4_6">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_7_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4_7">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -22467,12 +22497,25 @@
 <h2 id="problem">Problem<a class="headerlink" href="#problem" title="Permanent link">#</a></h2>
 <p>给字符数组 <code>s</code>，<strong>原地</strong>翻转，<span class="arithmatex">\(O(1)\)</span> 额外空间。<span class="arithmatex">\(1 \le |s| \le 10^5\)</span>，元素为可打印 ASCII。</p>
 <h2 id="background">背景 (Background)<a class="headerlink" href="#background" title="Permanent link">#</a></h2>
-<p>本题是 <strong>对向双指针 (two-pointer, opposite ends)</strong> 的最简范式。该模式在 <strong>回文判定、container with most water、快排 partition</strong> 中反复出现。原地翻转本身也是 <strong>排列群</strong> 中"逆序置换"的实现。</p>
+<p>翻转一个序列的目标本身是显然的：让 <span class="arithmatex">\(s'_i = s_{n-1-i}\)</span>。真正约束这道题的是 <span class="arithmatex">\(O(1)\)</span> 额外空间——它禁止了"把结果算到别处再搬回来"的最自然写法。下面整页只做一件事：从这个空间约束出发，推出唯一符合要求的算法。</p>
+<p>先看朴素做法为何不行。要得到 <span class="arithmatex">\(s'_i = s_{n-1-i}\)</span>，最直接的方式是新开一个数组 <code>t</code>，令 <code>t[i] = s[n-1-i]</code>，再把 <code>t</code> 拷回 <code>s</code>：</p>
+<div class="language-python highlight"><pre><span></span><code><span class="n">t</span> <span class="o">=</span> <span class="p">[</span><span class="n">s</span><span class="p">[</span><span class="n">n</span><span class="o">-</span><span class="mi">1</span><span class="o">-</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">)]</span>   <span class="c1"># 新数组</span>
+<span class="n">s</span><span class="p">[:]</span> <span class="o">=</span> <span class="n">t</span>
+</code></pre></div>
+<p>它结果正确，但 <code>t</code> 占用了 <span class="arithmatex">\(O(n)\)</span> 额外空间。Python 里看似"原地"的 <code>s[:] = s[::-1]</code> 同样如此：<code>s[::-1]</code> 先构造一个长度 <span class="arithmatex">\(n\)</span> 的反转副本，本质就是上面的 <code>t</code>。约束被破坏的位置很明确：任何先把整段结果存到另一处再写回的方案，那个"另一处"就是 <span class="arithmatex">\(O(n)\)</span> 的开销。</p>
+<p>要满足 <span class="arithmatex">\(O(1)\)</span>，就不能有中间副本，只能在原数组内部移动元素。于是问题收紧为：能否只用常数个临时变量，把每个元素直接送到它的目标位置？</p>
 <h2 id="formulation">形式化 (Formulation)<a class="headerlink" href="#formulation" title="Permanent link">#</a></h2>
-<p>设 <span class="arithmatex">\(s = s_0 s_1 \dots s_{n-1}\)</span>。变换为 <span class="arithmatex">\(s' = s_{n-1} s_{n-2} \dots s_0\)</span>，<strong>修改原数组</strong>。</p>
+<p>设 <span class="arithmatex">\(s = s_0 s_1 \dots s_{n-1}\)</span>。目标变换为</p>
+<div class="arithmatex">\[s'_i = s_{n-1-i}, \qquad i = 0, 1, \dots, n-1,\]</div>
+<p>且必须<strong>就地修改原数组</strong>，仅允许 <span class="arithmatex">\(O(1)\)</span> 额外空间。</p>
+<p>注意目标定义把位置 <span class="arithmatex">\(i\)</span> 与 <span class="arithmatex">\(n-1-i\)</span> 成对绑定：<span class="arithmatex">\(s'_i = s_{n-1-i}\)</span> 且 <span class="arithmatex">\(s'_{n-1-i} = s_i\)</span>。也就是说，位置 <span class="arithmatex">\(i\)</span> 和它的镜像位置 <span class="arithmatex">\(n-1-i\)</span> 上的两个元素需要互换，而这一对的处理与任何其他对都无关。这正是不需要副本的结构性原因——交换一对元素只需一个临时变量，是 <span class="arithmatex">\(O(1)\)</span> 的。</p>
 <h2 id="approach">数据结构 / 想法 (Approach)<a class="headerlink" href="#approach" title="Permanent link">#</a></h2>
-<p><strong>双指针对向交换</strong>：<code>l = 0, r = n-1</code>，循环 <code>l &lt; r</code> 时 swap，然后 <code>l++, r--</code>。</p>
-<p><strong>不变量</strong>：每次循环开始时，<span class="arithmatex">\(s[0..l-1]\)</span> 与 <span class="arithmatex">\(s[r+1..n-1]\)</span> 已交换完毕；区间 <span class="arithmatex">\([l, r]\)</span> 尚未处理。<span class="arithmatex">\(l, r\)</span> 相遇或越过时全部完成。</p>
+<p>把上面的成对结构落实成算法：对每个 <span class="arithmatex">\(i = 0, 1, \dots, \lfloor n/2 \rfloor - 1\)</span>，交换 <span class="arithmatex">\(s_i\)</span> 与 <span class="arithmatex">\(s_{n-1-i}\)</span>。用两个下标 <code>l</code> 与 <code>r</code> 分别指向当前待处理的最外层一对，<code>l</code> 从 <span class="arithmatex">\(0\)</span> 向右、<code>r</code> 从 <span class="arithmatex">\(n-1\)</span> 向左，每交换一对就同时向内收缩。</p>
+<p>为什么从两端向内收缩恰好不重不漏？给出循环不变量，算法的正确性即由它导出。</p>
+<blockquote>
+<p><strong>不变量 (I)</strong>：每次循环开始时，对所有 <span class="arithmatex">\(i \in [0, l-1] \cup [r+1, n-1]\)</span> 已有 <span class="arithmatex">\(s_i = s^{(0)}_{n-1-i}\)</span>（其中 <span class="arithmatex">\(s^{(0)}\)</span> 记原始数组），而区间 <span class="arithmatex">\([l, r]\)</span> 内尚未处理。</p>
+</blockquote>
+<p>初始 <code>l=0, r=n-1</code> 时两侧空集，(I) 平凡成立。每轮交换 <span class="arithmatex">\(s_l\)</span> 与 <span class="arithmatex">\(s_r\)</span> 后，位置 <span class="arithmatex">\(l\)</span> 与 <span class="arithmatex">\(r\)</span> 都达到目标值 <span class="arithmatex">\(s^{(0)}_{n-1-l}\)</span>、<span class="arithmatex">\(s^{(0)}_{n-1-r}\)</span>；随后 <code>l += 1, r -= 1</code>，已完成区间恰好向内扩张一格，(I) 在下一轮开始时仍成立。当 <code>l &lt; r</code> 不再满足时退出，此时 <span class="arithmatex">\([l, r]\)</span> 至多剩一个中心元素（<span class="arithmatex">\(l = r\)</span>）或为空（<span class="arithmatex">\(l &gt; r\)</span>），而中心元素的目标位置就是它自己，无需交换。于是 (I) 覆盖全部下标，变换完成。</p>
 <div class="language-python highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">Solution</span><span class="p">:</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">reverseString</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">s</span><span class="p">):</span>
         <span class="n">l</span><span class="p">,</span> <span class="n">r</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">s</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span>
@@ -22481,29 +22524,32 @@
             <span class="n">l</span> <span class="o">+=</span> <span class="mi">1</span>
             <span class="n">r</span> <span class="o">-=</span> <span class="mi">1</span>
 </code></pre></div>
-<p>Trace ["h","e","l","l","o"]: (0,4) swap→["o","e","l","l","h"]; (1,3) swap→["o","l","l","e","h"]; (2,2) 退出 ✓
-Trace ["H","a","n","n","a","h"] (n=6): (0,5)→["h",...,"H"]; (1,4)→["h","a","n","n","a","H"]; (2,3) swap (n,n 同值)→不变; (3,3) 退出 ✓</p>
+<p>用两个具体例子验证不变量在每步都成立。</p>
+<p>Trace <code>["h","e","l","l","o"]</code>（<span class="arithmatex">\(n=5\)</span>，奇数）：<code>(0,4)</code> swap → <code>["o","e","l","l","h"]</code>；<code>(1,3)</code> swap → <code>["o","l","l","e","h"]</code>；下一轮 <code>l=r=2</code>，<code>l &lt; r</code> 为假，退出，中心元素 <code>"l"</code> 已在目标位。</p>
+<p>Trace <code>["H","a","n","n","a","h"]</code>（<span class="arithmatex">\(n=6\)</span>，偶数）：<code>(0,5)</code> swap → <code>["h",...,"H"]</code>；<code>(1,4)</code> swap → <code>["h","a","n","n","a","H"]</code>；<code>(2,3)</code> swap（两端同为 <code>"n"</code>，值不变但交换确已发生）；随后 <code>l=3, r=2</code>，<code>l &lt; r</code> 为假，退出于状态 <code>(l=3, r=2)</code>，区间为空。</p>
 <h2 id="complexity">复杂度 (Complexity)<a class="headerlink" href="#complexity" title="Permanent link">#</a></h2>
+<p>退出条件 <code>l &lt; r</code> 配合每轮 <code>l += 1, r -= 1</code>，使循环恰好执行 <span class="arithmatex">\(\lfloor n/2 \rfloor\)</span> 次，每次一个常数代价的交换。</p>
 <ul>
-<li>Time: <span class="arithmatex">\(O(n)\)</span>，每元素至多 1 次 swap。</li>
-<li>Space: <span class="arithmatex">\(O(1)\)</span>。</li>
+<li>Time: <span class="arithmatex">\(O(n)\)</span>，每个元素至多被交换 <span class="arithmatex">\(1\)</span> 次，共 <span class="arithmatex">\(\lfloor n/2 \rfloor\)</span> 次交换。</li>
+<li>Space: <span class="arithmatex">\(O(1)\)</span>，只用 <code>l</code>、<code>r</code> 两个下标和交换所需的常数临时空间，无中间副本。</li>
 </ul>
 <h2 id="pitfalls">陷阱 (Pitfalls)<a class="headerlink" href="#pitfalls" title="Permanent link">#</a></h2>
 <ul>
-<li><strong>不能用 <code>s[:] = s[::-1]</code></strong> 等切片技巧来"原地"——内部会分配新数组（<span class="arithmatex">\(O(n)\)</span> 空间），不符要求。直接双指针。</li>
-<li><strong>奇数长度</strong>：中央元素 <code>l == r</code> 时跳过，不必特判。</li>
-<li>Python 中 <code>s</code> 是 list 才支持下标赋值；str 不可变，本题已给 list。</li>
+<li><strong>不能用 <code>s[:] = s[::-1]</code> 等切片技巧来"原地"</strong>：<code>s[::-1]</code> 会先分配一个长度 <span class="arithmatex">\(n\)</span> 的反转副本（<span class="arithmatex">\(O(n)\)</span> 空间），正是背景里被约束排除的那个中间副本，不符要求。只能逐对下标交换。</li>
+<li><strong>奇数长度无需特判</strong>：当 <code>l == r</code>（中心元素）时 <code>while l &lt; r</code> 直接为假而跳过，这是不变量 (I) 的直接推论，中心元素目标位即自身。</li>
+<li><strong>Python 中 <code>s</code> 必须是 list</strong>：<code>str</code> 不可变，下标赋值 <code>s[i] = ...</code> 会失败；本题已给 list，支持下标赋值。</li>
 </ul>
+<p>整页的逻辑链是：<span class="arithmatex">\(O(1)\)</span> 约束排除中间副本 → 目标定义把下标 <span class="arithmatex">\(i\)</span> 与 <span class="arithmatex">\(n-1-i\)</span> 绑成独立的对 → 逐对交换只需常数空间 → 两端向内收缩由不变量 (I) 保证不重不漏。下面的相关题目都是在此结构上叠加额外条件的变体。</p>
 <h2 id="related">相关题目 (Related)<a class="headerlink" href="#related" title="Permanent link">#</a></h2>
 <ul>
-<li><code>#345. Reverse Vowels of a String (off-wiki)</code> — 同模式 + 跳过非元音。</li>
-<li><code>#541. Reverse String II (off-wiki)</code> — 分段翻转。</li>
-<li><a href="../3794_reverse-string-prefix/">#3794. Reverse String Prefix</a> — 翻转前缀变体。</li>
-<li><code>#557. Reverse Words in a String III (off-wiki)</code> — 词内翻转。</li>
+<li><code>#345. Reverse Vowels of a String (off-wiki)</code> — 同样从两端向内收缩，但只在元音对上交换，跳过非元音。</li>
+<li><a href="../0541_reverse-string-ii/">#541. Reverse String II</a> — 把数组切成定长段，逐段套用本算法。</li>
+<li><a href="../3794_reverse-string-prefix/">#3794. Reverse String Prefix</a> — 只对前缀区间施加同一交换过程。</li>
+<li><code>#557. Reverse Words in a String III (off-wiki)</code> — 在每个词的子区间内独立翻转。</li>
 </ul>
 <h2 id="further-reading">Further Reading<a class="headerlink" href="#further-reading" title="Permanent link">#</a></h2>
 <ul>
-<li>无推荐外部资源（题目难度不足以需要专题文献）。</li>
+<li>无推荐外部资源（本题为对向双指针的最简形式，结论可由问题约束直接导出）。</li>
 </ul>
 
 
@@ -22610,6 +22656,8 @@ Trace ["H","a","n","n","a","h"] (n=6): (0,5)→["h",...,"H"]; (1,4)→["h","a","
         <script src="../../../js/mathjax/tex-mml-chtml.js"></script>
       
         <script src="../../../js/mermaid.min.js"></script>
+      
+        <script src="../../../js/featured.js"></script>
       
     
   </body>

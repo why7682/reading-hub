@@ -1466,6 +1466,8 @@
       
         
       
+        
+      
     
     
     
@@ -1521,6 +1523,34 @@
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../featured/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ⭐ Featured（已验证）
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
               
             
               
@@ -1610,10 +1640,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_4" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
         
           
-          <label class="md-nav__link" for="__nav_4_4" id="__nav_4_4_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_5" id="__nav_4_5_label" tabindex="">
             
   
   
@@ -1631,8 +1661,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_4_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_4">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_5">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1915,7 +1945,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -1937,14 +1967,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_4_5" id="__nav_4_5_label" tabindex="">
+              <label class="md-nav__link " for="__nav_4_6" id="__nav_4_6_label" tabindex="">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_5">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_6">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -5321,10 +5351,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_7" checked>
         
           
-          <label class="md-nav__link" for="__nav_4_6" id="__nav_4_6_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_7" id="__nav_4_7_label" tabindex="">
             
   
   
@@ -5342,8 +5372,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_4_6">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_7_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4_7">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -22467,29 +22497,57 @@
 <h2 id="problem">Problem<a class="headerlink" href="#problem" title="Permanent link">#</a></h2>
 <p><span class="arithmatex">\(m \times n\)</span> 互异数矩阵。"幸运数" = 在其行中最小，在其列中最大。返回所有幸运数。</p>
 <h2 id="_1">背景<a class="headerlink" href="#_1" title="Permanent link">#</a></h2>
-<p>本题考察对<strong>鞍点 (saddle point)</strong> 概念的算法实现。鞍点是博弈论 / 优化中的概念：在最大化某维同时最小化另一维。在矩阵中，鞍点是某行最小且某列最大（min-max 鞍点）或某行最大且某列最小（max-min 鞍点）。</p>
-<p><strong>关键性质</strong>：若矩阵元素互异，最多只有一个鞍点（min-max 类）。<strong>证明</strong>：设 <span class="arithmatex">\(a_{ij}, a_{kl}\)</span> 都是 min-max 鞍点。考察 <span class="arithmatex">\(a_{il}\)</span>（i 行 l 列）：因 <span class="arithmatex">\(a_{ij}\)</span> 是第 <span class="arithmatex">\(i\)</span> 行最小 → <span class="arithmatex">\(a_{ij} \le a_{il}\)</span>。因 <span class="arithmatex">\(a_{kl}\)</span> 是第 <span class="arithmatex">\(l\)</span> 列最大 → <span class="arithmatex">\(a_{il} \le a_{kl}\)</span>。同理 <span class="arithmatex">\(a_{kj} \ge a_{ij}\)</span> 且 <span class="arithmatex">\(a_{kj} \le a_{kl}\)</span> → <span class="arithmatex">\(a_{ij} = a_{kl}\)</span>。互异性下 <span class="arithmatex">\(i=k, j=l\)</span>。</p>
-<p>故本题答案最多 1 个元素。但写法上仍要扫描每个候选。</p>
+<p>先在最小的例子上把条件走一遍。取</p>
+<div class="arithmatex">\[
+\begin{pmatrix} 7 &amp; 8 \\ 1 &amp; 2 \end{pmatrix}.
+\]</div>
+<p>每行的最小值是第 0 行的 <span class="arithmatex">\(7\)</span>、第 1 行的 <span class="arithmatex">\(1\)</span>；把它们各自的所在列取最大值检验：<span class="arithmatex">\(7\)</span> 所在的第 0 列最大值是 <span class="arithmatex">\(7\)</span>（<span class="arithmatex">\(7&gt;1\)</span>），<span class="arithmatex">\(1\)</span> 所在的第 0 列最大值仍是 <span class="arithmatex">\(7\neq 1\)</span>。于是只有 <span class="arithmatex">\(7\)</span> 同时满足"行内最小"与"列内最大"，它就是唯一的幸运数。</p>
+<p>这次手算暴露了问题的结构：一个元素能否当选，由两个<strong>互相独立</strong>的条件决定——它在自己那一行里是否最小，它在自己那一列里是否最大。两个条件分别只依赖一行或一列的数据，彼此互不牵涉。后面的算法正是建立在这种可分性之上。</p>
+<p>判定一个元素是行最小且列最大，在优化文献里称为 <strong>min-max 鞍点 (saddle point)</strong>；这一名字此处只是术语标注，下面所有论证都只用矩阵自身的行列结构，不借助该领域的任何外部定理。</p>
 <h2 id="_2">形式化<a class="headerlink" href="#_2" title="Permanent link">#</a></h2>
-<p>返回 <span class="arithmatex">\(\{a_{ij} : a_{ij} = \min_k a_{ik} = \max_k a_{kj}\}\)</span>。</p>
+<p>把上一节的手算条件直接翻译为集合。记矩阵元素为 <span class="arithmatex">\(a_{ij}\)</span>（<span class="arithmatex">\(0\le i&lt;m\)</span>，<span class="arithmatex">\(0\le j&lt;n\)</span>）。元素 <span class="arithmatex">\(a_{ij}\)</span> 当选，当且仅当它等于第 <span class="arithmatex">\(i\)</span> 行的最小值，又等于第 <span class="arithmatex">\(j\)</span> 列的最大值。幸运数集合即</p>
+<div class="arithmatex">\[
+L \;=\; \Bigl\{\, a_{ij} \;:\; a_{ij} = \min_{0\le t&lt;n} a_{it} \;=\; \max_{0\le s&lt;m} a_{sj} \,\Bigr\}.
+\]</div>
+<p>这里用 <span class="arithmatex">\(t\)</span> 遍历列、<span class="arithmatex">\(s\)</span> 遍历行，两个下标互不重用。整个解法都从这一定义推导而来：算法要做的，就是对每个 <span class="arithmatex">\((i,j)\)</span> 判定其是否落在 <span class="arithmatex">\(L\)</span> 中。</p>
 <h2 id="_3">数据结构 / 想法<a class="headerlink" href="#_3" title="Permanent link">#</a></h2>
-<p><strong>两遍扫描</strong>：
+<p><strong>朴素法：逐格独立判定。</strong> 直接照 <span class="arithmatex">\(L\)</span> 的定义办：对每个 <span class="arithmatex">\((i,j)\)</span>，扫一遍第 <span class="arithmatex">\(i\)</span> 行确认 <span class="arithmatex">\(a_{ij}\)</span> 是行最小，再扫一遍第 <span class="arithmatex">\(j\)</span> 列确认它是列最大。单格代价 <span class="arithmatex">\(O(m+n)\)</span>，共 <span class="arithmatex">\(mn\)</span> 格，总计 <span class="arithmatex">\(O(mn(m+n))\)</span>。</p>
+<p>它慢在哪里很清楚：第 <span class="arithmatex">\(i\)</span> 行的最小值被重复求了 <span class="arithmatex">\(n\)</span> 次（该行每格各算一遍），第 <span class="arithmatex">\(j\)</span> 列的最大值被重复求了 <span class="arithmatex">\(m\)</span> 次。同一行的最小值、同一列的最大值，是与格无关的量，不该随格反复重算。</p>
+<p><strong>修正：把行最小、列最大各预计算一遍。</strong> 既然 <span class="arithmatex">\(\min_t a_{it}\)</span> 只依赖行 <span class="arithmatex">\(i\)</span>、<span class="arithmatex">\(\max_s a_{sj}\)</span> 只依赖列 <span class="arithmatex">\(j\)</span>，就先各扫一遍存下来：</p>
+<div class="arithmatex">\[
+\texttt{row\_min}[i] = \min_{t} a_{it}, \qquad \texttt{col\_max}[j] = \max_{s} a_{sj}.
+\]</div>
+<p>这两步合计 <span class="arithmatex">\(O(mn)\)</span>。之后判定 <span class="arithmatex">\(a_{ij}\in L\)</span> 退化为一次 <span class="arithmatex">\(O(1)\)</span> 的双等式比较 <span class="arithmatex">\(a_{ij}=\texttt{row\_min}[i]=\texttt{col\_max}[j]\)</span>，正是 <span class="arithmatex">\(L\)</span> 的定义本身。</p>
 <div class="language-python highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">luckyNumbers</span><span class="p">(</span><span class="n">matrix</span><span class="p">):</span>
     <span class="n">row_min</span> <span class="o">=</span> <span class="p">[</span><span class="nb">min</span><span class="p">(</span><span class="n">r</span><span class="p">)</span> <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">matrix</span><span class="p">]</span>
     <span class="n">col_max</span> <span class="o">=</span> <span class="p">[</span><span class="nb">max</span><span class="p">(</span><span class="n">c</span><span class="p">)</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="o">*</span><span class="n">matrix</span><span class="p">)]</span>
     <span class="k">return</span> <span class="p">[</span><span class="n">matrix</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">matrix</span><span class="p">))</span>
                          <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">matrix</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
                          <span class="k">if</span> <span class="n">matrix</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span> <span class="o">==</span> <span class="n">row_min</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="n">col_max</span><span class="p">[</span><span class="n">j</span><span class="p">]]</span>
-</code></pre></div></p>
-<p><strong>一遍优化</strong>：先按每行最小值集合得 <span class="arithmatex">\(\le m\)</span> 个候选；对每个候选检查其列最大值是否就是它（<span class="arithmatex">\(O(n)\)</span>）→ <span class="arithmatex">\(O(mn)\)</span> 仍是主导。</p>
+</code></pre></div>
+<p><code>zip(*matrix)</code> 把矩阵转置，于是每个 <code>c</code> 恰是一整列，<code>max(c)</code> 即该列最大值。</p>
+<p><strong>唯一性：为何答案至多一个。</strong> 若存在两个幸运数，则它们必须取相同的值；在互异约束下这不可能，故 <span class="arithmatex">\(|L|\le 1\)</span>。下面把这一观察坐实。</p>
+<p>设 <span class="arithmatex">\(a_{ij}\)</span> 与 <span class="arithmatex">\(a_{kl}\)</span> 都是幸运数。考察<strong>交叉格</strong> <span class="arithmatex">\(a_{il}\)</span>（第 <span class="arithmatex">\(i\)</span> 行、第 <span class="arithmatex">\(l\)</span> 列）：它与 <span class="arithmatex">\(a_{ij}\)</span> 同行，又与 <span class="arithmatex">\(a_{kl}\)</span> 同列，因而被两侧条件同时夹住——</p>
+<div class="arithmatex">\[
+a_{ij} = \min_t a_{it} \le a_{il}, \qquad a_{il} \le \max_s a_{sl} = a_{kl}
+\;\Longrightarrow\; a_{ij} \le a_{kl}.
+\]</div>
+<p>再考察另一交叉格 <span class="arithmatex">\(a_{kj}\)</span>（第 <span class="arithmatex">\(k\)</span> 行、第 <span class="arithmatex">\(j\)</span> 列），它与 <span class="arithmatex">\(a_{kl}\)</span> 同行、与 <span class="arithmatex">\(a_{ij}\)</span> 同列：</p>
+<div class="arithmatex">\[
+a_{kl} = \min_t a_{kt} \le a_{kj}, \qquad a_{kj} \le \max_s a_{sj} = a_{ij}
+\;\Longrightarrow\; a_{kl} \le a_{ij}.
+\]</div>
+<p>两式合并得 <span class="arithmatex">\(a_{ij}=a_{kl}\)</span>。元素互异，故 <span class="arithmatex">\(i=k\)</span>、<span class="arithmatex">\(j=l\)</span>，两个幸运数本是同一个。<span class="arithmatex">\(\square\)</span></p>
+<p>这条性质支撑一个一遍写法：先取每行最小值得至多 <span class="arithmatex">\(m\)</span> 个候选，对每个候选验证其所在列的最大值是否就是它即可，验证一旦命中就可停止。它省去了部分比较，但行最小与列最大仍各需一遍全扫描，渐进复杂度不变。</p>
 <h2 id="_4">复杂度<a class="headerlink" href="#_4" title="Permanent link">#</a></h2>
 <ul>
-<li>Time: <span class="arithmatex">\(O(mn)\)</span></li>
-<li>Space: <span class="arithmatex">\(O(m + n)\)</span></li>
+<li>Time: <span class="arithmatex">\(O(mn)\)</span>。三趟全扫描——<span class="arithmatex">\(m\)</span> 个行最小合计 <span class="arithmatex">\(O(mn)\)</span>、<span class="arithmatex">\(n\)</span> 个列最大合计 <span class="arithmatex">\(O(mn)\)</span>、逐格比较 <span class="arithmatex">\(O(mn)\)</span>；无数据相关的提前退出，最好与最坏同为 <span class="arithmatex">\(\Theta(mn)\)</span>。</li>
+<li>Space: <span class="arithmatex">\(O(m+n)\)</span>，存 <code>row_min</code>（长 <span class="arithmatex">\(m\)</span>）与 <code>col_max</code>（长 <span class="arithmatex">\(n\)</span>）。</li>
 </ul>
 <h2 id="_5">陷阱<a class="headerlink" href="#_5" title="Permanent link">#</a></h2>
 <ul>
-<li>题目保证互异，故"严格 min/max" 不必特别处理重复。</li>
+<li>题目保证元素互异，故"严格 min/max"与"非严格"在此无区别，无需特别处理重复值。</li>
+<li>唯一性是结构性质，但算法仍须遍历全部候选以检验条件；遍历不可因"至多一个答案"而省略。</li>
 <li>返回顺序任意。</li>
 </ul>
 <h2 id="_6">相关题目<a class="headerlink" href="#_6" title="Permanent link">#</a></h2>
@@ -22499,8 +22557,7 @@
 </ul>
 <h2 id="further-reading">Further Reading<a class="headerlink" href="#further-reading" title="Permanent link">#</a></h2>
 <ul>
-<li>无推荐外部资源（题目难度不足以需要专题文献）。</li>
-<li>鞍点性质参见线性规划 / 博弈论入门教材，如 Boyd &amp; Vandenberghe <em>Convex Optimization</em> §5.4。</li>
+<li>本题所涉及的鞍点性质，详见 Boyd &amp; Vandenberghe, <em>Convex Optimization</em> §5.4（min-max 与对偶）。</li>
 </ul>
 
 
@@ -22607,6 +22664,8 @@
         <script src="../../../js/mathjax/tex-mml-chtml.js"></script>
       
         <script src="../../../js/mermaid.min.js"></script>
+      
+        <script src="../../../js/featured.js"></script>
       
     
   </body>

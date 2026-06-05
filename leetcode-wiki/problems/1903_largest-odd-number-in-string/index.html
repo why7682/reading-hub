@@ -1466,6 +1466,8 @@
       
         
       
+        
+      
     
     
     
@@ -1521,6 +1523,34 @@
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../featured/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ⭐ Featured（已验证）
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
               
             
               
@@ -1610,10 +1640,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_4" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
         
           
-          <label class="md-nav__link" for="__nav_4_4" id="__nav_4_4_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_5" id="__nav_4_5_label" tabindex="">
             
   
   
@@ -1631,8 +1661,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_4_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_4">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_5">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1915,7 +1945,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -1937,14 +1967,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_4_5" id="__nav_4_5_label" tabindex="">
+              <label class="md-nav__link " for="__nav_4_6" id="__nav_4_6_label" tabindex="">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_5">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_6">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -5321,10 +5351,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_7" checked>
         
           
-          <label class="md-nav__link" for="__nav_4_6" id="__nav_4_6_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_7" id="__nav_4_7_label" tabindex="">
             
   
   
@@ -5342,8 +5372,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_4_6">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_7_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4_7">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -22467,16 +22497,25 @@
 <h2 id="problem">Problem<a class="headerlink" href="#problem" title="Permanent link">#</a></h2>
 <p>给数字字符串 <code>num</code>，返回其<strong>最大奇值子串</strong>（必须是连续子串），不存在返回 <code>""</code>。约束 <span class="arithmatex">\(1 \le |num| \le 10^5\)</span>，无前导零。</p>
 <h2 id="background">背景 (Background)<a class="headerlink" href="#background" title="Permanent link">#</a></h2>
-<p>本题是"数字大小比较"基本性质的小应用：</p>
+<p>直接的做法是把问题照字面执行：枚举所有连续子串，丢弃表示偶数的那些，在剩下的里挑数值最大的一个。这总能给出正确答案，但子串有 <span class="arithmatex">\(\Theta(n^2)\)</span> 个，当 <span class="arithmatex">\(n = 10^5\)</span> 时约 <span class="arithmatex">\(5 \times 10^9\)</span> 个候选，逐个比较必然超时。要降到线性，必须不再逐个枚举，而是先弄清"哪些子串根本不可能是答案"，把搜索空间砍到只剩常数个候选。</p>
+<p>砍掉候选要用到数字字符串的两条比较规则，它们决定了哪个候选更大：</p>
 <ul>
-<li>数值大小先比较位数（多位 &gt; 少位），同位数才比较字典序。</li>
-<li>奇偶性只看个位。</li>
-<li>因此<strong>最大奇值子串必从位 0 开始</strong>（保留尽可能多的高位），到最右奇位结束。</li>
+<li><strong>位数优先</strong>：在无前导零的前提下，位数多的数严格更大；只有位数相同才比较字典序。</li>
+<li><strong>奇偶只看个位</strong>：一个子串表示奇数，当且仅当它的最后一位是奇数字。</li>
 </ul>
+<p>先看奇偶规则能排除什么。一个候选子串 <span class="arithmatex">\(S[l..r]\)</span> 合法（表示奇数），当且仅当末位 <span class="arithmatex">\(S[r]\)</span> 是奇数字。所以右端点 <span class="arithmatex">\(r\)</span> 只能落在奇数字的位置上，偶数字位置永远不可能当末位。</p>
+<p>再看位数规则能排除什么。固定一个合法的右端点 <span class="arithmatex">\(r\)</span>，左端点 <span class="arithmatex">\(l\)</span> 可以取 <span class="arithmatex">\(0\)</span> 到 <span class="arithmatex">\(r\)</span> 之间任意值，得到一族末位相同、合法性相同的候选 <span class="arithmatex">\(S[l..r]\)</span>。它们末位都是 <span class="arithmatex">\(S[r]\)</span>，奇偶一致；位数是 <span class="arithmatex">\(r - l + 1\)</span>，在 <span class="arithmatex">\(l = 0\)</span> 时最大。由位数优先规则，<span class="arithmatex">\(l = 0\)</span> 的那个——也就是前缀 <span class="arithmatex">\(S[0..r]\)</span>——严格不小于同族其它候选。于是对每个合法右端点，只有从下标 <span class="arithmatex">\(0\)</span> 起的前缀才可能是答案，内部起点的子串全被淘汰。</p>
+<p>两条规则合起来，把答案的形态钉死了：答案一定是某个前缀 <span class="arithmatex">\(S[0..r]\)</span>，其中 <span class="arithmatex">\(S[r]\)</span> 是奇数字。候选从 <span class="arithmatex">\(\Theta(n^2)\)</span> 个子串缩到至多 <span class="arithmatex">\(n\)</span> 个前缀。下面进一步把这至多 <span class="arithmatex">\(n\)</span> 个前缀也缩成唯一一个。</p>
 <h2 id="formulation">形式化 (Formulation)<a class="headerlink" href="#formulation" title="Permanent link">#</a></h2>
-<p>设 <span class="arithmatex">\(S = num\)</span>，求最大下标 <span class="arithmatex">\(r\)</span> 使 <span class="arithmatex">\(S[r]\)</span> 为奇数字。若存在则返回 <span class="arithmatex">\(S[0..r]\)</span>，否则 <span class="arithmatex">\(""\)</span>。</p>
+<p>候选已缩到"以奇数字结尾的前缀" <span class="arithmatex">\(S[0..r]\)</span> 这一族。在这族里它们再比一次大小：右端点越大的前缀位数越多，由位数优先规则数值越大。所以我们要的是右端点最靠右的那个合法前缀，也就是最右的奇数字位置。把这句话写成定义：</p>
+<p>设 <span class="arithmatex">\(S = num\)</span>，<span class="arithmatex">\(n = |S|\)</span>，下标从 <span class="arithmatex">\(0\)</span> 起。定义</p>
+<div class="arithmatex">\[
+r^\* = \max\{\, i \in \{0,\dots,n-1\} : S[i] \in \{1,3,5,7,9\} \,\}.
+\]</div>
+<p>若该集合非空，答案为前缀 <span class="arithmatex">\(S[0..r^\*]\)</span>；若为空（全为偶数字），答案为 <span class="arithmatex">\(""\)</span>。</p>
+<p>这个定义就是解法的脊梁：它把"最大奇值子串"完全归约为一个标量 <span class="arithmatex">\(r^\*\)</span>，算法只需算出 <span class="arithmatex">\(r^\*\)</span>，答案 <span class="arithmatex">\(S[0..r^\*]\)</span> 直接读出，无需再做任何比较。</p>
 <h2 id="approach">数据结构 / 想法 (Approach)<a class="headerlink" href="#approach" title="Permanent link">#</a></h2>
-<p>从右向左扫描，找第一个奇数字位置 <span class="arithmatex">\(r\)</span>，返回前缀 <span class="arithmatex">\(S[:r+1]\)</span>。</p>
+<p>算法从定义直接读出。<span class="arithmatex">\(r^\*\)</span> 是满足 <span class="arithmatex">\(S[i]\)</span> 为奇数字的最大下标，求一个集合里的最大元素，只需从右端向左扫，遇到的第一个奇数字位置就是 <span class="arithmatex">\(r^\*\)</span>，立即停止并返回前缀 <span class="arithmatex">\(S[0..r^\*]\)</span>；扫完仍无奇数字则集合为空，返回 <span class="arithmatex">\(""\)</span>。</p>
 <div class="language-python highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">Solution</span><span class="p">:</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">largestOddNumber</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">num</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
         <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">num</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">):</span>
@@ -22484,19 +22523,21 @@
                 <span class="k">return</span> <span class="n">num</span><span class="p">[:</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span>
         <span class="k">return</span> <span class="s2">&quot;&quot;</span>
 </code></pre></div>
-<p><strong>正确性</strong>：任何符合条件的子串 <span class="arithmatex">\(S[l..r']\)</span> 必有 <span class="arithmatex">\(S[r']\)</span> 奇。若 <span class="arithmatex">\(r' &lt; r\)</span>（<span class="arithmatex">\(r\)</span> 是最右奇位），则 <span class="arithmatex">\(S[0..r]\)</span> 是更长的合法奇值（位数多，数值更大）。若 <span class="arithmatex">\(r' = r\)</span>，<span class="arithmatex">\(S[0..r] \ge S[l..r]\)</span>（前缀 vs 后缀同末位）。</p>
-<p>Trace 例 1 <code>"52"</code>: 个位 '2' 偶，索引 0 '5' 奇 → 返回 "5"。✓
-Trace 例 3 <code>"35427"</code>: 个位 '7' 奇 → 返回 "35427"。✓</p>
+<p><strong>正确性</strong>。设算法返回 <span class="arithmatex">\(S[0..r^\*]\)</span>。它合法：末位 <span class="arithmatex">\(S[r^\*]\)</span> 按定义是奇数字。它是最大的：取任意合法子串 <span class="arithmatex">\(S[l..r']\)</span>，其末位 <span class="arithmatex">\(S[r']\)</span> 为奇数字，故 <span class="arithmatex">\(r' \le r^\*\)</span>（<span class="arithmatex">\(r^\*\)</span> 是最右奇数字位置）。分两种情形比较它与 <span class="arithmatex">\(S[0..r^\*]\)</span>。</p>
+<p>情形一，<span class="arithmatex">\(r' &lt; r^\*\)</span>。前缀 <span class="arithmatex">\(S[0..r^\*]\)</span> 有 <span class="arithmatex">\(r^\* + 1\)</span> 位，子串 <span class="arithmatex">\(S[l..r']\)</span> 至多 <span class="arithmatex">\(r' + 1 \le r^\*\)</span> 位，前者位数严格更多。由位数优先规则（输入无前导零，前缀从下标 <span class="arithmatex">\(0\)</span> 起也无前导零），<span class="arithmatex">\(S[0..r^\*] &gt; S[l..r']\)</span>。</p>
+<p>情形二，<span class="arithmatex">\(r' = r^\*\)</span>。此时两者末位相同，<span class="arithmatex">\(S[l..r^\*]\)</span> 有 <span class="arithmatex">\(r^\* - l + 1 \le r^\* + 1\)</span> 位，不超过前缀的位数。位数相同则比字典序，但前缀位数不少于子串，故 <span class="arithmatex">\(S[0..r^\*] \ge S[l..r^\*]\)</span>。</p>
+<p>两种情形都有 <span class="arithmatex">\(S[0..r^\*]\)</span> 不小于任意合法子串，故它就是最大奇值子串。</p>
+<p>用两个例子检验。对 <code>"52"</code>，从右扫：个位 <code>'2'</code> 是偶数字，跳过；下标 <span class="arithmatex">\(0\)</span> 的 <code>'5'</code> 是奇数字，<span class="arithmatex">\(r^\* = 0\)</span>，返回前缀 <code>"5"</code>。对 <code>"35427"</code>，个位 <code>'7'</code> 已是奇数字，<span class="arithmatex">\(r^\* = 4\)</span>，返回整串 <code>"35427"</code>。</p>
 <h2 id="complexity">复杂度 (Complexity)<a class="headerlink" href="#complexity" title="Permanent link">#</a></h2>
 <ul>
-<li>Time: <span class="arithmatex">\(O(|num|)\)</span></li>
-<li>Space: <span class="arithmatex">\(O(1)\)</span> 额外（输出不计）</li>
+<li>Time: <span class="arithmatex">\(O(|num|)\)</span>。最坏情形（全为偶数字）扫完整串；末位为奇数字时一步即停。</li>
+<li>Space: <span class="arithmatex">\(O(1)\)</span> 额外空间（返回的前缀切片算输出，不计入）。</li>
 </ul>
 <h2 id="pitfalls">陷阱 (Pitfalls)<a class="headerlink" href="#pitfalls" title="Permanent link">#</a></h2>
 <ul>
-<li><strong>不要尝试枚举所有子串</strong>——<span class="arithmatex">\(O(n^2)\)</span> 子串，TLE。</li>
-<li><strong>前导零</strong>：题目保证输入无前导零，且返回的前缀也无前导零（因为从 index 0 截）。</li>
-<li><strong>判奇用末位 <code>%2</code></strong>——<code>int(num[i]) % 2</code> 或更省 <code>num[i] in '13579'</code>。</li>
+<li>不可枚举全部子串：<span class="arithmatex">\(\Theta(n^2)\)</span> 个候选在 <span class="arithmatex">\(n = 10^5\)</span> 时超时，这正是背景里要靠两条比较规则剪枝的原因。</li>
+<li>前导零依赖：位数优先规则只在无前导零时成立。题目保证输入无前导零，且答案是从下标 <span class="arithmatex">\(0\)</span> 起的前缀，故同样无前导零，比较有效。</li>
+<li>判奇只看末位：奇偶由个位决定，用 <code>int(num[i]) % 2</code> 判断；也可用 <code>num[i] in '13579'</code> 省去转整数。</li>
 </ul>
 <h2 id="related">相关题目 (Related)<a class="headerlink" href="#related" title="Permanent link">#</a></h2>
 <ul>
@@ -22610,6 +22651,8 @@ Trace 例 3 <code>"35427"</code>: 个位 '7' 奇 → 返回 "35427"。✓</p>
         <script src="../../../js/mathjax/tex-mml-chtml.js"></script>
       
         <script src="../../../js/mermaid.min.js"></script>
+      
+        <script src="../../../js/featured.js"></script>
       
     
   </body>

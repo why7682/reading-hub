@@ -1466,6 +1466,8 @@
       
         
       
+        
+      
     
     
     
@@ -1521,6 +1523,34 @@
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../featured/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ⭐ Featured（已验证）
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
               
             
               
@@ -1610,10 +1640,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_4" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
         
           
-          <label class="md-nav__link" for="__nav_4_4" id="__nav_4_4_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_5" id="__nav_4_5_label" tabindex="">
             
   
   
@@ -1631,8 +1661,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_4_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_4">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_5">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1915,7 +1945,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -1937,14 +1967,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_4_5" id="__nav_4_5_label" tabindex="">
+              <label class="md-nav__link " for="__nav_4_6" id="__nav_4_6_label" tabindex="">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_5">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_6">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -5321,10 +5351,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_7" checked>
         
           
-          <label class="md-nav__link" for="__nav_4_6" id="__nav_4_6_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_7" id="__nav_4_7_label" tabindex="">
             
   
   
@@ -5342,8 +5372,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_4_6">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_7_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4_7">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -22467,14 +22497,23 @@
 <h2 id="problem">Problem<a class="headerlink" href="#problem" title="Permanent link">#</a></h2>
 <p>设计 <code>MyCalendarThree</code>。<code>book(start, end)</code> 后返回当前所有事件的<strong>最大 <span class="arithmatex">\(k\)</span>-overlap</strong> —— 即最大整数 <span class="arithmatex">\(k\)</span> 使存在时刻同时被 <span class="arithmatex">\(k\)</span> 个事件覆盖。<span class="arithmatex">\(0 \le \text{start} &lt; \text{end} \le 10^9\)</span>，至多 400 次调用。</p>
 <h2 id="_1">背景<a class="headerlink" href="#_1" title="Permanent link">#</a></h2>
-<p>本题是 <strong>boundary count / sweep difference</strong> 模式的代表：把每个事件 <span class="arithmatex">\([s, e)\)</span> 拆成 <span class="arithmatex">\((s, +1), (e, -1)\)</span> 两个事件点，按时间扫描前缀和，最大值即最大 overlap。这正是 <strong>interval scheduling</strong> 中"最大重叠区间数"的经典算法（"飞机场停机位下限"问题），等价于 <strong>interval graph 的最大团 (clique number)</strong>。</p>
-<p>数学上等价于：给函数 <span class="arithmatex">\(f(t) = \sum_i \mathbf{1}[s_i \le t &lt; e_i]\)</span>，求 <span class="arithmatex">\(\max_t f(t)\)</span>。差分 + 前缀和给 <span class="arithmatex">\(O(N)\)</span>（<span class="arithmatex">\(N\)</span> = 事件数）。</p>
-<p>值域大但操作少 → 用 <code>SortedDict</code> / TreeMap 而非数组。</p>
+<p>先把"最大 <span class="arithmatex">\(k\)</span>-overlap"落到一个具体实例上。已经 <code>book</code> 了 <span class="arithmatex">\([10, 30)\)</span> 和 <span class="arithmatex">\([15, 25)\)</span>，时刻 <span class="arithmatex">\(t = 20\)</span> 同时落在两个事件里，于是该点的覆盖数是 <span class="arithmatex">\(2\)</span>。再 <code>book</code> <span class="arithmatex">\([18, 22)\)</span>，则 <span class="arithmatex">\(t = 20\)</span> 的覆盖数升到 <span class="arithmatex">\(3\)</span>。每次 <code>book</code> 要回答的，就是<strong>所有时刻中覆盖数的最大值</strong>。</p>
+<p>固定时刻 <span class="arithmatex">\(t\)</span>，它的覆盖数是把每个事件看作一个指示量后求和：</p>
+<div class="arithmatex">\[f(t) = \sum_{i} \mathbf{1}[s_i \le t &lt; e_i].\]</div>
+<p>最大 <span class="arithmatex">\(k\)</span>-overlap 就是 <span class="arithmatex">\(\max_t f(t)\)</span>。问题至此完全确定，剩下的全部是：每次插入一个区间后，如何高效地维护这个最大值。</p>
+<p><strong>朴素做法及其瓶颈。</strong> 直接照定义算 <span class="arithmatex">\(\max_t f(t)\)</span> 要面对两个困难。其一，<span class="arithmatex">\(t\)</span> 连续取值，无法逐点枚举。但 <span class="arithmatex">\(f\)</span> 是阶梯函数，只在某个 <span class="arithmatex">\(s_i\)</span> 或 <span class="arithmatex">\(e_i\)</span> 处跳变，所以最大值必在某个区间左端点 <span class="arithmatex">\(s_i\)</span> 处取得 —— 候选时刻只有 <span class="arithmatex">\(O(n)\)</span> 个端点。其二，即便只看这 <span class="arithmatex">\(O(n)\)</span> 个候选点,在每个点上重新数"有多少区间覆盖它"仍要遍历全部 <span class="arithmatex">\(n\)</span> 个区间,单次 <code>book</code> 就是 <span class="arithmatex">\(O(n^2)\)</span>。</p>
+<p>瓶颈在于：相邻候选点之间，被覆盖的区间集合几乎不变，逐点重数把同一批区间反复检查了无数遍。要消除这种重复，应当只记录覆盖数在每个端点处的<strong>变化量</strong>，而非每个点的绝对值。这正是下面差分表示的出发点。</p>
 <h2 id="_2">形式化<a class="headerlink" href="#_2" title="Permanent link">#</a></h2>
-<p>设事件集 <span class="arithmatex">\(E_t = \{[s_1, e_1), \dots, [s_t, e_t)\}\)</span>。每次 <code>book</code> 后返回</p>
-<div class="arithmatex">\[k_t = \max_{x \in \mathbb{R}} \#\{i : 1 \le i \le t,\, s_i \le x &lt; e_i\}.\]</div>
+<p>设到第 <span class="arithmatex">\(t\)</span> 次调用为止的事件集为 <span class="arithmatex">\(E_t = \{[s_1, e_1), \dots, [s_t, e_t)\}\)</span>。每次 <code>book</code> 后返回</p>
+<div class="arithmatex">\[k_t = \max_{x \in \mathbb{R}}\ \#\{i : 1 \le i \le t,\ s_i \le x &lt; e_i\}.\]</div>
+<p>这里对 <span class="arithmatex">\(x \in \mathbb{R}\)</span> 取最大与对端点集合取最大等价：<span class="arithmatex">\(f(x) = \#\{i : s_i \le x &lt; e_i\}\)</span> 是右连续阶梯函数，其上确界必在某个左端点 <span class="arithmatex">\(s_i\)</span> 处达到，所以把 <span class="arithmatex">\(x\)</span> 放宽到全体实数不改变结果。下面两种解法都在求这个 <span class="arithmatex">\(k_t\)</span>，区别只在用什么结构增量维护它。</p>
 <h2 id="_3">数据结构 / 想法<a class="headerlink" href="#_3" title="Permanent link">#</a></h2>
-<p><strong>解法 A：差分 + 全表扫描</strong>（<span class="arithmatex">\(O(n)\)</span> per book, <span class="arithmatex">\(O(n^2)\)</span> total —— <span class="arithmatex">\(n = 400\)</span> 可过）
+<p><strong>从定义到差分。</strong> 每个事件 <span class="arithmatex">\([s, e)\)</span> 对 <span class="arithmatex">\(f\)</span> 的贡献是：在 <span class="arithmatex">\(t \in [s, e)\)</span> 上整段 <span class="arithmatex">\(+1\)</span>。与其把这段贡献逐点铺开，不如只记两处变化：在 <span class="arithmatex">\(s\)</span> 处 <span class="arithmatex">\(f\)</span> 增加 <span class="arithmatex">\(1\)</span>，在 <span class="arithmatex">\(e\)</span> 处 <span class="arithmatex">\(f\)</span> 减少 <span class="arithmatex">\(1\)</span>。于是定义一张差分表 <code>delta</code>，把区间 <span class="arithmatex">\([s, e)\)</span> 编码为</p>
+<div class="arithmatex">\[\text{delta}[s]\mathrel{+}= 1,\qquad \text{delta}[e]\mathrel{-}= 1.\]</div>
+<p><strong>不变量。</strong> 按坐标从小到大累加 <code>delta</code>，到坐标 <span class="arithmatex">\(x\)</span> 为止的前缀和恰好等于"已开始但尚未结束的事件数"，也就是 <span class="arithmatex">\(f(x)\)</span>。理由直接来自构造：每个事件在 <span class="arithmatex">\(s_i\)</span> 把前缀和抬高 <span class="arithmatex">\(1\)</span>、在 <span class="arithmatex">\(e_i\)</span> 又压回，所以在任意 <span class="arithmatex">\(x\)</span> 处累计的净增量正是覆盖 <span class="arithmatex">\(x\)</span> 的事件数。<span class="arithmatex">\(f\)</span> 的最大值即前缀和扫描过程中的最大值。</p>
+<p>用两区间验证：<span class="arithmatex">\([1,3)\)</span> 与 <span class="arithmatex">\([2,4)\)</span> 给出 <code>delta</code> 在 <span class="arithmatex">\(1,2,3,4\)</span> 处为 <span class="arithmatex">\(+1,+1,-1,-1\)</span>；按坐标累加前缀和为 <span class="arithmatex">\(1,2,1,0\)</span>，最大值 <span class="arithmatex">\(2\)</span>，恰是 <span class="arithmatex">\(t \in [2,3)\)</span> 的 <span class="arithmatex">\(2\)</span>-overlap。</p>
+<p><strong>解法 A：差分 + 全表扫描</strong>（<span class="arithmatex">\(O(n)\)</span> per book, <span class="arithmatex">\(O(n^2)\)</span> total —— <span class="arithmatex">\(n = 400\)</span> 可过）</p>
+<p>坐标值域到 <span class="arithmatex">\(10^9\)</span>，但稠密数组开不下：<span class="arithmatex">\(10^9\)</span> 个槽的内存与初始化都不可行。真正出现的端点至多 <span class="arithmatex">\(2n = 800\)</span> 个,所以用按坐标有序的稀疏映射（<code>SortedDict</code> / TreeMap）存 <code>delta</code>，前缀和逻辑不变，空间降到 <span class="arithmatex">\(O(n)\)</span>。</p>
 <div class="language-python highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">sortedcontainers</span><span class="w"> </span><span class="kn">import</span> <span class="n">SortedDict</span>
 <span class="k">class</span><span class="w"> </span><span class="nc">MyCalendarThree</span><span class="p">:</span>
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span> <span class="bp">self</span><span class="o">.</span><span class="n">delta</span> <span class="o">=</span> <span class="n">SortedDict</span><span class="p">()</span>
@@ -22486,13 +22525,16 @@
             <span class="n">active</span> <span class="o">+=</span> <span class="n">v</span>
             <span class="n">best</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">best</span><span class="p">,</span> <span class="n">active</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">best</span>
-</code></pre></div></p>
+</code></pre></div>
+<p>每次 <code>book</code> 插入两个端点（<span class="arithmatex">\(O(\log n)\)</span>），再整表扫描求前缀和最大值（<span class="arithmatex">\(O(n)\)</span>）。</p>
+<p><strong>为什么需要解法 B。</strong> 解法 A 的瓶颈是：插入只改两个端点，却要全表重扫才能得到新的最大值。能否把"区间整体 <span class="arithmatex">\(+1\)</span>"和"查询全局最大"都做到 <span class="arithmatex">\(O(\log)\)</span>？这要求一个支持<strong>区间加、全局取最大</strong>的结构，正是线段树的用武之地 —— 但要解决两个新问题。</p>
+<p>第一，区间加若每次都下推到所有叶子，单次更新就退化回 <span class="arithmatex">\(O(\text{区间长度})\)</span>。<strong>懒标记 (lazy propagation)</strong> 解决这点：在覆盖整个节点区间的更新处，只在该节点累加一个待下推增量，并直接更新该节点的子树最大值，不再深入。节点维护"本区间内某点的最大同时活跃事件数"这一不变量；区间加 <span class="arithmatex">\([s,e)\)</span> 时，凡被 <span class="arithmatex">\([s,e)\)</span> 完整包含的节点都整体 <span class="arithmatex">\(+1\)</span>，其子树最大值同步 <span class="arithmatex">\(+1\)</span>，故不变量在不实际下推的情况下仍然成立。查询即根节点的最大值。</p>
+<p>第二，坐标值域 <span class="arithmatex">\(V = 10^9\)</span>。静态线段树要预分配约 <span class="arithmatex">\(2V\)</span> 个节点，不可行。<strong>动态开点 (implicit segment tree)</strong> 只在第一次访问某节点时才创建它：<span class="arithmatex">\(400\)</span> 次 <code>book</code>、每次触碰 <span class="arithmatex">\(O(\log V)\)</span> 个节点，总创建量约 <span class="arithmatex">\(400 \times 2\log_2(10^9) \approx 2.4\times 10^4\)</span>，内存为 <span class="arithmatex">\(O(n \log V)\)</span>。实现上用 dict 以节点编号或坐标为键按需建点。</p>
 <p><strong>解法 B：动态开点 segment tree (lazy propagation)</strong>（<span class="arithmatex">\(O(\log V)\)</span> per book，<span class="arithmatex">\(V = 10^9\)</span>）
 - 节点存"区间最大值"和"懒加"。
-- <code>update(s, e, +1)</code> 在区间 <span class="arithmatex">\([s, e)\)</span> 全部 += 1，并维护子树最大值。
+- <code>update(s, e, +1)</code> 在区间 <span class="arithmatex">\([s, e)\)</span> 全部 <span class="arithmatex">\(+1\)</span>，并维护子树最大值。
 - 查询即根节点最大值。
-- 推荐用 dict-based "implicit segment tree" 处理大坐标。</p>
-<p><strong>不变量</strong>（解法 A）：<code>delta[x]</code> 是"在 <span class="arithmatex">\(x\)</span> 处净开始事件数减净结束事件数"。前缀和即活跃事件数。扫描得最大值。</p>
+- 用 dict-based 动态开点处理大坐标，避免预分配 <span class="arithmatex">\(2V\)</span> 节点。</p>
 <h2 id="_4">复杂度<a class="headerlink" href="#_4" title="Permanent link">#</a></h2>
 <ul>
 <li>解法 A：每次 <span class="arithmatex">\(O(n)\)</span>，总 <span class="arithmatex">\(O(n^2)\)</span>；<span class="arithmatex">\(n = 400\)</span> → <span class="arithmatex">\(1.6 \times 10^5\)</span>，过。</li>
@@ -22500,7 +22542,7 @@
 </ul>
 <h2 id="_5">陷阱<a class="headerlink" href="#_5" title="Permanent link">#</a></h2>
 <ul>
-<li>半开区间 <span class="arithmatex">\([s, e)\)</span> 与闭区间的差别：用半开则 <code>delta[e] -= 1</code> 即可；用闭则 <code>delta[e+1] -= 1</code>。</li>
+<li>半开区间 <span class="arithmatex">\([s, e)\)</span> 与闭区间的差别：用半开则 <code>delta[e] -= 1</code> 即可（端点 <span class="arithmatex">\(e\)</span> 处恰好不再计入本区间）；用闭则 <code>delta[e+1] -= 1</code>。</li>
 <li><code>SortedDict</code> 在 Python 标准库无，需 <code>sortedcontainers</code> 第三方。</li>
 <li>解法 B 必须动态开点；静态线段树开 <span class="arithmatex">\(10^9\)</span> 节点会爆内存。</li>
 <li><code>book</code> 的返回是<strong>到目前为止</strong>的最大 overlap，不仅是新事件造成的影响。</li>
@@ -22508,7 +22550,7 @@
 <h2 id="_6">相关题目<a class="headerlink" href="#_6" title="Permanent link">#</a></h2>
 <ul>
 <li><code>#729. My Calendar I (off-wiki)</code> — 不允许 2-overlap，可用平衡树 / 区间表插入前判定。</li>
-<li><code>#731. My Calendar II (off-wiki)</code> — 不允许 3-overlap，维护两层 set。</li>
+<li><a href="../0731_my-calendar-ii/">#731. My Calendar II</a> — 不允许 3-overlap，维护两层 set。</li>
 <li><a href="../0218_the-skyline-problem/">#218. The Skyline Problem</a> — 同样扫描线 + 最大值，但需输出全部关键点。</li>
 <li><a href="../0699_falling-squares/">#699. Falling Squares</a> — segment tree + 区间赋值 / 最大值的双胞胎。</li>
 </ul>
@@ -22624,6 +22666,8 @@
         <script src="../../../js/mathjax/tex-mml-chtml.js"></script>
       
         <script src="../../../js/mermaid.min.js"></script>
+      
+        <script src="../../../js/featured.js"></script>
       
     
   </body>

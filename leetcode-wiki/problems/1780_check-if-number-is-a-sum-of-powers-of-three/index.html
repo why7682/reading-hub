@@ -1466,6 +1466,8 @@
       
         
       
+        
+      
     
     
     
@@ -1521,6 +1523,34 @@
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../featured/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ⭐ Featured（已验证）
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
               
             
               
@@ -1610,10 +1640,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_4" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
         
           
-          <label class="md-nav__link" for="__nav_4_4" id="__nav_4_4_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_5" id="__nav_4_5_label" tabindex="">
             
   
   
@@ -1631,8 +1661,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_4_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_4">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_5">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1915,7 +1945,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -1937,14 +1967,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_4_5" id="__nav_4_5_label" tabindex="">
+              <label class="md-nav__link " for="__nav_4_6" id="__nav_4_6_label" tabindex="">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_5">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_6">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -5321,10 +5351,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_7" checked>
         
           
-          <label class="md-nav__link" for="__nav_4_6" id="__nav_4_6_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_7" id="__nav_4_7_label" tabindex="">
             
   
   
@@ -5342,8 +5372,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_4_6">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_7_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4_7">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -22467,11 +22497,26 @@
 <h2 id="problem">Problem<a class="headerlink" href="#problem" title="Permanent link">#</a></h2>
 <p>给整数 <span class="arithmatex">\(n\)</span>，判断能否写成 <em>不同</em> 3 的非负次幂之和。约束 <span class="arithmatex">\(1 \le n \le 10^7\)</span>。</p>
 <h2 id="background">背景 (Background)<a class="headerlink" href="#background" title="Permanent link">#</a></h2>
-<p><strong>关键洞察</strong>：<span class="arithmatex">\(n\)</span> 可表示为不同 3 幂之和 <span class="arithmatex">\(\Leftrightarrow\)</span> <span class="arithmatex">\(n\)</span> 的三进制表示只含 0 和 1（无 2）。这是 <strong>位置数制 (positional notation)</strong> 的直接结果：base-3 中第 <span class="arithmatex">\(k\)</span> 位的"系数"必须是 <span class="arithmatex">\(\{0, 1, 2\}\)</span>，"不同 3 幂之和"对应"每个幂用 0 或 1 次" = 系数仅 <span class="arithmatex">\(\in \{0, 1\}\)</span>。</p>
-<p>这与"二进制表示 = 不同 2 幂之和"完全对应；推广到任意 base <span class="arithmatex">\(b\)</span>：<span class="arithmatex">\(n\)</span> = 不同 <span class="arithmatex">\(b\)</span> 幂之和 <span class="arithmatex">\(\Leftrightarrow\)</span> <span class="arithmatex">\(n\)</span> 的 base-<span class="arithmatex">\(b\)</span> 表示无系数 <span class="arithmatex">\(\ge 2\)</span>。这种"限制系数"的数制称 <strong>non-standard representation / sub-base representations</strong>（如 NAF, balanced ternary）。</p>
+<p>先把问题照字面写下来，不预设任何技巧。我们要在幂集合
+$<span class="arithmatex">\(\{3^0, 3^1, 3^2, \dots\}\)</span>$
+里挑一个子集，使其元素之和恰为 <span class="arithmatex">\(n\)</span>，且每个幂至多用一次。最直接的做法就是枚举这个子集：所有不超过 <span class="arithmatex">\(n\)</span> 的 3 的幂只有约 <span class="arithmatex">\(\log_3 n \le 15\)</span> 个，逐一决定"选或不选"，检查哪种组合加起来等于 <span class="arithmatex">\(n\)</span>。</p>
+<p>这是正确的，但代价是 <span class="arithmatex">\(O(2^{15})\)</span> 种组合。问题出在它把每个幂当成彼此独立的开关，完全没用到"它们是同一个底数 <span class="arithmatex">\(3\)</span> 的幂"这一结构。要消掉指数级搜索，就要问：<span class="arithmatex">\(n\)</span> 自身有没有某个特征，能一眼判定这样的子集是否存在？</p>
+<p>答案藏在 3 进制里。把 <span class="arithmatex">\(n\)</span> 按 3 进制展开，第 <span class="arithmatex">\(k\)</span> 位的数字恰好告诉我们 <span class="arithmatex">\(3^k\)</span> 在这个表示中"被用了几次"——而 3 进制展开是唯一的。于是"每个幂至多用一次"就翻译成"每一位数字至多是 1"。这把一个指数级的子集搜索，压成了对 <span class="arithmatex">\(n\)</span> 的各位数字的一次扫描。下面把这条直觉写成精确的等价命题，再由它导出算法。</p>
 <h2 id="formulation">形式化 (Formulation)<a class="headerlink" href="#formulation" title="Permanent link">#</a></h2>
-<p><span class="arithmatex">\(n = \sum_{k=0}^{K} d_k \cdot 3^k\)</span>，<span class="arithmatex">\(d_k \in \{0, 1, 2\}\)</span>（标准三进制）。答案 <span class="arithmatex">\(= (\forall k:\, d_k \in \{0, 1\})\)</span>。</p>
+<p>把 <span class="arithmatex">\(n\)</span> 写成标准 3 进制：存在唯一的一组数字 <span class="arithmatex">\(d_k \in \{0, 1, 2\}\)</span> 使得
+$<span class="arithmatex">\(n = \sum_{k=0}^{K} d_k \cdot 3^k.\)</span>$</p>
+<p>要判断的是：能否选一个幂的子集 <span class="arithmatex">\(S\)</span>，使 <span class="arithmatex">\(\sum_{3^k \in S} 3^k = n\)</span>。把"选 <span class="arithmatex">\(3^k\)</span>"记为系数 <span class="arithmatex">\(c_k \in \{0, 1\}\)</span>，则问题等价于求一组 <span class="arithmatex">\(c_k \in \{0,1\}\)</span> 满足 <span class="arithmatex">\(n = \sum_k c_k \cdot 3^k\)</span>。</p>
+<p>由 3 进制表示的唯一性，满足 <span class="arithmatex">\(n = \sum_k c_k \cdot 3^k\)</span> 且 <span class="arithmatex">\(c_k \in \{0,1,2\}\)</span> 的系数只有一组，就是上面的 <span class="arithmatex">\(d_k\)</span>。因此 <span class="arithmatex">\(c_k \in \{0,1\}\)</span> 的解存在，当且仅当那唯一的一组本身就落在 <span class="arithmatex">\(\{0,1\}\)</span> 里。于是得到判定条件：</p>
+<div class="arithmatex">\[\text{答案为真} \iff \forall k:\, d_k \in \{0, 1\}.\]</div>
+<p>换句话说，<span class="arithmatex">\(n\)</span> 可表示为不同 3 幂之和，当且仅当 <span class="arithmatex">\(n\)</span> 的 3 进制表示中不出现数字 <span class="arithmatex">\(2\)</span>。这条等价就是整页的脊柱，算法只是读取这些数字。</p>
 <h2 id="approach">数据结构 / 想法 (Approach)<a class="headerlink" href="#approach" title="Permanent link">#</a></h2>
+<p>形式化把问题归结为：检查 <span class="arithmatex">\(n\)</span> 的每一位 3 进制数字是否都 <span class="arithmatex">\(\le 1\)</span>。我们不需要先把所有数字算出来再扫，而是逐位生成、逐位检查。</p>
+<p>逐位提取数字的恒等式是除带余：<span class="arithmatex">\(d_0 = n \bmod 3\)</span>，且 <span class="arithmatex">\(\lfloor n/3 \rfloor\)</span> 的 3 进制表示恰是 <span class="arithmatex">\(n\)</span> 去掉最低位后剩下的高位。于是循环不变量是：每次进入循环时，所有已检查过的低位数字都已确认 <span class="arithmatex">\(\in \{0,1\}\)</span>，当前的 <span class="arithmatex">\(n\)</span> 持有尚未检查的高位。每一步做两件事——</p>
+<ul>
+<li>若 <span class="arithmatex">\(n \bmod 3 = 2\)</span>：当前最低位数字是 <span class="arithmatex">\(2\)</span>。要在这一位贡献出 <span class="arithmatex">\(2\)</span>，唯一办法是把对应的幂 <span class="arithmatex">\(3^k\)</span> 用两次（<span class="arithmatex">\(2 \cdot 3^k\)</span>），而更高的幂都是 <span class="arithmatex">\(3\)</span> 的倍数、补不出这一位的 <span class="arithmatex">\(2\)</span>。"不同幂之和"禁止重复使用同一个幂，所以无解，返回 <code>False</code>。</li>
+<li>否则数字是 <span class="arithmatex">\(0\)</span> 或 <span class="arithmatex">\(1\)</span>，合法。执行 <span class="arithmatex">\(n \leftarrow \lfloor n/3 \rfloor\)</span>，把焦点移到下一个更高位。</li>
+</ul>
+<p>当 <span class="arithmatex">\(n\)</span> 减到 <span class="arithmatex">\(0\)</span>，说明所有数字都已检查且无一为 <span class="arithmatex">\(2\)</span>，返回 <code>True</code>。算法就此从形式化条件直接落地：</p>
 <div class="language-python highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">Solution</span><span class="p">:</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">checkPowersOfThree</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
         <span class="k">while</span> <span class="n">n</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
@@ -22480,11 +22525,10 @@
             <span class="n">n</span> <span class="o">//=</span> <span class="mi">3</span>
         <span class="k">return</span> <span class="kc">True</span>
 </code></pre></div>
-<p><strong>心算 trace</strong>:
-- n=12: 12%3=0, n=4; 4%3=1, n=1; 1%3=1, n=0 → True ✓ (12 = 9 + 3 = 3² + 3¹)
-- n=91: 91%3=1, n=30; 30%3=0, n=10; 10%3=1, n=3; 3%3=0, n=1; 1%3=1, n=0 → True ✓ (91 = 81+9+1 = 3⁴+3²+3⁰)
-- n=21: 21%3=0, n=7; 7%3=1, n=2; 2%3=2 → False ✓</p>
-<p><strong>等价的递归视角</strong>：若 <span class="arithmatex">\(n\)</span> 偶数（base 3 mod 0）则去掉 <span class="arithmatex">\(3^0\)</span> 项；若奇且 <span class="arithmatex">\(n \% 3 == 1\)</span> 则减 1 再除 3；若 <span class="arithmatex">\(n \% 3 == 2\)</span> 则需"借位"，但不同 3 幂之和不允许同一幂用两次，所以失败。</p>
+<p><strong>验证</strong>（每例对应一种结局）：
+- <span class="arithmatex">\(n=12\)</span>：<span class="arithmatex">\(12 \bmod 3 = 0\)</span>，<span class="arithmatex">\(n=4\)</span>；<span class="arithmatex">\(4 \bmod 3 = 1\)</span>，<span class="arithmatex">\(n=1\)</span>；<span class="arithmatex">\(1 \bmod 3 = 1\)</span>，<span class="arithmatex">\(n=0\)</span> → <code>True</code>。对应 <span class="arithmatex">\(12 = 9 + 3 = 3^2 + 3^1\)</span>。
+- <span class="arithmatex">\(n=91\)</span>：依次取余 <span class="arithmatex">\(1,0,1,0,1\)</span>，无 <span class="arithmatex">\(2\)</span>，<span class="arithmatex">\(n\)</span> 归零 → <code>True</code>。对应 <span class="arithmatex">\(91 = 81 + 9 + 1 = 3^4 + 3^2 + 3^0\)</span>。
+- <span class="arithmatex">\(n=21\)</span>：<span class="arithmatex">\(21 \bmod 3 = 0\)</span>，<span class="arithmatex">\(n=7\)</span>；<span class="arithmatex">\(7 \bmod 3 = 1\)</span>，<span class="arithmatex">\(n=2\)</span>；<span class="arithmatex">\(2 \bmod 3 = 2\)</span> → <code>False</code>。<span class="arithmatex">\(21\)</span> 的 3 进制含数字 <span class="arithmatex">\(2\)</span>，无解。</p>
 <h2 id="complexity">复杂度 (Complexity)<a class="headerlink" href="#complexity" title="Permanent link">#</a></h2>
 <ul>
 <li>Time: <span class="arithmatex">\(O(\log_3 n) \le 17\)</span></li>
@@ -22492,13 +22536,13 @@
 </ul>
 <h2 id="pitfalls">陷阱 (Pitfalls)<a class="headerlink" href="#pitfalls" title="Permanent link">#</a></h2>
 <ul>
-<li><strong>不要枚举幂</strong>：<span class="arithmatex">\(3^0 + 3^1 + \dots\)</span> 子集枚举是 <span class="arithmatex">\(O(2^{17})\)</span>，慢且笨拙。</li>
-<li><strong><span class="arithmatex">\(n = 0\)</span></strong>：题目 <span class="arithmatex">\(n \ge 1\)</span>，无需处理。</li>
-<li><strong>答案不依赖具体表达</strong>：只要存在即可。</li>
+<li><strong>不要枚举幂子集</strong>：背景里那个对约 15 个幂逐个"选/不选"的暴力做法虽然正确，却是 <span class="arithmatex">\(O(2^{17})\)</span>，远超必要；3 进制的一次扫描把它降到 <span class="arithmatex">\(O(\log_3 n)\)</span>。</li>
+<li><strong><span class="arithmatex">\(n = 0\)</span></strong>：题目保证 <span class="arithmatex">\(n \ge 1\)</span>，无需处理。</li>
+<li><strong>答案不依赖具体表达</strong>：只需判断这样的子集是否存在，不必输出它。</li>
 </ul>
 <h2 id="related">相关题目 (Related)<a class="headerlink" href="#related" title="Permanent link">#</a></h2>
 <ul>
-<li><code>#326. Power of Three (off-wiki)</code> — 单纯 3 的幂判定。</li>
+<li><a href="../0326_power-of-three/">#326. Power of Three</a> — 单纯 3 的幂判定。</li>
 <li><a href="../3079_find-the-sum-of-encrypted-integers/">#3079. Find the Sum of Encrypted Integers</a> — 数字按位处理。</li>
 <li><a href="../3334_find-the-maximum-factor-score-of-array/">#3334. Find the Maximum Factor Score of Array</a> — 数论一题。</li>
 </ul>
@@ -22612,6 +22656,8 @@
         <script src="../../../js/mathjax/tex-mml-chtml.js"></script>
       
         <script src="../../../js/mermaid.min.js"></script>
+      
+        <script src="../../../js/featured.js"></script>
       
     
   </body>

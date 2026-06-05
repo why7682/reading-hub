@@ -1466,6 +1466,8 @@
       
         
       
+        
+      
     
     
     
@@ -1521,6 +1523,34 @@
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../featured/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ⭐ Featured（已验证）
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
               
             
               
@@ -1610,10 +1640,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_4" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
         
           
-          <label class="md-nav__link" for="__nav_4_4" id="__nav_4_4_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_5" id="__nav_4_5_label" tabindex="">
             
   
   
@@ -1631,8 +1661,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_4_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_4">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_5">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1915,7 +1945,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -1937,14 +1967,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_4_5" id="__nav_4_5_label" tabindex="">
+              <label class="md-nav__link " for="__nav_4_6" id="__nav_4_6_label" tabindex="">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_5">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_6">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -5321,10 +5351,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_7" checked>
         
           
-          <label class="md-nav__link" for="__nav_4_6" id="__nav_4_6_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_7" id="__nav_4_7_label" tabindex="">
             
   
   
@@ -5342,8 +5372,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_4_6">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_7_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4_7">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -22467,16 +22497,29 @@
 <h2 id="problem">Problem<a class="headerlink" href="#problem" title="Permanent link">#</a></h2>
 <p>有 <span class="arithmatex">\(n \leq 10\)</span> 个人和 40 顶帽子（编号 1..40）。给 <code>hats[i]</code> 表示第 <span class="arithmatex">\(i\)</span> 个人喜欢的帽子集合。求每人戴一顶不同帽子的方案数（mod <span class="arithmatex">\(10^9 + 7\)</span>）。</p>
 <h2 id="background">背景 (Background)<a class="headerlink" href="#background" title="Permanent link">#</a></h2>
-<p>这是<strong>带约束的二分图完美匹配计数</strong>：左部 <span class="arithmatex">\(n\)</span> 人，右部 40 顶帽子，匹配数 = 完美匹配数。一般二分图完美匹配计数是 <span class="arithmatex">\(\#\mathrm{P}\)</span>-hard（即 permanent 计算，Valiant 1979），但本题左部很小（<span class="arithmatex">\(n \leq 10\)</span>）⇒ 可对左部状压；右部需被遍历但<strong>不</strong>状压（<span class="arithmatex">\(2^{40}\)</span> 不可行）。这是 "swap which side to bitmask" 的经典 trick。</p>
+<p>先把约束说清楚：<span class="arithmatex">\(n\)</span> 个人，每人必须戴一顶他喜欢的帽子，且任意两人不能戴同一顶。这正是<strong>二分图完美匹配的计数</strong>——左部 <span class="arithmatex">\(n\)</span> 个人，右部 40 顶帽子，人 <span class="arithmatex">\(i\)</span> 与帽子 <span class="arithmatex">\(h\)</span> 之间有边当且仅当 <span class="arithmatex">\(h \in\)</span> <code>hats[i]</code>；一个合法方案就是覆盖所有人的一组匹配。</p>
+<p>为什么这个识别有用：它告诉我们问题的难度上界。一般二分图完美匹配计数等价于 0-1 矩阵 permanent 的计算，是 <span class="arithmatex">\(\#\mathrm{P}\)</span>-hard（Valiant 1979）。所以不要指望多项式精确算法。能救我们的只有一个特殊条件——<strong>左部规模 <span class="arithmatex">\(n \leq 10\)</span> 极小</strong>。下面整条解法都从这个不对称性长出来。</p>
 <h2 id="formulation">形式化 (Formulation)<a class="headerlink" href="#formulation" title="Permanent link">#</a></h2>
-<p>设 <span class="arithmatex">\(P_h \subseteq \{0, \dots, n-1\}\)</span> 为喜欢帽子 <span class="arithmatex">\(h\)</span> 的人集合（由 <code>hats</code> 反转得到）。求：</p>
-<div class="arithmatex">\[f(\text{mask}, h) = \#\bigl\{\text{把 mask 中的人各分配一顶 hats } \leq h \text{ 的方案}\bigr\}.\]</div>
-<p>转移：</p>
-<div class="arithmatex">\[f(\text{mask}, h) = f(\text{mask}, h-1) + \sum_{p \in P_h \cap \text{mask}} f(\text{mask} \setminus \{p\}, h-1).\]</div>
-<p>答案 <span class="arithmatex">\(= f(2^n - 1, 40)\)</span>。</p>
+<p><strong>先试最自然的方向。</strong> 既然要逐步构造匹配，最直接的想法是按人来 DP：依次考虑第 <span class="arithmatex">\(0, 1, \dots, n-1\)</span> 个人，给每人挑一顶他喜欢且尚未被占用的帽子。要保证"未被占用"，状态里必须记录<strong>哪些帽子已经用掉了</strong>。于是状态是</p>
+<div class="arithmatex">\[g(i, S) = \text{前 } i \text{ 个人已分配、占用帽子集合恰为 } S \text{ 的方案数},\qquad S \subseteq \{1,\dots,40\}.\]</div>
+<p>这个 DP 是对的，但 <span class="arithmatex">\(S\)</span> 的取值有 <span class="arithmatex">\(2^{40} \approx 10^{12}\)</span> 种。状态空间直接爆炸——按人 DP 的死因，是它要把一个 40 元集合塞进状态。</p>
+<p><strong>问题出在被状压的是右部。</strong> 注意一个不对称：被记录的帽子集合有 40 个元素，而人只有 <span class="arithmatex">\(n \leq 10\)</span> 个。如果反过来，让状态记录<strong>哪些人已经分配好了</strong>，集合只有 <span class="arithmatex">\(n\)</span> 个元素，状态数 <span class="arithmatex">\(2^n \leq 1024\)</span>，完全可行。这就要求：枚举的主循环不再是人，而是帽子；状态里压的是人。</p>
+<p><strong>为什么换成枚举帽子是合法的。</strong> 把帽子按编号 <span class="arithmatex">\(1, 2, \dots, 40\)</span> 顺序处理，每顶帽子做一个二选一决定：要么不发给任何人，要么发给某个喜欢它且尚未分配的人。逐帽决策天然保证每顶帽子至多用一次（每顶只被考虑一轮）；而"尚未分配"这一条件，只需要知道当前已分配的人集合即可判断——这正是 <span class="arithmatex">\(2^n\)</span> 状态所携带的全部信息。处理完所有帽子后，若全体 <span class="arithmatex">\(n\)</span> 人都已分配，就得到一个合法方案。</p>
+<p><strong>做一步数据变换。</strong> 决策"帽子 <span class="arithmatex">\(h\)</span> 发给谁"需要快速回答：谁喜欢帽子 <span class="arithmatex">\(h\)</span>？原始 <code>hats</code> 是按人索引的（人 → 帽子集合），回答这个问题要遍历所有人。把它反转成按帽子索引一次即可：</p>
+<div class="arithmatex">\[P_h = \{\,i : h \in \mathtt{hats}[i]\,\} \subseteq \{0, \dots, n-1\}.\]</div>
+<p>即喜欢帽子 <span class="arithmatex">\(h\)</span> 的人集合。<span class="arithmatex">\(P_h\)</span> 用一个 <span class="arithmatex">\(n\)</span> 位 bitmask 表示，与状态同构，转移时可直接位运算。</p>
+<p><strong>直觉先行。</strong> 现在定义状态。把帽子 <span class="arithmatex">\(1..h\)</span> 的发放决定都做完之后，对后续决策唯一有影响的，就是<strong>哪些人已经戴上了帽子</strong>——具体是谁戴的哪顶已经无关紧要。所以用一个人集合 mask 概括历史就够了。令</p>
+<div class="arithmatex">\[f(\text{mask}, h) = \#\bigl\{\text{用帽子 } 1..h \text{，使恰好 mask 中的人各戴一顶不同帽子的方案}\bigr\}. \tag{1}\]</div>
+<p>转移按帽子 <span class="arithmatex">\(h\)</span> 的那个二选一决定展开。处理帽子 <span class="arithmatex">\(h\)</span> 时，要么不发（继承 <span class="arithmatex">\(f(\cdot, h-1)\)</span>），要么发给某个 <span class="arithmatex">\(p \in P_h\)</span> 且 <span class="arithmatex">\(p\)</span> 在 <span class="arithmatex">\(h-1\)</span> 阶段尚未分配（即 <span class="arithmatex">\(p \in \text{mask}\)</span>、且 mask 去掉 <span class="arithmatex">\(p\)</span> 后是上一阶段的合法状态）：</p>
+<div class="arithmatex">\[f(\text{mask}, h) = f(\text{mask}, h-1) + \sum_{p \in P_h \cap \text{mask}} f(\text{mask} \setminus \{p\},\, h-1). \tag{2}\]</div>
+<p>边界：<span class="arithmatex">\(f(0, 0) = 1\)</span>（没人分配是唯一的空方案）。答案 <span class="arithmatex">\(= f(2^n - 1, 40)\)</span>，即全体 <span class="arithmatex">\(n\)</span> 人都戴上帽子。</p>
 <h2 id="approach">数据结构 / 想法 (Approach)<a class="headerlink" href="#approach" title="Permanent link">#</a></h2>
-<p><strong>为何按帽子而非按人 DP</strong>：若按人 DP，状态需要"已用哪些帽子" → <span class="arithmatex">\(2^{40}\)</span> 不可行。按帽子枚举时，每顶帽子至多分给一人，所以 outer loop 是帽子顺序、inner 是人 mask（<span class="arithmatex">\(2^{10} = 1024\)</span>）。这一交换是关键。</p>
-<p><strong>关键不变量</strong>：枚举到帽子 <span class="arithmatex">\(h\)</span> 时，<span class="arithmatex">\(f(\cdot, h)\)</span> 只允许使用前 <span class="arithmatex">\(h\)</span> 顶帽子；每个人在最终 mask 中恰被分配过一次（mask 的 bit 表示"已戴上"）。</p>
+<p>递推式 (2) 可以直接迭代实现。下面把状态表示、更新次序定下来，每个实现选择都对应 (2) 的一个结构特征。</p>
+<p>把 <span class="arithmatex">\(h\)</span> 这一维滚动掉：用一维数组 <code>dp[mask]</code> 保存当前已处理帽子下 <span class="arithmatex">\(f(\text{mask}, h)\)</span>，逐帽更新。对应 (2) 的两项：</p>
+<ul>
+<li><strong>第一项 <span class="arithmatex">\(f(\text{mask}, h-1)\)</span>（不发帽子 <span class="arithmatex">\(h\)</span>）</strong> 由 <code>new_dp = dp[:]</code> 实现——把上一阶段的值整份拷过来，作为"这一轮没人拿帽子 <span class="arithmatex">\(h\)</span>"的默认计数。若写成 <code>new_dp = [0]*...</code> 就丢掉了这个合法选项。</li>
+<li><strong>第二项 <span class="arithmatex">\(\sum_{p}\)</span>（发帽子 <span class="arithmatex">\(h\)</span> 给某个 <span class="arithmatex">\(p\)</span>）</strong> 由内层遍历实现。对每个非空状态 <code>dp[mask]</code>，可发对象是 <code>avail = pm &amp; ~mask</code>（喜欢 <span class="arithmatex">\(h\)</span> 且尚未分配的人），逐位取出 <span class="arithmatex">\(p\)</span>，累加到 <code>new_dp[mask | p]</code>。</li>
+</ul>
 <div class="language-python highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">Solution</span><span class="p">:</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">numberWays</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">hats</span><span class="p">):</span>
         <span class="n">MOD</span> <span class="o">=</span> <span class="mi">10</span><span class="o">**</span><span class="mi">9</span> <span class="o">+</span> <span class="mi">7</span>
@@ -22508,29 +22551,53 @@
                     <span class="n">bits</span> <span class="o">^=</span> <span class="n">p</span>
             <span class="n">dp</span> <span class="o">=</span> <span class="n">new_dp</span>
         <span class="k">return</span> <span class="n">dp</span><span class="p">[</span><span class="n">FULL</span><span class="p">]</span>
-
-<span class="c1"># Trace 样例 2: hats=[[3,5,1],[3,5]], n=2, FULL=3</span>
-<span class="c1"># people_of_hat: 1→{0}=01, 3→{0,1}=11, 5→{0,1}=11</span>
-<span class="c1"># h=1: pm=01. dp[0]=1 → new_dp[01]+=1 → dp=[1,1,0,0]</span>
-<span class="c1"># h=3: pm=11. mask=0 dp=1 → new_dp[01]+=1, new_dp[10]+=1</span>
-<span class="c1">#             mask=01 dp=1 → avail=11&amp;~01=10 → new_dp[11]+=1</span>
-<span class="c1">#             → dp=[1,2,1,1]</span>
-<span class="c1"># h=5: pm=11. mask=0:1→01,10; mask=01:1 avail=10→11+=1; mask=10:1 avail=01→11+=1; mask=11:1 (no avail)</span>
-<span class="c1">#             new_dp start=[1,2,1,1] → [1,3,2,1+1+1]=[1,3,2,3]</span>
-<span class="c1"># 结果 dp[3]=3? 但答案应为 4. 重新走 trace...</span>
 </code></pre></div>
-<p>让我重 trace：h=5 时 dp 进入是 <code>[1,2,1,1]</code>，new_dp 初始拷贝同样。mask=0 dp=1 avail=11 → new_dp[01]+=1=3, new_dp[10]+=1=2。mask=01 dp=2 avail=10 → new_dp[11]+=2=3。mask=10 dp=1 avail=01 → new_dp[11]+=1=4。mask=11 dp=1 avail=0 跳过。最终 dp[3]=4 ✓。（我上一段算错了，代码逻辑没问题。）</p>
+<p><strong>验证转移正确性（样例 2）</strong>：<code>hats=[[3,5,1],[3,5]]</code>，<span class="arithmatex">\(n=2\)</span>，<code>FULL=3</code>。反转得 <span class="arithmatex">\(P_1=\{0\}=\mathtt{01}\)</span>，<span class="arithmatex">\(P_3=\{0,1\}=\mathtt{11}\)</span>，<span class="arithmatex">\(P_5=\{0,1\}=\mathtt{11}\)</span>，其余 <span class="arithmatex">\(P_h=\varnothing\)</span>。逐帽更新 <code>dp</code>（按帽子编号顺序，跳过空层）：</p>
+<table>
+<thead>
+<tr>
+<th>处理完帽子</th>
+<th><code>dp[00] dp[01] dp[10] dp[11]</code></th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>初始</td>
+<td><code>1 0 0 0</code></td>
+<td>仅空方案</td>
+</tr>
+<tr>
+<td><span class="arithmatex">\(h=1\)</span>，<span class="arithmatex">\(pm=\mathtt{01}\)</span></td>
+<td><code>1 1 0 0</code></td>
+<td>mask=00 发给 0 → <code>dp[01]+=1</code></td>
+</tr>
+<tr>
+<td><span class="arithmatex">\(h=3\)</span>，<span class="arithmatex">\(pm=\mathtt{11}\)</span></td>
+<td><code>1 2 1 1</code></td>
+<td>mask=00 → <code>dp[01]</code>,<code>dp[10]</code>；mask=01 → <code>dp[11]</code></td>
+</tr>
+<tr>
+<td><span class="arithmatex">\(h=5\)</span>，<span class="arithmatex">\(pm=\mathtt{11}\)</span></td>
+<td><code>1 3 2 4</code></td>
+<td>mask=00 → <code>dp[01]</code>,<code>dp[10]</code>；mask=01 → <code>dp[11]</code>；mask=10 → <code>dp[11]</code></td>
+</tr>
+</tbody>
+</table>
+<p>最终 <code>dp[FULL] = dp[11] = 4</code>，与官方答案一致。每一行都对应 (2) 中"继承上一层 + 给可用的人各加一笔"两步。</p>
 <h2 id="complexity">复杂度 (Complexity)<a class="headerlink" href="#complexity" title="Permanent link">#</a></h2>
 <ul>
 <li>Time: <span class="arithmatex">\(O(40 \cdot 2^n \cdot n)\)</span>。每顶帽子枚举所有 mask，每个 mask 枚举 avail 中至多 <span class="arithmatex">\(n\)</span> 个 bit。<span class="arithmatex">\(40 \cdot 1024 \cdot 10 \approx 4 \times 10^5\)</span>。</li>
 <li>Space: <span class="arithmatex">\(O(2^n)\)</span>。</li>
 </ul>
 <h2 id="pitfalls">陷阱 (Pitfalls)<a class="headerlink" href="#pitfalls" title="Permanent link">#</a></h2>
+<p>每个陷阱都锚定到上面推导的某一步：</p>
 <ul>
-<li><strong>DP 维度搞反</strong>：用 <span class="arithmatex">\(2^n\)</span> 状压而非 <span class="arithmatex">\(2^{40}\)</span> 是核心。</li>
-<li><strong>同一帧内 in-place 更新</strong>：会重复使用同一顶帽子。必须用 <code>new_dp</code>（或反向 mask 遍历）。</li>
-<li><strong>跳过未被任何人喜欢的帽子</strong>：<code>pm == 0</code> 时整层跳过，否则白白拷贝数组。</li>
-<li><strong>MOD</strong>：每次累加后 <code>% MOD</code>，否则 Python 虽不溢出但慢。</li>
+<li><strong>状压维度搞反（形式化第一步）</strong>：按人 DP 要状压 40 顶帽子 → <span class="arithmatex">\(2^{40}\)</span> 不可行。必须状压 <span class="arithmatex">\(n \leq 10\)</span> 个人、枚举帽子。整条解法的命门就是这个不对称性。</li>
+<li><strong>同一帧内 in-place 更新（转移第二项）</strong>：若直接在 <code>dp</code> 上原地累加而非用 <code>new_dp</code>，同一顶帽子会在一轮内被反复发放（实测样例 1 由 24 膨胀到 840）。必须用 <code>new_dp</code>（或反向 mask 遍历）隔开"读上一层"与"写本层"。</li>
+<li><strong>拷贝 vs 清零（转移第一项）</strong>：<code>new_dp = dp[:]</code> 编码的是"帽子 <span class="arithmatex">\(h\)</span> 谁都不发"这个合法选项；写成 <code>[0]*...</code> 会丢掉它，结果偏小。</li>
+<li><strong>跳过无人喜欢的帽子</strong>：<code>pm == 0</code> 时整层跳过，否则白白拷贝数组。</li>
+<li><strong>MOD</strong>：每次累加后 <code>% MOD</code>，否则 Python 虽不溢出但大整数运算拖慢速度。</li>
 </ul>
 <h2 id="related">相关题目 (Related)<a class="headerlink" href="#related" title="Permanent link">#</a></h2>
 <ul>
@@ -22649,6 +22716,8 @@
         <script src="../../../js/mathjax/tex-mml-chtml.js"></script>
       
         <script src="../../../js/mermaid.min.js"></script>
+      
+        <script src="../../../js/featured.js"></script>
       
     
   </body>

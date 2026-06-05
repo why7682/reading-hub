@@ -1466,6 +1466,8 @@
       
         
       
+        
+      
     
     
     
@@ -1521,6 +1523,34 @@
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../featured/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ⭐ Featured（已验证）
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
               
             
               
@@ -1610,10 +1640,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_4" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
         
           
-          <label class="md-nav__link" for="__nav_4_4" id="__nav_4_4_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_5" id="__nav_4_5_label" tabindex="">
             
   
   
@@ -1631,8 +1661,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_4_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_4">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_5">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1915,7 +1945,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -1937,14 +1967,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_4_5" id="__nav_4_5_label" tabindex="">
+              <label class="md-nav__link " for="__nav_4_6" id="__nav_4_6_label" tabindex="">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_5">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_6">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -5321,10 +5351,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_7" checked>
         
           
-          <label class="md-nav__link" for="__nav_4_6" id="__nav_4_6_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_7" id="__nav_4_7_label" tabindex="">
             
   
   
@@ -5342,8 +5372,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_4_6">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_7_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4_7">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -11396,6 +11426,34 @@
       
     </span>
   </a>
+  
+    <nav class="md-nav" aria-label="数据结构 / 想法 (Approach)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-k" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        解法 1：回溯枚举 + 取第 \(k\)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2unranking" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        解法 2：计数定位（unranking）
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -22399,6 +22457,34 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="数据结构 / 想法 (Approach)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-k" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        解法 1：回溯枚举 + 取第 \(k\)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2unranking" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        解法 2：计数定位（unranking）
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -22467,12 +22553,28 @@
 <h2 id="problem">Problem<a class="headerlink" href="#problem" title="Permanent link">#</a></h2>
 <p>"Happy 串"定义：仅含 <code>'a','b','c'</code>，且任何相邻两字符不同。给定 <span class="arithmatex">\(n \in [1, 10], k \in [1, 100]\)</span>，输出按字典序排列的所有长度为 <span class="arithmatex">\(n\)</span> 的 happy 串中的第 <span class="arithmatex">\(k\)</span> 个；不存在则输出 <code>""</code>。</p>
 <h2 id="background">背景 (Background)<a class="headerlink" href="#background" title="Permanent link">#</a></h2>
-<p>合法集合的大小：长度 <span class="arithmatex">\(n\)</span> 的 happy 串共 <span class="arithmatex">\(3 \cdot 2^{n-1}\)</span> 个（首字 3 选 1，之后每位 2 选 1）。在字典序下可视为一棵深度 <span class="arithmatex">\(n\)</span> 的"非满三叉树"：根有 3 个孩子 <code>a/b/c</code>，之后每节点有 2 个孩子（不能选与父相同）。</p>
-<p><strong>关键洞察</strong>：第 <span class="arithmatex">\(k\)</span> 个不必枚举所有，可以<strong>计数定位</strong>——每个分支下的子树大小已知（<span class="arithmatex">\(2^{n-1-d}\)</span>），按二分思路下行。</p>
+<p>第一反应是直接生成。逐位填字符，每填一位就检查"不与前一位相同"，把所有合法串收集起来排序，取第 <span class="arithmatex">\(k\)</span> 个。这条路一定对，而且在本题范围内（<span class="arithmatex">\(n \le 10\)</span>）足够快——后面会给出实现。</p>
+<p>但它做了一件浪费的事：为了拿第 <span class="arithmatex">\(k\)</span> 个，它生成了全部串。当 <span class="arithmatex">\(k\)</span> 很小、<span class="arithmatex">\(n\)</span> 很大时，前 <span class="arithmatex">\(k-1\)</span> 个之外的串全是白生成的。于是真正的问题浮现出来：</p>
+<blockquote>
+<p>能不能不生成全部串，直接算出第 <span class="arithmatex">\(k\)</span> 个长什么样？</p>
+</blockquote>
+<p>这正是组合学里的 <strong>unranking</strong> 问题——给定一个有序集合和一个下标，不枚举就定位元素。能不能 unrank，取决于我们能否对"任意前缀之下还有多少个合法串"做出<strong>精确计数</strong>。本题的合法串恰好可以精确计数，所以 unranking 可行，下面就从这个计数出发把第 <span class="arithmatex">\(k\)</span> 个推导出来。</p>
 <h2 id="formulation">形式化 (Formulation)<a class="headerlink" href="#formulation" title="Permanent link">#</a></h2>
-<p>记 <span class="arithmatex">\(H_n\)</span> 为长度 <span class="arithmatex">\(n\)</span> 的 happy 串集合，<span class="arithmatex">\(|H_n| = 3 \cdot 2^{n-1}\)</span>。在字典序下排序，输出第 <span class="arithmatex">\(k-1\)</span> 个（0-indexed）或 <code>""</code> 若 <span class="arithmatex">\(k &gt; |H_n|\)</span>。</p>
+<p>记 <span class="arithmatex">\(H_n\)</span> 为长度 <span class="arithmatex">\(n\)</span> 的 happy 串集合，按字典序（<code>'a' &lt; 'b' &lt; 'c'</code>）排序后，目标是取其中第 <span class="arithmatex">\(k\)</span> 个（1-indexed），若 <span class="arithmatex">\(k &gt; |H_n|\)</span> 则输出 <code>""</code>。</p>
+<p>unranking 的全部依据是下面这个计数引理。先说直觉：一个 happy 串是逐位决定的；除首位外，每一位的约束只有一条——不等于前一位。三个字符里被禁掉恰好一个，于是每一位都剩 <strong>2</strong> 个候选，且这 2 个候选与更前面的历史无关。这个"每步 2 选 1 且彼此独立"的结构，让前缀之下的合法串数只取决于<strong>还剩几位</strong>，与前缀内容无关。</p>
+<p><strong>引理（子树计数）.</strong> 固定任意一个长度为 <span class="arithmatex">\(d\)</span>（<span class="arithmatex">\(1 \le d \le n\)</span>）的合法前缀，其后能补成的长度 <span class="arithmatex">\(n\)</span> 合法串的个数为</p>
+<div class="arithmatex">\[
+N(d) = 2^{\,n-d}. \tag{1}
+\]</div>
+<p><strong>证明.</strong> 前缀已定，第 <span class="arithmatex">\(d+1, d+2, \dots, n\)</span> 共 <span class="arithmatex">\(n-d\)</span> 位待填。每填一位，唯一的约束是不等于刚填的前一位，故每位恰有 <span class="arithmatex">\(3-1 = 2\)</span> 个合法选择，且选择之间相互独立。由乘法原理，补全方式共 <span class="arithmatex">\(2^{n-d}\)</span> 种。<span class="arithmatex">\(\square\)</span></p>
+<p>把引理用在首位上即得总数。首位无"前一位"约束，3 个字符都可选；选定首位后剩 <span class="arithmatex">\(n-1\)</span> 位，由 <span class="arithmatex">\((1)\)</span> 各有 <span class="arithmatex">\(2^{n-1}\)</span> 种补全：</p>
+<div class="arithmatex">\[
+|H_n| = 3 \cdot N(1) = 3 \cdot 2^{\,n-1}. \tag{2}
+\]</div>
+<p>公式 <span class="arithmatex">\((1)\)</span> 是整个解法的脊柱：它说<strong>同一深度下每个分支带着完全相同数量的串</strong>。下一节用这个等分性把"第 <span class="arithmatex">\(k\)</span> 个"逐位定位。</p>
 <h2 id="approach">数据结构 / 想法 (Approach)<a class="headerlink" href="#approach" title="Permanent link">#</a></h2>
-<p><strong>解法 1：回溯枚举 + 取第 <span class="arithmatex">\(k\)</span></strong>（简单直观）</p>
+<h3 id="1-k">解法 1：回溯枚举 + 取第 <span class="arithmatex">\(k\)</span><a class="headerlink" href="#1-k" title="Permanent link">#</a></h3>
+<p>最直接的实现：按 <code>'a','b','c'</code> 的顺序回溯填位。因为每层都按升序尝试字符，先完成的串字典序更小，所以收集顺序天然就是字典序，无需额外排序。收集到第 <span class="arithmatex">\(k\)</span> 个即可提前停止。</p>
 <div class="language-python highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">Solution</span><span class="p">:</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">getHappyString</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">k</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
         <span class="c1"># Time: O(n * 2^n), Space: O(n * 2^n)</span>
@@ -22491,53 +22593,91 @@
         <span class="n">bt</span><span class="p">([])</span>
         <span class="k">return</span> <span class="n">res</span><span class="p">[</span><span class="n">k</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="k">if</span> <span class="n">k</span> <span class="o">&lt;=</span> <span class="nb">len</span><span class="p">(</span><span class="n">res</span><span class="p">)</span> <span class="k">else</span> <span class="s2">&quot;&quot;</span>
 </code></pre></div>
-<p>按字典序枚举（<code>'abc'</code> 顺序保证）。剪枝 <code>len(res) &gt;= k</code> 可提前终止。最坏 <span class="arithmatex">\(O(n \cdot |H_n|)\)</span>。</p>
-<p><strong>解法 2：计数定位（<span class="arithmatex">\(O(n)\)</span> 优秀但更易错）</strong></p>
-<p>总数 <span class="arithmatex">\(3 \cdot 2^{n-1}\)</span>。若 $k &gt; $ 总数则 <code>""</code>。否则首字：每个首字下子树 <span class="arithmatex">\(2^{n-1}\)</span> 个；<span class="arithmatex">\(k\)</span> 落在哪个区间决定首字。后续每位有 2 个候选（按字典序），各自子树大小 <span class="arithmatex">\(2^{n-d-1}\)</span>；同理定位。</p>
+<p><code>len(res) &gt;= k</code> 的剪枝让搜索在凑够 <span class="arithmatex">\(k\)</span> 个后停手，平均代价约 <span class="arithmatex">\(O(nk)\)</span>；但最坏情形（<span class="arithmatex">\(k \ge |H_n|\)</span>，须遍历全部）退化为 <span class="arithmatex">\(O(n \cdot |H_n|) = O(n \cdot 2^n)\)</span>。它的不足不是会超时——在 <span class="arithmatex">\(n \le 10\)</span> 下不会——而是它对"第 <span class="arithmatex">\(k\)</span> 个"这个目标毫无利用：它把前 <span class="arithmatex">\(k-1\)</span> 个串整个物化了一遍，只为了数到 <span class="arithmatex">\(k\)</span>。公式 <span class="arithmatex">\((1)\)</span> 给了我们跳过这步的工具。</p>
+<h3 id="2unranking">解法 2：计数定位（unranking）<a class="headerlink" href="#2unranking" title="Permanent link">#</a></h3>
+<p>直觉先行。把答案串逐位确定。在某一位上有若干个候选字符，按字典序排开；由引理 <span class="arithmatex">\((1)\)</span>，每个候选之下挂着<strong>等量</strong>的合法串。于是把剩余的串想象成一段连续编号 <span class="arithmatex">\(0,1,\dots\)</span>：若每个分支恰含 <span class="arithmatex">\(s\)</span> 个串，则编号落在 <span class="arithmatex">\([0,s)\)</span> 的属于第 0 个候选，<span class="arithmatex">\([s,2s)\)</span> 属于第 1 个，依此类推。给定 0-indexed 的目标编号 <span class="arithmatex">\(k\)</span>，它所属的候选就是 <span class="arithmatex">\(\lfloor k/s \rfloor\)</span>；选定后，把 <span class="arithmatex">\(k\)</span> 减去前面分支占掉的编号（即 <span class="arithmatex">\(k \bmod s\)</span>），进入该分支继续定位下一位。</p>
+<p>这把一个查找变成了 <span class="arithmatex">\(n\)</span> 次整数除法。需要先把 1-indexed 的 <span class="arithmatex">\(k\)</span> 转成 0-indexed：第 1 个串对应编号 0，故令 <span class="arithmatex">\(k \leftarrow k-1\)</span>，使"第 <span class="arithmatex">\(k\)</span> 个"与"编号 <span class="arithmatex">\(k\)</span>"对齐。</p>
+<p>逐位定位规则如下。设当前在第 <span class="arithmatex">\(d\)</span> 位（<span class="arithmatex">\(1 \le d \le n\)</span>），由 <span class="arithmatex">\((1)\)</span>，此位每个候选之下的子树大小为</p>
+<div class="arithmatex">\[
+s_d = N(d) = 2^{\,n-d}. \tag{3}
+\]</div>
+<ul>
+<li><strong>首位 <span class="arithmatex">\(d=1\)</span></strong>：3 个候选 <code>a,b,c</code>，各带 <span class="arithmatex">\(s_1 = 2^{n-1}\)</span> 个串。选第 <span class="arithmatex">\(\lfloor k/s_1 \rfloor\)</span> 个候选，更新 <span class="arithmatex">\(k \leftarrow k \bmod s_1\)</span>。</li>
+<li><strong>后续位 <span class="arithmatex">\(d&gt;1\)</span></strong>：候选为去掉前一字符后按字典序排列的 2 个字符，各带 <span class="arithmatex">\(s_d = 2^{n-d}\)</span> 个串。选第 <span class="arithmatex">\(\lfloor k/s_d \rfloor\)</span> 个候选，更新 <span class="arithmatex">\(k \leftarrow k \bmod s_d\)</span>。</li>
+</ul>
 <div class="language-python highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">Solution</span><span class="p">:</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">getHappyString</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">k</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
         <span class="c1"># Time: O(n), Space: O(n)</span>
         <span class="n">total</span> <span class="o">=</span> <span class="mi">3</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="p">(</span><span class="n">n</span> <span class="o">-</span> <span class="mi">1</span><span class="p">))</span>
         <span class="k">if</span> <span class="n">k</span> <span class="o">&gt;</span> <span class="n">total</span><span class="p">:</span>
             <span class="k">return</span> <span class="s2">&quot;&quot;</span>
-        <span class="n">k</span> <span class="o">-=</span> <span class="mi">1</span>  <span class="c1"># 0-indexed</span>
-        <span class="n">size</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="p">(</span><span class="n">n</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
-        <span class="c1"># first char</span>
-        <span class="n">first_idx</span> <span class="o">=</span> <span class="n">k</span> <span class="o">//</span> <span class="n">size</span>
+        <span class="n">k</span> <span class="o">-=</span> <span class="mi">1</span>  <span class="c1"># 1-indexed -&gt; 0-indexed: &quot;第 k 个&quot; 对齐到 &quot;编号 k&quot;</span>
+        <span class="n">size</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="p">(</span><span class="n">n</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>        <span class="c1"># s_1 = 2^{n-1}</span>
+        <span class="n">first_idx</span> <span class="o">=</span> <span class="n">k</span> <span class="o">//</span> <span class="n">size</span>      <span class="c1"># 首位 3 选 1</span>
         <span class="n">res</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;abc&#39;</span><span class="p">[</span><span class="n">first_idx</span><span class="p">]]</span>
         <span class="n">k</span> <span class="o">%=</span> <span class="n">size</span>
-        <span class="n">size</span> <span class="o">&gt;&gt;=</span> <span class="mi">1</span>
-        <span class="c1"># subsequent chars</span>
-        <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
+        <span class="n">size</span> <span class="o">&gt;&gt;=</span> <span class="mi">1</span>                 <span class="c1"># s_2 = 2^{n-2}</span>
+        <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>      <span class="c1"># 填第 2..n 位</span>
             <span class="n">last</span> <span class="o">=</span> <span class="n">res</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
-            <span class="c1"># next two chars in dict order, excluding last</span>
-            <span class="n">cands</span> <span class="o">=</span> <span class="p">[</span><span class="n">c</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="s1">&#39;abc&#39;</span> <span class="k">if</span> <span class="n">c</span> <span class="o">!=</span> <span class="n">last</span><span class="p">]</span>  <span class="c1"># 2 items, sorted</span>
-            <span class="n">res</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">cands</span><span class="p">[</span><span class="n">k</span> <span class="o">//</span> <span class="n">size</span> <span class="k">if</span> <span class="n">size</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="k">else</span> <span class="mi">0</span><span class="p">])</span>
-            <span class="k">if</span> <span class="n">size</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
-                <span class="n">k</span> <span class="o">%=</span> <span class="n">size</span>
-                <span class="n">size</span> <span class="o">&gt;&gt;=</span> <span class="mi">1</span>
+            <span class="n">cands</span> <span class="o">=</span> <span class="p">[</span><span class="n">c</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="s1">&#39;abc&#39;</span> <span class="k">if</span> <span class="n">c</span> <span class="o">!=</span> <span class="n">last</span><span class="p">]</span>  <span class="c1"># 2 个候选, 已按字典序</span>
+            <span class="n">res</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">cands</span><span class="p">[</span><span class="n">k</span> <span class="o">//</span> <span class="n">size</span><span class="p">])</span>
+            <span class="n">k</span> <span class="o">%=</span> <span class="n">size</span>
+            <span class="n">size</span> <span class="o">&gt;&gt;=</span> <span class="mi">1</span>
         <span class="k">return</span> <span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">res</span><span class="p">)</span>
 </code></pre></div>
-<p><strong>注意</strong>：最后一位 <span class="arithmatex">\(d = n-1\)</span> 时 <code>size = 0</code>，需要特判（直接选 <code>cands[0]</code>，因为 <span class="arithmatex">\(k\)</span> 已被消耗到 0）。</p>
-<p>样例验证：
-- <code>n=1, k=3</code>. total=3, k-1=2, size=1, first_idx=2, res=['c']. 循环不执行。返回 "c" ✓.
-- <code>n=1, k=4</code>. total=3 &lt; 4 → "" ✓.
-- <code>n=3, k=9</code>. total=12, k-1=8, size=4. first_idx=8//4=2 → 'c'. k=0, size=2. 
-  - d=1: last='c', cands=['a','b']. k//size = 0//2 = 0 → 'a'. k=0, size=1.
-  - d=2: last='a', cands=['b','c']. k//size = 0 → 'b'? but expected "cab".</p>
-<p>等等——我的算法在最后取了 'b'，结果是 "cab"——对，"cab" 正是答案 ✓.</p>
+<p>代码用 <code>size &gt;&gt;= 1</code> 同步维护 <span class="arithmatex">\(s_d\)</span>：进入循环填第 <span class="arithmatex">\(d\)</span> 位前，<code>size</code> 恰为 <span class="arithmatex">\(s_d = 2^{n-d}\)</span>。最后一位 <span class="arithmatex">\(d=n\)</span> 时 <span class="arithmatex">\(s_n = 2^{n-n} = 2^0 = 1\)</span>——注意它是 <strong>1，不是 0</strong>：每个候选之下"只剩 0 位待填"意味着恰好 1 个串（前缀本身）。此时 <code>k // 1 = k</code>，而经过前面各位的取模，<span class="arithmatex">\(k\)</span> 已被消耗到 0，故选 <code>cands[0]</code>，与字典序最小一致。循环结束后 <code>size</code> 才右移成 0，但那时已无人使用它。</p>
+<p><strong>样例验证（<span class="arithmatex">\(n=3, k=9\)</span>，期望 <code>"cab"</code>）.</strong> <span class="arithmatex">\(|H_3| = 3 \cdot 2^2 = 12 \ge 9\)</span>，合法。置 <span class="arithmatex">\(k \leftarrow 8\)</span>。</p>
+<table>
+<thead>
+<tr>
+<th>步骤</th>
+<th><code>size</code> <span class="arithmatex">\(=s_d\)</span></th>
+<th>候选</th>
+<th><span class="arithmatex">\(\lfloor k/s_d \rfloor\)</span></th>
+<th>选中</th>
+<th>新 <span class="arithmatex">\(k = k \bmod s_d\)</span></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><span class="arithmatex">\(d=1\)</span></td>
+<td>4</td>
+<td><code>a,b,c</code></td>
+<td><span class="arithmatex">\(8/4=2\)</span></td>
+<td><code>c</code></td>
+<td><span class="arithmatex">\(8 \bmod 4 = 0\)</span></td>
+</tr>
+<tr>
+<td><span class="arithmatex">\(d=2\)</span></td>
+<td>2</td>
+<td><code>a,b</code>（去 <code>c</code>）</td>
+<td><span class="arithmatex">\(0/2=0\)</span></td>
+<td><code>a</code></td>
+<td><span class="arithmatex">\(0\)</span></td>
+</tr>
+<tr>
+<td><span class="arithmatex">\(d=3\)</span></td>
+<td>1</td>
+<td><code>b,c</code>（去 <code>a</code>）</td>
+<td><span class="arithmatex">\(0/1=0\)</span></td>
+<td><code>b</code></td>
+<td><span class="arithmatex">\(0\)</span></td>
+</tr>
+</tbody>
+</table>
+<p>输出 <code>"cab"</code>，与期望一致。该 trace 同时确认了两个边界：首位用 3 路划分、末位 <span class="arithmatex">\(s_3=1\)</span> 正常工作。</p>
 <h2 id="complexity">复杂度 (Complexity)<a class="headerlink" href="#complexity" title="Permanent link">#</a></h2>
 <ul>
-<li>解法 1: Time <span class="arithmatex">\(O(n \cdot |H_n|) = O(n \cdot 3 \cdot 2^{n-1})\)</span>，剪枝后 <span class="arithmatex">\(O(nk)\)</span></li>
-<li>解法 2: Time <span class="arithmatex">\(O(n)\)</span>, Space <span class="arithmatex">\(O(n)\)</span></li>
-<li><span class="arithmatex">\(n \leq 10\)</span>，两种都瞬间通过。</li>
+<li>解法 1：Time <span class="arithmatex">\(O(n \cdot |H_n|) = O(n \cdot 2^n)\)</span>（最坏须物化全部串），剪枝后平均约 <span class="arithmatex">\(O(nk)\)</span>；Space <span class="arithmatex">\(O(n \cdot 2^n)\)</span>（<code>res</code> 存全部串）。</li>
+<li>解法 2：Time <span class="arithmatex">\(O(n)\)</span>，Space <span class="arithmatex">\(O(n)\)</span>（仅存答案串）。</li>
+<li><span class="arithmatex">\(n \leq 10\)</span>，两者都瞬间通过；解法 2 的价值在于它直接回答了"第 <span class="arithmatex">\(k\)</span> 个是什么"，而非数到 <span class="arithmatex">\(k\)</span>。</li>
 </ul>
 <h2 id="pitfalls">陷阱 (Pitfalls)<a class="headerlink" href="#pitfalls" title="Permanent link">#</a></h2>
 <ul>
-<li>字典序：<code>'a' &lt; 'b' &lt; 'c'</code>，回溯按 <code>'abc'</code> 顺序遍历自动保序。</li>
-<li>不存在第 <span class="arithmatex">\(k\)</span> 个时返回空串 <code>""</code> 不是 <code>None</code>。</li>
-<li>计数法中 <code>size</code> 为 0 的边界（最后一位）；用 <code>1 &lt;&lt; (n-1-d)</code> 写法不易错。</li>
-<li>不要忘记首字符是 3 选 1（不像后续 2 选 1），是导致很多 off-by-one 错的位置。</li>
+<li>字典序 <code>'a' &lt; 'b' &lt; 'c'</code>：回溯按 <code>'abc'</code> 顺序遍历即自动保序，候选列表 <code>[c for c in 'abc' if c != last]</code> 也已升序，无需再排。</li>
+<li>不存在第 <span class="arithmatex">\(k\)</span> 个时返回空串 <code>""</code>，不是 <code>None</code>。</li>
+<li>1-indexed 到 0-indexed 的转换 <code>k -= 1</code> 必须在用 <span class="arithmatex">\(k\)</span> 做除法前完成；漏掉它会整体偏移一位。</li>
+<li>首位是 3 选 1（无前位约束），后续才是 2 选 1，这一不对称是大量 off-by-one 错误的根源。等价地，末位子树大小 <span class="arithmatex">\(s_n = 2^{n-n} = 1\)</span>（非 0）；若担心 <code>size&gt;&gt;=1</code> 在循环外才归零造成混淆，可直接用闭式 <code>size = 1 &lt;&lt; (n - 1 - d)</code> 计算每位的 <span class="arithmatex">\(s\)</span>，对所有 <span class="arithmatex">\(d \le n-1\)</span> 均为正。</li>
 </ul>
 <h2 id="related">相关题目 (Related)<a class="headerlink" href="#related" title="Permanent link">#</a></h2>
 <ul>
@@ -22654,6 +22794,8 @@
         <script src="../../../js/mathjax/tex-mml-chtml.js"></script>
       
         <script src="../../../js/mermaid.min.js"></script>
+      
+        <script src="../../../js/featured.js"></script>
       
     
   </body>

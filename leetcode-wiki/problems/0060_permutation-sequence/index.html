@@ -1466,6 +1466,8 @@
       
         
       
+        
+      
     
     
     
@@ -1521,6 +1523,34 @@
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../featured/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ⭐ Featured（已验证）
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
               
             
               
@@ -1610,10 +1640,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_4" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
         
           
-          <label class="md-nav__link" for="__nav_4_4" id="__nav_4_4_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_5" id="__nav_4_5_label" tabindex="">
             
   
   
@@ -1631,8 +1661,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_4_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_4">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_5">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1915,7 +1945,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -1937,14 +1967,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_4_5" id="__nav_4_5_label" tabindex="">
+              <label class="md-nav__link " for="__nav_4_6" id="__nav_4_6_label" tabindex="">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_5">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_6">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -5321,10 +5351,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_7" checked>
         
           
-          <label class="md-nav__link" for="__nav_4_6" id="__nav_4_6_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_7" id="__nav_4_7_label" tabindex="">
             
   
   
@@ -5342,8 +5372,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_4_6">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_7_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4_7">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -22467,13 +22497,28 @@
 <h2 id="problem">Problem<a class="headerlink" href="#problem" title="Permanent link">#</a></h2>
 <p><span class="arithmatex">\([1, 2, \dots, n]\)</span> 的全排列按字典序排列后共 <span class="arithmatex">\(n!\)</span> 个，给定 <span class="arithmatex">\(n, k\)</span>（<span class="arithmatex">\(1 \le n \le 9\)</span>，<span class="arithmatex">\(1 \le k \le n!\)</span>），返回第 <span class="arithmatex">\(k\)</span> 个排列字符串。</p>
 <h2 id="background">背景 (Background)<a class="headerlink" href="#background" title="Permanent link">#</a></h2>
-<p>本题是<strong>阶乘进位制 (factorial number system / factoradic)</strong> 的直接应用——也称 <strong>Lehmer code</strong>。任何 <span class="arithmatex">\(0 \le m &lt; n!\)</span> 可唯一表示为</p>
-<div class="arithmatex">\[m = d_{n-1} \cdot (n-1)! + d_{n-2} \cdot (n-2)! + \cdots + d_1 \cdot 1! + d_0 \cdot 0!,\quad 0 \le d_i \le i.\]</div>
-<p>这套数字 <span class="arithmatex">\((d_{n-1}, \dots, d_0)\)</span> 直接对应"在还未使用的元素中选第 <span class="arithmatex">\(d_i\)</span> 个"——产生字典序第 <span class="arithmatex">\(m\)</span> 个排列。这一对应是组合学的经典结果，常用于：(1) 在 <span class="arithmatex">\(O(n)\)</span> 时间随机抽样均匀排列 (Fisher–Yates 的另一观点)；(2) 在不显式生成全部排列的前提下做"排列 rank/unrank"；(3) 数论上等同于把 <span class="arithmatex">\(m\)</span> 表示在混合基底 <span class="arithmatex">\((1, 2, 3, \dots, n)\)</span> 中。</p>
+<p>最直接的想法是顺着字典序一个一个数。从最小排列 <span class="arithmatex">\(1\,2\,\cdots\,n\)</span> 出发，反复求"下一个排列"，数到第 <span class="arithmatex">\(k\)</span> 个为止。求下一个排列有标准的 <span class="arithmatex">\(O(n)\)</span> 算法（见 #31），所以这条路是 <span class="arithmatex">\(O(n \cdot k)\)</span>。</p>
+<p>问题出在 <span class="arithmatex">\(k\)</span> 上。<span class="arithmatex">\(k\)</span> 最大可以取到 <span class="arithmatex">\(n!\)</span>，于是最坏情形要走 <span class="arithmatex">\(n!\)</span> 步。<span class="arithmatex">\(n=9\)</span> 时 <span class="arithmatex">\(9! = 362880\)</span>，乘上每步的 <span class="arithmatex">\(O(n)\)</span> 约 <span class="arithmatex">\(3 \times 10^6\)</span> 次操作——本题约束下还能过。但这条路对 <span class="arithmatex">\(k\)</span> 是线性的，一旦 <span class="arithmatex">\(n\)</span> 稍大就崩：<span class="arithmatex">\(13! \approx 6.2 \times 10^9\)</span>，逐个枚举已不可行。</p>
+<p>逐个枚举为什么慢？它把"第 <span class="arithmatex">\(k\)</span> 个"当成一个<strong>位置</strong>，从头一步步走到那里，每走一步只前进 <span class="arithmatex">\(1\)</span>，完全没有用到字典序排列之间的关系。下一节先看清这个关系的结构，再用它把"走到第 <span class="arithmatex">\(k\)</span> 个"换成"直接算出第 <span class="arithmatex">\(k\)</span> 个"——时间只依赖 <span class="arithmatex">\(n\)</span>，不再依赖 <span class="arithmatex">\(k\)</span>。</p>
 <h2 id="formulation">形式化 (Formulation)<a class="headerlink" href="#formulation" title="Permanent link">#</a></h2>
-<p>设 <span class="arithmatex">\(\sigma_k\)</span> 为 <span class="arithmatex">\(S_n = \text{Sym}(\{1,\dots,n\})\)</span> 中按字典序的第 <span class="arithmatex">\(k\)</span> 个 (1-indexed) 排列。求 <span class="arithmatex">\(\sigma_k\)</span> 作为字符串。</p>
-<p>记 <span class="arithmatex">\(k' = k - 1\)</span>（转 0-indexed）。从高位起：第一个字符是剩余可选集 <span class="arithmatex">\(\{1,\dots,n\}\)</span> 中第 <span class="arithmatex">\(\lfloor k' / (n-1)! \rfloor\)</span> 个；更新 <span class="arithmatex">\(k' \gets k' \bmod (n-1)!\)</span>，可选集去掉该字符；递归对剩 <span class="arithmatex">\(n-1\)</span> 个元素重复。</p>
+<p><strong>直觉。</strong> 想知道第 <span class="arithmatex">\(k\)</span> 个排列的<strong>首字符</strong>是谁，不必把前面的排列都列出来，只要数清楚：字典序下，每个首字符各占多少个排列。字典序先比首字符，所以首字符相同的排列必然连续成一段，且首字符小的整段排在首字符大的整段之前。再看每段多大：首字符一旦固定，余下 <span class="arithmatex">\(n-1\)</span> 个元素可任意排列，故每段恰含 <span class="arithmatex">\((n-1)!\)</span> 个。于是 <span class="arithmatex">\(n!\)</span> 个排列被首字符切成 <span class="arithmatex">\(n\)</span> 个等长块，每块 <span class="arithmatex">\((n-1)!\)</span> 个，块的先后由首字符升序决定：</p>
+<div class="arithmatex">\[\underbrace{[\,\text{首字符} = a_0\,]}_{(n-1)!\ \text{个}},\ \underbrace{[\,\text{首字符} = a_1\,]}_{(n-1)!\ \text{个}},\ \dots,\ \underbrace{[\,\text{首字符} = a_{n-1}\,]}_{(n-1)!\ \text{个}}\]</div>
+<p>其中 <span class="arithmatex">\(a_0 &lt; a_1 &lt; \cdots &lt; a_{n-1}\)</span> 是当前可选元素的升序。这条计数事实——"固定首字符则余下恰 <span class="arithmatex">\((n-1)!\)</span> 种排法"——是整个算法成立的唯一理由：知道每块多大，就能算出第 <span class="arithmatex">\(k\)</span> 个落在第几块，而无须逐个走过去。</p>
+<p><strong>定位首字符。</strong> 把题面的 1-indexed <span class="arithmatex">\(k\)</span> 转成 0-indexed 偏移 <span class="arithmatex">\(k' = k - 1\)</span>（取值 <span class="arithmatex">\(0 \le k' &lt; n!\)</span>）。既然每块大小都是 <span class="arithmatex">\((n-1)!\)</span>，"第 <span class="arithmatex">\(k'\)</span> 个落在第几块"就是问 <span class="arithmatex">\(k'\)</span> 里能放下几个整块：</p>
+<div class="arithmatex">\[\boxed{\;\text{idx} = \left\lfloor \frac{k'}{(n-1)!} \right\rfloor\;}\tag{1}\]</div>
+<p>块按首字符升序排列，故 <span class="arithmatex">\(\text{idx}\)</span> 正是首字符在升序可选集 <span class="arithmatex">\(a_0 &lt; \cdots &lt; a_{n-1}\)</span> 中的下标。选定首字符后，目标排列落在本块内部第几个，就是除剩的余数：</p>
+<div class="arithmatex">\[\boxed{\;k' \bmod (n-1)!\;}\tag{2}\]</div>
+<p><strong>递归下降。</strong> 选定首字符并把它从可选集移除后，问题变成：在剩下 <span class="arithmatex">\(n-1\)</span> 个元素的 <span class="arithmatex">\((n-1)!\)</span> 个排列里，找本块内偏移 <span class="arithmatex">\((2)\)</span> 所指的那一个。这与原问题同构，只是规模降了 <span class="arithmatex">\(1\)</span>。于是对 <span class="arithmatex">\(n-1, n-2, \dots, 1\)</span> 重复 <span class="arithmatex">\((1)(2)\)</span>，逐位定下每个字符。终点 <span class="arithmatex">\(n=1\)</span> 时只剩一个元素，<span class="arithmatex">\(0! = 1\)</span>，<span class="arithmatex">\(\text{idx} = 0\)</span>，直接取走。</p>
+<p>把每一位选出的下标记成 <span class="arithmatex">\((d_{n-1}, d_{n-2}, \dots, d_0)\)</span>，由 <span class="arithmatex">\((1)\)</span> 知 <span class="arithmatex">\(0 \le d_i \le i\)</span>，且</p>
+<div class="arithmatex">\[k' = d_{n-1} \cdot (n-1)! + d_{n-2} \cdot (n-2)! + \cdots + d_1 \cdot 1! + d_0 \cdot 0!.\]</div>
+<p>这正是把 <span class="arithmatex">\(k'\)</span> 写在混合基底 <span class="arithmatex">\((1!, 2!, \dots, (n-1)!)\)</span> 下的展开式：每个 <span class="arithmatex">\(0 \le k' &lt; n!\)</span> 恰有唯一一组这样的数字。唯一性来自 <span class="arithmatex">\(\sum_{i=0}^{n-1} i \cdot i! = n! - 1\)</span>——数字 <span class="arithmatex">\(d_i\)</span> 各自的取值范围相乘后恰好铺满 <span class="arithmatex">\([0, n!)\)</span>，不重不漏。推导本身不依赖任何外部命名；只是这套结构在组合学里有现成的名字：数字 <span class="arithmatex">\((d_i)\)</span> 称为<strong>阶乘进位制 (factorial number system / factoradic)</strong>，对应的排列编码称为 <strong>Lehmer code</strong>。</p>
 <h2 id="approach">数据结构 / 想法 (Approach)<a class="headerlink" href="#approach" title="Permanent link">#</a></h2>
+<p><strong>不变量。</strong> 递归下降可以压成一个循环。每一步要维持的全部状态，上面的形式化已给齐，这里单独点明，代码只是它的机械落地：</p>
+<ul>
+<li><code>avail</code>：尚未使用的元素，<strong>按升序排列</strong>——只有升序时下标 <code>idx</code> 才对应"第 <code>idx</code> 小"（0-indexed），<span class="arithmatex">\((1)\)</span> 才成立；</li>
+<li><code>k</code>：当前子问题里的 0-indexed 偏移，落在剩余 <span class="arithmatex">\(i!\)</span> 个排列之中。</li>
+</ul>
+<p>循环变量 <code>i</code> 取<strong>当前剩余元素个数</strong>，从 <span class="arithmatex">\(n\)</span> 递减到 <span class="arithmatex">\(1\)</span>。剩 <span class="arithmatex">\(i\)</span> 个元素这一步，固定首字符后留下 <span class="arithmatex">\(i-1\)</span> 个元素、<span class="arithmatex">\((i-1)!\)</span> 种排法，故块大小是 <code>factorial(i-1)</code> 而非 <code>factorial(i)</code>——这正是 <span class="arithmatex">\((1)\)</span> 里分母随规模下降的来由。每步用 <span class="arithmatex">\((1)\)</span> 算 <code>idx = k // (i-1)!</code> 取走当前位字符，再用 <span class="arithmatex">\((2)\)</span> 把余数 <code>k % (i-1)!</code> 传给下一位。理解了这两条不变量，代码就只是逐行兑现：</p>
 <p><strong>Factoradic unrank</strong>：</p>
 <div class="language-python highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">math</span><span class="w"> </span><span class="kn">import</span> <span class="n">factorial</span>
 
@@ -22488,7 +22533,7 @@
             <span class="n">out</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">avail</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">idx</span><span class="p">)))</span>
         <span class="k">return</span> <span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">out</span><span class="p">)</span>
 </code></pre></div>
-<p><strong>心算 trace <code>n=4, k=9</code></strong>：
+<p><strong>心算 trace <code>n=4, k=9</code></strong>（验证 <span class="arithmatex">\((1)(2)\)</span> 逐位下降）：
 - avail=[1,2,3,4], k=8
 - i=4: f=3!=6, idx=8//6=1, k=8%6=2 → pop idx=1 → <code>2</code>，avail=[1,3,4]
 - i=3: f=2!=2, idx=2//2=1, k=2%2=0 → pop idx=1 → <code>3</code>，avail=[1,4]
@@ -22501,37 +22546,36 @@
 - i=2: f=1, idx=0, k=0 → pop 0 → <code>1</code>，avail=[3]
 - i=1: → <code>3</code>
 - 结果 <code>"213"</code> ✓</p>
-<p><strong>不变量</strong>：循环开始时 <code>avail</code> 是按升序排列、尚未使用的元素；<code>k</code> 是在剩余 <code>(i)!</code> 个排列中的 0-indexed 偏移。<code>idx = k // (i-1)!</code> 选出当前位的元素（avail 中第 idx 个），余数 <code>k % (i-1)!</code> 继承到下一位。</p>
-<p><strong>避坑：用排序后的 <code>SortedList</code> 实现 <span class="arithmatex">\(O(n \log n)\)</span> 总体</strong>，而非 <code>list.pop(idx)</code> 的 <span class="arithmatex">\(O(n^2)\)</span>（每次 pop 中间元素是 <span class="arithmatex">\(O(n)\)</span>）。<span class="arithmatex">\(n \le 9\)</span> 时两者皆瞬时；写一般规模代码要注意。</p>
+<p><strong>扩展到一般规模。</strong> <code>list.pop(idx)</code> 删中间元素要搬移后续，单次 <span class="arithmatex">\(O(n)\)</span>，整体 <span class="arithmatex">\(O(n^2)\)</span>。<span class="arithmatex">\(n \le 9\)</span> 时可忽略；但若 <span class="arithmatex">\(n\)</span> 大到 <span class="arithmatex">\(100\)</span> 起，应换成支持 <span class="arithmatex">\(O(\log n)\)</span> 按下标删除的结构（<code>SortedList</code> 或树状数组），把整体降到 <span class="arithmatex">\(O(n \log n)\)</span>：</p>
 <div class="language-python highlight"><pre><span></span><code><span class="c1"># O(n log n) 版（一般规模可扩展）</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">sortedcontainers</span><span class="w"> </span><span class="kn">import</span> <span class="n">SortedList</span>
 <span class="n">sl</span> <span class="o">=</span> <span class="n">SortedList</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">n</span><span class="o">+</span><span class="mi">1</span><span class="p">))</span>
 <span class="c1"># ... sl.pop(idx) 是 O(log n)</span>
 </code></pre></div>
-<p><strong>为何不能朴素枚举到第 k 个？</strong> <span class="arithmatex">\(9! = 362880\)</span> 可以，<span class="arithmatex">\(13! \approx 6.2 \times 10^9\)</span> 就不可行。本题 <span class="arithmatex">\(n \le 9\)</span>，朴素 <code>next_permutation</code> <span class="arithmatex">\(k\)</span> 次会过但是 <span class="arithmatex">\(O(n \cdot k)\)</span>，最差 <span class="arithmatex">\(\sim 3 \times 10^6\)</span> 操作，没必要。</p>
+<p>这条 unrank 直跳路线，时间只依赖 <span class="arithmatex">\(n\)</span> 不依赖 <span class="arithmatex">\(k\)</span>，正好补上了开头逐个枚举对 <span class="arithmatex">\(k\)</span> 线性的缺口。</p>
 <h2 id="complexity">复杂度 (Complexity)<a class="headerlink" href="#complexity" title="Permanent link">#</a></h2>
 <ul>
-<li>Time: <span class="arithmatex">\(O(n^2)\)</span>（<span class="arithmatex">\(n\)</span> 次 <code>pop</code> 各 <span class="arithmatex">\(O(n)\)</span>）。约束 <span class="arithmatex">\(n \le 9\)</span> → 81 操作。</li>
-<li>Space: <span class="arithmatex">\(O(n)\)</span>。</li>
+<li>Time: <span class="arithmatex">\(O(n^2)\)</span>——<span class="arithmatex">\(n\)</span> 次循环，每次 <code>pop</code> 删中间元素 <span class="arithmatex">\(O(n)\)</span>。约束 <span class="arithmatex">\(n \le 9\)</span> → 约 81 次操作。（换 <code>SortedList</code> 可降到 <span class="arithmatex">\(O(n \log n)\)</span>。）</li>
+<li>Space: <span class="arithmatex">\(O(n)\)</span>——<code>avail</code> 与输出各 <span class="arithmatex">\(O(n)\)</span>。</li>
 </ul>
 <h2 id="pitfalls">陷阱 (Pitfalls)<a class="headerlink" href="#pitfalls" title="Permanent link">#</a></h2>
 <ul>
-<li><strong>1-indexed vs 0-indexed</strong>：题面 <span class="arithmatex">\(k\)</span> 从 1 开始，必须先 <code>k -= 1</code>，否则 <code>n=3, k=3</code> 会输出 <code>"231"</code>（实际第 4 个）。</li>
-<li><strong><code>factorial(0) = 1</code></strong>：循环末次 <code>f = 0! = 1</code>、<code>idx = 0</code>，正确选最后一个剩余元素。代码若手算 fact 但漏掉 0! 的语义会越界。</li>
-<li><strong>可选集要保持有序</strong>：avail 必须按数值升序，pop(idx) 才对应字典序第 idx+1 小。用 <code>set</code> 会破坏顺序。</li>
-<li><strong>大 <span class="arithmatex">\(n\)</span> 用 <code>list.pop(idx)</code> 性能陷阱</strong>：<span class="arithmatex">\(n=100\)</span> 起就要 SortedList 或 BIT。</li>
+<li><strong>1-indexed vs 0-indexed</strong>：题面 <span class="arithmatex">\(k\)</span> 从 <span class="arithmatex">\(1\)</span> 开始，公式 <span class="arithmatex">\((1)(2)\)</span> 要求 0-indexed，必须先 <code>k -= 1</code>。漏掉这步，<code>n=3, k=3</code> 会输出 <code>"231"</code>（实际是第 <span class="arithmatex">\(4\)</span> 个排列）。</li>
+<li><strong><code>factorial(0) = 1</code></strong>：末次循环 <code>i=1</code>、<code>f = 0! = 1</code>、<code>idx = 0</code>，正好取走最后一个剩余元素。若手算阶乘时漏掉 <span class="arithmatex">\(0!\)</span> 的语义会越界。</li>
+<li><strong><code>avail</code> 必须保持升序</strong>：下标 <code>idx</code> 对应"第 <code>idx</code> 小"全靠这个顺序；用 <code>set</code> 会破坏顺序导致结果错乱。</li>
+<li><strong>大 <span class="arithmatex">\(n\)</span> 时 <code>list.pop(idx)</code> 退化为 <span class="arithmatex">\(O(n)\)</span></strong>：单次删中间元素是 <span class="arithmatex">\(O(n)\)</span>，<span class="arithmatex">\(n=100\)</span> 起就该换 <code>SortedList</code> 或树状数组。</li>
 </ul>
 <h2 id="related">相关题目 (Related)<a class="headerlink" href="#related" title="Permanent link">#</a></h2>
 <ul>
-<li><code>#31. Next Permutation (off-wiki)</code> — 字典序下一排列的 <span class="arithmatex">\(O(n)\)</span> 算法（"逆序点" 三段反转）；本题 <span class="arithmatex">\(k\)</span> 较小时可调用 <span class="arithmatex">\(k\)</span> 次替代。</li>
+<li><code>#31. Next Permutation (off-wiki)</code> — 字典序下一排列的 <span class="arithmatex">\(O(n)\)</span> 算法（逆序点定位后三段反转）；即开头被本题取代的逐个枚举路线，<span class="arithmatex">\(k\)</span> 较小时可调用 <span class="arithmatex">\(k\)</span> 次。</li>
 <li><code>#46. Permutations (off-wiki)</code> — 全排列回溯生成，与本题"unrank 直跳"对照。</li>
 <li><code>#0040. Combination Sum II</code>（<a href="../0040_combination-sum-ii/">本批</a>）— 都是字典序枚举家族成员。</li>
 </ul>
 <h2 id="further-reading">Further Reading<a class="headerlink" href="#further-reading" title="Permanent link">#</a></h2>
 <ul>
 <li>Knuth, <em>TAOCP</em> Vol. 2 §3.3.2 / Vol. 4A §7.2.1.2 — Lehmer code 与 factoradic 表示的完整论述 ⭐。</li>
-<li><em>Concrete Mathematics</em>, Graham/Knuth/Patashnik (2e), §4 数论与混合基底章节。</li>
-<li>Wikipedia: en.wikipedia.org/wiki/Factorial_number_system — factoradic 与排列 rank/unrank 的直接对应。</li>
+<li><em>Concrete Mathematics</em>, Graham/Knuth/Patashnik (2e), §4 数论与混合基底章节——本题首字符定位即混合基底 <span class="arithmatex">\((1!,2!,\dots)\)</span> 展开的特例。</li>
+<li>Wikipedia: en.wikipedia.org/wiki/Factorial_number_system — factoradic 与排列 rank/unrank 的直接对应；亦含与 Fisher–Yates 均匀抽样的联系。</li>
 <li>Wikipedia: en.wikipedia.org/wiki/Lehmer_code — Lehmer code 定义与性质。</li>
 </ul>
 
@@ -22639,6 +22683,8 @@
         <script src="../../../js/mathjax/tex-mml-chtml.js"></script>
       
         <script src="../../../js/mermaid.min.js"></script>
+      
+        <script src="../../../js/featured.js"></script>
       
     
   </body>

@@ -1466,6 +1466,8 @@
       
         
       
+        
+      
     
     
     
@@ -1521,6 +1523,34 @@
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../featured/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ⭐ Featured（已验证）
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
               
             
               
@@ -1610,10 +1640,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_4" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
         
           
-          <label class="md-nav__link" for="__nav_4_4" id="__nav_4_4_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_5" id="__nav_4_5_label" tabindex="">
             
   
   
@@ -1631,8 +1661,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_4_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_4">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_5">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1915,7 +1945,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -1937,14 +1967,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_4_5" id="__nav_4_5_label" tabindex="">
+              <label class="md-nav__link " for="__nav_4_6" id="__nav_4_6_label" tabindex="">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_5">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_6">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -5321,10 +5351,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_7" checked>
         
           
-          <label class="md-nav__link" for="__nav_4_6" id="__nav_4_6_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_7" id="__nav_4_7_label" tabindex="">
             
   
   
@@ -5342,8 +5372,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_4_6">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_7_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4_7">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -8761,6 +8791,17 @@
     <span class="md-ellipsis">
       
         数据结构 / 想法 (Approach)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#reachability" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        可达性 (Reachability)
       
     </span>
   </a>
@@ -22402,6 +22443,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#reachability" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        可达性 (Reachability)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#complexity" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -22467,20 +22519,32 @@
 <h2 id="problem">Problem<a class="headerlink" href="#problem" title="Permanent link">#</a></h2>
 <p><span class="arithmatex">\(2 \times 3\)</span> 棋盘有 5 个数字 1..5 和一个空格 0。每步将 0 与一个 4 邻居交换。问从给定状态到 <code>[[1,2,3],[4,5,0]]</code> 的最少步数；不可达返回 -1。</p>
 <h2 id="background">背景 (Background)<a class="headerlink" href="#background" title="Permanent link">#</a></h2>
-<p>这是 15-puzzle（Sam Loyd 1880 流行的拼图）的 5-tile 小型版。15-puzzle 是 <strong>state-space search</strong> 的标志性问题，引出 IDA*、模式数据库等 AI 启发式技术（Russell &amp; Norvig, AIMA 第 3 章）。状态数有限（<span class="arithmatex">\(6! = 720\)</span>），可直接 BFS 求最短步数；4×4 版本（10万亿状态）才需要启发式。可达性由排列奇偶性 + 空格行号同奇偶决定（Wilson 1974）。</p>
+<p>先尝试最直接的做法，看它在哪里失败。</p>
+<p>最自然的想法是递归枚举：从当前棋盘出发，试每一个合法移动，对得到的新棋盘继续递归，直到撞上目标。这会立刻遇到三个问题。第一，移动是可逆的——把 0 向右移再向左移就回到原处，于是递归会无限循环。第二，即使强行限制递归深度，每步有最多 4 个选择，深度 <span class="arithmatex">\(d\)</span> 的枚举量是 <span class="arithmatex">\(O(4^d)\)</span>，指数爆炸。第三，题目要的不是"任意一条路径"，而是"最短的那条"；深度优先找到的第一条解通常不是最短的，要确认最短还得把所有更短的可能都排除掉。</p>
+<p>这三个问题指向同一个结构。要破第一个问题，必须记住访问过的棋盘，不再重复展开。要破后两个问题，需要按"距起点的步数"分层推进：先看所有 1 步可达的棋盘，再看所有 2 步可达的，依此类推——这样第一次碰到目标时，当前层数就是最短步数，无需再搜。把这两点合起来，正是在棋盘构成的图上做广度优先搜索（BFS）。</p>
+<p>让这条路走得通的，是另一个事实：棋盘的不同排布只有有限多个。6 个格子放 6 个不同的值，总共 <span class="arithmatex">\(6! = 720\)</span> 种，规模极小，分层枚举完全可行。这一点是本题与 <span class="arithmatex">\(4 \times 4\)</span> 版本（15-puzzle）的分水岭：后者有 <span class="arithmatex">\(16!/2 \approx 10^{13}\)</span> 个状态，朴素 BFS 不可行，才需要 IDA<em>、模式数据库等启发式技术（Russell &amp; Norvig, </em>AIMA* 第 3 章）。15-puzzle 是 Sam Loyd 1880 年流行的拼图，也是状态空间搜索的标志性教学问题。</p>
 <h2 id="formulation">形式化 (Formulation)<a class="headerlink" href="#formulation" title="Permanent link">#</a></h2>
-<p>状态 <span class="arithmatex">\(s\)</span> 是 <span class="arithmatex">\(\{0,1,2,3,4,5\}\)</span> 在 6 格上的排列；目标 <span class="arithmatex">\(s^* = (1,2,3,4,5,0)\)</span>。允许的转移：将 0 与其 4 邻居交换。求最短转移序列长度，<span class="arithmatex">\(\mathrm{dist}(s_0, s^*)\)</span>。</p>
-<h2 id="approach">数据结构 / 想法 (Approach)<a class="headerlink" href="#approach" title="Permanent link">#</a></h2>
-<p><strong>BFS（最优解）</strong>：状态空间 <span class="arithmatex">\(6! = 720\)</span>，每状态最多 4 个邻居。把 <span class="arithmatex">\(2 \times 3\)</span> 棋盘展平成长度 6 的字符串/元组作为哈希 key；预先打表"位置 <span class="arithmatex">\(p\)</span> 的 4 邻居位置"（一维下标）：</p>
+<p>要把上面的图说精确，先问：什么是"一个棋盘状态"？两个棋盘相同，当且仅当相同的数字占据相同的格子。所以一个棋盘配置就是从 6 个格子到 6 个值的一一对应，也就是 <span class="arithmatex">\(\{0,1,2,3,4,5\}\)</span> 的一个排列。长度 6 的序列无损地编码了它，这也是后面用字符串当哈希 key 的依据。</p>
+<p>把格子按行优先展平编号：</p>
 <div class="language-text highlight"><pre><span></span><code>  0 1 2
   3 4 5
-
-neighbors = {
+</code></pre></div>
+<p>于是状态 <span class="arithmatex">\(s\)</span> 是 <span class="arithmatex">\(\{0,1,2,3,4,5\}\)</span> 在 6 个位置上的排列，目标 <span class="arithmatex">\(s^* = (1,2,3,4,5,0)\)</span>。一次合法移动是把 0 与其某个 4 邻居交换。这定义了一张状态转移图 <span class="arithmatex">\(G = (S, E)\)</span>：<span class="arithmatex">\(S\)</span> 是全部 720 个排列，<span class="arithmatex">\((s, s') \in E\)</span> 当且仅当 <span class="arithmatex">\(s'\)</span> 可由 <span class="arithmatex">\(s\)</span> 经一次合法交换得到。每条边代表一步，权重均为 1。所求即</p>
+<div class="arithmatex">\[
+\mathrm{dist}(s_0, s^*) = \min_{\pi}\, |\pi| \quad \text{s.t.}\ \pi:\ s_0 \rightsquigarrow s^*,
+\]</div>
+<p>也就是 <span class="arithmatex">\(G\)</span> 上从 <span class="arithmatex">\(s_0\)</span> 到 <span class="arithmatex">\(s^*\)</span> 的最短路长度；若 <span class="arithmatex">\(s^*\)</span> 不可达则为 <span class="arithmatex">\(-1\)</span>。</p>
+<p>整个解法就挂在这个形式化上：因为 <span class="arithmatex">\(G\)</span> 的每条边权为 1，从 <span class="arithmatex">\(s_0\)</span> 出发的 BFS 按距离非降序访问节点，第一次出队某状态时它的距离即最短。于是 BFS 算出的正是 <span class="arithmatex">\(\mathrm{dist}(s_0, s^*)\)</span>。</p>
+<h2 id="approach">数据结构 / 想法 (Approach)<a class="headerlink" href="#approach" title="Permanent link">#</a></h2>
+<p>只剩两个零件要落实：状态怎么存、邻居怎么算。</p>
+<p><strong>状态编码。</strong> 把 <span class="arithmatex">\(2 \times 3\)</span> 棋盘按上面的编号展平成长度 6 的字符串（如 <code>"123450"</code>）。它无损编码了排列，且字符串可哈希，能放进 <code>seen</code> 集合去重——这正是破"无限循环"那一步需要的。用 <code>list</code> 则不可哈希，进不了集合。</p>
+<p><strong>邻居表。</strong> 图的边只取决于 0 当前所在位置 <span class="arithmatex">\(p\)</span> 的几何邻居，与具体数字无关，所以可以对 6 个位置预先打表，避免每步重算行列。邻接关系直接从网格坐标推：位置 <span class="arithmatex">\(i\)</span> 的行为 <span class="arithmatex">\(i // 3\)</span>、列为 <span class="arithmatex">\(i \% 3\)</span>；两格相邻当且仅当它们共享一条边，即行列各差至多 1 且恰好一个坐标差 1。例如位置 0（行 0、列 0）的邻居是位置 1（同行右邻）与位置 3（同列下邻）；位置 4（行 1、列 1）的邻居是 1、3、5。照此推完六个位置：</p>
+<div class="language-text highlight"><pre><span></span><code>neighbors = {
   0: [1, 3], 1: [0, 2, 4], 2: [1, 5],
   3: [0, 4], 4: [1, 3, 5], 5: [2, 4]
 }
 </code></pre></div>
-<p>从初始状态 BFS 直到目标。</p>
+<p>有了这两个零件，BFS 从初始状态分层推进，第一次到达目标即返回当前步数；队列排空仍未命中则返回 -1。</p>
 <div class="language-python highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">collections</span><span class="w"> </span><span class="kn">import</span> <span class="n">deque</span>
 
 <span class="k">class</span><span class="w"> </span><span class="nc">Solution</span><span class="p">:</span>
@@ -22508,21 +22572,27 @@ neighbors = {
                     <span class="n">q</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">new</span><span class="p">,</span> <span class="n">nb</span><span class="p">,</span> <span class="n">d</span> <span class="o">+</span> <span class="mi">1</span><span class="p">))</span>
         <span class="k">return</span> <span class="o">-</span><span class="mi">1</span>
 </code></pre></div>
-<p>样例 1 trace：<code>[[1,2,3],[4,0,5]]</code> → "123405"。0 在位置 4。邻居：1, 3, 5。交换 5（位置 5）与 0 → "123450"。匹配目标 → 返回 1。✓</p>
-<p>样例 2 trace：<code>[[1,2,3],[5,4,0]]</code> → "123540"。可达状态集合不含 "123450"（排列奇偶性不同）。BFS 遍历完 360 个偶置换状态都不命中 → 返回 -1。✓</p>
-<p>样例 3 trace：<code>[[4,1,2],[5,0,3]]</code> → "412503"。BFS 至深度 5 命中目标。✓</p>
+<p>三个样例用来核验这台机器逐步执行的结果。</p>
+<p>样例 1：<code>[[1,2,3],[4,0,5]]</code> → <code>"123405"</code>，0 在位置 4，邻居为 1、3、5。把位置 5 的 <code>5</code> 与 0 交换得 <code>"123450"</code>，命中目标，返回 1。</p>
+<p>样例 3：<code>[[4,1,2],[5,0,3]]</code> → <code>"412503"</code>，BFS 推进到第 5 层命中目标，返回 5。</p>
+<p>样例 2 是最值得细看的 -1 情形：<code>[[1,2,3],[5,4,0]]</code> → <code>"123540"</code>。BFS 把从它出发能到的状态全部展开，却始终碰不到 <code>"123450"</code>。原因要回到移动的结构——下一节说明。</p>
+<h2 id="reachability">可达性 (Reachability)<a class="headerlink" href="#reachability" title="Permanent link">#</a></h2>
+<p>为什么有的起点无论怎么走都到不了目标？这不是 BFS 实现的漏洞，而是图本身分成了互不连通的两块，需要从移动的结构本身解释。</p>
+<p>观察一次合法移动对排列做了什么：它把 0 与一个相邻数字交换，也就是交换排列中的两个元素，即一个对换（transposition）。对换的关键性质是它翻转排列的奇偶性：偶排列做一次对换变奇，奇排列做一次变偶。因此每走一步，当前排列与目标排列之间的奇偶差也随之翻转一次。</p>
+<p>由此，从给定起点出发可达的状态，其奇偶性被锁定在一个交替的格局里；目标 <span class="arithmatex">\(s^*\)</span> 有确定的奇偶性。当起点与目标的奇偶约束无法对齐时，没有任何交换序列能把前者变成后者——目标根本不在起点所在的连通分量内。<span class="arithmatex">\(720\)</span> 个排列恰好被劈成两块各 <span class="arithmatex">\(360\)</span> 个，目标只在其中一块。样例 2 的起点落在不含目标的那一块，于是 BFS 遍历完它那 <span class="arithmatex">\(360\)</span> 个状态仍不命中，正确返回 -1。（可达性的完整判据——排列奇偶性与空格行号同奇偶——见 Wilson 1974。）</p>
+<p>这也解释了为什么 -1 必须作为合法返回值：约一半的起点天生不可达，算法要能干净地穷尽并报告无解。</p>
 <h2 id="complexity">复杂度 (Complexity)<a class="headerlink" href="#complexity" title="Permanent link">#</a></h2>
 <ul>
-<li>Time: <span class="arithmatex">\(O(6! \cdot 6) = O(4320)\)</span>，常数极小。</li>
-<li>Space: <span class="arithmatex">\(O(6!)\)</span> 状态字典。</li>
-<li>4×4 版（15-puzzle）状态 <span class="arithmatex">\(16!/2 \approx 10^{13}\)</span>，朴素 BFS 不可行，需 IDA* + 启发式（Manhattan distance + linear conflict）。</li>
+<li>Time: <span class="arithmatex">\(O(6! \cdot 6) = O(4320)\)</span>，每个状态至多展开 4 个邻居，常数极小。</li>
+<li>Space: <span class="arithmatex">\(O(6!)\)</span>，<code>seen</code> 集合最多存下全部 720 个状态。</li>
 </ul>
+<p>规模上界 <span class="arithmatex">\(6! = 720\)</span> 是 BFS 在此可行的根本原因。换成 <span class="arithmatex">\(4 \times 4\)</span> 的 15-puzzle，状态数 <span class="arithmatex">\(16!/2 \approx 10^{13}\)</span>，朴素 BFS 不可行，需 IDA* 配启发式（Manhattan distance + linear conflict）。两者算法不同，分界点正是状态空间能否被完整枚举。</p>
 <h2 id="pitfalls">陷阱 (Pitfalls)<a class="headerlink" href="#pitfalls" title="Permanent link">#</a></h2>
 <ul>
-<li><strong>可达性</strong>：约一半状态不可达（排列奇偶性约束），必须能返回 -1。</li>
-<li>状态编码：用 string / tuple 才能进 set；用 list 不可哈希。</li>
-<li>邻居表写错（尤其角落/中间格）是常见 bug，建议预打表而不是每次按行列推。</li>
-<li>起始即目标 → 返回 0，否则会进 BFS 多算一步。</li>
+<li><strong>可达性</strong>：约一半起点不可达（奇偶约束），必须能返回 -1，不要默认总有解。</li>
+<li><strong>状态编码</strong>：用 string / tuple 才能进 <code>seen</code>；用 <code>list</code> 不可哈希。</li>
+<li><strong>邻居表</strong>：角落格与中间格的邻居数不同，手推易错；从行列坐标推导并核对，胜过临时按行列计算。</li>
+<li><strong>起点即目标</strong>：先判 <code>start == goal</code> 返回 0，否则会进 BFS 多算一步。</li>
 </ul>
 <h2 id="related">相关题目 (Related)<a class="headerlink" href="#related" title="Permanent link">#</a></h2>
 <ul>
@@ -22640,6 +22710,8 @@ neighbors = {
         <script src="../../../js/mathjax/tex-mml-chtml.js"></script>
       
         <script src="../../../js/mermaid.min.js"></script>
+      
+        <script src="../../../js/featured.js"></script>
       
     
   </body>

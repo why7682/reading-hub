@@ -1466,6 +1466,8 @@
       
         
       
+        
+      
     
     
     
@@ -1521,6 +1523,34 @@
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../featured/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ⭐ Featured（已验证）
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
               
             
               
@@ -1610,10 +1640,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_4" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
         
           
-          <label class="md-nav__link" for="__nav_4_4" id="__nav_4_4_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_5" id="__nav_4_5_label" tabindex="">
             
   
   
@@ -1631,8 +1661,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_4_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_4">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_5">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1915,7 +1945,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -1937,14 +1967,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_4_5" id="__nav_4_5_label" tabindex="">
+              <label class="md-nav__link " for="__nav_4_6" id="__nav_4_6_label" tabindex="">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_5">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_6">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -5321,10 +5351,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_7" checked>
         
           
-          <label class="md-nav__link" for="__nav_4_6" id="__nav_4_6_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_7" id="__nav_4_7_label" tabindex="">
             
   
   
@@ -5342,8 +5372,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_4_6">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_7_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4_7">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -22467,44 +22497,77 @@
 <h2 id="problem">Problem<a class="headerlink" href="#problem" title="Permanent link">#</a></h2>
 <p>按时间顺序创建文件名 <code>names[i]</code>；若已存在则附 <code>(k)</code> 后缀使 <span class="arithmatex">\(k\)</span> 是最小使新名不冲突的正整数。返回实际名字序列。<span class="arithmatex">\(n \le 5 \times 10^4\)</span>。</p>
 <h2 id="_1">背景<a class="headerlink" href="#_1" title="Permanent link">#</a></h2>
-<p>本题考一个朴素但<strong>摊销复杂度暗藏陷阱</strong>的设计：
-- 朴素：对每个新名 <code>f</code> 从 <span class="arithmatex">\(k = 1\)</span> 起线性试探。最坏构造 <span class="arithmatex">\(\text{names} = [\text{"f"}, \text{"f"}, \dots, \text{"f"}]\)</span> → 每个新 <code>f</code> 的 <span class="arithmatex">\(k\)</span> 都从 1 开始扫到下一个未用整数，总复杂度 <span class="arithmatex">\(O(n^2)\)</span>。
-- 优化：维护字典 <code>next[f]</code> = "下次试探时从哪个 <span class="arithmatex">\(k\)</span> 开始"，可摊销 <span class="arithmatex">\(O(1)\)</span> per name（类似 Union-Find 路径压缩）。</p>
-<p>这是典型的<strong>"懒惰失效缓存"</strong> 模式：直接用 <code>next[f]</code> 跳过已知占用范围。在文件系统命名 (Mac Finder 的 "(2)" 后缀)、变量重命名、git 分支重命名中常见。</p>
+<p>先按题意直接实现。维护一个已用名字集合 <code>used</code>。对每个新名 <code>f</code>：若 <code>f</code> 不在 <code>used</code>，直接用它；否则从 <span class="arithmatex">\(k = 1\)</span> 起逐个试 <code>f(1)</code>, <code>f(2)</code>, …，取第一个不在 <code>used</code> 的，用它。</p>
+<p>这个朴素实现是正确的。问题在它的代价。考虑同一个名字连续到来 <span class="arithmatex">\(n\)</span> 次：</p>
+<div class="arithmatex">\[\text{names} = [\texttt{"f"}, \texttt{"f"}, \texttt{"f"}, \dots, \texttt{"f"}].\]</div>
+<p>逐步追踪前几步，注意每次内层试探都从 <span class="arithmatex">\(k=1\)</span> 重新开始：</p>
+<ul>
+<li>第 1 个 <code>"f"</code>：不在 <code>used</code>，直接用 <code>"f"</code>。</li>
+<li>第 2 个 <code>"f"</code>：在 <code>used</code>。试 <span class="arithmatex">\(k=1\)</span>：<code>"f(1)"</code> 空闲，用它。内层走了 1 步。</li>
+<li>第 3 个 <code>"f"</code>：在 <code>used</code>。试 <span class="arithmatex">\(k=1\)</span>：<code>"f(1)"</code> <strong>已被占用</strong>（上一步刚分配），失败；试 <span class="arithmatex">\(k=2\)</span>：<code>"f(2)"</code> 空闲，用它。内层走了 2 步。</li>
+<li>第 4 个 <code>"f"</code>：试 <span class="arithmatex">\(k=1, 2\)</span> 都已占用，到 <span class="arithmatex">\(k=3\)</span> 才空闲。内层走了 3 步。</li>
+</ul>
+<p>每一步都把 <code>f(1), \dots, f(k-1)</code> 这段已知被占用的前缀重新扫了一遍，只为找到那个唯一新的空位。第 <span class="arithmatex">\(i\)</span> 个名字的内层迭代数是 <span class="arithmatex">\(i-1\)</span>，总迭代数</p>
+<div class="arithmatex">\[\sum_{i=1}^{n} (i-1) = \frac{n(n-1)}{2} = O(n^2).\]</div>
+<p><span class="arithmatex">\(n = 5 \times 10^4\)</span> 时这是 <span class="arithmatex">\(\sim 10^9\)</span> 次哈希查询，超时。</p>
+<p>失败的根源是明确的：每来一个 <code>"f"</code>，朴素实现都丢弃了一条它本可以记住的信息——<code>f(1), \dots, f(k-1)</code> 已经全部被占用，下次试探不必再从 <span class="arithmatex">\(1\)</span> 开始。把这个下界记下来，重复扫描就消失了。下一节把"该记什么"精确化。</p>
 <h2 id="_2">形式化<a class="headerlink" href="#_2" title="Permanent link">#</a></h2>
-<p>维护 (1) 集合 <span class="arithmatex">\(U \subseteq \Sigma^*\)</span>（已用名字）、(2) 字典 <span class="arithmatex">\(K: \Sigma^* \to \mathbb{N}_{\ge 1}\)</span>（每基础名的下一候选 <span class="arithmatex">\(k\)</span>）。处理 <span class="arithmatex">\(\text{names}[i]\)</span>：若 <span class="arithmatex">\(\in U\)</span>，从 <span class="arithmatex">\(K[\text{names}[i]]\)</span> 起递增 <span class="arithmatex">\(k\)</span> 直到 <code>f(k)</code> <span class="arithmatex">\(\notin U\)</span>；输出 <code>f(k)</code>；更新 <span class="arithmatex">\(U, K\)</span>。</p>
+<p>直觉先行：要在摊销 <span class="arithmatex">\(O(1)\)</span> 内处理每个名字，只需维护两件事——基础名 <code>f</code> 本身是否被占用，以及"下次给 <code>f</code> 加后缀时，最小还没分配过的后缀 <span class="arithmatex">\(k\)</span>"。前者用集合，后者用字典。</p>
+<p><strong>定义 1（已用集合）</strong> <span class="arithmatex">\(U \subseteq \Sigma^*\)</span> 是当前已输出的全部名字。</p>
+<p><strong>定义 2（下界字典）</strong> <span class="arithmatex">\(K : \Sigma^* \to \mathbb{N}_{\ge 1}\)</span> 把每个基础名 <code>f</code> 映到下次试探的起点。约定 <code>f</code> 首次出现后 <span class="arithmatex">\(K[\texttt{f}] = 1\)</span>。</p>
+<p><strong>不变量</strong> 在任何时刻，对任意已见过的基础名 <code>f</code>，</p>
+<div class="arithmatex">\[f(1), f(2), \dots, f(K[\texttt{f}] - 1) \ \text{全部} \in U.\]</div>
+<p>即 <span class="arithmatex">\(K[\texttt{f}]\)</span> 是 <code>f</code> 的后缀中第一个"尚未被本算法分配过"的下界。算法的正确性与复杂度都从这条不变量推出：维护它，就能从 <span class="arithmatex">\(K[\texttt{f}]\)</span> 而非 <span class="arithmatex">\(1\)</span> 起步，且不漏掉任何更小的可用 <span class="arithmatex">\(k\)</span>（更小的都已在 <span class="arithmatex">\(U\)</span> 中）。</p>
+<p>处理 <span class="arithmatex">\(\text{names}[i]\)</span>：若 <span class="arithmatex">\(\notin U\)</span>，输出之，置 <span class="arithmatex">\(K[\text{names}[i]] \leftarrow 1\)</span>；否则从 <span class="arithmatex">\(k = K[\text{names}[i]]\)</span> 起递增直到 <code>f(k)</code> <span class="arithmatex">\(\notin U\)</span>，输出 <code>f(k)</code>，并把 <span class="arithmatex">\(K[\text{names}[i]]\)</span> 抬到 <span class="arithmatex">\(k+1\)</span> 以保持不变量。</p>
 <h2 id="_3">数据结构 / 想法<a class="headerlink" href="#_3" title="Permanent link">#</a></h2>
+<p>算法是"维护上述不变量的、每步代价最小的实现"。<code>nxt</code> 即定义 2 的字典 <span class="arithmatex">\(K\)</span>；<code>used</code> 即 <span class="arithmatex">\(U\)</span>。</p>
 <div class="language-python highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">getFolderNames</span><span class="p">(</span><span class="n">names</span><span class="p">):</span>
     <span class="n">used</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
-    <span class="n">nxt</span> <span class="o">=</span> <span class="p">{}</span>  <span class="c1"># next k to try for each base name</span>
+    <span class="n">nxt</span> <span class="o">=</span> <span class="p">{}</span>  <span class="c1"># nxt[f] = 下次给 f 加后缀时的起始 k（即定义 2 的 K）</span>
     <span class="n">out</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">names</span><span class="p">:</span>
         <span class="k">if</span> <span class="n">f</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">used</span><span class="p">:</span>
             <span class="n">out</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">f</span><span class="p">);</span> <span class="n">used</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
-            <span class="n">nxt</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>  <span class="c1"># if &#39;f&#39; appears next time, try &#39;(1)&#39; first</span>
+            <span class="n">nxt</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>  <span class="c1"># 不变量：f(1..0) 为空，下次从 1 起</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">k</span> <span class="o">=</span> <span class="n">nxt</span><span class="p">[</span><span class="n">f</span><span class="p">]</span>
             <span class="k">while</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">f</span><span class="si">}</span><span class="s2">(</span><span class="si">{</span><span class="n">k</span><span class="si">}</span><span class="s2">)&quot;</span> <span class="ow">in</span> <span class="n">used</span><span class="p">:</span>
                 <span class="n">k</span> <span class="o">+=</span> <span class="mi">1</span>
             <span class="n">cand</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">f</span><span class="si">}</span><span class="s2">(</span><span class="si">{</span><span class="n">k</span><span class="si">}</span><span class="s2">)&quot;</span>
             <span class="n">out</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">cand</span><span class="p">);</span> <span class="n">used</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">cand</span><span class="p">)</span>
-            <span class="n">nxt</span><span class="p">[</span><span class="n">f</span><span class="p">]</span> <span class="o">=</span> <span class="n">k</span> <span class="o">+</span> <span class="mi">1</span>
-            <span class="c1"># also: setdefault(cand, 1) — 见陷阱</span>
-            <span class="n">nxt</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="n">cand</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+            <span class="n">nxt</span><span class="p">[</span><span class="n">f</span><span class="p">]</span> <span class="o">=</span> <span class="n">k</span> <span class="o">+</span> <span class="mi">1</span>            <span class="c1"># 抬高下界，保持不变量</span>
+            <span class="n">nxt</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="n">cand</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>   <span class="c1"># cand 是合法基础名，必须建表项——见陷阱</span>
     <span class="k">return</span> <span class="n">out</span>
 </code></pre></div>
-<p><strong>不变量</strong>：<code>nxt[f]</code> 是"下次需要给 <code>f</code> 加后缀时，最小可能的 <span class="arithmatex">\(k\)</span>"——即所有 <code>f(1), ..., f(nxt[f]-1)</code> 均已被用。每次给 <code>f</code> 用 <code>f(k)</code> 后，<code>nxt[f]</code> 至少增到 <span class="arithmatex">\(k+1\)</span>。</p>
-<p><strong>为何摊销 <span class="arithmatex">\(O(1)\)</span></strong>：内层 <code>while</code> 循环的总执行次数 ≤ 各基础名上 <code>nxt[f]</code> 的增量之和 = 各基础名最终 <code>nxt[f]</code> 之和 ≤ 总 <span class="arithmatex">\(k\)</span> 分配数 <span class="arithmatex">\(\le n\)</span>。所以全部内层迭代次数总和 <span class="arithmatex">\(O(n)\)</span>。</p>
+<p>每次给 <code>f</code> 分配 <code>f(k)</code> 后置 <code>nxt[f] = k + 1</code>：因为 <code>f(k)</code> 此刻进入 <span class="arithmatex">\(U\)</span>，新的最小未分配下界恰是 <span class="arithmatex">\(k+1\)</span>，这正是不变量要求的更新（不是 <span class="arithmatex">\(k+2\)</span>，也无需 <code>max</code>，因为内层从旧 <code>nxt[f]</code> 单调递增到 <span class="arithmatex">\(k\)</span>）。</p>
+<p><strong>为何摊销 <span class="arithmatex">\(O(1)\)</span>。</strong> 用累计法（aggregate method）直接数内层 <code>while</code> 的总迭代数。</p>
+<blockquote>
+<p><strong>命题</strong> 全部内层迭代次数之和为 <span class="arithmatex">\(O(n)\)</span>。</p>
+<p><strong>证明</strong> 每次内层迭代恰把某个 <code>nxt[f]</code> 增加 <span class="arithmatex">\(1\)</span>。各基础名 <code>f</code> 的 <code>nxt[f]</code> 从 <span class="arithmatex">\(1\)</span> 单调递增到其终值，增量之和等于 <span class="arithmatex">\(\sum_f (\text{nxt}[f]_{\text{final}} - 1)\)</span>。而 <code>nxt[f]</code> 每增 <span class="arithmatex">\(1\)</span> 对应给 <code>f</code> 分配过一个后缀名，分配出的名字总数不超过输入长度 <span class="arithmatex">\(n\)</span>。故内层总迭代数 <span class="arithmatex">\(\le n\)</span>。<span class="arithmatex">\(\qquad\blacksquare\)</span></p>
+</blockquote>
+<p>外层每个名字另有 <span class="arithmatex">\(O(1)\)</span> 的集合/字典操作，因此总时间 <span class="arithmatex">\(O(n)\)</span> 摊销。注意"摊销"是必要措辞：单次内层 <code>while</code> 可以跑到 <span class="arithmatex">\(\sim n\)</span> 步（先填 <code>f(2..999)</code> 再来裸 <code>"f"</code>），但跨所有名字的总和受命题约束。</p>
 <h2 id="_4">复杂度<a class="headerlink" href="#_4" title="Permanent link">#</a></h2>
 <ul>
-<li>Time: <span class="arithmatex">\(O(n)\)</span> 摊销（每名平均 <span class="arithmatex">\(O(1)\)</span> 字典查询 + 哈希）。</li>
-<li>Space: <span class="arithmatex">\(O(n \cdot L)\)</span>，<span class="arithmatex">\(L = \max |\text{name}|\)</span>。</li>
+<li>Time: <span class="arithmatex">\(O(n)\)</span> 摊销（由上述命题；每名平均 <span class="arithmatex">\(O(1)\)</span> 字典查询 + 哈希）。</li>
+<li>Space: <span class="arithmatex">\(O(n \cdot L)\)</span>，<span class="arithmatex">\(L = \max |\text{name}|\)</span>（自动生成的后缀只多 <span class="arithmatex">\(O(\log n)\)</span> 字符，被 <span class="arithmatex">\(L\)</span> 吸收）。</li>
 </ul>
 <h2 id="_5">陷阱<a class="headerlink" href="#_5" title="Permanent link">#</a></h2>
 <ul>
-<li><strong>必须存 next 字典</strong>：朴素重新扫 <span class="arithmatex">\(k=1\)</span> 在最坏 case 是 <span class="arithmatex">\(O(n^2)\)</span> TLE。</li>
-<li><strong><code>f(k)</code> 本身可能与之后的原始名冲突</strong>：例如先来 <code>"gta(1)"</code>，后来 <code>"gta"</code> 时第一个不冲突直接用；再后来 <code>"gta"</code> 时 <span class="arithmatex">\(k=1\)</span> 已用 (<code>gta(1)</code>)，应跳到 <span class="arithmatex">\(k=2\)</span>。我们对 <code>cand</code> 也 <code>setdefault(cand, 1)</code> 是 defensive 但实际不必要（已加入 used，下次试 <code>cand</code> 即冲突，会进入正常 nxt[cand] 流程）。</li>
-<li>输入名本身含 <code>(k)</code> 格式不影响算法（视为普通名）。</li>
+<li>
+<p><strong>必须存下界字典</strong>：去掉 <code>nxt</code>、每次从 <span class="arithmatex">\(k=1\)</span> 重扫，就退回背景节的 <span class="arithmatex">\(O(n^2)\)</span>，在 <span class="arithmatex">\(\text{names} = [\texttt{"f"}, \dots, \texttt{"f"}]\)</span> 上超时。</p>
+</li>
+<li>
+<p><strong><code>nxt.setdefault(cand, 1)</code> 是必需的，不是可省的</strong>。自动生成的 <code>cand = f(k)</code> 本身是一个合法基础名，之后可能作为原始输入再次到来。看最小反例 <code>["a", "a", "a(1)"]</code>：</p>
+</li>
+<li>
+<p><code>"a"</code>：不在 <code>used</code>，输出 <code>"a"</code>，<code>nxt["a"]=1</code>。</p>
+</li>
+<li><code>"a"</code>：在 <code>used</code>，<span class="arithmatex">\(k=1\)</span>，<code>"a(1)"</code> 空闲，输出 <code>"a(1)"</code>，<code>nxt["a"]=2</code>；此句把 <code>nxt["a(1)"]=1</code> 也建好。</li>
+<li><code>"a(1)"</code>：<strong>已在 <code>used</code></strong>（第 2 步自动生成的），进入 <code>else</code> 分支，执行 <code>k = nxt["a(1)"]</code>。</li>
+</ul>
+<p>若第 2 步没建 <code>nxt["a(1)"]</code>，第 3 步的 <code>nxt["a(1)"]</code> 直接 <code>KeyError</code>。正确输出应为 <code>["a", "a(1)", "a(1)(1)"]</code>。所以这一行把 <code>cand</code> 纳入下界字典，是让"自动生成名 = 后续原始名"这一情形不崩溃的关键。</p>
+<ul>
+<li><strong>输入名本身含 <code>(k)</code> 格式不影响算法</strong>：<code>"gta(1)"</code> 被当作普通基础名对待，与上一条的机制一致。</li>
 </ul>
 <h2 id="_6">相关题目<a class="headerlink" href="#_6" title="Permanent link">#</a></h2>
 <ul>
@@ -22512,7 +22575,7 @@
 </ul>
 <h2 id="further-reading">Further Reading<a class="headerlink" href="#further-reading" title="Permanent link">#</a></h2>
 <ul>
-<li>CLRS, 3e §17 "Amortized Analysis" — 累计法 (aggregate method) 直接证明本题 <span class="arithmatex">\(O(n)\)</span> 摊销。</li>
+<li>CLRS, 3e §17 "Amortized Analysis" — 累计法 (aggregate method) 直接证明本题 <span class="arithmatex">\(O(n)\)</span> 摊销，对应上文命题的证法。</li>
 <li>Tarjan, R. (1985). <em>Amortized Computational Complexity</em>. SIAM Journal on Algebraic and Discrete Methods. — 摊销分析的奠基论文。</li>
 </ul>
 
@@ -22620,6 +22683,8 @@
         <script src="../../../js/mathjax/tex-mml-chtml.js"></script>
       
         <script src="../../../js/mermaid.min.js"></script>
+      
+        <script src="../../../js/featured.js"></script>
       
     
   </body>

@@ -1466,6 +1466,8 @@
       
         
       
+        
+      
     
     
     
@@ -1521,6 +1523,34 @@
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../featured/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ⭐ Featured（已验证）
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
               
             
               
@@ -1610,10 +1640,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_4" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
         
           
-          <label class="md-nav__link" for="__nav_4_4" id="__nav_4_4_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_5" id="__nav_4_5_label" tabindex="">
             
   
   
@@ -1631,8 +1661,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_4_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_4">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_5">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1915,7 +1945,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -1937,14 +1967,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_4_5" id="__nav_4_5_label" tabindex="">
+              <label class="md-nav__link " for="__nav_4_6" id="__nav_4_6_label" tabindex="">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_5">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_6">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -5321,10 +5351,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_7" checked>
         
           
-          <label class="md-nav__link" for="__nav_4_6" id="__nav_4_6_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_7" id="__nav_4_7_label" tabindex="">
             
   
   
@@ -5342,8 +5372,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_4_6">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_7_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4_7">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -22472,16 +22502,38 @@
 </ul>
 <p>约束：调用总数 <span class="arithmatex">\(\leq 10^4\)</span>，时间 <span class="arithmatex">\(\in [0, 10^9]\)</span>，单次查询窗口 <span class="arithmatex">\(\leq 10^4\)</span> 秒。</p>
 <h2 id="background">背景 (Background)<a class="headerlink" href="#background" title="Permanent link">#</a></h2>
-<p><strong>事件序时间索引</strong>问题。对每个推文名维护有序时间序列；查询时按 chunk 切片。两种实现路线：</p>
-<ol>
-<li><strong>有序集合（<code>SortedList</code>）</strong>：插入 <span class="arithmatex">\(O(\log n)\)</span>，查询用 <code>bisect</code> 找块的左右端，<span class="arithmatex">\(O(\log n + k)\)</span>（<span class="arithmatex">\(k\)</span>=chunk 数）。</li>
-<li><strong>无序数组 + 查询时排序</strong>：插入 <span class="arithmatex">\(O(1)\)</span>，查询时排序 <span class="arithmatex">\(O(n \log n)\)</span> 然后 bisect。</li>
-</ol>
-<p>题面约束极小（<span class="arithmatex">\(\leq 10^4\)</span> 次调用），所以即使方法 2 也轻松通过；但产品级设计倾向方法 1。</p>
+<p>把题面剥到核心：每个推文名背后是一串时间戳，而每次查询要做的只有一件事——把窗口 <span class="arithmatex">\([\text{start}, \text{end}]\)</span> 切成若干等宽时间块，数每块里落了多少个时间戳。</p>
+<p>先用最直接的办法把它做出来，看它在哪里不够用。记录推文时，往一个普通 <code>list</code> 里追加时间戳，<span class="arithmatex">\(O(1)\)</span>。查询时，对每个时间块，扫一遍整个 list，逐个判断该时间戳是否落在这一块里：</p>
+<div class="language-python highlight"><pre><span></span><code><span class="c1"># 朴素查询：每块扫全表</span>
+<span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">K</span><span class="p">):</span>              <span class="c1"># K 个时间块</span>
+    <span class="n">lo</span><span class="p">,</span> <span class="n">hi</span> <span class="o">=</span> <span class="n">block_k</span> <span class="n">的左右端</span>
+    <span class="n">cnt</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">lo</span> <span class="o">&lt;=</span> <span class="n">t</span> <span class="o">&lt;=</span> <span class="n">hi</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">times</span><span class="p">)</span>   <span class="c1"># O(n)</span>
+    <span class="n">res</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">cnt</span><span class="p">)</span>
+</code></pre></div>
+<p>单次查询是 <span class="arithmatex">\(O(K \cdot n)\)</span>（<span class="arithmatex">\(K\)</span> 块，每块扫 <span class="arithmatex">\(n\)</span> 个时间戳）。本题约束极小，这份代码能通过；但它把一个本可以更结构化的问题做成了线性扫描，且没有利用一个关键事实——每个时间块要的只是<strong>计数</strong>，不是具体元素。</p>
+<p>哪里能省？同一个时间块内，我们并不关心是哪些时间戳落在其中，只关心有几个。如果时间戳已经<strong>有序</strong>，"落在 <span class="arithmatex">\([\text{lo}, \text{hi}]\)</span> 内的个数"就不必逐个比较——它等于 hi 右边界的秩减去 lo 左边界的秩，两次二分即可。这把每块的 <span class="arithmatex">\(O(n)\)</span> 降到 <span class="arithmatex">\(O(\log n)\)</span>。</p>
+<p>这就引出下面的形式化：先把"块"精确定义清楚，再把"块内计数"翻译成有序序列上的秩查询。</p>
 <h2 id="formulation">形式化 (Formulation)<a class="headerlink" href="#formulation" title="Permanent link">#</a></h2>
-<p>设每条推文名 <span class="arithmatex">\(w\)</span> 对应时间多重集 <span class="arithmatex">\(T_w \subseteq \mathbb{N}\)</span>。查询给定 <span class="arithmatex">\(w, [s, e], \Delta \in \{60, 3600, 86400\}\)</span>。块数 <span class="arithmatex">\(K = \lfloor (e - s) / \Delta \rfloor + 1\)</span>，第 <span class="arithmatex">\(k\)</span> 块 <span class="arithmatex">\([s + k\Delta, \min(s + (k+1)\Delta - 1, e)]\)</span>（<span class="arithmatex">\(0 \leq k &lt; K\)</span>）。输出 <span class="arithmatex">\(|T_w \cap \text{block}_k|\)</span> for each <span class="arithmatex">\(k\)</span>。</p>
+<p>设每条推文名 <span class="arithmatex">\(w\)</span> 对应时间多重集 <span class="arithmatex">\(T_w \subseteq \mathbb{N}\)</span>（多重集，因为同一秒可重复记录）。查询给定 <span class="arithmatex">\(w\)</span>、窗口 <span class="arithmatex">\([s, e]\)</span>、块宽 <span class="arithmatex">\(\Delta \in \{60, 3600, 86400\}\)</span>，要输出每个时间块内 <span class="arithmatex">\(T_w\)</span> 的元素个数。</p>
+<p><strong>块数 <span class="arithmatex">\(K\)</span>。</strong> 块从 <span class="arithmatex">\(s\)</span> 起按 <span class="arithmatex">\(\Delta\)</span> 步进，第 <span class="arithmatex">\(k\)</span> 块（<span class="arithmatex">\(k \geq 0\)</span>）从 <span class="arithmatex">\(s + k\Delta\)</span> 开始。最后一块的起点是仍 <span class="arithmatex">\(\leq e\)</span> 的最大者，即 <span class="arithmatex">\(s + \lfloor (e-s)/\Delta \rfloor \cdot \Delta\)</span>，对应下标 <span class="arithmatex">\(k = \lfloor (e-s)/\Delta \rfloor\)</span>。下标从 0 数起，故块数</p>
+<div class="arithmatex">\[K = \left\lfloor \frac{e - s}{\Delta} \right\rfloor + 1.\]</div>
+<p>这里的 <span class="arithmatex">\(+1\)</span> 容易漏：朴素地写 <span class="arithmatex">\(K = \lfloor (e-s)/\Delta \rfloor\)</span> 会少算一块。它算的是"跨过了几个整块边界"，而块下标是 0-indexed，块数要再 <span class="arithmatex">\(+1\)</span> 把第 0 块本身算进去。边界自检：<span class="arithmatex">\([0,59]/60\)</span> 给 <span class="arithmatex">\(K=1\)</span>，<span class="arithmatex">\([0,60]/60\)</span> 给 <span class="arithmatex">\(K=2\)</span>，<span class="arithmatex">\([0,120]/60\)</span> 给 <span class="arithmatex">\(K=3\)</span>，恰为整数倍时也对。</p>
+<p><strong>块边界。</strong> 第 <span class="arithmatex">\(k\)</span> 块为闭区间</p>
+<div class="arithmatex">\[\text{block}_k = \big[\, s + k\Delta,\ \min(s + (k+1)\Delta - 1,\ e) \,\big],\qquad 0 \leq k &lt; K.\]</div>
+<p>右端为什么是 <span class="arithmatex">\((k+1)\Delta - 1\)</span> 而非 <span class="arithmatex">\((k+1)\Delta\)</span>？因为时间戳是整数，下一块恰好从 <span class="arithmatex">\(s + (k+1)\Delta\)</span> 起；本块右端应是严格小于下一块左端的最大整数，即减 1。这是整数时间戳约束的直接推论，不是约定。末块再截到 <span class="arithmatex">\(e\)</span>，保证整体恰好平铺 <span class="arithmatex">\([s, e]\)</span>、互不重叠、非末块都恰为 <span class="arithmatex">\(\Delta\)</span> 宽。</p>
+<p><strong>查询。</strong> 输出 <span class="arithmatex">\(\big(\,|T_w \cap \text{block}_k|\,\big)_{k=0}^{K-1}\)</span>。</p>
+<p>到此，问题已从"逐块扫描"变成"对每块求 <span class="arithmatex">\(|T_w \cap [\text{lo}, \text{hi}]|\)</span>"。下一步把这个交集计数落到有序序列上。</p>
 <h2 id="approach">数据结构 / 想法 (Approach)<a class="headerlink" href="#approach" title="Permanent link">#</a></h2>
-<p><strong>方法 1：<code>SortedList</code> per name（推荐）</strong></p>
+<p><strong>从形式化到秩查询。</strong> 设 <span class="arithmatex">\(T_w\)</span> 已按时间升序排列。对一个闭区间 <span class="arithmatex">\([\text{lo}, \text{hi}]\)</span>，定义两个秩：</p>
+<ul>
+<li><code>bisect_left(lo)</code>：第一个 <span class="arithmatex">\(\geq \text{lo}\)</span> 的元素下标；</li>
+<li><code>bisect_right(hi)</code>：最后一个 <span class="arithmatex">\(\leq \text{hi}\)</span> 的元素下标再加一。</li>
+</ul>
+<p>由有序性，下标落在 <span class="arithmatex">\([\,\texttt{bisect\_left(lo)},\ \texttt{bisect\_right(hi)}\,)\)</span> 之间的元素，恰是值落在 <span class="arithmatex">\([\text{lo}, \text{hi}]\)</span> 内的元素。于是</p>
+<div class="arithmatex">\[|T_w \cap [\text{lo}, \text{hi}]| = \texttt{bisect\_right(hi)} - \texttt{bisect\_left(lo)}.\]</div>
+<p>每块两次二分，<span class="arithmatex">\(O(\log n)\)</span>，<span class="arithmatex">\(K\)</span> 块共 <span class="arithmatex">\(O(K \log n)\)</span>——这正是把朴素 <span class="arithmatex">\(O(K \cdot n)\)</span> 中每块的线性扫换成了二分。剩下的唯一要求，是让 <span class="arithmatex">\(T_w\)</span> 始终有序，从而支持 <span class="arithmatex">\(O(\log n)\)</span> 的秩查询。</p>
+<p><strong>方法 1：<code>SortedList</code> per name（增量维护有序）</strong></p>
+<p><code>sortedcontainers.SortedList</code> 在插入时维护有序，<code>add</code> 为 <span class="arithmatex">\(O(\log n)\)</span>，秩查询 <span class="arithmatex">\(O(\log n)\)</span>。代码就是上面那个计数恒等式的直接实现：</p>
 <div class="language-python highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">collections</span><span class="w"> </span><span class="kn">import</span> <span class="n">defaultdict</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">sortedcontainers</span><span class="w"> </span><span class="kn">import</span> <span class="n">SortedList</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">bisect</span>
@@ -22509,18 +22561,24 @@
             <span class="n">res</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">right</span> <span class="o">-</span> <span class="n">left</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">res</span>
 </code></pre></div>
-<p>样例验证：record "tweet3" at 0, 60, 10. 查询 <code>minute, "tweet3", 0, 59</code>：delta=60, K=1, block [0,59], 含时间 0 与 10 → [2] ✓. 查询 <code>minute, "tweet3", 0, 60</code>：K=2, block [0,59]→{0,10}=2, block [60,60]→{60}=1 → [2,1] ✓. record at 120. 查询 <code>hour, "tweet3", 0, 210</code>：delta=3600, K=1, block [0,210], 含 0,60,10,120 → [4] ✓.</p>
-<p><strong>方法 2（更简单）</strong>：用 <code>list</code> 收集，每次查询时排序后 <code>bisect</code>。</p>
+<p><strong>方法 2：<code>list</code> + 查询时排序。</strong> 记录仍是 <span class="arithmatex">\(O(1)\)</span> 追加，把维护有序的代价推迟到查询：查询开头 <code>sort</code> 一次 <span class="arithmatex">\(O(n \log n)\)</span>，之后同样的两次 <code>bisect</code> 计数。两种方法的计数核完全相同——区别只在何时把序列变有序：方法 1 增量维护，方法 2 每次查询重排。本题约束下两者都远在限内；方法 1 在多查询场景下更优。</p>
+<p><strong>样例验证。</strong> 验证恒等式是否真的数对。record <code>"tweet3"</code> at 0, 60, 10，故 <span class="arithmatex">\(T_{\text{tweet3}} = \{0, 10, 60\}\)</span>（已序）。</p>
+<ul>
+<li>查询 <code>minute, "tweet3", 0, 59</code>：<span class="arithmatex">\(\Delta=60\)</span>，<span class="arithmatex">\(K=1\)</span>，块 <span class="arithmatex">\([0,59]\)</span>。<span class="arithmatex">\(\geq 0\)</span> 的秩为 0，<span class="arithmatex">\(\leq 59\)</span> 的秩为 2，差 <span class="arithmatex">\(2\)</span> → <code>[2]</code> ✓。</li>
+<li>查询 <code>minute, "tweet3", 0, 60</code>：<span class="arithmatex">\(K=2\)</span>。块 <span class="arithmatex">\([0,59]\)</span> 含 <span class="arithmatex">\(\{0,10\}\)</span> 得 2；块 <span class="arithmatex">\([60,60]\)</span> 含 <span class="arithmatex">\(\{60\}\)</span> 得 1 → <code>[2,1]</code> ✓。</li>
+<li>record at 120，<span class="arithmatex">\(T_{\text{tweet3}} = \{0,10,60,120\}\)</span>。查询 <code>hour, "tweet3", 0, 210</code>：<span class="arithmatex">\(\Delta=3600\)</span>，<span class="arithmatex">\(K=1\)</span>，块 <span class="arithmatex">\([0,210]\)</span> 含全部四个 → <code>[4]</code> ✓。</li>
+</ul>
 <h2 id="complexity">复杂度 (Complexity)<a class="headerlink" href="#complexity" title="Permanent link">#</a></h2>
 <ul>
 <li>record: <span class="arithmatex">\(O(\log n)\)</span>（SortedList）或 <span class="arithmatex">\(O(1)\)</span>（list）</li>
 <li>query: <span class="arithmatex">\(O(K \log n)\)</span>（SortedList，<span class="arithmatex">\(K\)</span>=chunk 数）或 <span class="arithmatex">\(O(n \log n + K \log n)\)</span>（list 排序后查）</li>
 <li>Space: <span class="arithmatex">\(O(\sum_w |T_w|)\)</span></li>
 </ul>
+<p>查询窗口约束 <span class="arithmatex">\(e - s \leq 10^4\)</span> 把 <span class="arithmatex">\(K\)</span> 锁在 <span class="arithmatex">\(10^4/60 + 1 \approx 167\)</span>（minute 粒度）以内，故 <span class="arithmatex">\(O(K \log n)\)</span> 的查询代价很小。</p>
 <h2 id="pitfalls">陷阱 (Pitfalls)<a class="headerlink" href="#pitfalls" title="Permanent link">#</a></h2>
 <ul>
 <li>块边界<strong>闭区间</strong> <code>[startTime + k*delta, startTime + (k+1)*delta - 1]</code>，最后一块截到 <code>endTime</code>——边界算错容易少计/重计一秒。</li>
-<li><span class="arithmatex">\(K = (e - s) // \Delta + 1\)</span>（注意 +1，因为 chunk 是左闭右闭）。</li>
+<li><span class="arithmatex">\(K = (e - s) // \Delta + 1\)</span>（注意 +1，因为 chunk 是左闭右闭，下标 0-indexed）。漏 +1 会少算最后一块。</li>
 <li><code>bisect_right(hi)</code> 而不是 <code>bisect_left(hi+1)</code>——对整型时间二者等价，但前者更直接。</li>
 <li>Python 内置 <code>SortedList</code> 不存在；用 <code>sortedcontainers.SortedList</code>，LeetCode 已预装。</li>
 </ul>
@@ -22640,6 +22698,8 @@
         <script src="../../../js/mathjax/tex-mml-chtml.js"></script>
       
         <script src="../../../js/mermaid.min.js"></script>
+      
+        <script src="../../../js/featured.js"></script>
       
     
   </body>

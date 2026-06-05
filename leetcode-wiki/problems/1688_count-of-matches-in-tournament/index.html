@@ -1466,6 +1466,8 @@
       
         
       
+        
+      
     
     
     
@@ -1521,6 +1523,34 @@
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../featured/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ⭐ Featured（已验证）
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
               
             
               
@@ -1610,10 +1640,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_4" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
         
           
-          <label class="md-nav__link" for="__nav_4_4" id="__nav_4_4_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_5" id="__nav_4_5_label" tabindex="">
             
   
   
@@ -1631,8 +1661,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_4_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_4">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_5">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1915,7 +1945,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -1937,14 +1967,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_4_5" id="__nav_4_5_label" tabindex="">
+              <label class="md-nav__link " for="__nav_4_6" id="__nav_4_6_label" tabindex="">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_5">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_6">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -5321,10 +5351,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_7" checked>
         
           
-          <label class="md-nav__link" for="__nav_4_6" id="__nav_4_6_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_7" id="__nav_4_7_label" tabindex="">
             
   
   
@@ -5342,8 +5372,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_4_6">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_7_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4_7">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -22467,34 +22497,50 @@
 <h2 id="problem">Problem<a class="headerlink" href="#problem" title="Permanent link">#</a></h2>
 <p><span class="arithmatex">\(n\)</span> 队单淘汰赛：偶数则两两配对 <span class="arithmatex">\(n/2\)</span> 场剩 <span class="arithmatex">\(n/2\)</span>；奇数则一队轮空，<span class="arithmatex">\((n-1)/2\)</span> 场剩 <span class="arithmatex">\((n-1)/2 + 1\)</span>。求总场次。约束 <span class="arithmatex">\(1 \le n \le 200\)</span>。</p>
 <h2 id="background">背景 (Background)<a class="headerlink" href="#background" title="Permanent link">#</a></h2>
-<p>经典的"消除论证 (elimination argument)"：单淘汰赛中每场恰淘汰一支队，最终冠军 1 队，故总场次 <span class="arithmatex">\(= n - 1\)</span>，与晋级机制无关。模拟亦可，但 <span class="arithmatex">\(O(1)\)</span> 数学答案更优雅。</p>
+<p>题面把每一轮的规则按奇偶分成两支：<span class="arithmatex">\(n\)</span> 为偶数时打 <span class="arithmatex">\(\lfloor n/2 \rfloor\)</span> 场、剩 <span class="arithmatex">\(n/2\)</span> 队；<span class="arithmatex">\(n\)</span> 为奇数时打 <span class="arithmatex">\((n-1)/2\)</span> 场、剩 <span class="arithmatex">\((n+1)/2\)</span> 队。最直接的做法就是照搬这个过程：从 <span class="arithmatex">\(n\)</span> 出发，一轮一轮模拟下去，每轮把当轮场次累加，直到只剩 1 队。</p>
+<p>这条路能算对答案，但它的形态有个值得注意的特征：每一轮要打多少场，取决于当时 <span class="arithmatex">\(n\)</span> 的奇偶。<span class="arithmatex">\(n\)</span> 在 <span class="arithmatex">\(\lfloor n/2 \rfloor\)</span> 与 <span class="arithmatex">\(\lceil n/2 \rceil\)</span> 之间往复，奇偶状态一路变化，于是总场次写成一串依赖逐轮奇偶的求和，无法一眼合并。要得到答案，似乎不得不真的走完 <span class="arithmatex">\(O(\log n)\)</span> 轮。</p>
+<p>问题是：这个求和最后等于什么？逐轮相加只是把过程记录下来，并没有解释结果。如果换一个计数对象——不数"每轮打几场"，而数"整场比赛一共淘汰了几支队"——奇偶分支就会消失。下一节把这个换向说清楚。</p>
 <h2 id="formulation">形式化 (Formulation)<a class="headerlink" href="#formulation" title="Permanent link">#</a></h2>
-<p>设 <span class="arithmatex">\(T(n)\)</span> = 比赛总场次。则 <span class="arithmatex">\(T(1) = 0\)</span>，且：</p>
-<div class="arithmatex">\[T(n) = \lfloor n/2 \rfloor + T(\lceil n/2 \rceil)\]</div>
-<p>闭式：<span class="arithmatex">\(T(n) = n - 1\)</span>。</p>
+<p>先把直接模拟写成递推，看清它"依赖奇偶"的形态。设 <span class="arithmatex">\(T(n)\)</span> 为 <span class="arithmatex">\(n\)</span> 队比赛打到分出冠军的总场次。</p>
+<ul>
+<li><span class="arithmatex">\(n\)</span> 为偶数：本轮打 <span class="arithmatex">\(\lfloor n/2 \rfloor\)</span> 场，剩 <span class="arithmatex">\(n/2 = \lceil n/2 \rceil\)</span> 队；</li>
+<li><span class="arithmatex">\(n\)</span> 为奇数：本轮打 <span class="arithmatex">\((n-1)/2 = \lfloor n/2 \rfloor\)</span> 场，剩 <span class="arithmatex">\((n+1)/2 = \lceil n/2 \rceil\)</span> 队。</li>
+</ul>
+<p>两支的本轮场次都是 <span class="arithmatex">\(\lfloor n/2 \rfloor\)</span>，剩余队数都是 <span class="arithmatex">\(\lceil n/2 \rceil\)</span>，于是可以合并成一条不分奇偶的递推：</p>
+<div class="arithmatex">\[T(n) = \lfloor n/2 \rfloor + T(\lceil n/2 \rceil), \qquad T(1) = 0.\]</div>
+<p>这条递推忠实地刻画了模拟过程，但每展开一层仍要追踪 <span class="arithmatex">\(\lceil n/2 \rceil\)</span> 的奇偶，闭式不会自己浮现。它是问题的正确骨架，却还不是答案。</p>
+<p><strong>换一个计数对象。</strong> 直接观察单淘汰赛的一个结构事实：每打一场，恰好有一支队伍出局；轮空不是比赛，不淘汰任何人。比赛在恰好剩 1 队（冠军）时结束，也就是说在过程中恰好有 <span class="arithmatex">\(n - 1\)</span> 支队各输了一次、被淘汰出局。每场比赛与每次淘汰一一对应，故</p>
+<div class="arithmatex">\[T(n) = (\text{淘汰总数}) = n - 1.\]</div>
+<p>这个论证不分奇偶：无论某一轮是两两配对还是有人轮空，"一场对应一次淘汰"始终成立。换向之所以有效，正是因为它绕开了让求和无法合并的那个奇偶依赖。</p>
+<p><strong>与递推对齐。</strong> 闭式也能从递推本身得到，作为对换向论证的交叉验证。设 <span class="arithmatex">\(T(k) = k - 1\)</span> 对所有 <span class="arithmatex">\(k &lt; n\)</span> 成立，则</p>
+<div class="arithmatex">\[T(n) = \lfloor n/2 \rfloor + T(\lceil n/2 \rceil) = \lfloor n/2 \rfloor + \bigl(\lceil n/2 \rceil - 1\bigr) = \bigl(\lfloor n/2 \rfloor + \lceil n/2 \rceil\bigr) - 1 = n - 1,\]</div>
+<p>末步用到 <span class="arithmatex">\(\lfloor n/2 \rfloor + \lceil n/2 \rceil = n\)</span>。基例 <span class="arithmatex">\(T(1) = 0 = 1 - 1\)</span> 成立，归纳完成。递推与淘汰论证给出同一个 <span class="arithmatex">\(T(n) = n - 1\)</span>。</p>
 <h2 id="approach">数据结构 / 想法 (Approach)<a class="headerlink" href="#approach" title="Permanent link">#</a></h2>
+<p>闭式既已导出，代码就是它的直接誊写。</p>
 <p><strong><span class="arithmatex">\(O(1)\)</span> 数学解</strong>：
 <div class="language-python highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">Solution</span><span class="p">:</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">numberOfMatches</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">n</span> <span class="o">-</span> <span class="mi">1</span>
-</code></pre></div></p>
-<p><strong>论证</strong>：每场恰淘汰 1 队。冠军剩 1 队 → 共淘汰 <span class="arithmatex">\(n - 1\)</span> 队 → <span class="arithmatex">\(n - 1\)</span> 场。轮空不算场次。</p>
-<p><strong>模拟解</strong>：
-<div class="language-python highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">numberOfMatches</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
+</code></pre></div>
+<span class="arithmatex">\(T(n) = n - 1\)</span> 由淘汰论证（每场恰淘汰一队，剩 1 队冠军，故 <span class="arithmatex">\(n-1\)</span> 场）给出，并经递推归纳验证。</p>
+<p><strong>模拟解</strong>：如果不想用结论，递推可逐字翻译成循环——它正是上一节那条按奇偶合并后的递推。</p>
+<p><div class="language-python highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">numberOfMatches</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
     <span class="n">m</span> <span class="o">=</span> <span class="mi">0</span>
     <span class="k">while</span> <span class="n">n</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
         <span class="n">m</span> <span class="o">+=</span> <span class="n">n</span> <span class="o">//</span> <span class="mi">2</span>
         <span class="n">n</span> <span class="o">=</span> <span class="p">(</span><span class="n">n</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">//</span> <span class="mi">2</span>
     <span class="k">return</span> <span class="n">m</span>
-</code></pre></div></p>
+</code></pre></div>
+其中 <code>n // 2</code> 即 <span class="arithmatex">\(\lfloor n/2 \rfloor\)</span>（本轮场次），<code>(n + 1) // 2</code> 即 <span class="arithmatex">\(\lceil n/2 \rceil\)</span>（剩余队数，对奇偶均成立）。每轮把队数约减到约一半，故循环约 <span class="arithmatex">\(\lceil \log_2 n \rceil\)</span> 轮终止，这也是其 <span class="arithmatex">\(O(\log n)\)</span> 的来源。它与数学解返回同一个值，是从过程而非从结论出发的对照实现。</p>
 <h2 id="complexity">复杂度 (Complexity)<a class="headerlink" href="#complexity" title="Permanent link">#</a></h2>
 <ul>
-<li>数学法：<span class="arithmatex">\(O(1)\)</span>。</li>
-<li>模拟法：<span class="arithmatex">\(O(\log n)\)</span>。</li>
+<li>数学法：<span class="arithmatex">\(O(1)\)</span> 时间，<span class="arithmatex">\(O(1)\)</span> 空间。</li>
+<li>模拟法：<span class="arithmatex">\(O(\log n)\)</span> 时间（每轮队数减半，约 <span class="arithmatex">\(\lceil \log_2 n \rceil\)</span> 轮），<span class="arithmatex">\(O(1)\)</span> 空间。</li>
 </ul>
 <h2 id="pitfalls">陷阱 (Pitfalls)<a class="headerlink" href="#pitfalls" title="Permanent link">#</a></h2>
 <ul>
-<li>无（题面已足够直白）。</li>
+<li><strong>不要把轮空计入场次</strong>。奇数轮中轮空的队伍直接晋级，没有比赛，故不贡献淘汰、不计场次；模拟里 <code>(n + 1) // 2</code> 让这支队留到下一轮正是此意。</li>
+<li><strong><span class="arithmatex">\(n = 1\)</span> 是约束下界</strong>。数学解返回 <span class="arithmatex">\(0\)</span>；模拟解的 <code>while n &gt; 1</code> 一次都不进入，同样返回 <span class="arithmatex">\(0\)</span>，与 <span class="arithmatex">\(T(1) = 0\)</span> 一致。</li>
 </ul>
 <h2 id="related">相关题目 (Related)<a class="headerlink" href="#related" title="Permanent link">#</a></h2>
 <ul>
@@ -22609,6 +22655,8 @@
         <script src="../../../js/mathjax/tex-mml-chtml.js"></script>
       
         <script src="../../../js/mermaid.min.js"></script>
+      
+        <script src="../../../js/featured.js"></script>
       
     
   </body>

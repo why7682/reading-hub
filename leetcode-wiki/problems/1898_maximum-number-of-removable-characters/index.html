@@ -1466,6 +1466,8 @@
       
         
       
+        
+      
     
     
     
@@ -1521,6 +1523,34 @@
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../featured/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ⭐ Featured（已验证）
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
               
             
               
@@ -1610,10 +1640,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_4" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
         
           
-          <label class="md-nav__link" for="__nav_4_4" id="__nav_4_4_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_5" id="__nav_4_5_label" tabindex="">
             
   
   
@@ -1631,8 +1661,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_4_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_4">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_5">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1915,7 +1945,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -1937,14 +1967,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_4_5" id="__nav_4_5_label" tabindex="">
+              <label class="md-nav__link " for="__nav_4_6" id="__nav_4_6_label" tabindex="">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_5">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_6">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -5321,10 +5351,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_7" checked>
         
           
-          <label class="md-nav__link" for="__nav_4_6" id="__nav_4_6_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_7" id="__nav_4_7_label" tabindex="">
             
   
   
@@ -5342,8 +5372,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_4_6">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_7_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4_7">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -22467,16 +22497,19 @@
 <h2 id="problem">Problem<a class="headerlink" href="#problem" title="Permanent link">#</a></h2>
 <p>给字符串 <code>s</code> 与其子序列 <code>p</code>，以及索引数组 <code>removable</code>。选最大 <span class="arithmatex">\(k\)</span> 使得删去 <code>removable[0..k-1]</code> 对应位置后 <code>p</code> 仍是 <code>s</code> 的子序列。返回该最大 <span class="arithmatex">\(k\)</span>。约束 <span class="arithmatex">\(|s| \le 10^5\)</span>，<span class="arithmatex">\(|p| \le |s|\)</span>。</p>
 <h2 id="background">背景 (Background)<a class="headerlink" href="#background" title="Permanent link">#</a></h2>
-<p>经典<strong>"在答案上二分 (binary search on answer)"</strong> 范式：</p>
-<ul>
-<li>关键性质：答案具有<strong>单调性</strong>——若删 <span class="arithmatex">\(k\)</span> 个仍可保持子序列，则删 <span class="arithmatex">\(k' &lt; k\)</span> 个必也可（删的是其前缀子集）。</li>
-<li>因此可以二分 <span class="arithmatex">\(k\)</span>，对每个候选 <span class="arithmatex">\(k\)</span> 用 <span class="arithmatex">\(O(|s|)\)</span> check：把 <code>removable[0..k-1]</code> 位置标记后用双指针验证 <code>p</code> 是否仍是子序列。</li>
-</ul>
-<p>总复杂度 <span class="arithmatex">\(O((|s| + |p|) \log |\text{removable}|)\)</span>，远优于线性枚举 <span class="arithmatex">\(O(|\text{removable}| \cdot |s|)\)</span>。</p>
+<p>最直接的做法是逐个试：对 <span class="arithmatex">\(k = 0, 1, 2, \dots, |R|\)</span>（记 <span class="arithmatex">\(R = \text{removable}\)</span>），每次删掉前 <span class="arithmatex">\(k\)</span> 个位置，再扫一遍 <code>s</code> 验证 <code>p</code> 是否仍是子序列。单次验证是一遍线性扫描，<span class="arithmatex">\(O(|s| + |p|)\)</span>；要试 <span class="arithmatex">\(|R|+1\)</span> 个候选，总代价 <span class="arithmatex">\(O(|R| \cdot (|s| + |p|))\)</span>。在约束上界处这是 <span class="arithmatex">\(10^5 \times 10^5 = 10^{10}\)</span> 次操作——远超可接受范围。瓶颈不在单次验证，而在候选数量：我们做了 <span class="arithmatex">\(|R|\)</span> 次彼此独立的验证。</p>
+<p>要减少验证次数，得先看清这 <span class="arithmatex">\(|R|+1\)</span> 个候选之间的关系。删第 <span class="arithmatex">\(k\)</span> 步时，<code>s</code> 中"存活"（未被删）的位置集合记作 <span class="arithmatex">\(A(k) = \{0,\dots,|s|-1\} \setminus \{R[0],\dots,R[k-1]\}\)</span>。因为删除是按 <code>removable</code> 顺序累加的，多删一步只会再拿掉一个位置，不会还回任何位置，所以</p>
+<div class="arithmatex">\[A(0) \supseteq A(1) \supseteq \dots \supseteq A(|R|).\]</div>
+<p>存活集是一族<strong>嵌套递减</strong>的集合。而 <code>p</code> 是否仍是子序列，只取决于能否在存活位置里按序匹配 <code>p</code>：若在较大的 <span class="arithmatex">\(A(k')\)</span> 里能匹配，那么去掉若干存活位置得到的 <span class="arithmatex">\(A(k)\)</span>（<span class="arithmatex">\(k &gt; k'\)</span>）只会让可用字符更少，匹配只会更难、绝不会更易。反过来，一旦在某个 <span class="arithmatex">\(k\)</span> 处匹配失败，再多删只会更糟。可行性沿 <span class="arithmatex">\(k\)</span> 单调下降——这正是我们想要的结构：验证结果不是 <span class="arithmatex">\(|R|\)</span> 个互不相关的布尔值，而是一段连续的"可行"接着一段连续的"不可行"。边界只有一个，无需逐个试。</p>
 <h2 id="formulation">形式化 (Formulation)<a class="headerlink" href="#formulation" title="Permanent link">#</a></h2>
-<p>设 <span class="arithmatex">\(R = \text{removable}\)</span>，<span class="arithmatex">\(f(k) = 1\)</span> 若删除位置集 <span class="arithmatex">\(\{R[0], \dots, R[k-1]\}\)</span> 后 <span class="arithmatex">\(p\)</span> 仍是子序列，否则 <span class="arithmatex">\(0\)</span>。<span class="arithmatex">\(f\)</span> 关于 <span class="arithmatex">\(k\)</span> 单调非增。求 <span class="arithmatex">\(\max\{k : f(k) = 1\}\)</span>。</p>
+<p>设 <span class="arithmatex">\(R = \text{removable}\)</span>，定义可行性谓词</p>
+<div class="arithmatex">\[f(k) = \begin{cases} 1 &amp; \text{删除位置集 } \{R[0], \dots, R[k-1]\} \text{ 后 } p \text{ 仍是 } s \text{ 的子序列} \\ 0 &amp; \text{否则}\end{cases}\]</div>
+<p>上节的嵌套论证给出<strong>单调性</strong>：若 <span class="arithmatex">\(k' \le k\)</span>，则 <span class="arithmatex">\(A(k') \supseteq A(k)\)</span>，故 <span class="arithmatex">\(f(k) = 1 \implies f(k') = 1\)</span>。等价地，<span class="arithmatex">\(f\)</span> 关于 <span class="arithmatex">\(k\)</span> 单调非增。题目所求即</p>
+<div class="arithmatex">\[k^* = \max\{k : f(k) = 1\}.\]</div>
+<p>边界由题目保证决定：<span class="arithmatex">\(p\)</span> 是 <span class="arithmatex">\(s\)</span> 的子序列，故 <span class="arithmatex">\(f(0) = 1\)</span>，可行集 <span class="arithmatex">\(\{k : f(k)=1\} = [0, k^*]\)</span> 非空；上界 <span class="arithmatex">\(f(|R|)\)</span> 可能为 <span class="arithmatex">\(0\)</span> 也可能为 <span class="arithmatex">\(1\)</span>（删光所有可删位置后仍可能保持子序列），<span class="arithmatex">\(k^*\)</span> 一定存在于 <span class="arithmatex">\([0, |R|]\)</span>。</p>
 <h2 id="approach">数据结构 / 想法 (Approach)<a class="headerlink" href="#approach" title="Permanent link">#</a></h2>
-<p><strong>二分 + 双指针 check</strong>：</p>
+<p>单调性把"求最大可行 <span class="arithmatex">\(k\)</span>"变成"在 <span class="arithmatex">\([0, |R|]\)</span> 上找 <span class="arithmatex">\(0/1\)</span> 跳变的边界"。由 <span class="arithmatex">\(f(k)=1 \iff k \le k^*\)</span>，可行集是一段前缀 <span class="arithmatex">\([0, k^*]\)</span>，故只需二分这个边界：维持区间 <span class="arithmatex">\([\text{lo}, \text{hi}]\)</span> 满足 <span class="arithmatex">\(f(\text{lo}) = 1\)</span> 而 <span class="arithmatex">\(f(\text{hi}+1) = 0\)</span>（或越界），每步用一次 <span class="arithmatex">\(f\)</span> 求值把区间折半。二分耗 <span class="arithmatex">\(O(\log |R|)\)</span> 次求值，把候选数从 <span class="arithmatex">\(|R|\)</span> 压到对数级。</p>
+<p>剩下的是把 <span class="arithmatex">\(f(k)\)</span> 算出来。由子序列定义，<span class="arithmatex">\(p\)</span> 是删后串的子序列当且仅当能在存活位置里找到 <span class="arithmatex">\(i_1 &lt; i_2 &lt; \dots &lt; i_{|p|}\)</span> 使 <span class="arithmatex">\(s[i_j] = p[j]\)</span>。贪心双指针正好实现这一点：从左扫 <code>s</code>，跳过被删位置，遇到与 <code>p</code> 当前字符相等就推进 <code>p</code> 指针；取最左匹配永不损害后续匹配，故贪心正确。<code>p</code> 指针走到末尾即 <span class="arithmatex">\(f(k)=1\)</span>。</p>
 <div class="language-python highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">Solution</span><span class="p">:</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">maximumRemovals</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">s</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">p</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">removable</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
         <span class="k">def</span><span class="w"> </span><span class="nf">feasible</span><span class="p">(</span><span class="n">k</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
@@ -22493,8 +22526,8 @@
                         <span class="k">return</span> <span class="kc">True</span>
             <span class="k">return</span> <span class="n">j</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
 
+        <span class="c1"># 不变量：feasible(lo) == True 且 feasible(hi+1) == False（或越界）</span>
         <span class="n">lo</span><span class="p">,</span> <span class="n">hi</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">removable</span><span class="p">)</span>
-        <span class="c1"># 二分最大可行 k</span>
         <span class="k">while</span> <span class="n">lo</span> <span class="o">&lt;</span> <span class="n">hi</span><span class="p">:</span>
             <span class="n">mid</span> <span class="o">=</span> <span class="p">(</span><span class="n">lo</span> <span class="o">+</span> <span class="n">hi</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">//</span> <span class="mi">2</span>
             <span class="k">if</span> <span class="n">feasible</span><span class="p">(</span><span class="n">mid</span><span class="p">):</span>
@@ -22503,22 +22536,24 @@
                 <span class="n">hi</span> <span class="o">=</span> <span class="n">mid</span> <span class="o">-</span> <span class="mi">1</span>
         <span class="k">return</span> <span class="n">lo</span>
 </code></pre></div>
-<p>Trace 例 1 <code>s="abcacb", p="ab", removable=[3,1,0]</code>：
-- 试 k=2 (mid=2)：removed = {3,1} → 剩余 s = a_cacb (索引 0,2,3,4,5 但 3 也被移... 等等 removable=[3,1,0], 前 2 个 = [3,1])，s 删后 = "a" + skip + "c" + skip + "cb" = "accb"。在 "accb" 中找 "ab"？a 在位 0 (✓), b 在位 3 (✓)。可行 → lo=2。
-- 试 k=3 (mid=3)：removed = {3,1,0} → 剩 "ccb"，找 "ab"：无 a → 不可行 → hi=2。
-- lo=hi=2，返回 2 ✓。</p>
-<p><strong>不变量</strong>：二分维持 <code>feasible(lo) == True</code> 且 <code>feasible(hi+1) == False</code>（若有意义）；循环终止时 lo == hi 是最大可行 k。</p>
+<p>Trace 例 1 <code>s="abcacb", p="ab", removable=[3,1,0]</code>：</p>
+<ul>
+<li>试 <span class="arithmatex">\(k=2\)</span>（<code>mid=2</code>）：删前 2 个位置 <span class="arithmatex">\(\{3,1\}\)</span>，存活位置 <span class="arithmatex">\(\{0,2,4,5\}\)</span>，对应留下 <code>"accb"</code>。在其中找 <code>"ab"</code>：<code>a</code> 在原索引 0（✓），<code>b</code> 在原索引 5（✓）。可行 → <code>lo=2</code>。</li>
+<li>试 <span class="arithmatex">\(k=3\)</span>（<code>mid=3</code>）：删 <span class="arithmatex">\(\{3,1,0\}\)</span>，存活 <span class="arithmatex">\(\{2,4,5\}\)</span> 即 <code>"ccb"</code>，无 <code>a</code>，匹配失败。不可行 → <code>hi=2</code>。</li>
+<li><code>lo == hi == 2</code>，返回 <code>2</code> ✓。</li>
+</ul>
+<p>二分维持的不变量 <span class="arithmatex">\(f(\text{lo})=1 \wedge f(\text{hi}+1)=0\)</span> 在循环终止（<code>lo == hi</code>）时给出 <span class="arithmatex">\(f(\text{lo})=1\)</span> 且 <span class="arithmatex">\(f(\text{lo}+1)=0\)</span>，即 <span class="arithmatex">\(\text{lo} = k^*\)</span>。</p>
 <h2 id="complexity">复杂度 (Complexity)<a class="headerlink" href="#complexity" title="Permanent link">#</a></h2>
 <ul>
-<li>Time: <span class="arithmatex">\(O((|s| + |p|) \log |R|)\)</span>，每次 check <span class="arithmatex">\(O(|s| + |p|)\)</span>，二分 <span class="arithmatex">\(O(\log |R|)\)</span> 次。</li>
-<li>Space: <span class="arithmatex">\(O(|s|)\)</span>（removed 标记数组）；可用 set 替代但常数大。</li>
+<li>Time: <span class="arithmatex">\(O((|s| + |p|) \log |R|)\)</span>。每次 <span class="arithmatex">\(f(k)\)</span> 求值用 <span class="arithmatex">\(O(|s|)\)</span> 建标记数组加 <span class="arithmatex">\(O(|s|)\)</span> 单遍扫描（<code>p</code> 指针总推进不超过 <span class="arithmatex">\(|p| \le |s|\)</span>），合计 <span class="arithmatex">\(O(|s| + |p|)\)</span>；二分做 <span class="arithmatex">\(O(\log |R|)\)</span> 次求值。对比 <span class="arithmatex">\(\S\)</span>背景 的朴素 <span class="arithmatex">\(O(|R| \cdot (|s| + |p|))\)</span>，候选数从线性降到对数。</li>
+<li>Space: <span class="arithmatex">\(O(|s|)\)</span>（<code>removed</code> 标记数组）；可用 set 替代但常数大。</li>
 </ul>
 <h2 id="pitfalls">陷阱 (Pitfalls)<a class="headerlink" href="#pitfalls" title="Permanent link">#</a></h2>
 <ul>
-<li><strong>二分上界</strong>：<code>hi = len(removable)</code>（最多删全部），不是 <code>len(removable) - 1</code>。</li>
-<li><strong>mid 取舍</strong>：因为找<strong>最大</strong> feasible，要 <code>mid = (lo + hi + 1) // 2</code> 否则死循环（lo=mid 但 mid==lo 时不变）。</li>
-<li><strong>下界 <code>k=0</code> 永远 feasible</strong>（题目保证 <span class="arithmatex">\(p\)</span> 是 <span class="arithmatex">\(s\)</span> 的子序列），所以二分一定有解。</li>
-<li><strong>不要每次 check 重建 list</strong>——可复用预分配数组（题目内存敏感时）。</li>
+<li><strong>二分上界</strong>：<code>hi = len(removable)</code>（最多删全部都是候选答案，须可达），不是 <code>len(removable) - 1</code>。</li>
+<li><strong><code>mid</code> 取上整</strong>：因为在 <span class="arithmatex">\(f(\text{lo})=1\)</span> 成功时执行 <code>lo = mid</code>，必须 <code>mid = (lo + hi + 1) // 2</code> 偏上取整。否则当 <code>hi == lo + 1</code> 时 <code>(lo+hi)//2 == lo</code>，<code>lo = mid</code> 成了空操作，区间不缩小，死循环。</li>
+<li><strong>下界 <span class="arithmatex">\(k=0\)</span> 永远可行</strong>：题目保证 <span class="arithmatex">\(p\)</span> 是 <span class="arithmatex">\(s\)</span> 的子序列，故 <span class="arithmatex">\(f(0)=1\)</span>，二分一定有解。</li>
+<li><strong>复用标记数组</strong>：每次 check 重建 <code>removed</code> 列表引入不必要的分配开销；内存敏感时可预分配并复用同一数组。</li>
 </ul>
 <h2 id="related">相关题目 (Related)<a class="headerlink" href="#related" title="Permanent link">#</a></h2>
 <ul>
@@ -22637,6 +22672,8 @@
         <script src="../../../js/mathjax/tex-mml-chtml.js"></script>
       
         <script src="../../../js/mermaid.min.js"></script>
+      
+        <script src="../../../js/featured.js"></script>
       
     
   </body>

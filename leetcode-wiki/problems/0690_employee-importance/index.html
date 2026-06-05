@@ -1466,6 +1466,8 @@
       
         
       
+        
+      
     
     
     
@@ -1521,6 +1523,34 @@
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../featured/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ⭐ Featured（已验证）
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
               
             
               
@@ -1610,10 +1640,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_4" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
         
           
-          <label class="md-nav__link" for="__nav_4_4" id="__nav_4_4_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_5" id="__nav_4_5_label" tabindex="">
             
   
   
@@ -1631,8 +1661,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_4_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_4">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_5">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1915,7 +1945,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -1937,14 +1967,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_4_5" id="__nav_4_5_label" tabindex="">
+              <label class="md-nav__link " for="__nav_4_6" id="__nav_4_6_label" tabindex="">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_5">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_6">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -5321,10 +5351,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_7" checked>
         
           
-          <label class="md-nav__link" for="__nav_4_6" id="__nav_4_6_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_7" id="__nav_4_7_label" tabindex="">
             
   
   
@@ -5342,8 +5372,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_4_6">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_7_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4_7">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -22467,14 +22497,18 @@
 <h2 id="problem">Problem<a class="headerlink" href="#problem" title="Permanent link">#</a></h2>
 <p>每个 employee 有 <code>id</code>, <code>importance</code>, <code>subordinates</code>（下属 id 列表）。给定起始 <code>id</code>，返回该员工及所有（直接 + 间接）下属的 importance 之和。<span class="arithmatex">\(1 \le n \le 2000\)</span>，每人 importance <span class="arithmatex">\(\in [-100, 100]\)</span>，每人最多一个直接上司。</p>
 <h2 id="background">背景 (Background)<a class="headerlink" href="#background" title="Permanent link">#</a></h2>
-<p>数据形态是<strong>有根树</strong>（每人最多一上司，存在唯一根）以邻接表 / 父指针稀疏表示——这是 DFS/BFS 在树上做"子树聚合"的最基础实例。它与 segment tree、tree DP、Euler tour 等高级技术的关系是：本题是"子树和"<span class="arithmatex">\(O(n)\)</span> DFS 的最简单版本，无需 update 操作所以无需 segment tree。</p>
+<p>先把要做的计算说清楚：给定一个员工 <code>id</code>，我们要访问由它出发能到达的每一个下属，把权值累加起来。员工之间的「上司—下属」关系决定了哪些节点可达——<code>subordinates</code> 给出每个节点的直接下属，沿着这层关系反复展开，就得到「该员工的全部下属」。</p>
+<p>朴素的做法直接照抄这个描述：维护一个待处理 id 集合，反复取出一个 id，找到对应的 employee，加上它的 importance，再把它的下属 id 放回集合。问题出在「找到对应的 employee」这一步——输入是一个 <code>employees</code> 列表，按 id 找节点要线性扫描，单次 <span class="arithmatex">\(O(n)\)</span>。每访问一个节点就扫一次，总共访问 <span class="arithmatex">\(O(n)\)</span> 个节点，于是总时间 <span class="arithmatex">\(O(n^2)\)</span>。瓶颈精确地落在「按 id 取节点」上，而不在累加本身。</p>
+<p>修复方法直接针对这个瓶颈：先扫一遍 <code>employees</code>，建一张 <code>id -&gt; Employee</code> 的哈希表，之后任何按 id 的查找都是 <span class="arithmatex">\(O(1)\)</span>。建表 <span class="arithmatex">\(O(n)\)</span>、遍历 <span class="arithmatex">\(O(n)\)</span>，总时间降到 <span class="arithmatex">\(O(n)\)</span>。下面的形式化和代码都建立在「查找已是 <span class="arithmatex">\(O(1)\)</span>」这个前提上。</p>
 <h2 id="formulation">形式化 (Formulation)<a class="headerlink" href="#formulation" title="Permanent link">#</a></h2>
-<p>给有根树 <span class="arithmatex">\(T\)</span>，每节点权值 <span class="arithmatex">\(w(v)\)</span>。对查询节点 <span class="arithmatex">\(u\)</span>，求子树和：</p>
-<div class="arithmatex">\[f(u) = w(u) + \sum_{c \in \mathrm{children}(u)} f(c)\]</div>
+<p>要把「累加全部下属」写成可计算的递推，先看清这组关系的结构：每个员工最多一个直接上司，所以从根到任一节点的路径唯一，整张图是一棵<strong>有根树</strong>。在树上，从节点 <span class="arithmatex">\(u\)</span> 可达的节点集恰好是</p>
+<div class="arithmatex">\[R(u) = \{u\} \cup \bigcup_{c \in \mathrm{children}(u)} R(c),\]</div>
+<p>而且各个 <span class="arithmatex">\(R(c)\)</span> 两两不相交——因为单上司约束保证没有两条路径汇到同一节点，子树之间不共享节点。正是这个<strong>不相交</strong>让求和可以拆开而不重不漏：<span class="arithmatex">\(u\)</span> 子树的总权值，等于 <span class="arithmatex">\(u\)</span> 自身权值，加上各个子树各自的总权值。</p>
+<p>设 <span class="arithmatex">\(w(v)\)</span> 为节点 <span class="arithmatex">\(v\)</span> 的 importance，<span class="arithmatex">\(f(u)\)</span> 为以 <span class="arithmatex">\(u\)</span> 为根的子树权值之和。上面的结构观察直接给出递推：</p>
+<div class="arithmatex">\[f(u) = w(u) + \sum_{c \in \mathrm{children}(u)} f(c), \qquad f(u) = w(u) \ \text{当}\ \mathrm{children}(u) = \emptyset.\]</div>
+<p>基例（叶子）是必需的——它是递归终止处，也是正确性论证的落脚点。查询答案即 <span class="arithmatex">\(f(\texttt{id})\)</span>。</p>
 <h2 id="approach">数据结构 / 想法 (Approach)<a class="headerlink" href="#approach" title="Permanent link">#</a></h2>
-<p><strong>解法 1（DFS 递归）</strong>：建 <code>id -&gt; Employee</code> 哈希表，从 <code>u</code> 出发 DFS 累加。</p>
-<p><strong>解法 2（BFS）</strong>：队列推进遍历子树，累加。</p>
-<p>任一一种 <span class="arithmatex">\(O(n)\)</span>。</p>
+<p>递推 <span class="arithmatex">\(f(u) = w(u) + \sum_c f(c)\)</span> 本身就规定了求值顺序：要返回 <span class="arithmatex">\(f(u)\)</span>，必须先拿到每个孩子的 <span class="arithmatex">\(f(c)\)</span>。也就是说调用必须先向下到达孩子、再向上回收结果——「先下降后上升」正是深度优先遍历（DFS）的访问顺序。于是递推可以逐字翻译成递归：</p>
 <div class="language-python highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">Employee</span><span class="p">:</span>
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">id</span><span class="p">,</span> <span class="n">importance</span><span class="p">,</span> <span class="n">subordinates</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">id</span> <span class="o">=</span> <span class="nb">id</span>
@@ -22483,7 +22517,7 @@
 
 <span class="k">class</span><span class="w"> </span><span class="nc">Solution</span><span class="p">:</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">getImportance</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">employees</span><span class="p">,</span> <span class="nb">id</span><span class="p">):</span>
-        <span class="n">table</span> <span class="o">=</span> <span class="p">{</span><span class="n">e</span><span class="o">.</span><span class="n">id</span><span class="p">:</span> <span class="n">e</span> <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">employees</span><span class="p">}</span>
+        <span class="n">table</span> <span class="o">=</span> <span class="p">{</span><span class="n">e</span><span class="o">.</span><span class="n">id</span><span class="p">:</span> <span class="n">e</span> <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">employees</span><span class="p">}</span>   <span class="c1"># id -&gt; Employee，使按 id 查找 O(1)</span>
 
         <span class="k">def</span><span class="w"> </span><span class="nf">dfs</span><span class="p">(</span><span class="n">u</span><span class="p">):</span>
             <span class="n">e</span> <span class="o">=</span> <span class="n">table</span><span class="p">[</span><span class="n">u</span><span class="p">]</span>
@@ -22491,17 +22525,19 @@
 
         <span class="k">return</span> <span class="n">dfs</span><span class="p">(</span><span class="nb">id</span><span class="p">)</span>
 </code></pre></div>
-<p>样例 1 trace：<code>employees = [[1,5,[2,3]],[2,3,[]],[3,3,[]]]</code>, id=1。table={1:[5,[2,3]], 2:[3,[]], 3:[3,[]]}。dfs(1) = 5 + dfs(2) + dfs(3) = 5 + 3 + 3 = 11。✓</p>
+<p><code>table</code> 即上节修复瓶颈的哈希表；<code>dfs(u)</code> 即递推：<code>e.importance</code> 是 <span class="arithmatex">\(w(u)\)</span>，<code>sum(dfs(c) ...)</code> 是 <span class="arithmatex">\(\sum_c f(c)\)</span>，子节点列表为空时 <code>sum</code> 返回 <span class="arithmatex">\(0\)</span>，自动落到基例 <span class="arithmatex">\(f(u)=w(u)\)</span>。</p>
+<p>把样例代回递推可验证两端吻合。<code>employees = [[1,5,[2,3]],[2,3,[]],[3,3,[]]]</code>, id=1，得 <code>table = {1:[5,[2,3]], 2:[3,[]], 3:[3,[]]}</code>。按递推展开：<span class="arithmatex">\(f(2)=3\)</span>（叶子），<span class="arithmatex">\(f(3)=3\)</span>（叶子），<span class="arithmatex">\(f(1)=w(1)+f(2)+f(3)=5+3+3=11\)</span>。代码的调用 <code>dfs(1) = 5 + dfs(2) + dfs(3) = 5 + 3 + 3 = 11</code> 与之逐项对应。✓</p>
+<p>DFS 并非唯一选择。递推只要求「每个孩子的 <span class="arithmatex">\(f(c)\)</span> 都被算进父节点」，并不规定下降还是上升先发生——只要每个节点恰好访问一次、其权值恰好被累加一次即可。因此也可以用队列做广度优先遍历（BFS）：从 <code>id</code> 入队，每弹出一个节点就累加其权值并把下属入队，队空时累加完毕。BFS 用显式队列在堆上推进，避开了系统调用栈（见下文递归深度一项），但访问次数与累加结果与 DFS 完全一致，同为 <span class="arithmatex">\(O(n)\)</span>。</p>
 <h2 id="complexity">复杂度 (Complexity)<a class="headerlink" href="#complexity" title="Permanent link">#</a></h2>
 <ul>
-<li>Time: <span class="arithmatex">\(O(n)\)</span>，每个节点访问一次。</li>
-<li>Space: <span class="arithmatex">\(O(n)\)</span> 哈希表 + 递归栈最坏 <span class="arithmatex">\(O(n)\)</span>（链状树）。</li>
+<li>Time: <span class="arithmatex">\(O(n)\)</span>，建表 <span class="arithmatex">\(O(n)\)</span> + 每个节点访问一次、查找 <span class="arithmatex">\(O(1)\)</span>。</li>
+<li>Space: <span class="arithmatex">\(O(n)\)</span> 哈希表 + 递归栈最坏 <span class="arithmatex">\(O(n)\)</span>（链状树，即每人恰好一个下属）。BFS 版本则是 <span class="arithmatex">\(O(n)\)</span> 队列。</li>
 </ul>
 <h2 id="pitfalls">陷阱 (Pitfalls)<a class="headerlink" href="#pitfalls" title="Permanent link">#</a></h2>
 <ul>
-<li>必须先建 <code>id -&gt; Employee</code> 哈希表，否则每次按 id 找节点 <span class="arithmatex">\(O(n)\)</span> → 总 <span class="arithmatex">\(O(n^2)\)</span>。</li>
-<li>importance 可为负，不能因"看到负值就 break"做优化——题目要求精确求和。</li>
-<li>Python 递归深度默认 1000，<span class="arithmatex">\(n=2000\)</span> 链状树会爆栈，需 <code>sys.setrecursionlimit(3000)</code> 或改 BFS。</li>
+<li><strong>哈希表不可省</strong>：若直接在 <code>employees</code> 列表里按 id 线性查找，单次 <span class="arithmatex">\(O(n)\)</span>、总计退化到 <span class="arithmatex">\(O(n^2)\)</span>——这正是「背景」中先建 <code>id -&gt; Employee</code> 表所要消除的瓶颈。</li>
+<li><strong>importance 可为负</strong>：权值取值 <span class="arithmatex">\(\in [-100,100]\)</span>，题目要求精确求和，不能因「看到负值」就提前 break 或剪枝，那会漏加后续节点。</li>
+<li><strong>Python 递归深度</strong>：默认上限 1000（<code>sys.getrecursionlimit()</code> 为 1000），而 <span class="arithmatex">\(n\)</span> 可达 2000，链状树会爆栈。注意上面代码用了生成器表达式 <code>sum(dfs(c) for c in ...)</code>，每层树会额外压入一个 <code>&lt;genexpr&gt;</code> 栈帧，即每层约消耗 2 个 Python 帧——故深度 2000 的链需要约 4000+ 帧。把上限设为 3000 仍会崩（经实测，4000 也不够，约需 4500）。可靠的修法有三选一：(1) 设较大上限，如 <code>sys.setrecursionlimit(10000)</code> 留足余量；(2) 去掉生成器帧，改写成显式累加 <code>total = e.importance; for c in e.subordinates: total += dfs(c)</code>，每层仅约 1 帧，此时 <code>setrecursionlimit(2500)</code> 即够；(3) 改用「想法」中的 BFS / 显式栈，完全避开系统递归栈。</li>
 </ul>
 <h2 id="related">相关题目 (Related)<a class="headerlink" href="#related" title="Permanent link">#</a></h2>
 <ul>
@@ -22618,6 +22654,8 @@
         <script src="../../../js/mathjax/tex-mml-chtml.js"></script>
       
         <script src="../../../js/mermaid.min.js"></script>
+      
+        <script src="../../../js/featured.js"></script>
       
     
   </body>

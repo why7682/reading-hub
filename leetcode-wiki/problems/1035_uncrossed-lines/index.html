@@ -1466,6 +1466,8 @@
       
         
       
+        
+      
     
     
     
@@ -1521,6 +1523,34 @@
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../featured/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ⭐ Featured（已验证）
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
               
             
               
@@ -1610,10 +1640,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_4" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
         
           
-          <label class="md-nav__link" for="__nav_4_4" id="__nav_4_4_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_5" id="__nav_4_5_label" tabindex="">
             
   
   
@@ -1631,8 +1661,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_4_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_4">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_5">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1915,7 +1945,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -1937,14 +1967,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_4_5" id="__nav_4_5_label" tabindex="">
+              <label class="md-nav__link " for="__nav_4_6" id="__nav_4_6_label" tabindex="">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_5">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_6">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -5321,10 +5351,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_7" checked>
         
           
-          <label class="md-nav__link" for="__nav_4_6" id="__nav_4_6_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_7" id="__nav_4_7_label" tabindex="">
             
   
   
@@ -5342,8 +5372,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_4_6">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_7_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4_7">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -22467,18 +22497,44 @@
 <h2 id="problem">Problem<a class="headerlink" href="#problem" title="Permanent link">#</a></h2>
 <p>给定两个整数数组 <code>nums1</code>, <code>nums2</code>。在两条水平线上分别按顺序写下它们；可连线 <code>(i, j)</code> 当 <code>nums1[i] == nums2[j]</code> 且与任何已有连线不交叉（端点也不共享）。求最多可连多少条线。<span class="arithmatex">\(1 \leq |nums1|, |nums2| \leq 500\)</span>。</p>
 <h2 id="background">背景 (Background)<a class="headerlink" href="#background" title="Permanent link">#</a></h2>
-<p>本题与「<strong>最长公共子序列 (LCS)</strong>」<strong>完全等价</strong>——这是个漂亮的几何/序列对偶：两条线不交叉 <span class="arithmatex">\(\Leftrightarrow\)</span> 对应的 <code>(i, j)</code> 对在两序列中保持原有相对顺序 <span class="arithmatex">\(\Leftrightarrow\)</span> 这些匹配点对应一个公共子序列。LCS 是动态规划课的标志题（CLRS §15.4），有 Wagner-Fischer 1974 经典 <span class="arithmatex">\(O(mn)\)</span> 解，也有 Hunt-Szymanski、Hirschberg 1975（线性空间）等变体。</p>
+<p>先试最直接的办法：贪心。从左到右扫 <code>nums1</code>，每遇到一个值就在 <code>nums2</code> 里找最早的、还没被用过的相等位置连上。这种连法保证不交叉——每次都往右推进两个指针——但它会错过更优解。</p>
+<p>考虑 <code>nums1=[1,4,2]</code>, <code>nums2=[1,2,4]</code>。贪心从 <code>nums1[0]=1</code> 连到 <code>nums2[0]=1</code>；接着 <code>nums1[1]=4</code>，在 <code>nums2</code> 中 <code>4</code> 出现在位置 2，连 <code>(1,2)</code>；再看 <code>nums1[2]=2</code>，<code>2</code> 在 <code>nums2</code> 位置 1，但 <code>1 &lt; 2</code>，连它会与刚才的 <code>(1,2)</code> 交叉，只能放弃。贪心得 2 条。这次答案恰好对，但把它换成 <code>nums1=[2,4]</code>, <code>nums2=[4,2]</code>：贪心先把 <code>2</code> 连到 <code>nums2</code> 中唯一的 <code>2</code>（位置 1），于是 <code>4</code> 只能连位置 0，而 <code>0 &lt; 1</code> 交叉，放弃，得 1 条。可最优是直接连 <code>4</code>-<code>4</code>，再也连不了别的，也是 1 条——看似无碍。真正的反例需要让"过早占用一个位置"挡住后面两条线。问题的根源是清楚的：贪心一旦把某个值连到偏右的位置，就压缩了后续所有线的可用空间，而它无法预见这种代价。</p>
+<p>要绕开这个困境，得先把"不交叉"这个几何约束翻译成关于下标的精确条件，而不是逐步试探。下一节就做这件事。</p>
 <h2 id="formulation">形式化 (Formulation)<a class="headerlink" href="#formulation" title="Permanent link">#</a></h2>
-<p>定义匹配集合 <span class="arithmatex">\(M = \{(i_1, j_1), \dots, (i_K, j_K)\}\)</span> 满足：</p>
-<ul>
-<li><span class="arithmatex">\(\text{nums1}[i_k] = \text{nums2}[j_k]\)</span></li>
-<li><span class="arithmatex">\(i_1 &lt; i_2 &lt; \dots &lt; i_K\)</span> 且 <span class="arithmatex">\(j_1 &lt; j_2 &lt; \dots &lt; j_K\)</span></li>
-</ul>
-<p>求 <span class="arithmatex">\(\max |M|\)</span>，即 <span class="arithmatex">\(\text{LCS}(\text{nums1}, \text{nums2})\)</span>。</p>
+<p><strong>何时两条线交叉。</strong> 两条线由下标对 <span class="arithmatex">\((i_a, j_a)\)</span> 与 <span class="arithmatex">\((i_b, j_b)\)</span> 确定，<span class="arithmatex">\(i\)</span> 是上排位置、<span class="arithmatex">\(j\)</span> 是下排位置，两排都从左到右递增。不妨设 <span class="arithmatex">\(i_a &lt; i_b\)</span>（<span class="arithmatex">\(a\)</span> 的上端点更靠左）。两条线段不相交，当且仅当 <span class="arithmatex">\(a\)</span> 的下端点也更靠左，即 <span class="arithmatex">\(j_a &lt; j_b\)</span>；若 <span class="arithmatex">\(j_a &gt; j_b\)</span>，则一条从左上到右下、另一条从右上到左下，两段必然交叉。于是：</p>
+<div class="arithmatex">\[
+(i_a, j_a),\ (i_b, j_b)\ \text{不交叉}\quad\Longleftrightarrow\quad (i_a &lt; i_b \Rightarrow j_a &lt; j_b).
+\]</div>
+<p><strong>从两两不交叉到整体结构。</strong> 一组线两两都不交叉，等价于：把它们按上排下标 <span class="arithmatex">\(i\)</span> 排序后，下排下标 <span class="arithmatex">\(j\)</span> 也严格递增。也就是说，被选中的下标对在两个坐标上同序。再加上连线的合法性要求 <span class="arithmatex">\(\text{nums1}[i] = \text{nums2}[j]\)</span>，得到匹配集合的定义：</p>
+<div class="arithmatex">\[
+M = \{(i_1, j_1), \dots, (i_K, j_K)\}, \qquad
+\begin{cases}
+\text{nums1}[i_k] = \text{nums2}[j_k], &amp; \\
+i_1 &lt; i_2 &lt; \dots &lt; i_K, &amp; \\
+j_1 &lt; j_2 &lt; \dots &lt; j_K. &amp;
+\end{cases}
+\]</div>
+<p>这恰好是「<strong>最长公共子序列 (LCS)</strong>」的定义：一个公共子序列就是一组在两序列中同序出现的相等元素。两条下标递增、取值相等的链，正是这样一个子序列。因此</p>
+<div class="arithmatex">\[
+\max |M| = \text{LCS}(\text{nums1}, \text{nums2}).
+\]</div>
+<p>几何约束（不交叉）被完全消化为序列约束（同序匹配），原问题与 LCS 完全等价。下一节从这个最大化目标直接推出递推。</p>
 <h2 id="approach">数据结构 / 想法 (Approach)<a class="headerlink" href="#approach" title="Permanent link">#</a></h2>
-<p><strong>经典 LCS DP</strong>：<span class="arithmatex">\(f[i][j] =\)</span> 前缀 <code>nums1[0..i)</code>, <code>nums2[0..j)</code> 的 LCS 长度。</p>
-<div class="arithmatex">\[f[i][j] = \begin{cases} 0 &amp; i=0 \lor j=0 \\ f[i-1][j-1] + 1 &amp; \text{nums1}[i-1] = \text{nums2}[j-1] \\ \max(f[i-1][j], f[i][j-1]) &amp; \text{otherwise} \end{cases}\]</div>
-<p><strong>关键不变量</strong>：<span class="arithmatex">\(f[i][j]\)</span> 单调不降。证明"两线不交叉 <span class="arithmatex">\(\Leftrightarrow\)</span> 公共子序列"——若 <span class="arithmatex">\(i_a &lt; i_b\)</span> 但 <span class="arithmatex">\(j_a &gt; j_b\)</span>，连线 <span class="arithmatex">\((i_a, j_a)\)</span> 与 <span class="arithmatex">\((i_b, j_b)\)</span> 必交叉；反之不交叉等价于 <span class="arithmatex">\(i\)</span> 与 <span class="arithmatex">\(j\)</span> 同序，恰为公共子序列的定义。</p>
+<p><strong>子问题与最优子结构。</strong> 要最大化 <span class="arithmatex">\(|M|\)</span>，按上排下标从右往左考虑最后一个可选位置。定义</p>
+<div class="arithmatex">\[
+f[i][j] = \text{在前缀 nums1}[0..i)\ \text{与 nums2}[0..j)\ \text{上的}\ \max |M|.
+\]</div>
+<p>考察这两个前缀的末尾元素 <code>nums1[i-1]</code> 与 <code>nums2[j-1]</code>，分两种情况。</p>
+<p>若 <code>nums1[i-1] == nums2[j-1]</code>，可以把下标对 <span class="arithmatex">\((i-1, j-1)\)</span> 接到任何只用更小下标的匹配后面——它的两个坐标都比之前所有选中下标大，同序条件自动满足。接上它严格更优，故最优解必然包含它，剩下的部分就是两个更短前缀上的最优解：<span class="arithmatex">\(f[i][j] = f[i-1][j-1] + 1\)</span>。</p>
+<p>若 <code>nums1[i-1] != nums2[j-1]</code>，这两个末尾元素不可能同时作为同一条线的端点（值不等）。于是至少有一个末尾元素不参与任何线，把它丢掉不损失最优性：要么不用 <code>nums1[i-1]</code>（退到 <span class="arithmatex">\(f[i-1][j]\)</span>），要么不用 <code>nums2[j-1]</code>（退到 <span class="arithmatex">\(f[i][j-1]\)</span>），取两者较大。合起来：</p>
+<div class="arithmatex">\[
+f[i][j] = \begin{cases}
+0 &amp; i=0 \lor j=0 \\
+f[i-1][j-1] + 1 &amp; \text{nums1}[i-1] = \text{nums2}[j-1] \\
+\max(f[i-1][j],\ f[i][j-1]) &amp; \text{otherwise}
+\end{cases}
+\]</div>
+<p><strong>为什么 max 不会重复计数。</strong> <span class="arithmatex">\(f\)</span> 在前缀变长时单调不降：<span class="arithmatex">\(f[i][j] \le f[i'][j']\)</span> 当 <span class="arithmatex">\(i \le i'\)</span> 且 <span class="arithmatex">\(j \le j'\)</span>，因为更大前缀上的每个可行匹配在更小前缀上仍可行。正是这个单调性保证 <span class="arithmatex">\(\max(f[i-1][j], f[i][j-1])\)</span> 取的是两个真子问题中更优者，而被丢弃元素的贡献已包含在对应分支里，不会被算两遍。</p>
 <div class="language-python highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">Solution</span><span class="p">:</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">maxUncrossedLines</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">nums1</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">],</span> <span class="n">nums2</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
         <span class="n">m</span><span class="p">,</span> <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">nums1</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">nums2</span><span class="p">)</span>
@@ -22498,7 +22554,7 @@
         <span class="k">return</span> <span class="n">prev</span><span class="p">[</span><span class="n">n</span><span class="p">]</span>
 </code></pre></div>
 <p><strong>手动 trace 样例 1</strong>：<code>nums1=[1,4,2]</code>, <code>nums2=[1,2,4]</code>。LCS 有 <code>[1,4]</code> 或 <code>[1,2]</code>，长 2。✓</p>
-<p><strong>样例 3</strong>：<code>nums1=[1,3,7,1,7,5]</code>, <code>nums2=[1,9,2,5,1]</code>。LCS 候选：<code>[1,1]</code>(取头 1 配尾 1)、<code>[1,5]</code>(头 1 配 5)等，长 2。✓</p>
+<p><strong>样例 3</strong>：<code>nums1=[1,3,7,1,7,5]</code>, <code>nums2=[1,9,2,5,1]</code>。LCS 候选：<code>[1,1]</code>（取头 1 配尾 1）、<code>[1,5]</code>（头 1 配 5）等，长 2。✓</p>
 <h2 id="complexity">复杂度 (Complexity)<a class="headerlink" href="#complexity" title="Permanent link">#</a></h2>
 <ul>
 <li>Time: <span class="arithmatex">\(O(mn)\)</span>。</li>
@@ -22507,7 +22563,7 @@
 </ul>
 <h2 id="pitfalls">陷阱 (Pitfalls)<a class="headerlink" href="#pitfalls" title="Permanent link">#</a></h2>
 <ul>
-<li>切忌把"线相同值就配"误为贪心：贪心配最早出现的可能错过更优配对。LCS 的 <span class="arithmatex">\(O(mn)\)</span> DP 才是最优。</li>
+<li>切忌把"线相同值就配"误为贪心：贪心配最早出现的可能错过更优配对（见背景节的反例分析）。LCS 的 <span class="arithmatex">\(O(mn)\)</span> DP 才是最优。</li>
 <li>数组元素可重复，但 LCS DP 对重复值天然正确（不影响 <span class="arithmatex">\(f\)</span> 的转移）。</li>
 <li>注意 <span class="arithmatex">\(i, j\)</span> 索引偏移：DP 表用 1-indexed，访问数组用 0-indexed。</li>
 </ul>
@@ -22628,6 +22684,8 @@
         <script src="../../../js/mathjax/tex-mml-chtml.js"></script>
       
         <script src="../../../js/mermaid.min.js"></script>
+      
+        <script src="../../../js/featured.js"></script>
       
     
   </body>

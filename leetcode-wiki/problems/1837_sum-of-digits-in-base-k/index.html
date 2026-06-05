@@ -1466,6 +1466,8 @@
       
         
       
+        
+      
     
     
     
@@ -1521,6 +1523,34 @@
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../featured/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ⭐ Featured（已验证）
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
               
             
               
@@ -1610,10 +1640,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_4" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
         
           
-          <label class="md-nav__link" for="__nav_4_4" id="__nav_4_4_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_5" id="__nav_4_5_label" tabindex="">
             
   
   
@@ -1631,8 +1661,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_4_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_4">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_5">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1915,7 +1945,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -1937,14 +1967,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_4_5" id="__nav_4_5_label" tabindex="">
+              <label class="md-nav__link " for="__nav_4_6" id="__nav_4_6_label" tabindex="">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_5">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_6">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -5321,10 +5351,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_7" checked>
         
           
-          <label class="md-nav__link" for="__nav_4_6" id="__nav_4_6_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_7" id="__nav_4_7_label" tabindex="">
             
   
   
@@ -5342,8 +5372,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_4_6">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_7_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4_7">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -22467,32 +22497,51 @@
 <h2 id="problem">Problem<a class="headerlink" href="#problem" title="Permanent link">#</a></h2>
 <p>给十进制整数 <code>n</code> 和进制 <code>k</code>，返回 <code>n</code> 在 <span class="arithmatex">\(k\)</span> 进制表示下的各位数字之和（以十进制返回）。约束 <span class="arithmatex">\(1 \le n \le 100\)</span>，<span class="arithmatex">\(2 \le k \le 10\)</span>。</p>
 <h2 id="background">背景 (Background)<a class="headerlink" href="#background" title="Permanent link">#</a></h2>
-<p>位制转换是数论基础，对应"短除法 (repeated division)"。任何正整数 <span class="arithmatex">\(n\)</span> 在基 <span class="arithmatex">\(k \ge 2\)</span> 下都有唯一表示</p>
-<div class="arithmatex">\[n = \sum_{i=0}^{m} d_i k^i,\quad 0 \le d_i &lt; k\]</div>
-<p>可通过反复取模 + 整除提取各位数字。这也是 Horner 多项式求值的逆运算。</p>
+<p>要把各位数字加起来，先得有这些数字。最直接的办法是把 <span class="arithmatex">\(n\)</span> 转成 <span class="arithmatex">\(k\)</span> 进制的字符串，再逐字符求和：</p>
+<div class="language-python highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">sumBase</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">k</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+    <span class="n">digits</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">while</span> <span class="n">n</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">digits</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">n</span> <span class="o">%</span> <span class="n">k</span><span class="p">)</span>   <span class="c1"># 收集每一位</span>
+        <span class="n">n</span> <span class="o">//=</span> <span class="n">k</span>
+    <span class="k">return</span> <span class="nb">sum</span><span class="p">(</span><span class="n">digits</span><span class="p">)</span>
+</code></pre></div>
+<p>这能用，但它暴露了一个值得追问的问题：凭什么 <code>n % k</code> 就是某一位数字、<code>n //= k</code> 就能去掉它？把这两步算清楚，列表本身就成了多余——既然每收集一位就能立刻累加，何必先存进 <code>digits</code> 再求和。要看清这一点，先把"位"是什么精确定义出来。</p>
 <h2 id="formulation">形式化 (Formulation)<a class="headerlink" href="#formulation" title="Permanent link">#</a></h2>
-<p>设 <span class="arithmatex">\(n = \sum_{i=0}^{m} d_i k^i\)</span>（<span class="arithmatex">\(d_i\)</span> 为 <span class="arithmatex">\(k\)</span> 进制数字），返回 <span class="arithmatex">\(\sum_i d_i\)</span>。</p>
+<p>位制的全部依据是这条唯一表示定理：任何正整数 <span class="arithmatex">\(n\)</span> 在基 <span class="arithmatex">\(k \ge 2\)</span> 下都有唯一展开</p>
+<div class="arithmatex">\[n = \sum_{i=0}^{m} d_i k^i,\quad 0 \le d_i &lt; k,\quad m = \lfloor \log_k n \rfloor \tag{1}\]</div>
+<p>其中 <span class="arithmatex">\(d_i\)</span> 就是第 <span class="arithmatex">\(i\)</span> 位数字。目标是返回 <span class="arithmatex">\(\sum_i d_i\)</span>。这条等式不只是定义记号，它直接告诉我们如何取出最低位 <span class="arithmatex">\(d_0\)</span>。在式 (1) 两边对 <span class="arithmatex">\(k\)</span> 取模：所有 <span class="arithmatex">\(i \ge 1\)</span> 的项都含因子 <span class="arithmatex">\(k^i\)</span>，被 <span class="arithmatex">\(k\)</span> 整除后归零，只剩 <span class="arithmatex">\(d_0\)</span>，而 <span class="arithmatex">\(0 \le d_0 &lt; k\)</span> 保证它就是余数本身：</p>
+<div class="arithmatex">\[n \bmod k = d_0. \tag{2}\]</div>
+<p>去掉最低位则对应整除：<span class="arithmatex">\(\lfloor n/k \rfloor = \sum_{i=1}^{m} d_i k^{i-1}\)</span>，这是一个同样形如式 (1) 的更小问题，其数字恰为 <span class="arithmatex">\(d_1, d_2, \dots, d_m\)</span>。于是取数字这件事有了递推结构：取余得当前最低位，整除后对剩下的部分重复。</p>
 <h2 id="approach">数据结构 / 想法 (Approach)<a class="headerlink" href="#approach" title="Permanent link">#</a></h2>
-<p><strong>短除法循环</strong>：</p>
+<p>把式 (2) 的递推直接写成循环，并在过程中累加，就不需要 <code>digits</code> 列表了。在进入第 <span class="arithmatex">\(t\)</span> 次迭代前，记累加器为 <span class="arithmatex">\(s_t\)</span>、剩余值为 <span class="arithmatex">\(n_t\)</span>，则</p>
+<div class="arithmatex">\[s_t = \sum_{i&lt;t} d_i,\qquad n_t = \left\lfloor n / k^t \right\rfloor = \sum_{i \ge t} d_i k^{i-t}. \tag{3}\]</div>
+<p>也就是说，<span class="arithmatex">\(s_t\)</span> 已经攒下了低 <span class="arithmatex">\(t\)</span> 位之和，<span class="arithmatex">\(n_t\)</span> 是尚未处理的高位部分（仍是一个合法的 <span class="arithmatex">\(k\)</span> 进制数）。两者合起来给出一个对每次迭代都成立的不变量：</p>
+<div class="arithmatex">\[s_t + (\,n_t \text{ 在 } k \text{ 进制下的位和}\,) = \sum_i d_i. \tag{4}\]</div>
+<p>它之所以成立，是因为单步操作恰好在两侧之间搬运一位：由式 (2)，<span class="arithmatex">\(d_t = n_t \bmod k\)</span> 从右项移入左项 <span class="arithmatex">\(s_{t+1} = s_t + d_t\)</span>，同时 <span class="arithmatex">\(n_{t+1} = \lfloor n_t / k \rfloor\)</span> 把这一位从剩余值中删去——总和守恒。当 <span class="arithmatex">\(n_t = 0\)</span> 时右项为空，式 (4) 退化为 <span class="arithmatex">\(s = \sum_i d_i\)</span>，正是答案。循环不过是这个不变量的逐字实现：</p>
 <div class="language-python highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">Solution</span><span class="p">:</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">sumBase</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">k</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
         <span class="n">s</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="k">while</span> <span class="n">n</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
-            <span class="n">s</span> <span class="o">+=</span> <span class="n">n</span> <span class="o">%</span> <span class="n">k</span>
-            <span class="n">n</span> <span class="o">//=</span> <span class="n">k</span>
+            <span class="n">s</span> <span class="o">+=</span> <span class="n">n</span> <span class="o">%</span> <span class="n">k</span>        <span class="c1"># d_t = n_t mod k，移入累加器</span>
+            <span class="n">n</span> <span class="o">//=</span> <span class="n">k</span>           <span class="c1"># n_{t+1} = floor(n_t / k)，删去该位</span>
         <span class="k">return</span> <span class="n">s</span>
 </code></pre></div>
-<p><strong>不变量</strong>：循环开始时 <code>s + (n 在 k 进制下的位和) = 原始 n 的位和</code>。每次循环把 <span class="arithmatex">\(n\)</span> 的最低位 (<span class="arithmatex">\(n \bmod k\)</span>) 加入 <code>s</code>，剩余 <span class="arithmatex">\(n \gets \lfloor n/k \rfloor\)</span>。</p>
-<p>Trace 例 1：<span class="arithmatex">\(n=34, k=6\)</span> → s=4, n=5 → s=9, n=0 → 返回 9。✓</p>
+<p>以 <span class="arithmatex">\(n=34, k=6\)</span> 验证不变量式 (4)，初始 <span class="arithmatex">\(\sum_i d_i = 9\)</span>（因 <span class="arithmatex">\(34 = 5\cdot 6 + 4\)</span>，数字为 <span class="arithmatex">\(5,4\)</span>）：</p>
+<ul>
+<li><span class="arithmatex">\(t=0\)</span>：<span class="arithmatex">\(s_0=0\)</span>，<span class="arithmatex">\(n_0=34\)</span>；右项位和 <span class="arithmatex">\(=9\)</span>，和为 <span class="arithmatex">\(0+9=9\)</span>。✓</li>
+<li><span class="arithmatex">\(t=1\)</span>：取 <span class="arithmatex">\(d_0 = 34 \bmod 6 = 4\)</span>，<span class="arithmatex">\(s_1=4\)</span>，<span class="arithmatex">\(n_1=\lfloor 34/6\rfloor=5\)</span>；右项位和 <span class="arithmatex">\(=5\)</span>，和为 <span class="arithmatex">\(4+5=9\)</span>。✓</li>
+<li><span class="arithmatex">\(t=2\)</span>：取 <span class="arithmatex">\(d_1 = 5 \bmod 6 = 5\)</span>，<span class="arithmatex">\(s_2=9\)</span>，<span class="arithmatex">\(n_2=0\)</span>；右项为空，和为 <span class="arithmatex">\(9+0=9\)</span>。✓</li>
+</ul>
+<p><span class="arithmatex">\(n\)</span> 归零，返回 <span class="arithmatex">\(s=9\)</span>。每一步两侧之和恒为 9，不变量得证，结果正确。</p>
 <h2 id="complexity">复杂度 (Complexity)<a class="headerlink" href="#complexity" title="Permanent link">#</a></h2>
 <ul>
-<li>Time: <span class="arithmatex">\(O(\log_k n)\)</span></li>
-<li>Space: <span class="arithmatex">\(O(1)\)</span></li>
+<li>Time: <span class="arithmatex">\(O(\log_k n)\)</span>——循环次数为 <span class="arithmatex">\(m+1 = \lfloor \log_k n \rfloor + 1\)</span>，每次 <span class="arithmatex">\(n\)</span> 缩小为 <span class="arithmatex">\(\lfloor n/k \rfloor\)</span>。</li>
+<li>Space: <span class="arithmatex">\(O(1)\)</span>——只用累加器 <span class="arithmatex">\(s\)</span> 与复用的 <span class="arithmatex">\(n\)</span>；去掉 <code>digits</code> 列表后无额外空间。</li>
 </ul>
 <h2 id="pitfalls">陷阱 (Pitfalls)<a class="headerlink" href="#pitfalls" title="Permanent link">#</a></h2>
 <ul>
-<li><span class="arithmatex">\(n = 0\)</span> 时循环不执行，返回 0（本题 <span class="arithmatex">\(n \ge 1\)</span> 故无虞）。</li>
-<li><span class="arithmatex">\(k = 10\)</span> 时答案就是十进制位和（如例 2）。</li>
+<li><span class="arithmatex">\(n = 0\)</span> 时 <code>while n &gt; 0</code> 直接跳过，返回 0；由题意约束 <span class="arithmatex">\(n \ge 1\)</span>，此情形不会出现。</li>
+<li><span class="arithmatex">\(k = 10\)</span> 时式 (1) 就是 <span class="arithmatex">\(n\)</span> 的十进制展开，答案即十进制位和（如例 2）。</li>
 </ul>
 <h2 id="related">相关题目 (Related)<a class="headerlink" href="#related" title="Permanent link">#</a></h2>
 <ul>
@@ -22607,6 +22656,8 @@
         <script src="../../../js/mathjax/tex-mml-chtml.js"></script>
       
         <script src="../../../js/mermaid.min.js"></script>
+      
+        <script src="../../../js/featured.js"></script>
       
     
   </body>

@@ -1466,6 +1466,8 @@
       
         
       
+        
+      
     
     
     
@@ -1521,6 +1523,34 @@
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../featured/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ⭐ Featured（已验证）
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
               
             
               
@@ -1610,10 +1640,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_4" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
         
           
-          <label class="md-nav__link" for="__nav_4_4" id="__nav_4_4_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_5" id="__nav_4_5_label" tabindex="">
             
   
   
@@ -1631,8 +1661,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_4_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_4">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_5">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1915,7 +1945,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -1937,14 +1967,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_4_5" id="__nav_4_5_label" tabindex="">
+              <label class="md-nav__link " for="__nav_4_6" id="__nav_4_6_label" tabindex="">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_5">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_6">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -5321,10 +5351,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_7" checked>
         
           
-          <label class="md-nav__link" for="__nav_4_6" id="__nav_4_6_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_7" id="__nav_4_7_label" tabindex="">
             
   
   
@@ -5342,8 +5372,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_4_6">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_7_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4_7">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -22467,31 +22497,105 @@
 <h2 id="problem">Problem<a class="headerlink" href="#problem" title="Permanent link">#</a></h2>
 <p><code>Employee(empId, name, supervisor, salary)</code>，<code>Bonus(empId, bonus)</code>。返回所有 bonus &lt; 1000 或没有 bonus 的员工 (name, bonus)。</p>
 <h2 id="background">背景 (Background)<a class="headerlink" href="#background" title="Permanent link">#</a></h2>
-<p>SQL 入门题：<strong>LEFT JOIN + NULL 比较</strong>。考点是理解 <code>NULL &lt; 1000</code> 的三值逻辑——<code>NULL</code> 不等于任何东西，连 <code>NULL &lt; 1000</code> 都返回 <code>UNKNOWN</code>，必须显式 <code>IS NULL</code> 测试。</p>
+<p>两张表，一个条件：把 <code>bonus</code> 小于 1000 的员工挑出来。员工信息在 <code>Employee</code>，奖金信息在 <code>Bonus</code>，两表靠 <code>empId</code> 关联——所以第一反应是把它们连起来，再用 <code>WHERE</code> 卡阈值：</p>
+<div class="language-sql highlight"><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="n">e</span><span class="p">.</span><span class="n">name</span><span class="p">,</span><span class="w"> </span><span class="n">b</span><span class="p">.</span><span class="n">bonus</span>
+<span class="k">FROM</span><span class="w"> </span><span class="n">Employee</span><span class="w"> </span><span class="n">e</span>
+<span class="k">JOIN</span><span class="w"> </span><span class="n">Bonus</span><span class="w"> </span><span class="n">b</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">e</span><span class="p">.</span><span class="n">empId</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">b</span><span class="p">.</span><span class="n">empId</span>
+<span class="k">WHERE</span><span class="w"> </span><span class="n">b</span><span class="p">.</span><span class="n">bonus</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">1000</span><span class="p">;</span>
+</code></pre></div>
+<p>这条查询读起来无懈可击，但它在两个地方悄悄出错，而且都不会报错——结果集只是少了几行。题目的全部内容，就是定位这两处静默失败，并各自修一刀。下面用一份具体数据把失败暴露出来。</p>
+<table>
+<thead>
+<tr>
+<th>empId</th>
+<th>name</th>
+<th>Bonus 表中的奖金</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>John</td>
+<td>（无对应行）</td>
+</tr>
+<tr>
+<td>2</td>
+<td>Dan</td>
+<td>500</td>
+</tr>
+<tr>
+<td>3</td>
+<td>Brad</td>
+<td>（无对应行）</td>
+</tr>
+<tr>
+<td>4</td>
+<td>Thomas</td>
+<td>2000</td>
+</tr>
+</tbody>
+</table>
+<p>正确答案应包含 John、Brad（没奖金，视为满足）和 Dan（500 &lt; 1000），排除 Thomas（2000）。上面的查询只会返回 Dan 一行。问题出在哪？</p>
 <h2 id="formulation">形式化 (Formulation)<a class="headerlink" href="#formulation" title="Permanent link">#</a></h2>
-<p>返回 <span class="arithmatex">\(\pi_{\text{name, bonus}}(\sigma_{\text{bonus} &lt; 1000 \lor \text{bonus IS NULL}}(\text{Employee} \bowtie_{\text{LEFT}} \text{Bonus}))\)</span>。</p>
+<p><strong>失败一：<code>JOIN</code> 丢掉无奖金的员工。</strong></p>
+<p><code>Employee JOIN Bonus ON empId</code> 默认是 <strong>内连接 (INNER JOIN)</strong>：它只保留两表都有匹配的行。John 和 Brad 在 <code>Bonus</code> 表里没有对应行，于是连接结果里根本不存在他们——还没轮到 <code>WHERE</code> 过滤，他们就已经消失了。但"没有奖金"恰恰是题目要返回的情形。</p>
+<p>要让 <code>Employee</code> 的每一行都活下来（无论 <code>Bonus</code> 是否匹配），需要 <strong>左外连接 (LEFT JOIN)</strong>：以左表 <code>Employee</code> 为基准，对每一行尝试匹配 <code>Bonus</code>；匹配不上时，照样输出该行，并把右表字段填成 <code>NULL</code>。</p>
+<div class="language-sql highlight"><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="n">e</span><span class="p">.</span><span class="n">name</span><span class="p">,</span><span class="w"> </span><span class="n">b</span><span class="p">.</span><span class="n">bonus</span>
+<span class="k">FROM</span><span class="w"> </span><span class="n">Employee</span><span class="w"> </span><span class="n">e</span>
+<span class="k">LEFT</span><span class="w"> </span><span class="k">JOIN</span><span class="w"> </span><span class="n">Bonus</span><span class="w"> </span><span class="n">b</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">e</span><span class="p">.</span><span class="n">empId</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">b</span><span class="p">.</span><span class="n">empId</span>
+<span class="k">WHERE</span><span class="w"> </span><span class="n">b</span><span class="p">.</span><span class="n">bonus</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">1000</span><span class="p">;</span>
+</code></pre></div>
+<p>现在连接结果包含全部四人，John 和 Brad 的 <code>b.bonus</code> 是 <code>NULL</code>。但运行后他们仍然不在输出里。第二处失败浮现了。</p>
+<p><strong>失败二：<code>NULL &lt; 1000</code> 不是 TRUE。</strong></p>
+<p><code>NULL</code> 表示"值未知"，而不是"值为空"或"值为零"。一旦把"未知"代入比较，结果只能是"未知"：我们不知道那个缺失的奖金到底是多少，自然无法断定它是否小于 1000。SQL 用三值逻辑 (three-valued logic) 兑现这一点——比较的结果不是 <code>TRUE</code>/<code>FALSE</code> 两种，而是 <code>TRUE</code>/<code>FALSE</code>/<code>UNKNOWN</code> 三种：</p>
+<div class="arithmatex">\[
+\texttt{NULL} &lt; 1000 \;\longrightarrow\; \texttt{UNKNOWN}.
+\]</div>
+<p><code>WHERE</code> 子句只放行结果为 <code>TRUE</code> 的行；<code>UNKNOWN</code> 和 <code>FALSE</code> 一样被拦下。于是 John 和 Brad 第二次被静默淘汰。修法是显式承认"未知奖金"也算合格，用 <code>IS NULL</code> 单独检测它——<code>IS NULL</code> 是专门为三值逻辑设计的测试，返回 <code>TRUE</code>/<code>FALSE</code> 而非 <code>UNKNOWN</code>：</p>
+<div class="arithmatex">\[
+(\texttt{bonus} &lt; 1000) \;\lor\; (\texttt{bonus IS NULL}).
+\]</div>
+<p>两刀修完，目标集合可以一句话精确写出。设 <span class="arithmatex">\(\bowtie_{\text{LOJ}}\)</span> 为左外连接，缺失的右表字段取空值 <span class="arithmatex">\(\omega\)</span>，则答案为</p>
+<div class="arithmatex">\[
+\pi_{\text{name, bonus}}\Big(\sigma_{\,\text{bonus} &lt; 1000 \,\lor\, \text{bonus} = \omega}\big(\text{Employee} \bowtie_{\text{LOJ}} \text{Bonus}\big)\Big).
+\]</div>
+<p>这条表达式正是上面两次修复的浓缩：<span class="arithmatex">\(\bowtie_{\text{LOJ}}\)</span> 对应失败一的修法（保留无匹配的左行），<span class="arithmatex">\(\sigma\)</span> 里的 <span class="arithmatex">\(\lor\,\text{bonus} = \omega\)</span> 对应失败二的修法（让空值通过）。SQL 与之逐项对应：<code>LEFT JOIN</code> 即 <span class="arithmatex">\(\bowtie_{\text{LOJ}}\)</span>，<code>WHERE</code> 即 <span class="arithmatex">\(\sigma\)</span>，<code>SELECT e.name, b.bonus</code> 即 <span class="arithmatex">\(\pi_{\text{name, bonus}}\)</span>。</p>
+<blockquote>
+<p>注：<code>= \omega</code> 是关系代数对空值的记法；落到 SQL 必须写成 <code>IS NULL</code>，因为 <code>bonus = NULL</code> 同样返回 <code>UNKNOWN</code>，永远不放行。</p>
+</blockquote>
 <h2 id="approach">数据结构 / 想法 (Approach)<a class="headerlink" href="#approach" title="Permanent link">#</a></h2>
+<p>把两处修复合到一起，就是最终查询：</p>
 <div class="language-sql highlight"><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="n">e</span><span class="p">.</span><span class="n">name</span><span class="p">,</span><span class="w"> </span><span class="n">b</span><span class="p">.</span><span class="n">bonus</span>
 <span class="k">FROM</span><span class="w"> </span><span class="n">Employee</span><span class="w"> </span><span class="n">e</span>
 <span class="k">LEFT</span><span class="w"> </span><span class="k">JOIN</span><span class="w"> </span><span class="n">Bonus</span><span class="w"> </span><span class="n">b</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">e</span><span class="p">.</span><span class="n">empId</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">b</span><span class="p">.</span><span class="n">empId</span>
 <span class="k">WHERE</span><span class="w"> </span><span class="n">b</span><span class="p">.</span><span class="n">bonus</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">1000</span><span class="w"> </span><span class="k">OR</span><span class="w"> </span><span class="n">b</span><span class="p">.</span><span class="n">bonus</span><span class="w"> </span><span class="k">IS</span><span class="w"> </span><span class="k">NULL</span><span class="p">;</span>
 </code></pre></div>
-<p><strong>Trace 样例</strong>：
-- Brad(3): no row in Bonus → bonus NULL → 满足 IS NULL ✓
-- John(1): no row → NULL ✓
-- Dan(2): bonus 500 &lt; 1000 ✓
-- Thomas(4): bonus 2000，不满足</p>
-<p>输出 <code>[(Brad, null), (John, null), (Dan, 500)]</code> ✓</p>
-<p><strong>为什么必须 LEFT JOIN</strong>：INNER JOIN 会丢掉 Bonus 中无对应行的员工，遗漏 Brad/John。</p>
-<p><strong>为什么必须显式 <code>IS NULL</code></strong>：<code>NULL &lt; 1000</code> 在 SQL 三值逻辑下为 <code>UNKNOWN</code>，被 WHERE 当作 FALSE 过滤掉。</p>
-<h2 id="complexity">复杂度 (Complexity)<a class="headerlink" href="#complexity" title="Permanent link">#</a></h2>
+<p>对前面的四行数据逐行走一遍，确认两条修复都生效：</p>
 <ul>
-<li>Time: <span class="arithmatex">\(O(|E| + |B|)\)</span>（hash join 或 sort-merge）</li>
+<li><strong>John (1)</strong>：<code>Bonus</code> 无对应行 → <code>LEFT JOIN</code> 保留该行，<code>b.bonus = NULL</code> → <code>b.bonus &lt; 1000</code> 得 <code>UNKNOWN</code>，但 <code>b.bonus IS NULL</code> 得 <code>TRUE</code> → 入选。</li>
+<li><strong>Brad (3)</strong>：同 John → 入选。</li>
+<li><strong>Dan (2)</strong>：<code>b.bonus = 500</code> → <code>500 &lt; 1000</code> 得 <code>TRUE</code> → 入选。</li>
+<li><strong>Thomas (4)</strong>：<code>b.bonus = 2000</code> → <code>2000 &lt; 1000</code> 得 <code>FALSE</code>，<code>IS NULL</code> 得 <code>FALSE</code> → 排除。</li>
 </ul>
+<p>输出 <code>[(John, null), (Brad, null), (Dan, 500)]</code>，与期望一致。两条 <code>WHERE</code> 分支各司其职：<code>b.bonus &lt; 1000</code> 负责有奖金的人，<code>b.bonus IS NULL</code> 负责没奖金的人，缺一行就漏。</p>
+<h2 id="complexity">复杂度 (Complexity)<a class="headerlink" href="#complexity" title="Permanent link">#</a></h2>
+<p>记 <span class="arithmatex">\(|E|\)</span>、<span class="arithmatex">\(|B|\)</span> 为 <code>Employee</code>、<code>Bonus</code> 两表的行数。复杂度取决于优化器选定的连接算法，因此分情形讨论：</p>
+<ul>
+<li><strong>哈希连接 (hash join)</strong>：以较小表建哈希表，扫另一表探查。</li>
+<li>Time：平均 <span class="arithmatex">\(O(|E| + |B|)\)</span>（哈希摊还 <span class="arithmatex">\(O(1)\)</span>，且建表侧能放进内存）；最坏情况哈希严重冲突时退化到 <span class="arithmatex">\(O(|E| \cdot |B|)\)</span>。</li>
+<li>Space：<span class="arithmatex">\(O(\min(|E|, |B|))\)</span>，即建表侧哈希表大小。</li>
+<li><strong>排序-归并连接 (sort-merge join)</strong>：两表各自排序后归并。</li>
+<li>Time：<span class="arithmatex">\(O(|E| \log |E| + |B| \log |B|)\)</span>——注意这并非 <span class="arithmatex">\(O(|E| + |B|)\)</span>。</li>
+<li>Space：<span class="arithmatex">\(O(|E| + |B|)\)</span>（外排序的工作空间）。</li>
+<li><strong>嵌套循环连接 (nested-loop join)</strong>：优化器在小表上也可能选它。</li>
+<li>Time：<span class="arithmatex">\(O(|E| \cdot |B|)\)</span>。</li>
+<li>Space：<span class="arithmatex">\(O(1)\)</span>（除输出外）。</li>
+</ul>
+<p>对本题这种小表，三者的常数差异远比渐近阶更重要；真实开销由优化器统计与索引决定，而非查询写法。</p>
 <h2 id="pitfalls">陷阱 (Pitfalls)<a class="headerlink" href="#pitfalls" title="Permanent link">#</a></h2>
 <ul>
-<li><strong>三值逻辑</strong>：<code>NULL &lt; 1000</code> 不为 TRUE，必须 <code>OR ... IS NULL</code>。</li>
-<li><strong>INNER JOIN 误用</strong>：会漏掉无 bonus 的员工。</li>
+<li><strong><code>IS NULL</code> 不能写成 <code>= NULL</code></strong>：<code>bonus = NULL</code> 在三值逻辑下恒为 <code>UNKNOWN</code>，永远不放行；空值检测只能用 <code>IS NULL</code>。</li>
+<li><strong><code>LEFT JOIN</code> 后又在 <code>WHERE</code> 里加右表非空条件</strong>：若写成 <code>WHERE b.bonus &lt; 1000</code>（无 <code>IS NULL</code>），右表的 <code>NULL</code> 行被三值逻辑悄悄滤掉，<code>LEFT JOIN</code> 退化得和 <code>INNER JOIN</code> 同效，失败一的修复被失败二抵消。两刀必须同时在场。</li>
 </ul>
 <h2 id="related">相关题目 (Related)<a class="headerlink" href="#related" title="Permanent link">#</a></h2>
 <ul>
@@ -22605,6 +22709,8 @@
         <script src="../../../js/mathjax/tex-mml-chtml.js"></script>
       
         <script src="../../../js/mermaid.min.js"></script>
+      
+        <script src="../../../js/featured.js"></script>
       
     
   </body>

@@ -1466,6 +1466,8 @@
       
         
       
+        
+      
     
     
     
@@ -1521,6 +1523,34 @@
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../featured/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ⭐ Featured（已验证）
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
               
             
               
@@ -1610,10 +1640,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_4" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
         
           
-          <label class="md-nav__link" for="__nav_4_4" id="__nav_4_4_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_5" id="__nav_4_5_label" tabindex="">
             
   
   
@@ -1631,8 +1661,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_4_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_4">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_5">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1915,7 +1945,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -1937,14 +1967,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_4_5" id="__nav_4_5_label" tabindex="">
+              <label class="md-nav__link " for="__nav_4_6" id="__nav_4_6_label" tabindex="">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_5">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_6">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -5321,10 +5351,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_7" checked>
         
           
-          <label class="md-nav__link" for="__nav_4_6" id="__nav_4_6_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_7" id="__nav_4_7_label" tabindex="">
             
   
   
@@ -5342,8 +5372,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_4_6">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_7_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4_7">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -22467,14 +22497,39 @@
 <h2 id="problem">Problem<a class="headerlink" href="#problem" title="Permanent link">#</a></h2>
 <p>非空数组 nums，除一个元素出现 1 次外，其它均出现 2 次。<strong>线性时间 + 常数额外空间</strong> 找出那个单独元素。<span class="arithmatex">\(1 \le n \le 3 \times 10^4\)</span>，<span class="arithmatex">\(|n_i| \le 3 \times 10^4\)</span>。</p>
 <h2 id="background">背景 (Background)<a class="headerlink" href="#background" title="Permanent link">#</a></h2>
-<p>本题的"标准解"是XOR 性质的代数应用——<span class="arithmatex">\((\mathbb{Z}/2)^k\)</span> 上整数构成 Abelian 群 <span class="arithmatex">\((\mathbb{Z}/2\mathbb{Z})^{32}\)</span>，XOR 是群运算，<strong>每个元素是自己的逆元</strong> (<span class="arithmatex">\(a \oplus a = 0\)</span>)，且 0 是单位元。所以无论顺序如何</p>
-<div class="arithmatex">\[\bigoplus_{i=1}^{n} a_i = (\text{每出现 2 次的项被自消}) \oplus (\text{单出现项}) = \text{单出现项}.\]</div>
-<p>这是把"频次模 2"特性嵌入到代数运算中——可推广到 #137 Single Number II（频次模 3 → 用两个 bitmask 模拟 ternary 计数）、#260 Single Number III（两个单出现项 → XOR 全数后用最低 1 位拆分）。XOR-as-group-op 也是 Bloom filter、CRC、奇偶校验码、Reed-Solomon 解码的核心。</p>
+<p>从最朴素的做法入手，看它在哪一条约束上失败，失败之处恰好指向正确方法。</p>
+<p><strong>朴素一：哈希计数。</strong> 扫一遍，用 <code>Counter</code> 统计每个值出现次数，再找出计数为 1 的那个。正确，但需要一张随输入增长的表，空间 <span class="arithmatex">\(O(n)\)</span>。</p>
+<p><strong>朴素二：排序后扫描。</strong> 排序后，成对的元素相邻；逐对比较，落单的那个就是答案。时间 <span class="arithmatex">\(O(n \log n)\)</span>，且若不允许原地排序还要额外空间。</p>
+<p>两种朴素法都能解，但各踩中题目的一条硬约束：朴素一违反"常数额外空间"，朴素二违反"线性时间"。约束不是装饰——它逼我们放弃"逐个记住谁出现过几次"。一旦不能存计数，问题就重写为：</p>
+<blockquote>
+<p>能不能设计一个运算，让"出现两次"的贡献自动相互抵消，从而无需记录任何计数？</p>
+</blockquote>
+<p>朴素法之所以费空间，是因为它保留了过多信息（每个值的完整计数）。下一节先把答案真正依赖的最小信息量找出来，再从位的层面把这个"自动抵消"造出来。</p>
 <h2 id="formulation">形式化 (Formulation)<a class="headerlink" href="#formulation" title="Permanent link">#</a></h2>
-<p>设 <span class="arithmatex">\(a_1, \dots, a_n\)</span>，存在唯一 <span class="arithmatex">\(j^*\)</span> 使 <span class="arithmatex">\(a_{j^*}\)</span> 出现奇数 (=1) 次，其余出现偶数 (=2) 次。利用 <span class="arithmatex">\((\mathbb{Z}/2)^{32}\)</span> 群：</p>
-<div class="arithmatex">\[\text{ans} = a_1 \oplus a_2 \oplus \cdots \oplus a_n = a_{j^*}.\]</div>
+<p>设输入为 <span class="arithmatex">\(a_1, \dots, a_n\)</span>，存在唯一下标 <span class="arithmatex">\(j^* \in \{1, \dots, n\}\)</span> 使 <span class="arithmatex">\(a_{j^*}\)</span> 出现奇数（这里 =1）次，其余每个值出现偶数（=2）次。我们要在 <span class="arithmatex">\(O(n)\)</span> 时间、<span class="arithmatex">\(O(1)\)</span> 空间内求出 <span class="arithmatex">\(a_{j^*}\)</span>。</p>
+<p><strong>直觉：答案依赖的信息比朴素法保留的少得多。</strong> 把每个整数看成 32 个互不影响的比特，逐位地看。在任意一个比特位上，一个值出现两次，就在该位贡献了两个相同的比特；要判断"哪个值落单"，并不需要知道每个值出现几次，只需要知道每一位上 1 的总数是奇是偶——因为成对的贡献必然成双，对奇偶性毫无影响。于是真正要算的量是每位的奇偶性，而非完整计数。</p>
+<p>把这个直觉写成形式。固定一个比特位 <span class="arithmatex">\(b\)</span>，记 <span class="arithmatex">\(a_i\)</span> 在第 <span class="arithmatex">\(b\)</span> 位上的取值为 <span class="arithmatex">\(a_i^{(b)} \in \{0,1\}\)</span>，定义第 <span class="arithmatex">\(b\)</span> 位的奇偶和</p>
+<div class="arithmatex">\[
+p_b \;=\; \Big(\sum_{i=1}^{n} a_i^{(b)}\Big) \bmod 2. \tag{1}
+\]</div>
+<p>成对出现的值，对 <span class="arithmatex">\(p_b\)</span> 的贡献恒为偶数，因而对 <span class="arithmatex">\((1)\)</span> 这个模 2 的和<strong>没有净贡献</strong>。于是 <span class="arithmatex">\(p_b\)</span> 只由 <span class="arithmatex">\(a_{j^*}\)</span> 的第 <span class="arithmatex">\(b\)</span> 位决定，<span class="arithmatex">\(p_b = a_{j^*}^{(b)}\)</span>。逐位把 <span class="arithmatex">\(p_b\)</span> 拼回去，就还原出 <span class="arithmatex">\(a_{j^*}\)</span>。这就是从问题自身结构（位的独立性 + 奇偶性）直接导出的解，不依赖任何外部代数框架。</p>
 <h2 id="approach">数据结构 / 想法 (Approach)<a class="headerlink" href="#approach" title="Permanent link">#</a></h2>
-<p><strong>异或扫描一遍过</strong>：</p>
+<p><strong>逐位实现还是太重。</strong> 公式 <span class="arithmatex">\((1)\)</span> 要对 32 个比特各算一次奇偶和，但"在某一位上做模 2 加法"恰好就是单比特异或，而 XOR 在所有比特位上并行地做这件事。于是 <span class="arithmatex">\((1)\)</span> 对全部位的整体效果，就是把所有 <span class="arithmatex">\(a_i\)</span> 异或起来：</p>
+<div class="arithmatex">\[
+\text{ans} \;=\; a_1 \oplus a_2 \oplus \cdots \oplus a_n. \tag{2}
+\]</div>
+<p>按公式 <span class="arithmatex">\((1)\)</span>，<span class="arithmatex">\((2)\)</span> 的第 <span class="arithmatex">\(b\)</span> 位恰为 <span class="arithmatex">\(p_b = a_{j^*}^{(b)}\)</span>，所以 <span class="arithmatex">\(\text{ans} = a_{j^*}\)</span>。</p>
+<p><strong>自抵消性质从位级定义直接得来。</strong> 异或为何让成对项消失？看单个比特位：<span class="arithmatex">\((x \oplus x)\)</span> 的第 <span class="arithmatex">\(b\)</span> 位是 <span class="arithmatex">\(x^{(b)} \oplus x^{(b)}\)</span>，而相同比特异或恒为 0。每一位都为 0，故</p>
+<div class="arithmatex">\[
+x \oplus x = 0. \tag{3}
+\]</div>
+<p>这不是需要记忆的事实，而是 <span class="arithmatex">\((1)\)</span> 在单值上的特例：一个值出现两次，它在每一位的贡献偶数次，奇偶和归零。</p>
+<p><strong>累积不变量。</strong> 把 <span class="arithmatex">\((2)\)</span> 写成在线扫描：令 <code>ans</code> 初始为 0，逐个异或。则扫到第 <span class="arithmatex">\(i\)</span> 个元素后，</p>
+<div class="arithmatex">\[
+\texttt{ans} \;=\; a_1 \oplus a_2 \oplus \cdots \oplus a_i. \tag{4}
+\]</div>
+<p>也就是说，<code>ans</code> 始终等于"已扫部分的逐位奇偶累计"。一对值一旦两次都被扫过，按 <span class="arithmatex">\((3)\)</span> 它们彼此抵消；扫完全数组，唯一没被配对抵消的就是 <span class="arithmatex">\(a_{j^*}\)</span>。这就是为什么一趟扫描、零额外存储即可。</p>
+<p><strong>代码：</strong> 下面的实现就是不变量 <span class="arithmatex">\((4)\)</span> 的逐字翻译——<code>ans</code> 维护前缀异或，循环结束时 <span class="arithmatex">\((4)\)</span> 取 <span class="arithmatex">\(i=n\)</span>，即公式 <span class="arithmatex">\((2)\)</span>。</p>
 <div class="language-python highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">Solution</span><span class="p">:</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">singleNumber</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">nums</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
         <span class="n">ans</span> <span class="o">=</span> <span class="mi">0</span>
@@ -22482,8 +22537,8 @@
             <span class="n">ans</span> <span class="o">^=</span> <span class="n">x</span>
         <span class="k">return</span> <span class="n">ans</span>
 </code></pre></div>
-<p>或一行：<code>from functools import reduce; return reduce(xor, nums)</code>。</p>
-<p><strong>心算 trace <code>[4,1,2,1,2]</code></strong>：
+<p>或一行：<code>from functools import reduce; from operator import xor; return reduce(xor, nums)</code>。</p>
+<p><strong>执行轨迹（验证不变量 <span class="arithmatex">\((4)\)</span>）<code>[4,1,2,1,2]</code></strong>：
 - 0 ^ 4 = 4
 - 4 ^ 1 = 5
 - 5 ^ 2 = 7
@@ -22491,24 +22546,26 @@
 - 6 ^ 2 = 4 ✓</p>
 <p><strong><code>[2,2,1]</code></strong>：0^2=2, 2^2=0, 0^1=1 ✓</p>
 <p><strong><code>[1]</code></strong>：0^1=1 ✓</p>
-<p><strong>不变量</strong>：扫到第 <span class="arithmatex">\(i\)</span> 个后，<code>ans = a_1 ⊕ a_2 ⊕ ... ⊕ a_i</code>。所有出现两次的元素一旦扫完两次都自消，剩下的是当前已扫部分中"出现奇数次"的代数累计。</p>
-<p><strong>XOR 性质</strong>（群论说法）：
-1. <strong>结合律 + 交换律</strong>：可任意顺序计算。
-2. <strong>自逆</strong>：<span class="arithmatex">\(a \oplus a = 0\)</span>。
-3. <strong>单位元</strong>：<span class="arithmatex">\(a \oplus 0 = a\)</span>。</p>
-<p>这三性质使得本题的"消除偶数次出现"成为代数恒等式而非算法。</p>
-<p><strong>为什么不用 set / Counter？</strong> 都能解，但都 <span class="arithmatex">\(O(n)\)</span> 空间，违反题目"常数额外空间"。XOR 是该约束下唯一的标准答案。</p>
+<p><strong>用群论复述（可选）。</strong> 上面用到的三条性质，正是把 32-bit 整数集合在 XOR 下视为群 <span class="arithmatex">\((\mathbb{Z}/2\mathbb{Z})^{32}\)</span> 后的群公理：</p>
+<ol>
+<li><strong>结合律 + 交换律</strong>：<span class="arithmatex">\((2)\)</span> 可按任意顺序计算，对应公式 <span class="arithmatex">\((1)\)</span> 与求和顺序无关。</li>
+<li><strong>自逆</strong>：<span class="arithmatex">\(a \oplus a = 0\)</span>，即公式 <span class="arithmatex">\((3)\)</span>，每个元素是自己的逆元。</li>
+<li><strong>单位元</strong>：<span class="arithmatex">\(a \oplus 0 = a\)</span>，故 <code>ans</code> 从 0 起累积无副作用。</li>
+</ol>
+<p>群论是上述位级论证的精确再表述，而非更深的来源；先理解位级抵消，再看群公理只是给它一个名字。</p>
+<p><strong>回到起点。</strong> "背景"里设问的那个运算——让成对贡献自动归零、无需任何计数——至此已被造出来：它就是 XOR。set / Counter 之所以被排除，不是因为它们错，而是因为它们保留了答案不需要的信息，从而付出 <span class="arithmatex">\(O(n)\)</span> 空间。XOR 只携带每位的奇偶性，恰好是公式 <span class="arithmatex">\((1)\)</span> 证明的"答案所需的最小信息量"，这也是本题在常数空间下的标准答案。</p>
 <h2 id="complexity">复杂度 (Complexity)<a class="headerlink" href="#complexity" title="Permanent link">#</a></h2>
+<p>公式 <span class="arithmatex">\((2)\)</span> 是对数组的单趟异或，每个元素只触及一次，且只维护一个累加变量 <code>ans</code>。</p>
 <ul>
 <li>Time: <span class="arithmatex">\(O(n)\)</span>。</li>
 <li>Space: <span class="arithmatex">\(O(1)\)</span>。</li>
 </ul>
 <h2 id="pitfalls">陷阱 (Pitfalls)<a class="headerlink" href="#pitfalls" title="Permanent link">#</a></h2>
 <ul>
-<li><strong>负数 XOR</strong>：Python int 是任意精度，负数也按二补码语义参与按位运算（但顶位永远是符号位，结果仍然正确）。在 C/C++/Java 用 <code>int</code> 类型 XOR 完全无虞。题面允许 <span class="arithmatex">\(|a_i| \le 3 \times 10^4\)</span>，与 32-bit int 安全。</li>
+<li><strong>负数 XOR</strong>：Python int 是任意精度，负数也按二补码语义参与按位运算（顶位为符号位，结果仍正确）。在 C/C++/Java 用 <code>int</code> 类型 XOR 完全无虞。题面允许 <span class="arithmatex">\(|a_i| \le 3 \times 10^4 = 30000 &lt; 2^{15}\)</span>，与 32-bit int 安全。</li>
 <li><strong>空数组</strong>：题面保证非空 (<span class="arithmatex">\(n \ge 1\)</span>)，无需特判。</li>
 <li><strong>若元素恰一对相同 + 单独</strong>：算法依然对——一对自消，单独保留。</li>
-<li><strong>题目误用</strong>：本算法依赖"其它元素均出现<strong>偶数</strong>次"，不只是"两次"。若改成"每元素出现 3 次，找单出现的"（#137），简单 XOR 失效，需更复杂的位级计数。</li>
+<li><strong>题目误用</strong>：公式 <span class="arithmatex">\((1)\)</span> 依赖"其它元素均出现<strong>偶数</strong>次"，不只是"两次"——奇偶和归零靠的是偶数。若改成"每元素出现 3 次，找单出现的"（#137），模 2 不再归零，简单 XOR 失效，需按位做模 3 计数。</li>
 </ul>
 <h2 id="related">相关题目 (Related)<a class="headerlink" href="#related" title="Permanent link">#</a></h2>
 <ul>
@@ -22629,6 +22686,8 @@
         <script src="../../../js/mathjax/tex-mml-chtml.js"></script>
       
         <script src="../../../js/mermaid.min.js"></script>
+      
+        <script src="../../../js/featured.js"></script>
       
     
   </body>

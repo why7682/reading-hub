@@ -1466,6 +1466,8 @@
       
         
       
+        
+      
     
     
     
@@ -1521,6 +1523,34 @@
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../featured/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ⭐ Featured（已验证）
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
               
             
               
@@ -1610,10 +1640,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_4" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
         
           
-          <label class="md-nav__link" for="__nav_4_4" id="__nav_4_4_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_5" id="__nav_4_5_label" tabindex="">
             
   
   
@@ -1631,8 +1661,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_4_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_4">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_5">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1915,7 +1945,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -1937,14 +1967,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_4_5" id="__nav_4_5_label" tabindex="">
+              <label class="md-nav__link " for="__nav_4_6" id="__nav_4_6_label" tabindex="">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_5">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_6">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -5321,10 +5351,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_7" checked>
         
           
-          <label class="md-nav__link" for="__nav_4_6" id="__nav_4_6_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_7" id="__nav_4_7_label" tabindex="">
             
   
   
@@ -5342,8 +5372,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_4_6">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_7_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4_7">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -22467,27 +22497,34 @@
 <h2 id="problem">Problem<a class="headerlink" href="#problem" title="Permanent link">#</a></h2>
 <p>环形路 <span class="arithmatex">\(n\)</span> 站，相邻距离 <code>distance[i]</code>（<span class="arithmatex">\(i\)</span> 到 <span class="arithmatex">\((i+1) \% n\)</span>）。给 <code>start, destination</code>，返回两站间最短距离（顺时针 / 逆时针中较小者）。</p>
 <h2 id="_1">背景<a class="headerlink" href="#_1" title="Permanent link">#</a></h2>
-<p>这是<strong>环 (cycle graph) 上两点最短距离</strong>的最简形式。在更广的 graph 中需要 Dijkstra / BFS，但环图特殊：两点之间有恰两条路径（顺时针 / 逆时针），其和等于环周长。因此最短距离 = <span class="arithmatex">\(\min(\text{clock}, \text{total} - \text{clock})\)</span>。</p>
-<p>这种 "环-总和-互补" 思路也用于：环形数组求最大子段和（拆成"含跨界 / 不含跨界"两情况）、环形赛程安排、圆排列计数。</p>
+<p>先尝试最直接的做法：从 <code>start</code> 出发，沿下标增大的方向逐站累加 <code>distance</code>，直到到达 <code>destination</code>。这给出一条路径的长度。问题在于：这条路径不一定是较短的那条。要知道它是不是更短，我们得把另一条路径也走一遍，然后取较小值。于是天真做法变成"两个方向各扫一遍"——但这里有一个更省事的结构可以利用。</p>
+<p>观察这条环的结构本身。<span class="arithmatex">\(n\)</span> 个站排成一圈，相邻两站之间恰有一条边，一共 <span class="arithmatex">\(n\)</span> 条边。任取两站 <code>start</code> 和 <code>destination</code>，它们把这一圈切成两段弧：一段是从 <code>start</code> 沿下标增大方向走到 <code>destination</code>，另一段是反方向走回来。环上每条边要么落在第一段弧里，要么落在第二段弧里，不会同时属于两段，也不会哪段都不属于。换句话说，两段弧的边集恰好是全部 <span class="arithmatex">\(n\)</span> 条边的一个划分。</p>
+<p>这个划分立刻给出结论：两段弧的长度之和等于整圈的总长 <span class="arithmatex">\(S\)</span>。所以一旦我们算出其中一段弧的长度 <span class="arithmatex">\(C\)</span>，另一段就是 <span class="arithmatex">\(S - C\)</span>，不必再扫第二遍。最短距离就是 <span class="arithmatex">\(\min(C, S - C)\)</span>。天真做法里"另一个方向"的信息，其实已经被 <span class="arithmatex">\(S\)</span> 和 <span class="arithmatex">\(C\)</span> 一起编码了。</p>
 <h2 id="_2">形式化<a class="headerlink" href="#_2" title="Permanent link">#</a></h2>
-<p>设 <span class="arithmatex">\(S = \sum_i d_i\)</span> 为环周长。设 <span class="arithmatex">\(C = \sum_{i=\min(s,t)}^{\max(s,t)-1} d_i\)</span> 为按一方向的距离。答案 <span class="arithmatex">\(= \min(C, S - C)\)</span>。</p>
+<p>把上面的结构写成精确形式。记 <span class="arithmatex">\(d_i\)</span> 为 <code>distance[i]</code>，环的总长 <span class="arithmatex">\(S = \sum_{i=0}^{n-1} d_i\)</span>。设 <code>start</code>、<code>destination</code> 为 <span class="arithmatex">\(s\)</span>、<span class="arithmatex">\(t\)</span>，不失一般性设 <span class="arithmatex">\(s \le t\)</span>（否则交换二者，下面解释为何可以交换）。沿下标增大方向从下标 <span class="arithmatex">\(s\)</span> 站走到下标 <span class="arithmatex">\(t\)</span> 站，经过的边是 <span class="arithmatex">\(d_s, d_{s+1}, \dots, d_{t-1}\)</span>，故这一段弧长</p>
+<div class="arithmatex">\[C = \sum_{i=s}^{t-1} d_i.\]</div>
+<p>上限取 <span class="arithmatex">\(t-1\)</span> 而非 <span class="arithmatex">\(t\)</span>：从 <span class="arithmatex">\(s\)</span> 走到 <span class="arithmatex">\(t\)</span> 经过的边是 <span class="arithmatex">\(d_s\)</span> 到 <span class="arithmatex">\(d_{t-1}\)</span> 这 <span class="arithmatex">\(t-s\)</span> 条，第 <span class="arithmatex">\(d_t\)</span> 条边连接的是 <span class="arithmatex">\(t\)</span> 与 <span class="arithmatex">\(t+1\)</span>，已经在弧外。由前一节的边划分，反方向那段弧长为 <span class="arithmatex">\(S - C\)</span>，于是答案</p>
+<div class="arithmatex">\[\text{ans} = \min(C,\; S - C).\]</div>
+<p>具体看一个例子，取 <span class="arithmatex">\(n=4\)</span>，<code>distance = [1,2,3,4]</code>，<span class="arithmatex">\(s=1\)</span>，<span class="arithmatex">\(t=3\)</span>。沿增大方向经过的边是 <span class="arithmatex">\(d_1, d_2 = 2, 3\)</span>，故 <span class="arithmatex">\(C = 2 + 3 = 5\)</span>；总长 <span class="arithmatex">\(S = 1+2+3+4 = 10\)</span>，反方向 <span class="arithmatex">\(S - C = 5\)</span>，答案 <span class="arithmatex">\(\min(5,5)=5\)</span>。这里 <span class="arithmatex">\(C\)</span> 恰好就是 Python 切片 <code>sum(distance[1:3])</code> 的值——半开区间 <span class="arithmatex">\([s, t)\)</span> 取的正是 <span class="arithmatex">\(d_s\)</span> 到 <span class="arithmatex">\(d_{t-1}\)</span>，与上面的求和上限一致。</p>
 <h2 id="_3">数据结构 / 想法<a class="headerlink" href="#_3" title="Permanent link">#</a></h2>
+<p>按形式化直接实现：<code>sum(distance[start:destination])</code> 即 <span class="arithmatex">\(C\)</span>，<code>sum(distance)</code> 即 <span class="arithmatex">\(S\)</span>，答案取二者较小。代码先交换使 <code>start &lt;= destination</code>，原因见下方不变量。</p>
 <div class="language-python highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">distanceBetweenBusStops</span><span class="p">(</span><span class="n">distance</span><span class="p">,</span> <span class="n">start</span><span class="p">,</span> <span class="n">destination</span><span class="p">):</span>
     <span class="k">if</span> <span class="n">start</span> <span class="o">&gt;</span> <span class="n">destination</span><span class="p">:</span> <span class="n">start</span><span class="p">,</span> <span class="n">destination</span> <span class="o">=</span> <span class="n">destination</span><span class="p">,</span> <span class="n">start</span>
     <span class="n">one_way</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">distance</span><span class="p">[</span><span class="n">start</span><span class="p">:</span><span class="n">destination</span><span class="p">])</span>
     <span class="n">total</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">distance</span><span class="p">)</span>
     <span class="k">return</span> <span class="nb">min</span><span class="p">(</span><span class="n">one_way</span><span class="p">,</span> <span class="n">total</span> <span class="o">-</span> <span class="n">one_way</span><span class="p">)</span>
 </code></pre></div>
-<p><strong>不变量</strong>：<code>one_way</code> 是从 <span class="arithmatex">\(\min\)</span> 走到 <span class="arithmatex">\(\max\)</span>（不绕回）的距离；<code>total - one_way</code> 是反向距离。</p>
+<p><strong>不变量</strong>：交换后保证 <code>start &lt;= destination</code>，于是切片 <code>distance[start:destination]</code> 取的是半开区间 <span class="arithmatex">\([s, t)\)</span> 上的边，正好是一段完整弧的长度 <span class="arithmatex">\(C\)</span>；<code>total - one_way</code> 即另一段弧长 <span class="arithmatex">\(S - C\)</span>。若不交换，当 <code>start &gt; destination</code> 时切片为空、<code>one_way = 0</code>，答案会被错误地算成 0（见陷阱）。</p>
 <h2 id="_4">复杂度<a class="headerlink" href="#_4" title="Permanent link">#</a></h2>
 <ul>
 <li>Time: <span class="arithmatex">\(O(n)\)</span></li>
 <li>Space: <span class="arithmatex">\(O(1)\)</span></li>
 </ul>
+<p>两次 <code>sum</code> 各扫一遍数组，均为 <span class="arithmatex">\(O(n)\)</span>，整体单趟线性。无大小常数之分，最好 = 平均 = 最坏。</p>
 <h2 id="_5">陷阱<a class="headerlink" href="#_5" title="Permanent link">#</a></h2>
 <ul>
-<li>start == destination → 答案 0。</li>
-<li>必须先排序 start/destination，否则切片越界。</li>
+<li>start == destination → 答案 0（切片为空，<span class="arithmatex">\(C=0\)</span>，<span class="arithmatex">\(\min(0, S)=0\)</span>，正确）。</li>
+<li>必须先交换 start/destination 使 <code>start &lt;= destination</code>。否则当 <code>start &gt; destination</code> 时 Python 切片<strong>不会</strong>越界报错——<code>distance[3:0]</code> 静默返回 <code>[]</code>，使 <code>one_way = 0</code>，答案被错算成 0（如 <code>distance=[1,2,3,4], start=3, destination=0</code> 应得 4，却返回 0）。错误是静默的而非异常。</li>
 <li>若需要多次查询同一数组，可前缀和优化到 <span class="arithmatex">\(O(1)\)</span> per query；本题单次查询无意义。</li>
 </ul>
 <h2 id="_6">相关题目<a class="headerlink" href="#_6" title="Permanent link">#</a></h2>
@@ -22605,6 +22642,8 @@
         <script src="../../../js/mathjax/tex-mml-chtml.js"></script>
       
         <script src="../../../js/mermaid.min.js"></script>
+      
+        <script src="../../../js/featured.js"></script>
       
     
   </body>

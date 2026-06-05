@@ -1466,6 +1466,8 @@
       
         
       
+        
+      
     
     
     
@@ -1521,6 +1523,34 @@
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../featured/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ⭐ Featured（已验证）
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
               
             
               
@@ -1610,10 +1640,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_4" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
         
           
-          <label class="md-nav__link" for="__nav_4_4" id="__nav_4_4_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_5" id="__nav_4_5_label" tabindex="">
             
   
   
@@ -1631,8 +1661,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_4_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_4">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_5">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1915,7 +1945,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -1937,14 +1967,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_4_5" id="__nav_4_5_label" tabindex="">
+              <label class="md-nav__link " for="__nav_4_6" id="__nav_4_6_label" tabindex="">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_5">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_6">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -5321,10 +5351,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_7" checked>
         
           
-          <label class="md-nav__link" for="__nav_4_6" id="__nav_4_6_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_7" id="__nav_4_7_label" tabindex="">
             
   
   
@@ -5342,8 +5372,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_4_6">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_7_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4_7">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -7056,6 +7086,23 @@
       
     </span>
   </a>
+  
+    <nav class="md-nav" aria-label="数据结构 / 想法 (Approach)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        循环顺序决定数的是序列还是多重集合
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -22399,6 +22446,23 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="数据结构 / 想法 (Approach)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        循环顺序决定数的是序列还是多重集合
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -22467,18 +22531,32 @@
 <h2 id="problem">Problem<a class="headerlink" href="#problem" title="Permanent link">#</a></h2>
 <p>给<strong>不同</strong>正整数数组 <code>nums</code> 与目标 <code>target</code>，求"和为 target"的<strong>有序组合数</strong>（即不同顺序视为不同）。<span class="arithmatex">\(1 \le |nums| \le 200\)</span>，<span class="arithmatex">\(nums[i] \le 1000\)</span>，<span class="arithmatex">\(target \le 1000\)</span>。答案 32-bit 内。</p>
 <h2 id="background">背景 (Background)<a class="headerlink" href="#background" title="Permanent link">#</a></h2>
-<p>名为 "combination sum" 实为 <strong>有序组合 (composition)</strong> 计数——这是 <strong>组合数学</strong> 里的核心区分：
-- <strong>组合 (combination)</strong> 不计顺序，<span class="arithmatex">\((1,1,2)\)</span> 与 <span class="arithmatex">\((2,1,1)\)</span> 同。
-- <strong>组合 (composition)</strong> 计顺序，二者不同。本题求的是后者。</p>
-<p>本题等价于 <strong>整数有序划分 (compositions)</strong>：将 <span class="arithmatex">\(target\)</span> 写成 nums 中元素的有序和的方式数。在母函数 (generating function) 框架下，答案是</p>
-<div class="arithmatex">\[[x^{target}] \frac{1}{1 - \sum_{c \in nums} x^c}\]</div>
-<p>——这是 <strong>unbounded compositions with restricted parts</strong> 的标准母函数。</p>
+<p>先把"要数什么"弄清楚，否则连暴力都写不对。</p>
+<p>最朴素的做法：枚举所有"用 nums 元素、和恰为 target"的序列，逐个数。以 <code>nums=[1,2,3]</code>、<code>target=4</code> 为例，把每个序列写成下标的有序列表：</p>
+<div class="language-text highlight"><pre><span></span><code>(1,1,1,1)  (1,1,2)  (1,2,1)  (2,1,1)  (2,2)  (1,3)  (3,1)
+</code></pre></div>
+<p>共 7 个。注意 <code>(1,2,1)</code>、<code>(2,1,1)</code>、<code>(1,1,2)</code> 被分别计数——<strong>顺序不同即不同</strong>。这暴露了题名的误导：虽叫 "combination sum"，要数的却不是无序的<strong>组合 (combination)</strong>，而是有序的<strong>有序组合 (composition)</strong>：</p>
+<ul>
+<li><strong>组合 (combination)</strong> 不计顺序，<span class="arithmatex">\((1,1,2)\)</span> 与 <span class="arithmatex">\((2,1,1)\)</span> 算同一个。</li>
+<li><strong>有序组合 (composition)</strong> 计顺序，二者不同。本题求的是后者。</li>
+</ul>
+<p>为什么不能把它当成普通组合来数？因为同一个无序多重集合 <span class="arithmatex">\(\{1,1,2\}\)</span> 在本题里对应 3 个不同序列（<span class="arithmatex">\(1,2\)</span> 与 <span class="arithmatex">\(2\)</span> 之间的三种排布），而无序计数会把它们压成 1 个。所以"先数无序组合、再乘排列数"的修补思路立刻失效：每个多重集合的排列数依赖它内部的重复结构，没有统一公式。暴力枚举本身是对的，但它的规模随 target 指数增长——<code>target=1000</code> 时序列数远超 32-bit。我们需要的是<strong>不枚举每个序列、却能数清序列总数</strong>的方法。</p>
 <h2 id="formulation">形式化 (Formulation)<a class="headerlink" href="#formulation" title="Permanent link">#</a></h2>
-<p>设 <span class="arithmatex">\(f(v)\)</span> = 用 nums 元素构成有序和为 <span class="arithmatex">\(v\)</span> 的方式数（同元素可重复）。</p>
-<div class="arithmatex">\[f(0) = 1; \quad f(v) = \sum_{c \in nums,\, c \le v} f(v - c).\]</div>
+<p>朴素枚举的指数爆炸来自重复劳动：数 <code>target=4</code> 的序列时，凡是以 <code>1</code> 开头的，其余部分正是"和为 3 的所有序列"——而这堆序列在数 <code>target=3</code> 时已经数过一遍。把这种重复抽出来，就得到递推。</p>
+<p><strong>关键观察</strong>：任何一个和为 <span class="arithmatex">\(v\)</span> 的有序组合，都恰好<strong>以某个 <span class="arithmatex">\(c \in nums\)</span> 结尾</strong>（<span class="arithmatex">\(c \le v\)</span>）。去掉这个结尾元素，剩下的是一个和为 <span class="arithmatex">\(v - c\)</span> 的有序组合，且这个对应是双射——给定结尾 <span class="arithmatex">\(c\)</span> 与一个和为 <span class="arithmatex">\(v-c\)</span> 的序列，拼回去唯一地还原出原序列。于是"和为 <span class="arithmatex">\(v\)</span> 的序列"按其结尾元素 <span class="arithmatex">\(c\)</span> 划分成互不相交的若干类，第 <span class="arithmatex">\(c\)</span> 类的大小恰是"和为 <span class="arithmatex">\(v-c\)</span> 的序列数"。</p>
+<p>设 <span class="arithmatex">\(f(v)\)</span> = 用 nums 元素构成有序和为 <span class="arithmatex">\(v\)</span> 的序列数（同元素可重复）。上述划分直接给出</p>
+<div class="arithmatex">\[
+f(v) = \sum_{\substack{c \in nums \\ c \le v}} f(v - c), \qquad f(0) = 1.
+\]</div>
 <p>答 = <span class="arithmatex">\(f(target)\)</span>。</p>
+<p><strong>基例 <span class="arithmatex">\(f(0) = 1\)</span></strong>：和为 <span class="arithmatex">\(0\)</span> 的序列恰有一个——空序列。它不是凑出来的特例，而是上面递推的边界：当 <span class="arithmatex">\(v = c\)</span> 时该项落到 <span class="arithmatex">\(f(0)\)</span>，代表"以 <span class="arithmatex">\(c\)</span> 结尾、前面什么都不放"这一个序列；若令 <span class="arithmatex">\(f(0)=0\)</span>，则所有"单元素序列"都会被漏数。</p>
+<p><strong>与母函数的联系</strong>：把递推按 <span class="arithmatex">\(v\)</span> 累加成形式幂级数 <span class="arithmatex">\(F(x) = \sum_{v \ge 0} f(v)\,x^v\)</span>，递推 <span class="arithmatex">\(f(v) = \sum_c f(v-c)\)</span> 正是卷积关系 <span class="arithmatex">\(F(x) = 1 + \big(\sum_{c \in nums} x^c\big) F(x)\)</span>，解出</p>
+<div class="arithmatex">\[
+F(x) = \frac{1}{1 - \sum_{c \in nums} x^c}, \qquad f(target) = [x^{target}]\,F(x).
+\]</div>
+<p>这把几何级数展开还原成递推，二者是同一个对象的两种写法——母函数给出闭式，递推给出可计算的逐项规则。下面用后者。</p>
 <h2 id="approach">数据结构 / 想法 (Approach)<a class="headerlink" href="#approach" title="Permanent link">#</a></h2>
-<p><strong>自底向上 DP</strong>（外层 <span class="arithmatex">\(v\)</span>，内层 nums）：</p>
+<p>递推 <span class="arithmatex">\(f(v) = \sum_c f(v-c)\)</span> 直接照搬就是带记忆化的自顶向下递归。但注意 <span class="arithmatex">\(f(v)\)</span> 只依赖<strong>严格更小</strong>的下标 <span class="arithmatex">\(f(v-c)\)</span>（因 <span class="arithmatex">\(c \ge 1\)</span>），所以可以反过来按 <span class="arithmatex">\(v\)</span> 升序填表，自底向上，省掉递归栈：</p>
 <div class="language-python highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">Solution</span><span class="p">:</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">combinationSum4</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">nums</span><span class="p">,</span> <span class="n">target</span><span class="p">):</span>
         <span class="n">dp</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="n">target</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
@@ -22489,28 +22567,38 @@
                     <span class="n">dp</span><span class="p">[</span><span class="n">v</span><span class="p">]</span> <span class="o">+=</span> <span class="n">dp</span><span class="p">[</span><span class="n">v</span> <span class="o">-</span> <span class="n">c</span><span class="p">]</span>
         <span class="k">return</span> <span class="n">dp</span><span class="p">[</span><span class="n">target</span><span class="p">]</span>
 </code></pre></div>
-<p><strong>不变量</strong>：处理 <span class="arithmatex">\(v\)</span> 时，所有 <code>dp[v'] = f(v')</code> 已就绪 (<span class="arithmatex">\(v' &lt; v\)</span>)；按 <span class="arithmatex">\(v\)</span> 升序填即可。</p>
-<p>Trace nums=[1,2,3], target=4:
-- dp[0]=1
-- dp[1]: c=1, dp[0]=1 → dp[1]=1
-- dp[2]: c=1, dp[1]=1; c=2, dp[0]=1 → dp[2]=2
-- dp[3]: c=1, dp[2]=2; c=2, dp[1]=1; c=3, dp[0]=1 → dp[3]=4
-- dp[4]: c=1, dp[3]=4; c=2, dp[2]=2; c=3, dp[1]=1 → dp[4]=7 ✓</p>
-<p><strong>与 Coin Change II 对比 (关键!)</strong>：
-- <strong>Coin Change II (不计顺序)</strong>：外层 coin，内层 amount。<span class="arithmatex">\((1,2)\)</span> 与 <span class="arithmatex">\((2,1)\)</span> 视为同种。
-- <strong>Combination Sum IV (计顺序)</strong>：外层 amount，内层 nums。<span class="arithmatex">\((1,2)\)</span> 与 <span class="arithmatex">\((2,1)\)</span> 视为两种。</p>
-<p><strong>循环顺序决定语义</strong>——这是 unbounded knapsack DP 的精微之处，<strong>写反就错</strong>。直觉：内层 nums 在每个 amount 都重置，故每条 <code>[c_1, c_2, c_3, ...]</code> 不同排列被各自统计；若外层 nums，则一旦选定 coin 顺序遍历就锁死，避免顺序重复。</p>
+<p><strong>为何升序填表正确</strong>：<span class="arithmatex">\(f(v)\)</span> 的每个依赖项 <span class="arithmatex">\(f(v-c)\)</span> 满足 <span class="arithmatex">\(v - c &lt; v\)</span>（因 <span class="arithmatex">\(c \ge 1\)</span>）。所以当外层循环处理到 <span class="arithmatex">\(v\)</span> 时，所有 <span class="arithmatex">\(v' &lt; v\)</span> 的 <code>dp[v']</code> 都已是终值 <span class="arithmatex">\(f(v')\)</span>，内层求和读到的都是正确值。这不是额外假设，正是递推"只依赖更小下标"这一性质的直接结果。</p>
+<p>Trace <code>nums=[1,2,3]</code>, <code>target=4</code>：
+- <code>dp[0]=1</code>
+- <code>dp[1]</code>: c=1, dp[0]=1 → <code>dp[1]=1</code>
+- <code>dp[2]</code>: c=1, dp[1]=1; c=2, dp[0]=1 → <code>dp[2]=2</code>
+- <code>dp[3]</code>: c=1, dp[2]=2; c=2, dp[1]=1; c=3, dp[0]=1 → <code>dp[3]=4</code>
+- <code>dp[4]</code>: c=1, dp[3]=4; c=2, dp[2]=2; c=3, dp[1]=1 → <code>dp[4]=7</code> ✓</p>
+<p>末行的 7 与背景里手工枚举的 7 个序列一致。</p>
+<h3 id="_1">循环顺序决定数的是序列还是多重集合<a class="headerlink" href="#_1" title="Permanent link">#</a></h3>
+<p>本题外层是 <span class="arithmatex">\(v\)</span>、内层是 nums。把两层对调，得到的就是 <strong>Coin Change II</strong>（不计顺序的组合数）——同一段加法、不同的循环嵌套，数出来的东西却不同。这不是巧合，而是循环顺序改变了 <code>dp[v]</code> 的语义。</p>
+<p>先看本题的写法（外 <span class="arithmatex">\(v\)</span>、内 nums）。填 <code>dp[v]</code> 时，内层把<strong>每个</strong>可用的结尾 <span class="arithmatex">\(c\)</span> 都加一遍，对应递推 <span class="arithmatex">\(f(v)=\sum_c f(v-c)\)</span>。它正是按"序列的最后一个元素"做划分，因此 <span class="arithmatex">\((1,2)\)</span>（结尾 2）与 <span class="arithmatex">\((2,1)\)</span>（结尾 1）落在不同的项里，被分别计入——数出来的是<strong>序列</strong>。</p>
+<p>再看对调后的写法（外 nums、内 amount）：</p>
+<div class="language-python highlight"><pre><span></span><code><span class="c1"># Coin Change II：不计顺序</span>
+<span class="n">dp</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="n">target</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">dp</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">nums</span><span class="p">:</span>                       <span class="c1"># 外层：固定一个硬币遍历顺序</span>
+    <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">target</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+        <span class="n">dp</span><span class="p">[</span><span class="n">v</span><span class="p">]</span> <span class="o">+=</span> <span class="n">dp</span><span class="p">[</span><span class="n">v</span> <span class="o">-</span> <span class="n">c</span><span class="p">]</span>
+</code></pre></div>
+<p>此时存在一个<strong>结构不变量</strong>：当外层处理到第 <span class="arithmatex">\(i\)</span> 个硬币时，<code>dp[v]</code> 只累加了"所有元素下标 <span class="arithmatex">\(\le i\)</span>"的多重集合。换言之，每个无序多重集合只会在它<strong>下标最大的元素</strong>被外层访问到的那一轮被计入一次。<span class="arithmatex">\(\{1,2\}\)</span> 只在处理硬币 2 那轮、由 <code>dp[2] += dp[1]</code> 计入一次；不存在第二条路径在另一轮再数它。于是 <span class="arithmatex">\((1,2)\)</span> 与 <span class="arithmatex">\((2,1)\)</span> 被合并成同一个多重集合，数出来的是<strong>组合</strong>。</p>
+<p>两种语义的差别，完全由"内层枚举什么"决定：内层枚举 nums，则每个 <code>dp[v]</code> 处都重新考虑全部结尾元素，排列被各自计数；内层枚举 amount，则元素被外层逐个引入，多重集合按"最大下标元素"唯一归属。<strong>写反就得到另一道题的答案</strong>，这正是 unbounded knapsack DP 最易错的地方。</p>
 <h2 id="complexity">复杂度 (Complexity)<a class="headerlink" href="#complexity" title="Permanent link">#</a></h2>
 <ul>
-<li>Time: <span class="arithmatex">\(O(\text{target} \cdot |nums|)\)</span>.</li>
-<li>Space: <span class="arithmatex">\(O(\text{target})\)</span>.</li>
+<li>Time: <span class="arithmatex">\(O(\text{target} \cdot |nums|)\)</span>——外层 <span class="arithmatex">\(v\)</span> 共 target 轮，内层扫一遍 nums。</li>
+<li>Space: <span class="arithmatex">\(O(\text{target})\)</span>——单个一维 <code>dp</code> 数组。</li>
 </ul>
 <h2 id="pitfalls">陷阱 (Pitfalls)<a class="headerlink" href="#pitfalls" title="Permanent link">#</a></h2>
 <ul>
-<li><strong>循环顺序</strong>（如上）。</li>
-<li><strong><code>dp[0] = 1</code></strong>：空和的方案数为 1（空组合），是计数 DP 的标准初始值。</li>
-<li><strong>整数溢出</strong>：题目保证 32-bit 内，Python 安全；C++/Java 注意 <code>long long</code>。</li>
-<li><strong>若允许负数 nums</strong>：会产生"+1 -1 +1 -1 ..."等无限循环组合，问题不再有限——必须加约束（如组合长度上限），见 follow-up。</li>
+<li><strong>循环顺序</strong>：外层 <span class="arithmatex">\(v\)</span>、内层 nums 数序列（本题）；对调数多重集合（Coin Change II）。判据是上一节的不变量，不是背口诀。</li>
+<li><strong><code>dp[0] = 1</code></strong>：空序列是和为 0 的唯一序列，也是递推落到 <span class="arithmatex">\(v=c\)</span> 时的边界。写成 0 会漏掉所有单元素序列。</li>
+<li><strong>整数溢出</strong>：题目保证<strong>最终答案</strong>在 signed 32-bit 内，Python 安全；C++/Java 用 <code>long long</code> 更稳。对非负 nums，中间值不超过 <code>dp[target]</code>（如 <code>dp[35]=1132436852 &lt; 2^31</code>），故最终值不溢出即够，但大类型仍是稳妥之选。</li>
+<li><strong>若允许负数 nums</strong>：会产生 <code>+1 -1 +1 -1 ...</code> 等无限长组合，序列数不再有限，问题失去定义——必须加约束（如序列长度上限），见 LeetCode follow-up。</li>
 <li><strong>target 较大时 DP 数组过大</strong>：本题 <span class="arithmatex">\(\le 1000\)</span> 无忧。</li>
 </ul>
 <h2 id="related">相关题目 (Related)<a class="headerlink" href="#related" title="Permanent link">#</a></h2>
@@ -22632,6 +22720,8 @@
         <script src="../../../js/mathjax/tex-mml-chtml.js"></script>
       
         <script src="../../../js/mermaid.min.js"></script>
+      
+        <script src="../../../js/featured.js"></script>
       
     
   </body>

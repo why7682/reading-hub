@@ -1466,6 +1466,8 @@
       
         
       
+        
+      
     
     
     
@@ -1521,6 +1523,34 @@
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../featured/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ⭐ Featured（已验证）
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
               
             
               
@@ -1610,10 +1640,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_4" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
         
           
-          <label class="md-nav__link" for="__nav_4_4" id="__nav_4_4_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_5" id="__nav_4_5_label" tabindex="">
             
   
   
@@ -1631,8 +1661,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_4_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_4">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_5">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1915,7 +1945,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -1937,14 +1967,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_4_5" id="__nav_4_5_label" tabindex="">
+              <label class="md-nav__link " for="__nav_4_6" id="__nav_4_6_label" tabindex="">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_5">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_6">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -5321,10 +5351,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_7" checked>
         
           
-          <label class="md-nav__link" for="__nav_4_6" id="__nav_4_6_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_7" id="__nav_4_7_label" tabindex="">
             
   
   
@@ -5342,8 +5372,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_4_6">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_7_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4_7">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -22467,16 +22497,27 @@
 <h2 id="problem">Problem<a class="headerlink" href="#problem" title="Permanent link">#</a></h2>
 <p>整数数组 <code>nums</code>，整数 <code>goal</code>。选子序列使其和尽量接近 <code>goal</code>，返回 <span class="arithmatex">\(\min |sum - goal|\)</span>。约束 <span class="arithmatex">\(1 \le n \le 40\)</span>，<span class="arithmatex">\(|v| \le 10^7\)</span>，<span class="arithmatex">\(|goal| \le 10^9\)</span>。</p>
 <h2 id="background">背景 (Background)<a class="headerlink" href="#background" title="Permanent link">#</a></h2>
-<p>本题是 <strong>Meet in the Middle</strong> (MitM) 的标志题。直接 <span class="arithmatex">\(2^{40} \approx 10^{12}\)</span> 不可枚；但 <span class="arithmatex">\(n = 40\)</span> 提示 <span class="arithmatex">\(2^{20} \approx 10^6\)</span> 可承受 — <strong>MitM</strong> 把搜索空间从 <span class="arithmatex">\(2^n\)</span> 降到 <span class="arithmatex">\(2 \cdot 2^{n/2}\)</span>，每边独立枚举再合并。</p>
-<p>MitM 在密码学中也出现（如对双 DES 的攻击：Diffie-Hellman 1977 提出 MitM 把 <span class="arithmatex">\(2^{112}\)</span> 降到 <span class="arithmatex">\(2^{57}\)</span>）。算法上的同源思想：<strong>生日攻击 / collision</strong> + 排序合并。</p>
+<p>最直接的做法是枚举所有子序列。每个元素选或不选，共 <span class="arithmatex">\(2^n\)</span> 个子集，逐一算出和、取与 <code>goal</code> 距离的最小值即得答案。正确无疑，代码也只有几行。</p>
+<p>问题出在规模。<span class="arithmatex">\(n\)</span> 可达 <span class="arithmatex">\(40\)</span>，<span class="arithmatex">\(2^{40} \approx 1.1 \times 10^{12}\)</span>。即便每个子集只花一次加法，也要上万亿次操作，超时无悬念。所以瓶颈很明确：<strong>搜索空间随 <span class="arithmatex">\(n\)</span> 指数膨胀，而 <span class="arithmatex">\(n = 40\)</span> 正好落在暴力枚举的禁区</strong>。</p>
+<p>但 <span class="arithmatex">\(40\)</span> 这个上界本身是个提示。<span class="arithmatex">\(2^{40}\)</span> 不可枚，<span class="arithmatex">\(2^{20} \approx 10^6\)</span> 却轻松可枚——两者相差一个平方。若能把"枚举 <span class="arithmatex">\(40\)</span> 个元素的所有子集"换成"两次枚举 <span class="arithmatex">\(20\)</span> 个元素的所有子集"，代价就从 <span class="arithmatex">\(2^{40}\)</span> 掉到 <span class="arithmatex">\(2 \cdot 2^{20}\)</span>。能否拆分，取决于目标函数是否允许两半独立处理。下一节的形式化会回答这一点。</p>
 <h2 id="formulation">形式化 (Formulation)<a class="headerlink" href="#formulation" title="Permanent link">#</a></h2>
-<p>设 <span class="arithmatex">\(A \subseteq \{1..\lfloor n/2 \rfloor\}\)</span>，<span class="arithmatex">\(B \subseteq \{\lfloor n/2 \rfloor + 1..n\}\)</span>；记 <span class="arithmatex">\(s_A = \sum_{i \in A} a_i\)</span>，<span class="arithmatex">\(s_B\)</span> 同理。答案：</p>
-<div class="arithmatex">\[\min_{A, B}\; |s_A + s_B - goal|\]</div>
+<p>把下标集合 <span class="arithmatex">\(\{1, \dots, n\}\)</span> 切成前后两半 <span class="arithmatex">\(L = \{1, \dots, \lfloor n/2 \rfloor\}\)</span> 与 <span class="arithmatex">\(R = \{\lfloor n/2 \rfloor + 1, \dots, n\}\)</span>，并记 $a_i = $ <code>nums[i-1]</code>。</p>
+<p>关键观察：任意子序列对应的下标集合 <span class="arithmatex">\(S \subseteq \{1, \dots, n\}\)</span> 都<strong>唯一分解</strong>为左半部分 <span class="arithmatex">\(A = S \cap L\)</span> 与右半部分 <span class="arithmatex">\(B = S \cap R\)</span>，反之任取 <span class="arithmatex">\(A \subseteq L\)</span>、<span class="arithmatex">\(B \subseteq R\)</span> 也唯一拼回一个 <span class="arithmatex">\(S = A \cup B\)</span>。于是子序列的和也分解为两段之和：</p>
+<div class="arithmatex">\[\sum_{i \in S} a_i = \underbrace{\sum_{i \in A} a_i}_{s_A} + \underbrace{\sum_{i \in B} a_i}_{s_B}.\]</div>
+<p>由于 <span class="arithmatex">\(A\)</span> 与 <span class="arithmatex">\(B\)</span> 取自不相交的下标集，<span class="arithmatex">\(s_A\)</span> 与 <span class="arithmatex">\(s_B\)</span> <strong>互不约束</strong>：可以独立选取。优化目标因此写成在两个独立变量上的最小化：</p>
+<div class="arithmatex">\[\min_{A \subseteq L,\; B \subseteq R}\; |s_A + s_B - goal|.\]</div>
+<p>正是这个独立性把 <span class="arithmatex">\(2^{40}\)</span> 的联合枚举拆成两个 <span class="arithmatex">\(2^{20}\)</span> 的分别枚举——枚举所有 <span class="arithmatex">\(s_A\)</span> 与所有 <span class="arithmatex">\(s_B\)</span> 各只需 <span class="arithmatex">\(2^{n/2}\)</span> 次。这一拆分即所谓 <strong>Meet in the Middle</strong> (MitM)：在下标的"中点"切开，两侧各自枚举，再在中间汇合。</p>
 <h2 id="approach">数据结构 / 想法 (Approach)<a class="headerlink" href="#approach" title="Permanent link">#</a></h2>
-<p><strong>步骤</strong>：
-1. 把 <code>nums</code> 分两半，各 <span class="arithmatex">\(\le 20\)</span> 元素。
-2. 枚举左半所有 <span class="arithmatex">\(2^{20}\)</span> 子集和，存入排序数组 <code>L</code>。同理右半 <code>R</code>。
-3. 对每个 <code>r ∈ R</code>，在 <code>L</code> 中二分找 <code>goal - r</code> 的两个最近邻（左 / 右），更新答案。</p>
+<p>形式化给出的是双变量最小化 <span class="arithmatex">\(\min_{A, B} |s_A + s_B - goal|\)</span>。直接对所有 <span class="arithmatex">\((A, B)\)</span> 配对仍是 <span class="arithmatex">\(2^{20} \times 2^{20} = 2^{40}\)</span>，没省下来。要真正利用独立性，得<strong>固定一侧、优化另一侧</strong>。</p>
+<p>固定右半选法，设其和为 <span class="arithmatex">\(s_B = r\)</span>。此时目标退化为单变量问题：</p>
+<div class="arithmatex">\[\min_{A \subseteq L}\; |s_A - (goal - r)|.\]</div>
+<p>即在所有左半子集和 <span class="arithmatex">\(s_A\)</span> 中，找最接近 <span class="arithmatex">\(goal - r\)</span> 的那个。若把左半所有 <span class="arithmatex">\(s_A\)</span> 排序存入数组 <code>L</code>，这就是一个有序数组上的<strong>最近邻查询</strong>——二分定位 <span class="arithmatex">\(goal - r\)</span> 的插入点，最近邻必在插入点左右两侧之一。每个 <span class="arithmatex">\(r\)</span> 的查询从 <span class="arithmatex">\(O(2^{20})\)</span> 降到 <span class="arithmatex">\(O(\log 2^{20})\)</span>。</p>
+<p>三步算法由此直接落地，每一步都对应形式化里的一环：</p>
+<ol>
+<li>把 <code>nums</code> 分两半，各 <span class="arithmatex">\(\le 20\)</span> 元素（下标集切分 <span class="arithmatex">\(L / R\)</span>）。</li>
+<li>枚举左半所有 <span class="arithmatex">\(2^{20}\)</span> 子集和，排序存入 <code>L</code>；枚举右半所有子集和存入 <code>R</code>（分别枚举 <span class="arithmatex">\(s_A\)</span>、<span class="arithmatex">\(s_B\)</span>）。</li>
+<li>对每个 <code>r ∈ R</code>，在 <code>L</code> 中二分 <span class="arithmatex">\(goal - r\)</span>，检查左右两个最近邻，更新答案（固定 <span class="arithmatex">\(s_B\)</span>、最近邻优化 <span class="arithmatex">\(s_A\)</span>）。</li>
+</ol>
 <div class="language-python highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">Solution</span><span class="p">:</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">minAbsDifference</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">nums</span><span class="p">,</span> <span class="n">goal</span><span class="p">):</span>
         <span class="kn">from</span><span class="w"> </span><span class="nn">bisect</span><span class="w"> </span><span class="kn">import</span> <span class="n">bisect_left</span>
@@ -22507,25 +22548,25 @@
 - r=5: need=1; bisect L for 1 → i=3; j=2: |0+5-6|=1, j=3: |5+5-6|=4
 - r=8: need=-2; bisect L for -2 → i=1; j=0: |-7+8-6|=5, j=1: |-2+8-6|=0 ← 找到！
 - 答案 0 ✓</p>
-<p><strong>为何分一半最优</strong>：<span class="arithmatex">\(n/2\)</span> 让 <span class="arithmatex">\(2^{n/2}\)</span> 大小相等，避免一侧太大不能 fit memory / 排序时间。</p>
+<p><strong>为何恰好分一半</strong>：两侧规模是 <span class="arithmatex">\(2^{|L|}\)</span> 与 <span class="arithmatex">\(2^{|R|}\)</span>，总代价由较大一侧主导。固定 <span class="arithmatex">\(|L| + |R| = n\)</span>，要让 <span class="arithmatex">\(\max(2^{|L|}, 2^{|R|})\)</span> 最小，须令 <span class="arithmatex">\(|L| = |R| = n/2\)</span>；任何偏斜分法都会让一侧更大、抬高峰值代价。</p>
 <h2 id="complexity">复杂度 (Complexity)<a class="headerlink" href="#complexity" title="Permanent link">#</a></h2>
 <ul>
-<li>Time: <span class="arithmatex">\(O(2^{n/2} \cdot n/2)\)</span> 生成 + <span class="arithmatex">\(O(2^{n/2} \log 2^{n/2}) = O(n \cdot 2^{n/2})\)</span> 排序 + <span class="arithmatex">\(O(2^{n/2} \log 2^{n/2})\)</span> 查询。总 <span class="arithmatex">\(O(n \cdot 2^{n/2})\)</span>。对 <span class="arithmatex">\(n = 40\)</span> 约 <span class="arithmatex">\(4 \times 10^7\)</span>，可过。</li>
+<li>Time: 生成两侧子集和各 <span class="arithmatex">\(O(2^{n/2})\)</span>——<code>all_sums</code> 每读入一个元素就把列表翻倍并整体扫一遍，<span class="arithmatex">\(n/2\)</span> 个元素累计 <span class="arithmatex">\(\sum_{k=0}^{n/2} 2^k = O(2^{n/2})\)</span>；排序 <code>L</code> 为 <span class="arithmatex">\(O(2^{n/2} \log 2^{n/2}) = O(n \cdot 2^{n/2})\)</span>；对 <span class="arithmatex">\(R\)</span> 中每个元素二分查询，<span class="arithmatex">\(O(2^{n/2} \log 2^{n/2}) = O(n \cdot 2^{n/2})\)</span>。总 <span class="arithmatex">\(O(n \cdot 2^{n/2})\)</span>。对 <span class="arithmatex">\(n = 40\)</span> 约 <span class="arithmatex">\(4 \times 10^7\)</span>，可过。</li>
 <li>Space: <span class="arithmatex">\(O(2^{n/2})\)</span>。</li>
 </ul>
 <h2 id="pitfalls">陷阱 (Pitfalls)<a class="headerlink" href="#pitfalls" title="Permanent link">#</a></h2>
 <ul>
-<li><strong>必须二分查两端</strong>：仅查 <code>bisect_left</code> 的下一个可能错过更近的左邻。</li>
-<li><strong>空子集</strong>：<span class="arithmatex">\(s_A = 0\)</span> 也合法（题目允许空子序列）；<code>all_sums</code> 用 <code>sums = [0]</code> 初始化天然包含。</li>
+<li><strong>必须二分查两端</strong>：<code>bisect_left</code> 给出插入点 <code>i</code>，最近邻可能在 <code>i</code>（右邻）也可能在 <code>i-1</code>（左邻）。只查一侧会漏掉更近的另一侧，答案偏大。</li>
+<li><strong>空子集</strong>：<span class="arithmatex">\(s_A = 0\)</span>、<span class="arithmatex">\(s_B = 0\)</span> 都合法（题目允许空子序列）；<code>all_sums</code> 用 <code>sums = [0]</code> 初始化天然包含空集，<code>ans = abs(goal)</code> 也对应整体空选。</li>
 <li><strong>MitM 内存</strong>：<span class="arithmatex">\(2^{20} \cdot 8 \text{B} = 8 \text{MB}\)</span>，安全；若 <span class="arithmatex">\(n\)</span> 更大则需优化。</li>
-<li><strong>负数 goal</strong>：算法对 goal 符号不敏感，无需特判。</li>
-<li><strong>不要试图 DP</strong>：<span class="arithmatex">\(|v| \le 10^7\)</span> 总和达 <span class="arithmatex">\(4 \times 10^8\)</span>，背包不可行。</li>
+<li><strong>负数 goal</strong>：算法只比较 <span class="arithmatex">\(|s_A + s_B - goal|\)</span>，对 goal 符号不敏感，无需特判。</li>
+<li><strong>不要试图 DP</strong>：背包式 DP 的状态是"可达的和"，但 <span class="arithmatex">\(|v| \le 10^7\)</span> 时总和量级达 <span class="arithmatex">\(40 \times 10^7 = 4 \times 10^8\)</span>，状态空间过大不可行——正是大值域逼着我们用 MitM 而非值域 DP。</li>
 </ul>
 <h2 id="related">相关题目 (Related)<a class="headerlink" href="#related" title="Permanent link">#</a></h2>
 <ul>
 <li><code>#494. Target Sum (off-wiki)</code> — 小值域可用 DP；本题大值域才需 MitM。</li>
 <li><code>#2035. Partition Array Into Two Arrays to Minimize Sum Difference (off-wiki)</code> — 同 MitM 变体（要求大小相等）。</li>
-<li><code>#956. Tallest Billboard (off-wiki)</code> — 分组 DP，"差值"作为状态。</li>
+<li><a href="../0956_tallest-billboard/">#956. Tallest Billboard</a> — 分组 DP，"差值"作为状态。</li>
 </ul>
 <h2 id="further-reading">Further Reading<a class="headerlink" href="#further-reading" title="Permanent link">#</a></h2>
 <ul>
@@ -22638,6 +22679,8 @@
         <script src="../../../js/mathjax/tex-mml-chtml.js"></script>
       
         <script src="../../../js/mermaid.min.js"></script>
+      
+        <script src="../../../js/featured.js"></script>
       
     
   </body>

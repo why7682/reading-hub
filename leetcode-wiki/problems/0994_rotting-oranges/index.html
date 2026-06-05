@@ -1466,6 +1466,8 @@
       
         
       
+        
+      
     
     
     
@@ -1521,6 +1523,34 @@
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../featured/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ⭐ Featured（已验证）
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
               
             
               
@@ -1610,10 +1640,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_4" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
         
           
-          <label class="md-nav__link" for="__nav_4_4" id="__nav_4_4_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_5" id="__nav_4_5_label" tabindex="">
             
   
   
@@ -1631,8 +1661,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_4_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_4">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_5">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1915,7 +1945,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -1937,14 +1967,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_4_5" id="__nav_4_5_label" tabindex="">
+              <label class="md-nav__link " for="__nav_4_6" id="__nav_4_6_label" tabindex="">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_5">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_6">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -5321,10 +5351,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_7" checked>
         
           
-          <label class="md-nav__link" for="__nav_4_6" id="__nav_4_6_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_7" id="__nav_4_7_label" tabindex="">
             
   
   
@@ -5342,8 +5372,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_4_6">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_7_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4_7">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -22467,14 +22497,26 @@
 <h2 id="problem">Problem<a class="headerlink" href="#problem" title="Permanent link">#</a></h2>
 <p><span class="arithmatex">\(m \times n\)</span> 网格中 <code>0=空</code>，<code>1=新鲜橘子</code>，<code>2=腐烂橘子</code>。每分钟，与腐烂相邻（4 方向）的新鲜橘子也变腐烂。求所有新鲜橘子都变腐烂的最少分钟数；若不可达，返回 <span class="arithmatex">\(-1\)</span>。<span class="arithmatex">\(1 \leq m, n \leq 10\)</span>。</p>
 <h2 id="background">背景 (Background)<a class="headerlink" href="#background" title="Permanent link">#</a></h2>
-<p>经典「<strong>多源 BFS</strong> (multi-source BFS)」模型：起点是所有初始腐烂的格子，目标是把整张图的层级（最短距离）一次性算出。多源 BFS 是单源 BFS 的简单扩展——把所有源同时入队即可，正确性等价于在虚拟超源点 <span class="arithmatex">\(s^*\)</span> 出发的单源 BFS（每个源点距离 <span class="arithmatex">\(s^*\)</span> 为 <span class="arithmatex">\(0\)</span>）。同模式也出现在 #542 01 Matrix、#1162 As Far from Land as Possible，物理上等价于"火/疫病同时从多点扩散"。</p>
+<p>问题的核心是一个时间量：每个新鲜橘子在某个分钟首次腐烂，我们要的是「所有橘子都腐烂」的那一刻。先把腐烂的传播写成精确的转移规则。设 <span class="arithmatex">\(R_t\)</span> 为第 <span class="arithmatex">\(t\)</span> 分钟末已腐烂的格子集合，<span class="arithmatex">\(R_0\)</span> 是初始腐烂格。规则是：</p>
+<div class="arithmatex">\[R_{t+1} = R_t \cup \{v : v \text{ 是新鲜橘子，且与某个 } u \in R_t \text{ 四邻接}\}.\]</div>
+<p>也就是说，一个新鲜格在它第一次紧邻某个已腐烂格的那一分钟腐烂，之后保持腐烂。答案就是使 <span class="arithmatex">\(R_t\)</span> 覆盖全部新鲜橘子的最小 <span class="arithmatex">\(t\)</span>。</p>
+<p>先试最朴素的想法：只盯住<strong>一个</strong>腐烂源。固定某个初始腐烂格 <span class="arithmatex">\(s\)</span>，从它出发做标准 BFS，得到每个格子到 <span class="arithmatex">\(s\)</span> 的最短步数 <span class="arithmatex">\(d_G(s, v)\)</span>。在无权图上 BFS 逐层扩展，第 <span class="arithmatex">\(t\)</span> 层恰好是离 <span class="arithmatex">\(s\)</span> 距离为 <span class="arithmatex">\(t\)</span> 的格子——这正好刻画「腐烂从 <span class="arithmatex">\(s\)</span> 单点扩散，<span class="arithmatex">\(t\)</span> 分钟后波及哪些格」。</p>
+<p>朴素想法在两个地方坏掉。第一，<strong>它算的距离对象错了</strong>。当有多个初始腐烂源时，一个新鲜格 <span class="arithmatex">\(v\)</span> 的真实腐烂时刻由<strong>离它最近的那个源</strong>决定，即 <span class="arithmatex">\(\min_{s \in S} d_G(s, v)\)</span>，而不是到某个固定 <span class="arithmatex">\(s\)</span> 的距离。盯住单个源会高估那些离别的源更近的格子的腐烂时刻。第二，<strong>补救代价高</strong>。若对每个源各跑一次 BFS 再逐格取最小值，<span class="arithmatex">\(k\)</span> 个源就是 <span class="arithmatex">\(O(k \cdot mn)\)</span>，而本题源可达 <span class="arithmatex">\(O(mn)\)</span> 个。</p>
+<p>修正的入口在转移规则本身：<span class="arithmatex">\(R_{t+1}\)</span> 是从 <span class="arithmatex">\(R_t\)</span> <strong>整体</strong>向外扩一圈，它从不区分某个腐烂格属于哪个源。于是把全部初始腐烂源<strong>同时</strong>置于第 <span class="arithmatex">\(0\)</span> 层、一次 BFS 逐层外扩，得到的第 <span class="arithmatex">\(t\)</span> 层正好是 <span class="arithmatex">\(R_t \setminus R_{t-1}\)</span>——这一分钟新腐烂的格。这就是多源 BFS (multi-source BFS)：它直接复刻转移规则，一次遍历同时算出所有 <span class="arithmatex">\(v\)</span> 的 <span class="arithmatex">\(\min_{s \in S} d_G(s, v)\)</span>。下一节把这个想法钉成精确的形式化。</p>
 <h2 id="formulation">形式化 (Formulation)<a class="headerlink" href="#formulation" title="Permanent link">#</a></h2>
-<p>设图 <span class="arithmatex">\(G = (V, E)\)</span>，<span class="arithmatex">\(V\)</span> 为非零格子（<code>1</code> 或 <code>2</code>），<span class="arithmatex">\(E\)</span> 为 4 邻接边。源集 <span class="arithmatex">\(S = \{v : v 初始 = 2\}\)</span>。对每个新鲜格 <span class="arithmatex">\(v\)</span> 计算</p>
-<div class="arithmatex">\[d(v) = \min_{s \in S} d_G(s, v).\]</div>
-<p>答案为 <span class="arithmatex">\(\max_{v : v 初始 = 1} d(v)\)</span>；若存在 <span class="arithmatex">\(v\)</span> 满足 <span class="arithmatex">\(d(v) = \infty\)</span>（不可达），返回 <span class="arithmatex">\(-1\)</span>。若初始无新鲜橘子，返回 <span class="arithmatex">\(0\)</span>。</p>
+<p>直觉先行：每个新鲜橘子在「腐烂波首次抵达它」的那一分钟腐烂；全部腐烂的时刻，就是这些首次抵达时刻里<strong>最晚</strong>的一个。把这句话翻译成图上的最短路。</p>
+<p>设图 <span class="arithmatex">\(G = (V, E)\)</span>，<span class="arithmatex">\(V\)</span> 为非零格子（<code>1</code> 或 <code>2</code>），<span class="arithmatex">\(E\)</span> 为 4 邻接边。把 <code>0</code> 格排除在 <span class="arithmatex">\(V\)</span> 之外，腐烂便无法穿过空格传播，与转移规则一致。源集 <span class="arithmatex">\(S = \{v : v \text{ 初始}= 2\}\)</span>。对<strong>每个新鲜格</strong> <span class="arithmatex">\(v\)</span>（初始 <span class="arithmatex">\(=1\)</span>）定义其腐烂时刻</p>
+<div class="arithmatex">\[d(v) = \min_{s \in S} d_G(s, v),\]</div>
+<p>其中 <span class="arithmatex">\(d_G\)</span> 是无权图最短路（步数），<span class="arithmatex">\(d(v) = \infty\)</span> 表示 <span class="arithmatex">\(v\)</span> 与所有源不连通。</p>
+<p>这个 <span class="arithmatex">\(d\)</span> 与转移规则严格吻合：归纳可知 <span class="arithmatex">\(R_t = S \cup \{v : d(v) \leq t\}\)</span>。波在 <span class="arithmatex">\(t\)</span> 分钟覆盖的，恰是腐烂时刻不超过 <span class="arithmatex">\(t\)</span> 的格。于是「全部腐烂」即 <span class="arithmatex">\(\{v : d(v) \leq t\}\)</span> 含尽所有新鲜格，最小这样的 <span class="arithmatex">\(t\)</span> 等于这些腐烂时刻的最大值：</p>
+<div class="arithmatex">\[\text{答案} = \max_{v : v \text{ 初始}=1} d(v).\]</div>
+<p>取 <span class="arithmatex">\(\max\)</span>（而非求和或平均）正源于此——要等到<strong>最慢</strong>的那个橘子腐烂。若存在新鲜格满足 <span class="arithmatex">\(d(v) = \infty\)</span>，则它永不腐烂，返回 <span class="arithmatex">\(-1\)</span>；若初始无新鲜橘子，<span class="arithmatex">\(\max\)</span> 取空集，约定返回 <span class="arithmatex">\(0\)</span>。下一节说明一次 BFS 如何同时算出所有 <span class="arithmatex">\(d(v)\)</span>。</p>
 <h2 id="approach">数据结构 / 想法 (Approach)<a class="headerlink" href="#approach" title="Permanent link">#</a></h2>
-<p><strong>算法</strong>：多源 BFS。队列初始装入所有腐烂格 (dist=0)，按层扩展，记录最大层。同时维护 <code>fresh</code> 计数；最终若 <code>fresh &gt; 0</code> 说明不可达。</p>
-<p><strong>不变量</strong>：BFS 第 <span class="arithmatex">\(t\)</span> 轮出队的所有节点距离最近源恰为 <span class="arithmatex">\(t\)</span>（无权图最短路）。</p>
+<p>形式化要求对每个 <span class="arithmatex">\(v\)</span> 算出 <span class="arithmatex">\(d(v) = \min_{s \in S} d_G(s, v)\)</span>。把全部源以距离 <span class="arithmatex">\(0\)</span> 入队、运行一次 BFS，出队顺序即给出这些值——下面的不变量正是它成立的原因。</p>
+<p><strong>先讲不变量的直觉</strong>。所有边权均为 <span class="arithmatex">\(1\)</span>：一个距离为 <span class="arithmatex">\(t\)</span> 的格，其邻居距离至多 <span class="arithmatex">\(t+1\)</span>；反过来，任何距离为 <span class="arithmatex">\(t+1\)</span> 的格，必须等到某个距离 <span class="arithmatex">\(t\)</span> 的格被处理、向它扩展时才首次被触及。因此队列严格按距离非降序处理格子，逐层推进。</p>
+<p><strong>不变量</strong>。把所有源以距离 <span class="arithmatex">\(0\)</span> 入队后做 BFS，则第 <span class="arithmatex">\(t\)</span> 轮出队的格子，其到最近源的距离 <span class="arithmatex">\(\min_{s\in S} d_G(s, v)\)</span> 恰为 <span class="arithmatex">\(t\)</span>。</p>
+<p><em>归纳证明（对 <span class="arithmatex">\(t\)</span>）</em>：<span class="arithmatex">\(t=0\)</span> 时队列恰为 <span class="arithmatex">\(S\)</span>，每个源到最近源距离为 <span class="arithmatex">\(0\)</span>。设第 <span class="arithmatex">\(0\ldots t\)</span> 轮成立。任一新鲜格 <span class="arithmatex">\(v\)</span> 首次被某个出队格 <span class="arithmatex">\(u\)</span>（距离 <span class="arithmatex">\(t\)</span>）标记并入队，此时记其距离 <span class="arithmatex">\(t+1\)</span>。由 <span class="arithmatex">\(u\)</span> 到最近源距离为 <span class="arithmatex">\(t\)</span> 且 <span class="arithmatex">\(u,v\)</span> 邻接，<span class="arithmatex">\(v\)</span> 到最近源距离 <span class="arithmatex">\(\le t+1\)</span>；又 <span class="arithmatex">\(v\)</span> 未在前 <span class="arithmatex">\(t\)</span> 轮出现，故其距离 <span class="arithmatex">\(&gt; t\)</span>。两者夹逼得距离恰为 <span class="arithmatex">\(t+1\)</span>。∎</p>
+<p>于是 BFS 一次遍历即填好所有 <span class="arithmatex">\(d(v)\)</span>：源置 <span class="arithmatex">\(0\)</span> 层，每标记一个新鲜格就把它放进下一层。算法据此展开——队列初始装入所有腐烂格 (dist=0)，按层扩展并记录出现过的最大层 <code>ans</code>；同时维护 <code>fresh</code> 计数，每标记一格减一，最终 <code>fresh &gt; 0</code> 即存在不可达的新鲜橘子。因为出队按距离非降序，最后一次 <code>ans = t + 1</code> 写下的正是 <span class="arithmatex">\(\max_v d(v)\)</span>。</p>
 <div class="language-python highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">collections</span><span class="w"> </span><span class="kn">import</span> <span class="n">deque</span>
 
 <span class="k">class</span><span class="w"> </span><span class="nc">Solution</span><span class="p">:</span>
@@ -22507,14 +22549,14 @@
 <p><strong>样例 3</strong>：<code>[[0,2]]</code> 初始无新鲜橘子，直接返回 0。✓</p>
 <h2 id="complexity">复杂度 (Complexity)<a class="headerlink" href="#complexity" title="Permanent link">#</a></h2>
 <ul>
-<li>Time: <span class="arithmatex">\(O(mn)\)</span>，每个格子至多入队一次出队一次。</li>
+<li>Time: <span class="arithmatex">\(O(mn)\)</span>，每个格子至多入队一次出队一次；初始化扫一遍全网格。</li>
 <li>Space: <span class="arithmatex">\(O(mn)\)</span>，队列与 in-place 标记。</li>
 </ul>
 <h2 id="pitfalls">陷阱 (Pitfalls)<a class="headerlink" href="#pitfalls" title="Permanent link">#</a></h2>
 <ul>
-<li><strong>必须先检查初始 fresh == 0 返回 0</strong>：否则空队列直接返回 0 也对，但若初始无任何 1 也无任何 2，仍需返回 0；上述代码已处理。</li>
-<li>必须用 multi-source BFS；从每个源单独 BFS 取最小值正确但更慢，且最终的 max 仍需另算。</li>
-<li>队列里建议存 <code>(i, j, dist)</code> 或用 level-by-level 的两层结构；不要用 DFS（DFS 算不出无权最短路）。</li>
+<li><strong>初始无新鲜橘子须返回 0</strong>：当 <code>fresh == 0</code> 时（无论是否有腐烂格、是否全空），答案是 <span class="arithmatex">\(0\)</span>。代码用开头的 <code>if fresh == 0: return 0</code> 显式拦下；否则需确认末尾 <code>return ans if fresh == 0 else -1</code> 在空队列时也恰好返回 <span class="arithmatex">\(0\)</span>（确实如此，因 <code>ans</code> 初值为 <span class="arithmatex">\(0\)</span>）。两条路径都对，但开头早退让逻辑更清晰。</li>
+<li><strong>必须多源、不能逐源独立 BFS</strong>：对每个源单独跑 BFS 再取最小值结果正确，但 <span class="arithmatex">\(O(k \cdot mn)\)</span> 更慢，且最终的 <span class="arithmatex">\(\max\)</span> 仍需另算；多源 BFS 一次遍历同时给出两者。</li>
+<li>队列里建议存 <code>(i, j, dist)</code> 或用 level-by-level 的两层结构；不要用 DFS（DFS 算不出无权最短路，会高估 <span class="arithmatex">\(d(v)\)</span>）。</li>
 </ul>
 <h2 id="related">相关题目 (Related)<a class="headerlink" href="#related" title="Permanent link">#</a></h2>
 <ul>
@@ -22632,6 +22674,8 @@
         <script src="../../../js/mathjax/tex-mml-chtml.js"></script>
       
         <script src="../../../js/mermaid.min.js"></script>
+      
+        <script src="../../../js/featured.js"></script>
       
     
   </body>

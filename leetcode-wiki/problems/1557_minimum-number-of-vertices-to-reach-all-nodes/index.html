@@ -1466,6 +1466,8 @@
       
         
       
+        
+      
     
     
     
@@ -1521,6 +1523,34 @@
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../featured/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ⭐ Featured（已验证）
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
               
             
               
@@ -1610,10 +1640,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_4" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
         
           
-          <label class="md-nav__link" for="__nav_4_4" id="__nav_4_4_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_5" id="__nav_4_5_label" tabindex="">
             
   
   
@@ -1631,8 +1661,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_4_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_4">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_5">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1915,7 +1945,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -1937,14 +1967,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_4_5" id="__nav_4_5_label" tabindex="">
+              <label class="md-nav__link " for="__nav_4_6" id="__nav_4_6_label" tabindex="">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_5">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_6">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -5321,10 +5351,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_7" checked>
         
           
-          <label class="md-nav__link" for="__nav_4_6" id="__nav_4_6_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_7" id="__nav_4_7_label" tabindex="">
             
   
   
@@ -5342,8 +5372,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_4_6">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_7_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4_7">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -22467,14 +22497,22 @@
 <h2 id="problem">Problem<a class="headerlink" href="#problem" title="Permanent link">#</a></h2>
 <p>给 DAG（<span class="arithmatex">\(n \leq 10^5\)</span> 顶点、<span class="arithmatex">\(\leq 10^5\)</span> 边）。返回最小顶点集，使从该集合出发能到达所有顶点。保证解唯一。</p>
 <h2 id="background">背景 (Background)<a class="headerlink" href="#background" title="Permanent link">#</a></h2>
-<p>DAG 的入度=0 节点是 source；任何节点入度=0 必须自身在集合中（无其它路径可达它），反之有入度的节点都可由其某个祖先到达。这是 DAG topological structure 的最简推论。</p>
+<p>先尝试最朴素的想法：能不能只选一个起点，从它一路遍历就覆盖全图？</p>
+<p>考虑两个互不相连的部分，例如 <span class="arithmatex">\(0 \to 1\)</span> 与 <span class="arithmatex">\(2 \to 3\)</span>。从 <span class="arithmatex">\(0\)</span> 出发到不了 <span class="arithmatex">\(2\)</span>，从 <span class="arithmatex">\(2\)</span> 出发也到不了 <span class="arithmatex">\(0\)</span>。任何单点都漏掉另一半，所以起点集合至少要包含多个顶点。朴素想法在此失败，但失败方式给出了线索：被漏掉的恰好是没有入边的顶点（<span class="arithmatex">\(0\)</span> 和 <span class="arithmatex">\(2\)</span>），而有入边的顶点（<span class="arithmatex">\(1\)</span> 和 <span class="arithmatex">\(3\)</span>）总能被它们的前驱带到。</p>
+<p>把这个观察沿入边继续推。取任意有入边的顶点 <span class="arithmatex">\(v\)</span>，它必有某前驱 <span class="arithmatex">\(u\)</span>；问题就从"是否要选 <span class="arithmatex">\(v\)</span>"转成"是否要选 <span class="arithmatex">\(u\)</span>"。<span class="arithmatex">\(u\)</span> 若也有入边，再上溯到它的前驱。每一步都退到一条入边的另一端，而图无环，这条上溯链不会回到走过的顶点，因而必然在有限步内停在一个没有入边的顶点。于是：每个顶点要么自己没有入边，要么能从某个没有入边的顶点到达。这把"选哪些顶点"完全归结到"哪些顶点没有入边"。</p>
 <h2 id="formulation">形式化 (Formulation)<a class="headerlink" href="#formulation" title="Permanent link">#</a></h2>
-<p>设 <span class="arithmatex">\(G = (V, E)\)</span> DAG。求最小 <span class="arithmatex">\(S \subseteq V\)</span> 使 <span class="arithmatex">\(\forall v \in V, \exists u \in S, u \rightsquigarrow v\)</span>（存在有向路径）。</p>
-<p><strong>结论</strong>：<span class="arithmatex">\(S = \{ v : \deg^-(v) = 0 \}\)</span>，即所有入度 0 节点。</p>
-<p><strong>正确性证明</strong>：
-- 必要：若 <span class="arithmatex">\(v\)</span> 入度 0，没有其它节点能到 <span class="arithmatex">\(v\)</span> → <span class="arithmatex">\(v\)</span> 必须在 <span class="arithmatex">\(S\)</span>。
-- 充分：若 <span class="arithmatex">\(v\)</span> 入度 &gt; 0，沿入边一路回溯，因 DAG 无环回溯必终止于某入度 0 祖先 <span class="arithmatex">\(u\)</span>；<span class="arithmatex">\(u \rightsquigarrow v\)</span> → <span class="arithmatex">\(v\)</span> 被 <span class="arithmatex">\(u\)</span> 覆盖。</p>
+<p>上一节的上溯链终止于无入边顶点这一现象，正是下面刻画的来源。先把问题精确化，再从中推出解。</p>
+<p>设 <span class="arithmatex">\(G = (V, E)\)</span> 为 DAG。记 <span class="arithmatex">\(u \rightsquigarrow v\)</span> 表示存在从 <span class="arithmatex">\(u\)</span> 到 <span class="arithmatex">\(v\)</span> 的有向路径（含 <span class="arithmatex">\(u = v\)</span>）。求最小的 <span class="arithmatex">\(S \subseteq V\)</span> 使</p>
+<div class="arithmatex">\[\forall v \in V,\ \exists u \in S,\ u \rightsquigarrow v.\]</div>
+<p><strong>定理</strong>：满足该覆盖条件的最小集合唯一，且</p>
+<div class="arithmatex">\[S = \{\, v \in V : \deg^-(v) = 0 \,\},\]</div>
+<p>即恰好是所有入度为 <span class="arithmatex">\(0\)</span> 的顶点。</p>
+<p><strong>证明</strong>。分必要性与充分性两步。</p>
+<p><em>必要性</em>：设 <span class="arithmatex">\(\deg^-(v) = 0\)</span>。则不存在边 <span class="arithmatex">\((u, v) \in E\)</span>，故除 <span class="arithmatex">\(v\)</span> 自身外没有顶点 <span class="arithmatex">\(u\)</span> 满足 <span class="arithmatex">\(u \rightsquigarrow v\)</span>（任何到达 <span class="arithmatex">\(v\)</span> 的路径其最后一条边必以 <span class="arithmatex">\(v\)</span> 为终点）。要覆盖 <span class="arithmatex">\(v\)</span> 只能令 <span class="arithmatex">\(v \in S\)</span>。因此每个入度 <span class="arithmatex">\(0\)</span> 顶点都被迫属于 <span class="arithmatex">\(S\)</span>。</p>
+<p><em>充分性</em>：设 <span class="arithmatex">\(\deg^-(v) &gt; 0\)</span>，证它能被某入度 <span class="arithmatex">\(0\)</span> 顶点到达。沿入边构造上溯序列 <span class="arithmatex">\(v = v_0, v_1, v_2, \dots\)</span>，其中每个 <span class="arithmatex">\(v_{k+1}\)</span> 是 <span class="arithmatex">\(v_k\)</span> 的某个前驱，即 <span class="arithmatex">\((v_{k+1}, v_k) \in E\)</span>。只要当前顶点入度仍大于 <span class="arithmatex">\(0\)</span>，下一个前驱就存在。该序列不会重复出现同一顶点：若 <span class="arithmatex">\(v_i = v_j\)</span>（<span class="arithmatex">\(i &lt; j\)</span>），则 <span class="arithmatex">\(v_i \rightsquigarrow v_j = v_i\)</span> 构成有向环，与 <span class="arithmatex">\(G\)</span> 为 DAG 矛盾。这里无环性是关键——在含环的有向图中上溯可能永远绕圈，永不抵达入度 <span class="arithmatex">\(0\)</span> 顶点。顶点有限且不重复，序列必在某 <span class="arithmatex">\(v_m\)</span> 处停下，此处再无前驱可取，即 <span class="arithmatex">\(\deg^-(v_m) = 0\)</span>。由构造 <span class="arithmatex">\(v_m \rightsquigarrow v_0 = v\)</span>，故 <span class="arithmatex">\(v\)</span> 被入度 <span class="arithmatex">\(0\)</span> 顶点 <span class="arithmatex">\(v_m\)</span> 覆盖。</p>
+<p>必要性表明入度 <span class="arithmatex">\(0\)</span> 顶点必须全在 <span class="arithmatex">\(S\)</span> 中；充分性表明这些顶点已覆盖其余所有顶点。两者合起来，最小覆盖集恰为入度 <span class="arithmatex">\(0\)</span> 顶点之集，且因每个入度 <span class="arithmatex">\(0\)</span> 顶点都被强制选入、它们之间互不可达，该最小集唯一。<span class="arithmatex">\(\qquad\blacksquare\)</span></p>
 <h2 id="approach">数据结构 / 想法 (Approach)<a class="headerlink" href="#approach" title="Permanent link">#</a></h2>
+<p>定理把任务简化为：判定每个顶点是否有入边。一次扫描所有边，标记每条边的终点"有入边"；再收集未被标记的顶点即为答案。</p>
 <div class="language-python highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">Solution</span><span class="p">:</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">findSmallestSetOfVertices</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">edges</span><span class="p">):</span>
         <span class="n">has_incoming</span> <span class="o">=</span> <span class="p">[</span><span class="kc">False</span><span class="p">]</span> <span class="o">*</span> <span class="n">n</span>
@@ -22488,15 +22526,16 @@
 <span class="c1"># Trace 样例 2: n=5, edges=[[0,1],[2,1],[3,1],[1,4],[2,4]]</span>
 <span class="c1"># has_incoming: 1,4 T. 入度 0: {0,2,3}. → [0,2,3] ✓</span>
 </code></pre></div>
-<p><strong>为何不需要算精确入度</strong>：只需"有/无"入边，bool 数组足够。</p>
+<p>证明只用到入度是否为 <span class="arithmatex">\(0\)</span>，而非精确入度值，因此布尔标记数组已足够，无需整数计数器。</p>
 <h2 id="complexity">复杂度 (Complexity)<a class="headerlink" href="#complexity" title="Permanent link">#</a></h2>
 <ul>
 <li>Time <span class="arithmatex">\(O(V + E)\)</span>；Space <span class="arithmatex">\(O(V)\)</span>。</li>
 </ul>
+<p>一次遍历边填充 <code>has_incoming</code>，一次遍历顶点收集答案；算法无输入相关分支，故最好、平均、最坏均为 <span class="arithmatex">\(\Theta(V + E)\)</span>。</p>
 <h2 id="pitfalls">陷阱 (Pitfalls)<a class="headerlink" href="#pitfalls" title="Permanent link">#</a></h2>
 <ul>
-<li><strong>是否必须 DAG</strong>：题面保证。若是一般有向图含 SCC，需先缩点；但本题不涉及。</li>
-<li><strong>解唯一</strong>：题面保证，所以我们的结果就是答案；若题意改成"任意最小集"思路一样。</li>
+<li><strong>DAG 假设是承重的</strong>：充分性证明依赖无环性保证上溯链终止。若输入是一般有向图，含强连通分量（SCC）时上溯可能在环内循环、永不抵达入度 <span class="arithmatex">\(0\)</span> 顶点，刻画失效。此时需先把每个 SCC 缩成一点得到 condensation DAG，再在其上应用同一入度 <span class="arithmatex">\(0\)</span> 论证；本题题面已保证 DAG，无需缩点。</li>
+<li><strong>解唯一来自结构而非题面</strong>：题面声明解唯一，但定理已表明这是结构事实——入度 <span class="arithmatex">\(0\)</span> 顶点被强制选入且互不可达。即便题意改为"任意一个最小集"，答案也不变。</li>
 </ul>
 <h2 id="related">相关题目 (Related)<a class="headerlink" href="#related" title="Permanent link">#</a></h2>
 <ul>
@@ -22613,6 +22652,8 @@
         <script src="../../../js/mathjax/tex-mml-chtml.js"></script>
       
         <script src="../../../js/mermaid.min.js"></script>
+      
+        <script src="../../../js/featured.js"></script>
       
     
   </body>

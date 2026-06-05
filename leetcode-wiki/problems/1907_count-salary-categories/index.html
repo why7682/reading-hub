@@ -1466,6 +1466,8 @@
       
         
       
+        
+      
     
     
     
@@ -1521,6 +1523,34 @@
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../featured/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ⭐ Featured（已验证）
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
               
             
               
@@ -1610,10 +1640,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_4" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
         
           
-          <label class="md-nav__link" for="__nav_4_4" id="__nav_4_4_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_5" id="__nav_4_5_label" tabindex="">
             
   
   
@@ -1631,8 +1661,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_4_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_4">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_5">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1915,7 +1945,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -1937,14 +1967,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_4_5" id="__nav_4_5_label" tabindex="">
+              <label class="md-nav__link " for="__nav_4_6" id="__nav_4_6_label" tabindex="">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_5">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_6">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -5321,10 +5351,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_7" checked>
         
           
-          <label class="md-nav__link" for="__nav_4_6" id="__nav_4_6_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_7" id="__nav_4_7_label" tabindex="">
             
   
   
@@ -5342,8 +5372,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_4_6">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_7_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4_7">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -22467,14 +22497,39 @@
 <h2 id="problem">Problem<a class="headerlink" href="#problem" title="Permanent link">#</a></h2>
 <p>表 <code>Accounts(account_id, income)</code>。返回三类 salary 的账户数：Low (&lt; 20000)，Average ([20000, 50000])，High (&gt; 50000)。即使某类为 0 也必须出现在结果中。</p>
 <h2 id="background">背景 (Background)<a class="headerlink" href="#background" title="Permanent link">#</a></h2>
-<p>SQL "categorical aggregation" 的标准题：当<strong>类别在数据中可能缺席</strong>时，不能直接 <code>GROUP BY category</code>（缺席类别就丢了）。两种通用解法：
-1. <strong>UNION 三个固定计数子查询</strong>——简单但 IO 多。
-2. <strong>派生类别表 LEFT JOIN</strong>——更"关系代数"，可扩展到 N 类别。</p>
-<p>关系数据库教科书（Kifer/Bernstein/Lewis, Garcia-Molina, etc.）都把这种"保留空桶 (outer join with category dimension)"作为基本反 anti-pattern 案例。</p>
+<p>最自然的写法是给每行算出它的类别，然后 <code>GROUP BY</code> 类别后 <code>COUNT</code>：</p>
+<div class="language-sql highlight"><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="k">CASE</span><span class="w"> </span><span class="k">WHEN</span><span class="w"> </span><span class="n">income</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">20000</span><span class="w"> </span><span class="k">THEN</span><span class="w"> </span><span class="s1">&#39;Low Salary&#39;</span>
+<span class="w">            </span><span class="k">WHEN</span><span class="w"> </span><span class="n">income</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="mi">50000</span><span class="w"> </span><span class="k">THEN</span><span class="w"> </span><span class="s1">&#39;Average Salary&#39;</span>
+<span class="w">            </span><span class="k">ELSE</span><span class="w"> </span><span class="s1">&#39;High Salary&#39;</span><span class="w"> </span><span class="k">END</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">category</span><span class="p">,</span>
+<span class="w">       </span><span class="k">COUNT</span><span class="p">(</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">accounts_count</span>
+<span class="k">FROM</span><span class="w"> </span><span class="n">Accounts</span>
+<span class="k">GROUP</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">category</span><span class="p">;</span>
+</code></pre></div>
+<p>设想 <code>Accounts</code> 里只出现了 Low 和 High 两个区间的收入，没有任何一行落在 Average。<code>GROUP BY</code> 的输出规则是：<strong>数据里出现过的每个分组值产生一行，没出现过的不产生行</strong>。于是输出只有两行，Average 整行消失。但题目要求三个类别恒定出现——这是它和普通分类聚合的唯一区别，也是全部难点所在。</p>
+<p>问题因此不是"如何分类计数"，而是"如何让输出的类别集合<strong>不依赖于数据</strong>"。<code>GROUP BY category</code> 的类别集合恰恰由数据决定，所以它从根上就不满足要求。下面的形式化把这个约束写清楚，两个解法都从它推出来。</p>
 <h2 id="formulation">形式化 (Formulation)<a class="headerlink" href="#formulation" title="Permanent link">#</a></h2>
-<p>设关系 <span class="arithmatex">\(A(id, inc)\)</span>。返回关系 <span class="arithmatex">\(\{(c, n)\}\)</span> 其中 <span class="arithmatex">\(c \in \{\text{Low, Average, High}\}\)</span>，<span class="arithmatex">\(n = |\{x \in A : f(x.inc) = c\}|\)</span>，分类 <span class="arithmatex">\(f\)</span> 由阈值定义。</p>
+<p>设关系 <span class="arithmatex">\(A(id, inc)\)</span>。定义分类函数 <span class="arithmatex">\(f\)</span>，把收入映到固定的三元类别集 <span class="arithmatex">\(C = \{\text{Low}, \text{Average}, \text{High}\}\)</span>：</p>
+<div class="arithmatex">\[
+f(v) =
+\begin{cases}
+\text{Low} &amp; v &lt; 20000 \\
+\text{Average} &amp; 20000 \le v \le 50000 \\
+\text{High} &amp; v &gt; 50000
+\end{cases}
+\]</div>
+<p>三个区间两两不交且覆盖整条实轴，所以 <span class="arithmatex">\(f\)</span> 是 <span class="arithmatex">\(C\)</span> 上的一个划分：每个收入恰好命中一个类别。要求返回的关系是</p>
+<div class="arithmatex">\[
+R = \{(c, n) : c \in C,\; n = |\{x \in A : f(x.inc) = c\}|\}.
+\]</div>
+<p>注意 <span class="arithmatex">\(c\)</span> 在<strong>整个</strong> <span class="arithmatex">\(C\)</span> 上取值，与 <span class="arithmatex">\(A\)</span> 无关：哪怕某个 <span class="arithmatex">\(c\)</span> 对应的集合 <span class="arithmatex">\(\{x \in A : f(x.inc) = c\}\)</span> 为空，<span class="arithmatex">\((c, 0)\)</span> 仍然要出现在 <span class="arithmatex">\(R\)</span> 中。这一句话就是上面失败的根源——<code>GROUP BY</code> 让 <span class="arithmatex">\(c\)</span> 的取值范围塌缩成 <span class="arithmatex">\(\{f(x.inc) : x \in A\}\)</span>（数据里实际出现的类别），而 <span class="arithmatex">\(R\)</span> 要的是固定的 <span class="arithmatex">\(C\)</span>。</p>
+<p>两条修复路径直接对应于"如何保证 <span class="arithmatex">\(c\)</span> 跑遍 <span class="arithmatex">\(C\)</span>"的两种结构选择：</p>
+<ol>
+<li>为 <span class="arithmatex">\(C\)</span> 的<strong>每个</strong>元素单独写一个聚合，各算各的 <span class="arithmatex">\(n\)</span>。每个类别的存在性由我们手写保证，与数据无关。</li>
+<li>先把 <span class="arithmatex">\(C\)</span> 物化成一张表，再让 <span class="arithmatex">\(A\)</span> 去 join 它。<span class="arithmatex">\(C\)</span> 的每一行天然都在，与匹配到几行 <span class="arithmatex">\(A\)</span> 无关。</li>
+</ol>
 <h2 id="approach">数据结构 / 想法 (Approach)<a class="headerlink" href="#approach" title="Permanent link">#</a></h2>
-<p><strong>解法 A — UNION ALL</strong>（最直观，三段独立 COUNT）：</p>
+<p><strong>解法 A — 为每个类别写独立聚合（UNION ALL）</strong></p>
+<p>直接落实路径 1：<span class="arithmatex">\(C\)</span> 有三个元素，就写三段 <code>SELECT</code>，每段把整张表压成一个标量计数，再 <code>UNION ALL</code> 拼起来。</p>
 <div class="language-sql highlight"><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="s1">&#39;Low Salary&#39;</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">category</span><span class="p">,</span>
 <span class="w">       </span><span class="k">SUM</span><span class="p">(</span><span class="k">CASE</span><span class="w"> </span><span class="k">WHEN</span><span class="w"> </span><span class="n">income</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">20000</span><span class="w"> </span><span class="k">THEN</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="k">ELSE</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="k">END</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">accounts_count</span>
 <span class="k">FROM</span><span class="w"> </span><span class="n">Accounts</span>
@@ -22487,8 +22542,11 @@
 <span class="w">       </span><span class="k">SUM</span><span class="p">(</span><span class="k">CASE</span><span class="w"> </span><span class="k">WHEN</span><span class="w"> </span><span class="n">income</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">50000</span><span class="w"> </span><span class="k">THEN</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="k">ELSE</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="k">END</span><span class="p">)</span>
 <span class="k">FROM</span><span class="w"> </span><span class="n">Accounts</span><span class="p">;</span>
 </code></pre></div>
-<p>注意 <code>SUM(CASE ...)</code> 即使没有匹配行也返回 0（如果表非空）。若 <code>Accounts</code> 为空表，<code>SUM</code> 返回 <code>NULL</code>，需 <code>COALESCE(SUM(...), 0)</code>。</p>
-<p><strong>解法 B — 单次扫描 + 派生类别表（LEFT JOIN）</strong>：</p>
+<p>为什么每段一定产出恰好一行？因为不带 <code>GROUP BY</code> 的 <code>SUM</code> 是对整张表的全局聚合，无论多少行让 <code>CASE</code> 取到 1，结果都被折叠成单个标量——一段 <code>SELECT</code> 对应 <span class="arithmatex">\(R\)</span> 中的一行。这正是路径 1 想要的：类别行的存在性写死在 SQL 里，不交给数据决定。空类别也不例外：所有 <code>CASE</code> 都取 0，<span class="arithmatex">\(0 + 0 + \dots = 0\)</span>，那一行照样是 <span class="arithmatex">\((c, 0)\)</span>。对照之下，<code>COUNT(*) \dots GROUP BY</code> 在空类别上根本没有行可数，于是整行缺席——两者的差别就在这里。</p>
+<p>唯一的破绽是空表：表里一行都没有时 <code>SUM</code> 在空集上返回 <code>NULL</code> 而非 0，需要 <code>COALESCE(SUM(...), 0)</code> 兜底。</p>
+<p><strong>解法 B — 把 <span class="arithmatex">\(C\)</span> 物化后 LEFT JOIN</strong></p>
+<p>落实路径 2 的关键，是 <code>LEFT JOIN</code> 的行保留性质：左表（驱动表）的每一行都出现在结果里，即使右表没有任何行满足 join 谓词（此时右表各列填 <code>NULL</code>）。把 <span class="arithmatex">\(C\)</span> 放在左边，则 <span class="arithmatex">\(C\)</span> 的三行恒在输出中，与匹配到几行 <span class="arithmatex">\(A\)</span> 无关——这恰好是 <span class="arithmatex">\(R\)</span> 要求 <span class="arithmatex">\(c\)</span> 跑遍 <span class="arithmatex">\(C\)</span> 的那个约束。</p>
+<p>剩下要构造的是 join 谓词：它要把每行 <span class="arithmatex">\(A\)</span> 映到它所属的那一个类别行，也就是用 SQL 复刻划分 <span class="arithmatex">\(f\)</span>。</p>
 <div class="language-sql highlight"><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="n">cats</span><span class="p">.</span><span class="n">category</span><span class="p">,</span>
 <span class="w">       </span><span class="k">COUNT</span><span class="p">(</span><span class="n">a</span><span class="p">.</span><span class="n">account_id</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">accounts_count</span>
 <span class="k">FROM</span><span class="w"> </span><span class="p">(</span><span class="k">SELECT</span><span class="w"> </span><span class="s1">&#39;Low Salary&#39;</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">category</span>
@@ -22500,25 +22558,32 @@
 <span class="w">  </span><span class="k">OR</span><span class="w"> </span><span class="p">(</span><span class="n">cats</span><span class="p">.</span><span class="n">category</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;High Salary&#39;</span><span class="w">    </span><span class="k">AND</span><span class="w"> </span><span class="n">a</span><span class="p">.</span><span class="n">income</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">50000</span><span class="p">)</span>
 <span class="k">GROUP</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">cats</span><span class="p">.</span><span class="n">category</span><span class="p">;</span>
 </code></pre></div>
-<p><code>LEFT JOIN</code> 保证三个类别都在结果中；<code>COUNT(a.account_id)</code> 对 NULL 不计数，所以空类别返回 0。</p>
-<h2 id="complexity">复杂度 (Complexity)<a class="headerlink" href="#complexity" title="Permanent link">#</a></h2>
+<p>这里有两个独立的语义步骤，不要混为一谈：</p>
 <ul>
-<li>解法 A：三次表扫描，<span class="arithmatex">\(O(3 |A|)\)</span> 在无索引情况。</li>
-<li>解法 B：一次扫描 + 哈希分组，<span class="arithmatex">\(O(|A|)\)</span>。</li>
+<li><strong>Join 语义</strong>保证三个类别都进入结果——<code>LEFT JOIN</code> 的行保留性质。</li>
+<li><strong>聚合语义</strong>保证空类别数成 0——<code>COUNT(a.account_id)</code> 不计 <code>NULL</code>。空类别那一行的 <code>a.account_id</code> 是 <code>NULL</code>，所以被 <code>COUNT</code> 跳过，结果是 0；这一步与 join 无关。</li>
 </ul>
+<h2 id="complexity">复杂度 (Complexity)<a class="headerlink" href="#complexity" title="Permanent link">#</a></h2>
+<p>代价模型：以"对 <code>Accounts</code> 行做一次类别比较"为单位计数；表无可用索引（<code>&lt;</code>、<code>BETWEEN</code>、<code>OR</code> 这类范围/析取谓词无法走索引）。</p>
+<ul>
+<li>解法 A：三段各扫一遍全表，约 <span class="arithmatex">\(3|A|\)</span> 次比较。</li>
+<li>解法 B：实测查询计划（SQLite EXPLAIN）是嵌套循环——<code>cats</code>（3 行）× 全表扫描 <code>a</code>，每行 <span class="arithmatex">\(A\)</span> 要试 3 个析取分支，约 <span class="arithmatex">\(3|A|\)</span> 次比较，再加一次 <code>GROUP BY</code> 的临时排序/分组。</li>
+</ul>
+<p>两者都是 <span class="arithmatex">\(O(|A|)\)</span>，同一个大 O 量级——<span class="arithmatex">\(O(3|A|) = O(|A|)\)</span>，常数因子也接近。B 并非"单次线性扫描 + 哈希分组"：范围/<code>OR</code> 谓词不能哈希也不能走索引，优化器只能退化成嵌套循环。所以这道题上选 A 还是 B 是可读性和健壮性之考量（见陷阱），不是渐进复杂度之争。</p>
 <h2 id="pitfalls">陷阱 (Pitfalls)<a class="headerlink" href="#pitfalls" title="Permanent link">#</a></h2>
 <ul>
-<li><strong>直接 <code>GROUP BY 类别</code></strong> 会丢空类别——常见错误。</li>
-<li><strong><code>BETWEEN</code> 含两端</strong>——满足 Average 是 inclusive <code>[20000, 50000]</code>。<code>income = 20000</code> 不算 Low，也不算 High。</li>
-<li><strong><code>COUNT(*) vs COUNT(col)</code></strong>：<code>LEFT JOIN</code> 后空类别会有一行 (cat, NULL)，用 <code>COUNT(*)</code> 会算成 1，必须用 <code>COUNT(a.account_id)</code>。</li>
-<li><strong>空表</strong>：题目通常假定表非空但 robust 写法应 <code>COALESCE</code>。</li>
+<li><strong>直接 <code>GROUP BY 类别</code> 会丢空类别</strong>——本题的核心。<code>GROUP BY</code> 的输出类别集合由数据决定，空类别整行消失，违反"三类恒在"。这是全篇推导的起点，不是事后告警。</li>
+<li><strong><code>BETWEEN</code> 含两端</strong>——Average 是 inclusive <code>[20000, 50000]</code>。<code>income = 20000</code> 不算 Low，<code>income = 50000</code> 不算 High，两端都归 Average。</li>
+<li><strong><code>COUNT(*)</code> vs <code>COUNT(col)</code></strong>：<code>LEFT JOIN</code> 后空类别会留下一行 <code>(cat, NULL)</code>。<code>COUNT(*)</code> 把这行也数进去得到 1（错），<code>COUNT(a.account_id)</code> 因为该列是 <code>NULL</code> 而跳过它得到 0（对）。这里必须用 <code>COUNT(a.account_id)</code>。</li>
+<li><strong>空表</strong>：解法 A 的 <code>SUM(CASE ...)</code> 在空表上返回 <code>NULL</code>，需 <code>COALESCE(SUM(...), 0)</code>；解法 B 的 <code>LEFT JOIN + COUNT</code> 在空表上对三类都返回 0，无需 <code>COALESCE</code>——这是 B 相对 A 的一个健壮性优势。</li>
+<li><strong>结果顺序</strong>：解法 A 按 <code>Low / Average / High</code> 自然顺序输出；解法 B 因 <code>GROUP BY</code> 按字母序输出 <code>Average / High / Low</code>。LeetCode #1907 接受任意顺序，但需要固定顺序时要留意。</li>
 </ul>
 <h2 id="related">相关题目 (Related)<a class="headerlink" href="#related" title="Permanent link">#</a></h2>
 <ul>
 <li><a href="../0177_nth-highest-salary/">#177. Nth Highest Salary</a> — 同表 SQL 经典题。</li>
 <li><a href="../0584_find-customer-referee/">#584. Find Customer Referee</a> — NULL 处理的 SQL 题。</li>
 <li><a href="../2933_high-access-employees/">#2933. High-Access Employees</a> — 时间窗口 SQL 题。</li>
-<li><code>#262. Trips and Users (off-wiki)</code> — 同类"分类聚合 + 完整覆盖"。</li>
+<li><a href="../0262_trips-and-users/">#262. Trips and Users</a> — 同类"分类聚合 + 完整覆盖"。</li>
 </ul>
 <h2 id="further-reading">Further Reading<a class="headerlink" href="#further-reading" title="Permanent link">#</a></h2>
 <ul>
@@ -22630,6 +22695,8 @@
         <script src="../../../js/mathjax/tex-mml-chtml.js"></script>
       
         <script src="../../../js/mermaid.min.js"></script>
+      
+        <script src="../../../js/featured.js"></script>
       
     
   </body>

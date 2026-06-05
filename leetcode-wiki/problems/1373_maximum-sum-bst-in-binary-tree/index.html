@@ -1466,6 +1466,8 @@
       
         
       
+        
+      
     
     
     
@@ -1521,6 +1523,34 @@
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../featured/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ⭐ Featured（已验证）
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
               
             
               
@@ -1610,10 +1640,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_4" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
         
           
-          <label class="md-nav__link" for="__nav_4_4" id="__nav_4_4_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_5" id="__nav_4_5_label" tabindex="">
             
   
   
@@ -1631,8 +1661,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_4_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_4">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_5">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1915,7 +1945,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -1937,14 +1967,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_4_5" id="__nav_4_5_label" tabindex="">
+              <label class="md-nav__link " for="__nav_4_6" id="__nav_4_6_label" tabindex="">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_5">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_6">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -5321,10 +5351,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_7" checked>
         
           
-          <label class="md-nav__link" for="__nav_4_6" id="__nav_4_6_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_7" id="__nav_4_7_label" tabindex="">
             
   
   
@@ -5342,8 +5372,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_4_6">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_7_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4_7">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -22467,22 +22497,28 @@
 <h2 id="problem">Problem<a class="headerlink" href="#problem" title="Permanent link">#</a></h2>
 <p>给定二叉树 <code>root</code>（<span class="arithmatex">\(1 \leq n \leq 4 \cdot 10^4\)</span>，值 <span class="arithmatex">\(\in [-4 \cdot 10^4, 4 \cdot 10^4]\)</span>）。在所有<strong>也是 BST</strong>的子树中，找节点值之和最大的，返回该和（若所有 BST 子树和都为负，可返回 0 即"空 BST"）。BST 定义：左子树所有值严格小于、右子树所有值严格大于当前节点；且左右子树本身也是 BST。</p>
 <h2 id="background">背景 (Background)<a class="headerlink" href="#background" title="Permanent link">#</a></h2>
-<p><strong>树形 DP 中的"自下而上聚合"</strong> 经典题。每个节点向上传递 <span class="arithmatex">\((\text{isBST}, \text{sum}, \min, \max)\)</span> 四元组，使父节点能 <span class="arithmatex">\(O(1)\)</span> 判断自身是否为 BST。这是 <em>post-order DP</em> 在二叉树上的标准模板，类似算法：求最大子树高度、平衡判定（#110）、最大同值子树。</p>
-<p>注意"严格小于/大于"——若值有重复且重复的视为非 BST。</p>
+<p>最直接的做法是把问题拆成两个独立的子任务。对每个节点 <span class="arithmatex">\(v\)</span>，写一个 <code>isBST(v)</code> 判断 <span class="arithmatex">\(T_v\)</span> 是否为 BST，再写一个 <code>sum(v)</code> 求 <span class="arithmatex">\(T_v\)</span> 的节点和；遍历所有节点，对通过判定的取最大和。</p>
+<p>这能算出正确答案，但代价高。<code>isBST(v)</code> 为了验证 <span class="arithmatex">\(v\)</span> 左子树全部小于 <span class="arithmatex">\(v.\text{val}\)</span>，必须扫遍左子树的每个节点；在 <span class="arithmatex">\(v\)</span> 的每个祖先处又要重扫同一批节点。一条长度 <span class="arithmatex">\(n\)</span> 的链上，越靠根的节点其子树越大，逐层重扫使总工作量达到 <span class="arithmatex">\(O(n^2)\)</span>。<code>sum(v)</code> 同样在每个节点处重新累加整棵子树。问题的根源是：判定和求和都被当作"从 <span class="arithmatex">\(v\)</span> 出发向下重新计算"，而 <span class="arithmatex">\(v\)</span> 的孩子刚刚算过的结果被丢弃了。</p>
+<p>要消除重复，需要让每个节点只被访问一次，把它产生的信息一次性交给父节点。下面先确定父节点到底需要孩子的哪些信息，这决定了遍历该返回什么。</p>
 <h2 id="formulation">形式化 (Formulation)<a class="headerlink" href="#formulation" title="Permanent link">#</a></h2>
-<p>对每个节点 <span class="arithmatex">\(v\)</span>，记其子树 <span class="arithmatex">\(T_v\)</span>。<span class="arithmatex">\(T_v\)</span> 是 BST 当且仅当 <span class="arithmatex">\(T_v\)</span> 的中序遍历严格递增。等价递归判定：</p>
+<p>先建立直觉。一棵子树是 BST，当且仅当它的中序遍历严格递增。中序遍历把左子树、根、右子树首尾相接，因此严格递增可以拆成三件事：左子树自身严格递增、右子树自身严格递增、并且左子树的末尾（其最大值）严格小于根、根又严格小于右子树的开头（其最小值）。前两件正是"左右子树各自是 BST"，第三件只涉及两个孩子子树的极值。换言之，全局的 BST 性质坍缩成了一个只看直接孩子的局部检查。</p>
+<p>记节点 <span class="arithmatex">\(v\)</span> 的子树为 <span class="arithmatex">\(T_v\)</span>，<span class="arithmatex">\(v.L, v.R\)</span> 为其左右孩子。设 <span class="arithmatex">\(T_{v.L}\)</span> 表示以 <span class="arithmatex">\(v\)</span> 左孩子为根的子树（右孩子同理）。上述拆分给出递归判定：</p>
 <div class="arithmatex">\[
-\text{BST}(v) \iff \text{BST}(v.L) \land \text{BST}(v.R) \land \max(T_{v.L}) &lt; v.\text{val} &lt; \min(T_{v.R}),
+\text{BST}(v) \iff \text{BST}(v.L) \land \text{BST}(v.R) \land \max(T_{v.L}) &lt; v.\text{val} &lt; \min(T_{v.R}).
 \]</div>
-<p>空树视为 BST（边界）。答案 = <span class="arithmatex">\(\max\{0, \max_{v: \text{BST}(T_v)} \sum_{u \in T_v} u.\text{val}\}\)</span>。</p>
+<p>之所以只需比较孩子子树的极值、而不必下探更深：由于 <span class="arithmatex">\(T_{v.L}\)</span> 已是 BST，它的最大值 <span class="arithmatex">\(\max(T_{v.L})\)</span> 就是其中离 <span class="arithmatex">\(v.\text{val}\)</span> 最近、约束最紧的那个值；只要它小于 <span class="arithmatex">\(v.\text{val}\)</span>，左子树其余的值必然更小。<span class="arithmatex">\(\min(T_{v.R})\)</span> 对右子树同理。极值因此是孩子子树对父节点判定的充分概括。</p>
+<p>空树视为 BST，作为递归边界。</p>
+<p>答案要取所有 BST 子树里的最大和，并与 0 取较大者——因为题目允许"空 BST"，其和为 0，给出了一个保底下界：</p>
+<div class="arithmatex">\[
+\text{ans} = \max\Big\{\,0,\ \max_{v:\, \text{BST}(T_v)} \sum_{u \in T_v} u.\text{val}\,\Big\}.
+\]</div>
+<p>外层的 <span class="arithmatex">\(\max\{0, \cdot\}\)</span> 保证：当全部 BST 子树和都为负时，返回 0 而非某个负数。</p>
 <h2 id="approach">数据结构 / 想法 (Approach)<a class="headerlink" href="#approach" title="Permanent link">#</a></h2>
-<p><strong>后序 DFS 返回 <code>(isBST, sum, lo, hi)</code></strong>：</p>
-<ul>
-<li><code>isBST</code>: 该子树是否为 BST</li>
-<li><code>sum</code>: 节点值之和</li>
-<li><code>lo, hi</code>: 子树最小、最大值（仅 isBST 时有意义）</li>
-</ul>
-<p>空树返回 <code>(True, 0, +∞, -∞)</code>——这是巧妙的 sentinel：左子空时 <code>hi = -∞</code>，必然 <code>&lt; v.val</code>；右子空时 <code>lo = +∞</code>，必然 <code>&gt; v.val</code>；保证递归边界正确。</p>
+<p>形式化已经点明父节点判定需要孩子的哪些信息。假设遍历每个节点只返回 <span class="arithmatex">\((\text{isBST}, \text{sum})\)</span>，父节点能否完成判定？不能：<span class="arithmatex">\(\max(T_{v.L}) &lt; v.\text{val} &lt; \min(T_{v.R})\)</span> 这一步要的是左子树最大值与右子树最小值，而这两个数不在返回值里。父节点为此又得重新下探子树求极值，重复扫描卷土重来。</p>
+<p>因此返回值必须把这两个极值一并带上。把每棵子树的全局最小值记为 <span class="arithmatex">\(\text{lo}\)</span>、全局最大值记为 <span class="arithmatex">\(\text{hi}\)</span>，遍历对每个节点返回四元组 <span class="arithmatex">\((\text{isBST}, \text{sum}, \text{lo}, \text{hi})\)</span>。这四个量恰好是父节点 <span class="arithmatex">\(O(1)\)</span> 完成判定与求和所需的充分统计量：用 <span class="arithmatex">\(\text{isBST}\)</span> 验证孩子合法，用左孩子的 <span class="arithmatex">\(\text{hi}\)</span> 和右孩子的 <span class="arithmatex">\(\text{lo}\)</span> 验证 <span class="arithmatex">\(v\)</span> 夹在中间，用 <span class="arithmatex">\(\text{sum}\)</span> 累加。判定依赖孩子的信息，所以计算必须自底向上，这就是后序遍历。</p>
+<p>合法子树向上返回时，<span class="arithmatex">\(\text{lo}, \text{hi}\)</span> 要刷新为<strong>整棵</strong> <span class="arithmatex">\(T_v\)</span> 的极值，因为 <span class="arithmatex">\(v\)</span> 的父节点将用它们做判定。<span class="arithmatex">\(T_v\)</span> 的最小值是 <span class="arithmatex">\(\min(\text{lo}(T_{v.L}),\, v.\text{val})\)</span>：左子树已是更小的一侧，但 <span class="arithmatex">\(v\)</span> 本身也可能比它更小（不会，因 BST 已保证 <span class="arithmatex">\(v\)</span> 大于左子树，但取 <span class="arithmatex">\(\min\)</span> 仍正确且统一）；对称地最大值是 <span class="arithmatex">\(\max(\text{hi}(T_{v.R}),\, v.\text{val})\)</span>。</p>
+<p><strong>空子树的返回值由判定的边界要求倒推。</strong> 当 <span class="arithmatex">\(v\)</span> 的左孩子为空时，条件 <span class="arithmatex">\(\max(T_{v.L}) &lt; v.\text{val}\)</span> 应当无条件成立——空子树不施加任何约束。要让该不等式对任意 <span class="arithmatex">\(v.\text{val}\)</span> 都成立，空树的 <span class="arithmatex">\(\text{hi}\)</span> 必须小于一切可能的节点值，故取 <span class="arithmatex">\(\text{hi} = -\infty\)</span>。对称地，空右子树需 <span class="arithmatex">\(\text{lo} = +\infty\)</span> 使 <span class="arithmatex">\(v.\text{val} &lt; \min(T_{v.R})\)</span> 恒真。于是空树返回 <span class="arithmatex">\((\text{True}, 0, +\infty, -\infty)\)</span>。这两个哨兵值不是技巧，而是"空孩子不约束父节点"这一边界条件的直接编码，它免去了对左右孩子是否为空的逐一判空分支。</p>
+<p>最后，答案不能只看 <code>dfs(root)</code> 的返回值。根所在的子树未必是 BST，而最大和 BST 可以挂在树中任意位置，因此每遇到一个合法的 BST 节点，就用它的子树和去更新一个全局最优 <code>self.ans</code>。</p>
 <div class="language-python highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">TreeNode</span><span class="p">:</span>
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">val</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">left</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">right</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">val</span> <span class="o">=</span> <span class="n">val</span>
@@ -22508,28 +22544,29 @@
         <span class="n">dfs</span><span class="p">(</span><span class="n">root</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">ans</span>
 </code></pre></div>
-<p>样例 1 验证：树 <code>[1,4,3,2,4,2,5,null,null,null,null,null,null,4,6]</code>。结构（按层序）：
+<p>非 BST 节点返回 <code>(False, 0, 0, 0)</code>：<code>isBST</code> 为 <code>False</code> 已使任何祖先的判定短路失败，后三个分量不再被读取，取何值无所谓。</p>
+<p>样例 1 验证：<code>[1,4,3,2,4,2,5,null,null,null,null,null,null,4,6]</code>。按数组层序还原结构，节点 3 的左孩子为 2、右孩子为 5；节点 5 的左孩子为 4、右孩子为 6：</p>
 <div class="language-text highlight"><pre><span></span><code>        1
       /   \
      4     3
     / \   / \
    2   4 2   5
-              \
-               6  (and 5&#39;s right child is 4,6 per the array layout)
+            / \
+           4   6
 </code></pre></div>
-答案 20 对应"3 作为根的子树 {3, 2, 5, 4, 6}" —— 但 5 的左子为 4 ⇒ 4 &lt; 5 ✓, 6 &gt; 5 ✓; 2 &lt; 3, 5 &gt; 3, 整子树 {2, 3, 4, 5, 6} 和 = 20 ✓.</p>
-<p>样例 3：<code>[-4,-2,-5]</code>，3 个节点；树 = -4 根，左 -2，右 -5。-2 &lt; -4 不成立（要求左子 &lt; 父），整树非 BST. 单叶 -2 sum=-2; -4 sum=-4; -5 sum=-5. 最大 = -2，但答案 0（"空 BST"占优）→ <code>max(0, max(...))</code> 初值取 0 ✓.</p>
+<p>整棵以 1 为根的树不是 BST（根 1 的右子树含 2，<span class="arithmatex">\(2 &lt; 1\)</span> 不成立等多处违例）。以 3 为根的子树 <span class="arithmatex">\(\{2, 3, 4, 5, 6\}\)</span>：左子 2 单点合法且 <span class="arithmatex">\(2 &lt; 3\)</span>；右子以 5 为根，<span class="arithmatex">\(4 &lt; 5 &lt; 6\)</span> 合法，且 <span class="arithmatex">\(\min = 4 &gt; 3\)</span>；故整子树为 BST，和 <span class="arithmatex">\(= 2 + 3 + 4 + 5 + 6 = 20\)</span>。无更大者，答案 20。</p>
+<p>样例 3：<code>[-4,-2,-5]</code>，根 -4、左 -2、右 -5。根处判定需 <span class="arithmatex">\(-2 &lt; -4\)</span>（左孩子值小于父），不成立，整树非 BST。三个单叶各自合法，和分别为 -4、-2、-5，最大为 -2；但与空 BST 的 0 取较大者，<code>self.ans</code> 初值 0 占优，答案 0。</p>
 <h2 id="complexity">复杂度 (Complexity)<a class="headerlink" href="#complexity" title="Permanent link">#</a></h2>
 <ul>
-<li>Time: <span class="arithmatex">\(O(n)\)</span> 每节点 <span class="arithmatex">\(O(1)\)</span> 合并</li>
-<li>Space: <span class="arithmatex">\(O(h)\)</span> 递归栈，最差 <span class="arithmatex">\(O(n)\)</span>（链式树）</li>
+<li>Time: <span class="arithmatex">\(O(n)\)</span>，每个节点访问一次，合并四元组为 <span class="arithmatex">\(O(1)\)</span>。</li>
+<li>Space: <span class="arithmatex">\(O(h)\)</span> 递归栈深，最差 <span class="arithmatex">\(O(n)\)</span>（链式树）。</li>
 </ul>
 <h2 id="pitfalls">陷阱 (Pitfalls)<a class="headerlink" href="#pitfalls" title="Permanent link">#</a></h2>
 <ul>
-<li><strong>严格不等</strong>：BST 要求 <code>lHi &lt; val &lt; rLo</code>，不能 <code>≤</code>。重复值视为非 BST。</li>
-<li><strong>空子树 sentinel</strong> 必须用 <code>(+∞, -∞)</code> 这种"自动通过"值，否则要写大量 <code>if node.left is None</code> 分支。</li>
-<li>答案初值取 0（题目允许空 BST，sum 为 0），别取 <code>-∞</code> 否则全负树会返回 <code>-∞</code>。</li>
-<li>递归深度 <span class="arithmatex">\(\leq n = 4 \times 10^4\)</span>，Python 要 <code>sys.setrecursionlimit(50000)</code> 或改迭代。</li>
+<li><strong>严格不等</strong>：BST 要求 <code>lHi &lt; val &lt; rLo</code>，不能 <code>≤</code>。重复值视为非 BST（如 <code>[2,1,2]</code> 根处右孩子等于根值，被拒）。</li>
+<li><strong>空子树哨兵</strong> 必须用 <span class="arithmatex">\((+\infty, -\infty)\)</span> 这种使判定恒真的值，否则要写大量 <code>if node.left is None</code> 判空分支。</li>
+<li>答案初值取 0（题目允许空 BST，sum 为 0），别取 <code>-∞</code>，否则全负树会返回 <code>-∞</code>。</li>
+<li>递归深度 <span class="arithmatex">\(\leq n = 4 \times 10^4\)</span>，远超 Python 默认 <code>recursionlimit</code>（1000），需 <code>sys.setrecursionlimit(50000)</code> 或改迭代，否则链式树触发 <code>RecursionError</code>。</li>
 </ul>
 <h2 id="related">相关题目 (Related)<a class="headerlink" href="#related" title="Permanent link">#</a></h2>
 <ul>
@@ -22647,6 +22684,8 @@
         <script src="../../../js/mathjax/tex-mml-chtml.js"></script>
       
         <script src="../../../js/mermaid.min.js"></script>
+      
+        <script src="../../../js/featured.js"></script>
       
     
   </body>

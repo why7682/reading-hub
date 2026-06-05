@@ -1466,6 +1466,8 @@
       
         
       
+        
+      
     
     
     
@@ -1521,6 +1523,34 @@
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../featured/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ⭐ Featured（已验证）
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
               
             
               
@@ -1610,10 +1640,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_4" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
         
           
-          <label class="md-nav__link" for="__nav_4_4" id="__nav_4_4_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_5" id="__nav_4_5_label" tabindex="">
             
   
   
@@ -1631,8 +1661,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_4_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_4">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_5">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1915,7 +1945,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -1937,14 +1967,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_4_5" id="__nav_4_5_label" tabindex="">
+              <label class="md-nav__link " for="__nav_4_6" id="__nav_4_6_label" tabindex="">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_5">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_6">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -5321,10 +5351,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_7" checked>
         
           
-          <label class="md-nav__link" for="__nav_4_6" id="__nav_4_6_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_7" id="__nav_4_7_label" tabindex="">
             
   
   
@@ -5342,8 +5372,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_4_6">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_7_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4_7">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -22467,30 +22497,83 @@
 <h2 id="problem">Problem<a class="headerlink" href="#problem" title="Permanent link">#</a></h2>
 <p>方形房间边长为 <span class="arithmatex">\(p\)</span>，西南角发射一束激光，第一次撞到东墙时距离东南角（0 号接收器）为 <span class="arithmatex">\(q\)</span>。另外两角分别为接收器 1（东北）和 2（西北）。求激光首先击中哪个接收器。<span class="arithmatex">\(1 \le q \le p \le 1000\)</span>，保证有限步可达。</p>
 <h2 id="background">背景 (Background)<a class="headerlink" href="#background" title="Permanent link">#</a></h2>
-<p>这是经典的 <strong>unfolding（镜像展开 / billiard unfolding）</strong> 几何技巧：把反射的轨迹"拉直"，等价于在无限平面镶嵌的方格网中走一条直线。可追溯到 König 与 Szücs 1913 年的弹球问题（billiard in a square），是动力系统与数论的接合点；本质上由 <span class="arithmatex">\(\gcd(p, q)\)</span> 决定。在物理学（量子混沌）、计算机图形学（光线追踪展开），以及数论（连分数与 Stern-Brocot）中都有踪迹。</p>
+<p>最直接的做法是照着物理过程模拟。激光从西南角出发，斜率为 <span class="arithmatex">\(q/p\)</span>，第一次在东墙的高度 <span class="arithmatex">\(q\)</span> 处反射；继续飞行，每撞一面墙就把对应方向的速度分量取反，逐次追踪它的折线轨迹，直到落在某个角上。</p>
+<p>这个模拟会越来越笨重。每段轨迹的方向取决于此前撞墙的总次数，而轨迹的端点落在哪面墙上又取决于走过的格距是 <span class="arithmatex">\(p\)</span> 的奇数倍还是偶数倍——撞墙次数一多，端点在哪面墙、哪个角，就不再是显然的了。更要命的是反射点坐标用浮点数累加，长程飞行后误差累积，判断「是否恰好落在角上」会失真。取极端情形 <span class="arithmatex">\(p=1000,\,q=1\)</span>：激光要在东西墙之间来回上千次才到角，逐次模拟既慢又不可靠。</p>
+<p>症结在于：折线本身难处理，但折线之所以是折线，只因为每次撞墙都把方向「掰」了一下。如果撞墙时不掰激光、而是把房间整个翻折过去，激光在翻折后的房间里就继续走直线。下面把这个想法精确化，它会把整道题化为一个关于直线何时穿过格点的算术问题。</p>
 <h2 id="formulation">形式化 (Formulation)<a class="headerlink" href="#formulation" title="Permanent link">#</a></h2>
-<p>镜像展开后，激光在方格平面沿直线斜率 <span class="arithmatex">\(q/p\)</span> 飞行，命中点为 <span class="arithmatex">\((kp, kq)\)</span>，<span class="arithmatex">\(k = 1, 2, \dots\)</span>。设 <span class="arithmatex">\(g = \gcd(p, q)\)</span>，<span class="arithmatex">\(P = p/g\)</span>，<span class="arithmatex">\(Q = q/g\)</span>。最早撞到角的是 <span class="arithmatex">\(k = \text{lcm}(p,q)/q = P\)</span>，对应坐标 <span class="arithmatex">\((pP, qP) = (pP, pQ)\)</span>。</p>
-<p>对方格 <span class="arithmatex">\((a, b)\)</span> 的奇偶判定（以 <span class="arithmatex">\(p\)</span> 为单位）：
-- <span class="arithmatex">\(a\)</span> 奇 <span class="arithmatex">\(\land\)</span> <span class="arithmatex">\(b\)</span> 奇 → 接收器 1（NE）
-- <span class="arithmatex">\(a\)</span> 奇 <span class="arithmatex">\(\land\)</span> <span class="arithmatex">\(b\)</span> 偶 → 接收器 0（SE）
-- <span class="arithmatex">\(a\)</span> 偶 <span class="arithmatex">\(\land\)</span> <span class="arithmatex">\(b\)</span> 奇 → 接收器 2（NW）
-- <span class="arithmatex">\(a\)</span> 偶 <span class="arithmatex">\(\land\)</span> <span class="arithmatex">\(b\)</span> 偶 → 西南角（题目排除）</p>
+<p><strong>从一次反射开始。</strong> 设激光撞上东墙（<span class="arithmatex">\(x=p\)</span>）。物理上它向西反射，<span class="arithmatex">\(x\)</span> 方向速度取反；等价地，保持激光方向不变，把房间沿东墙镜像翻折一份贴到 <span class="arithmatex">\(x\in[p,2p]\)</span>。原房间里反射后的轨迹，与翻折房间里那条没拐弯的直线，逐点重合——因为镜像正是把「入射角等于反射角」翻成了一条直线。对北墙同理。</p>
+<p>把这个翻折在两个方向上无限重复，整个平面被边长 <span class="arithmatex">\(p\)</span> 的方格铺满，每格是原房间的一份镜像。激光在这张格网里是一条从原点出发、斜率 <span class="arithmatex">\(q/p\)</span> 的直线：</p>
+<div class="arithmatex">\[
+y = \frac{q}{p}\,x,\qquad x \ge 0.
+\]</div>
+<p>原房间的四个角，在格网中对应所有坐标为 <span class="arithmatex">\(p\)</span> 的整数倍的格点 <span class="arithmatex">\((ip,\,jp)\)</span>，<span class="arithmatex">\(i,j \in \mathbb{Z}_{\ge 0}\)</span>。<strong>激光击中某接收器，当且仅当这条直线第一次穿过这样一个格点。</strong></p>
+<p><strong>何时穿过格点。</strong> 直线上 <span class="arithmatex">\(x=kp\)</span> 处的高度为 <span class="arithmatex">\(y = (q/p)(kp) = kq\)</span>，<span class="arithmatex">\(k=1,2,\dots\)</span>。要落在格点上，纵坐标 <span class="arithmatex">\(kq\)</span> 也必须是 <span class="arithmatex">\(p\)</span> 的整数倍：</p>
+<div class="arithmatex">\[
+kq \equiv 0 \pmod p. \tag{1}
+\]</div>
+<p>设 <span class="arithmatex">\(g=\gcd(p,q)\)</span>，<span class="arithmatex">\(P=p/g\)</span>，<span class="arithmatex">\(Q=q/g\)</span>（故 <span class="arithmatex">\(\gcd(P,Q)=1\)</span>）。由 (1)，<span class="arithmatex">\(p \mid kq\)</span> 即 <span class="arithmatex">\(P \mid kQ\)</span>；因 <span class="arithmatex">\(\gcd(P,Q)=1\)</span>，必有 <span class="arithmatex">\(P \mid k\)</span>。满足条件的最小正整数是</p>
+<div class="arithmatex">\[
+k_{\min}=P=\frac{p}{g}. \tag{2}
+\]</div>
+<p>此时端点格点为</p>
+<div class="arithmatex">\[
+(kp,\,kq)\big|_{k=P}=(pP,\,qP)=(pP,\,pQ), \tag{3}
+\]</div>
+<p>末式用了 <span class="arithmatex">\(qP=q\cdot\frac p g=p\cdot\frac q g=pQ\)</span>。所以激光首次到角，恰好走过横向 <span class="arithmatex">\(P\)</span> 个、纵向 <span class="arithmatex">\(Q\)</span> 个格子。这里出现 <span class="arithmatex">\(\gcd\)</span> 不是巧合：<span class="arithmatex">\(p,q\)</span> 是两个方向上的步长，<span class="arithmatex">\(g=\gcd(p,q)\)</span> 是同时整除两者的最大公因子，约去后 <span class="arithmatex">\(P,Q\)</span> 是化简步长，<span class="arithmatex">\(k=P\)</span> 正是两个方向首次同时凑齐 <span class="arithmatex">\(p\)</span> 的整数倍、所有反射「对齐」的时刻。</p>
+<p><strong>端点格点对应哪个接收器。</strong> 现在只剩一步：把端点格点 <span class="arithmatex">\((pP,\,pQ)\)</span> 翻译回原房间的某个角。关键在于翻折次数的奇偶。每跨过一个横向格子，房间就被左右翻折一次：跨了偶数格，端点所在格与原房间同向，落在原房间的西墙一侧（<span class="arithmatex">\(x=0\)</span> 那一边的角）；跨了奇数格，端点格是原房间的左右镜像，落在东墙一侧。纵向完全类似，跨过的格子数控制端点落在南墙还是北墙一侧。于是横向格数 <span class="arithmatex">\(P\)</span> 的奇偶决定东/西，纵向格数 <span class="arithmatex">\(Q\)</span> 的奇偶决定北/南：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: center;"><span class="arithmatex">\(P \bmod 2\)</span></th>
+<th style="text-align: center;"><span class="arithmatex">\(Q \bmod 2\)</span></th>
+<th style="text-align: center;">端点角</th>
+<th style="text-align: center;">接收器</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;">奇</td>
+<td style="text-align: center;">奇</td>
+<td style="text-align: center;">东北 (NE)</td>
+<td style="text-align: center;">1</td>
+</tr>
+<tr>
+<td style="text-align: center;">奇</td>
+<td style="text-align: center;">偶</td>
+<td style="text-align: center;">东南 (SE)</td>
+<td style="text-align: center;">0</td>
+</tr>
+<tr>
+<td style="text-align: center;">偶</td>
+<td style="text-align: center;">奇</td>
+<td style="text-align: center;">西北 (NW)</td>
+<td style="text-align: center;">2</td>
+</tr>
+<tr>
+<td style="text-align: center;">偶</td>
+<td style="text-align: center;">偶</td>
+<td style="text-align: center;">西南 (SW)</td>
+<td style="text-align: center;">发射点，不可能</td>
+</tr>
+</tbody>
+</table>
+<p>最后一行不会发生：<span class="arithmatex">\(P,Q\)</span> 互素，不可能同为偶数，故端点绝不会回到发射的西南角。三种合法情形与接收器编号一一对应。</p>
 <h2 id="approach">数据结构 / 想法 (Approach)<a class="headerlink" href="#approach" title="Permanent link">#</a></h2>
-<p><strong>核心：奇偶性分析</strong> 设 <span class="arithmatex">\(g = \gcd(p, q)\)</span>，则在 <span class="arithmatex">\(x = p \cdot P\)</span> 处第一次到角，纵坐标为 <span class="arithmatex">\(q \cdot P\)</span>。令 <span class="arithmatex">\(a = P, b = Q\)</span>（已互素），不可能同时为偶数。</p>
+<p>形式化已给出完整算法：求 <span class="arithmatex">\(g=\gcd(p,q)\)</span>，取 <span class="arithmatex">\(P=p/g\)</span>、<span class="arithmatex">\(Q=q/g\)</span>，按 (3) 端点格点的横纵格数 <span class="arithmatex">\(P,Q\)</span> 的奇偶查表即得答案。只需一次 Euclid 求 <span class="arithmatex">\(\gcd\)</span>，无需任何模拟。</p>
 <div class="language-python highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">math</span><span class="w"> </span><span class="kn">import</span> <span class="n">gcd</span>
 <span class="k">class</span><span class="w"> </span><span class="nc">Solution</span><span class="p">:</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">mirrorReflection</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">p</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">q</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
         <span class="n">g</span> <span class="o">=</span> <span class="n">gcd</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">q</span><span class="p">)</span>
-        <span class="n">a</span> <span class="o">=</span> <span class="n">p</span> <span class="o">//</span> <span class="n">g</span>  <span class="c1"># 横向跨越的格子数</span>
-        <span class="n">b</span> <span class="o">=</span> <span class="n">q</span> <span class="o">//</span> <span class="n">g</span>  <span class="c1"># 纵向跨越的格子数</span>
-        <span class="c1"># a, b 互素，不可能都偶</span>
-        <span class="k">if</span> <span class="n">a</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">1</span> <span class="ow">and</span> <span class="n">b</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span> <span class="k">return</span> <span class="mi">1</span>
-        <span class="k">if</span> <span class="n">a</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">1</span> <span class="ow">and</span> <span class="n">b</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span> <span class="k">return</span> <span class="mi">0</span>
-        <span class="k">return</span> <span class="mi">2</span>  <span class="c1"># a 偶 b 奇</span>
+        <span class="n">a</span> <span class="o">=</span> <span class="n">p</span> <span class="o">//</span> <span class="n">g</span>  <span class="c1"># 横向跨越的格子数 P</span>
+        <span class="n">b</span> <span class="o">=</span> <span class="n">q</span> <span class="o">//</span> <span class="n">g</span>  <span class="c1"># 纵向跨越的格子数 Q</span>
+        <span class="c1"># a, b 互素，不可能同为偶数</span>
+        <span class="k">if</span> <span class="n">a</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">1</span> <span class="ow">and</span> <span class="n">b</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span> <span class="k">return</span> <span class="mi">1</span>  <span class="c1"># 奇奇 → NE</span>
+        <span class="k">if</span> <span class="n">a</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">1</span> <span class="ow">and</span> <span class="n">b</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span> <span class="k">return</span> <span class="mi">0</span>  <span class="c1"># 奇偶 → SE</span>
+        <span class="k">return</span> <span class="mi">2</span>                                <span class="c1"># 偶奇 → NW</span>
 </code></pre></div>
-<p>样例 1：<span class="arithmatex">\(p=2, q=1\)</span>，<span class="arithmatex">\(g=1, a=2, b=1\)</span> → 接收器 2。
-样例 2：<span class="arithmatex">\(p=3, q=1\)</span>，<span class="arithmatex">\(g=1, a=3, b=1\)</span> → 接收器 1。</p>
-<p><strong>为什么 unfolding 正确</strong>：每次撞墙反射，等价于把房间沿撞墙方向"翻折"一次；连续翻折后激光仍是直线。第 <span class="arithmatex">\(k\)</span> 次纵向跨越偶数次时回到南墙 <span class="arithmatex">\(y\)</span> 坐标，奇数次时到北墙，横向类似。</p>
+<p>代码中 <code>a, b</code> 即形式化里的 <span class="arithmatex">\(P, Q\)</span>，三个 <code>return</code> 分支正是奇偶表的三种合法情形（奇偶 / 偶奇 / 奇奇），第四种偶偶因互素被排除，无需分支。</p>
+<p>样例 1：<span class="arithmatex">\(p=2,\,q=1\)</span>，<span class="arithmatex">\(g=1,\,P=2,\,Q=1\)</span>（偶奇）→ 接收器 2。
+样例 2：<span class="arithmatex">\(p=3,\,q=1\)</span>，<span class="arithmatex">\(g=1,\,P=3,\,Q=1\)</span>（奇奇）→ 接收器 1。</p>
 <h2 id="complexity">复杂度 (Complexity)<a class="headerlink" href="#complexity" title="Permanent link">#</a></h2>
 <ul>
 <li>Time: <span class="arithmatex">\(O(\log \min(p, q))\)</span>（Euclid 求 gcd）</li>
@@ -22498,9 +22581,9 @@
 </ul>
 <h2 id="pitfalls">陷阱 (Pitfalls)<a class="headerlink" href="#pitfalls" title="Permanent link">#</a></h2>
 <ul>
-<li>直接模拟反射会非常慢且有浮点误差；必须用 gcd 跳到答案。</li>
+<li>直接模拟反射复杂度高且引入浮点误差（如 <span class="arithmatex">\(p=1000,q=1\)</span> 需上千次撞墙）；利用 <span class="arithmatex">\(\gcd\)</span> 由 (2)(3) 直接算出终点格点，避开模拟。</li>
 <li>注意 <span class="arithmatex">\(p, q\)</span> 可同为大数，但因 <span class="arithmatex">\(\gcd(p, q)\)</span> 必非零（<span class="arithmatex">\(q \ge 1\)</span>），不会除零。</li>
-<li>区分接收器编号：题面"0=SE, 1=NE, 2=NW"，西南角是发射点（无接收器）。</li>
+<li>区分接收器编号：题面「0=SE, 1=NE, 2=NW」，西南角是发射点（无接收器），与奇偶表最后一行排除的情形一致。</li>
 </ul>
 <h2 id="related">相关题目 (Related)<a class="headerlink" href="#related" title="Permanent link">#</a></h2>
 <ul>
@@ -22510,7 +22593,7 @@
 <h2 id="further-reading">Further Reading<a class="headerlink" href="#further-reading" title="Permanent link">#</a></h2>
 <ul>
 <li>cp-algorithms.com/algebra/euclid-algorithm.html — Euclid 算法与同余基础。</li>
-<li>Wikipedia: Dynamical billiards — billiard 系统的展开技巧来源。</li>
+<li>Wikipedia: Dynamical billiards — 本题的翻折构造即方形弹球的 unfolding，可追溯到 König 与 Szücs (1913)；该技巧在量子混沌与光线追踪中亦有应用。</li>
 <li>Concrete Mathematics (2e), Graham/Knuth/Patashnik, §4 "Number Theory" — gcd 与互素的代数性质。</li>
 </ul>
 
@@ -22618,6 +22701,8 @@
         <script src="../../../js/mathjax/tex-mml-chtml.js"></script>
       
         <script src="../../../js/mermaid.min.js"></script>
+      
+        <script src="../../../js/featured.js"></script>
       
     
   </body>

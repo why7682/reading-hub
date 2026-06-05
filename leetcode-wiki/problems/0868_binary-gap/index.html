@@ -1466,6 +1466,8 @@
       
         
       
+        
+      
     
     
     
@@ -1521,6 +1523,34 @@
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../featured/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ⭐ Featured（已验证）
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
               
             
               
@@ -1610,10 +1640,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_4" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
         
           
-          <label class="md-nav__link" for="__nav_4_4" id="__nav_4_4_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_5" id="__nav_4_5_label" tabindex="">
             
   
   
@@ -1631,8 +1661,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_4_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_4">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_5">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1915,7 +1945,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -1937,14 +1967,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_4_5" id="__nav_4_5_label" tabindex="">
+              <label class="md-nav__link " for="__nav_4_6" id="__nav_4_6_label" tabindex="">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_5">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_6">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -5321,10 +5351,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_7" checked>
         
           
-          <label class="md-nav__link" for="__nav_4_6" id="__nav_4_6_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_7" id="__nav_4_7_label" tabindex="">
             
   
   
@@ -5342,8 +5372,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_4_6">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_7_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4_7">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -22467,11 +22497,42 @@
 <h2 id="problem">Problem<a class="headerlink" href="#problem" title="Permanent link">#</a></h2>
 <p>给正整数 <span class="arithmatex">\(n\)</span>，求二进制表示中<strong>相邻</strong>两个 1 之间的最远距离（位差绝对值）。若不存在两个 1，返回 0。<span class="arithmatex">\(1 \le n \le 10^9\)</span>。</p>
 <h2 id="background">背景 (Background)<a class="headerlink" href="#background" title="Permanent link">#</a></h2>
-<p>本题为基础位运算遍历，无特殊学科背景。可视作 run-length encoding（连续 0 段长度的最大值 + 1）的特例。</p>
+<p>问题只关心 <span class="arithmatex">\(n\)</span> 的二进制里 1 出现在哪些位置。把这些位置按从低到高排好，所求的量完全由相邻两个位置的间隔决定——其余结构（具体是哪些位、中间有多少个 0）都不影响答案。这一观察直接决定了形式化的对象：set-bit 的位置集合，以及其中相邻元素的差。</p>
 <h2 id="formulation">形式化 (Formulation)<a class="headerlink" href="#formulation" title="Permanent link">#</a></h2>
-<p>设 <span class="arithmatex">\(n\)</span> 的二进制位 <span class="arithmatex">\(b_0, b_1, \dots\)</span>（<span class="arithmatex">\(b_0\)</span> 为 LSB），令 <span class="arithmatex">\(P = \{i : b_i = 1\}\)</span>。返回 <span class="arithmatex">\(\max\{j - i : i, j \in P, j &gt; i, \forall k \in (i,j),\ b_k = 0\}\)</span>，若 <span class="arithmatex">\(|P| &lt; 2\)</span> 返回 0。等价于 <span class="arithmatex">\(\max\)</span> 相邻 1 位置差。</p>
+<p><strong>直觉</strong>：先把"相邻的 1"说清楚。从低位向高位扫，每遇到一个 1，它和"上一个 1"之间夹着的全是 0；这一对就是一对相邻的 1，它们的位置差是一个候选距离。答案是所有这种候选距离里最大的那个。注意"相邻"指的不是物理上挨着的两个位，而是中间不再有别的 1——这正是把它们配成一对的条件。</p>
+<p>设 <span class="arithmatex">\(n\)</span> 的二进制位为 <span class="arithmatex">\(b_0, b_1, \dots\)</span>（<span class="arithmatex">\(b_0\)</span> 为 LSB），令</p>
+<div class="arithmatex">\[
+P = \{\, i : b_i = 1 \,\}.
+\]</div>
+<p>所求为相邻 set-bit 位置的最大差：</p>
+<div class="arithmatex">\[
+\mathrm{ans} = \max\{\, j - i : i, j \in P,\ j &gt; i,\ \forall k \in (i,j)\ b_k = 0 \,\},
+\]</div>
+<p>当 <span class="arithmatex">\(|P| &lt; 2\)</span> 时定义 <span class="arithmatex">\(\mathrm{ans} = 0\)</span>。</p>
+<p>这里 <span class="arithmatex">\(\forall k \in (i,j)\ b_k = 0\)</span> 就是"<span class="arithmatex">\(i\)</span> 与 <span class="arithmatex">\(j\)</span> 之间没有别的 1"，即把 <span class="arithmatex">\(i,j\)</span> 配成相邻一对的条件。把 <span class="arithmatex">\(P\)</span> 的元素从小到大写成 <span class="arithmatex">\(p_0 &lt; p_1 &lt; \dots &lt; p_{m-1}\)</span>，则满足该条件的 <span class="arithmatex">\((i,j)\)</span> 恰好是连续元素对 <span class="arithmatex">\((p_t, p_{t+1})\)</span>。于是</p>
+<div class="arithmatex">\[
+\mathrm{ans} = \max_{0 \le t &lt; m-1} (p_{t+1} - p_t),
+\]</div>
+<p>即 <strong><span class="arithmatex">\(P\)</span> 中相邻元素差的最大值</strong>。形式化到此已经把问题化简为一维问题：给一串递增整数，求相邻差的最大值。</p>
 <h2 id="approach">数据结构 / 想法 (Approach)<a class="headerlink" href="#approach" title="Permanent link">#</a></h2>
-<p><strong>单次遍历位</strong>：记录上一个 1 的位置，遇到当前 1 时更新答案。</p>
+<p><strong>朴素解法：两遍扫描。</strong> 形式化几乎是字面可执行的。第一遍从低位扫到高位，把所有满足 <span class="arithmatex">\(b_i = 1\)</span> 的下标收集进列表 <span class="arithmatex">\(P = [p_0, p_1, \dots]\)</span>；第二遍遍历相邻对，取 <span class="arithmatex">\(\max(p_{t+1} - p_t)\)</span>。</p>
+<div class="language-python highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">Solution</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">binaryGap</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+        <span class="n">P</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">while</span> <span class="n">n</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">n</span> <span class="o">&amp;</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="n">P</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+            <span class="n">n</span> <span class="o">&gt;&gt;=</span> <span class="mi">1</span>
+            <span class="n">i</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="n">ans</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">P</span><span class="p">)):</span>
+            <span class="n">ans</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">ans</span><span class="p">,</span> <span class="n">P</span><span class="p">[</span><span class="n">t</span><span class="p">]</span> <span class="o">-</span> <span class="n">P</span><span class="p">[</span><span class="n">t</span> <span class="o">-</span> <span class="mi">1</span><span class="p">])</span>
+        <span class="k">return</span> <span class="n">ans</span>
+</code></pre></div>
+<p>这已经正确，时间 <span class="arithmatex">\(O(\log n)\)</span>。代价是显式存下了整个 <span class="arithmatex">\(P\)</span>，空间 <span class="arithmatex">\(O(\log n)\)</span>。</p>
+<p><strong>为何能去掉 <span class="arithmatex">\(P\)</span>。</strong> 答案 <span class="arithmatex">\(\max_t (p_{t+1} - p_t)\)</span> 是一组相邻差的最大值，而每个差 <span class="arithmatex">\(p_{t+1} - p_t\)</span> 只用到一对<strong>相邻</strong>元素。从低位向高位扫到 <span class="arithmatex">\(p_{t+1}\)</span> 时，它需要的另一项恰是上一个 set-bit <span class="arithmatex">\(p_t\)</span>，也就是扫描过程中最近一次见到的 1。更早的 <span class="arithmatex">\(p_0, \dots, p_{t-1}\)</span> 对计算 <span class="arithmatex">\(p_{t+1}-p_t\)</span> 没有用：它们离 <span class="arithmatex">\(p_{t+1}\)</span> 更远，不参与与 <span class="arithmatex">\(p_{t+1}\)</span> 配对的那个相邻差。因此无需保留整个列表，只需记住"上一个 1 的位置"这一个值。</p>
+<p><strong>单次遍历位。</strong> 用变量 <code>last</code> 保存上一个 1 的位置。每遇到一个 1，就用 <code>i - last</code> 更新答案，再把 <code>last</code> 推进到当前位。剩下一个边界问题：扫到第一个 1 时根本没有"上一个 1"，此时不应产生候选距离。用哨兵 <code>last = -1</code> 表示"尚未见到任何 1"，因为有效位下标都 <span class="arithmatex">\(\ge 0\)</span>，所以 <code>last &gt;= 0</code> 恰好区分了这两种情形——这也自然处理了 <span class="arithmatex">\(|P| &lt; 2\)</span>（只有一个 1 时永远进不了更新分支，返回初值 0）。</p>
 <div class="language-python highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">Solution</span><span class="p">:</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">binaryGap</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
         <span class="n">ans</span> <span class="o">=</span> <span class="mi">0</span>
@@ -22486,19 +22547,20 @@
             <span class="n">i</span> <span class="o">+=</span> <span class="mi">1</span>
         <span class="k">return</span> <span class="n">ans</span>
 </code></pre></div>
+<p>代码与形式化逐项对应：<code>i</code> 是当前扫描到的位下标，<code>last</code> 是上一个 set-bit（即 <span class="arithmatex">\(P\)</span> 中当前元素的前驱 <span class="arithmatex">\(p_t\)</span>），<code>i - last</code> 就是相邻差 <span class="arithmatex">\(p_{t+1} - p_t\)</span>，<code>ans</code> 累积它们的最大值。空间降到 <span class="arithmatex">\(O(1)\)</span>。</p>
 <p>样例：
 - <span class="arithmatex">\(n=22 = 10110_2\)</span>。位 1, 2, 4 是 1。差 = <span class="arithmatex">\(2-1=1, 4-2=2\)</span> → max 2。✓
-- <span class="arithmatex">\(n=8 = 1000_2\)</span>。仅一个 1，返回 0。✓
+- <span class="arithmatex">\(n=8 = 1000_2\)</span>。仅一个 1，<code>last &gt;= 0</code> 从不成立，返回 0。✓
 - <span class="arithmatex">\(n=5 = 101_2\)</span>。差 = <span class="arithmatex">\(2-0=2\)</span>。✓</p>
 <h2 id="complexity">复杂度 (Complexity)<a class="headerlink" href="#complexity" title="Permanent link">#</a></h2>
 <ul>
-<li>Time: <span class="arithmatex">\(O(\log n)\)</span>（位数）</li>
-<li>Space: <span class="arithmatex">\(O(1)\)</span></li>
+<li>Time: <span class="arithmatex">\(O(\log n)\)</span>——循环对每个位执行一次，直到最高 set-bit，共 <span class="arithmatex">\(\lfloor \log_2 n \rfloor + 1\)</span> 次；位模式不影响迭代次数，best/avg/worst 相同。</li>
+<li>Space: <span class="arithmatex">\(O(1)\)</span>。</li>
 </ul>
 <h2 id="pitfalls">陷阱 (Pitfalls)<a class="headerlink" href="#pitfalls" title="Permanent link">#</a></h2>
 <ul>
-<li>"相邻 1"指中间无其它 1（可含 0），不是连续位；逻辑上等价于"任意两个 1 中相距最远的相邻一对"。</li>
-<li>单个 1（如 <span class="arithmatex">\(n = 2^k\)</span>）需返回 0，注意 <code>last = -1</code> 哨兵。</li>
+<li>"相邻 1"指两个 1 之间不再有别的 1（中间可含若干 0），不是物理上连续的两位。这一点已写进形式化的条件 <span class="arithmatex">\(\forall k \in (i,j)\ b_k = 0\)</span>，并直接决定了为何只需与"最近一个 1"配对。</li>
+<li>哨兵 <code>last = -1</code> 是这条逻辑的落地：它把"尚未见到 1"与任何有效位下标（<span class="arithmatex">\(\ge 0\)</span>）区分开。去掉哨兵、或用 <code>last = 0</code> 初始化，会让第一个 1 凭空产生一个错误的候选距离。</li>
 </ul>
 <h2 id="related">相关题目 (Related)<a class="headerlink" href="#related" title="Permanent link">#</a></h2>
 <ul>
@@ -22612,6 +22674,8 @@
         <script src="../../../js/mathjax/tex-mml-chtml.js"></script>
       
         <script src="../../../js/mermaid.min.js"></script>
+      
+        <script src="../../../js/featured.js"></script>
       
     
   </body>

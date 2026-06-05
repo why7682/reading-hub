@@ -1466,6 +1466,8 @@
       
         
       
+        
+      
     
     
     
@@ -1521,6 +1523,34 @@
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../featured/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ⭐ Featured（已验证）
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
               
             
               
@@ -1610,10 +1640,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_4" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
         
           
-          <label class="md-nav__link" for="__nav_4_4" id="__nav_4_4_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_5" id="__nav_4_5_label" tabindex="">
             
   
   
@@ -1631,8 +1661,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_4_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_4">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_5">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1915,7 +1945,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -1937,14 +1967,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_4_5" id="__nav_4_5_label" tabindex="">
+              <label class="md-nav__link " for="__nav_4_6" id="__nav_4_6_label" tabindex="">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_5">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_6">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -5321,10 +5351,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_7" checked>
         
           
-          <label class="md-nav__link" for="__nav_4_6" id="__nav_4_6_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_7" id="__nav_4_7_label" tabindex="">
             
   
   
@@ -5342,8 +5372,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_4_6">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_7_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4_7">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -22466,65 +22496,91 @@
 <p><strong>Tags</strong>: Array, Two Pointers</p>
 <h2 id="problem">Problem<a class="headerlink" href="#problem" title="Permanent link">#</a></h2>
 <p>定长数组 <code>arr</code>，把每个 <code>0</code> 复制一份并把后续元素右移；超出数组长度的部分丢弃。原地修改。<span class="arithmatex">\(1 \leq n \leq 10^4\)</span>，<span class="arithmatex">\(0 \leq a_i \leq 9\)</span>。</p>
+<p>具体地，<code>arr = [1, 0, 2]</code> 应变为 <code>[1, 0, 0]</code>：第二个 <code>0</code> 是新复制出来的，它把 <code>2</code> 挤出了数组右端，<code>2</code> 被丢弃。</p>
 <h2 id="background">背景 (Background)<a class="headerlink" href="#background" title="Permanent link">#</a></h2>
-<p>本题考察「<strong>原地数组移位</strong>」与「<strong>双指针从右往左写</strong>」技巧。从左到右覆写会破坏未读数据；改为先算"扩展后的长度被截到原长 <span class="arithmatex">\(n\)</span> 的最后一个有效输入位置"，再从右往左写——避免临时数组。同模式在 #88 Merge Sorted Array、#283 Move Zeroes 中常见，是工程中 in-place 操作的入门。</p>
+<p>先看最直接的做法，并看它在哪里坏掉——修正它的需求会逼出整个算法。</p>
+<p><strong>朴素尝试一：就地从左往右扩展。</strong> 从左扫描，每遇到一个 <code>0</code>，就把它右边的所有元素整体右移一位，再在原位填入复制的 <code>0</code>。每次移位是 <span class="arithmatex">\(O(n)\)</span>，最坏情况（全是 <code>0</code>）有 <span class="arithmatex">\(\Theta(n)\)</span> 次移位，总复杂度 <span class="arithmatex">\(O(n^2)\)</span>。功能正确，但慢，且在 <span class="arithmatex">\(n = 10^4\)</span> 时移位次数接近 <span class="arithmatex">\(10^8\)</span>。我们希望单趟 <span class="arithmatex">\(O(n)\)</span>。</p>
+<p><strong>朴素尝试二：就地从左往右单趟覆写。</strong> 用一个读指针 <span class="arithmatex">\(i\)</span> 和写指针 <span class="arithmatex">\(w\)</span>，从左端同时出发。读到非零就 <code>arr[w] = arr[i]</code>；读到 <code>0</code> 就写两个零（<code>w</code> 前进两步）。问题在于：每遇到一个 <code>0</code>，<code>w</code> 比 <code>i</code> 多走一步，于是 <code>w</code> 领先于 <code>i</code>。当我们执行 <code>arr[w] = ...</code> 时，被覆盖的 <code>arr[w]</code> 是 <span class="arithmatex">\(i\)</span> 尚未读到的原始数据。</p>
+<p>最小反例：<code>arr = [0, 1]</code>。读 <code>arr[0]=0</code>，写两个零：<code>arr[0]=0</code>、<code>arr[1]=0</code>，此时 <code>arr</code> 已变成 <code>[0, 0]</code>；但 <code>arr[1]</code> 原本的 <code>1</code> 在被读到之前就被销毁了。正确答案是 <code>[0, 0]</code>（<code>1</code> 本就该被挤出），这个例子凑巧对，但 <code>arr = [0, 1, 2]</code> 就会读到已被污染的 <code>arr[1]</code>。</p>
+<p><strong>坏在哪。</strong> 朴素尝试二的失败点是精确的：写指针领先读指针，覆盖了未读数据。要修复它，只需让写操作永远不落在未读数据上。注意一个结构性事实——扩展只会把数组变长，被丢弃的总在右端，所以<strong>输出右端的每个位置，其内容只依赖于原数组中下标 <span class="arithmatex">\(\le\)</span> 它的元素</strong>。如果我们从右端往左写，写指针会始终等于或落后于读指针（在原数组坐标里），永不覆盖未读数据。这就是把扫描方向倒过来的全部理由。</p>
+<p>要从右往左写，必须先知道"从哪个原下标开始读"——即原数组中最后一个仍落在输出内的元素。这个下标需要先求出来。下一节先把"输出长什么样"形式化，再据此把读写指针的关系推导出来。</p>
 <h2 id="formulation">形式化 (Formulation)<a class="headerlink" href="#formulation" title="Permanent link">#</a></h2>
-<p>设 <span class="arithmatex">\(a = (a_0, \dots, a_{n-1})\)</span>。定义扩展序列 <span class="arithmatex">\(b\)</span>：把每个 <span class="arithmatex">\(a_i = 0\)</span> 替换为 <span class="arithmatex">\((0, 0)\)</span>。令 <span class="arithmatex">\(b' = b[0 : n]\)</span>。要求 <code>arr</code> 修改后等于 <span class="arithmatex">\(b'\)</span>。</p>
+<p>设 <span class="arithmatex">\(a = (a_0, \dots, a_{n-1})\)</span>。定义扩展序列 <span class="arithmatex">\(b\)</span>：从左到右遍历 <span class="arithmatex">\(a\)</span>，每个 <span class="arithmatex">\(a_i\)</span> 写入 <span class="arithmatex">\(b\)</span>；若 <span class="arithmatex">\(a_i = 0\)</span>，则紧接着再写一个 <span class="arithmatex">\(0\)</span>。令 <span class="arithmatex">\(b' = b[0 : n]\)</span>（取前 <span class="arithmatex">\(n\)</span> 项）。要求 <code>arr</code> 修改后等于 <span class="arithmatex">\(b'\)</span>。</p>
+<p>核心是 <span class="arithmatex">\(a\)</span> 的下标到 <span class="arithmatex">\(b\)</span> 的下标的映射。设
+$$
+z(i) = #{\, j &lt; i : a_j = 0 \,}
+$$
+为 <span class="arithmatex">\(a_0, \dots, a_{i-1}\)</span> 中 <code>0</code> 的个数。则 <span class="arithmatex">\(a_i\)</span> 在 <span class="arithmatex">\(b\)</span> 中落在位置
+$$
+p(i) = i + z(i),
+$$
+因为它前面的每个 <code>0</code> 都额外占了一格。这个映射是关于 <span class="arithmatex">\(i\)</span> 严格递增的（<span class="arithmatex">\(i\)</span> 增 <span class="arithmatex">\(1\)</span>，<span class="arithmatex">\(p\)</span> 至少增 <span class="arithmatex">\(1\)</span>），因此可逆，也因此"哪些原元素落在 <span class="arithmatex">\(b'\)</span> 内"由一个阈值决定：<span class="arithmatex">\(a_i\)</span> 出现在 <span class="arithmatex">\(b'\)</span> 中当且仅当 <span class="arithmatex">\(p(i) &lt; n\)</span>。</p>
+<p>定义 <span class="arithmatex">\(i^\* = \max\{\, i : p(i) &lt; n \,\}\)</span>，即最后一个本体落在窗口 <span class="arithmatex">\([0, n)\)</span> 内的原下标。整个算法就是计算 <span class="arithmatex">\(i^\*\)</span>，再把 <span class="arithmatex">\(a_0, \dots, a_{i^\*}\)</span> 按扩展规则写进 <span class="arithmatex">\(b'\)</span>。</p>
 <h2 id="approach">数据结构 / 想法 (Approach)<a class="headerlink" href="#approach" title="Permanent link">#</a></h2>
-<p><strong>两步</strong>：
-1. <strong>找到「写入终点」对应的原索引</strong> <span class="arithmatex">\(i^*\)</span>：模拟扩展长度计数器 <code>pad</code>，从 <span class="arithmatex">\(i=0\)</span> 起累加，当 <code>i + pad &gt;= n</code> 时停。<code>pad</code> 即新生的 0 数。
-2. <strong>从右往左双指针写</strong>：读指针 <span class="arithmatex">\(i = i^*\)</span>，写指针 <span class="arithmatex">\(w = n - 1\)</span>。若 <code>arr[i] == 0</code> 写两次零；否则写一次该值。</p>
-<p><strong>边界</strong>：若停止时 <code>i + pad == n</code> 且 <code>arr[i] == 0</code> 且 <code>arr[i]+其复制</code> 中复制部分恰好落在 <span class="arithmatex">\(n\)</span> 外，需要在写时只写一个 0（首字符），跳过其副本。</p>
+<p>算法分两趟，都从形式化直接读出。</p>
+<p><strong>第一趟：求 <span class="arithmatex">\(i^\*\)</span>。</strong> 沿用 <span class="arithmatex">\(p(i) = i + z(i)\)</span>。引入计数器 <code>out</code>，表示 <span class="arithmatex">\(a_0, \dots, a_{i-1}\)</span> 在输出中已占用的格数——正是 <span class="arithmatex">\(p(i)\)</span>。从 <span class="arithmatex">\(i = 0\)</span>、<code>out = 0</code> 起，逐个考虑 <span class="arithmatex">\(a_i\)</span> 占用的格数 <code>step</code>（<code>0</code> 占两格，否则一格）。只要 <code>out + step &lt;= n</code>，这个元素的本体确定落在窗口内，累加 <code>out</code>、前进 <span class="arithmatex">\(i\)</span>。第一次出现 <code>out + step &gt; n</code>，说明 <span class="arithmatex">\(a_i\)</span> 是个 <code>0</code>，但它的两格里只有第一格（本体）落在 <span class="arithmatex">\(n\)</span> 内、复制格溢出——这就是<strong>截断的 0</strong>：本体写一次，副本丢弃。</p>
+<p><strong>第二趟：从右往左双指针写。</strong> 读指针 <span class="arithmatex">\(i\)</span> 从 <span class="arithmatex">\(i^\*\)</span> 出发，写指针 <span class="arithmatex">\(w\)</span> 从 <span class="arithmatex">\(n - 1\)</span> 出发，二者同向左移。由 <span class="arithmatex">\(p\)</span> 递增，<span class="arithmatex">\(w\)</span> 在原坐标里始终 <span class="arithmatex">\(\ge i\)</span>（第一趟的不变量保证读区间 <span class="arithmatex">\([0, i^\*]\)</span> 恰好填满 <span class="arithmatex">\([0, n)\)</span>），故写操作永不落在未读数据上——这正是朴素尝试二缺失的性质。若 <code>arr[i] == 0</code> 写两个零，否则写一次该值。若存在截断的 <code>0</code>，先在 <span class="arithmatex">\(w = n - 1\)</span> 单独写一个 <code>0</code> 并把它从读区间剔除，再进入主循环。</p>
 <div class="language-python highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">Solution</span><span class="p">:</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">duplicateZeros</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">arr</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">arr</span><span class="p">)</span>
-        <span class="n">i</span><span class="p">,</span> <span class="n">pad</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span>
-        <span class="c1"># 找到最后一个被保留的原下标 i*；pad 是要插入的 0 数</span>
-        <span class="k">while</span> <span class="n">i</span> <span class="o">+</span> <span class="n">pad</span> <span class="o">&lt;</span> <span class="n">n</span> <span class="o">-</span> <span class="mi">1</span><span class="p">:</span>
-            <span class="k">if</span> <span class="n">arr</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-                <span class="n">pad</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="c1"># 第一趟：out = p(i) 是 a[0..i-1] 占用的输出格数；求最后一个本体落在窗口内的 i*。</span>
+        <span class="n">i</span><span class="p">,</span> <span class="n">out</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span>
+        <span class="n">truncated_zero</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="k">while</span> <span class="n">out</span> <span class="o">&lt;</span> <span class="n">n</span><span class="p">:</span>
+            <span class="n">step</span> <span class="o">=</span> <span class="mi">2</span> <span class="k">if</span> <span class="n">arr</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span> <span class="k">else</span> <span class="mi">1</span>
+            <span class="k">if</span> <span class="n">out</span> <span class="o">+</span> <span class="n">step</span> <span class="o">&gt;</span> <span class="n">n</span><span class="p">:</span>          <span class="c1"># arr[i] 是 0，仅本体落入窗口，副本溢出</span>
+                <span class="n">truncated_zero</span> <span class="o">=</span> <span class="kc">True</span>
+                <span class="k">break</span>
+            <span class="n">out</span> <span class="o">+=</span> <span class="n">step</span>
+            <span class="k">if</span> <span class="n">out</span> <span class="o">==</span> <span class="n">n</span><span class="p">:</span>                <span class="c1"># 恰好填满，i 即 i*</span>
+                <span class="k">break</span>
             <span class="n">i</span> <span class="o">+=</span> <span class="mi">1</span>
-        <span class="c1"># 边界：i + pad == n - 1 且 arr[i] == 0，最后那个 0 只能写一次（其副本被丢）</span>
+        <span class="n">i_star</span> <span class="o">=</span> <span class="n">i</span>
+        <span class="c1"># 第二趟：从右往左写。</span>
         <span class="n">w</span> <span class="o">=</span> <span class="n">n</span> <span class="o">-</span> <span class="mi">1</span>
-        <span class="k">if</span> <span class="n">i</span> <span class="o">+</span> <span class="n">pad</span> <span class="o">==</span> <span class="n">n</span> <span class="ow">and</span> <span class="n">arr</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>  <span class="c1"># 注意：若我们多走了一步导致 pad 超</span>
-            <span class="c1"># 实际不会进入：循环条件防止</span>
-            <span class="k">pass</span>
-        <span class="c1"># 处理：判断最后一个位置是否是&quot;被截断的 0 的副本&quot;</span>
-        <span class="n">special_truncated</span> <span class="o">=</span> <span class="kc">False</span>
-        <span class="k">if</span> <span class="n">arr</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">i</span> <span class="o">+</span> <span class="n">pad</span> <span class="o">==</span> <span class="n">n</span> <span class="o">-</span> <span class="mi">1</span> <span class="ow">and</span> <span class="n">pad</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
-            <span class="c1"># 检查：如果 i 这一位是 0，&quot;i+pad&quot;是新数组末尾——它就是这个 0 的本体</span>
-            <span class="c1"># 副本会在 n 之外，所以应该写一个 0 而非两个</span>
+        <span class="k">if</span> <span class="n">truncated_zero</span><span class="p">:</span>              <span class="c1"># 截断的 0：本体只写一次</span>
             <span class="n">arr</span><span class="p">[</span><span class="n">w</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
             <span class="n">w</span> <span class="o">-=</span> <span class="mi">1</span>
-            <span class="n">i</span> <span class="o">-=</span> <span class="mi">1</span>
-            <span class="n">special_truncated</span> <span class="o">=</span> <span class="kc">True</span>
-        <span class="k">while</span> <span class="n">i</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">i_star</span> <span class="o">-=</span> <span class="mi">1</span>
+        <span class="n">i</span> <span class="o">=</span> <span class="n">i_star</span>
+        <span class="k">while</span> <span class="n">i</span> <span class="o">&gt;=</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">w</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">arr</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
                 <span class="n">arr</span><span class="p">[</span><span class="n">w</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">w</span> <span class="o">-=</span> <span class="mi">1</span>
-                <span class="n">arr</span><span class="p">[</span><span class="n">w</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">w</span> <span class="o">-=</span> <span class="mi">1</span>
+                <span class="k">if</span> <span class="n">w</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">:</span>
+                    <span class="n">arr</span><span class="p">[</span><span class="n">w</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">w</span> <span class="o">-=</span> <span class="mi">1</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">arr</span><span class="p">[</span><span class="n">w</span><span class="p">]</span> <span class="o">=</span> <span class="n">arr</span><span class="p">[</span><span class="n">i</span><span class="p">];</span> <span class="n">w</span> <span class="o">-=</span> <span class="mi">1</span>
             <span class="n">i</span> <span class="o">-=</span> <span class="mi">1</span>
 </code></pre></div>
-<p><strong>手动 trace 样例 1</strong>：<code>arr=[1,0,2,3,0,4,5,0]</code>, n=8。
-循环：i=0, pad=0, 1+0&lt;7 进; arr[0]=1, i=1, pad=0; arr[1]=0, i=2, pad=1; 2+1&lt;7 进; arr[2]=2, i=3, pad=1; 3+1&lt;7 进; arr[3]=3, i=4, pad=1; arr[4]=0, i=5, pad=2; 5+2&lt;7 false。退出，i=5, pad=2，i+pad=7=n-1。arr[5]=4 非 0，进入主循环。w=7。
-- i=5: arr[5]=4, 写 w=7: arr=[1,0,2,3,0,4,5,4], w=6
-- i=4: arr[4]=0, 写 w=6,5: arr=[1,0,2,3,0,4,0,4]→[1,0,2,3,0,0,0,4]，w=4
-- i=3: arr[3]=3, w=4: arr=[1,0,2,3,3,0,0,4], w=3
-- i=2: arr[2]=2, w=3: arr=[1,0,2,2,3,0,0,4], w=2
-- i=1: arr[1]=0, w=2,1: arr=[1,0,0,2,3,0,0,4]→[1,0,0,2,3,0,0,4]，w=0
-- i=0: arr[0]=1, w=0: arr=[1,0,0,2,3,0,0,4], w=-1
-结果 <code>[1,0,0,2,3,0,0,4]</code> ✓</p>
+<p><strong>手动 trace 样例 1</strong>：<code>arr=[1,0,2,3,0,4,5,0]</code>, <span class="arithmatex">\(n=8\)</span>。</p>
+<p>第一趟（求 <span class="arithmatex">\(i^\*\)</span>）：
+- <span class="arithmatex">\(i{=}0\)</span>, <code>out</code><span class="arithmatex">\(=0\)</span>：<code>arr[0]=1</code>, step<span class="arithmatex">\(=1\)</span>, out<span class="arithmatex">\(+1=1\le 8\)</span> → out<span class="arithmatex">\(=1\)</span>, <span class="arithmatex">\(i{=}1\)</span>
+- <span class="arithmatex">\(i{=}1\)</span>：<code>arr[1]=0</code>, step<span class="arithmatex">\(=2\)</span>, out<span class="arithmatex">\(+2=3\le 8\)</span> → out<span class="arithmatex">\(=3\)</span>, <span class="arithmatex">\(i{=}2\)</span>
+- <span class="arithmatex">\(i{=}2\)</span>：<code>arr[2]=2</code>, step<span class="arithmatex">\(=1\)</span>, out<span class="arithmatex">\(=4\)</span>, <span class="arithmatex">\(i{=}3\)</span>
+- <span class="arithmatex">\(i{=}3\)</span>：<code>arr[3]=3</code>, step<span class="arithmatex">\(=1\)</span>, out<span class="arithmatex">\(=5\)</span>, <span class="arithmatex">\(i{=}4\)</span>
+- <span class="arithmatex">\(i{=}4\)</span>：<code>arr[4]=0</code>, step<span class="arithmatex">\(=2\)</span>, out<span class="arithmatex">\(+2=7\le 8\)</span> → out<span class="arithmatex">\(=7\)</span>, <span class="arithmatex">\(i{=}5\)</span>
+- <span class="arithmatex">\(i{=}5\)</span>：<code>arr[5]=4</code>, step<span class="arithmatex">\(=1\)</span>, out<span class="arithmatex">\(+1=8\le 8\)</span> → out<span class="arithmatex">\(=8\)</span>，<code>out == n</code>，break。</p>
+<p><span class="arithmatex">\(i^\* = 5\)</span>，无截断。第二趟，<span class="arithmatex">\(w = 7\)</span>：
+- <span class="arithmatex">\(i{=}5\)</span>: <code>arr[5]=4</code>, 写 <span class="arithmatex">\(w{=}7\)</span>：<code>[1,0,2,3,0,4,5,4]</code>, <span class="arithmatex">\(w{=}6\)</span>
+- <span class="arithmatex">\(i{=}4\)</span>: <code>arr[4]=0</code>, 写 <span class="arithmatex">\(w{=}6,5\)</span>：<code>[1,0,2,3,0,0,0,4]</code>, <span class="arithmatex">\(w{=}4\)</span>
+- <span class="arithmatex">\(i{=}3\)</span>: <code>arr[3]=3</code>, 写 <span class="arithmatex">\(w{=}4\)</span>：<code>[1,0,2,3,3,0,0,4]</code>, <span class="arithmatex">\(w{=}3\)</span>
+- <span class="arithmatex">\(i{=}2\)</span>: <code>arr[2]=2</code>, 写 <span class="arithmatex">\(w{=}3\)</span>：<code>[1,0,2,2,3,0,0,4]</code>, <span class="arithmatex">\(w{=}2\)</span>
+- <span class="arithmatex">\(i{=}1\)</span>: <code>arr[1]=0</code>, 写 <span class="arithmatex">\(w{=}2,1\)</span>：<code>[1,0,0,2,3,0,0,4]</code>, <span class="arithmatex">\(w{=}0\)</span>
+- <span class="arithmatex">\(i{=}0\)</span>: <code>arr[0]=1</code>, 写 <span class="arithmatex">\(w{=}0\)</span>：<code>[1,0,0,2,3,0,0,4]</code>, <span class="arithmatex">\(w{=}-1\)</span></p>
+<p>结果 <code>[1,0,0,2,3,0,0,4]</code> ✓</p>
+<p><strong>手动 trace 截断样例</strong>：<code>arr=[1,2,3,0]</code>, <span class="arithmatex">\(n=4\)</span>。扩展 <span class="arithmatex">\(b=[1,2,3,0,0]\)</span>，<span class="arithmatex">\(b'=[1,2,3,0]\)</span>——最后那个 <code>0</code> 的副本溢出。</p>
+<p>第一趟：out 走到 <code>arr[3]=0</code> 时 out<span class="arithmatex">\(=3\)</span>, step<span class="arithmatex">\(=2\)</span>, out<span class="arithmatex">\(+2=5&gt;4\)</span> → <code>truncated_zero=True</code>, break，<span class="arithmatex">\(i^\*=3\)</span>。第二趟 <span class="arithmatex">\(w=3\)</span>：截断分支写 <code>arr[3]=0</code>, <span class="arithmatex">\(w{=}2\)</span>, <span class="arithmatex">\(i^\*{=}2\)</span>。主循环从 <span class="arithmatex">\(i{=}2\)</span> 写回 <code>3,2,1</code>：<code>[1,2,3,0]</code> ✓。这条路径验证了 <code>truncated_zero</code> 分支确实在该触发时触发、且只写一个 <code>0</code>。</p>
 <h2 id="complexity">复杂度 (Complexity)<a class="headerlink" href="#complexity" title="Permanent link">#</a></h2>
 <ul>
-<li>Time: <span class="arithmatex">\(O(n)\)</span>，两次单调扫描。</li>
-<li>Space: <span class="arithmatex">\(O(1)\)</span>，原地。</li>
+<li>Time: <span class="arithmatex">\(O(n)\)</span>，两趟单调扫描，每趟每个下标至多访问一次。</li>
+<li>Space: <span class="arithmatex">\(O(1)\)</span>，原地，只用常数个指针/计数器。</li>
 </ul>
 <h2 id="pitfalls">陷阱 (Pitfalls)<a class="headerlink" href="#pitfalls" title="Permanent link">#</a></h2>
 <ul>
-<li><strong>截断 0</strong>：当某个 0 本身写入末位但其副本会溢出时，只能写一次零（不能两次）。上面代码用 <code>special_truncated</code> 分支处理。</li>
-<li>不要用 <span class="arithmatex">\(O(n)\)</span> 临时数组——题面强调 in-place。</li>
-<li>别用从左往右覆写——会破坏未读元素。</li>
+<li><strong>截断的 0</strong>：当某个 <code>0</code> 的本体恰好落在 <span class="arithmatex">\(n - 1\)</span>、其副本会溢出时，只能写一次零。判据是第一趟中首次出现 <code>out + step &gt; n</code>（此时 <code>arr[i]</code> 必为 <code>0</code>）。代码用 <code>truncated_zero</code> 分支单独写一个 <code>0</code> 再进主循环；上面的截断 trace 验证了它确实触发。</li>
+<li><strong>写指针领先读指针</strong>：朴素的从左往右单趟覆写会让写指针领先读指针，覆盖未读数据（反例 <code>[0,1,2]</code>）。从右往左写才能保证写操作不落在未读数据上。</li>
+<li><strong>不要用 <span class="arithmatex">\(O(n)\)</span> 临时数组</strong>：题面强调 in-place；先求 <span class="arithmatex">\(i^\*\)</span> 再从右写正是为了避开辅助数组。</li>
+<li><strong>counting 循环的 off-by-one</strong>：第一趟必须让 <span class="arithmatex">\(i\)</span> 停在 <span class="arithmatex">\(i^\*\)</span> 本身（最后一个本体落入窗口的下标），而非越过它。用 <code>out</code>（即 <span class="arithmatex">\(p(i)\)</span>）作为不变量、并在 <code>out == n</code> 时立即 break，可避免 <span class="arithmatex">\(i\)</span> 多走一步导致第二趟从错误位置读起。</li>
 </ul>
 <h2 id="related">相关题目 (Related)<a class="headerlink" href="#related" title="Permanent link">#</a></h2>
 <ul>
@@ -22640,6 +22696,8 @@
         <script src="../../../js/mathjax/tex-mml-chtml.js"></script>
       
         <script src="../../../js/mermaid.min.js"></script>
+      
+        <script src="../../../js/featured.js"></script>
       
     
   </body>

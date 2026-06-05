@@ -1466,6 +1466,8 @@
       
         
       
+        
+      
     
     
     
@@ -1521,6 +1523,34 @@
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../featured/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ⭐ Featured（已验证）
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
               
             
               
@@ -1610,10 +1640,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_4" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
         
           
-          <label class="md-nav__link" for="__nav_4_4" id="__nav_4_4_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_5" id="__nav_4_5_label" tabindex="">
             
   
   
@@ -1631,8 +1661,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_4_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_4">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_5">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1915,7 +1945,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -1937,14 +1967,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_4_5" id="__nav_4_5_label" tabindex="">
+              <label class="md-nav__link " for="__nav_4_6" id="__nav_4_6_label" tabindex="">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_5">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_6">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -5321,10 +5351,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_7" checked>
         
           
-          <label class="md-nav__link" for="__nav_4_6" id="__nav_4_6_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_7" id="__nav_4_7_label" tabindex="">
             
   
   
@@ -5342,8 +5372,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_4_6">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_7_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4_7">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -22467,17 +22497,27 @@
 <h2 id="problem">Problem<a class="headerlink" href="#problem" title="Permanent link">#</a></h2>
 <p>给定 <span class="arithmatex">\(m \times n\)</span>（<span class="arithmatex">\(m, n \leq 3\)</span>）的 0/1 矩阵 <code>mat</code>。一次操作选一格 <span class="arithmatex">\((i,j)\)</span>，将该格及其上下左右四个邻居（若存在）取反。求把矩阵变为全 0 的最少操作数；若无法实现返回 <span class="arithmatex">\(-1\)</span>。</p>
 <h2 id="background">背景 (Background)<a class="headerlink" href="#background" title="Permanent link">#</a></h2>
-<p>这是经典 <strong>Lights Out / σ-game</strong> 在 <span class="arithmatex">\(\mathbb{F}_2\)</span> 上的求解。每个格的状态是 <span class="arithmatex">\(\mathbb{F}_2\)</span> 元素，每次按按钮等价于加上一个固定向量（按钮的"影响 mask"），目标是从初始状态减到 0。问题可形式化为：给定 <span class="arithmatex">\(A \in \mathbb{F}_2^{mn \times mn}\)</span>（每列是按钮 mask），求 <span class="arithmatex">\(\|x\|_1\)</span> 最小的 <span class="arithmatex">\(x \in \mathbb{F}_2^{mn}\)</span> 满足 <span class="arithmatex">\(Ax = b\)</span>（<span class="arithmatex">\(b\)</span> 是初始状态）。最小汉明权解是 NP-Hard（min-weight syndrome decoding），但本题 <span class="arithmatex">\(mn \leq 9\)</span>，状态空间仅 <span class="arithmatex">\(2^9 = 512\)</span>，BFS 暴搜可行。</p>
-<p>注意：每个按钮按两次等于不按，故每按钮按 0 或 1 次，按下集合是 <span class="arithmatex">\(\{0,1\}^{mn}\)</span>，按下顺序无关——这是 <span class="arithmatex">\(\mathbb{F}_2\)</span> 线性的"翻转交换性"。</p>
+<p>先从最朴素的想法出发。我们要找一组操作把矩阵清零，最直接的做法是枚举"哪些操作被执行了"。一个操作由它选中的格子 <span class="arithmatex">\((i,j)\)</span> 唯一确定，所以候选操作恰有 <span class="arithmatex">\(mn\)</span> 个。把每个操作看成"做"或"不做"，候选方案就是 <span class="arithmatex">\(mn\)</span> 个操作的所有子集，共 <span class="arithmatex">\(2^{mn}\)</span> 个。对每个子集模拟一遍、看结果是否全 0，取其中操作数最小的——这能解，但它把"做几次"的问题悄悄简化成了"做不做"。这个简化需要证明，而证明它正是理解整道题的入口。</p>
+<p><strong>为什么每个操作至多做一次。</strong> 单看一格：一次操作把它取反，再来一次又取反回去。任何格的状态只有 0/1 两种，取反两次等于没动。所以对同一个操作，执行偶数次等于不执行、奇数次等于执行一次——只有奇偶性影响结果。于是"某操作做 <span class="arithmatex">\(t\)</span> 次"可以归约为"做 <span class="arithmatex">\(t \bmod 2\)</span> 次"，候选方案从 <span class="arithmatex">\(\mathbb{N}^{mn}\)</span> 缩到 <span class="arithmatex">\(\{0,1\}^{mn}\)</span>。</p>
+<p><strong>为什么操作的顺序无关。</strong> 设操作 <span class="arithmatex">\(A\)</span> 翻转的格子集合为 <span class="arithmatex">\(\mathrm{mask}(A)\)</span>，操作 <span class="arithmatex">\(B\)</span> 为 <span class="arithmatex">\(\mathrm{mask}(B)\)</span>。先 <span class="arithmatex">\(A\)</span> 后 <span class="arithmatex">\(B\)</span>，每格被翻转的次数是它在两个 mask 中出现次数之和；先 <span class="arithmatex">\(B\)</span> 后 <span class="arithmatex">\(A\)</span>，每格的翻转次数完全相同。由于每格最终状态只取决于被翻转的总次数的奇偶性，两种顺序得到同一结果。因此最终矩阵只由"执行了哪个子集的操作"决定，与执行次序无关。</p>
+<p>这两条性质——取反自逆、翻转可交换——正是"按位异或"（XOR）的两条代数性质：<span class="arithmatex">\(a \oplus a = 0\)</span> 与 <span class="arithmatex">\(a \oplus b = b \oplus a\)</span>。把每个操作的影响写成一个 0/1 向量（mask），执行一组操作就是把对应的 mask 全部异或到初始矩阵上。这恰好是 <span class="arithmatex">\(\mathbb{F}_2\)</span>（两元素域，加法即 XOR）上的线性结构，也就是经典的 <strong>Lights Out / σ-game</strong> 模型。我们没有"假设"这个模型，而是从问题自身的两条性质推出了它。</p>
 <h2 id="formulation">形式化 (Formulation)<a class="headerlink" href="#formulation" title="Permanent link">#</a></h2>
-<p>设矩阵展平为 <span class="arithmatex">\(s \in \mathbb{F}_2^{mn}\)</span>。每个按钮 <span class="arithmatex">\(k \in [0, mn)\)</span> 对应翻转 mask <span class="arithmatex">\(f_k \in \mathbb{F}_2^{mn}\)</span>（自己 + 邻居为 1）。求</p>
+<p>把矩阵按行优先展平为向量 <span class="arithmatex">\(s \in \mathbb{F}_2^{mn}\)</span>，第 <span class="arithmatex">\(i\cdot n + j\)</span> 个分量是格 <span class="arithmatex">\((i,j)\)</span> 的值。每个操作 <span class="arithmatex">\(k \in [0, mn)\)</span>（对应某格）有固定的翻转 mask <span class="arithmatex">\(f_k \in \mathbb{F}_2^{mn}\)</span>：自己及其存在的四邻居处为 1，其余为 0。</p>
+<p>设 <span class="arithmatex">\(x \in \mathbb{F}_2^{mn}\)</span> 为决策向量，<span class="arithmatex">\(x_k = 1\)</span> 表示执行操作 <span class="arithmatex">\(k\)</span>。由上一节，执行这组操作后矩阵变为 <span class="arithmatex">\(s \oplus \bigoplus_{k:\,x_k=1} f_k\)</span>，与顺序无关。我们要它等于 0 且操作数 <span class="arithmatex">\(\|x\|_1\)</span>（汉明权）最小：</p>
 <div class="arithmatex">\[
-\min_{x \in \mathbb{F}_2^{mn}} \|x\|_1 \quad \text{s.t.} \quad s \oplus \bigoplus_{k: x_k = 1} f_k = 0.
+\min_{x \in \mathbb{F}_2^{mn}} \|x\|_1 \quad \text{s.t.} \quad s \oplus \bigoplus_{k:\, x_k = 1} f_k = 0 .
 \]</div>
-<p>等价线性方程 <span class="arithmatex">\(Fx = s\)</span>（<span class="arithmatex">\(F\)</span> 列为 <span class="arithmatex">\(f_k\)</span>）。</p>
+<p>把诸 <span class="arithmatex">\(f_k\)</span> 作为列拼成矩阵 <span class="arithmatex">\(F \in \mathbb{F}_2^{mn \times mn}\)</span>，则 <span class="arithmatex">\(\bigoplus_{k:\,x_k=1} f_k = Fx\)</span>，约束化为线性方程 <span class="arithmatex">\(Fx = s\)</span>。问题即：</p>
+<div class="arithmatex">\[
+\min \|x\|_1 \quad \text{s.t.} \quad Fx = s, \quad x \in \mathbb{F}_2^{mn}.
+\]</div>
+<p>这就是 <span class="arithmatex">\(\mathbb{F}_2\)</span> 上的<strong>最小汉明权解</strong>，等价于编码理论中的最小重量伴随解码。一般情形它是 NP-Hard（Berlekamp–McEliece–van Tilborg, 1978）。但 NP-Hard 是关于矩阵规模的渐近论断；本题 <span class="arithmatex">\(mn \leq 9\)</span>，决策向量只有 <span class="arithmatex">\(2^9 = 512\)</span> 种取值，整个解空间可被完全枚举，渐近硬度在此不起作用。下面所有解法都从这个形式化导出。</p>
 <h2 id="approach">数据结构 / 想法 (Approach)<a class="headerlink" href="#approach" title="Permanent link">#</a></h2>
-<p><strong>解法 1：BFS 于状态空间（推荐，最直观）</strong>。</p>
-<p>把矩阵编码为整数 <span class="arithmatex">\(s \in [0, 2^{mn})\)</span>。从 <span class="arithmatex">\(s_0\)</span> 做 BFS，每步枚举一个按钮编号 <span class="arithmatex">\(k\)</span> 产生新状态 <span class="arithmatex">\(s \oplus f_k\)</span>，找到 0 的最短步数。状态空间 <span class="arithmatex">\(2^{mn} \leq 512\)</span>，转移 <span class="arithmatex">\(mn \leq 9\)</span> 个，总 <span class="arithmatex">\(O(mn \cdot 2^{mn}) \leq 9 \cdot 512 = 4608\)</span>，常数极小。</p>
+<p>朴素枚举 <span class="arithmatex">\(2^{mn}\)</span> 个子集是对的，但它对每个子集独立验证，没有利用一个事实：相邻的子集（差一个操作）所到达的矩阵状态也只差一次异或。把这种相邻关系显式化，就能在不枚举全部子集的前提下找到最小操作数。</p>
+<p><strong>解法 1：状态空间上的 BFS。</strong></p>
+<p>把约束 <span class="arithmatex">\(Fx = s\)</span> 改写为搜索语言。从初始矩阵 <span class="arithmatex">\(s_0\)</span> 出发，每执行一个操作 <span class="arithmatex">\(k\)</span>，矩阵从当前状态 <span class="arithmatex">\(s\)</span> 变到 <span class="arithmatex">\(s \oplus f_k\)</span>。于是定义一张图：顶点是所有可能的矩阵状态（共 <span class="arithmatex">\(2^{mn}\)</span> 个），<span class="arithmatex">\(s\)</span> 与 <span class="arithmatex">\(s \oplus f_k\)</span> 之间连一条边（对应执行操作 <span class="arithmatex">\(k\)</span>）。在这张图上，从 <span class="arithmatex">\(s_0\)</span> 到全 0 的一条长度为 <span class="arithmatex">\(d\)</span> 的路径，恰对应一组使矩阵清零、含 <span class="arithmatex">\(d\)</span> 次操作的执行序列；反之亦然。求最少操作数，就是求 <span class="arithmatex">\(s_0\)</span> 到 <span class="arithmatex">\(0\)</span> 的最短路。</p>
+<p>每条边代价相同（都是一次操作），图无权，故 BFS 首次到达某状态时的层数即为最短路长度。BFS 第一次访问到全 0 状态，其层数就是答案；若整张可达子图都搜完仍未碰到 0，则无解，返回 <span class="arithmatex">\(-1\)</span>。每条 BFS 边正好对应异或和 <span class="arithmatex">\(Fx = s\)</span> 中的一项，因此 BFS 直接在求解最小 <span class="arithmatex">\(\|x\|_1\)</span>，而非另起炉灶。</p>
+<p>矩阵状态用整数编码：<span class="arithmatex">\(mn \leq 9\)</span>，每格 0/1，故整个矩阵恰好装进 9 位，第 <span class="arithmatex">\(i\cdot n+j\)</span> 位存格 <span class="arithmatex">\((i,j)\)</span>。不同矩阵映到不同整数，两状态相等当且仅当整数相等，所以用整数集合 <code>seen</code> 去重等价于对矩阵状态去重。状态空间 <span class="arithmatex">\(2^{mn} \leq 512\)</span>，每个状态有 <span class="arithmatex">\(mn \leq 9\)</span> 种转移，总工作量 <span class="arithmatex">\(O(mn \cdot 2^{mn}) \leq 9 \cdot 512 = 4608\)</span>。</p>
 <div class="language-python highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">collections</span><span class="w"> </span><span class="kn">import</span> <span class="n">deque</span>
 
 <span class="k">class</span><span class="w"> </span><span class="nc">Solution</span><span class="p">:</span>
@@ -22515,22 +22555,28 @@
                     <span class="n">q</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">ns</span><span class="p">,</span> <span class="n">d</span> <span class="o">+</span> <span class="mi">1</span><span class="p">))</span>
         <span class="k">return</span> <span class="o">-</span><span class="mi">1</span>
 </code></pre></div>
-<p>样例验证：
-- <code>[[0,0],[0,1]]</code>：<span class="arithmatex">\(s_0 = 0b1000 = 8\)</span>（位序按 <span class="arithmatex">\(i \cdot n + j\)</span>，(1,1) → 位 3）。masks: (0,0)→{(0,0),(0,1),(1,0)}=0b0111=7;(0,1)→0b1011=11;(1,0)→0b1101=13;(1,1)→0b1110=14. BFS: 8 → 试翻 (0,0): 8^7=15. 试翻 (1,1): 8^14=6. ... 实际最少 3 步可达 0 ✓（题目答案）。</p>
-<p><strong>解法 2：Gauss-Jordan 于 <span class="arithmatex">\(\mathbb{F}_2\)</span> + 枚举自由变量</strong>。把 <span class="arithmatex">\(F\)</span> 化简，自由变量数 <span class="arithmatex">\(f\)</span>；枚举 <span class="arithmatex">\(2^f\)</span> 个组合算 <span class="arithmatex">\(\|x\|_1\)</span> 取最小。理论更优但 <span class="arithmatex">\(m,n \leq 3\)</span> 时 BFS 更短。</p>
-<p><strong>解法 3：枚举第一行 + 推导</strong>（"Lights Out chase"）。一旦决定第 0 行的按下集合，每一格按"上一行不能再修复"原则唯一推导。最终检查最后一行是否归零。<span class="arithmatex">\(O(2^n \cdot mn)\)</span>。</p>
+<p>样例验证（<span class="arithmatex">\(1 \times 3\)</span> 矩阵 <code>[[1,0,1]]</code>，可手工走完整条路径）：</p>
+<ul>
+<li>编码：<span class="arithmatex">\(s_0 = 0b101 = 5\)</span>。三个操作的 mask：格 0 翻转 {0,1}，<span class="arithmatex">\(f_0 = 0b011 = 3\)</span>；格 1 翻转 {0,1,2}，<span class="arithmatex">\(f_1 = 0b111 = 7\)</span>；格 2 翻转 {1,2}，<span class="arithmatex">\(f_2 = 0b110 = 6\)</span>。</li>
+<li>BFS 第 1 层：<span class="arithmatex">\(5\oplus3=6\)</span>，<span class="arithmatex">\(5\oplus7=2\)</span>，<span class="arithmatex">\(5\oplus6=3\)</span>，均非 0，入队。</li>
+<li>BFS 第 2 层：从 <span class="arithmatex">\(6\)</span> 出发 <span class="arithmatex">\(6\oplus7=1\)</span>、<span class="arithmatex">\(6\oplus6=0\)</span>——命中 0，返回 <span class="arithmatex">\(d+1 = 2\)</span>。</li>
+<li>验证：执行操作 0 后 <span class="arithmatex">\(5\to6\)</span>（即 <code>[0,1,1]</code>），再执行操作 2，<span class="arithmatex">\(6\to0\)</span>（即 <code>[0,0,0]</code>）。两步清零，与 BFS 结果一致 ✓。</li>
+</ul>
+<p><strong>解法 2：<span class="arithmatex">\(\mathbb{F}_2\)</span> 上的 Gauss-Jordan + 枚举自由变量。</strong> 这一解法直接利用 <span class="arithmatex">\(Fx=s\)</span> 的线性性。把 <span class="arithmatex">\(F\)</span> 做高斯-约当消元，得到约束 <span class="arithmatex">\(r\)</span> 个、自由变量 <span class="arithmatex">\(f = mn - r\)</span> 个的解空间；自由变量的每种 <span class="arithmatex">\(\{0,1\}^f\)</span> 取值确定一个完整解 <span class="arithmatex">\(x\)</span>，遍历这 <span class="arithmatex">\(2^f\)</span> 个解、取 <span class="arithmatex">\(\|x\|_1\)</span> 最小者。它把搜索维度从 <span class="arithmatex">\(mn\)</span> 降到自由变量个数 <span class="arithmatex">\(f\)</span>，在大规模实例上优于 BFS；但 <span class="arithmatex">\(m,n\leq3\)</span> 时 <span class="arithmatex">\(2^{mn}\leq512\)</span> 已极小，BFS 的实现更直接，二者实际运行都可忽略不计。</p>
+<p><strong>解法 3：枚举第一行 + 逐行推导（"Lights Out chase"）。</strong> 这一解法利用清零约束的逐行确定性：一旦第 0 行的操作子集选定，第 <span class="arithmatex">\(i\)</span> 行每格是否执行操作就被唯一逼出——若处理完第 <span class="arithmatex">\(i-1\)</span> 行后格 <span class="arithmatex">\((i-1,j)\)</span> 仍为 1，则唯一能再翻动它的是第 <span class="arithmatex">\(i\)</span> 行的操作 <span class="arithmatex">\((i,j)\)</span>，故 <span class="arithmatex">\((i,j)\)</span> 是否执行被 <span class="arithmatex">\((i-1,j)\)</span> 的剩余值强制决定。逐行推到底，再检查末行是否全 0。枚举第一行的 <span class="arithmatex">\(2^n\)</span> 种子集，每种 <span class="arithmatex">\(O(mn)\)</span> 推导，总 <span class="arithmatex">\(O(2^n \cdot mn)\)</span>。</p>
 <h2 id="complexity">复杂度 (Complexity)<a class="headerlink" href="#complexity" title="Permanent link">#</a></h2>
 <ul>
-<li>Time: <span class="arithmatex">\(O(mn \cdot 2^{mn})\)</span> BFS</li>
-<li>Space: <span class="arithmatex">\(O(2^{mn})\)</span></li>
-<li>由于 <span class="arithmatex">\(mn \leq 9\)</span>，总操作 <span class="arithmatex">\(\leq 4608\)</span>，常数级。</li>
+<li>Time（最坏）：<span class="arithmatex">\(O(mn \cdot 2^{mn})\)</span>。BFS 至多访问 <span class="arithmatex">\(2^{mn}\)</span> 个状态，每个有 <span class="arithmatex">\(mn\)</span> 个转移。</li>
+<li>Time（最好）：<span class="arithmatex">\(O(1)\)</span>，当 <span class="arithmatex">\(s_0 = 0\)</span> 时直接返回；一般情形 BFS 在触达全 0 即提前终止，通常不会展开全部 512 个状态。</li>
+<li>Space：<span class="arithmatex">\(O(2^{mn})\)</span>，由 <code>seen</code> 集合主导。</li>
+<li>由于 <span class="arithmatex">\(mn \leq 9\)</span>，最坏总操作数不超过 <span class="arithmatex">\(9 \cdot 512 = 4608\)</span>。</li>
 </ul>
 <h2 id="pitfalls">陷阱 (Pitfalls)<a class="headerlink" href="#pitfalls" title="Permanent link">#</a></h2>
 <ul>
-<li>不要把"翻转邻居"包含越界的位置——必须先检查 <code>0 &lt;= ni &lt; m</code>。</li>
-<li>同一按钮按两次等于不按 → BFS 中无需枚举"按某按钮 <span class="arithmatex">\(k\)</span> 次"，每个状态有 <span class="arithmatex">\(mn\)</span> 个转移即可（不是 <span class="arithmatex">\(mn \cdot 2\)</span>）。</li>
+<li>不要把"翻转邻居"包含越界的位置——必须先检查 <code>0 &lt;= ni &lt; m</code> 和 <code>0 &lt;= nj &lt; n</code>。</li>
+<li>同一操作做两次等于没做（<span class="arithmatex">\(\mathbb{F}_2\)</span> 取反自逆），故 BFS 中每个状态只有 <span class="arithmatex">\(mn\)</span> 个转移即可，不必枚举"做某操作 <span class="arithmatex">\(k\)</span> 次"（不是 <span class="arithmatex">\(mn \cdot 2\)</span>）。这是前文导出的基础性质，而非实现时的意外。</li>
 <li>初始即为 0 时直接返回 0（容易遗漏）。</li>
-<li>题目说 <span class="arithmatex">\(m,n \in [1,3]\)</span>，故 BFS 全局可解；不要写出依赖更大尺寸的"启发式"。</li>
+<li>题目说 <span class="arithmatex">\(m,n \in [1,3]\)</span>，故 BFS 可枚举全部可达状态、无解时正确返回 <span class="arithmatex">\(-1\)</span>；不要写出依赖更大尺寸才成立的"启发式"剪枝。</li>
 </ul>
 <h2 id="related">相关题目 (Related)<a class="headerlink" href="#related" title="Permanent link">#</a></h2>
 <ul>
@@ -22648,6 +22694,8 @@
         <script src="../../../js/mathjax/tex-mml-chtml.js"></script>
       
         <script src="../../../js/mermaid.min.js"></script>
+      
+        <script src="../../../js/featured.js"></script>
       
     
   </body>

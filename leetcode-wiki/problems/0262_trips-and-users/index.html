@@ -1466,6 +1466,8 @@
       
         
       
+        
+      
     
     
     
@@ -1521,6 +1523,34 @@
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../featured/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ⭐ Featured（已验证）
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
               
             
               
@@ -1610,10 +1640,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_4" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
         
           
-          <label class="md-nav__link" for="__nav_4_4" id="__nav_4_4_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_5" id="__nav_4_5_label" tabindex="">
             
   
   
@@ -1631,8 +1661,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_4_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_4">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_5">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1915,7 +1945,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -1937,14 +1967,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_4_5" id="__nav_4_5_label" tabindex="">
+              <label class="md-nav__link " for="__nav_4_6" id="__nav_4_6_label" tabindex="">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_5">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_6">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -5321,10 +5351,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_7" checked>
         
           
-          <label class="md-nav__link" for="__nav_4_6" id="__nav_4_6_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_7" id="__nav_4_7_label" tabindex="">
             
   
   
@@ -5342,8 +5372,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_4_6">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_7_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4_7">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -22467,18 +22497,32 @@
 <h2 id="problem">Problem<a class="headerlink" href="#problem" title="Permanent link">#</a></h2>
 <p>两张表 <code>Trips(id, client_id, driver_id, city_id, status, request_at)</code> 与 <code>Users(users_id, banned, role)</code>。求 2013-10-01 至 2013-10-03 之间每一天的 <strong>取消率</strong>：客户和司机都未被封禁的请求中，被取消（无论由谁取消）的比例，保留两位小数；只输出该日期范围内有 ≥1 笔订单的日期。</p>
 <h2 id="background">背景 (Background)<a class="headerlink" href="#background" title="Permanent link">#</a></h2>
-<p>本题是 <strong>SQL 经典面试题</strong>——LeetCode 早期数据库板块代表作，由 Uber 类业务背景设计。技术点覆盖：
-- <strong>多表 JOIN 与过滤条件位置</strong>（WHERE vs JOIN ON 的语义差异）
-- <strong>GROUP BY + 条件聚合</strong>（COUNT(CASE WHEN ...)）
-- <strong>集合反 SEMI-JOIN</strong>（NOT IN 排除子集）
-- <strong>ROUND / 类型转换</strong></p>
-<p>从 <strong>关系代数 (relational algebra)</strong> 角度看，本题是 <span class="arithmatex">\(\sigma \to \bowtie \to \pi \to \gamma\)</span>（过滤、连接、投影、分组聚合）的标准组合。</p>
+<p>先把要算的东西说清楚。"取消率"是一个比例，问题在于分子和分母各自该数哪些行。</p>
+<p>每一笔 trip 牵涉两个用户：发起请求的 <code>client_id</code> 与接单的 <code>driver_id</code>。题目要求统计时排除任何一方被封禁的订单。注意这里的不对称：日期是 <code>Trips</code> 自身的一列，一个谓词即可判定；而"双方都未封禁"却要拿同一行的<strong>两个不同的列</strong>去另一张表 <code>Users</code> 里各查一次。这个"一行两查"的结构，正是本题区别于普通 SQL 过滤题的地方，下面所有的技术选择都由它驱动。</p>
+<p>先尝试最朴素的写法，看它在哪里崩。一个初学者很可能这样起手：</p>
+<div class="language-sql highlight"><pre><span></span><code><span class="c1">-- 朴素尝试（错误）：只过滤了日期</span>
+<span class="k">SELECT</span><span class="w"> </span><span class="n">request_at</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="k">Day</span><span class="p">,</span>
+<span class="w">       </span><span class="n">ROUND</span><span class="p">(</span><span class="k">SUM</span><span class="p">(</span><span class="n">status</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="s1">&#39;completed&#39;</span><span class="p">)</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="k">COUNT</span><span class="p">(</span><span class="o">*</span><span class="p">),</span><span class="w"> </span><span class="mi">2</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="o">`</span><span class="n">Cancellation</span><span class="w"> </span><span class="n">Rate</span><span class="o">`</span>
+<span class="k">FROM</span><span class="w"> </span><span class="n">Trips</span>
+<span class="k">WHERE</span><span class="w"> </span><span class="n">request_at</span><span class="w"> </span><span class="k">BETWEEN</span><span class="w"> </span><span class="s1">&#39;2013-10-01&#39;</span><span class="w"> </span><span class="k">AND</span><span class="w"> </span><span class="s1">&#39;2013-10-03&#39;</span>
+<span class="k">GROUP</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">request_at</span><span class="p">;</span>
+</code></pre></div>
+<p>它把被封禁用户的订单也算进了分母和分子，取消率因此偏离题意。补救的第一反应往往是只加一个客户过滤：</p>
+<div class="language-sql highlight"><pre><span></span><code><span class="c1">-- 仍然错误：漏掉了 driver</span>
+<span class="p">...</span><span class="w"> </span><span class="k">AND</span><span class="w"> </span><span class="n">client_id</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">IN</span><span class="w"> </span><span class="p">(</span><span class="k">SELECT</span><span class="w"> </span><span class="n">users_id</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">Users</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">banned</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;Yes&#39;</span><span class="p">)</span>
+</code></pre></div>
+<p>这依然不对——一笔由未封禁客户发起、却被封禁司机接单的订单不应计入。要修正它，必须对<strong>两个列各加一次排除</strong>。这正是"一行两查"结构的直接后果，下一节把它写成精确的定义。</p>
 <h2 id="formulation">形式化 (Formulation)<a class="headerlink" href="#formulation" title="Permanent link">#</a></h2>
-<p>设 <span class="arithmatex">\(T\)</span> = Trips, <span class="arithmatex">\(U\)</span> = Users。已封禁用户集 <span class="arithmatex">\(B = \{u : U.banned = \text{Yes}\}\)</span>。对每天 <span class="arithmatex">\(d\)</span>:</p>
-<div class="arithmatex">\[\text{rate}(d) = \frac{|\{t \in T : t.\text{date}=d,\ t.\text{client}, t.\text{driver} \notin B,\ t.\text{status} \neq \text{completed}\}|}{|\{t \in T : t.\text{date}=d,\ t.\text{client}, t.\text{driver} \notin B\}|}.\]</div>
-<p>输出 <span class="arithmatex">\(d \in [\text{2013-10-01}, \text{2013-10-03}]\)</span> 且分母 <span class="arithmatex">\(&gt; 0\)</span> 的 <span class="arithmatex">\((d, \text{rate}(d))\)</span>，保留 2 位小数。</p>
+<p>直觉是：分母数的是"合法订单"（客户与司机都未被封禁），分子数的是其中"未完成"的那一部分；两个封禁排除条件必须<strong>同时</strong>作用于两个角色。把这句话写成集合定义。</p>
+<p>设 <span class="arithmatex">\(T\)</span> 为 Trips 集合，<span class="arithmatex">\(U\)</span> 为 Users 集合。被封禁的用户 ID 集合为</p>
+<div class="arithmatex">\[B = \{\, u.\text{users\_id} : u \in U,\ u.\text{banned} = \text{Yes} \,\}. \tag{0}\]</div>
+<p>注意 <span class="arithmatex">\(B\)</span> 是<strong>用户 ID 的集合</strong>，与 trip 行里的 <code>client_id</code> / <code>driver_id</code> 同域，可以直接判属。对每天 <span class="arithmatex">\(d\)</span>，定义合法订单集合</p>
+<div class="arithmatex">\[E(d) = \{\, t \in T : t.\text{date} = d,\ t.\text{client} \notin B \ \text{and}\ t.\text{driver} \notin B \,\}, \tag{1}\]</div>
+<p>取消率即合法订单中未完成者所占的比例</p>
+<div class="arithmatex">\[\text{rate}(d) = \frac{|\{\, t \in E(d) : t.\text{status} \neq \text{completed} \,\}|}{|E(d)|}. \tag{2}\]</div>
+<p>输出 <span class="arithmatex">\(d \in [\text{2013-10-01}, \text{2013-10-03}]\)</span> 且 <span class="arithmatex">\(|E(d)| &gt; 0\)</span> 的 <span class="arithmatex">\((d, \text{rate}(d))\)</span>，保留 2 位小数。"被取消"在此精确地等于 <span class="arithmatex">\(\text{status} \neq \text{completed}\)</span>，它覆盖 <code>cancelled_by_driver</code> 与 <code>cancelled_by_client</code> 两种状态——这一点在写 SQL 时会再次用到。</p>
 <h2 id="approach">数据结构 / 想法 (Approach)<a class="headerlink" href="#approach" title="Permanent link">#</a></h2>
-<p><strong>直接 SQL</strong>：</p>
+<p>公式 (2) 逐项映射到 SQL：日期谓词 <span class="arithmatex">\(t.\text{date}=d\)</span> 进 <code>WHERE</code>，封禁排除 <span class="arithmatex">\(t.\text{client}\notin B \wedge t.\text{driver}\notin B\)</span> 进过滤，按 <span class="arithmatex">\(d\)</span> 分组用 <code>GROUP BY request_at</code>，比值用聚合计算。集合 <span class="arithmatex">\(E(d)\)</span> 的两个排除条件可以直译为两个独立的 <code>NOT IN</code> 子查询——每个子查询恰好枚举集合 <span class="arithmatex">\(B\)</span>：</p>
 <div class="language-sql highlight"><pre><span></span><code><span class="k">SELECT</span>
 <span class="w">    </span><span class="n">request_at</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="k">Day</span><span class="p">,</span>
 <span class="w">    </span><span class="n">ROUND</span><span class="p">(</span>
@@ -22492,7 +22536,8 @@
 <span class="w">    </span><span class="k">AND</span><span class="w"> </span><span class="n">driver_id</span><span class="w">  </span><span class="k">NOT</span><span class="w"> </span><span class="k">IN</span><span class="w"> </span><span class="p">(</span><span class="k">SELECT</span><span class="w"> </span><span class="n">users_id</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">Users</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">banned</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;Yes&#39;</span><span class="p">)</span>
 <span class="k">GROUP</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">request_at</span><span class="p">;</span>
 </code></pre></div>
-<p><strong>等价 JOIN 写法</strong>（性能往往更佳）：</p>
+<p><code>SUM(CASE WHEN status != 'completed' THEN 1 ELSE 0 END)</code> 数的是 (2) 的分子，<code>COUNT(*)</code> 数的是分母 <span class="arithmatex">\(|E(d)|\)</span>（<code>WHERE</code> 已把 <span class="arithmatex">\(E(d)\)</span> 以外的行剔除）。<code>GROUP BY request_at</code> 之所以无需 <code>HAVING</code>：<code>WHERE</code> 已限定日期范围，分组只对实际存在的行建组，因此每个输出行都对应一个至少有一笔合法订单的日期——这正是 <span class="arithmatex">\(|E(d)|&gt;0\)</span> 的要求，由分组语义自动满足，不必额外断言。</p>
+<p><strong>从 <code>NOT IN</code> 推出等价的 JOIN 写法。</strong> <span class="arithmatex">\(t.\text{client}\notin B\)</span> 是一个反半连接（anti-semi-join）；它的对偶是：把"客户未封禁"作为连接谓词，与 <code>Users</code> 内连接，匹配不上的行（即被封禁的客户）自然落选。对 driver 同理，需要给 <code>Users</code> 取两个别名各连一次：</p>
 <div class="language-sql highlight"><pre><span></span><code><span class="k">SELECT</span>
 <span class="w">    </span><span class="n">t</span><span class="p">.</span><span class="n">request_at</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="k">Day</span><span class="p">,</span>
 <span class="w">    </span><span class="n">ROUND</span><span class="p">(</span><span class="k">AVG</span><span class="p">(</span><span class="n">t</span><span class="p">.</span><span class="n">status</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="s1">&#39;completed&#39;</span><span class="p">),</span><span class="w"> </span><span class="mi">2</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="o">`</span><span class="n">Cancellation</span><span class="w"> </span><span class="n">Rate</span><span class="o">`</span>
@@ -22502,25 +22547,62 @@
 <span class="k">WHERE</span><span class="w"> </span><span class="n">t</span><span class="p">.</span><span class="n">request_at</span><span class="w"> </span><span class="k">BETWEEN</span><span class="w"> </span><span class="s1">&#39;2013-10-01&#39;</span><span class="w"> </span><span class="k">AND</span><span class="w"> </span><span class="s1">&#39;2013-10-03&#39;</span>
 <span class="k">GROUP</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">t</span><span class="p">.</span><span class="n">request_at</span><span class="p">;</span>
 </code></pre></div>
-<p><strong>要点解析</strong>：
-1. <strong>AVG(boolean)</strong> 在 MySQL 中等价于 "true 比例"，省去 CASE WHEN。
-2. <strong>JOIN with <code>banned = 'No'</code></strong> 在 ON 子句中：把"未封禁"作为连接谓词，未匹配的行自然被剔除——等价于 NOT IN 但优化器通常更易优化。
-3. <strong>GROUP BY 后无 HAVING</strong>：因为 WHERE 已限定日期范围，且 GROUP BY 自动只输出有数据的天（"至少一笔订单"），符合题意。</p>
-<p><strong>Trace</strong> 例 1 2013-10-01：四单 (id 1-4)。Client id=2 被封禁 → id=2 单被过滤 → 余 3 单 (id 1,3,4)；其中 id=4 状态 = cancelled_by_client → 1 取消；rate = 1/3 = 0.33. ✓</p>
-<p>2013-10-02：三单 (5,6,7)。Client id=2 被封禁 → id=6 过滤 → 余 2 单全 completed → rate = 0/2 = 0.00. ✓</p>
-<p>2013-10-03：三单 (8,9,10)。Client id=2 被封禁 → id=8 过滤 → 余 2 单 (9,10)；id=10 = cancelled_by_driver → 1 取消；rate = 1/2 = 0.50. ✓</p>
+<p>这个改写与 <code>NOT IN</code> 版本<strong>等价，但有一个前提</strong>：<code>Users.users_id</code> 是唯一主键，所以每次 JOIN 对一笔 trip 至多匹配一行，不会让 trip 行翻倍。若 <code>users_id</code> 不唯一，JOIN 会复制 trip，<code>COUNT(*)</code> 与 <code>AVG</code> 随之失真——等价性依赖这个唯一性不变量，不能省。两个角色各连一次，对应 (1) 中两个 <code>and</code> 连接的排除条件，缺一不可。</p>
+<p><strong>为何 <code>AVG(boolean)</code> 就是取消率。</strong> MySQL 里比较表达式 <code>status != 'completed'</code> 求值为 1（真）或 0（假）。于是这一列上的 <code>SUM</code> 等于满足条件的行数，<code>AVG = SUM / COUNT(*)</code> 等于满足条件的行所占比例——恰好是 (2) 的右端。这不是一个要记住的特例，而是从布尔到整数的强制转换加上算术平均定义的直接结论，因此它替代了显式的 <code>CASE WHEN</code> 枚举。</p>
+<p><strong>先用样例数据验证集合 <span class="arithmatex">\(E(d)\)</span> 与 rate。</strong> 在写出 SQL 之前理解每个谓词淘汰了哪些行，比读代码更能验证理解。规范数据集中被封禁的是 <code>users_id = 2</code>（一个客户）。逐日追踪 (1)(2)：</p>
+<table>
+<thead>
+<tr>
+<th>日期</th>
+<th>全部 trips</th>
+<th>经 <span class="arithmatex">\(B\)</span> 过滤掉</th>
+<th><span class="arithmatex">\(E(d)\)</span></th>
+<th>其中未完成</th>
+<th>rate<span class="arithmatex">\((d)\)</span></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>2013-10-01</td>
+<td>id 1,2,3,4</td>
+<td>id 2（client 被封）</td>
+<td>1,3,4</td>
+<td>id 4 = <code>cancelled_by_client</code></td>
+<td><span class="arithmatex">\(1/3 = 0.33\)</span></td>
+</tr>
+<tr>
+<td>2013-10-02</td>
+<td>id 5,6,7</td>
+<td>id 6（client 被封）</td>
+<td>5,7</td>
+<td>无</td>
+<td><span class="arithmatex">\(0/2 = 0.00\)</span></td>
+</tr>
+<tr>
+<td>2013-10-03</td>
+<td>id 8,9,10</td>
+<td>id 8（client 被封）</td>
+<td>9,10</td>
+<td>id 10 = <code>cancelled_by_driver</code></td>
+<td><span class="arithmatex">\(1/2 = 0.50\)</span></td>
+</tr>
+</tbody>
+</table>
+<p>三行 rate 与 LeetCode 期望输出一致，且验证了"取消"必须按 <span class="arithmatex">\(\text{status}\neq\text{completed}\)</span> 判定：<code>cancelled_by_client</code> 与 <code>cancelled_by_driver</code> 都被计入分子。</p>
 <h2 id="complexity">复杂度 (Complexity)<a class="headerlink" href="#complexity" title="Permanent link">#</a></h2>
+<p>主导成本是把 <span class="arithmatex">\(|T|\)</span> 笔 trip 与 <code>Users</code> 比对（两次 <code>NOT IN</code> 探测，或两次 JOIN 探测）。分组键是 <code>request_at</code>，且已被 <code>WHERE</code> 限制在 3 天窗口内，分组集合极小，分组本身近似 <span class="arithmatex">\(O(|E|)\)</span>，不构成瓶颈。</p>
 <ul>
-<li>取决于优化器与索引。理想索引（<code>Users(users_id)</code> 主键 + <code>Trips(request_at)</code> / <code>Trips(client_id)</code> / <code>Trips(driver_id)</code>）下：JOIN 是 hash / nested loop <span class="arithmatex">\(O(|T|)\)</span>，GROUP BY 是 <span class="arithmatex">\(O(|T| \log |T|)\)</span> 或 hash agg <span class="arithmatex">\(O(|T|)\)</span>。</li>
-<li>无索引 + NOT IN 子查询：可能退化为 <span class="arithmatex">\(O(|T| \cdot |U|)\)</span>。</li>
+<li><strong>理想索引</strong>（<code>Users(users_id)</code> 主键 + <code>Trips(request_at)</code>）：日期范围先把 trip 缩到窗口内，每笔 trip 对 <code>Users</code> 做主键查找 <span class="arithmatex">\(O(1)\)</span>，总计 <span class="arithmatex">\(O(|T|)\)</span>。</li>
+<li><strong>无索引 + <code>NOT IN</code> 子查询</strong>：每笔 trip 可能要线性扫一遍 <span class="arithmatex">\(B\)</span>，退化为 <span class="arithmatex">\(O(|T|\cdot|U|)\)</span>。这正是上一节倾向 JOIN 改写的原因——优化器更容易把它转成主键探测。</li>
 </ul>
 <h2 id="pitfalls">陷阱 (Pitfalls)<a class="headerlink" href="#pitfalls" title="Permanent link">#</a></h2>
+<p>以下每一条都对应形式化或推导中的一个具体步骤，而非孤立的清单项。</p>
 <ul>
-<li><strong>同时检查 client 与 driver 都未封禁</strong>——只检查一方是错的（题目英文"both client and driver"）。</li>
-<li><strong>完成状态判定</strong>：取消 = status ≠ 'completed'（含 <code>cancelled_by_driver</code> 与 <code>cancelled_by_client</code>）；不要写成 <code>status LIKE 'cancelled%'</code>——若未来加新状态会出错。题目语义"被取消"应等价于"非 completed"。</li>
-<li><strong>ROUND 与除法精度</strong>：MySQL 整数除法 <code>1/3 = 0</code>；务必让分子或分母为浮点（<code>SUM(...)</code> 或 <code>AVG(...)</code> 已浮点；或显式 <code>/ COUNT(*) * 1.0</code>）。</li>
-<li><strong>WHERE vs HAVING</strong>：日期过滤放 WHERE（在分组前），不要放 HAVING（性能差）。</li>
-<li><strong>NOT IN 与 NULL</strong>：若 <code>Users.users_id</code> 含 NULL，NOT IN 整体返回 NULL（即 false），全部行被过滤。本题表定义 <code>users_id</code> 为主键非空，无此问题；但通用代码用 NOT EXISTS 或 JOIN 更安全。</li>
+<li><strong>(1) 的两个 <code>and</code> 缺一不可</strong>：只检查 client 或只检查 driver 都会把不该计入的订单纳入 <span class="arithmatex">\(E(d)\)</span>（题目英文 "both client and driver"）。这正是"朴素尝试"崩掉的地方。</li>
+<li><strong>取消按 <span class="arithmatex">\(\text{status}\neq\text{completed}\)</span> 判定</strong>，不要写成 <code>status LIKE 'cancelled%'</code>。后者依赖状态字符串的拼写约定，一旦新增取消状态就会漏算；而 (2) 的定义"非 completed 即取消"对状态集合的扩展是稳健的。</li>
+<li><strong><code>/</code> 在 MySQL 中是十进制除法，不是整数截断</strong>：<code>1/3</code> 求值为 <code>0.3333</code>，因此第一段 <code>SUM(...)/COUNT(*)</code> 无需任何浮点转换即得 <code>0.33</code>。（截断的整数除法是另一个运算符 <code>DIV</code>：<code>1 DIV 3 = 0</code>。）两段查询都是 MySQL 方言——反引号别名与 <code>AVG(boolean)</code> 惯用法即是标志——所以以 MySQL 语义为准；若移植到 SQLite/Postgres 等 <code>/</code> 对整数做截断的方言，才需显式 <code>* 1.0</code>。</li>
+<li><strong>日期过滤放 <code>WHERE</code> 而非 <code>HAVING</code></strong>：<code>WHERE</code> 在分组前作用，能先缩小 trip 集合；<code>HAVING</code> 在分组后才过滤，徒增分组开销且语义上没有必要。</li>
+<li><strong><code>NOT IN</code> 与 <code>NULL</code></strong>：若 <code>Users.users_id</code> 含 <code>NULL</code>，<code>NOT IN</code> 整体返回 <code>NULL</code>（被当作 false），会过滤掉全部行。本题 <code>users_id</code> 是非空主键，无此问题——这也是上一节 JOIN 等价性所依赖的同一个唯一/非空不变量；但通用代码用 <code>NOT EXISTS</code> 或 JOIN 更稳健。</li>
 </ul>
 <h2 id="related">相关题目 (Related)<a class="headerlink" href="#related" title="Permanent link">#</a></h2>
 <ul>
@@ -22639,6 +22721,8 @@
         <script src="../../../js/mathjax/tex-mml-chtml.js"></script>
       
         <script src="../../../js/mermaid.min.js"></script>
+      
+        <script src="../../../js/featured.js"></script>
       
     
   </body>

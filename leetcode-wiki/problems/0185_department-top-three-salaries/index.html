@@ -1466,6 +1466,8 @@
       
         
       
+        
+      
     
     
     
@@ -1521,6 +1523,34 @@
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../featured/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ⭐ Featured（已验证）
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
               
             
               
@@ -1610,10 +1640,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_4" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
         
           
-          <label class="md-nav__link" for="__nav_4_4" id="__nav_4_4_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_5" id="__nav_4_5_label" tabindex="">
             
   
   
@@ -1631,8 +1661,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_4_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_4">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_5">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1915,7 +1945,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -1937,14 +1967,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_4_5" id="__nav_4_5_label" tabindex="">
+              <label class="md-nav__link " for="__nav_4_6" id="__nav_4_6_label" tabindex="">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_5">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_6">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -5321,10 +5351,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_7" checked>
         
           
-          <label class="md-nav__link" for="__nav_4_6" id="__nav_4_6_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_7" id="__nav_4_7_label" tabindex="">
             
   
   
@@ -5342,8 +5372,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_4_6">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_7_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4_7">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -6272,6 +6302,34 @@
       
     </span>
   </a>
+  
+    <nav class="md-nav" aria-label="数据结构 / 想法 (Approach)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#b" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        解法 B：从判定式直接展开
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#a" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        解法 A：把同一个计数交给窗口函数
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -22399,6 +22457,34 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="数据结构 / 想法 (Approach)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#b" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        解法 B：从判定式直接展开
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#a" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        解法 A：把同一个计数交给窗口函数
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -22467,15 +22553,52 @@
 <h2 id="problem">Problem<a class="headerlink" href="#problem" title="Permanent link">#</a></h2>
 <p>两张表：<code>Employee(id, name, salary, departmentId)</code>、<code>Department(id, name)</code>。<strong>高收入员工</strong> = 部门内薪水位列<strong>前三不同薪资值</strong>之一。返回所有部门所有高收入员工 (<code>Department, Employee, Salary</code>)。</p>
 <h2 id="background">背景 (Background)<a class="headerlink" href="#background" title="Permanent link">#</a></h2>
-<p>本题考察 SQL 中的"<strong>Top-N per group</strong>" 模式——关系代数中没有直接算子，但有多种等价表达：
-1. <strong>相关子查询 + DISTINCT 计数</strong>（标准 SQL-92，可移植）：对每行检查"严格大于该薪水的不同薪资数 &lt; 3"。
-2. <strong>窗口函数 <code>DENSE_RANK() OVER (PARTITION BY ...)</code></strong>（SQL:2003 / 现代 DB）：直接给每行打"相同薪资等同的密集排名"，过滤 ≤ 3。
-3. <strong>半连接 (semi-join) self-join 计数</strong>：与方案 1 同义但更显式。</p>
-<p>LeetCode 评测兼容 MySQL/PostgreSQL/MS SQL/Oracle 子集，<strong>DENSE_RANK</strong> 是现代写法首选。注意"前三<strong>不同</strong>薪资"= <code>DENSE_RANK</code> 而非 <code>RANK</code>（后者并列后跳号）。</p>
+<p>SQL 的基本算子 <code>SELECT</code> / <code>WHERE</code> / <code>GROUP BY</code> 能对整张表筛选、能对每组聚合成单值，却没有一个算子直接表达"每组保留前 N 行"。本题的难点正源于此缺口：所求是一个 <strong>per-group 的顺序统计量</strong>，而关系代数里没有现成的"top-N per group"算子。</p>
+<p>最自然的第一反应是按薪资降序取前三：</p>
+<div class="language-sql highlight"><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="n">name</span><span class="p">,</span><span class="w"> </span><span class="n">salary</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">Employee</span><span class="w"> </span><span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">salary</span><span class="w"> </span><span class="k">DESC</span><span class="w"> </span><span class="k">LIMIT</span><span class="w"> </span><span class="mi">3</span><span class="p">;</span>
+</code></pre></div>
+<p>它在两点上失效，且两点都来自题面约束：</p>
+<ol>
+<li><strong><code>LIMIT</code> 是全局的，不是 per-group 的</strong>。它只截取整张表排序后的前三行，于是所有部门挤在同一个排名里——薪资最高的部门会占满名额，其余部门一个都进不去。题目要求的是"每个 <code>departmentId</code> 内部各自取前三"，全局 <code>LIMIT</code> 无法表达分组边界。</li>
+<li><strong>它按"行"计数，而题面按"不同薪资值"计数</strong>。即便把范围缩到单个部门，<code>LIMIT 3</code> 取的是三<strong>行</strong>；若前两高薪资各有两人并列，三行只覆盖了前两个薪资值。题面是 "top three <strong>unique</strong> salaries"——前三个<strong>值</strong>，与持有这些值的人数无关。</li>
+</ol>
+<p>修复这两处失效，正是后面两种解法各自要做的事：一是把排名限定在每个部门内（解决失效 1），二是按去重后的薪资值排名而非按行排名（解决失效 2）。在写出 SQL 前，先把"高收入"这个判定精确化。</p>
 <h2 id="formulation">形式化 (Formulation)<a class="headerlink" href="#formulation" title="Permanent link">#</a></h2>
-<p>对部门 <span class="arithmatex">\(d\)</span> 的薪资多重集 <span class="arithmatex">\(S_d = \{ e.\text{salary} : e \in E, e.\text{deptId} = d \}\)</span>，其去重集合 <span class="arithmatex">\(\hat S_d\)</span>。员工 <span class="arithmatex">\(e\)</span> 是高收入 iff <span class="arithmatex">\(e.\text{salary} \in \text{Top}_3(\hat S_d)\)</span>，其中 <span class="arithmatex">\(\text{Top}_3\)</span> 取最大三元素（不足三个时全收）。</p>
+<p>直觉先行：一名员工入选，当且仅当<strong>在其所在部门内，严格高于他薪资的不同薪资值少于三个</strong>。"少于三个"意味着他自己的薪资落在去重后的前三大值之中——这正是失效 2 暴露的"按值不按行"要求。</p>
+<p>把它写成集合语言。对部门 <span class="arithmatex">\(d\)</span>，令其薪资多重集为
+$$ S_d = {\, e.\text{salary} : e \in E,\ e.\text{deptId} = d \,}, $$
+去重后的集合记为 <span class="arithmatex">\(\hat S_d\)</span>。员工 <span class="arithmatex">\(e\)</span> 是高收入当且仅当</p>
+<div class="arithmatex">\[ e.\text{salary} \in \text{Top}_3(\hat S_d), \]</div>
+<p>其中 <span class="arithmatex">\(\text{Top}_3(\hat S_d)\)</span> 取 <span class="arithmatex">\(\hat S_d\)</span> 中最大的三个元素（<span class="arithmatex">\(|\hat S_d| &lt; 3\)</span> 时取全部）。下面两种解法都是这一判定的直接计算实现：解法 B 把"前三大值"翻译成一个计数谓词，解法 A 把同一个计数交给窗口函数隐式完成。</p>
 <h2 id="approach">数据结构 / 想法 (Approach)<a class="headerlink" href="#approach" title="Permanent link">#</a></h2>
-<p><strong>解法 A：<code>DENSE_RANK</code> 窗口函数（推荐）</strong></p>
+<h3 id="b">解法 B：从判定式直接展开<a class="headerlink" href="#b" title="Permanent link">#</a></h3>
+<p>先做解法 B，因为它是 <span class="arithmatex">\(e.\text{salary} \in \text{Top}_3(\hat S_d)\)</span> 最字面的实现。把"属于前三大值"逐步展开：把去重集合 <span class="arithmatex">\(\hat S_d\)</span> 的元素降序排列为 <span class="arithmatex">\(s_1 &gt; s_2 &gt; \cdots &gt; s_k\)</span>（故 <span class="arithmatex">\(\hat S_d = \{s_1, \dots, s_k\}\)</span>），设 <span class="arithmatex">\(e.\text{salary} = s_r\)</span>。则</p>
+<div class="arithmatex">\[ e.\text{salary} \in \text{Top}_3(\hat S_d) \iff r \le 3 \iff r - 1 &lt; 3. \]</div>
+<p>而 <span class="arithmatex">\(r - 1\)</span> 恰是<strong>严格大于 <span class="arithmatex">\(e.\text{salary}\)</span> 的不同薪资值个数</strong>——即排在 <span class="arithmatex">\(s_r\)</span> 之前的那些值。于是判定式等价于一个可直接计数的谓词：</p>
+<div class="arithmatex">\[ \bigl|\{\, s \in \hat S_d : s &gt; e.\text{salary} \,\}\bigr| &lt; 3. \]</div>
+<p>这个计数在 SQL 里就是 <code>COUNT(DISTINCT ...)</code> 配一个相关子查询，把范围限定在同部门（修复失效 1）、并对薪资值去重（修复失效 2）：</p>
+<div class="language-sql highlight"><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="n">d</span><span class="p">.</span><span class="n">name</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">Department</span><span class="p">,</span>
+<span class="w">       </span><span class="n">e</span><span class="p">.</span><span class="n">name</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">Employee</span><span class="p">,</span>
+<span class="w">       </span><span class="n">e</span><span class="p">.</span><span class="n">salary</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">Salary</span>
+<span class="k">FROM</span><span class="w"> </span><span class="n">Employee</span><span class="w"> </span><span class="n">e</span>
+<span class="k">JOIN</span><span class="w"> </span><span class="n">Department</span><span class="w"> </span><span class="n">d</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">d</span><span class="p">.</span><span class="n">id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">e</span><span class="p">.</span><span class="n">departmentId</span>
+<span class="k">WHERE</span><span class="w"> </span><span class="mi">3</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="k">SELECT</span><span class="w"> </span><span class="k">COUNT</span><span class="p">(</span><span class="k">DISTINCT</span><span class="w"> </span><span class="n">e2</span><span class="p">.</span><span class="n">salary</span><span class="p">)</span>
+<span class="w">    </span><span class="k">FROM</span><span class="w"> </span><span class="n">Employee</span><span class="w"> </span><span class="n">e2</span>
+<span class="w">    </span><span class="k">WHERE</span><span class="w"> </span><span class="n">e2</span><span class="p">.</span><span class="n">departmentId</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">e</span><span class="p">.</span><span class="n">departmentId</span>
+<span class="w">      </span><span class="k">AND</span><span class="w"> </span><span class="n">e2</span><span class="p">.</span><span class="n">salary</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="n">e</span><span class="p">.</span><span class="n">salary</span>
+<span class="p">);</span>
+</code></pre></div>
+<p><code>DISTINCT</code> 是失效 2 的修复点：若漏掉它，子查询数的是"更高薪资的行数"而非"更高薪资的值数"，并列高薪会被重复计入，把本该入选的人挤出去。子查询里的 <code>e2.departmentId = e.departmentId</code> 是失效 1 的修复点，它把计数锁在同一部门。</p>
+<p><strong>命题（解法 B 的正确性）</strong>：在上述查询中，员工 <span class="arithmatex">\(e\)</span> 被选中当且仅当 <span class="arithmatex">\(e.\text{salary} \in \text{Top}_3(\hat S_d)\)</span>。</p>
+<p><em>证明</em>：沿用 <span class="arithmatex">\(\hat S_d = \{s_1 &gt; \cdots &gt; s_k\}\)</span> 与 <span class="arithmatex">\(e.\text{salary} = s_r\)</span>。严格大于 <span class="arithmatex">\(s_r\)</span> 的元素恰为 <span class="arithmatex">\(s_1, \dots, s_{r-1}\)</span>，故子查询计数 <span class="arithmatex">\(|\{s \in \hat S_d : s &gt; s_r\}| = r - 1\)</span>。<code>WHERE</code> 通过当且仅当 <span class="arithmatex">\(r - 1 &lt; 3\)</span>，即 <span class="arithmatex">\(r \le 3\)</span>，即 <span class="arithmatex">\(s_r \in \text{Top}_3(\hat S_d)\)</span>。∎</p>
+<h3 id="a">解法 A：把同一个计数交给窗口函数<a class="headerlink" href="#a" title="Permanent link">#</a></h3>
+<p>解法 B 对每一行都重算一次子查询。能否让数据库一次扫描就给每行算出它的 <span class="arithmatex">\(r\)</span>？这正是窗口函数 <code>DENSE_RANK</code> 做的事——它对每行输出的就是命题里的 <span class="arithmatex">\(r\)</span>。要复现解法 B 的两处修复：</p>
+<ul>
+<li>失效 1（分组）→ <code>PARTITION BY departmentId</code>：把排名各自限定在每个部门内，等价于子查询的 <code>e2.departmentId = e.departmentId</code>。</li>
+<li>排序方向 → <code>ORDER BY salary DESC</code>：从高到低赋名次，使名次 1 对应最高薪资。</li>
+<li>失效 2（按值不按行）→ 选 <code>DENSE_RANK</code> 而非 <code>RANK</code>（见下），使相同薪资值共享同一名次、且名次不跳号。</li>
+</ul>
 <div class="language-sql highlight"><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="n">d</span><span class="p">.</span><span class="n">name</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">Department</span><span class="p">,</span>
 <span class="w">       </span><span class="n">e</span><span class="p">.</span><span class="n">name</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">Employee</span><span class="p">,</span>
 <span class="w">       </span><span class="n">e</span><span class="p">.</span><span class="n">salary</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">Salary</span>
@@ -22490,49 +22613,36 @@
 <span class="k">JOIN</span><span class="w"> </span><span class="n">Department</span><span class="w"> </span><span class="n">d</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">d</span><span class="p">.</span><span class="n">id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">e</span><span class="p">.</span><span class="n">departmentId</span>
 <span class="k">WHERE</span><span class="w"> </span><span class="n">e</span><span class="p">.</span><span class="n">rnk</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="mi">3</span><span class="p">;</span>
 </code></pre></div>
-<p><strong>心算 trace 例</strong>:
-- IT 部门 (deptId=1) 薪资: 85000, 90000, 69000, 85000, 70000. 去重降序: 90000(1), 85000(2), 70000(3), 69000(4).
-- Max(90000) → rnk 1; Joe(85000) → rnk 2; Randy(85000) → rnk 2; Will(70000) → rnk 3; Janet(69000) → rnk 4 (排除).
-- Sales (deptId=2) 薪资: 80000, 60000. Henry → rnk 1, Sam → rnk 2.
-- 结果含 Max/Joe/Randy/Will/Henry/Sam ✓</p>
-<p><strong>为何 <code>DENSE_RANK</code> 而非 <code>RANK</code></strong>：
-- <code>RANK</code>：相同值并列同名次，下一名跳号（1,2,2,4）。
-- <code>DENSE_RANK</code>：相同值并列同名次，下一名紧接（1,2,2,3）。
-- 题面 "top three <strong>unique</strong> salaries" 要求按薪资值（去重后）的前三大 → DENSE_RANK 准确建模。</p>
-<p><strong>解法 B：相关子查询（标准 SQL-92，可移植旧版 MySQL）</strong></p>
-<div class="language-sql highlight"><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="n">d</span><span class="p">.</span><span class="n">name</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">Department</span><span class="p">,</span>
-<span class="w">       </span><span class="n">e</span><span class="p">.</span><span class="n">name</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">Employee</span><span class="p">,</span>
-<span class="w">       </span><span class="n">e</span><span class="p">.</span><span class="n">salary</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">Salary</span>
-<span class="k">FROM</span><span class="w"> </span><span class="n">Employee</span><span class="w"> </span><span class="n">e</span>
-<span class="k">JOIN</span><span class="w"> </span><span class="n">Department</span><span class="w"> </span><span class="n">d</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">d</span><span class="p">.</span><span class="n">id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">e</span><span class="p">.</span><span class="n">departmentId</span>
-<span class="k">WHERE</span><span class="w"> </span><span class="mi">3</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="p">(</span>
-<span class="w">    </span><span class="k">SELECT</span><span class="w"> </span><span class="k">COUNT</span><span class="p">(</span><span class="k">DISTINCT</span><span class="w"> </span><span class="n">e2</span><span class="p">.</span><span class="n">salary</span><span class="p">)</span>
-<span class="w">    </span><span class="k">FROM</span><span class="w"> </span><span class="n">Employee</span><span class="w"> </span><span class="n">e2</span>
-<span class="w">    </span><span class="k">WHERE</span><span class="w"> </span><span class="n">e2</span><span class="p">.</span><span class="n">departmentId</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">e</span><span class="p">.</span><span class="n">departmentId</span>
-<span class="w">      </span><span class="k">AND</span><span class="w"> </span><span class="n">e2</span><span class="p">.</span><span class="n">salary</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="n">e</span><span class="p">.</span><span class="n">salary</span>
-<span class="p">);</span>
-</code></pre></div>
-<p><strong>逻辑</strong>：员工 <span class="arithmatex">\(e\)</span> 入选当且仅当部门内"严格更高的不同薪资数 &lt; 3"，即 <span class="arithmatex">\(e\)</span> 自身薪水属于前 3 大不同值。</p>
-<p><strong>正确性证明</strong>：设员工 <span class="arithmatex">\(e\)</span> 部门内不同薪资降序 <span class="arithmatex">\(s_1 &gt; s_2 &gt; \cdots &gt; s_k\)</span>。若 <span class="arithmatex">\(e.\text{salary} = s_r\)</span>，则严格高于其的不同薪资数 = <span class="arithmatex">\(r - 1\)</span>。<span class="arithmatex">\(r \le 3 \iff r - 1 &lt; 3\)</span> ✓。</p>
-<h2 id="complexity">复杂度 (Complexity)<a class="headerlink" href="#complexity" title="Permanent link">#</a></h2>
+<p>此处 <code>rnk</code> 就是命题中的 <span class="arithmatex">\(r\)</span>：<code>PARTITION BY departmentId ORDER BY salary DESC</code> 让窗口为每行算出"同部门内严格更高的不同薪资值个数 <span class="arithmatex">\(+1\)</span>"，于是 <code>rnk &lt;= 3</code> 与解法 B 的 <code>3 &gt; COUNT(...)</code> 表达同一判定。</p>
+<p><strong>为何必须 <code>DENSE_RANK</code> 而非 <code>RANK</code></strong>：判定式按薪资<strong>值</strong>（<span class="arithmatex">\(\hat S_d\)</span> 的元素）排名，不按<strong>行位置</strong>排名。<code>DENSE_RANK</code> 对相同值赋同名次、下一名次紧接（如 <span class="arithmatex">\(1,2,2,3\)</span>），恰好枚举去重后的值序；<code>RANK</code> 同样对相同值赋同名次，但下一名次按并列行数跳号（如 <span class="arithmatex">\(1,2,2,4\)</span>），数的是行位置而非值位次。一旦出现并列，<code>RANK</code> 给出的 <span class="arithmatex">\(r\)</span> 不再等于命题里的 <span class="arithmatex">\(r\)</span>——<code>rnk &lt;= 3</code> 会少放一个本应入选的薪资值。</p>
+<p><strong>验证 trace</strong>：</p>
 <ul>
-<li>解法 A: 窗口函数 <span class="arithmatex">\(O(N \log N)\)</span>（分组排序）。</li>
-<li>解法 B: 相关子查询 <span class="arithmatex">\(O(N \cdot N)\)</span> 朴素，索引在 <code>(departmentId, salary)</code> 上可优化到 <span class="arithmatex">\(O(N \log N)\)</span>。</li>
-<li>现代 DB 通常 A 更快、更可读。</li>
+<li>IT 部门 (deptId=1) 薪资 <span class="arithmatex">\(85000, 90000, 69000, 85000, 70000\)</span>。去重降序 <span class="arithmatex">\(90000(r{=}1), 85000(r{=}2), 70000(r{=}3), 69000(r{=}4)\)</span>。
+  Max(90000)→rnk 1；Joe(85000)→rnk 2；Randy(85000)→rnk 2；Will(70000)→rnk 3；Janet(69000)→rnk 4（<span class="arithmatex">\(r &gt; 3\)</span>，排除）。</li>
+<li>Sales 部门 (deptId=2) 薪资 <span class="arithmatex">\(80000, 60000\)</span>。Henry→rnk 1，Sam→rnk 2。</li>
+<li>结果含 Max / Joe / Randy / Will / Henry / Sam。两个 85000 都以 rnk 2 入选——若改用 <code>RANK</code>，70000 会跳到 rnk 4 被错误排除，与 trace 不符。</li>
+</ul>
+<h2 id="complexity">复杂度 (Complexity)<a class="headerlink" href="#complexity" title="Permanent link">#</a></h2>
+<p>两种解法实现同一判定，代价却不同；下面比较的是数据库为每行算出 <span class="arithmatex">\(r\)</span> 所付出的工作量。</p>
+<ul>
+<li><strong>解法 A</strong>：窗口函数需按 <code>(departmentId, salary)</code> 排序后单趟扫描，<span class="arithmatex">\(O(N \log N)\)</span>。</li>
+<li><strong>解法 B</strong>：相关子查询对每行扫一遍同部门，最坏 <span class="arithmatex">\(O(N^2)\)</span>（当所有行集中于一个部门时）。在 <code>(departmentId, salary)</code> 上建索引能把每行的计数限定为"比 <span class="arithmatex">\(e.\text{salary}\)</span> 高的同部门区间"的索引范围扫描，避免每行全表扫；但计数仍随该区间长度增长，渐近上界不改变。其优势在常数因子而非阶。</li>
+<li>现代数据库上解法 A 通常更快也更易读，因为单个窗口算子取代了 <span class="arithmatex">\(N\)</span> 次子查询求值。</li>
 </ul>
 <h2 id="pitfalls">陷阱 (Pitfalls)<a class="headerlink" href="#pitfalls" title="Permanent link">#</a></h2>
 <ul>
-<li><strong><code>RANK</code> vs <code>DENSE_RANK</code></strong>：若用 <code>RANK</code> 配 <code>&lt;= 3</code>，遇到 IT 部门两个 85000 时会跳号到 4，把 Will(70000) 排除——错答。</li>
-<li><strong>空部门</strong>：Department 表的某 id 没员工时，结果中不出现——本题没说要补 NULL。</li>
-<li><strong><code>SELECT *</code> 列名冲突</strong>：JOIN 后用 <code>e.name</code>, <code>d.name</code>，必须显式 alias 否则歧义。</li>
-<li><strong>MySQL 8 之前无窗口函数</strong>：在旧版 MySQL（5.7 及以下）只能用解法 B；LeetCode 默认 MySQL 8+ 但保险起见知晓两版。</li>
-<li><strong><code>DESC</code> 不能漏</strong>：默认升序排，会取最低三 unique 薪资。</li>
+<li><strong><code>RANK</code> vs <code>DENSE_RANK</code></strong>：见解法 A 中的完整论证。用 <code>RANK</code> 配 <code>rnk &lt;= 3</code> 时，IT 部门两个 85000 使下一名次跳到 4，Will(70000) 被错误排除。根因是 <code>RANK</code> 数行位置、<code>DENSE_RANK</code> 数薪资值位次，而判定式要的是后者。</li>
+<li><strong>漏 <code>DISTINCT</code></strong>：解法 B 若把 <code>COUNT(DISTINCT e2.salary)</code> 写成 <code>COUNT(e2.salary)</code>，并列高薪被按行重复计数，等价于失效 2 重新出现。</li>
+<li><strong>漏 <code>DESC</code></strong>：<code>ORDER BY salary</code> 默认升序，会把名次 1 赋给最低薪，取成最低三个不同薪资值。</li>
+<li><strong>空部门</strong>：<code>Department</code> 中某 id 无对应员工时不出现在结果里；题面未要求补 <code>NULL</code>，故无需外连接。</li>
+<li><strong><code>name</code> 列歧义</strong>：两表都有 <code>name</code>，<code>JOIN</code> 后必须以 <code>e.name</code> / <code>d.name</code> 显式限定，否则列名歧义。</li>
+<li><strong>旧版 MySQL 无窗口函数</strong>：MySQL 5.7 及以下不支持 <code>DENSE_RANK</code>，只能用解法 B；LeetCode 默认 MySQL 8+，两种解法均可提交。</li>
 </ul>
 <h2 id="related">相关题目 (Related)<a class="headerlink" href="#related" title="Permanent link">#</a></h2>
 <ul>
-<li><a href="../0177_nth-highest-salary/">#177. Nth Highest Salary</a> — 同类 Top-N 单部门版。</li>
+<li><a href="../0177_nth-highest-salary/">#177. Nth Highest Salary</a> — 同类 Top-N 单部门版（去掉 <code>PARTITION BY</code> 即退化为本题的单组情形）。</li>
 <li><code>#176. Second Highest Salary (off-wiki)</code> — N=2 退化版。</li>
-<li><code>#184. Department Highest Salary (off-wiki)</code> — Top-1 per group。</li>
+<li><code>#184. Department Highest Salary (off-wiki)</code> — Top-1 per group，本题取 <span class="arithmatex">\(r \le 1\)</span> 的特例。</li>
 <li><a href="../0584_find-customer-referee/">#0584. Find Customer Referee</a> — 同 Database 系列基础筛选。</li>
 </ul>
 <h2 id="further-reading">Further Reading<a class="headerlink" href="#further-reading" title="Permanent link">#</a></h2>
@@ -22646,6 +22756,8 @@
         <script src="../../../js/mathjax/tex-mml-chtml.js"></script>
       
         <script src="../../../js/mermaid.min.js"></script>
+      
+        <script src="../../../js/featured.js"></script>
       
     
   </body>

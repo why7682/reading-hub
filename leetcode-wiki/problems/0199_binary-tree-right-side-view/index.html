@@ -1466,6 +1466,8 @@
       
         
       
+        
+      
     
     
     
@@ -1521,6 +1523,34 @@
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../featured/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ⭐ Featured（已验证）
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
               
             
               
@@ -1610,10 +1640,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_4" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
         
           
-          <label class="md-nav__link" for="__nav_4_4" id="__nav_4_4_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_5" id="__nav_4_5_label" tabindex="">
             
   
   
@@ -1631,8 +1661,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_4_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_4">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_5">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1915,7 +1945,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -1937,14 +1967,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_4_5" id="__nav_4_5_label" tabindex="">
+              <label class="md-nav__link " for="__nav_4_6" id="__nav_4_6_label" tabindex="">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_5">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_6">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -5321,10 +5351,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_7" checked>
         
           
-          <label class="md-nav__link" for="__nav_4_6" id="__nav_4_6_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_7" id="__nav_4_7_label" tabindex="">
             
   
   
@@ -5342,8 +5372,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_4_6">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_7_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4_7">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -22467,13 +22497,21 @@
 <h2 id="problem">Problem<a class="headerlink" href="#problem" title="Permanent link">#</a></h2>
 <p>给二叉树根 <code>root</code>，返回从右侧观察时<strong>每层最先看到</strong>的节点值，自顶向下排列。当某层右子树缺失时，应看到该层最右侧实际存在的节点。节点数 <span class="arithmatex">\(\in [0, 100]\)</span>，值 <span class="arithmatex">\(\in [-100, 100]\)</span>。</p>
 <h2 id="background">背景 (Background)<a class="headerlink" href="#background" title="Permanent link">#</a></h2>
-<p>本题是 <strong>层序遍历 (level-order traversal)</strong> 的应用，等价于把二叉树投影到一条垂直射线上、记录每层最右元素。从 CS 角度，"按层访问" 是 BFS 的天然语义；从树论 (graph theory on rooted trees) 角度，本题问的是 "每层 (depth) 索引上最大顺序号的节点"。该模式还出现在 <em>bottom view</em>, <em>vertical order traversal</em> 等变体中——核心都是把树的"二维布局"投影到某条轴。</p>
+<p>最自然的第一反应：站在右侧看到的就是「一路向右」的那条链——从根开始，每次走右孩子，把沿途的值收集起来。对 <code>[1,2,3,null,5,null,4]</code> 这棵树，这条右链是 <code>1 → 3 → 4</code>，结果 <code>[1,3,4]</code>，恰好正确。</p>
+<p>但这个想法在右孩子缺失时立刻失效。考虑树 <code>[1,2,3,4,null,null,null,5]</code>：根 <code>1</code> 的右孩子是 <code>3</code>，而 <code>3</code> 没有任何孩子，右链到此为止，给出 <code>[1,3]</code>。可是深度 3 处其实有节点 <code>5</code>（路径 <code>1 → 2 → 4 → 5</code>，全走左孩子）——从右侧仍然能看到它，因为它那一层没有别的节点挡在它右边。右链漏掉了它。</p>
+<p>失效的根源是：「最右可见节点」不是一个全局的、可以一路向右追下去的链，而是<strong>逐层</strong>定义的。每一层各自独立地有一个「最右节点」，它可能来自任意一条根到该层的路径，未必接在上一层最右节点的下面。所以正确的分解单位不是「向右的路径」，而是「深度」：输出列表的第 <span class="arithmatex">\(d\)</span> 项，只取决于深度为 <span class="arithmatex">\(d\)</span> 的那一组节点。这把问题从「追一条链」转成了「逐层取一个代表」。</p>
 <h2 id="formulation">形式化 (Formulation)<a class="headerlink" href="#formulation" title="Permanent link">#</a></h2>
-<p>设根的深度为 <span class="arithmatex">\(0\)</span>，节点 <span class="arithmatex">\(v\)</span> 的深度为 <span class="arithmatex">\(d(v)\)</span>。按中序遍历下的某种"右优先"顺序排序后，对每个 <span class="arithmatex">\(d\)</span> 取该层的最后访问到的节点 <span class="arithmatex">\(v_d\)</span>，输出 <span class="arithmatex">\(\{val(v_d) : d = 0, 1, \dots, H-1\}\)</span>，其中 <span class="arithmatex">\(H\)</span> 为树高。等价：</p>
-<div class="arithmatex">\[\text{ans}[d] = val(\arg\max_{v : d(v) = d} \text{rightmost-rank}(v)).\]</div>
+<p>先把上面的结论落成精确语言。设根的深度为 <span class="arithmatex">\(0\)</span>，节点 <span class="arithmatex">\(v\)</span> 的深度 <span class="arithmatex">\(d(v)\)</span> 为它到根的边数，树高 <span class="arithmatex">\(H = 1 + \max_v d(v)\)</span>（空树 <span class="arithmatex">\(H = 0\)</span>）。</p>
+<p>对每个深度 <span class="arithmatex">\(d \in \{0, 1, \dots, H-1\}\)</span>，令 <span class="arithmatex">\(L_d = \{v : d(v) = d\}\)</span> 为该层的节点集合。我们需要在 <span class="arithmatex">\(L_d\)</span> 内部定一个「谁在右边」的顺序。自然的选择是<strong>水平位置</strong>：把同一层的节点按从左到右排列，给每个节点一个该层内的横向序号 <span class="arithmatex">\(\text{pos}(v)\)</span>——同一父节点下左孩子的 <code>pos</code> 小于右孩子，且整层严格按左右次序递增。这正是层序（BFS）逐层入队时节点出现的次序。</p>
+<p>于是「该层最右节点」就是 <span class="arithmatex">\(L_d\)</span> 中 <span class="arithmatex">\(\text{pos}\)</span> 最大者，答案为</p>
+<div class="arithmatex">\[\text{ans}[d] = \text{val}\Big(\arg\max_{v \in L_d} \text{pos}(v)\Big), \qquad d = 0, 1, \dots, H-1.\]</div>
+<blockquote>
+<p>注意顺序必须是层内水平位置，<strong>不能</strong>用中序或前序的全局遍历序号。例如 <code>[1,2,3,4,5,6,7]</code> 若按中序排名取每层最大，会得到错误的 <code>[1,2,4]</code>；正确答案 <code>[1,3,7]</code> 只有按层内水平位置才得到。横向序号是逐层局部定义的，与跨层的遍历次序无关。</p>
+</blockquote>
+<p>下面两种解法分别从这个公式的两个侧面读出算法：解法 A 直接枚举每个 <span class="arithmatex">\(L_d\)</span> 并取其最右；解法 B 用遍历次序间接保证「首次到达深度 <span class="arithmatex">\(d\)</span> 的就是 <span class="arithmatex">\(\arg\max\)</span>」。</p>
 <h2 id="approach">数据结构 / 想法 (Approach)<a class="headerlink" href="#approach" title="Permanent link">#</a></h2>
-<p><strong>解法 A — BFS (按层)</strong>：用队列做 level-order，每层结束时把"最后一个出队的节点"的值写入答案。
-- 不变量：处理第 <span class="arithmatex">\(d\)</span> 层时，队列中恰好是该层全部节点，按从左到右顺序排列；最后弹出的即"该层最右节点"。</p>
+<p><strong>解法 A — BFS（直接枚举每层）。</strong> 公式要求按层处理、层内取 <span class="arithmatex">\(\text{pos}\)</span> 最大者。BFS 用队列天然按深度分批：若每一轮开始时队列恰好装着 <span class="arithmatex">\(L_d\)</span> 的全部节点、且按 <span class="arithmatex">\(\text{pos}\)</span> 升序排列，那么这一轮<strong>最后</strong>出队的就是 <span class="arithmatex">\(\arg\max_{v \in L_d}\text{pos}(v)\)</span>，正是 <span class="arithmatex">\(\text{ans}[d]\)</span>。</p>
+<p>需要验证这个不变量逐层成立。归纳：第 0 轮队列只有根，单元素层平凡成立。设第 <span class="arithmatex">\(d\)</span> 轮开始时队列是 <span class="arithmatex">\(L_d\)</span> 按 <span class="arithmatex">\(\text{pos}\)</span> 升序。这一轮把 <span class="arithmatex">\(L_d\)</span> 全部出队，对每个出队节点<strong>先入左孩子、后入右孩子</strong>。同父的孩子里左先于右；不同父的节点按父在 <span class="arithmatex">\(L_d\)</span> 中的次序（即 <span class="arithmatex">\(\text{pos}\)</span> 升序）依次处理，孩子也就按父的次序排好。两条合起来，新入队的恰是 <span class="arithmatex">\(L_{d+1}\)</span> 按 <span class="arithmatex">\(\text{pos}\)</span> 升序——不变量传递到下一层。所以只要每轮记录最后一个出队值即可。</p>
 <div class="language-python highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">collections</span><span class="w"> </span><span class="kn">import</span> <span class="n">deque</span>
 <span class="k">class</span><span class="w"> </span><span class="nc">Solution</span><span class="p">:</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">rightSideView</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">root</span><span class="p">):</span>
@@ -22489,7 +22527,9 @@
             <span class="n">ans</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">last</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">ans</span>
 </code></pre></div>
-<p><strong>解法 B — DFS (右优先)</strong>：先访问右子，再左子，并维护当前深度 <span class="arithmatex">\(d\)</span>。若 <span class="arithmatex">\(d == len(ans)\)</span>，说明 <span class="arithmatex">\(d\)</span> 这层首次到达，本节点就是该层最右——加入答案。</p>
+<p><strong>解法 B — DFS（用遍历次序代替显式分层）。</strong> 能否不维护整层队列、只用递归栈？朴素的左优先 DFS 走到深度 <span class="arithmatex">\(d\)</span> 时，第一个到达的是该层最左节点，不是我们要的最右；而且同一深度会被多条路径反复到达，无法简单判断哪个才是 <span class="arithmatex">\(\arg\max\)</span>。</p>
+<p>把遍历翻转成<strong>先右后左</strong>，问题就化解了。关键观察：在先右后左的 DFS 中，<strong>第一次</strong>到达深度 <span class="arithmatex">\(d\)</span> 时所走的路径，在每个有右孩子的分叉处都选了右——因此这个首达节点正是 <span class="arithmatex">\(L_d\)</span> 中 <span class="arithmatex">\(\text{pos}\)</span> 最大者，即 <span class="arithmatex">\(\arg\max\)</span>。后续再到达深度 <span class="arithmatex">\(d\)</span> 的节点 <span class="arithmatex">\(\text{pos}\)</span> 只会更小，应当跳过。于是「是否首次到达深度 <span class="arithmatex">\(d\)</span>」就成了唯一的录入判据。</p>
+<p>如何判定「首次到达深度 <span class="arithmatex">\(d\)</span>」？答案列表 <code>ans</code> 严格按深度递增填充：填完 <code>ans[0..d-1]</code> 才会首次触及深度 <span class="arithmatex">\(d\)</span>，此刻 <code>len(ans) == d</code>。所以条件就是 <code>d == len(ans)</code>——严格相等，不是 <code>&gt;=</code>。相等意味着深度 <span class="arithmatex">\(d\)</span> 尚无记录、当前正是首达；一旦记下，<code>len(ans)</code> 增到 <span class="arithmatex">\(d+1\)</span>，同层后续节点都不再满足。</p>
 <div class="language-python highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">Solution</span><span class="p">:</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">rightSideView</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">root</span><span class="p">):</span>
         <span class="n">ans</span> <span class="o">=</span> <span class="p">[]</span>
@@ -22502,24 +22542,80 @@
         <span class="n">dfs</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">ans</span>
 </code></pre></div>
-<p>DFS 版本空间为递归栈 <span class="arithmatex">\(O(H)\)</span>，BFS 版本空间为队列最宽层 <span class="arithmatex">\(O(W)\)</span>。完全二叉树 <span class="arithmatex">\(W \approx n/2\)</span> 而 <span class="arithmatex">\(H \approx \log n\)</span>，DFS 更省内存。</p>
-<p>Trace 样例 1 <code>[1,2,3,null,5,null,4]</code>：DFS 走 1→3 (d=1, 加入)→4 (d=2, 加入)→回 1→2 (d=1, len(ans)=2，跳过)→5 (d=2, len(ans)=2，跳过)。结果 <code>[1,3,4]</code>。✓</p>
+<p>在 <code>[1,2,3,null,5,null,4]</code> 上逐步跟踪解法 B：</p>
+<table>
+<thead>
+<tr>
+<th>步</th>
+<th>访问节点</th>
+<th>深度 <span class="arithmatex">\(d\)</span></th>
+<th><code>len(ans)</code></th>
+<th>判定</th>
+<th><code>ans</code></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+<td><span class="arithmatex">\(d=\)</span>len，录入</td>
+<td><code>[1]</code></td>
+</tr>
+<tr>
+<td>2</td>
+<td>3</td>
+<td>1</td>
+<td>1</td>
+<td><span class="arithmatex">\(d=\)</span>len，录入</td>
+<td><code>[1,3]</code></td>
+</tr>
+<tr>
+<td>3</td>
+<td>4</td>
+<td>2</td>
+<td>2</td>
+<td><span class="arithmatex">\(d=\)</span>len，录入</td>
+<td><code>[1,3,4]</code></td>
+</tr>
+<tr>
+<td>4</td>
+<td>2</td>
+<td>1</td>
+<td>3</td>
+<td><span class="arithmatex">\(d&lt;\)</span>len，跳过</td>
+<td><code>[1,3,4]</code></td>
+</tr>
+<tr>
+<td>5</td>
+<td>5</td>
+<td>2</td>
+<td>3</td>
+<td><span class="arithmatex">\(d&lt;\)</span>len，跳过</td>
+<td><code>[1,3,4]</code></td>
+</tr>
+</tbody>
+</table>
+<p>先右后左使 <code>1 → 3 → 4</code> 这条最右路径最先被走完，三层的最右节点依次落位；回溯到左子树时各层均已有记录，全部跳过。结果 <code>[1,3,4]</code>。✓</p>
+<p>两种解法只在<strong>用什么承载「层」</strong>上分道：A 用队列显式持有整层，B 用递归栈隐式按深度区分。这一差别直接决定空间——见下。</p>
 <h2 id="complexity">复杂度 (Complexity)<a class="headerlink" href="#complexity" title="Permanent link">#</a></h2>
 <ul>
-<li>Time: <span class="arithmatex">\(O(n)\)</span>，每节点访问一次。</li>
-<li>Space: BFS <span class="arithmatex">\(O(W)\)</span>（最宽层），DFS <span class="arithmatex">\(O(H)\)</span>（递归栈）。最坏 <span class="arithmatex">\(W = H = n\)</span>。</li>
+<li>Time：<span class="arithmatex">\(O(n)\)</span>，每个节点恰好访问一次。</li>
+<li>Space：解法 A 为队列峰值，即最宽层宽度 <span class="arithmatex">\(O(W)\)</span>；解法 B 为递归栈深度，即树高 <span class="arithmatex">\(O(H)\)</span>。</li>
 </ul>
+<p>两者的空间在不同形状的树上取到最坏：BFS 的 <span class="arithmatex">\(O(W)\)</span> 在「底部很宽」的树上达到 <span class="arithmatex">\(O(n)\)</span>（例如完全二叉树最底层约 <span class="arithmatex">\(n/2\)</span> 个节点）；DFS 的 <span class="arithmatex">\(O(H)\)</span> 在「退化成一条链」的树上达到 <span class="arithmatex">\(O(n)\)</span>。这是<strong>两棵不同的树</strong>——一棵不可能同时既宽 <span class="arithmatex">\(W=n\)</span> 又高 <span class="arithmatex">\(H=n\)</span>（<span class="arithmatex">\(W=n\)</span> 逼所有节点挤在一层使 <span class="arithmatex">\(H\)</span> 很小，<span class="arithmatex">\(H=n\)</span> 逼成单链使 <span class="arithmatex">\(W=1\)</span>）。对常见的较平衡的树，<span class="arithmatex">\(W \approx n/2\)</span> 而 <span class="arithmatex">\(H \approx \log n\)</span>，故 DFS 通常更省内存，这也是解法 B 在面试中的偏好理由。</p>
 <h2 id="pitfalls">陷阱 (Pitfalls)<a class="headerlink" href="#pitfalls" title="Permanent link">#</a></h2>
 <ul>
-<li><strong>空树</strong>：直接返回 <code>[]</code>，不要进入循环。</li>
-<li><strong>右子缺失但左子存在</strong>：该层应看到的是左子树里这一层的最右节点（不是 <code>None</code>）。例 2 中 <code>[1,2,3,4,null,null,null,5]</code>，深度 3 看到的是 5（来自 <code>2 → 4 → 5</code> 左侧分支），而非空。两个解法都自然处理。</li>
-<li>BFS 版需要先记录 <code>len(q)</code> 再循环出队，否则内层 <code>append</code> 会污染本层节点数。</li>
-<li>DFS 版条件用 <code>d == len(ans)</code> 而非 <code>&gt;</code>：必须严格相等才"首次到达"。</li>
+<li><strong>空树</strong>：<code>n=0</code> 时直接返回 <code>[]</code>，不要进入循环（约束允许 <span class="arithmatex">\(n=0\)</span>）。</li>
+<li><strong>右子缺失但左子存在</strong>：该层最右应是左子树中这一层的最右节点，而非 <code>None</code>。这正是「向右追链」朴素法失效之处。以树 <code>[1,2,3,4,null,null,null,5]</code> 为例，深度 3 看到的是 <code>5</code>（它是节点 <code>4</code> 的左孩子，<code>4</code> 又是 <code>2</code> 的左孩子，路径 <code>1 → 2 → 4 → 5</code>），右侧视图为 <code>[1,3,4,5]</code>。两种解法都自然处理——A 因为整层都在队列里，B 因为先右后左仍会回溯进左子树并在该层尚无记录时录入。</li>
+<li><strong>BFS 必须先记录 <code>len(q)</code> 再循环</strong>：内层的 <code>append</code> 会在出队过程中向队列加入下一层节点；若不预先固定本轮的层宽，循环边界会被下一层污染。</li>
+<li><strong>DFS 条件用 <code>d == len(ans)</code> 而非 <code>&gt;=</code></strong>：严格相等才表示「深度 <span class="arithmatex">\(d\)</span> 首次到达」。用 <code>&gt;=</code> 会让同层后续（更靠左的）节点也满足条件，覆盖掉已记录的最右节点。</li>
 </ul>
 <h2 id="related">相关题目 (Related)<a class="headerlink" href="#related" title="Permanent link">#</a></h2>
 <ul>
-<li><code>#102. Binary Tree Level Order Traversal (off-wiki)</code> — 层序遍历的基础题，本题在其上加一步"取最右"。</li>
-<li><code>#116. Populating Next Right Pointers in Each Node (off-wiki)</code> — 层序遍历的另一应用：连同层节点。</li>
+<li><code>#102. Binary Tree Level Order Traversal (off-wiki)</code> — 层序遍历的基础题，本题在其上加一步「取最右」。</li>
+<li><a href="../0116_populating-next-right-pointers-in-each-node/">#116. Populating Next Right Pointers in Each Node</a> — 层序遍历的另一应用：连同层节点。</li>
 <li><code>#545. Boundary of Binary Tree (off-wiki)</code> — 同样要把树投影到边界，含左边界 / 右边界 / 叶子。</li>
 <li><a href="../0226_invert-binary-tree/">#226. Invert Binary Tree</a> — 镜像后做 left side view 等价。</li>
 <li><a href="../1448_count-good-nodes-in-binary-tree/">#1448. Count Good Nodes in Binary Tree</a> — 同为 DFS 维护路径信息。</li>
@@ -22635,6 +22731,8 @@
         <script src="../../../js/mathjax/tex-mml-chtml.js"></script>
       
         <script src="../../../js/mermaid.min.js"></script>
+      
+        <script src="../../../js/featured.js"></script>
       
     
   </body>

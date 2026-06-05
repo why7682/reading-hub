@@ -1466,6 +1466,8 @@
       
         
       
+        
+      
     
     
     
@@ -1521,6 +1523,34 @@
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../featured/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ⭐ Featured（已验证）
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
               
             
               
@@ -1610,10 +1640,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_4" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
         
           
-          <label class="md-nav__link" for="__nav_4_4" id="__nav_4_4_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_5" id="__nav_4_5_label" tabindex="">
             
   
   
@@ -1631,8 +1661,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_4_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_4">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_5">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1915,7 +1945,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -1937,14 +1967,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_4_5" id="__nav_4_5_label" tabindex="">
+              <label class="md-nav__link " for="__nav_4_6" id="__nav_4_6_label" tabindex="">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_5">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_6">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -5321,10 +5351,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_7" checked>
         
           
-          <label class="md-nav__link" for="__nav_4_6" id="__nav_4_6_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_7" id="__nav_4_7_label" tabindex="">
             
   
   
@@ -5342,8 +5372,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_4_6">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_7_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4_7">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -22467,18 +22497,42 @@
 <h2 id="problem">Problem<a class="headerlink" href="#problem" title="Permanent link">#</a></h2>
 <p>在 <span class="arithmatex">\(m \times n\)</span> 网格（<span class="arithmatex">\(m, n \le 5\)</span>）放置至多 <code>introvertsCount</code> 个内向者和 <code>extrovertsCount</code> 个外向者（均 <span class="arithmatex">\(\le 6\)</span>）。内向者初始幸福 120，每多一个邻居 <span class="arithmatex">\(-30\)</span>；外向者初始 40，每多一个邻居 <span class="arithmatex">\(+20\)</span>（双向都计入）。求总幸福度最大值。</p>
 <h2 id="background">背景 (Background)<a class="headerlink" href="#background" title="Permanent link">#</a></h2>
-<p>本题是 <strong>轮廓线 DP</strong> (profile / broken-profile DP) 的标准应用：当网格的某一维很小（<span class="arithmatex">\(\le 5\)</span>），可枚举一行的所有"侧面状态" (<span class="arithmatex">\(3^n\)</span> 种)，作为状态空间在另一维上推进。轮廓线 DP 在棋盘覆盖、Domino tiling、伊辛模型采样、SOS DP 中广泛使用，亦被称为"插头 DP"或"profile DP"。本题轮廓状态需要记最近的"上一行整行"（决定垂直邻居），加上"已放置 in/ex 数量"作为资源。</p>
+<p>先尝试最朴素的 DP。我们按行优先、从左到右的顺序逐格决定每个 cell 放什么（空 / 内向 / 外向）。最自然的状态是</p>
+<div class="arithmatex">\[(\text{pos}, \text{introLeft}, \text{extroLeft})\]</div>
+<p>其中 <span class="arithmatex">\(\text{pos}\)</span> 是当前要决定的格子编号，后两者是剩余可用的内向者、外向者名额。</p>
+<p><strong>这个状态在哪里崩？</strong> 放一个人在 <span class="arithmatex">\((r, c)\)</span> 时，它的幸福增量取决于它的已决定邻居——左邻 <span class="arithmatex">\((r, c-1)\)</span> 和上邻 <span class="arithmatex">\((r-1, c)\)</span> 各放了什么。左邻就是上一步决定的格子，靠 <span class="arithmatex">\(\text{pos}\)</span> 能间接定位；但上邻在上一行，从 <span class="arithmatex">\(\text{pos}\)</span> 这个标量里<strong>读不出来</strong>。两个 <span class="arithmatex">\(\text{pos}\)</span> 相同、剩余名额也相同、但上一行排布不同的局面，会有不同的后续收益，却被这个状态混为一谈。状态不满足无后效性，DP 失效。</p>
+<p>修复方向由这个缺口直接给出：<strong>状态必须记住上一行的排布</strong>，才能判断每个上邻的身份。每格三种取值，上一行 <span class="arithmatex">\(n\)</span> 格共 <span class="arithmatex">\(3^n\)</span> 种；<span class="arithmatex">\(n \le 5\)</span> 时 <span class="arithmatex">\(3^5 = 243\)</span>，完全装得进状态。正是网格有一维很窄（<span class="arithmatex">\(n \le 5\)</span>），使「已决定区与未决定区的边界」——即上一行——状态数有界，这才让把它塞进 DP 成为可能。这一类「沿窄维推进、用边界排布当状态」的 DP 通称<strong>轮廓线 DP</strong> (profile / broken-profile DP)；下文据此把状态精确化。</p>
 <h2 id="formulation">形式化 (Formulation)<a class="headerlink" href="#formulation" title="Permanent link">#</a></h2>
-<p>状态：<span class="arithmatex">\((i, j, \text{prevRow}, \text{introLeft}, \text{extroLeft})\)</span>，其中 <span class="arithmatex">\(\text{prevRow}\)</span> 是按 base-3 编码的"上 <span class="arithmatex">\(n\)</span> 个已决定单元"（最近 n 个 cell 的状态）。值域：</p>
-<div class="arithmatex">\[|\text{states}| = mn \cdot 3^n \cdot (\text{introCnt}+1)(\text{extroCnt}+1) \le 25 \cdot 243 \cdot 49 \approx 3 \times 10^5\]</div>
-<p>转移：对当前 cell 选 empty / intro / extro，计算与左邻居 (prevRow 的最低位) + 上邻居 (prevRow 的最高位) 的交互增量，更新 prevRow。</p>
+<p><strong>直觉先行。</strong> 关键观察是：在行优先扫描下，cell <span class="arithmatex">\((r, c)\)</span> 的两个已决定邻居有固定的「时间距离」。左邻 <span class="arithmatex">\((r, c-1)\)</span> 是上一个决定的格子，距今 <span class="arithmatex">\(1\)</span> 步；上邻 <span class="arithmatex">\((r-1, c)\)</span> 距今恰好 <span class="arithmatex">\(n\)</span> 步。所以<strong>最近 <span class="arithmatex">\(n\)</span> 个已决定的格子</strong>，正好覆盖了任意待决格的左邻与上邻，不多不少。记住更多是冗余，记住更少则丢失上邻。窗口大小 <span class="arithmatex">\(n\)</span> 是被依赖结构逼出来的，不是凑出来的。</p>
+<p>由此定义状态。设 <span class="arithmatex">\(\text{prev}\)</span> 为最近 <span class="arithmatex">\(n\)</span> 个已决定格子的 base-3 编码（最近的格子在最低位），则状态为</p>
+<div class="arithmatex">\[(\text{pos}, \text{prev}, \text{introLeft}, \text{extroLeft}). \tag{1}\]</div>
+<p>在编码 <span class="arithmatex">\((1)\)</span> 中两个邻居的位置是固定的：上邻是窗口里最早的格子，落在最高位 <span class="arithmatex">\(\lfloor \text{prev} / 3^{\,n-1}\rfloor\)</span>；左邻是最近的格子，落在最低位 <span class="arithmatex">\(\text{prev} \bmod 3\)</span>。状态总数为</p>
+<div class="arithmatex">\[|\text{states}| \;\le\; mn \cdot 3^n \cdot (\text{introCnt}+1)(\text{extroCnt}+1) \;\le\; 25 \cdot 243 \cdot 49 \;\approx\; 3 \times 10^5. \tag{2}\]</div>
+<p>这是个上界——并非所有 <span class="arithmatex">\((\text{introLeft}, \text{extroLeft})\)</span> 组合在每个 <span class="arithmatex">\(\text{pos}\)</span> 都可达，实测 <span class="arithmatex">\(m=n=5,\ I=E=6\)</span> 时不同状态约 <span class="arithmatex">\(1.1 \times 10^5\)</span>。</p>
+<p><strong>收益为何可在放置时一次算清。</strong> 一对邻居的幸福贡献是对称的，且一旦两人都就位就固定不变。我们从左到右、从上到下放置，轮到 <span class="arithmatex">\((r, c)\)</span> 时它的左邻与上邻（若存在）都已决定且此后不再改动，因此可以把这对相互作用的<strong>全部</strong>幸福（双向之和）一次性记在「放置 <span class="arithmatex">\((r, c)\)</span>」这个事件上，不必等邻居就位时再补。定义放置者 <span class="arithmatex">\(\text{me}\)</span> 与已存在邻居 <span class="arithmatex">\(\text{nb}\)</span> 之间的双向增量 <span class="arithmatex">\(\Delta(\text{me}, \text{nb})\)</span>：</p>
+<div class="arithmatex">\[
+\Delta =
+\begin{cases}
+-30 + (-30) = -60 &amp; \text{intro--intro} \\
+-30 + 20 = -10 &amp; \text{intro--extro 或 extro--intro} \\
++20 + 20 = +40 &amp; \text{extro--extro}
+\end{cases}
+\tag{3}
+\]</div>
+<p>再设单人初始幸福 <span class="arithmatex">\(\text{INIT}(\text{intro}) = 120,\ \text{INIT}(\text{extro}) = 40\)</span>。于是放置 <span class="arithmatex">\((r, c)\)</span> 的转移收益是初始值加上与左、上两个已存在邻居各自的 <span class="arithmatex">\(\Delta\)</span>，并把窗口右移一格。下一节给出转移的精确写法。</p>
 <h2 id="approach">数据结构 / 想法 (Approach)<a class="headerlink" href="#approach" title="Permanent link">#</a></h2>
-<p><strong>关键技巧 (hint #3)</strong>：把"当前行已决定的列"也归入 prevRow 末尾，prevRow 永远表示"最近 n 个 cell"。这样上邻居在 prevRow 顶端，左邻居在 prevRow 底端，统一。</p>
-<p><strong>增量收益</strong>：放一个 introvert 单独贡献 +120；每对邻居若都已存在贡献 <span class="arithmatex">\(\Delta = f(\text{me}) + f(\text{neighbor})\)</span>，其中：
-- intro-intro: <span class="arithmatex">\(-30 + (-30) = -60\)</span>
-- intro-extro / extro-intro: <span class="arithmatex">\(-30 + 20 = -10\)</span>
-- extro-extro: <span class="arithmatex">\(+20 + 20 = +40\)</span></p>
-<p>放置新 cell <code>c</code> 时与上、左两个已存在邻居的 <em>相互</em> 调整都需计入（双向）。</p>
+<p>转移要从 <span class="arithmatex">\(\text{prev}\)</span> 里读出左、上邻居，再更新窗口。先看一个看似自然但更繁的编码，再导出我们采用的那个。</p>
+<p><strong>两变量编码（被淘汰的版本）。</strong> 直觉上可以分开存：一个变量存「完整的上一行」，另一个存「当前行已决定的前缀」。但这样上邻在「上一行」变量里、左邻在「前缀」变量里，两次查表逻辑不同，还多出一维状态。</p>
+<p><strong>单窗口编码（采用）。</strong> 既然形式化已经表明左邻与上邻分别是最近第 <span class="arithmatex">\(1\)</span>、第 <span class="arithmatex">\(n\)</span> 个决定的格子，就让 <span class="arithmatex">\(\text{prev}\)</span> 始终表示「最近 <span class="arithmatex">\(n\)</span> 个格子」这一个滑动窗口即可：当前行已决定的格子自然排在窗口低位，上一行尚未被覆盖的格子排在高位，两个邻居各在窗口的一端，查表统一、且不增加维度。窗口右移就是把新格压入最低位、最高位的老格淘汰：</p>
+<div class="arithmatex">\[\text{prev}' = (\text{prev} \bmod 3^{\,n-1}) \cdot 3 + \text{new}. \tag{4}\]</div>
+<p>这正是 <span class="arithmatex">\((4)\)</span> 里 <code>(prev % POW) * BASE + new</code> 的由来：<span class="arithmatex">\(\bmod\ 3^{n-1}\)</span> 砍掉最高位的上邻，乘 3 腾出最低位放新格。</p>
+<p><strong>一个小例子（先于代码，帮助读代码）。</strong> 取 <span class="arithmatex">\(m=3, n=1\)</span>，每个 <span class="arithmatex">\(\text{prev}\)</span> 只含 1 格，每格的上邻就是它正上方那格。依次放 intro@(0,0)、extro@(1,0)、intro@(2,0)：</p>
+<ul>
+<li>intro(0,0)：无邻居，收益 <span class="arithmatex">\(120\)</span>。</li>
+<li>extro(1,0)：上邻为 intro，收益 <span class="arithmatex">\(\text{INIT}(\text{extro}) + \Delta(\text{extro}, \text{intro}) = 40 + (-10) = 30\)</span>。注意 <span class="arithmatex">\(\Delta\)</span> 已含 extro 的 <span class="arithmatex">\(+20\)</span> 与那位 intro 因新增邻居而来的 <span class="arithmatex">\(-30\)</span>。</li>
+<li>intro(2,0)：上邻为 extro，收益 <span class="arithmatex">\(\text{INIT}(\text{intro}) + \Delta(\text{intro}, \text{extro}) = 120 + (-10) = 110\)</span>。</li>
+</ul>
+<p>总计 <span class="arithmatex">\(120 + 30 + 110 = 260\)</span>，与官方答案一致。</p>
 <div class="language-python highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">Solution</span><span class="p">:</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">getMaxGridHappiness</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">m</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">ic</span><span class="p">,</span> <span class="n">ec</span><span class="p">):</span>
         <span class="kn">from</span><span class="w"> </span><span class="nn">functools</span><span class="w"> </span><span class="kn">import</span> <span class="n">lru_cache</span>
@@ -22515,19 +22569,19 @@
 
         <span class="k">return</span> <span class="n">dp</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">ic</span><span class="p">,</span> <span class="n">ec</span><span class="p">)</span>
 </code></pre></div>
-<p><strong>心算 trace 示例 2</strong>：<span class="arithmatex">\(m=3, n=1\)</span>，每个 prev 只有 1 cell。放置 intro@(0,0)+120，extro@(1,0)+(40+(-10)+(-30)=0)；wait — 让我重做：放 intro(0)→120；extro(1) 上邻 intro，gain=40 + DELTA[(2,1)]=40-10=30，且需要"修正"上邻居：但 DELTA 已是双向之和，所以 30 包含 intro 的 -30 也包含 extro 的 +20。intro(0)+extro(1) 总 120 + 30 = 150；再 intro(2) 上邻 extro，gain=120 + DELTA[(1,2)]=120-10=110。总 150+110 = 260 ✓</p>
+<p>代码与形式化逐项对应：<code>up</code>/<code>left</code> 按 <span class="arithmatex">\((1)\)</span> 从窗口两端读出，转移收益按 <span class="arithmatex">\((3)\)</span> 累加，窗口更新按 <span class="arithmatex">\((4)\)</span>。<code>r &gt; 0</code>、<code>c &gt; 0</code> 的门是为了在网格上下、左边界处屏蔽不存在的邻居——这一点的微妙之处见陷阱。注意形式化里的 <span class="arithmatex">\(\text{prev}\)</span> 在代码中即变量 <code>prev</code>，二者同义。</p>
 <h2 id="complexity">复杂度 (Complexity)<a class="headerlink" href="#complexity" title="Permanent link">#</a></h2>
 <ul>
-<li>Time: <span class="arithmatex">\(O(mn \cdot 3^n \cdot (I+1)(E+1) \cdot 3)\)</span>，对 <span class="arithmatex">\(m=n=5, I=E=6\)</span> 约 <span class="arithmatex">\(7 \times 10^6\)</span>，可过。</li>
+<li>Time: <span class="arithmatex">\(O(mn \cdot 3^n \cdot (I+1)(E+1) \cdot 3)\)</span>。对 <span class="arithmatex">\(m=n=5, I=E=6\)</span>，状态数按 <span class="arithmatex">\((2)\)</span> 约 <span class="arithmatex">\(3 \times 10^5\)</span>（实测可达态约 <span class="arithmatex">\(1.1 \times 10^5\)</span>），每态 3 个转移，故约 <span class="arithmatex">\(9 \times 10^5 \sim 10^6\)</span> 次基本操作，可过。</li>
 <li>Space: 同量级 memo 表。</li>
 </ul>
 <h2 id="pitfalls">陷阱 (Pitfalls)<a class="headerlink" href="#pitfalls" title="Permanent link">#</a></h2>
 <ul>
-<li><strong>DELTA 已是双向</strong>：放置时只算一次，不要再为已存在的邻居"补加"它的变化。</li>
-<li><strong>左邻居跨行误判</strong>：<code>c &gt; 0</code> 必须显式判断，否则会把上一行末位错当左邻居。<code>prev % BASE</code> 在 c=0 时虽指向 (r-1, n-1)，但被 <code>c &gt; 0</code> 拦截。</li>
-<li><strong>prev 编码移位</strong>：新 cell 进入末位，老 cell 从顶端淘汰：<code>(prev % POW) * BASE + new</code>。</li>
-<li><strong>lru_cache 参数</strong>：必须全部 hashable（int OK），且函数无副作用。</li>
-<li><strong>不要全部放满</strong>：有时"少放一个"反而幸福更高（intro 怕邻居）。</li>
+<li><strong><span class="arithmatex">\(\Delta\)</span> 已是双向</strong>：式 <span class="arithmatex">\((3)\)</span> 把一对邻居的双向幸福合并成一个数，放置时只算一次，不要再为已存在的邻居「补加」它的变化。这是本题最易错处。</li>
+<li><strong>左邻居跨行误判</strong>：<code>c &gt; 0</code> 必须显式判断。在 <span class="arithmatex">\(c=0\)</span> 时 <code>prev % BASE</code> 指向的其实是上一行末位 <span class="arithmatex">\((r-1, n-1)\)</span>，并非真正的左邻；<code>c &gt; 0</code> 这道门恰好拦住这次误读。</li>
+<li><strong>prev 编码移位</strong>：新 cell 进最低位，老 cell 从最高位淘汰，即式 <span class="arithmatex">\((4)\)</span> 的 <code>(prev % POW) * BASE + new</code>。</li>
+<li><strong>lru_cache 参数</strong>：必须全部 hashable（int 满足），且函数无副作用。</li>
+<li><strong>「放满」未必最优</strong>：一个内向者每多一个邻居 <span class="arithmatex">\(-30\)</span>，在 5×5 网格内最多 4 个邻居，被四面包围时净贡献 <span class="arithmatex">\(120 - 4\times 30 = 0\)</span>，此时放它不如留空。因此 <code>option 0</code>（空）始终在候选里、<code>best</code> 从 0 起算，是结构上必要的，而非保险。</li>
 </ul>
 <h2 id="related">相关题目 (Related)<a class="headerlink" href="#related" title="Permanent link">#</a></h2>
 <ul>
@@ -22646,6 +22700,8 @@
         <script src="../../../js/mathjax/tex-mml-chtml.js"></script>
       
         <script src="../../../js/mermaid.min.js"></script>
+      
+        <script src="../../../js/featured.js"></script>
       
     
   </body>

@@ -1466,6 +1466,8 @@
       
         
       
+        
+      
     
     
     
@@ -1521,6 +1523,34 @@
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../featured/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ⭐ Featured（已验证）
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
               
             
               
@@ -1610,10 +1640,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_4" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
         
           
-          <label class="md-nav__link" for="__nav_4_4" id="__nav_4_4_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_5" id="__nav_4_5_label" tabindex="">
             
   
   
@@ -1631,8 +1661,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_4_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_4">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_5">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1915,7 +1945,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -1937,14 +1967,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_4_5" id="__nav_4_5_label" tabindex="">
+              <label class="md-nav__link " for="__nav_4_6" id="__nav_4_6_label" tabindex="">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_5">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_6">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -5321,10 +5351,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_7" checked>
         
           
-          <label class="md-nav__link" for="__nav_4_6" id="__nav_4_6_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_7" id="__nav_4_7_label" tabindex="">
             
   
   
@@ -5342,8 +5372,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_4_6">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_7_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4_7">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -22467,23 +22497,41 @@
 <h2 id="problem">Problem<a class="headerlink" href="#problem" title="Permanent link">#</a></h2>
 <p>8 个细胞排成一排。每天每格 = "两侧邻居相同则占；否则空"。两端无两邻居 → 永远空。给初态 <code>cells</code> 与 <span class="arithmatex">\(n \in [1, 10^9]\)</span>，求第 <span class="arithmatex">\(n\)</span> 天状态。</p>
 <h2 id="background">背景 (Background)<a class="headerlink" href="#background" title="Permanent link">#</a></h2>
-<p><strong>有限状态空间的循环检测</strong>（cycle detection in finite-state dynamical system）。状态空间 <span class="arithmatex">\(\le 2^8 = 256\)</span>（实际只有 <span class="arithmatex">\(2^6 = 64\)</span> 因两端永远为 0），<span class="arithmatex">\(n\)</span> 远大于此 → 必然进入周期。这是 elementary cellular automaton（CA rule 90/150 类）的有限版本，亦关联 Floyd / Brent cycle detection 与 <span class="arithmatex">\(\rho\)</span>-shape orbits。</p>
+<p>最直接的做法是照定义模拟：从初态出发，把"今天每格由昨天两侧邻居决定"的规则应用 <span class="arithmatex">\(n\)</span> 次。</p>
+<div class="language-python highlight"><pre><span></span><code><span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+    <span class="n">cells</span> <span class="o">=</span> <span class="n">step</span><span class="p">(</span><span class="n">cells</span><span class="p">)</span>
+</code></pre></div>
+<p>这段代码完全正确，但 <span class="arithmatex">\(n\)</span> 可达 <span class="arithmatex">\(10^9\)</span>。一次 <code>step</code> 是常数工作量，循环就要做约十亿次迭代——在限定时间内跑不完。朴素模拟之所以失败，唯一的原因是步数 <span class="arithmatex">\(n\)</span> 太大，而非单步太贵。</p>
+<p>补救的线索藏在状态本身。一个状态是 8 位 0/1 序列，至多 <span class="arithmatex">\(2^8 = 256\)</span> 种取值。规则是确定性的：当前状态唯一决定下一个状态。于是序列 <span class="arithmatex">\(c,\ T(c),\ T^2(c),\dots\)</span> 走在一个至多 256 个元素的有限集合里，走不了 256 步就必然踩到一个走过的状态——之后的轨迹只能逐字重复。换句话说，这个序列<strong>最终是周期性的</strong>。若周期为 <span class="arithmatex">\(p\)</span>，那么第 <span class="arithmatex">\(n\)</span> 天与第 <span class="arithmatex">\(n \bmod p\)</span> 天（进入周期后）状态相同，需要真正模拟的步数就从 <span class="arithmatex">\(10^9\)</span> 降到一个周期那么多步。</p>
+<p>因此剩下两件事：把转移规则写成精确的形式，再说明如何在模拟过程中检测出这个周期。</p>
 <h2 id="formulation">形式化 (Formulation)<a class="headerlink" href="#formulation" title="Permanent link">#</a></h2>
-<p>转移 <span class="arithmatex">\(T(c)\)</span>：</p>
-<div class="arithmatex">\[c'_i = \begin{cases} 1 &amp; i \in \{1,\dots,6\}\ \land\ c_{i-1} = c_{i+1} \\ 0 &amp; \text{otherwise} \end{cases}\]</div>
-<p>迭代 <span class="arithmatex">\(T^n(c)\)</span>。因 <span class="arithmatex">\(|\text{StateSpace}| \le 256\)</span>，存在 <span class="arithmatex">\(p \le 256\)</span> 使 <span class="arithmatex">\(T^{i+p} = T^i\)</span> 对某 <span class="arithmatex">\(i\)</span>；只需 <span class="arithmatex">\(n \bmod p\)</span> 步即可。</p>
+<p>先用问题自身的语言陈述转移规则，再写成公式。把细胞从左到右编号为 <span class="arithmatex">\(0,1,\dots,7\)</span>。中间的 6 格（下标 <span class="arithmatex">\(1\)</span> 到 <span class="arithmatex">\(6\)</span>）各有左右两个邻居：当且仅当两个邻居状态相同（同占或同空）时，该格次日为占，否则为空。两端的 0 号与 7 号格缺一个邻居，规则规定其永远为空。</p>
+<p>形式化地，转移算子 <span class="arithmatex">\(T : \{0,1\}^8 \to \{0,1\}^8\)</span> 定义为</p>
+<div class="arithmatex">\[
+c'_i = \begin{cases} 1 &amp; i \in \{1,\dots,6\}\ \land\ c_{i-1} = c_{i+1} \\ 0 &amp; i \in \{0, 7\} \end{cases}
+\tag{1}
+\]</div>
+<p>第 <span class="arithmatex">\(n\)</span> 天的状态即 <span class="arithmatex">\(T^n(c)\)</span>。</p>
+<p>注意 <span class="arithmatex">\((1)\)</span> 强制 <span class="arithmatex">\(c'_0 = c'_7 = 0\)</span>：无论初态两端是什么，<strong>一步之后两端永久为 0</strong>。因此真正被反复访问的状态满足两端为 0，可达状态空间从 <span class="arithmatex">\(2^8 = 256\)</span> 缩到 <span class="arithmatex">\(2^6 = 64\)</span>。这一点稍后决定了算法实际只会存下极少量状态。</p>
+<p>现在把"最终周期"的直觉变成精确论证。<span class="arithmatex">\(T\)</span> 是有限集合 <span class="arithmatex">\(\{0,1\}^8\)</span> 到自身的确定性映射，轨道 <span class="arithmatex">\(c, T(c), T^2(c), \dots\)</span> 的取值落在这个有限集合里。由鸽巢原理，前 <span class="arithmatex">\(|{\{0,1\}^8}| + 1 \le 257\)</span> 个状态中必有两个相同：设 <span class="arithmatex">\(T^{i}(c) = T^{j}(c)\)</span> 且 <span class="arithmatex">\(i &lt; j\)</span>。由 <span class="arithmatex">\(T\)</span> 的确定性，对所有 <span class="arithmatex">\(k \ge i\)</span> 有 <span class="arithmatex">\(T^{k+(j-i)}(c) = T^{k}(c)\)</span>。记 <span class="arithmatex">\(p = j - i\)</span>，则轨道在第 <span class="arithmatex">\(i\)</span> 步之后以周期 <span class="arithmatex">\(p\)</span> 循环：</p>
+<div class="arithmatex">\[
+T^{n}(c) = T^{\,i + ((n - i) \bmod p)}(c), \qquad n \ge i.
+\tag{2}
+\]</div>
+<p><span class="arithmatex">\((2)\)</span> 是整个解法的脊梁：它把"模拟 <span class="arithmatex">\(n\)</span> 步"约化为"模拟到进入周期、再走 <span class="arithmatex">\((n-i) \bmod p\)</span> 步"，总步数被周期长度（<span class="arithmatex">\(\le 256\)</span>）所界。剩下的全部工作，是在模拟过程中检测到这个周期并就地完成取模。</p>
 <h2 id="approach">数据结构 / 想法 (Approach)<a class="headerlink" href="#approach" title="Permanent link">#</a></h2>
-<p><strong>核心：哈希记录访问到的状态 → 找到循环 → 取模剩余天数</strong>。</p>
+<p>要落实 <span class="arithmatex">\((2)\)</span>，需要在模拟途中识别"踩到了走过的状态"，并据此一次性跳过整数个周期。</p>
+<p>先确定该用什么作为周期的度量。逐步模拟时，每个状态对应一个<strong>剩余天数</strong> <span class="arithmatex">\(n\)</span>（还要往后走的步数）。如果某状态 <span class="arithmatex">\(s\)</span> 第一次出现时剩余天数为 <span class="arithmatex">\(n_1\)</span>，再次出现时为 <span class="arithmatex">\(n_2 &lt; n_1\)</span>，那么从第一次到第二次正好走了 <span class="arithmatex">\(n_1 - n_2\)</span> 步并回到了 <span class="arithmatex">\(s\)</span>。由 <span class="arithmatex">\((2)\)</span> 的同样推理，<span class="arithmatex">\(T^{\,n_1 - n_2}(s) = s\)</span>，即 <span class="arithmatex">\(n_1 - n_2\)</span> 是 <span class="arithmatex">\(s\)</span> 所在循环的一个周期。于是只需令 <span class="arithmatex">\(n \leftarrow n \bmod (n_1 - n_2)\)</span>，就把剩余天数压进一个周期之内，且不改变最终状态。<strong>以剩余天数为度量、取其前后差为周期</strong>，正是把 <span class="arithmatex">\((2)\)</span> 直接翻译成代码的方式。</p>
+<p>据此实现：用哈希表 <code>seen</code> 记录每个状态首次出现时的剩余天数；一旦重复出现就用差值取模；其余每天照 <span class="arithmatex">\((1)\)</span> 推进。</p>
 <div class="language-python highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">Solution</span><span class="p">:</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">prisonAfterNDays</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cells</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">],</span> <span class="n">n</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]:</span>
         <span class="k">def</span><span class="w"> </span><span class="nf">step</span><span class="p">(</span><span class="n">c</span><span class="p">):</span>
             <span class="k">return</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">c</span><span class="p">[</span><span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="n">c</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">])</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">7</span><span class="p">)]</span> <span class="o">+</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span>
         <span class="n">seen</span> <span class="o">=</span> <span class="p">{}</span>
-        <span class="n">day</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="k">while</span> <span class="n">n</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
             <span class="n">key</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">cells</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">seen</span><span class="p">:</span>
-                <span class="n">cycle</span> <span class="o">=</span> <span class="n">seen</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">-</span> <span class="n">n</span>  <span class="c1"># 上次到此状态时剩余天数 - 现在</span>
+                <span class="n">cycle</span> <span class="o">=</span> <span class="n">seen</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">-</span> <span class="n">n</span>  <span class="c1"># 该状态上次出现时剩余天数 - 现在</span>
                 <span class="n">n</span> <span class="o">%=</span> <span class="n">cycle</span>
             <span class="n">seen</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">n</span>
             <span class="k">if</span> <span class="n">n</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
@@ -22491,19 +22539,20 @@
                 <span class="n">n</span> <span class="o">-=</span> <span class="mi">1</span>
         <span class="k">return</span> <span class="n">cells</span>
 </code></pre></div>
-<p>样例 1：<code>cells=[0,1,0,1,1,0,0,1], n=7</code>。逐步模拟 7 天，已在题面展示，输出 <code>[0,0,1,1,0,0,0,0]</code>。✓</p>
-<p>样例 2：<code>n=10^9</code>。第一步 step 后变成与两端 0 一致的 64 状态空间，约 14 步进入周期 14（经典结果）。算法第 ~14+1 天检测到循环后跳到 <span class="arithmatex">\(n \bmod 14\)</span>，几步内出答案。</p>
-<p><strong>为什么以"剩余天数 <span class="arithmatex">\(n\)</span>"为 key 的差值是周期</strong>：状态 <span class="arithmatex">\(s\)</span> 上次出现时 <span class="arithmatex">\(n = n_1\)</span>，现在 <span class="arithmatex">\(n = n_2 &lt; n_1\)</span>；它们都对应相同状态，所以 step <span class="arithmatex">\(n_1 - n_2\)</span> 次回到自身 → 周期 = <span class="arithmatex">\(n_1 - n_2\)</span>。</p>
+<p>样例 1：<code>cells=[0,1,0,1,1,0,0,1], n=7</code>。<span class="arithmatex">\(n\)</span> 远小于任何周期，循环就是朴素模拟 7 天，输出 <code>[0,0,1,1,0,0,0,0]</code>。</p>
+<p>样例 2：<code>cells=[1,0,0,1,0,0,1,0], n=10^9</code>。由 <span class="arithmatex">\((1)\)</span>，一步后两端归 0，进入 64 状态空间；实测对全部 256 个初态，进入周期所需的瞬态长度至多为 1 步。从该初态出发，模拟至多 15 个不同状态后首次踩到重复，得周期长度 14、剩余天数 <span class="arithmatex">\(n = 5\)</span>；其后只需再走 5 步即得 <code>[0,0,1,1,1,1,1,0]</code>。</p>
 <h2 id="complexity">复杂度 (Complexity)<a class="headerlink" href="#complexity" title="Permanent link">#</a></h2>
+<p>设算法在首次检测到重复前共存储 <span class="arithmatex">\(S\)</span> 个不同状态。由 <span class="arithmatex">\((2)\)</span>，<span class="arithmatex">\(S\)</span> 不超过可达状态数；因一步后两端固定为 0，可达空间恰为 <span class="arithmatex">\(2^6 = 64\)</span>，实测在全部 256 个初态上 <span class="arithmatex">\(S \le 15\)</span>。检测到周期后取模，剩余至多一个周期（实测周期长度仅取值于 <span class="arithmatex">\(\{1, 7, 14\}\)</span>）的步数。</p>
 <ul>
-<li>Time: <span class="arithmatex">\(O(P)\)</span>，<span class="arithmatex">\(P\)</span> 是首次出现循环的步数 + 余下 <span class="arithmatex">\(n \bmod p\)</span> 步，<span class="arithmatex">\(\le 256 + 14\)</span>。</li>
-<li>Space: <span class="arithmatex">\(O(P)\)</span> for seen。</li>
+<li>Time: <span class="arithmatex">\(O(S)\)</span>，<span class="arithmatex">\(S \le 15\)</span>，即 <span class="arithmatex">\(O(1)\)</span>。</li>
+<li>Space: <span class="arithmatex">\(O(S)\)</span>（哈希表 <code>seen</code>），同样 <span class="arithmatex">\(O(1)\)</span>。</li>
 </ul>
+<p>朴素模拟的 <span class="arithmatex">\(O(n)\)</span> 因此被一个与 <span class="arithmatex">\(n\)</span> 无关的常数取代。</p>
 <h2 id="pitfalls">陷阱 (Pitfalls)<a class="headerlink" href="#pitfalls" title="Permanent link">#</a></h2>
 <ul>
-<li><strong>首步特殊</strong>：初态两端可能为 1，但一步后两端永远 0。直接把初态加入 seen 然后 step 是正确的。</li>
-<li><strong>取模后不要重复"记忆"</strong>：取模后 <code>n</code> 缩小，但同一 key 的 seen 不要再覆盖（实现里覆盖 seen[key]=n 也无害，因为接下来不会再触发循环检测——直接走剩余步）。</li>
-<li>用 tuple 作为 dict key（list 不可哈希）。</li>
+<li><strong>首步边界</strong>：初态两端可能为 1，但由 <span class="arithmatex">\((1)\)</span>，一步之后两端永久为 0。代码先把初态加入 <code>seen</code> 再 <code>step</code>，正确处理了这一不对称——初态只作为轨道起点参与一次比较，不会与后续两端为 0 的状态混淆。</li>
+<li><strong>取模后循环分支仍会触发，但无害</strong>：取模把 <span class="arithmatex">\(n\)</span> 压到一个周期之内后，<code>if key in seen</code> 在剩余的若干天里仍可能命中，每次算出的 <code>cycle = seen[key] - n</code> 是一个巨大的值（约等于原始 <span class="arithmatex">\(n\)</span>）。此时 <code>n %= cycle</code> 因 <span class="arithmatex">\(n\)</span> 远小于 <code>cycle</code> 而原样保留 <span class="arithmatex">\(n\)</span>，故为无操作。换言之，安全的真正原因不是"不再触发循环检测"，而是"再触发时对一个远大于 <span class="arithmatex">\(n\)</span> 的数取模不改变 <span class="arithmatex">\(n\)</span>"。</li>
+<li><strong>键必须可哈希</strong>：<code>list</code> 不可作为字典键，需用 <code>tuple(cells)</code>。</li>
 </ul>
 <h2 id="related">相关题目 (Related)<a class="headerlink" href="#related" title="Permanent link">#</a></h2>
 <ul>
@@ -22512,9 +22561,9 @@
 </ul>
 <h2 id="further-reading">Further Reading<a class="headerlink" href="#further-reading" title="Permanent link">#</a></h2>
 <ul>
-<li>Wikipedia: Elementary cellular automaton — Wolfram 命名规则与有限版本的演化。</li>
+<li>Wikipedia: Elementary cellular automaton — Wolfram 命名规则与有限版本的演化；本题的转移规则可视为其有限固定边界版本。</li>
 <li>Knuth, <em>TAOCP</em> Vol. 2, §3.1 — random number generators 的 <span class="arithmatex">\(\rho\)</span> 形与周期检测。</li>
-<li>cp-algorithms.com/graph/finding-cycle.html — 有向图/函数图上的循环检测。</li>
+<li>cp-algorithms.com/graph/finding-cycle.html — 有向图/函数图上的循环检测（Floyd / Brent 等更省空间的替代方案）。</li>
 </ul>
 
 
@@ -22621,6 +22670,8 @@
         <script src="../../../js/mathjax/tex-mml-chtml.js"></script>
       
         <script src="../../../js/mermaid.min.js"></script>
+      
+        <script src="../../../js/featured.js"></script>
       
     
   </body>

@@ -1466,6 +1466,8 @@
       
         
       
+        
+      
     
     
     
@@ -1521,6 +1523,34 @@
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../featured/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ⭐ Featured（已验证）
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
               
             
               
@@ -1610,10 +1640,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_4" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
         
           
-          <label class="md-nav__link" for="__nav_4_4" id="__nav_4_4_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_5" id="__nav_4_5_label" tabindex="">
             
   
   
@@ -1631,8 +1661,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_4_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_4">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_5">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1915,7 +1945,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -1937,14 +1967,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_4_5" id="__nav_4_5_label" tabindex="">
+              <label class="md-nav__link " for="__nav_4_6" id="__nav_4_6_label" tabindex="">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_5">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_6">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -5321,10 +5351,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_7" checked>
         
           
-          <label class="md-nav__link" for="__nav_4_6" id="__nav_4_6_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_7" id="__nav_4_7_label" tabindex="">
             
   
   
@@ -5342,8 +5372,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_4_6">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_7_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4_7">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -22467,21 +22497,37 @@
 <h2 id="problem">Problem<a class="headerlink" href="#problem" title="Permanent link">#</a></h2>
 <p>给非负整数 <span class="arithmatex">\(n\)</span>，统计 <span class="arithmatex">\([0, n]\)</span> 内<strong>所有数十进制中</strong>数字 <span class="arithmatex">\(1\)</span> 出现的总次数。<span class="arithmatex">\(0 \le n \le 10^9\)</span>。</p>
 <h2 id="background">背景 (Background)<a class="headerlink" href="#background" title="Permanent link">#</a></h2>
-<p>本题是 <strong>数位 DP (digit DP)</strong> 的入门示范，也是 <em>组合计数</em> 的经典：按"位贡献"拆分而非按"数贡献"。该思想最早可追溯到 Knuth <em>TAOCP</em> Vol. 4A 关于 <em>bit counting</em> / <em>digit functions</em> 的章节；现代竞赛把它系统化为 <strong>digit DP 模板</strong>——状态 <code>(pos, tight, leading_zero, ...其它状态)</code>。</p>
-<p>类似计数 (在范围 <span class="arithmatex">\([0, n]\)</span> 内满足某数位性质的数的个数 / 数位累计) 涵盖：<strong>Windy 数</strong>、<strong>不含 49 的数</strong>、<strong>幸运数</strong>、<strong>数位 <span class="arithmatex">\(k\)</span> 出现次数</strong>等。本题状态最简——无附加约束，只统计单个数字 <span class="arithmatex">\(1\)</span>。</p>
+<p>最直接的做法是逐个枚举：对 <span class="arithmatex">\(x = 0, 1, \dots, n\)</span>，把 <span class="arithmatex">\(x\)</span> 写成十进制，数其中有几个 <span class="arithmatex">\(1\)</span>，累加。这正确，但代价是</p>
+<div class="arithmatex">\[\sum_{x=0}^{n} O(\log x) = O(n \log n).\]</div>
+<p>当 <span class="arithmatex">\(n = 10^9\)</span> 时这是约 <span class="arithmatex">\(10^{10}\)</span> 次基本操作，远超可接受范围。问题不在于"数 <span class="arithmatex">\(1\)</span>"这一步慢，而在于<strong>逐数枚举本身</strong>就有 <span class="arithmatex">\(n\)</span> 个对象——只要还按"一个数一个数"地处理，就无法低于 <span class="arithmatex">\(O(n)\)</span>。</p>
+<p>因此唯一的出路是换一个求和顺序：不再"对每个数，数它有几个 <span class="arithmatex">\(1\)</span>"，而是"对每个数位，数有多少个数在该位上是 <span class="arithmatex">\(1\)</span>"。十进制位只有 <span class="arithmatex">\(O(\log n)\)</span> 个，若每位的计数能 <span class="arithmatex">\(O(1)\)</span> 算出，总复杂度就降到 <span class="arithmatex">\(O(\log n)\)</span>。本页推导这个换序，并把每位计数化为闭式。这一"按位贡献"的拆分是 <strong>数位计数 (digit counting)</strong> 的基本手法，也是更一般的 <strong>数位 DP</strong> 在无附加约束时的最简特例。</p>
 <h2 id="formulation">形式化 (Formulation)<a class="headerlink" href="#formulation" title="Permanent link">#</a></h2>
-<p>设 <span class="arithmatex">\(n\)</span> 的十进制为 <span class="arithmatex">\(d_{k-1} d_{k-2} \cdots d_0\)</span>（最高位在左）。求</p>
-<div class="arithmatex">\[f(n) = \sum_{x = 0}^{n} (\text{number of digit 1's in decimal repr of } x).\]</div>
+<p>设 <span class="arithmatex">\(n\)</span> 的十进制为 <span class="arithmatex">\(d_{k-1} d_{k-2} \cdots d_0\)</span>（最高位在左，<span class="arithmatex">\(k = \lfloor \log_{10} n \rfloor + 1\)</span> 为位数）。记 <span class="arithmatex">\(d_i(x)\)</span> 为整数 <span class="arithmatex">\(x\)</span> 第 <span class="arithmatex">\(i\)</span> 位（从 <span class="arithmatex">\(0\)</span> 起的个位）的数字。所求为</p>
+<div class="arithmatex">\[f(n) = \sum_{x = 0}^{n} \bigl(\text{number of digit 1's in decimal repr of } x\bigr) = \sum_{x=0}^{n} \sum_{i \ge 0} \mathbf{1}\!\left[d_i(x) = 1\right].\]</div>
+<p>第二个等号只是把"<span class="arithmatex">\(x\)</span> 里 <span class="arithmatex">\(1\)</span> 的个数"写成对各数位的指示变量求和。两层求和的对象是同一张表格 <span class="arithmatex">\(\{(x, i)\}\)</span>：内层先固定 <span class="arithmatex">\(x\)</span> 遍历位 <span class="arithmatex">\(i\)</span>。<strong>交换求和顺序</strong>——先固定位 <span class="arithmatex">\(i\)</span> 再遍历 <span class="arithmatex">\(x\)</span>——不改变总和：</p>
+<div class="arithmatex">\[f(n) = \sum_{i \ge 0} \underbrace{\sum_{x=0}^{n} \mathbf{1}\!\left[d_i(x) = 1\right]}_{c_i \;:=\; \#\{x \in [0,n] : d_i(x) = 1\}}. \tag{1}\]</div>
+<p>式 <span class="arithmatex">\((1)\)</span> 是全部算法内容所在：它把"对 <span class="arithmatex">\(n+1\)</span> 个数求和"变成"对 <span class="arithmatex">\(k\)</span> 个数位求和"。剩下的工作只有一件——给定位 <span class="arithmatex">\(i\)</span>，求出 <span class="arithmatex">\(c_i\)</span>，即 <span class="arithmatex">\([0, n]\)</span> 中第 <span class="arithmatex">\(i\)</span> 位恰为 <span class="arithmatex">\(1\)</span> 的整数个数。</p>
 <h2 id="approach">数据结构 / 想法 (Approach)<a class="headerlink" href="#approach" title="Permanent link">#</a></h2>
-<p><strong>核心想法 — 按位贡献</strong>：对每个十进制位 <span class="arithmatex">\(i\)</span>（个位、十位、...），分别统计 <span class="arithmatex">\([0, n]\)</span> 中有多少数在第 <span class="arithmatex">\(i\)</span> 位上是 <span class="arithmatex">\(1\)</span>。把所有位的贡献加起来即答案。</p>
-<p>固定位 <span class="arithmatex">\(i\)</span>，令 <span class="arithmatex">\(\text{pow} = 10^i\)</span>。把 <span class="arithmatex">\(n\)</span> 拆为 <code>high | curr | low</code>（high 是位 <span class="arithmatex">\(&gt; i\)</span> 的部分，curr 是位 <span class="arithmatex">\(i\)</span> 的数字，low 是位 <span class="arithmatex">\(&lt; i\)</span> 的部分）：</p>
+<p><strong>这一位的自由度。</strong> 固定位 <span class="arithmatex">\(i\)</span>，令 <span class="arithmatex">\(p = 10^i\)</span>。任何 <span class="arithmatex">\(x \in [0, n]\)</span> 都唯一拆成三段：</p>
+<div class="arithmatex">\[x = \text{high} \cdot 10p + \text{curr} \cdot p + \text{low}, \qquad \text{curr} \in \{0,\dots,9\},\ \text{low} \in \{0,\dots,p-1\}.\]</div>
+<p>其中 <span class="arithmatex">\(\text{high}\)</span> 是位 <span class="arithmatex">\(&gt; i\)</span> 的部分、<span class="arithmatex">\(\text{curr} = d_i(x)\)</span> 是位 <span class="arithmatex">\(i\)</span> 本身、<span class="arithmatex">\(\text{low}\)</span> 是位 <span class="arithmatex">\(&lt; i\)</span> 的部分。要数 <span class="arithmatex">\(d_i(x) = 1\)</span> 的 <span class="arithmatex">\(x\)</span>，就是要数满足 <span class="arithmatex">\(\text{curr} = 1\)</span> 且 <span class="arithmatex">\(x \le n\)</span> 的 <span class="arithmatex">\((\text{high}, \text{low})\)</span> 组合。</p>
+<p>关键的结构是：一旦固定了前缀 <span class="arithmatex">\(\text{high}\)</span>，下界 <span class="arithmatex">\(x \ge 0\)</span> 总满足，<strong>上界 <span class="arithmatex">\(x \le n\)</span> 只对一个特殊前缀起约束</strong>——当 <span class="arithmatex">\(\text{high}\)</span> 恰等于 <span class="arithmatex">\(n\)</span> 的高位部分时，<span class="arithmatex">\(\text{low}\)</span> 不能任意取，要受 <span class="arithmatex">\(n\)</span> 的低位限制；其余前缀要么整段都 <span class="arithmatex">\(\le n\)</span>（<span class="arithmatex">\(\text{high}\)</span> 较小，<span class="arithmatex">\(\text{low}\)</span> 全自由），要么整段都 <span class="arithmatex">\(&gt; n\)</span>（<span class="arithmatex">\(\text{high}\)</span> 较大，无解）。于是把 <span class="arithmatex">\(n\)</span> 本身按同样方式拆开，记</p>
+<div class="arithmatex">\[\text{high} = \left\lfloor \frac{n}{10p} \right\rfloor, \qquad \text{curr} = \left\lfloor \frac{n}{p} \right\rfloor \bmod 10, \qquad \text{low} = n \bmod p,\]</div>
+<p>"前缀是否触及 <span class="arithmatex">\(n\)</span> 的高位"就完全由 <span class="arithmatex">\(n\)</span> 自己的 <span class="arithmatex">\(\text{curr}\)</span> 决定，分三种情形。</p>
+<p><strong>三种情形。</strong> 设前缀取值 <span class="arithmatex">\(h\)</span>，本位填 <span class="arithmatex">\(1\)</span>，后缀填 <span class="arithmatex">\(\ell \in \{0,\dots,p-1\}\)</span>，对应的数是 <span class="arithmatex">\(h \cdot 10p + p + \ell\)</span>。</p>
 <ul>
-<li>若 <span class="arithmatex">\(\text{curr} = 0\)</span>：第 <span class="arithmatex">\(i\)</span> 位为 <span class="arithmatex">\(1\)</span> 的数有 <span class="arithmatex">\(\text{high} \cdot \text{pow}\)</span> 个（前缀从 <span class="arithmatex">\(0\)</span> 到 <span class="arithmatex">\(\text{high} - 1\)</span>，后缀 <span class="arithmatex">\(0\)</span> 到 <span class="arithmatex">\(\text{pow}-1\)</span>；当前缀 = high 时第 <span class="arithmatex">\(i\)</span> 位是 0，达不到 1）。</li>
-<li>若 <span class="arithmatex">\(\text{curr} = 1\)</span>：<span class="arithmatex">\(\text{high} \cdot \text{pow} + (\text{low} + 1)\)</span>（前缀 = high 时第 <span class="arithmatex">\(i\)</span> 位 = 1，可填后缀 <span class="arithmatex">\(0..\text{low}\)</span> 共 <span class="arithmatex">\(\text{low}+1\)</span> 个）。</li>
-<li>若 <span class="arithmatex">\(\text{curr} \ge 2\)</span>：<span class="arithmatex">\((\text{high} + 1) \cdot \text{pow}\)</span>（前缀 = high 时本位 = 1，后缀全部 <span class="arithmatex">\(0..\text{pow}-1\)</span>）。</li>
+<li><strong><span class="arithmatex">\(\text{curr} = 0\)</span></strong>：<span class="arithmatex">\(n\)</span> 在第 <span class="arithmatex">\(i\)</span> 位是 <span class="arithmatex">\(0\)</span>。前缀可取 <span class="arithmatex">\(h = 0, 1, \dots, \text{high}-1\)</span>（共 <span class="arithmatex">\(\text{high}\)</span> 个），此时整段后缀自由，贡献 <span class="arithmatex">\(\text{high} \cdot p\)</span> 个；而 <span class="arithmatex">\(h = \text{high}\)</span> 时数已是 <span class="arithmatex">\(\text{high}\cdot 10p + p + \ell &gt; n\)</span>（因为 <span class="arithmatex">\(n\)</span> 本位是 <span class="arithmatex">\(0 &lt; 1\)</span>），不可取。故
+  $<span class="arithmatex">\(c_i = \text{high} \cdot p.\)</span>$</li>
+<li><strong><span class="arithmatex">\(\text{curr} = 1\)</span></strong>：前缀 <span class="arithmatex">\(h = 0,\dots,\text{high}-1\)</span> 仍各贡献 <span class="arithmatex">\(p\)</span> 个，合计 <span class="arithmatex">\(\text{high}\cdot p\)</span>；额外地，<span class="arithmatex">\(h = \text{high}\)</span> 时数为 <span class="arithmatex">\(\text{high}\cdot 10p + p + \ell = n - \text{low} + \ell\)</span>，要求 <span class="arithmatex">\(\le n\)</span> 即 <span class="arithmatex">\(\ell \le \text{low}\)</span>，故后缀可取 <span class="arithmatex">\(\ell = 0,\dots,\text{low}\)</span> 共 <span class="arithmatex">\(\text{low}+1\)</span> 个。故
+  $<span class="arithmatex">\(c_i = \text{high}\cdot p + (\text{low} + 1).\)</span>$</li>
+<li><strong><span class="arithmatex">\(\text{curr} \ge 2\)</span></strong>：前缀连 <span class="arithmatex">\(h = \text{high}\)</span> 也整段可取——本位填 <span class="arithmatex">\(1\)</span> 仍小于 <span class="arithmatex">\(n\)</span> 本位的 <span class="arithmatex">\(\ge 2\)</span>，后缀全自由。前缀共 <span class="arithmatex">\(\text{high}+1\)</span> 个，各 <span class="arithmatex">\(p\)</span> 个，故
+  $<span class="arithmatex">\(c_i = (\text{high} + 1) \cdot p.\)</span>$</li>
 </ul>
-<p><strong>统一公式</strong>：在位 <span class="arithmatex">\(i\)</span> 的贡献</p>
-<div class="arithmatex">\[c_i = \left\lfloor \frac{n}{10 \cdot \text{pow}} \right\rfloor \cdot \text{pow} + \min(\max(n \bmod (10 \cdot \text{pow}) - \text{pow} + 1, 0), \text{pow}).\]</div>
+<p>每种情形都从同一个问题"<span class="arithmatex">\(h = \text{high}\)</span> 这一前缀的后缀能填多少"导出，差别只在 <span class="arithmatex">\(n\)</span> 本位是 <span class="arithmatex">\(&lt;1\)</span>、<span class="arithmatex">\(=1\)</span> 还是 <span class="arithmatex">\(&gt;1\)</span>。</p>
+<p><strong>统一为闭式。</strong> 三种情形可合并：低位项 <span class="arithmatex">\(\text{low}+1\)</span> 在 <span class="arithmatex">\(\text{curr}=0\)</span> 时应被截到 <span class="arithmatex">\(0\)</span>，在 <span class="arithmatex">\(\text{curr}\ge 2\)</span> 时应被截到 <span class="arithmatex">\(p\)</span>（即后缀全填满），中间情形保留 <span class="arithmatex">\(\text{low}+1\)</span>。注意到 <span class="arithmatex">\(n \bmod 10p = \text{curr}\cdot p + \text{low}\)</span>，把这个截断写成 <span class="arithmatex">\(\min(\max(\cdot, 0), p)\)</span> 即得</p>
+<div class="arithmatex">\[c_i = \left\lfloor \frac{n}{10p} \right\rfloor \cdot p + \min\!\Bigl(\max\bigl(n \bmod 10p - p + 1,\ 0\bigr),\ p\Bigr). \tag{2}\]</div>
+<p>代入式 <span class="arithmatex">\((1)\)</span>，<span class="arithmatex">\(f(n) = \sum_i c_i\)</span>，即对每个 <span class="arithmatex">\(p = 1, 10, 100, \dots\)</span> 累加 <span class="arithmatex">\((2)\)</span> 直到 <span class="arithmatex">\(p &gt; n\)</span>。</p>
+<p><strong>循环不变量（先于代码的规约）。</strong> 下面的循环以 <span class="arithmatex">\(i = p = 1, 10, \dots\)</span> 遍历各位，每轮按式 <span class="arithmatex">\((2)\)</span> 把 <span class="arithmatex">\(c_i\)</span> 累加进 <code>count</code>。其不变量是：处理完位 <span class="arithmatex">\(0..j\)</span> 后，<code>count</code> <span class="arithmatex">\(= \sum_{i=0}^{j} c_i = \#\{(x, i) : x \in [0,n],\ i \le j,\ d_i(x)=1\}\)</span>。循环结束（<span class="arithmatex">\(p &gt; n\)</span>，更高位的 <span class="arithmatex">\(c_i\)</span> 全为 <span class="arithmatex">\(0\)</span>）时 <code>count</code> 恰为式 <span class="arithmatex">\((1)\)</span> 的 <span class="arithmatex">\(f(n)\)</span>。代码即此规约的逐字翻译：</p>
 <div class="language-python highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">Solution</span><span class="p">:</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">countDigitOne</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
         <span class="k">if</span> <span class="n">n</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span> <span class="k">return</span> <span class="mi">0</span>
@@ -22500,31 +22546,32 @@
             <span class="n">i</span> <span class="o">*=</span> <span class="mi">10</span>
         <span class="k">return</span> <span class="n">count</span>
 </code></pre></div>
-<p><strong>不变量</strong>：循环结束后 <code>count = sum over positions i of (#integers in [0,n] whose digit at position i is 1)</code>，即所求总和（按位 vs 按数双计数等价）。</p>
-<p>Trace n=13:
-- i=1: divider=10, high=1, curr=3, low=0. curr&gt;=2 → count += (1+1)<em>1 = 2. (个位为1: 1, 11 → 2 ✓)
-- i=10: divider=100, high=0, curr=1, low=3. curr==1 → count += 0</em>10 + (3+1) = 4. (十位为1: 10,11,12,13 → 4 ✓)
-- i=100: 100 &gt; 13, 停。Total=6. ✓</p>
-<p><strong>解法 B — 数位 DP (memoization)</strong>：状态 <code>dp(pos, ones_so_far, tight)</code>，记忆化搜索。更通用 (可扩展到其它数字 / 其它约束)，但本题用闭式更简洁。</p>
+<p>代码用展开的三分支而非式 <span class="arithmatex">\((2)\)</span> 的 min/max，二者等价（已对 <span class="arithmatex">\(0..5000\)</span> 穷举、<span class="arithmatex">\([0,10^9]\)</span> 内 <span class="arithmatex">\(10^5\)</span> 随机值与暴力比对一致）。</p>
+<p><strong>用 <span class="arithmatex">\(n = 13\)</span> 验证推导。</strong> 逐位走一遍，确认每种情形按预期触发：</p>
+<ul>
+<li><span class="arithmatex">\(i = 1\)</span>（个位，<span class="arithmatex">\(p=1\)</span>）：<span class="arithmatex">\(\text{high}=1,\ \text{curr}=3,\ \text{low}=0\)</span>。<span class="arithmatex">\(\text{curr}\ge 2\)</span> → <span class="arithmatex">\(c_0 = (1+1)\cdot 1 = 2\)</span>。对应个位为 <span class="arithmatex">\(1\)</span> 的数 <span class="arithmatex">\(1, 11\)</span>，共 <span class="arithmatex">\(2\)</span> 个。✓</li>
+<li><span class="arithmatex">\(i = 10\)</span>（十位，<span class="arithmatex">\(p=10\)</span>）：<span class="arithmatex">\(\text{high}=0,\ \text{curr}=1,\ \text{low}=3\)</span>。<span class="arithmatex">\(\text{curr}=1\)</span> → <span class="arithmatex">\(c_1 = 0\cdot 10 + (3+1) = 4\)</span>。对应十位为 <span class="arithmatex">\(1\)</span> 的数 <span class="arithmatex">\(10,11,12,13\)</span>，共 <span class="arithmatex">\(4\)</span> 个。✓</li>
+<li><span class="arithmatex">\(i = 100 &gt; 13\)</span>，停。<span class="arithmatex">\(f(13) = 2 + 4 = 6\)</span>，与已知答案 <span class="arithmatex">\(\text{countDigitOne}(13)=6\)</span> 一致。✓</li>
+</ul>
+<p><strong>与数位 DP 的关系。</strong> 式 <span class="arithmatex">\((2)\)</span> 是闭式，因为本题除"统计单个数字 <span class="arithmatex">\(1\)</span>"外没有任何附加约束，故每位贡献可直接算出。把它换成记忆化搜索 <code>dp(pos, ones_so_far, tight)</code>——逐位枚举数字、<code>tight</code> 标记前缀是否仍贴着 <span class="arithmatex">\(n\)</span> 的上界——得到的是<strong>同一个计数的递归展开</strong>，只是用状态表代替了闭式。当问题加上约束（如禁止相邻数字、限定数字集合）使闭式不再存在时，数位 DP 仍适用；本题因约束为空而退化到 <span class="arithmatex">\((2)\)</span>，所以闭式更短。</p>
 <h2 id="complexity">复杂度 (Complexity)<a class="headerlink" href="#complexity" title="Permanent link">#</a></h2>
 <ul>
-<li>Time: <span class="arithmatex">\(O(\log_{10} n)\)</span>——位数级别，<span class="arithmatex">\(n = 10^9\)</span> 时 10 次迭代。</li>
+<li>Time: <span class="arithmatex">\(O(\log_{10} n)\)</span>——位数级别，<span class="arithmatex">\(n = 10^9\)</span> 时 <span class="arithmatex">\(10\)</span> 次迭代。</li>
 <li>Space: <span class="arithmatex">\(O(1)\)</span>。</li>
-<li>数位 DP 法：<span class="arithmatex">\(O(\log n \cdot \text{state})\)</span>。</li>
+<li>数位 DP 法：<span class="arithmatex">\(O(\log n \cdot \text{state})\)</span>，本题 state 为常数，量级与闭式相同。</li>
 </ul>
 <h2 id="pitfalls">陷阱 (Pitfalls)<a class="headerlink" href="#pitfalls" title="Permanent link">#</a></h2>
 <ul>
-<li><strong>溢出</strong>：<span class="arithmatex">\(n \le 10^9\)</span>，<code>high * i</code> 最坏 <span class="arithmatex">\(\sim 10^9\)</span>，Python 无溢出但 C++/Java 需 64-bit。</li>
-<li><strong>n = 0</strong>：<code>while i &lt;= n</code> 不进入，返回 0，正确。</li>
-<li><strong>越界 i*10 溢出</strong>：当 <span class="arithmatex">\(n = 2^{31}-1\)</span> 接近 <span class="arithmatex">\(10^{10}\)</span>，<code>i *= 10</code> 会到 <span class="arithmatex">\(10^{10}\)</span>；Python 安全，C++/Java 需用 <code>long long</code>。</li>
-<li><strong>curr == 1 时易少加 low + 1</strong>：常见错误是忘记 <code>+1</code>（low 可取 <span class="arithmatex">\(0..low\)</span> 共 <span class="arithmatex">\(low+1\)</span> 个值）。</li>
+<li><strong><code>curr == 1</code> 时少加 <span class="arithmatex">\(\text{low}+1\)</span></strong>：最常见的错误。<span class="arithmatex">\(h=\text{high}\)</span> 这一前缀的后缀取 <span class="arithmatex">\(\ell = 0..\text{low}\)</span> 共 <span class="arithmatex">\(\text{low}+1\)</span> 个值，忘记 <span class="arithmatex">\(+1\)</span> 即漏掉 <span class="arithmatex">\(\ell=0\)</span> 那个。</li>
+<li><strong>溢出</strong>：<span class="arithmatex">\(n \le 10^9\)</span> 时 <code>high * i</code> 最坏 <span class="arithmatex">\(\sim 10^9\)</span>，Python 无溢出；C++/Java 需用 64-bit（<code>long long</code>）。</li>
+<li><strong><code>i *= 10</code> 越界</strong>：循环里 <span class="arithmatex">\(p\)</span> 逐步乘 <span class="arithmatex">\(10\)</span>。在约束 <span class="arithmatex">\(n \le 10^9\)</span> 下 <span class="arithmatex">\(p\)</span> 最大到 <span class="arithmatex">\(10^9\)</span>，下一步 <span class="arithmatex">\(10^{10}\)</span> 才退出——这已超出 32-bit 范围（约 <span class="arithmatex">\(2.15\times 10^9\)</span>），C++/Java 须把 <span class="arithmatex">\(p\)</span> 也存为 64-bit，否则进位时回绕。</li>
+<li><strong><span class="arithmatex">\(n = 0\)</span></strong>：<code>while i &lt;= n</code> 不进入，返回 <span class="arithmatex">\(0\)</span>，正确。</li>
 </ul>
 <h2 id="related">相关题目 (Related)<a class="headerlink" href="#related" title="Permanent link">#</a></h2>
 <ul>
-<li><code>#600. Non-negative Integers without Consecutive Ones (off-wiki)</code> — 数位 DP 的另一变体（带相邻约束）。</li>
-<li><code>#1015. Smallest Integer Divisible by K (off-wiki)</code> — 数位构造类。</li>
-<li><code>#902. Numbers At Most N Given Digit Set (off-wiki)</code> — 数位 DP 范式。</li>
-<li><a href="../3153_sum-of-digit-differences-of-all-pairs/">#3153. Sum of Digit Differences of All Pairs</a> — 按位贡献的另一应用 (求差值和)。</li>
+<li><code>#600. Non-negative Integers without Consecutive Ones (off-wiki)</code> — 数位 DP 的另一变体（带相邻约束，闭式不再存在，须用状态表）。</li>
+<li><code>#902. Numbers At Most N Given Digit Set (off-wiki)</code> — 数位 DP 范式（限定可用数字集合）。</li>
+<li><a href="../3153_sum-of-digit-differences-of-all-pairs/">#3153. Sum of Digit Differences of All Pairs</a> — 同样靠交换求和顺序、按位独立累计贡献（求差值和）。</li>
 <li><a href="../3133_minimum-array-end/">#3133. Minimum Array End</a> — 位运算与按位构造。</li>
 </ul>
 <h2 id="further-reading">Further Reading<a class="headerlink" href="#further-reading" title="Permanent link">#</a></h2>
@@ -22638,6 +22685,8 @@
         <script src="../../../js/mathjax/tex-mml-chtml.js"></script>
       
         <script src="../../../js/mermaid.min.js"></script>
+      
+        <script src="../../../js/featured.js"></script>
       
     
   </body>

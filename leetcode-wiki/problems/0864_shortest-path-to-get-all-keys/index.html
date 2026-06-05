@@ -1466,6 +1466,8 @@
       
         
       
+        
+      
     
     
     
@@ -1521,6 +1523,34 @@
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../featured/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ⭐ Featured（已验证）
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
               
             
               
@@ -1610,10 +1640,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_4" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
         
           
-          <label class="md-nav__link" for="__nav_4_4" id="__nav_4_4_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_5" id="__nav_4_5_label" tabindex="">
             
   
   
@@ -1631,8 +1661,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_4_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_4">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_5">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1915,7 +1945,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -1937,14 +1967,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_4_5" id="__nav_4_5_label" tabindex="">
+              <label class="md-nav__link " for="__nav_4_6" id="__nav_4_6_label" tabindex="">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_5">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_6">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -5321,10 +5351,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_7" checked>
         
           
-          <label class="md-nav__link" for="__nav_4_6" id="__nav_4_6_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_7" id="__nav_4_7_label" tabindex="">
             
   
   
@@ -5342,8 +5372,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_4_6">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_7_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4_7">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -22467,12 +22497,36 @@
 <h2 id="problem">Problem<a class="headerlink" href="#problem" title="Permanent link">#</a></h2>
 <p><span class="arithmatex">\(m \times n\)</span> 网格：<code>'.'</code> 空地、<code>'#'</code> 墙、<code>'@'</code> 起点、小写字母为钥匙、大写字母为对应的锁。每步上下左右走一格。走到钥匙自动拾取；只有持有对应钥匙才能踩锁。返回收集<strong>全部</strong>钥匙的最少步数；不可能返回 <span class="arithmatex">\(-1\)</span>。<span class="arithmatex">\(1 \le m, n \le 30\)</span>，钥匙数 <span class="arithmatex">\(k \in [1, 6]\)</span>。</p>
 <h2 id="background">背景 (Background)<a class="headerlink" href="#background" title="Permanent link">#</a></h2>
-<p>经典 <strong>状态空间 BFS</strong>（state-space search）题：把"持有钥匙集合"嵌入状态后，原图变成 <span class="arithmatex">\(V' = V \times 2^k\)</span> 的扩展图，仍用 BFS 求最短路。这是把"边权 1 + 状态扩张"的标准技巧，可视为 AI 规划（PDDL planning）的简化版；和 Dijkstra in product graph、retrograde analysis 同一框架。位掩码表示集合是 <strong>bitmask DP / state compression</strong> 的入门。</p>
+<p>求网格上的最少步数，第一反应是 BFS：把每个格子当作图的节点，相邻空地之间连一条权 1 的边，从起点逐层扩展，第一次到达终点的层数就是最短步数。BFS 的正确性依赖一条不变量——<strong>某个节点第一次被弹出队列时，到它的距离已经最短</strong>，因此每个节点只需访问一次，用 <code>visited</code> 标记后不再重复入队。</p>
+<p>这条不变量在普通网格上成立，但本题的"能否踩某格"不再是格子的固定属性，而取决于走到这里时手上有哪些钥匙。考虑一格锁 <code>A</code> 把网格分成两半，钥匙 <code>a</code> 在锁的同一侧但需要绕路才能拿到。如果只用 <span class="arithmatex">\((r, c)\)</span> 当节点：</p>
+<ul>
+<li>第一次走到锁 <code>A</code> 旁边时手里没有 <code>a</code>，<code>A</code> 不可踩，BFS 把这条路当成死胡同；</li>
+<li>之后绕去拿了 <code>a</code>，再回到 <code>A</code> 旁边——但 <code>(r, c)</code> 已被标记 <code>visited</code>，BFS 不会重新扩展，于是<strong>永远踩不进锁后的区域</strong>，得到错误的"无解"或更长的路径。</li>
+</ul>
+<p>失败的根源很具体：同一个格子 <span class="arithmatex">\((r, c)\)</span>，在"持有 <span class="arithmatex">\(\{a\}\)</span>"和"持有 <span class="arithmatex">\(\emptyset\)</span>"两种情形下，可达的邻居不同，因而<strong>不是同一个搜索节点</strong>。用 <span class="arithmatex">\((r, c)\)</span> 去重把两个本质不同的状态合并了，破坏了"第一次弹出即最短"赖以成立的前提：第二次到达时手上钥匙更多、能力更强，理应被允许重新探索。</p>
+<p>修复方式由此确定：把"当前持有的钥匙集合"并入节点。节点从 <span class="arithmatex">\((r, c)\)</span> 升级为 <span class="arithmatex">\((r, c, K)\)</span>，其中 <span class="arithmatex">\(K\)</span> 是已拾取的钥匙集合。此时同一格在不同钥匙集合下是不同节点，BFS 不变量重新成立——这正是<strong>状态空间扩张</strong>：在原图节点上附加一个随路径变化、决定通行权的辅助变量，得到扩展图后照常跑 BFS。钥匙集合至多 <span class="arithmatex">\(k \le 6\)</span> 个元素，用 <span class="arithmatex">\(k\)</span> 位整数（位掩码）表示，集合相等退化为整数相等、"是否持有第 <span class="arithmatex">\(i\)</span> 把钥匙"退化为一次位与，状态去重与转移判断都是 <span class="arithmatex">\(O(1)\)</span>。</p>
 <h2 id="formulation">形式化 (Formulation)<a class="headerlink" href="#formulation" title="Permanent link">#</a></h2>
-<p>状态 <span class="arithmatex">\((r, c, K)\)</span>：行 <span class="arithmatex">\(r\)</span>、列 <span class="arithmatex">\(c\)</span>、钥匙集合 <span class="arithmatex">\(K \subseteq \{0, \dots, k-1\}\)</span>。初始 <span class="arithmatex">\((r_0, c_0, \emptyset)\)</span>；目标任意 <span class="arithmatex">\((r, c, K_{\text{full}})\)</span>，<span class="arithmatex">\(K_{\text{full}} = \{0, \dots, k-1\}\)</span>。从 <span class="arithmatex">\((r, c, K)\)</span> 可走到 <span class="arithmatex">\((r', c', K')\)</span> 当且仅当 <span class="arithmatex">\((r', c')\)</span> 是相邻空地，或是字母（若是锁，要求对应位 <span class="arithmatex">\(\in K\)</span>），<span class="arithmatex">\(K' = K \cup \{\text{该格钥匙位}\}\)</span>（若该格为钥匙），否则 <span class="arithmatex">\(K' = K\)</span>。求最短路。</p>
+<p>把上述节点形式化。记钥匙编号为 <span class="arithmatex">\(0, \dots, k-1\)</span>，钥匙集合 <span class="arithmatex">\(K \subseteq \{0, \dots, k-1\}\)</span> 用位掩码表示。</p>
+<p><strong>状态空间</strong>：<span class="arithmatex">\(S = \{(r, c, K) : (r, c) \text{ 非墙}, K \subseteq \{0, \dots, k-1\}\}\)</span>，即位置与钥匙集合的乘积 <span class="arithmatex">\(V \times 2^{[k]}\)</span>。</p>
+<ul>
+<li><strong>初始状态</strong>：<span class="arithmatex">\((r_0, c_0, \emptyset)\)</span>，<span class="arithmatex">\((r_0, c_0)\)</span> 为 <code>@</code> 所在格。</li>
+<li><strong>目标</strong>：任意 <span class="arithmatex">\((r, c, K_{\text{full}})\)</span>，其中 <span class="arithmatex">\(K_{\text{full}} = \{0, \dots, k-1\}\)</span> 为全部钥匙。</li>
+</ul>
+<p>直观上，一次合法移动要满足两件事：目标格能踩进去（空地、钥匙格无条件可进，锁格要求手上已有对应钥匙），以及踩进钥匙格后把该钥匙并入集合。形式化为转移关系：从 <span class="arithmatex">\((r, c, K)\)</span> 到相邻 <span class="arithmatex">\((r', c', K')\)</span> 是一条权 1 的边，当且仅当 <span class="arithmatex">\((r', c')\)</span> 与 <span class="arithmatex">\((r, c)\)</span> 四连通相邻，且：</p>
+<ol>
+<li><strong>可踩</strong>：<span class="arithmatex">\((r', c')\)</span> 非墙；若 <span class="arithmatex">\((r', c')\)</span> 是锁 <span class="arithmatex">\(L\)</span>，要求 <span class="arithmatex">\(L\)</span> 对应位 <span class="arithmatex">\(\in K\)</span>；</li>
+<li><strong>拾取</strong>：若 <span class="arithmatex">\((r', c')\)</span> 是钥匙 <span class="arithmatex">\(j\)</span>，则 <span class="arithmatex">\(K' = K \cup \{j\}\)</span>；否则 <span class="arithmatex">\(K' = K\)</span>。</li>
+</ol>
+<p>所有边权为 1，扩展图无负权、无需考虑松弛顺序，故 <strong>BFS 第一次弹出某状态时距离即最短</strong>——与普通图上 BFS 的正确性论证逐字相同，只是把"节点"换成 <span class="arithmatex">\((r, c, K)\)</span>。求的是从初始状态到任一目标状态的最短路。</p>
 <h2 id="approach">数据结构 / 想法 (Approach)<a class="headerlink" href="#approach" title="Permanent link">#</a></h2>
-<p><strong>核心：BFS on <span class="arithmatex">\(V \times 2^k\)</span></strong>。状态数 <span class="arithmatex">\(\le m \cdot n \cdot 2^k \le 30 \cdot 30 \cdot 64 = 57600\)</span>，规模友好。</p>
-<p><strong>关键不变量</strong>：BFS 第一次到达某状态时距离最短（边权一致 = 1）。<code>visited</code> 集合按 <span class="arithmatex">\((r, c, K)\)</span> 三元组去重。</p>
+<p>代码是上节形式化的逐条转写，每个 BFS 部件对应一个形式化组件：</p>
+<ul>
+<li><strong>节点</strong> <span class="arithmatex">\((r, c, K)\)</span> → 队列元素 <code>(r, c, k, d)</code>，<code>k</code> 是钥匙位掩码，<code>d</code> 是到此的距离；</li>
+<li><strong>初始状态</strong> <span class="arithmatex">\((r_0, c_0, \emptyset)\)</span> → <code>(sr, sc, 0)</code> 入队，<code>seen</code> 同步标记；</li>
+<li><strong>目标</strong> <span class="arithmatex">\(K_{\text{full}}\)</span> → 整数 <code>full</code>（全部钥匙位的或），出队即判 <code>k == full</code>；</li>
+<li><strong>转移关系</strong>第 1、2 条 → 内层对四邻居的可踩判断与拾取更新；</li>
+<li><strong>去重键</strong> <span class="arithmatex">\((r, c, K)\)</span> → <code>seen</code> 中的三元组 <code>(nr, nc, nk)</code>。</li>
+</ul>
 <div class="language-python highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">collections</span><span class="w"> </span><span class="kn">import</span> <span class="n">deque</span>
 <span class="k">class</span><span class="w"> </span><span class="nc">Solution</span><span class="p">:</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">shortestPathAllKeys</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">grid</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
@@ -22485,44 +22539,52 @@
                 <span class="k">if</span> <span class="n">ch</span> <span class="o">==</span> <span class="s1">&#39;@&#39;</span><span class="p">:</span>
                     <span class="n">sr</span><span class="p">,</span> <span class="n">sc</span> <span class="o">=</span> <span class="n">r</span><span class="p">,</span> <span class="n">c</span>
                 <span class="k">elif</span> <span class="s1">&#39;a&#39;</span> <span class="o">&lt;=</span> <span class="n">ch</span> <span class="o">&lt;=</span> <span class="s1">&#39;f&#39;</span><span class="p">:</span>
-                    <span class="n">full</span> <span class="o">|=</span> <span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="p">(</span><span class="nb">ord</span><span class="p">(</span><span class="n">ch</span><span class="p">)</span> <span class="o">-</span> <span class="nb">ord</span><span class="p">(</span><span class="s1">&#39;a&#39;</span><span class="p">))</span>
-        <span class="n">q</span> <span class="o">=</span> <span class="n">deque</span><span class="p">([(</span><span class="n">sr</span><span class="p">,</span> <span class="n">sc</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)])</span>  <span class="c1"># r, c, keys, steps</span>
-        <span class="n">seen</span> <span class="o">=</span> <span class="p">{(</span><span class="n">sr</span><span class="p">,</span> <span class="n">sc</span><span class="p">,</span> <span class="mi">0</span><span class="p">)}</span>
+                    <span class="n">full</span> <span class="o">|=</span> <span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="p">(</span><span class="nb">ord</span><span class="p">(</span><span class="n">ch</span><span class="p">)</span> <span class="o">-</span> <span class="nb">ord</span><span class="p">(</span><span class="s1">&#39;a&#39;</span><span class="p">))</span>  <span class="c1"># K_full = 全部钥匙位</span>
+        <span class="n">q</span> <span class="o">=</span> <span class="n">deque</span><span class="p">([(</span><span class="n">sr</span><span class="p">,</span> <span class="n">sc</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)])</span>  <span class="c1"># (r, c, K=∅, d=0)</span>
+        <span class="n">seen</span> <span class="o">=</span> <span class="p">{(</span><span class="n">sr</span><span class="p">,</span> <span class="n">sc</span><span class="p">,</span> <span class="mi">0</span><span class="p">)}</span>         <span class="c1"># 去重键 (r, c, K)</span>
         <span class="k">while</span> <span class="n">q</span><span class="p">:</span>
             <span class="n">r</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">d</span> <span class="o">=</span> <span class="n">q</span><span class="o">.</span><span class="n">popleft</span><span class="p">()</span>
-            <span class="k">if</span> <span class="n">k</span> <span class="o">==</span> <span class="n">full</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">k</span> <span class="o">==</span> <span class="n">full</span><span class="p">:</span>            <span class="c1"># 到达目标状态 K_full</span>
                 <span class="k">return</span> <span class="n">d</span>
             <span class="k">for</span> <span class="n">dr</span><span class="p">,</span> <span class="n">dc</span> <span class="ow">in</span> <span class="p">((</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">),(</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">),(</span><span class="mi">0</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">),(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">)):</span>
                 <span class="n">nr</span><span class="p">,</span> <span class="n">nc</span> <span class="o">=</span> <span class="n">r</span> <span class="o">+</span> <span class="n">dr</span><span class="p">,</span> <span class="n">c</span> <span class="o">+</span> <span class="n">dc</span>
                 <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="mi">0</span> <span class="o">&lt;=</span> <span class="n">nr</span> <span class="o">&lt;</span> <span class="n">m</span> <span class="ow">and</span> <span class="mi">0</span> <span class="o">&lt;=</span> <span class="n">nc</span> <span class="o">&lt;</span> <span class="n">n</span><span class="p">):</span>
                     <span class="k">continue</span>
                 <span class="n">ch</span> <span class="o">=</span> <span class="n">grid</span><span class="p">[</span><span class="n">nr</span><span class="p">][</span><span class="n">nc</span><span class="p">]</span>
-                <span class="k">if</span> <span class="n">ch</span> <span class="o">==</span> <span class="s1">&#39;#&#39;</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">ch</span> <span class="o">==</span> <span class="s1">&#39;#&#39;</span><span class="p">:</span>        <span class="c1"># 墙，不可踩</span>
                     <span class="k">continue</span>
                 <span class="n">nk</span> <span class="o">=</span> <span class="n">k</span>
                 <span class="k">if</span> <span class="s1">&#39;a&#39;</span> <span class="o">&lt;=</span> <span class="n">ch</span> <span class="o">&lt;=</span> <span class="s1">&#39;f&#39;</span><span class="p">:</span>
-                    <span class="n">nk</span> <span class="o">|=</span> <span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="p">(</span><span class="nb">ord</span><span class="p">(</span><span class="n">ch</span><span class="p">)</span> <span class="o">-</span> <span class="nb">ord</span><span class="p">(</span><span class="s1">&#39;a&#39;</span><span class="p">))</span>
+                    <span class="n">nk</span> <span class="o">|=</span> <span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="p">(</span><span class="nb">ord</span><span class="p">(</span><span class="n">ch</span><span class="p">)</span> <span class="o">-</span> <span class="nb">ord</span><span class="p">(</span><span class="s1">&#39;a&#39;</span><span class="p">))</span>   <span class="c1"># 拾取：K&#39; = K ∪ {j}</span>
                 <span class="k">elif</span> <span class="s1">&#39;A&#39;</span> <span class="o">&lt;=</span> <span class="n">ch</span> <span class="o">&lt;=</span> <span class="s1">&#39;F&#39;</span><span class="p">:</span>
-                    <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="n">k</span> <span class="o">&gt;&gt;</span> <span class="p">(</span><span class="nb">ord</span><span class="p">(</span><span class="n">ch</span><span class="p">)</span> <span class="o">-</span> <span class="nb">ord</span><span class="p">(</span><span class="s1">&#39;A&#39;</span><span class="p">)))</span> <span class="o">&amp;</span> <span class="mi">1</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="n">k</span> <span class="o">&gt;&gt;</span> <span class="p">(</span><span class="nb">ord</span><span class="p">(</span><span class="n">ch</span><span class="p">)</span> <span class="o">-</span> <span class="nb">ord</span><span class="p">(</span><span class="s1">&#39;A&#39;</span><span class="p">)))</span> <span class="o">&amp;</span> <span class="mi">1</span><span class="p">:</span>  <span class="c1"># 锁：要求对应位 ∈ K</span>
                         <span class="k">continue</span>
                 <span class="k">if</span> <span class="p">(</span><span class="n">nr</span><span class="p">,</span> <span class="n">nc</span><span class="p">,</span> <span class="n">nk</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">seen</span><span class="p">:</span>
                     <span class="n">seen</span><span class="o">.</span><span class="n">add</span><span class="p">((</span><span class="n">nr</span><span class="p">,</span> <span class="n">nc</span><span class="p">,</span> <span class="n">nk</span><span class="p">))</span>
                     <span class="n">q</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">nr</span><span class="p">,</span> <span class="n">nc</span><span class="p">,</span> <span class="n">nk</span><span class="p">,</span> <span class="n">d</span> <span class="o">+</span> <span class="mi">1</span><span class="p">))</span>
         <span class="k">return</span> <span class="o">-</span><span class="mi">1</span>
 </code></pre></div>
-<p>样例 1：<code>["@.a..","###.#","b.A.B"]</code>，钥匙 <code>a, b</code>，full=0b11=3。BFS 从 <code>(0,0)</code> 出发，先抓 <code>a</code> 到 <code>(0,2)</code>(2 步)，绕到 <code>b</code> 经过 <code>A</code>(需 <code>a</code>)、…一路走到 <code>(2,0)</code> 共 8 步。✓</p>
-<p><strong>替代方案</strong>：A* + 启发式（剩余钥匙到当前位置的曼哈顿和的下界），常数更优但实现复杂。对 <span class="arithmatex">\(k \le 6\)</span>，普通 BFS 已够。</p>
+<p>锁的位检查用<strong>当前</strong>钥匙集合 <code>k</code>（而非更新后的 <code>nk</code>），因为踩进锁格之前手上就必须已经持有钥匙；先验锁、再算 <code>nk</code>，顺序不能颠倒。</p>
+<p>回到背景里的失败例子，看状态扩张如何把它救活。取 <code>["@.a..","###.#","b.A.B"]</code>，钥匙 <code>a, b</code>，<code>full = 0b11 = 3</code>：</p>
+<ul>
+<li>从 <span class="arithmatex">\((0,0,\emptyset)\)</span> 出发，2 步走到钥匙 <code>a</code> 所在 <span class="arithmatex">\((0,2)\)</span>，状态变为 <span class="arithmatex">\((0,2,\{a\})\)</span>，位掩码 <code>0b01</code>；</li>
+<li>锁 <code>A</code> 在 <span class="arithmatex">\((2,2)\)</span>。若某条路径手上还没有 <code>a</code>，到 <span class="arithmatex">\((2,2)\)</span> 旁会因 <code>(k &gt;&gt; 0) &amp; 1 == 0</code> 被跳过——这正是普通 BFS 会卡死的地方；</li>
+<li>但手持 <code>a</code> 时，节点是 <span class="arithmatex">\((\cdot,\cdot,\{a\})\)</span>，与无钥匙时的 <span class="arithmatex">\((\cdot,\cdot,\emptyset)\)</span> 在 <code>seen</code> 里是<strong>不同三元组</strong>，可以重新踩进 <code>A</code>，继续走到 <code>b</code>；</li>
+<li>全程最短 8 步到达 <span class="arithmatex">\((2,0,\{a,b\})\)</span>，<code>k == full</code>，返回 8。</li>
+</ul>
+<p>同一格 <span class="arithmatex">\((2,2)\)</span> 被访问了两次（一次空集、一次 <span class="arithmatex">\(\{a\}\)</span>），靠 <span class="arithmatex">\(K\)</span> 进入去重键才得以区分——这就是状态必须包含钥匙的直接体现。</p>
+<p><strong>替代方案</strong>：A* + 启发式（剩余钥匙到当前位置曼哈顿距离的下界），常数更优但实现复杂。对 <span class="arithmatex">\(k \le 6\)</span>，状态数被 <span class="arithmatex">\(2^6 = 64\)</span> 倍封顶，普通 BFS 已足够。</p>
 <h2 id="complexity">复杂度 (Complexity)<a class="headerlink" href="#complexity" title="Permanent link">#</a></h2>
 <ul>
-<li>Time: <span class="arithmatex">\(O(m \cdot n \cdot 2^k)\)</span>，<span class="arithmatex">\(k \le 6\)</span> → 约 <span class="arithmatex">\(5.7 \times 10^4\)</span> 状态，每状态 4 邻居。</li>
-<li>Space: <span class="arithmatex">\(O(m \cdot n \cdot 2^k)\)</span> for <code>seen</code>。</li>
+<li>Time: <span class="arithmatex">\(O(m \cdot n \cdot 2^k)\)</span>。状态数 <span class="arithmatex">\(\le 30 \cdot 30 \cdot 64 = 57600 \approx 5.7 \times 10^4\)</span>，每状态扩展 4 个邻居，均摊每状态 <span class="arithmatex">\(O(1)\)</span>。</li>
+<li>Space: <span class="arithmatex">\(O(m \cdot n \cdot 2^k)\)</span>，由 <code>seen</code> 主导。</li>
 </ul>
 <h2 id="pitfalls">陷阱 (Pitfalls)<a class="headerlink" href="#pitfalls" title="Permanent link">#</a></h2>
 <ul>
-<li>状态必须包括 keys，否则同一格在不同钥匙集合下应视作不同节点；只用 <span class="arithmatex">\((r,c)\)</span> 去重会<strong>漏解</strong>或<strong>输出错路径</strong>。</li>
-<li>起点也要立即拾取格内钥匙（题面 <code>@</code> 单独定义为起点，所以起点不会同时是钥匙）；但若起点周围已是 full（<span class="arithmatex">\(k=0\)</span> 时不会发生，因 <span class="arithmatex">\(k \ge 1\)</span>），需要在 BFS 开始即判断目标。</li>
-<li>大写锁的位检查：<code>(k &gt;&gt; idx) &amp; 1</code>，别忘 <code>else continue</code>。</li>
-<li>题面 <span class="arithmatex">\(k \in [1, 6]\)</span>，单从字母 <code>a..f</code>/<code>A..F</code>，不会越界。</li>
+<li><strong>状态必须包含钥匙集合</strong>（本题核心，见背景）：只用 <span class="arithmatex">\((r,c)\)</span> 去重会把"持不同钥匙"的同一格错误合并，导致漏解或输出错路径。锁后区域第一次访问时被判死胡同，拿到钥匙绕回来又因 <code>visited</code> 不再扩展。</li>
+<li>锁的位检查用当前钥匙 <code>k</code>：<code>(k &gt;&gt; idx) &amp; 1</code>，且别忘 <code>else continue</code>——否则会踩进未持钥匙的锁。</li>
+<li>出队即判 <code>k == full</code> 正确：BFS 按距离非降序出队，且 <code>@</code> 总是起点、从不是钥匙格，故起点不会立即满足 <code>k == full</code>（<span class="arithmatex">\(k \ge 1 \Rightarrow\)</span> <code>full</code> <span class="arithmatex">\(\ne 0\)</span>），无需在起点拾取格内钥匙。</li>
+<li>题面 <span class="arithmatex">\(k \in [1, 6]\)</span>，字母仅 <code>a..f</code> / <code>A..F</code>，位移 <span class="arithmatex">\(&lt; 6\)</span>，不会越界。</li>
 </ul>
 <h2 id="related">相关题目 (Related)<a class="headerlink" href="#related" title="Permanent link">#</a></h2>
 <ul>
@@ -22641,6 +22703,8 @@
         <script src="../../../js/mathjax/tex-mml-chtml.js"></script>
       
         <script src="../../../js/mermaid.min.js"></script>
+      
+        <script src="../../../js/featured.js"></script>
       
     
   </body>

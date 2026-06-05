@@ -1466,6 +1466,8 @@
       
         
       
+        
+      
     
     
     
@@ -1521,6 +1523,34 @@
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../featured/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ⭐ Featured（已验证）
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
               
             
               
@@ -1610,10 +1640,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_4" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
         
           
-          <label class="md-nav__link" for="__nav_4_4" id="__nav_4_4_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_5" id="__nav_4_5_label" tabindex="">
             
   
   
@@ -1631,8 +1661,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_4_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_4">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_5">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1915,7 +1945,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -1937,14 +1967,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_4_5" id="__nav_4_5_label" tabindex="">
+              <label class="md-nav__link " for="__nav_4_6" id="__nav_4_6_label" tabindex="">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_5">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_6">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -5321,10 +5351,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_7" checked>
         
           
-          <label class="md-nav__link" for="__nav_4_6" id="__nav_4_6_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_7" id="__nav_4_7_label" tabindex="">
             
   
   
@@ -5342,8 +5372,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_4_6">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_7_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4_7">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -22467,15 +22497,18 @@
 <h2 id="problem">Problem<a class="headerlink" href="#problem" title="Permanent link">#</a></h2>
 <p>Alice 与 Bob 玩石子游戏：偶数堆 <span class="arithmatex">\(\text{piles}[0..n-1]\)</span> 排成一排，总石子数为奇（无平局）。两人轮流取行首或行尾的整堆，Alice 先手。双方最优，问 Alice 是否赢。<span class="arithmatex">\(2 \le n \le 500\)</span>（偶），<span class="arithmatex">\(1 \le \text{piles}[i] \le 500\)</span>。</p>
 <h2 id="background">背景 (Background)<a class="headerlink" href="#background" title="Permanent link">#</a></h2>
-<p><strong>博弈论</strong>经典题：<strong>Minimax + 两端选取</strong>。可用 <span class="arithmatex">\(O(n^2)\)</span> DP（与 #486 Predict the Winner、#1690 Stone Game VII 同框架），也存在著名"诈死"奇偶论证导致<strong>直接返回 true</strong>。这是 normal-play partizan 博弈在偶数堆下的特殊性质：先手可锁定全部偶下标或全部奇下标。</p>
-<p>数学背景：把堆按下标奇偶分组 <span class="arithmatex">\(E = \sum_{i \text{ 偶}} \text{piles}[i]\)</span>、<span class="arithmatex">\(O = \sum_{i \text{ 奇}} \text{piles}[i]\)</span>。总和奇 → <span class="arithmatex">\(E \ne O\)</span>。先手策略：若 <span class="arithmatex">\(E &gt; O\)</span> 首取 <span class="arithmatex">\(\text{piles}[0]\)</span>（偶下标），剩下两端必都是奇下标（左 1 右 <span class="arithmatex">\(n-1\)</span>），对手无论取哪个，先手下一步两端又都是偶下标——归纳出"先手永远可拿全部偶下标"。同理 <span class="arithmatex">\(O &gt; E\)</span> 时拿全部奇下标。所以先手必胜。</p>
+<p>每一步，当前玩家只面对两个数：取最左堆或取最右堆。无论取哪一端，对手都将在一个更短的序列上面对同样的二选一。这个游戏递归进入自身，子问题与原问题同构——这就是全部结构，先不引入任何外部框架。</p>
+<p>最朴素的尝试是贪心：每步取较大的一端。它立刻失败。考虑 <span class="arithmatex">\(\text{piles}=[2,100,1,2]\)</span>：贪心让 Alice 先取右端的 <span class="arithmatex">\(2\)</span>，于是 <span class="arithmatex">\(100\)</span> 暴露给 Bob，Bob 取走 <span class="arithmatex">\(100\)</span>，Alice 大败。问题在于，眼前取得多，可能把更大的堆送到对手手里。局部最优不等于全局最优，所以不能只看当前这一步的得分。</p>
+<p>贪心的失败指明了正确的提问方式：不要问"这一步拿多少"，要问"从当前局面出发，先手最终能比对手多拿多少"。这个量对子序列递归定义，正是上一段那个自相似结构的代数表达。我们先把它形式化，再据此推导转移。</p>
 <h2 id="formulation">形式化 (Formulation)<a class="headerlink" href="#formulation" title="Permanent link">#</a></h2>
-<p>设 $f(i, j) = $ "区间 <span class="arithmatex">\([i..j]\)</span> 上当前先手"相对于后手能多得的最大石子数。递推：</p>
-<div class="arithmatex">\[f(i, j) = \max(\text{piles}[i] - f(i+1, j),\ \text{piles}[j] - f(i, j-1))\]</div>
-<p>边界 <span class="arithmatex">\(f(i, i) = \text{piles}[i]\)</span>。Alice 赢 <span class="arithmatex">\(\iff f(0, n-1) &gt; 0\)</span>。</p>
+<p><strong>直觉。</strong> 游戏在区间 <span class="arithmatex">\([i..j]\)</span> 上是零和的：这段石子的总量 <span class="arithmatex">\(S(i,j)=\sum_{k=i}^{j}\text{piles}[k]\)</span> 固定，先手多拿一颗，后手就少拿一颗。于是只需追踪一个有符号量——先手相对后手的领先——而不必分别记录两人得分。若直接以 <span class="arithmatex">\((\text{alice\_score}, \text{bob\_score})\)</span> 为状态，维度翻倍且还需额外记录该谁走；而领先差把两者塌缩成一个数，因为 <span class="arithmatex">\(\text{bob\_score}=S(i,j)-\text{alice\_score}\)</span>，多余的一维可由总量约束消去。</p>
+<p><strong>定义。</strong> 设 <span class="arithmatex">\(f(i, j)\)</span> 为在区间 <span class="arithmatex">\([i..j]\)</span> 上、由当前先手出发，先手能比后手多得的最大石子数（零和领先量）。</p>
+<p><strong>转移的推导。</strong> 先手有两个动作。若取 <span class="arithmatex">\(\text{piles}[i]\)</span>，先手立即入账 <span class="arithmatex">\(\text{piles}[i]\)</span>；随后轮到对手在 <span class="arithmatex">\([i+1..j]\)</span> 上先行，对手将相对先手取得领先 <span class="arithmatex">\(f(i+1, j)\)</span>，这份领先是从先手身上扣的。于是这一支先手的净领先为 <span class="arithmatex">\(\text{piles}[i] - f(i+1, j)\)</span>。取右端同理。先手在两个动作中取较大者：</p>
+<div class="arithmatex">\[f(i, j) = \max\big(\text{piles}[i] - f(i+1, j),\ \text{piles}[j] - f(i, j-1)\big) \tag{1}\]</div>
+<p>边界 <span class="arithmatex">\(f(i, i) = \text{piles}[i]\)</span>：只剩一堆时先手全取，领先即该堆石子数。减号正是 minimax 在领先量下的等价形式——对手最大化自己的领先，等价于最小化先手的领先，符号一翻即得。Alice 赢 <span class="arithmatex">\(\iff f(0, n-1) &gt; 0\)</span>，因为总和为奇，<span class="arithmatex">\(f(0,n-1)\ne 0\)</span>，无平局之虞。</p>
 <h2 id="approach">数据结构 / 想法 (Approach)<a class="headerlink" href="#approach" title="Permanent link">#</a></h2>
-<p><strong>方案 A（数学论证）</strong>：直接 <code>return True</code>。<span class="arithmatex">\(O(1)\)</span> 时间空间。需要在解释中证明上述奇偶策略。</p>
-<p><strong>方案 B（区间 DP，通用）</strong>：填表 <span class="arithmatex">\(f[i][j]\)</span>，按区间长度递增。可滚动到一维节省空间。</p>
+<p><strong>朴素递归为何需要 DP。</strong> 式 (1) 直接展开是指数级的：<span class="arithmatex">\(f(i,j)\)</span> 调用 <span class="arithmatex">\(f(i+1,j)\)</span> 与 <span class="arithmatex">\(f(i,j-1)\)</span>，而这两者又各自分裂，同一个子区间 <span class="arithmatex">\([i'..j']\)</span> 在递归树中被反复求值——子问题重叠。但不同的 <span class="arithmatex">\((i,j)\)</span> 只有 <span class="arithmatex">\(O(n^2)\)</span> 个，记忆化或自底向上填表即可去掉重复，这就是区间 DP。</p>
+<p><strong>方案 B（区间 DP，通用）。</strong> 按区间长度 <span class="arithmatex">\(L\)</span> 从小到大填 <span class="arithmatex">\(f[i][j]\)</span>：长度 <span class="arithmatex">\(L\)</span> 的值只依赖长度 <span class="arithmatex">\(L-1\)</span> 的值，依赖关系无环。下面用一维数组滚动，<code>dp[i]</code> 在外层第 <span class="arithmatex">\(L\)</span> 轮表示 <span class="arithmatex">\(f(i, i+L-1)\)</span>。</p>
 <div class="language-python highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">Solution</span><span class="p">:</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">stoneGame</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">piles</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
         <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">piles</span><span class="p">)</span>
@@ -22486,12 +22519,19 @@
                 <span class="n">dp</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">piles</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">-</span> <span class="n">dp</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">],</span> <span class="n">piles</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">-</span> <span class="n">dp</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
         <span class="k">return</span> <span class="n">dp</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">0</span>
 </code></pre></div>
+<p>写入顺序的安全性来自式 (1) 的依赖结构。第 <span class="arithmatex">\(L\)</span> 轮按 <span class="arithmatex">\(i\)</span> 递增写 <code>dp[i]</code> 时：<code>dp[i+1]</code> 尚未在本轮被覆写（<span class="arithmatex">\(i+1&gt;i\)</span>，本轮后处理），仍持有上一轮长度 <span class="arithmatex">\(L-1\)</span> 的旧值 <span class="arithmatex">\(f(i+1, j)\)</span>；而 <code>dp[i]</code> 此刻仍是上一轮的旧值，对应 <span class="arithmatex">\(f(i, j-1)\)</span>。两个读取恰好都是式 (1) 需要的长度 <span class="arithmatex">\(L-1\)</span> 的量，无过早覆盖。</p>
 <p>样例 trace <code>piles=[5,3,4,5]</code>，<span class="arithmatex">\(n=4\)</span>：
 - L=2: dp[0]=max(5-3,3-5)=2; dp[1]=max(3-4,4-3)=1; dp[2]=max(4-5,5-4)=1.
 - L=3: dp[0]=max(5-1,4-2)=4; dp[1]=max(3-1,5-1)=4.
 - L=4: dp[0]=max(5-4,5-4)=1.
 - dp[0]=1 &gt; 0 → True。✓</p>
-<p><strong>为什么 B 正确</strong>：定义 <span class="arithmatex">\(f\)</span> 为"先手优势"，转移枚举先手两种选择，把"对方"的优势减去（minimax 等价形式）。</p>
+<p><strong>方案 A（<span class="arithmatex">\(O(1)\)</span> 数学论证）。</strong> 在 DP 之上，题面的两个限制——堆数为偶、总和为奇——还能推出一个更强的结论：先手必胜，可直接 <code>return True</code>。这不是另一种凑出来的技巧，而是索引奇偶结构的直接推论。</p>
+<p>按下标奇偶把石子分两组：<span class="arithmatex">\(E = \sum_{i \text{ 偶}} \text{piles}[i]\)</span>，<span class="arithmatex">\(O = \sum_{i \text{ 奇}} \text{piles}[i]\)</span>。总和为奇 <span class="arithmatex">\(\Rightarrow E \ne O\)</span>。关键是下面这个可被先手锁定的不变量。</p>
+<blockquote>
+<p><strong>Claim.</strong> 当 <span class="arithmatex">\(n\)</span> 为偶数、且先手每一步都从下标为偶的那一端取堆时，每当轮到后手，剩余区间的两个端点下标都为奇；后手取走一端、先手再取一端后，端点下标又都恢复为偶。</p>
+</blockquote>
+<p>证明由索引算术给出，不依赖任何外部论证。初始区间为 <span class="arithmatex">\([0, n-1]\)</span>：<span class="arithmatex">\(0\)</span> 偶、<span class="arithmatex">\(n-1\)</span> 奇（<span class="arithmatex">\(n\)</span> 偶），两端点奇偶相反，且偶下标端在左。先手取偶下标端（左端 <span class="arithmatex">\(0\)</span>），剩区间 <span class="arithmatex">\([1, n-1]\)</span>：两端 <span class="arithmatex">\(1\)</span> 与 <span class="arithmatex">\(n-1\)</span> 均为奇下标。后手无论取哪一端，剩下三种长度都变，但去掉一个奇下标端后，新区间一端是先手即将要取的偶下标、另一端仍为偶下标——后手取左则剩 <span class="arithmatex">\([2, n-1]\)</span>（<span class="arithmatex">\(2\)</span> 偶、<span class="arithmatex">\(n-1\)</span> 奇），后手取右则剩 <span class="arithmatex">\([1, n-2]\)</span>（<span class="arithmatex">\(1\)</span> 奇、<span class="arithmatex">\(n-2\)</span> 偶），无论哪种，先手都恰好够到一个偶下标端可取，取完后剩区间两端又都成偶下标。归纳即得：先手可保证取走全部偶下标堆。同理可保证取走全部奇下标堆。</p>
+<p>先手据此自由选择拿下 <span class="arithmatex">\(E\)</span> 组或 <span class="arithmatex">\(O\)</span> 组的全部，于是选较大者：<span class="arithmatex">\(E&gt;O\)</span> 就锁偶下标，<span class="arithmatex">\(O&gt;E\)</span> 就锁奇下标。因 <span class="arithmatex">\(E\ne O\)</span>，先手所得严格大于后手，必胜。所以在题设约束下答案恒为 <code>True</code>。</p>
 <h2 id="complexity">复杂度 (Complexity)<a class="headerlink" href="#complexity" title="Permanent link">#</a></h2>
 <ul>
 <li>方案 A：<span class="arithmatex">\(O(1)\)</span> / <span class="arithmatex">\(O(1)\)</span></li>
@@ -22499,9 +22539,9 @@
 </ul>
 <h2 id="pitfalls">陷阱 (Pitfalls)<a class="headerlink" href="#pitfalls" title="Permanent link">#</a></h2>
 <ul>
-<li>题面条件"piles.length 是偶 + 总和为奇"是奇偶论证的前提；若题目放宽（如奇数堆或可有平局），方案 A 不再成立——这正是 Stone Game II/III/IV/V 等变体的难点所在。</li>
-<li>DP 转移须用"差值"形式而非各自得分，否则状态维度爆炸。</li>
-<li>一维滚动方向：按区间长度递增，外层 <span class="arithmatex">\(L\)</span> 内层 <span class="arithmatex">\(i\)</span>，<code>dp[i]</code> 写时仍可读 <code>dp[i+1]</code>（旧值，长度 <span class="arithmatex">\(L-1\)</span>）和 <code>dp[i]</code>（旧值，长度 <span class="arithmatex">\(L-1\)</span> 的 <span class="arithmatex">\([i, j-1]\)</span>）—— 需要仔细验证写入顺序无覆盖。</li>
+<li>题面条件"piles.length 是偶 + 总和为奇"是方案 A 奇偶论证的前提，缺一不可：Claim 的归纳起点用到 <span class="arithmatex">\(n\)</span> 偶（端点奇偶相反），<span class="arithmatex">\(E\ne O\)</span> 用到总和为奇。题目一旦放宽（奇数堆或允许平局），先手锁定单一奇偶组的不变量被打破，方案 A 不再成立——这正是 Stone Game II/III/IV/V 等变体的难点所在，它们退回方案 B 那类通用 DP。</li>
+<li>DP 状态须用"领先差"<span class="arithmatex">\(f(i,j)\)</span> 而非分别记录两人得分。后者维度翻倍且需附加"轮到谁"，由 <span class="arithmatex">\(\text{bob\_score}=S(i,j)-\text{alice\_score}\)</span> 可知这一维冗余；用差值塌缩掉它，是转移成立的前提。</li>
+<li>一维滚动须按区间长度递增（外层 <span class="arithmatex">\(L\)</span> 内层 <span class="arithmatex">\(i\)</span> 递增），靠的是式 (1) 只依赖长度 <span class="arithmatex">\(L-1\)</span> 的旧值；写 <code>dp[i]</code> 时 <code>dp[i+1]</code>（旧 <span class="arithmatex">\(f(i+1,j)\)</span>）与 <code>dp[i]</code>（旧 <span class="arithmatex">\(f(i,j-1)\)</span>）均未被本轮污染——改变内外层顺序或令 <span class="arithmatex">\(i\)</span> 递减都会读到错误值。</li>
 </ul>
 <h2 id="related">相关题目 (Related)<a class="headerlink" href="#related" title="Permanent link">#</a></h2>
 <ul>
@@ -22620,6 +22660,8 @@
         <script src="../../../js/mathjax/tex-mml-chtml.js"></script>
       
         <script src="../../../js/mermaid.min.js"></script>
+      
+        <script src="../../../js/featured.js"></script>
       
     
   </body>

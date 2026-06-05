@@ -1466,6 +1466,8 @@
       
         
       
+        
+      
     
     
     
@@ -1521,6 +1523,34 @@
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../featured/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ⭐ Featured（已验证）
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
               
             
               
@@ -1610,10 +1640,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_4" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
         
           
-          <label class="md-nav__link" for="__nav_4_4" id="__nav_4_4_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_5" id="__nav_4_5_label" tabindex="">
             
   
   
@@ -1631,8 +1661,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_4_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_4">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_5">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1915,7 +1945,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -1937,14 +1967,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_4_5" id="__nav_4_5_label" tabindex="">
+              <label class="md-nav__link " for="__nav_4_6" id="__nav_4_6_label" tabindex="">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_5">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_6">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -5321,10 +5351,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_7" checked>
         
           
-          <label class="md-nav__link" for="__nav_4_6" id="__nav_4_6_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_7" id="__nav_4_7_label" tabindex="">
             
   
   
@@ -5342,8 +5372,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_4_6">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_7_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4_7">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -22467,14 +22497,29 @@
 <h2 id="problem">Problem<a class="headerlink" href="#problem" title="Permanent link">#</a></h2>
 <p>"相似"：两串等长且最多交换两个位置即可相等（或本就相等）。给一组<strong>互为字母重排 (anagram)</strong> 的字符串 <code>strs</code>，按相似关系求连通分量数。<span class="arithmatex">\(|\text{strs}| \le 300, |s| \le 300\)</span>。</p>
 <h2 id="_1">背景<a class="headerlink" href="#_1" title="Permanent link">#</a></h2>
-<p>这是 <strong>graph connectivity</strong> 在隐式图上的运算：节点为字符串，边为相似关系。原图最多有 <span class="arithmatex">\(\binom{n}{2}\)</span> 条边；每条边需要 <span class="arithmatex">\(O(L)\)</span> 时间判断（数差异位置数 <span class="arithmatex">\(\le 2\)</span>）。建图后 DSU / DFS 都是 <span class="arithmatex">\(O(n)\)</span> 求连通分量。</p>
-<p><strong>关键复杂度对比</strong>：
-- <span class="arithmatex">\(O(n^2 \cdot L)\)</span>：暴力建图，每对比较。<span class="arithmatex">\(300^2 \cdot 300 = 2.7 \times 10^7\)</span>，可过。
-- <span class="arithmatex">\(O(n \cdot L^3)\)</span>（理论更优当 <span class="arithmatex">\(L \ll n\)</span>）：对每个串枚举所有可能"通过一次交换"得到的串（<span class="arithmatex">\(L^2\)</span> 种），查哈希表。但 <span class="arithmatex">\(L^2 \cdot n \cdot L\)</span>（哈希时间）= <span class="arithmatex">\(n L^3 = 8.1 \times 10^9\)</span>，反而慢。本题 <span class="arithmatex">\(n \approx L\)</span>，暴力优。</p>
-<p>属于 <em>implicit graph BFS / DSU</em> 范式：节点空间巨大但<strong>邻居生成</strong>廉价。同类例：Word Ladder、8-puzzle、Rubik's cube IDA*。</p>
+<p>先尝试最直接的做法：把"相似"当作一个分组规则，扫一遍 <code>strs</code>，每个新串去和已有的某个组里的串比较，相似就并入那组。这等价于在串之间连边——只要两串相似就连一条——然后问连了多少个团。</p>
+<p>问题出在"相似"这个关系本身。它显然<strong>自反</strong>（每串与自己相似）、<strong>对称</strong>（交换一次的操作可逆）。但它<strong>不传递</strong>：</p>
+<ul>
+<li>$A = $ <code>abc</code>，$B = $ <code>bac</code>（交换 0,1 位），<span class="arithmatex">\(A \sim B\)</span>；</li>
+<li>$C = $ <code>bca</code>（在 <span class="arithmatex">\(B\)</span> 上交换 0,2 位），<span class="arithmatex">\(B \sim C\)</span>；</li>
+<li>但 $A = $ <code>abc</code> 与 $C = $ <code>bca</code> 在全部 3 个位置都不同，单次交换无法消除三处错位，故 <span class="arithmatex">\(A \not\sim C\)</span>。</li>
+</ul>
+<p>所以"直接相似"并不能把字符串划分成组——<span class="arithmatex">\(A,C\)</span> 不直接相似，却应当同组，因为它们经由 <span class="arithmatex">\(B\)</span> 相连。我们真正要数的不是 <span class="arithmatex">\(\sim\)</span> 本身的关系块，而是 <span class="arithmatex">\(\sim\)</span> 的<strong>传递闭包</strong> <span class="arithmatex">\(\sim^*\)</span> 下的等价类。这正是图论里的连通分量：节点是字符串，<span class="arithmatex">\(\sim\)</span> 给出边，同一连通分量内任意两点经若干条边相连，对应 <span class="arithmatex">\(\sim^*\)</span> 的一个等价类。</p>
+<p>下一步就清楚了：建出这张图，数它的连通分量。</p>
 <h2 id="_2">形式化<a class="headerlink" href="#_2" title="Permanent link">#</a></h2>
-<p><span class="arithmatex">\(x \sim y\)</span> 当 <span class="arithmatex">\(x = y\)</span> 或 <span class="arithmatex">\(\#\{i : x_i \neq y_i\} = 2\)</span>。求 <span class="arithmatex">\(\sim^*\)</span>（传递闭包）下的等价类数。</p>
+<p>把每个字符串看作按位置索引的字符序列 <span class="arithmatex">\(x = (x_0, x_1, \dots)\)</span>。在 anagram 约束下，定义相似关系：</p>
+<div class="arithmatex">\[x \sim y \iff x = y \;\text{ 或 }\; \#\{i : x_i \neq y_i\} = 2.\]</div>
+<p>记 <span class="arithmatex">\(\sim^*\)</span> 为 <span class="arithmatex">\(\sim\)</span> 的传递闭包（最小的包含 <span class="arithmatex">\(\sim\)</span> 的等价关系）。<strong>所求即 <span class="arithmatex">\(\sim^*\)</span> 的等价类个数</strong>，等价地，即以 <span class="arithmatex">\(\sim\)</span> 为边集的图的连通分量数。</p>
+<p>为什么相似性可以只靠"差异位置数"判定，而不必真去试所有交换？这要从定义读出来。一次交换恰好改动两个位置：把 <span class="arithmatex">\(x\)</span> 的第 <span class="arithmatex">\(i,j\)</span> 位互换。</p>
+<ul>
+<li><strong>必要方向</strong>（<span class="arithmatex">\(x \sim y \Rightarrow \text{diff} \in \{0,2\}\)</span>）：若 <span class="arithmatex">\(x=y\)</span> 则 <span class="arithmatex">\(\text{diff}=0\)</span>；否则那一次交换把 <span class="arithmatex">\(x_i,x_j\)</span> 换成 <span class="arithmatex">\(x_j,x_i\)</span>，只有这两位可能与 <span class="arithmatex">\(y\)</span> 不同，故 <span class="arithmatex">\(\text{diff} \le 2\)</span>。又因 <span class="arithmatex">\(x \ne y\)</span> 且交换两个<strong>相同</strong>字符不产生变化，真正生效的交换必使恰好两位不同，<span class="arithmatex">\(\text{diff}=2\)</span>。</li>
+<li><strong>充分方向</strong>（<span class="arithmatex">\(\text{diff} = 2 \Rightarrow x \sim y\)</span>）：设 <span class="arithmatex">\(x,y\)</span> 恰在位置 <span class="arithmatex">\(i,j\)</span> 不同。此处 <strong>anagram 约束是关键</strong>：<span class="arithmatex">\(x,y\)</span> 是彼此的字母重排，在 <span class="arithmatex">\(i,j\)</span> 之外两串逐位相等，故这两个位置上的多重字符集 <span class="arithmatex">\(\{x_i,x_j\}\)</span> 与 <span class="arithmatex">\(\{y_i,y_j\}\)</span> 必相等。又 <span class="arithmatex">\(x_i \ne y_i\)</span>，只能是 <span class="arithmatex">\(x_i = y_j,\, x_j = y_i\)</span>——交换 <span class="arithmatex">\(x\)</span> 的第 <span class="arithmatex">\(i,j\)</span> 位即得 <span class="arithmatex">\(y\)</span>。</li>
+</ul>
+<p>若没有 anagram 约束，充分方向会失效：<code>ab</code> 与 <code>cd</code> 差异位置数为 2，但交换 <code>ab</code> 只得 <code>ba</code>，无论如何换不出 <code>cd</code>。所以判定式 <span class="arithmatex">\(\text{diff} \in \{0,2\}\)</span> 的合法性<strong>依赖</strong> anagram 前提，这一点在实现里必须记牢（见<a href="#陷阱">陷阱</a>）。</p>
+<p>至此 <code>sim(x,y)</code> 可在 <span class="arithmatex">\(O(L)\)</span> 内完成：逐位计数差异，超过 2 即可提前判负。</p>
 <h2 id="_3">数据结构 / 想法<a class="headerlink" href="#_3" title="Permanent link">#</a></h2>
+<p>形式化告诉我们要做两件事：(1) 用 <span class="arithmatex">\(O(L)\)</span> 的 <code>sim</code> 判定每对串是否有边；(2) 数连通分量。先看最朴素的连边方式：枚举全部 <span class="arithmatex">\(\binom{n}{2}\)</span> 对，相似就连边，再跑一遍 DFS/BFS 数连通块。这是正确的基线，代价为 <span class="arithmatex">\(O(n^2 L)\)</span> 建图加 <span class="arithmatex">\(O(n^2)\)</span> 遍历，代入 <span class="arithmatex">\(300^2 \cdot 300 = 2.7\times10^7\)</span>，1 秒内可过。</p>
+<p>DFS 的麻烦在于：边是<strong>一边发现一边产生</strong>的（建图时才知道谁连谁），而 DFS 需要先有完整邻接表再遍历。我们其实并不关心具体的边，只关心"哪些点最终连通"。这种"边逐步到来、只问连通性"的需求，正是并查集 (Union-Find / DSU) 的本职：每发现一条相似边就 <code>union</code> 两端，全部处理完后，每个连通分量恰好对应一个根。于是连边与统计合二为一，无需显式邻接表。</p>
 <p><strong>Union-Find + 暴力建图</strong>：
 <div class="language-python highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">numSimilarGroups</span><span class="p">(</span><span class="n">strs</span><span class="p">):</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">sim</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
@@ -22498,19 +22543,21 @@
                 <span class="n">union</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">)</span>
     <span class="k">return</span> <span class="nb">sum</span><span class="p">(</span><span class="n">p</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">))</span>
 </code></pre></div></p>
-<p><strong>DFS / BFS 连通分量</strong>：对每个未访问节点 BFS 找连通分量，访问完计数 +1。</p>
-<p><strong>优化思路</strong>（不必采用，仅供参考）：当 <span class="arithmatex">\(L \ll n\)</span> 时，对每个串枚举所有可能交换 (<code>L*(L-1)/2</code> 种)，生成结果串查哈希表是否存在 → 复杂度 <span class="arithmatex">\(O(n L^2 + n L)\)</span>。但要求所有串互为 anagram，否则交换不会得到同一 anagram 类外的元素。</p>
-<p><strong>关键洞察</strong>：题目保证所有串互为 anagram → 任意两串差异位置数必为 0 或偶数（每个错位都需另一处对应错位补偿）→ "最多两次交换" 在 anagram 限制下等价于"差异位置数 <span class="arithmatex">\(\in \{0, 2\}\)</span>"。<strong>所以 <code>sim</code> 的实现可以只数差异数</strong>。</p>
+<p>最后一行 <code>sum(p[i] == i)</code> 直接数根的个数：每个连通分量恰有一个指向自身的根，故根数即分量数（无需先对所有点做一遍 <code>find</code>）。</p>
+<p><strong>DFS / BFS 连通分量</strong>：若坚持显式遍历，可先建邻接表，再对每个未访问节点跑一次 BFS/DFS 标记整块，每标记完一块计数 +1。与 DSU 同阶，但需额外存储邻接表，且代码更长。两者皆可，DSU 在"边在线到来"的场景下更贴合。</p>
+<p><strong>当 <span class="arithmatex">\(L \ll n\)</span> 时的另一条路</strong>。暴力建图的瓶颈是 <span class="arithmatex">\(\binom{n}{2}\)</span> 对比较。若字符串短而数量多，可改为对每个串枚举它"一次交换可达"的所有结果串——共 <span class="arithmatex">\(\binom{L}{2}\)</span> 种——把这些结果在哈希表里查是否对应某个输入串，命中则连边。这样避开了 <span class="arithmatex">\(n^2\)</span> 的成对枚举，复杂度约 <span class="arithmatex">\(O(n L^2 \cdot L) = O(n L^3)\)</span>（每个串枚举 <span class="arithmatex">\(L^2\)</span> 个候选，每个候选构造与哈希需 <span class="arithmatex">\(O(L)\)</span>）。</p>
+<p>是否更优取决于 <span class="arithmatex">\(n\)</span> 与 <span class="arithmatex">\(L\)</span> 的相对大小：暴力为 <span class="arithmatex">\(O(n^2 L)\)</span>，枚举为 <span class="arithmatex">\(O(n L^3)\)</span>，前者更优当且仅当 <span class="arithmatex">\(n L &lt; L^3\)</span>，即 <span class="arithmatex">\(n &lt; L^2\)</span>。本题上界 <span class="arithmatex">\(n \le 300,\, L \le 300\)</span>，<span class="arithmatex">\(n \approx L\)</span> 时枚举退化为 <span class="arithmatex">\(O(n L^3) = 300 \cdot 300^3 = 8.1\times10^9\)</span>，远慢于暴力的 <span class="arithmatex">\(2.7\times10^7\)</span>。故在本题参数下，朴素的成对暴力反而是更好的选择；枚举法只在 <span class="arithmatex">\(n\)</span> 显著大于 <span class="arithmatex">\(L^2\)</span> 时才赢。</p>
 <h2 id="_4">复杂度<a class="headerlink" href="#_4" title="Permanent link">#</a></h2>
 <ul>
-<li>Time: <span class="arithmatex">\(O(n^2 L)\)</span>。<span class="arithmatex">\(2.7 \times 10^7\)</span> 操作可在 1s 内。</li>
-<li>Space: <span class="arithmatex">\(O(n)\)</span> DSU。</li>
+<li>Time: <span class="arithmatex">\(O(n^2 L)\)</span>。建图阶段 <span class="arithmatex">\(\binom{n}{2}\)</span> 对各做 <span class="arithmatex">\(O(L)\)</span> 的 <code>sim</code>，代入 <span class="arithmatex">\(2.7\times10^7\)</span>，1 秒内可过。DSU 操作总计近 <span class="arithmatex">\(O(n\,\alpha(n))\)</span>，被建图项吸收。</li>
+<li>Space: <span class="arithmatex">\(O(n)\)</span>，仅父指针数组（不显式存边）。</li>
 </ul>
 <h2 id="_5">陷阱<a class="headerlink" href="#_5" title="Permanent link">#</a></h2>
 <ul>
-<li>必须用 anagram 保证才能简化 sim 判定为"差异数 <span class="arithmatex">\(\in \{0, 2\}\)</span>"；若题目放宽就要真做交换枚举。</li>
-<li>DSU 路径压缩 + 按秩合并能稳到 <span class="arithmatex">\(O(\alpha)\)</span>，但 <span class="arithmatex">\(n=300\)</span> 不压缩也快。</li>
-<li>DFS 写法栈深可能到 <span class="arithmatex">\(n=300\)</span>，Python 默认 1000 OK。</li>
+<li><strong>anagram 前提是判定式合法的前提</strong>。<code>sim</code> 只数差异位置数、以 <span class="arithmatex">\(\text{diff}\in\{0,2\}\)</span> 判相似，其充分方向依赖所有串互为 anagram（见<a href="#形式化">形式化</a>的反例 <code>ab</code>/<code>cd</code>）。若题目放宽这一约束，就必须真正枚举交换来验证相似，不能再用纯计数。</li>
+<li>注意"anagram 不强制差异位置数为偶数"：<code>abc</code> 与 <code>bca</code> 互为 anagram 却在 3 个位置全不同（一个 3-循环置换）。本题用不到这一事实，但不要误以为 anagram 会带来某种奇偶性保证。</li>
+<li>DSU 这里只做了路径压缩（<code>find</code> 内的两行）、未做按秩/按大小合并；<span class="arithmatex">\(n=300\)</span> 下即便退化也极快，无需额外优化。</li>
+<li>若改用递归 DFS，链状连通分量的栈深可达 <span class="arithmatex">\(n=300\)</span>，Python 默认递归上限 1000 足够；但 <span class="arithmatex">\(n\)</span> 更大时需改迭代或提高上限。</li>
 </ul>
 <h2 id="_6">相关题目<a class="headerlink" href="#_6" title="Permanent link">#</a></h2>
 <ul>
@@ -22629,6 +22676,8 @@
         <script src="../../../js/mathjax/tex-mml-chtml.js"></script>
       
         <script src="../../../js/mermaid.min.js"></script>
+      
+        <script src="../../../js/featured.js"></script>
       
     
   </body>

@@ -1466,6 +1466,8 @@
       
         
       
+        
+      
     
     
     
@@ -1521,6 +1523,34 @@
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../featured/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ⭐ Featured（已验证）
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
               
             
               
@@ -1610,10 +1640,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_4" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
         
           
-          <label class="md-nav__link" for="__nav_4_4" id="__nav_4_4_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_5" id="__nav_4_5_label" tabindex="">
             
   
   
@@ -1631,8 +1661,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_4_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_4">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_5">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1915,7 +1945,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -1937,14 +1967,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_4_5" id="__nav_4_5_label" tabindex="">
+              <label class="md-nav__link " for="__nav_4_6" id="__nav_4_6_label" tabindex="">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_5">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_6">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -5321,10 +5351,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_7" checked>
         
           
-          <label class="md-nav__link" for="__nav_4_6" id="__nav_4_6_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_7" id="__nav_4_7_label" tabindex="">
             
   
   
@@ -5342,8 +5372,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_4_6">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_7_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4_7">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -22467,11 +22497,26 @@
 <h2 id="problem">Problem<a class="headerlink" href="#problem" title="Permanent link">#</a></h2>
 <p>整数数组 <code>arr</code>（<span class="arithmatex">\(2 \leq |arr| \leq 500\)</span>，元素 <span class="arithmatex">\(\in [-10^3, 10^3]\)</span>）。判断是否存在两个<strong>不同</strong>下标 <span class="arithmatex">\(i \neq j\)</span>，使 <code>arr[i] == 2 * arr[j]</code>。返回布尔。</p>
 <h2 id="background">背景 (Background)<a class="headerlink" href="#background" title="Permanent link">#</a></h2>
-<p><strong>单次扫描 + 哈希表</strong> 的经典 Two Sum 变体。难点在 0 的处理：若 <code>arr[j] = 0</code> 则 <code>2 * arr[j] = 0</code>，需要另一个 <code>arr[i] = 0</code>（不同下标），不能用 "自己 = 2 × 自己" 的同一下标。</p>
+<p>最直接的做法是枚举所有有序对 <span class="arithmatex">\((i, j)\)</span>，逐一检查 <code>arr[i] == 2 * arr[j]</code>：</p>
+<div class="language-python highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">checkIfExist_brute</span><span class="p">(</span><span class="n">arr</span><span class="p">):</span>
+    <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">arr</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">i</span> <span class="o">!=</span> <span class="n">j</span> <span class="ow">and</span> <span class="n">arr</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">arr</span><span class="p">[</span><span class="n">j</span><span class="p">]:</span>
+                <span class="k">return</span> <span class="kc">True</span>
+    <span class="k">return</span> <span class="kc">False</span>
+</code></pre></div>
+<p>在 <span class="arithmatex">\(n \leq 500\)</span> 的约束下，<span class="arithmatex">\(O(n^2)\)</span> 共约 <span class="arithmatex">\(2.5 \times 10^5\)</span> 次比较，完全跑得过。所以本题不是被规模逼出来的——它的价值在于看清这个双重循环到底在重复做什么，从而把它压成单次扫描。</p>
+<p>观察内层循环：对每个固定的 <span class="arithmatex">\(i\)</span>，我们其实只是在问一个成员性问题——"数组里有没有某个值等于 <span class="arithmatex">\(2 \cdot arr[i]\)</span>"。值是什么不重要，存不存在才重要。双重循环把这个成员性查询用线性遍历来回答，于是付出了 <span class="arithmatex">\(O(n)\)</span> 的代价；而成员性查询恰好是哈希集合的强项，可以降到 <span class="arithmatex">\(O(1)\)</span>。下面把这个化简一步步推出来，并交代它在 <span class="arithmatex">\(0\)</span> 处的一个非平凡边界。</p>
 <h2 id="formulation">形式化 (Formulation)<a class="headerlink" href="#formulation" title="Permanent link">#</a></h2>
-<p>存在 <span class="arithmatex">\(i \neq j\)</span> 使 <span class="arithmatex">\(a_i = 2 a_j\)</span>。</p>
+<p>直觉是：原始关系把两个下标对称地绑在一起，但当我们按下标顺序扫描时，这对下标总有一个先出现。固定"后出现"的那一个，问题就退化成一次单向成员性查询。把这个想法写成精确陈述。</p>
+<p>我们要判定是否存在 <span class="arithmatex">\(i \neq j\)</span> 使</p>
+<div class="arithmatex">\[a_i = 2 a_j.\]</div>
+<p>关系 <span class="arithmatex">\(a_i = 2 a_j\)</span> 在两个下标上不对称（<span class="arithmatex">\(a_i\)</span> 是 <span class="arithmatex">\(a_j\)</span> 的两倍），但"存在这样一对"这件事是对称的：给定满足条件的一对 <span class="arithmatex">\((i, j)\)</span>，按扫描顺序它们中必有一个下标更大。设更大的那个为 <span class="arithmatex">\(k\)</span>。则在到达 <span class="arithmatex">\(k\)</span> 时，另一个下标已经被扫过。于是判定式等价为</p>
+<div class="arithmatex">\[\exists\, k \ \text{使得在 } \{a_0, \dots, a_{k-1}\} \text{ 中存在 } 2 a_k \ \text{或} \ a_k / 2.\]</div>
+<p>两个分支对应另一个下标扮演的角色：若先出现的那个是 <span class="arithmatex">\(a_k\)</span> 的两倍，查 <span class="arithmatex">\(2 a_k\)</span>；若它是 <span class="arithmatex">\(a_k\)</span> 的一半，查 <span class="arithmatex">\(a_k / 2\)</span>。两分支合起来覆盖了 <span class="arithmatex">\((i, j)\)</span> 谁先谁后的两种情形，这正是对称性所要求的双向检查。</p>
 <h2 id="approach">数据结构 / 想法 (Approach)<a class="headerlink" href="#approach" title="Permanent link">#</a></h2>
-<p><strong>哈希表一次扫描</strong>：维护已见元素集合。对当前 <span class="arithmatex">\(a_i\)</span>，检查 <span class="arithmatex">\(2 a_i\)</span> 或 <span class="arithmatex">\(a_i / 2\)</span>（若 <span class="arithmatex">\(a_i\)</span> 偶）是否在集合中。负数也照常工作（<span class="arithmatex">\(-4 = 2 \times (-2)\)</span>）。</p>
+<p>形式化已经把判定式改写成"对每个 <span class="arithmatex">\(k\)</span>，在前缀 <span class="arithmatex">\(\{a_0, \dots, a_{k-1}\}\)</span> 中做一次成员性查询"。这恰好是一个可增量维护的集合：扫描时把已见元素放进集合 <code>seen</code>，到达 <span class="arithmatex">\(a_k\)</span> 时只查 <code>seen</code>，查完再把 <span class="arithmatex">\(a_k\)</span> 加入。每次查询 <span class="arithmatex">\(O(1)\)</span>，总计 <span class="arithmatex">\(O(n)\)</span>。</p>
 <div class="language-python highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">Solution</span><span class="p">:</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">checkIfExist</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">arr</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
         <span class="c1"># Time: O(n), Space: O(n)</span>
@@ -22482,11 +22527,15 @@
             <span class="n">seen</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
         <span class="k">return</span> <span class="kc">False</span>
 </code></pre></div>
-<p><strong>0 的细节</strong>：当 <code>x = 0</code> 时 <code>2*x = 0</code>、<code>x//2 = 0</code>。第一次扫到 0 时 <code>seen</code> 还不含 0 → 不触发；之后再扫到 0 时 <code>2*0 = 0 in seen</code> → 触发。这恰好对应"至少两个 0"的合法情况，单独一个 0 不会误判。</p>
-<p><strong>Python 注意</strong>：<code>x % 2</code> 对负数：<code>(-3) % 2 == 1</code> in Python（向下取整余数），但 <code>-3 // 2 == -2</code> ≠ <code>-1</code>，是错的除以 2。这里我们要的是"真除以 2"，但只有 <code>x</code> 是偶数（包括负偶数）才需要查 <code>x // 2</code>，而对负偶数（如 -4）<code>x // 2 = -2</code> 正确。<strong>对奇数（包括负奇）跳过</strong>，对偶数 (<code>x % 2 == 0</code>) 安全。Python <code>(-4) % 2 == 0</code> 成立，所以判断 <code>x % 2 == 0</code> 在负偶数也对。</p>
-<p>样例验证：
-- <code>[10,2,5,3]</code>：扫 10 (seen={}), 2<em>10=20 not in, 10//2=5 not in, add 10. 扫 2: 2</em>2=4 not, 1 not, add. 扫 5: 10 in seen → True ✓.
-- <code>[3,1,7,11]</code>：每次都不在，最终 False ✓.</p>
+<p>"先查后加"的顺序不是实现细节，而是 <span class="arithmatex">\(i \neq j\)</span> 约束的直接落实：<code>seen</code> 在查询时刻恰好是严格前缀 <span class="arithmatex">\(\{a_0, \dots, a_{k-1}\}\)</span>，不含 <span class="arithmatex">\(a_k\)</span> 自己，所以任何命中都来自一个不同的下标。下面三段分别交代由此引出的三件事：<span class="arithmatex">\(x / 2\)</span> 分支的整除前提、它在负数上的正确性、以及 <span class="arithmatex">\(0\)</span> 处的退化。</p>
+<p><strong>整除前提与 <code>x // 2</code> 的写法。</strong> 数组元素都是整数，所以 <span class="arithmatex">\(a_k / 2\)</span> 只有在 <span class="arithmatex">\(a_k\)</span> 为偶数时才可能等于前缀中的某个整数；<span class="arithmatex">\(a_k\)</span> 为奇数时这一分支无解，必须跳过。因此守卫 <code>x % 2 == 0</code> 不是为了规避 Python 行为，而是从元素整性导出的正确性条件：仅当它成立时，<code>x // 2</code> 才表示 <span class="arithmatex">\(a_k\)</span> 的精确一半。</p>
+<p><strong>负数下的正确性。</strong> Python 的地板除对负奇数会偏移，例如 <code>-3 // 2 == -2</code> 而非 <code>-1</code>。但守卫 <code>x % 2 == 0</code> 把所有奇数（含负奇数）挡在分支之外，偏移的那一支根本不会执行。对偶数（含负偶数，如 <code>-4 // 2 == -2</code>），地板除给出的就是精确一半，故 <code>(x // 2) * 2 == x</code> 在所有偶数上成立。<code>(-4) % 2 == 0</code> 也成立，所以负偶数同样进入该分支并被正确处理。</p>
+<p><strong><span class="arithmatex">\(0\)</span> 处的退化。</strong> 把 <span class="arithmatex">\(a_j = 0\)</span> 代入 <span class="arithmatex">\(a_i = 2 a_j\)</span> 得 <span class="arithmatex">\(a_i = 0\)</span>。此时关系对 <span class="arithmatex">\(a_i\)</span> 和 <span class="arithmatex">\(a_j\)</span> 都要求取值 <span class="arithmatex">\(0\)</span>，唯一区分两者的是 <span class="arithmatex">\(i \neq j\)</span>：必须有两个取值为 <span class="arithmatex">\(0\)</span> 的不同下标，单独一个 <span class="arithmatex">\(0\)</span> 不满足判定。代码恰好兑现这点——第一次扫到 <span class="arithmatex">\(0\)</span> 时 <code>seen</code> 尚不含 <span class="arithmatex">\(0\)</span>，<code>2 * 0 = 0 not in seen</code>，不触发，随后 <span class="arithmatex">\(0\)</span> 入集合；第二次扫到 <span class="arithmatex">\(0\)</span> 时 <code>2 * 0 = 0 in seen</code>，触发。"先查后加"在这里把"至少两个 <span class="arithmatex">\(0\)</span>"和"只有一个 <span class="arithmatex">\(0\)</span>"精确地分开。</p>
+<p>样例验证：</p>
+<ul>
+<li><code>[10,2,5,3]</code>：扫 10（seen={}），<span class="arithmatex">\(2 \cdot 10 = 20\)</span> 不在，<span class="arithmatex">\(10 / 2 = 5\)</span> 不在，加入 10。扫 2：<span class="arithmatex">\(2 \cdot 2 = 4\)</span> 不在，1 不在，加入。扫 5：<span class="arithmatex">\(2 \cdot 5 = 10 \in\)</span> seen → True ✓。</li>
+<li><code>[3,1,7,11]</code>：每个元素的 <span class="arithmatex">\(2x\)</span> 与 <span class="arithmatex">\(x/2\)</span> 都不在前缀中，最终 False ✓。</li>
+</ul>
 <h2 id="complexity">复杂度 (Complexity)<a class="headerlink" href="#complexity" title="Permanent link">#</a></h2>
 <ul>
 <li>Time: <span class="arithmatex">\(O(n)\)</span></li>
@@ -22494,9 +22543,9 @@
 </ul>
 <h2 id="pitfalls">陷阱 (Pitfalls)<a class="headerlink" href="#pitfalls" title="Permanent link">#</a></h2>
 <ul>
-<li><strong>0 的双胞胎陷阱</strong>：必须用"先查再 add"顺序，避免单个 0 自匹配。</li>
-<li><strong>负数 floor 除</strong>：判断 <code>x // 2</code> 时要先确认 <code>x % 2 == 0</code>，否则 Python 的负数地板除会偏移。</li>
-<li>用排序 + 二分也可（<span class="arithmatex">\(O(n \log n)\)</span>），但本题哈希更简单。</li>
+<li><strong><span class="arithmatex">\(0\)</span> 的退化情形</strong>：<span class="arithmatex">\(a_j = 0\)</span> 强制 <span class="arithmatex">\(a_i = 0\)</span>，靠 <span class="arithmatex">\(i \neq j\)</span> 区分，所以需要两个 <span class="arithmatex">\(0\)</span>。"先查后加"的扫描顺序保证单个 <span class="arithmatex">\(0\)</span> 不会与自己匹配。</li>
+<li><strong>负数地板除</strong>：查 <code>x // 2</code> 前必须先确认 <code>x % 2 == 0</code>，否则负奇数的地板除会偏移到错误的"一半"。</li>
+<li>排序 + 二分也可（<span class="arithmatex">\(O(n \log n)\)</span>）：排好序后对每个 <span class="arithmatex">\(a_k\)</span> 二分查找 <span class="arithmatex">\(2 a_k\)</span>，但本题哈希更简单且更快。</li>
 </ul>
 <h2 id="related">相关题目 (Related)<a class="headerlink" href="#related" title="Permanent link">#</a></h2>
 <ul>
@@ -22613,6 +22662,8 @@
         <script src="../../../js/mathjax/tex-mml-chtml.js"></script>
       
         <script src="../../../js/mermaid.min.js"></script>
+      
+        <script src="../../../js/featured.js"></script>
       
     
   </body>

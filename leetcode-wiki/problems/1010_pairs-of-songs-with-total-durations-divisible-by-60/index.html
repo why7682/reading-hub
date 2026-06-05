@@ -1466,6 +1466,8 @@
       
         
       
+        
+      
     
     
     
@@ -1521,6 +1523,34 @@
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../featured/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ⭐ Featured（已验证）
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
               
             
               
@@ -1610,10 +1640,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_4" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
         
           
-          <label class="md-nav__link" for="__nav_4_4" id="__nav_4_4_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_5" id="__nav_4_5_label" tabindex="">
             
   
   
@@ -1631,8 +1661,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_4_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_4">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_5">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1915,7 +1945,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -1937,14 +1967,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_4_5" id="__nav_4_5_label" tabindex="">
+              <label class="md-nav__link " for="__nav_4_6" id="__nav_4_6_label" tabindex="">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_5">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_6">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -5321,10 +5351,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_7" checked>
         
           
-          <label class="md-nav__link" for="__nav_4_6" id="__nav_4_6_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_7" id="__nav_4_7_label" tabindex="">
             
   
   
@@ -5342,8 +5372,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_4_6">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_7_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4_7">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -22467,12 +22497,46 @@
 <h2 id="problem">Problem<a class="headerlink" href="#problem" title="Permanent link">#</a></h2>
 <p>数 <code>time</code> 中所有满足 <span class="arithmatex">\(i &lt; j\)</span> 且 <span class="arithmatex">\((\text{time}[i] + \text{time}[j]) \equiv 0 \pmod{60}\)</span> 的对数。<span class="arithmatex">\(n \le 6 \times 10^4\)</span>。</p>
 <h2 id="_1">背景<a class="headerlink" href="#_1" title="Permanent link">#</a></h2>
-<p><strong>模运算计数对</strong> 是数论与组合学交叉的经典模式：把每个值映射到其 mod <span class="arithmatex">\(m\)</span> 余数（这里 <span class="arithmatex">\(m=60\)</span>），原问题降为"在 <span class="arithmatex">\(\mathbb{Z}/60\mathbb{Z}\)</span> 上的余数桶里数和为 0 的对"。这是 <strong>two sum</strong> 在模意义下的版本——把数组 → 频次表 → 配对计数，三步走。</p>
-<p>类似 idea 在 <em>competitive programming</em> 里非常常见：和为 <span class="arithmatex">\(k\)</span>、差为 <span class="arithmatex">\(k\)</span>、积为 <span class="arithmatex">\(k\)</span>、xor 为 <span class="arithmatex">\(k\)</span> 等都有桶计数 <span class="arithmatex">\(O(n)\)</span> 解。</p>
+<p>最直接的做法是枚举所有无序对 <span class="arithmatex">\((i,j)\)</span>，逐对检验 <span class="arithmatex">\((t_i + t_j) \bmod 60 = 0\)</span>：</p>
+<div class="language-python highlight"><pre><span></span><code><span class="n">res</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">time</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+</span> <span class="n">time</span><span class="p">[</span><span class="n">j</span><span class="p">])</span> <span class="o">%</span> <span class="mi">60</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">res</span> <span class="o">+=</span> <span class="mi">1</span>
+</code></pre></div>
+<p>这枚举了 <span class="arithmatex">\(\binom{n}{2}\)</span> 个对。当 <span class="arithmatex">\(n = 6 \times 10^4\)</span> 时约 <span class="arithmatex">\(1.8 \times 10^9\)</span> 次检验，会 TLE。</p>
+<p>瓶颈在于：我们对每一对都重新做了一次加法和取模，却没有复用任何信息。要做到 <span class="arithmatex">\(O(n)\)</span>，必须找到"哪些 <span class="arithmatex">\(t_j\)</span> 能与某个 <span class="arithmatex">\(t_i\)</span> 配对"的廉价刻画——而不是把 <span class="arithmatex">\(t_j\)</span> 逐个试过去。</p>
+<p>关键观察是：配对条件 <span class="arithmatex">\((t_i + t_j) \equiv 0 \pmod{60}\)</span> 只取决于两个值各自模 60 的余数，与它们的完整大小无关。具体地，
+$$
+(t_i + t_j) \equiv 0 \pmod{60}
+\iff
+(t_i \bmod 60) + (t_j \bmod 60) \equiv 0 \pmod{60}.
+$$
+于是把每个值替换成它的余数 <span class="arithmatex">\(r = t \bmod 60\)</span> 不丢失任何信息，问题坍缩到只有 60 种取值的值域上。</p>
 <h2 id="_2">形式化<a class="headerlink" href="#_2" title="Permanent link">#</a></h2>
-<p>求 <span class="arithmatex">\(\#\{(i, j) : 0 \le i &lt; j &lt; n,\, (t_i + t_j) \bmod 60 = 0\}\)</span>。等价于在 mod 60 桶 <span class="arithmatex">\(B_r = \{i : t_i \bmod 60 = r\}\)</span> 中，求 <span class="arithmatex">\(\sum_{r=1}^{29} |B_r| \cdot |B_{60-r}| + \binom{|B_0|}{2} + \binom{|B_{30}|}{2}\)</span>。</p>
+<p>设 <span class="arithmatex">\(r_i = t_i \bmod 60 \in \{0, 1, \dots, 59\}\)</span>，把下标按余数分桶：
+$$
+B_r = {\, i : t_i \bmod 60 = r \,}, \qquad r = 0, 1, \dots, 59.
+$$</p>
+<p>由上一节的等价式，下标 <span class="arithmatex">\(i, j\)</span> 能配对当且仅当 <span class="arithmatex">\(r_i + r_j \equiv 0 \pmod{60}\)</span>，即 <span class="arithmatex">\(r_j \equiv -r_i \pmod{60}\)</span>。给定 <span class="arithmatex">\(r\)</span>，与之互补的余数是
+$$
+\operatorname{comp}(r) = (60 - r) \bmod 60,
+$$
+其中外层 <span class="arithmatex">\(\bmod 60\)</span> 把 <span class="arithmatex">\(r = 0\)</span> 的互补从 <span class="arithmatex">\(60\)</span> 折回 <span class="arithmatex">\(0\)</span>。</p>
+<p>互补关系把 60 个余数配成对，但有两类要分开数：</p>
+<ul>
+<li><strong>自互补</strong>（<span class="arithmatex">\(\operatorname{comp}(r) = r\)</span>）：解 <span class="arithmatex">\(2r \equiv 0 \pmod{60}\)</span> 得 <span class="arithmatex">\(r = 0\)</span> 与 <span class="arithmatex">\(r = 30\)</span>。同一桶内任取两个下标即成一对，共 <span class="arithmatex">\(\binom{|B_r|}{2}\)</span> 对。</li>
+<li><strong>异桶互补</strong>（<span class="arithmatex">\(r \in \{1, \dots, 29\}\)</span>，配 <span class="arithmatex">\(60 - r \in \{31, \dots, 59\}\)</span>）：两桶各取一个下标即成一对，共 <span class="arithmatex">\(|B_r| \cdot |B_{60-r}|\)</span> 对。</li>
+</ul>
+<p>让 <span class="arithmatex">\(r\)</span> 跑遍 <span class="arithmatex">\(1\)</span> 到 <span class="arithmatex">\(29\)</span> 恰好不重不漏地覆盖所有异桶对（<span class="arithmatex">\(31\)</span> 到 <span class="arithmatex">\(59\)</span> 作为 <span class="arithmatex">\(60-r\)</span> 被带到）。于是</p>
+<div class="arithmatex">\[
+\#\{(i,j): i&lt;j,\ (t_i+t_j)\bmod 60 = 0\}
+= \sum_{r=1}^{29} |B_r|\,|B_{60-r}| + \binom{|B_0|}{2} + \binom{|B_{30}|}{2}.
+\]</div>
 <h2 id="_3">数据结构 / 想法<a class="headerlink" href="#_3" title="Permanent link">#</a></h2>
-<p><strong>一遍扫描</strong>：边扫边累计，避免后处理：
+<p>形式化给出的求和直接对应一个<strong>两遍法</strong>：第一遍扫描建桶得到所有 <span class="arithmatex">\(|B_r|\)</span>，第二遍按上式累加。但其实不必先把桶建满——配对计数可以与建桶融合成<strong>一遍扫描</strong>。</p>
+<p><strong>不变量</strong>：处理到第 <span class="arithmatex">\(j\)</span> 个元素、即将查询时，<code>cnt[r]</code> 恰等于此前已处理元素中余数为 <span class="arithmatex">\(r\)</span> 的个数。</p>
+<p>这个不变量正是一遍法正确的理由。当 <span class="arithmatex">\(t_j\)</span> 到来时，它的余数是 <span class="arithmatex">\(r_j\)</span>，需要的互补余数是 <span class="arithmatex">\(\operatorname{comp}(r_j)\)</span>。此刻 <code>cnt[comp(r_j)]</code> 正是满足 <span class="arithmatex">\(i &lt; j\)</span> 且 <span class="arithmatex">\(r_i = \operatorname{comp}(r_j)\)</span> 的下标个数——每一个这样的 <span class="arithmatex">\(i\)</span> 都与 <span class="arithmatex">\(j\)</span> 恰配成一对。于是把 <code>cnt[comp(r_j)]</code> 累加进答案，再把 <span class="arithmatex">\(r_j\)</span> 计入 <code>cnt</code>，不变量得以保持。代码是这段推理的逐字转写：</p>
 <div class="language-python highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">numPairsDivisibleBy60</span><span class="p">(</span><span class="n">time</span><span class="p">):</span>
     <span class="n">cnt</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="mi">60</span>
     <span class="n">res</span> <span class="o">=</span> <span class="mi">0</span>
@@ -22482,13 +22546,8 @@
         <span class="n">res</span> <span class="o">+=</span> <span class="n">cnt</span><span class="p">[</span><span class="n">comp</span><span class="p">]</span>
         <span class="n">cnt</span><span class="p">[</span><span class="n">r</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
     <span class="k">return</span> <span class="n">res</span>
-</code></pre></div></p>
-<p><strong>不变量</strong>：循环开始时 <code>cnt[r]</code> = 已处理元素中模 60 为 <span class="arithmatex">\(r\)</span> 的数量。新元素 <span class="arithmatex">\(t\)</span> 与之前每个 mod 互补的元素都恰好配成一对。</p>
-<p><strong>两遍法</strong>（先建桶再配对）：
-- <span class="arithmatex">\(r = 0\)</span> 和 <span class="arithmatex">\(r = 30\)</span> 自配：<span class="arithmatex">\(\binom{|B_r|}{2}\)</span>。
-- 其余 <span class="arithmatex">\(r \in [1, 29]\)</span> 与 <span class="arithmatex">\(60-r\)</span> 配：<span class="arithmatex">\(|B_r| \cdot |B_{60-r}|\)</span>。
-- 加总即可。</p>
-<p><strong>正确性</strong>：一遍扫描法保证 <span class="arithmatex">\(i &lt; j\)</span> 自动成立（每个 <span class="arithmatex">\(t_j\)</span> 只查询此前的 cnt）。<span class="arithmatex">\(60-r \bmod 60\)</span> 在 <span class="arithmatex">\(r=0\)</span> 时返回 0，处理同桶自配也正确（先查再增）。</p>
+</code></pre></div>
+<p><strong>为何一遍法自动正确处理 <span class="arithmatex">\(i&lt;j\)</span> 与自配对</strong>：先查询、后自增，保证每个 <span class="arithmatex">\(t_j\)</span> 只看到严格在它之前的元素，故 <span class="arithmatex">\(i &lt; j\)</span> 自动成立。对自互补余数（<span class="arithmatex">\(r = 0\)</span> 或 <span class="arithmatex">\(30\)</span>），<span class="arithmatex">\(\operatorname{comp}(r) = r\)</span>，查询的是同一个桶；第 <span class="arithmatex">\(k\)</span> 个进入该桶的元素会读到此前 <span class="arithmatex">\(k-1\)</span> 个，累加 <span class="arithmatex">\(0 + 1 + \dots + (|B_r|-1) = \binom{|B_r|}{2}\)</span>，与形式化的 <span class="arithmatex">\(\binom{|B_r|}{2}\)</span> 一致。</p>
 <h2 id="_4">复杂度<a class="headerlink" href="#_4" title="Permanent link">#</a></h2>
 <ul>
 <li>Time: <span class="arithmatex">\(O(n + 60) = O(n)\)</span>。</li>
@@ -22498,13 +22557,13 @@
 <ul>
 <li><code>(60 - r) % 60</code> 对 <span class="arithmatex">\(r=0\)</span> 必须返回 0 而非 60，Python <code>%</code> 天然处理；C 中要注意。</li>
 <li>配对计数：用一遍扫描自然避免 <span class="arithmatex">\(i = j\)</span> 问题；两遍法对 <span class="arithmatex">\(r=0/30\)</span> 必须用 <span class="arithmatex">\(\binom{n}{2}\)</span> 而非 <span class="arithmatex">\(n^2\)</span>。</li>
-<li>数据类型：<span class="arithmatex">\(n^2\)</span> 可达 <span class="arithmatex">\(1.8 \cdot 10^9\)</span> 仍在 int64 内，但若用 32 位会溢。Python 不溢。</li>
+<li>数据类型：答案最大值在所有歌曲落入同一自互补桶时取得，为 <span class="arithmatex">\(\binom{n}{2} = n(n-1)/2 \approx 1.8 \times 10^9\)</span>（注意这是 <span class="arithmatex">\(\binom{n}{2}\)</span> 而非 <span class="arithmatex">\(n^2 = 3.6 \times 10^9\)</span>）。该值仍小于 <span class="arithmatex">\(\text{INT32\_MAX} \approx 2.147 \times 10^9\)</span>，单个乘积项 <span class="arithmatex">\(|B_r|\,|B_{60-r}| \le (n/2)^2 = 9 \times 10^8\)</span> 也在范围内，故 32 位有符号累加器对本题足够。Python 整数无界，不必担心。</li>
 </ul>
 <h2 id="_6">相关题目<a class="headerlink" href="#_6" title="Permanent link">#</a></h2>
 <ul>
 <li><a href="../0825_friends-of-appropriate-ages/">#0825. Friends Of Appropriate Ages</a> — 同款"小值域 + 桶计数"。</li>
 <li><code>#1512. Number of Good Pairs (off-wiki)</code> — 桶计数对的入门。</li>
-<li><code>#1. Two Sum (off-wiki)</code> — 哈希表数对的原始范式。</li>
+<li><a href="../0001_two-sum/">#1. Two Sum</a> — 哈希表数对的原始范式。</li>
 <li><code>#523. Continuous Subarray Sum (off-wiki)</code> — 前缀和 mod <span class="arithmatex">\(k\)</span> 的姊妹问题。</li>
 </ul>
 <h2 id="further-reading">Further Reading<a class="headerlink" href="#further-reading" title="Permanent link">#</a></h2>
@@ -22617,6 +22676,8 @@
         <script src="../../../js/mathjax/tex-mml-chtml.js"></script>
       
         <script src="../../../js/mermaid.min.js"></script>
+      
+        <script src="../../../js/featured.js"></script>
       
     
   </body>

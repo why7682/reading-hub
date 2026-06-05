@@ -1466,6 +1466,8 @@
       
         
       
+        
+      
     
     
     
@@ -1521,6 +1523,34 @@
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../featured/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ⭐ Featured（已验证）
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
               
             
               
@@ -1610,10 +1640,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_4" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
         
           
-          <label class="md-nav__link" for="__nav_4_4" id="__nav_4_4_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_5" id="__nav_4_5_label" tabindex="">
             
   
   
@@ -1631,8 +1661,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_4_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_4">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_5">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1915,7 +1945,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -1937,14 +1967,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_4_5" id="__nav_4_5_label" tabindex="">
+              <label class="md-nav__link " for="__nav_4_6" id="__nav_4_6_label" tabindex="">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_5">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_6">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -5321,10 +5351,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_7" checked>
         
           
-          <label class="md-nav__link" for="__nav_4_6" id="__nav_4_6_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_7" id="__nav_4_7_label" tabindex="">
             
   
   
@@ -5342,8 +5372,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_4_6">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_7_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4_7">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -22467,11 +22497,18 @@
 <h2 id="problem">Problem<a class="headerlink" href="#problem" title="Permanent link">#</a></h2>
 <p>等长字符串数组 <code>strs</code> 排成网格。统计需删除多少列，使保留的列在自上而下方向<strong>字典升序</strong>（实际上题目只问需要删除的列数 = 不升序的列数）。<span class="arithmatex">\(1 \le n \le 100\)</span>，<span class="arithmatex">\(1 \le |\text{strs}[i]| \le 1000\)</span>。</p>
 <h2 id="background">背景 (Background)<a class="headerlink" href="#background" title="Permanent link">#</a></h2>
-<p>本题为基础矩阵遍历，无特殊学科背景。可作为列扫描 / column-major 访问模式的最小例。</p>
+<p>把 <code>strs</code> 看成一个 <span class="arithmatex">\(n\)</span> 行、<span class="arithmatex">\(L\)</span> 列的字符网格：<code>strs[i]</code> 是第 <span class="arithmatex">\(i\)</span> 行，<code>strs[i][j]</code> 是第 <span class="arithmatex">\(i\)</span> 行第 <span class="arithmatex">\(j\)</span> 列的字符。删除一列就是抹掉所有行在该位置的字符。题目要求保留的每一列自上而下不降，于是要删的列恰是那些<strong>存在某对上下相邻字符逆序</strong>的列。</p>
+<p>每一列的判定彼此独立——列 <span class="arithmatex">\(j\)</span> 是否合格只取决于它自己那一竖排字符，与其它列无关。因此整道题的结构是：对 <span class="arithmatex">\(L\)</span> 个独立的列各做一次"是否单调不降"的判定，再数有多少列不合格。这一独立性是后面所有推导的起点。</p>
 <h2 id="formulation">形式化 (Formulation)<a class="headerlink" href="#formulation" title="Permanent link">#</a></h2>
-<p>设网格高 <span class="arithmatex">\(n\)</span> 宽 <span class="arithmatex">\(L\)</span>。统计 <span class="arithmatex">\(|\{j : \exists i,\ \text{strs}[i][j] &gt; \text{strs}[i+1][j]\}|\)</span>。</p>
+<p><strong>直觉</strong>：固定一列 <span class="arithmatex">\(j\)</span>，从上往下读出 <span class="arithmatex">\(\text{strs}[0][j], \text{strs}[1][j], \dots, \text{strs}[n-1][j]\)</span>。只要其中有<strong>任意一对</strong>上下相邻字符满足上面的比下面的大，这一列就"坏"了，必须删除；数有多少坏列即可。注意"存在一对逆序"是个<strong>存在量词</strong>——一处违反就足以判坏，无需看完整列。</p>
+<p><strong>形式化</strong>：设网格高 <span class="arithmatex">\(n\)</span> 宽 <span class="arithmatex">\(L\)</span>。称列 <span class="arithmatex">\(j\)</span> 为坏列当且仅当 <span class="arithmatex">\(\exists i \in [0, n-1)\)</span> 使 <span class="arithmatex">\(\text{strs}[i][j] &gt; \text{strs}[i+1][j]\)</span>。答案是坏列的个数</p>
+<div class="arithmatex">\[\bigl|\{\, j \in [0, L) : \exists\, i,\ \text{strs}[i][j] &gt; \text{strs}[i+1][j] \,\}\bigr|.\]</div>
+<p>这个集合的结构直接规定了求解的骨架，下一节据此展开：外层枚举被计数的对象 <span class="arithmatex">\(j\)</span>，内层见证存在量词 <span class="arithmatex">\(\exists i\)</span>。</p>
 <h2 id="approach">数据结构 / 想法 (Approach)<a class="headerlink" href="#approach" title="Permanent link">#</a></h2>
-<p>对每列扫一遍判断升序性。早 break 加速。</p>
+<p><strong>先看最朴素的尝试。</strong> 既然 <code>strs[i]</code> 就是第 <span class="arithmatex">\(i\)</span> 行，最自然的写法是按行遍历：外层 <code>for i</code>，内层 <code>for j</code>，逐字符比较 <code>strs[i][j]</code> 与 <code>strs[i-1][j]</code>。问题立刻浮现——我们要数的是<strong>列</strong>，而一列是否坏取决于它跨越所有行的那一竖排。按行扫到第 <span class="arithmatex">\(i\)</span> 行第 <span class="arithmatex">\(j\)</span> 列时，只看到了该列的一部分；要判定列 <span class="arithmatex">\(j\)</span> 是否坏，必须等所有行都扫完。于是行优先遍历得为每一列单独维护"是否已发现逆序"的状态，把简单计数搅成了状态管理。</p>
+<p><strong>问题出在循环嵌套的顺序与计数对象不一致。</strong> 我们计数的单位是列，那就让外层直接枚举列 <span class="arithmatex">\(j\)</span>，把整列的判定收拢到一次内层扫描里。这正是形式化里集合 <span class="arithmatex">\(\{j : \dots\}\)</span> 的写照：外层 <code>for j</code> 遍历被计数的定义域 <span class="arithmatex">\([0, L)\)</span>，内层 <code>for i</code> 见证存在量词 <span class="arithmatex">\(\exists i\)</span>。</p>
+<p><strong>为何一发现逆序就 <code>break</code>。</strong> 存在量词只要一个见证者：列 <span class="arithmatex">\(j\)</span> 一旦出现某对 <span class="arithmatex">\(\text{strs}[i][j] &lt; \text{strs}[i-1][j]\)</span>，它已确定为坏列，对答案的贡献恰好 <span class="arithmatex">\(+1\)</span>。继续扫同一列只可能撞见更多逆序对，而坏列的计数单位是<strong>列</strong>不是<strong>逆序对</strong>——同列若有 <span class="arithmatex">\(k\)</span> 个逆序对，不 <code>break</code> 就会多加 <span class="arithmatex">\(k-1\)</span>。<code>break</code> 不是性能修饰，而是存在量词"短路"语义的直接落实：见证一处即停。</p>
+<p>据此，三处设计——外层枚举 <span class="arithmatex">\(j\)</span>、内层见证 <span class="arithmatex">\(\exists i\)</span>、首个见证即 <code>break</code>——逐一对应形式化的三个成分：</p>
 <div class="language-python highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">Solution</span><span class="p">:</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">minDeletionSize</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">strs</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
         <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">strs</span><span class="p">);</span> <span class="n">L</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">strs</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
@@ -22483,10 +22520,10 @@
                     <span class="k">break</span>
         <span class="k">return</span> <span class="n">cnt</span>
 </code></pre></div>
-<p>样例：
-- <code>["cba","daf","ghi"]</code>: col 0 = c&lt;d&lt;g 升; col 1 = b&lt;a 降，cnt=1; col 2 = a&lt;f&lt;i 升. 答 1。✓
+<p>先按列追一遍样例，确认访问模式与计数单位：
+- <code>["cba","daf","ghi"]</code>: col 0 = c&lt;d<g 升; col 1 = b 然后 a，b>a 逆序，<code>break</code>，cnt=1; col 2 = a&lt;f&lt;i 升。答 1。✓
 - <code>["a","b"]</code>: 单列 a&lt;b 升, 答 0。✓
-- <code>["zyx","wvu","tsr"]</code>: 全降, cnt=3。✓</p>
+- <code>["zyx","wvu","tsr"]</code>: 三列全降，各贡献 1，cnt=3。✓</p>
 <h2 id="complexity">复杂度 (Complexity)<a class="headerlink" href="#complexity" title="Permanent link">#</a></h2>
 <ul>
 <li>Time: <span class="arithmatex">\(O(n \cdot L)\)</span></li>
@@ -22494,8 +22531,8 @@
 </ul>
 <h2 id="pitfalls">陷阱 (Pitfalls)<a class="headerlink" href="#pitfalls" title="Permanent link">#</a></h2>
 <ul>
-<li>不要在判定到一处不升序后继续累加同列（用 break）；否则 cnt 会偏大。</li>
-<li>用字符串字典序即字符 ASCII 比较，Python 直接 <code>&lt;</code> 即可。</li>
+<li>漏掉 <code>break</code> 会把计数单位从"列"错成"逆序对"：同一列出现多处逆序时 cnt 偏大（至多多算 <span class="arithmatex">\(n-1\)</span>）。这一点的推导已并入 Approach，因为它是算法逻辑的一部分，而非外加的注意事项。</li>
+<li>这里的"字典升序"逐位比较的是<strong>单个字符</strong>，Python 对单字符 <code>&lt;</code> 即按码点（小写字母即 ASCII）比较，直接 <code>&lt;</code> 即可；不要误用为多字符整行的字典序（那是 #955 的判定方式）。</li>
 </ul>
 <h2 id="related">相关题目 (Related)<a class="headerlink" href="#related" title="Permanent link">#</a></h2>
 <ul>
@@ -22608,6 +22645,8 @@
         <script src="../../../js/mathjax/tex-mml-chtml.js"></script>
       
         <script src="../../../js/mermaid.min.js"></script>
+      
+        <script src="../../../js/featured.js"></script>
       
     
   </body>

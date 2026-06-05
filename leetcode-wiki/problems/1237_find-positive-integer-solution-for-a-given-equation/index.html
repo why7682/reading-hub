@@ -1466,6 +1466,8 @@
       
         
       
+        
+      
     
     
     
@@ -1521,6 +1523,34 @@
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../featured/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ⭐ Featured（已验证）
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
               
             
               
@@ -1610,10 +1640,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_4" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
         
           
-          <label class="md-nav__link" for="__nav_4_4" id="__nav_4_4_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_5" id="__nav_4_5_label" tabindex="">
             
   
   
@@ -1631,8 +1661,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_4_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_4">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_5">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1915,7 +1945,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -1937,14 +1967,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_4_5" id="__nav_4_5_label" tabindex="">
+              <label class="md-nav__link " for="__nav_4_6" id="__nav_4_6_label" tabindex="">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_5">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_6">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -5321,10 +5351,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_7" checked>
         
           
-          <label class="md-nav__link" for="__nav_4_6" id="__nav_4_6_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_7" id="__nav_4_7_label" tabindex="">
             
   
   
@@ -5342,8 +5372,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_4_6">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_7_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4_7">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -22467,19 +22497,41 @@
 <h2 id="problem">Problem<a class="headerlink" href="#problem" title="Permanent link">#</a></h2>
 <p>给隐含的 <span class="arithmatex">\(f(x, y)\)</span>（对 <span class="arithmatex">\(x, y\)</span> 均<strong>严格单调递增</strong>）与目标 <span class="arithmatex">\(z\)</span>。在 <span class="arithmatex">\(1 \leq x, y \leq 1000\)</span> 中找所有满足 <span class="arithmatex">\(f(x, y) = z\)</span> 的整数对。<span class="arithmatex">\(1 \leq z \leq 100\)</span>。</p>
 <h2 id="background">背景 (Background)<a class="headerlink" href="#background" title="Permanent link">#</a></h2>
-<p>经典「<strong>单调矩阵中查找</strong>」（Young tableau / saddleback search）题。在 <span class="arithmatex">\(f(x, y)\)</span> 关于两维都单调时，二维查找可在 <span class="arithmatex">\(O(n + m)\)</span> 完成，远优于 <span class="arithmatex">\(O(nm)\)</span> 暴力。Knuth (TAOCP Vol. 3) 在排序/搜索章讨论过此结构；同思路出现在 #74 Search 2D Matrix II、#378 Kth Smallest in Sorted Matrix。</p>
+<p>最朴素的做法是枚举所有 <span class="arithmatex">\((x, y)\)</span> 并各调用一次 <span class="arithmatex">\(f\)</span>：</p>
+<div class="language-python highlight"><pre><span></span><code><span class="n">ans</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">N</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">y</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">N</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">customfunction</span><span class="o">.</span><span class="n">f</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span> <span class="o">==</span> <span class="n">z</span><span class="p">:</span>
+            <span class="n">ans</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">])</span>
+</code></pre></div>
+<p>这需要 <span class="arithmatex">\(N^2 = 10^6\)</span> 次 <span class="arithmatex">\(f\)</span> 调用。本题是交互题——<span class="arithmatex">\(f\)</span> 的内部实现对我们隐藏，只能通过调用接口探测，调用次数是真正的代价。<span class="arithmatex">\(10^6\)</span> 次探测既慢，也在交互题的调用预算下不可接受。</p>
+<p>朴素枚举之所以浪费，是因为它对每个格点都重新提问，完全没有利用题目给出的唯一结构：<span class="arithmatex">\(f\)</span> 对两维都<strong>严格单调递增</strong>。一次调用 <span class="arithmatex">\(f(x, y)\)</span> 返回的不只是这一个格点的信息，它同时约束了同行、同列其余所有格点的取值。下文先把这一观察形式化，再从中推导出只需 <span class="arithmatex">\(O(N)\)</span> 次调用的算法。这一结构在 #74 Search 2D Matrix II、#378 Kth Smallest in Sorted Matrix 中同样出现。</p>
 <h2 id="formulation">形式化 (Formulation)<a class="headerlink" href="#formulation" title="Permanent link">#</a></h2>
-<p>设 <span class="arithmatex">\(f : [1, N]^2 \to \mathbb{Z}\)</span> 满足
-<span class="arithmatex">\(f(x, y) &lt; f(x+1, y), \quad f(x, y) &lt; f(x, y+1)\)</span>。
-求 <span class="arithmatex">\(\{(x, y) : f(x, y) = z\}\)</span>。</p>
-<h2 id="approach">数据结构 / 想法 (Approach)<a class="headerlink" href="#approach" title="Permanent link">#</a></h2>
-<p><strong>双指针 / 抗对角扫描</strong>（"saddleback search"）：从右上角 <span class="arithmatex">\((x=1, y=N)\)</span> 出发：</p>
+<p>设 <span class="arithmatex">\(N = 1000\)</span>，<span class="arithmatex">\(f : [1, N]^2 \to \mathbb{Z}\)</span> 满足</p>
+<div class="arithmatex">\[f(x, y) &lt; f(x+1, y), \quad f(x, y) &lt; f(x, y+1). \tag{1}\]</div>
+<p>求解集 <span class="arithmatex">\(S = \{(x, y) \in [1, N]^2 : f(x, y) = z\}\)</span>。</p>
+<p>约束 <span class="arithmatex">\((1)\)</span> 即「沿 <span class="arithmatex">\(x\)</span> 增大与沿 <span class="arithmatex">\(y\)</span> 增大，<span class="arithmatex">\(f\)</span> 都严格变大」。它的直接推论是：知道单个格点 <span class="arithmatex">\(f(x, y)\)</span> 与 <span class="arithmatex">\(z\)</span> 的大小关系，就能一次性判定整行或整列是否可能含解。</p>
+<p><strong>消去引理</strong>。固定一个格点 <span class="arithmatex">\((x, y)\)</span>：</p>
 <ul>
-<li>若 <span class="arithmatex">\(f(x, y) &gt; z\)</span>：<span class="arithmatex">\(y \mathrel{-}{=} 1\)</span>（减小 <span class="arithmatex">\(y\)</span> 让值变小）。</li>
-<li>若 <span class="arithmatex">\(f(x, y) &lt; z\)</span>：<span class="arithmatex">\(x \mathrel{+}{=} 1\)</span>（增大 <span class="arithmatex">\(x\)</span> 让值变大）。</li>
-<li>若 <span class="arithmatex">\(= z\)</span>：记录 <span class="arithmatex">\((x, y)\)</span>，然后两指针都移（同一行/列不能再有相等值，因严格单调）。</li>
+<li>若 <span class="arithmatex">\(f(x, y) &gt; z\)</span>，则对所有 <span class="arithmatex">\(y' \geq y\)</span> 有 <span class="arithmatex">\(f(x, y') \geq f(x, y) &gt; z\)</span>。故第 <span class="arithmatex">\(x\)</span> 行中 <span class="arithmatex">\(y\)</span> 及其右侧（更大的 <span class="arithmatex">\(y\)</span>）全部无解。</li>
+<li>若 <span class="arithmatex">\(f(x, y) &lt; z\)</span>，则对所有 <span class="arithmatex">\(x' \leq x\)</span> 有 <span class="arithmatex">\(f(x', y) \leq f(x, y) &lt; z\)</span>。故第 <span class="arithmatex">\(y\)</span> 列中 <span class="arithmatex">\(x\)</span> 及其上方（更小的 <span class="arithmatex">\(x\)</span>）全部无解。</li>
 </ul>
-<p><strong>关键不变量</strong>：在每一步，我们已排除掉 <span class="arithmatex">\(f &gt; z\)</span> 的整列（向左移 <span class="arithmatex">\(y\)</span> 时）或 <span class="arithmatex">\(f &lt; z\)</span> 的整行（向右移 <span class="arithmatex">\(x\)</span> 时），不漏解。</p>
+<p>两条都是 <span class="arithmatex">\((1)\)</span> 的单调性的直接展开：函数沿一个方向单调，则该方向上的整段取值与 <span class="arithmatex">\(z\)</span> 的大小关系被一个端点的比较锁定。</p>
+<h2 id="approach">数据结构 / 想法 (Approach)<a class="headerlink" href="#approach" title="Permanent link">#</a></h2>
+<p>消去引理告诉我们：一次比较可以排除一整行的一段或一整列的一段，但前提是要选对探测点，使「被排除的那一段」恰好是一个完整的行或列。</p>
+<p><strong>直觉</strong>。若从某个角点出发，让两条排除规则各自作用在一个完整的维度上，则每次比较都能干净地丢掉一整行或一整列，且不丢任何解。考虑右上角 <span class="arithmatex">\((x, y) = (1, N)\)</span>：</p>
+<ul>
+<li>此处 <span class="arithmatex">\(y\)</span> 已取最大值。若 <span class="arithmatex">\(f(1, N) &gt; z\)</span>，由消去引理第一条，第 <span class="arithmatex">\(1\)</span> 行从 <span class="arithmatex">\(y = N\)</span> 起右侧无解——但 <span class="arithmatex">\(y = N\)</span> 已是上界，等价于「第 <span class="arithmatex">\(1\)</span> 行无解」，可令 <span class="arithmatex">\(y\)</span> 减一移到 <span class="arithmatex">\((1, N-1)\)</span>，把第 <span class="arithmatex">\(1\)</span> 行彻底排除。</li>
+<li>此处 <span class="arithmatex">\(x\)</span> 已取最小值。若 <span class="arithmatex">\(f(1, N) &lt; z\)</span>，由消去引理第二条，第 <span class="arithmatex">\(N\)</span> 列从 <span class="arithmatex">\(x = 1\)</span> 起上方无解——但 <span class="arithmatex">\(x = 1\)</span> 已是下界，等价于「第 <span class="arithmatex">\(N\)</span> 列无解」，可令 <span class="arithmatex">\(x\)</span> 加一移到 <span class="arithmatex">\((2, N)\)</span>，把第 <span class="arithmatex">\(N\)</span> 列彻底排除。</li>
+</ul>
+<p>关键在于：在右上角，每条规则要丢弃的「一段」恰好填满它所在的整行或整列，没有残留。换成 <span class="arithmatex">\((1, 1)\)</span> 起点则不然——那里 <span class="arithmatex">\(f\)</span> 取最小，比较结果无法对应到一个完整维度的排除，不变量随即失效。</p>
+<p><strong>不变量</strong>。维护指针 <span class="arithmatex">\((x, y)\)</span>，始终保证：所有 <span class="arithmatex">\(x' &lt; x\)</span> 的行、所有 <span class="arithmatex">\(y' &gt; y\)</span> 的列都已被排除，其中不含解。初始 <span class="arithmatex">\((1, N)\)</span> 平凡满足（无更小的行、无更大的列）。每步：</p>
+<ul>
+<li>若 <span class="arithmatex">\(f(x, y) &gt; z\)</span>：第 <span class="arithmatex">\(x\)</span> 行右起（含当前列）无解，且左侧诸列尚未访问；由于 <span class="arithmatex">\(y\)</span> 是当前未排除列中最大者，第 <span class="arithmatex">\(x\)</span> 行可整体排除，令 <span class="arithmatex">\(y \mathrel{-}{=} 1\)</span>。</li>
+<li>若 <span class="arithmatex">\(f(x, y) &lt; z\)</span>：第 <span class="arithmatex">\(y\)</span> 列上起（含当前行）无解；由于 <span class="arithmatex">\(x\)</span> 是当前未排除行中最小者，第 <span class="arithmatex">\(y\)</span> 列可整体排除，令 <span class="arithmatex">\(x \mathrel{+}{=} 1\)</span>。</li>
+<li>若 <span class="arithmatex">\(f(x, y) = z\)</span>：记录 <span class="arithmatex">\((x, y) \in S\)</span>。由严格单调 <span class="arithmatex">\((1)\)</span>，第 <span class="arithmatex">\(x\)</span> 行、第 <span class="arithmatex">\(y\)</span> 列再无其他解（同行同列任意其他格点的 <span class="arithmatex">\(f\)</span> 值都严格异于 <span class="arithmatex">\(z\)</span>），故两指针可同时移动，令 <span class="arithmatex">\(x \mathrel{+}{=} 1\)</span>、<span class="arithmatex">\(y \mathrel{-}{=} 1\)</span>。</li>
+</ul>
+<p>每一步都恰好排除一整行或一整列，所排除处经引理保证无解，故不变量保持、且不漏解。指针走到 <span class="arithmatex">\(x &gt; N\)</span> 或 <span class="arithmatex">\(y &lt; 1\)</span> 时所有行列均已处理，终止。</p>
 <div class="language-python highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">Solution</span><span class="p">:</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">findSolution</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">customfunction</span><span class="p">,</span> <span class="n">z</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]]:</span>
         <span class="n">N</span> <span class="o">=</span> <span class="mi">1000</span>
@@ -22497,22 +22549,27 @@
                 <span class="n">y</span> <span class="o">-=</span> <span class="mi">1</span>
         <span class="k">return</span> <span class="n">ans</span>
 </code></pre></div>
-<p><strong>手动 trace 样例 1</strong>：<span class="arithmatex">\(f(x,y) = x+y\)</span>, <span class="arithmatex">\(z=5\)</span>. 从 (1, 1000) 开始。
-- <span class="arithmatex">\(f=1001 &gt; 5\)</span>，y→999... 一路 y 减至 4. f=1+4=5 = z. 记录 (1,4). x=2, y=3.
-- f=5. 记录 (2,3). x=3, y=2.
-- f=5. 记录 (3,2). x=4, y=1.
-- f=5. 记录 (4,1). x=5, y=0 → 退出.
-返回 [[1,4],[2,3],[3,2],[4,1]]. ✓</p>
-<h2 id="complexity">复杂度 (Complexity)<a class="headerlink" href="#complexity" title="Permanent link">#</a></h2>
+<p><strong>手动 trace 样例 1</strong>：<span class="arithmatex">\(f(x,y) = x+y\)</span>, <span class="arithmatex">\(z=5\)</span>. 从 <span class="arithmatex">\((1, 1000)\)</span> 开始。</p>
 <ul>
-<li>Time: <span class="arithmatex">\(O(N)\)</span> 调用 <span class="arithmatex">\(f\)</span>（最多 <span class="arithmatex">\(x\)</span> 增 <span class="arithmatex">\(N\)</span> 步 + <span class="arithmatex">\(y\)</span> 减 <span class="arithmatex">\(N\)</span> 步）。</li>
-<li>Space: <span class="arithmatex">\(O(K)\)</span> 输出，<span class="arithmatex">\(K\)</span> 为解数。</li>
+<li><span class="arithmatex">\(f = 1001 &gt; 5\)</span>，<span class="arithmatex">\(y\)</span> 逐步减小……一路 <span class="arithmatex">\(y\)</span> 减至 <span class="arithmatex">\(4\)</span>，此时 <span class="arithmatex">\(f = 1+4 = 5 = z\)</span>，记录 <span class="arithmatex">\((1,4)\)</span>，<span class="arithmatex">\(x=2,\ y=3\)</span>。</li>
+<li><span class="arithmatex">\(f = 5\)</span>，记录 <span class="arithmatex">\((2,3)\)</span>，<span class="arithmatex">\(x=3,\ y=2\)</span>。</li>
+<li><span class="arithmatex">\(f = 5\)</span>，记录 <span class="arithmatex">\((3,2)\)</span>，<span class="arithmatex">\(x=4,\ y=1\)</span>。</li>
+<li><span class="arithmatex">\(f = 5\)</span>，记录 <span class="arithmatex">\((4,1)\)</span>，<span class="arithmatex">\(x=5,\ y=0\)</span>，退出。</li>
 </ul>
+<p>返回 <span class="arithmatex">\([[1,4],[2,3],[3,2],[4,1]]\)</span>. ✓</p>
+<p>这一模式——从单调矩阵的角点出发，每次比较排除一行或一列——在文献中常称为 saddleback search（鞍点搜索）。</p>
+<h2 id="complexity">复杂度 (Complexity)<a class="headerlink" href="#complexity" title="Permanent link">#</a></h2>
+<p>每次迭代要么使 <span class="arithmatex">\(x\)</span> 增一，要么使 <span class="arithmatex">\(y\)</span> 减一（相等时两者同时发生）。<span class="arithmatex">\(x\)</span> 至多从 <span class="arithmatex">\(1\)</span> 增到 <span class="arithmatex">\(N+1\)</span>（<span class="arithmatex">\(N\)</span> 步），<span class="arithmatex">\(y\)</span> 至多从 <span class="arithmatex">\(N\)</span> 减到 <span class="arithmatex">\(0\)</span>（<span class="arithmatex">\(N\)</span> 步），故循环至多 <span class="arithmatex">\(2N - 1\)</span> 次，每次一次 <span class="arithmatex">\(f\)</span> 调用。</p>
+<ul>
+<li>Time: <span class="arithmatex">\(O(N)\)</span> 次 <span class="arithmatex">\(f\)</span> 调用（<span class="arithmatex">\(N = 1000\)</span>，最坏 <span class="arithmatex">\(2N - 1 = 1999\)</span> 次）。</li>
+<li>Space: <span class="arithmatex">\(O(K)\)</span> 输出，<span class="arithmatex">\(K\)</span> 为解数；除输出外辅助空间 <span class="arithmatex">\(O(1)\)</span>。</li>
+</ul>
+<p>相对朴素枚举的 <span class="arithmatex">\(O(N^2) = 10^6\)</span> 次调用，消去引理把每次比较的「信息量」从一个格点提升到一整行或一整列，从而把调用数从平方降到线性。</p>
 <h2 id="pitfalls">陷阱 (Pitfalls)<a class="headerlink" href="#pitfalls" title="Permanent link">#</a></h2>
 <ul>
-<li>暴力 <span class="arithmatex">\(O(N^2)\)</span> 调用 <span class="arithmatex">\(f\)</span> 是 <span class="arithmatex">\(10^6\)</span> 次，可能超时（题面强调交互题，调用次数受限）。</li>
-<li>严格单调是关键：若仅"非严格"则需要等号时维持指针之一不动。本题保证严格。</li>
-<li>别枚举 <span class="arithmatex">\((x, y)\)</span> 在错误起点（如 <span class="arithmatex">\((1,1)\)</span>）——只有从角点出发才能保持不变量。</li>
+<li>朴素枚举需 <span class="arithmatex">\(O(N^2) = 10^6\)</span> 次 <span class="arithmatex">\(f\)</span> 调用，在交互题受限的调用预算下可能超时——这正是引出消去引理的动机，而非事后补充的警告。</li>
+<li>起点必须是角点。不变量依赖「当前列是未排除列中的最大者、当前行是未排除行中的最小者」，只有右上角（或对称地左下角）满足这一边界；从 <span class="arithmatex">\((1,1)\)</span> 出发时比较结果无法对应到完整维度的排除，不变量立即失效。</li>
+<li>严格单调 <span class="arithmatex">\((1)\)</span> 是相等时同移两指针的前提：它保证同行同列不再有第二个解。若仅「非严格」单调，相等时须保留其中一个指针不动以免漏掉同行/同列的相邻解。本题保证严格。</li>
 </ul>
 <h2 id="related">相关题目 (Related)<a class="headerlink" href="#related" title="Permanent link">#</a></h2>
 <ul>
@@ -22629,6 +22686,8 @@
         <script src="../../../js/mathjax/tex-mml-chtml.js"></script>
       
         <script src="../../../js/mermaid.min.js"></script>
+      
+        <script src="../../../js/featured.js"></script>
       
     
   </body>

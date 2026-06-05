@@ -1466,6 +1466,8 @@
       
         
       
+        
+      
     
     
     
@@ -1521,6 +1523,34 @@
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../featured/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ⭐ Featured（已验证）
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
               
             
               
@@ -1610,10 +1640,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_4" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
         
           
-          <label class="md-nav__link" for="__nav_4_4" id="__nav_4_4_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_5" id="__nav_4_5_label" tabindex="">
             
   
   
@@ -1631,8 +1661,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_4_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_4">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_5">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1915,7 +1945,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -1937,14 +1967,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_4_5" id="__nav_4_5_label" tabindex="">
+              <label class="md-nav__link " for="__nav_4_6" id="__nav_4_6_label" tabindex="">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_5">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_6">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -5321,10 +5351,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_7" checked>
         
           
-          <label class="md-nav__link" for="__nav_4_6" id="__nav_4_6_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_7" id="__nav_4_7_label" tabindex="">
             
   
   
@@ -5342,8 +5372,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_4_6">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_7_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4_7">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -22467,12 +22497,36 @@
 <h2 id="problem">Problem<a class="headerlink" href="#problem" title="Permanent link">#</a></h2>
 <p>给定 <code>Users(user_id, user_name)</code> 与 <code>Register(contest_id, user_id)</code>。求每场比赛参与用户占总用户的百分比（保留两位小数），按百分比降序、<code>contest_id</code> 升序排列。</p>
 <h2 id="background">背景 (Background)<a class="headerlink" href="#background" title="Permanent link">#</a></h2>
-<p>SQL <strong>GROUP BY + 子查询作为标量</strong> 的典型题。要点是把"总用户数"作为常量参与每行除法计算；DBMS 实现上等价于先一次全表 count，再 hash aggregate by contest。无特殊学科背景。</p>
+<p>这道题要求的"百分比"是一个比值：每场比赛的注册人数，除以系统中的总用户数。注意这两个数来自不同的范围——分子随比赛而变（每场各算各的注册人数），分母对所有比赛都相同（总用户数与具体哪场比赛无关）。</p>
+<p>最直接的翻译会把这两个计数都塞进同一个按比赛分组的查询里：</p>
+<div class="language-sql highlight"><pre><span></span><code><span class="c1">-- 朴素尝试（不正确）</span>
+<span class="k">SELECT</span>
+<span class="w">    </span><span class="n">contest_id</span><span class="p">,</span>
+<span class="w">    </span><span class="k">COUNT</span><span class="p">(</span><span class="n">user_id</span><span class="p">)</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="k">COUNT</span><span class="p">(</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">percentage</span>
+<span class="k">FROM</span><span class="w"> </span><span class="n">Register</span>
+<span class="k">GROUP</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">contest_id</span><span class="p">;</span>
+</code></pre></div>
+<p>它在三处失效，而每一处恰好对应最终解的一个修正动作：</p>
+<ol>
+<li><strong>分母的范围错了</strong>。<code>GROUP BY contest_id</code> 之后，<code>SELECT</code> 里的每个聚合都只作用于当前组的行。于是 <code>COUNT(*)</code> 数的是"这一场比赛的注册行数"，而不是总用户数——它和分子数的几乎是同一批行，比值恒为 1。分母需要一个不随分组变化的常量，所以它必须脱离当前 <code>GROUP BY</code> 的作用域，单独计算。</li>
+<li><strong>没有放大成百分比</strong>。比值落在 <span class="arithmatex">\([0,1]\)</span>，题目要的是百分数，需乘以 <span class="arithmatex">\(100\)</span>。</li>
+<li><strong>重复注册会高估</strong>。<code>COUNT(user_id)</code> 数的是行数，不是不同的用户数。若同一用户在同一场比赛里出现两次，他会被计两次。</li>
+</ol>
+<p>第 1 点是结构性的，决定了查询的形状；后两点是算术修正。下面把这些观察固定成一个精确的公式，再从公式逐项推回到 SQL。</p>
 <h2 id="formulation">形式化 (Formulation)<a class="headerlink" href="#formulation" title="Permanent link">#</a></h2>
-<p>设 <span class="arithmatex">\(U\)</span> 为 <code>Users</code> 行集，<span class="arithmatex">\(R\)</span> 为 <code>Register</code> 行集。对每个 <span class="arithmatex">\(c \in \pi_{\text{contest\_id}}(R)\)</span> 求：</p>
-<div class="arithmatex">\[p(c) = \mathrm{round}\!\left(\frac{|\{u : (c, u) \in R\}|}{|U|} \times 100,\; 2\right)\]</div>
-<p>按 <span class="arithmatex">\((p(c)\downarrow, c\uparrow)\)</span> 排序。</p>
+<p>直觉是：一场比赛 <span class="arithmatex">\(c\)</span> 的百分比 = 注册了 <span class="arithmatex">\(c\)</span> 的不同用户数 ÷ 总用户数 × 100，结果四舍五入到两位小数。把它写精确。</p>
+<p>设 <span class="arithmatex">\(U\)</span> 为 <code>Users</code> 的行集，<span class="arithmatex">\(R\)</span> 为 <code>Register</code> 的行集。比赛的取值范围是出现在 <span class="arithmatex">\(R\)</span> 中的所有 <code>contest_id</code>，即 <span class="arithmatex">\(\{c \mid \exists u: (c, u) \in R\}\)</span>。对其中每个 <span class="arithmatex">\(c\)</span> 定义</p>
+<div class="arithmatex">\[p(c) = \mathrm{round}\!\left(\frac{\bigl|\{u : (c, u) \in R\}\bigr|}{|U|} \times 100,\; 2\right) \tag{1}\]</div>
+<p>其中 <span class="arithmatex">\(\mathrm{round}(\cdot, 2)\)</span> 表示四舍五入到两位小数。最终结果按 <span class="arithmatex">\((p(c)\downarrow, c\uparrow)\)</span> 排序。</p>
+<p>公式 (1) 把背景里的三个修正都钉死了：分子 <span class="arithmatex">\(\bigl|\{u : (c, u) \in R\}\bigr|\)</span> 是一个<strong>集合</strong>的基数，天然去重；分母 <span class="arithmatex">\(|U|\)</span> 是与 <span class="arithmatex">\(c\)</span> 无关的常量；<span class="arithmatex">\(\times 100\)</span> 完成放大。剩下的工作只是把每个符号翻译成一个 SQL 子句。</p>
 <h2 id="approach">数据结构 / 想法 (Approach)<a class="headerlink" href="#approach" title="Permanent link">#</a></h2>
+<p>逐项把公式 (1) 映射到 SQL：</p>
+<ul>
+<li>分子 <span class="arithmatex">\(\bigl|\{u : (c, u) \in R\}\bigr|\)</span>（注册某场比赛的不同用户数）→ <code>COUNT(DISTINCT user_id)</code>，在按 <code>contest_id</code> 分组后对每组计算；</li>
+<li>分母 <span class="arithmatex">\(|U|\)</span>（总用户数，常量）→ 标量子查询 <code>(SELECT COUNT(*) FROM Users)</code>，它独立于 <code>GROUP BY</code> 的作用域，整条查询只求值一次；</li>
+<li>比赛的取值范围 <span class="arithmatex">\(\{c \mid \exists u: (c,u)\in R\}\)</span> → <code>FROM Register GROUP BY contest_id</code>；</li>
+<li><span class="arithmatex">\(\times 100\)</span> 与 <span class="arithmatex">\(\mathrm{round}(\cdot, 2)\)</span> → <code>ROUND(... * 100.0, 2)</code>。</li>
+</ul>
 <div class="language-sql highlight"><pre><span></span><code><span class="k">SELECT</span>
 <span class="w">    </span><span class="n">contest_id</span><span class="p">,</span>
 <span class="w">    </span><span class="n">ROUND</span><span class="p">(</span><span class="k">COUNT</span><span class="p">(</span><span class="k">DISTINCT</span><span class="w"> </span><span class="n">user_id</span><span class="p">)</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">100</span><span class="p">.</span><span class="mi">0</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="p">(</span><span class="k">SELECT</span><span class="w"> </span><span class="k">COUNT</span><span class="p">(</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">Users</span><span class="p">),</span><span class="w"> </span><span class="mi">2</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">percentage</span>
@@ -22480,19 +22534,21 @@
 <span class="k">GROUP</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">contest_id</span>
 <span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">percentage</span><span class="w"> </span><span class="k">DESC</span><span class="p">,</span><span class="w"> </span><span class="n">contest_id</span><span class="w"> </span><span class="k">ASC</span><span class="p">;</span>
 </code></pre></div>
-<p>要点：
-1. 分母用标量子查询 <code>(SELECT COUNT(*) FROM Users)</code>，每次执行只算一次。
-2. 乘 <code>100.0</code>（带小数）避免整除截断。
-3. <code>COUNT(DISTINCT user_id)</code> 容错重复注册；本题主键已保证 <code>(contest_id, user_id)</code> 唯一，理论上不需要 DISTINCT，但加上更鲁棒。</p>
+<p>三个修正落地为：</p>
+<ol>
+<li><strong>分母用标量子查询</strong>，把它移出 <code>GROUP BY</code> 的作用域，从而表达公式 (1) 中那个对所有比赛恒定的 <span class="arithmatex">\(|U|\)</span>，而非当前组的行数。</li>
+<li><strong><code>COUNT(DISTINCT user_id)</code></strong> 实现集合基数：它数的是不同的用户，而非行数。本题主键 <code>(contest_id, user_id)</code> 已保证每对至多出现一次，因此此处 <code>DISTINCT</code> 与不加它等价；保留它使查询在该约束被违反（出现重复注册）时仍与公式 (1) 一致。</li>
+<li><strong>乘 <code>100.0</code></strong> 完成 <span class="arithmatex">\(\times 100\)</span> 放大；用带小数点的 <code>100.0</code> 是为可移植性——在某些引擎里整数 <code>/</code> 整数会走整数除法语义而截断小数（MySQL 的 <code>/</code> 始终返回 DECIMAL，并不截断，但显式写浮点更稳妥）。</li>
+</ol>
 <h2 id="complexity">复杂度 (Complexity)<a class="headerlink" href="#complexity" title="Permanent link">#</a></h2>
 <ul>
-<li>Time: <span class="arithmatex">\(O(|R| + |U|)\)</span>，单次扫描 + hash aggregate。</li>
-<li>Space: <span class="arithmatex">\(O(C)\)</span>，<span class="arithmatex">\(C\)</span> 为 contest 数。</li>
+<li>Time: <span class="arithmatex">\(O(|R| + |U|)\)</span>。标量子查询对 <code>Users</code> 做一次全表 <code>COUNT</code>；主查询对 <code>Register</code> 单遍扫描并按 <code>contest_id</code> 聚合。在常见的基于哈希的聚合实现下，聚合是把行散列进以 <code>contest_id</code> 为键的桶再逐桶归约，均摊线性。</li>
+<li>Space: <span class="arithmatex">\(O(C)\)</span>，<span class="arithmatex">\(C\)</span> 为不同 <code>contest_id</code> 的个数（聚合时每个比赛一个桶）。</li>
 </ul>
 <h2 id="pitfalls">陷阱 (Pitfalls)<a class="headerlink" href="#pitfalls" title="Permanent link">#</a></h2>
 <ul>
-<li><strong>整除截断</strong>：写 <code>* 100 /</code> 而非 <code>* 100.0 /</code> 在 MySQL 早期版本可能得整数；用 <code>100.0</code> 强制浮点。</li>
-<li><strong>ROUND 默认行为</strong>：MySQL <code>ROUND</code> 是 half-away-from-zero，与 banker's rounding 不同；本题样例不会触发差异。</li>
+<li><strong>跨引擎的整数除法</strong>：在按整数语义做除法的引擎里，<code>COUNT(...) * 100 / (...)</code> 可能走整数除法而丢掉小数；显式写 <code>100.0</code> 强制浮点可移植。注意在 MySQL 中 <code>/</code> 运算符<strong>总是</strong>做 DECIMAL 除法（例如 <code>1*100/4</code> 得 <code>25.0000</code>，绝不会截成 <code>25</code>），只有 <code>DIV</code> 运算符才整除——所以这是面向其他引擎的防御性写法，而非 MySQL 自身的修正。</li>
+<li><strong>ROUND 的舍入模式</strong>：MySQL 的 <code>ROUND</code> 对精确值（DECIMAL）采用 half-away-from-zero，与 banker's rounding 不同；本题样例不含 <code>.xx5</code> 的临界情形，两种模式结果一致，差异不可观测。</li>
 </ul>
 <h2 id="related">相关题目 (Related)<a class="headerlink" href="#related" title="Permanent link">#</a></h2>
 <ul>
@@ -22502,7 +22558,7 @@
 </ul>
 <h2 id="further-reading">Further Reading<a class="headerlink" href="#further-reading" title="Permanent link">#</a></h2>
 <ul>
-<li>无推荐外部资源（题目难度不足以需要专题文献）。</li>
+<li>本题不涉及需要专题文献的技术点。</li>
 </ul>
 
 
@@ -22609,6 +22665,8 @@
         <script src="../../../js/mathjax/tex-mml-chtml.js"></script>
       
         <script src="../../../js/mermaid.min.js"></script>
+      
+        <script src="../../../js/featured.js"></script>
       
     
   </body>

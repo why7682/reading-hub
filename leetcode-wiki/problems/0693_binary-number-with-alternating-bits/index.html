@@ -1466,6 +1466,8 @@
       
         
       
+        
+      
     
     
     
@@ -1521,6 +1523,34 @@
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../featured/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ⭐ Featured（已验证）
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
               
             
               
@@ -1610,10 +1640,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_4" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
         
           
-          <label class="md-nav__link" for="__nav_4_4" id="__nav_4_4_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_5" id="__nav_4_5_label" tabindex="">
             
   
   
@@ -1631,8 +1661,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_4_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_4">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_5">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1915,7 +1945,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -1937,14 +1967,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_4_5" id="__nav_4_5_label" tabindex="">
+              <label class="md-nav__link " for="__nav_4_6" id="__nav_4_6_label" tabindex="">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_5">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_6">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -5321,10 +5351,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_7" checked>
         
           
-          <label class="md-nav__link" for="__nav_4_6" id="__nav_4_6_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_7" id="__nav_4_7_label" tabindex="">
             
   
   
@@ -5342,8 +5372,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_4_6">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_7_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4_7">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -22467,11 +22497,39 @@
 <h2 id="problem">Problem<a class="headerlink" href="#problem" title="Permanent link">#</a></h2>
 <p>给正整数 <span class="arithmatex">\(n\)</span>（<span class="arithmatex">\(\le 2^{31}-1\)</span>），判断其二进制表示是否相邻位都不同（如 5=101 是；7=111 不是）。</p>
 <h2 id="background">背景 (Background)<a class="headerlink" href="#background" title="Permanent link">#</a></h2>
-<p>"交替位"对应数学上 <span class="arithmatex">\(n\)</span> 的二进制是 <code>(10)^k</code> 或 <code>(10)^k 1</code> 形式，即等差数列 <span class="arithmatex">\(a_0 = 1, a_i = 2 a_{i-1} + 1\)</span>（全 1 数）右移一位的奇偶版。bit tricks 中的"<span class="arithmatex">\(x \oplus (x \gg 1)\)</span> 全 1"恒等式是其紧凑判据。这是 Hacker's Delight 风格 bit pattern 检测的迷你练习。</p>
+<p>问题要求检测一个整数二进制串的一种规律性：相邻两位永远相反。最直接的做法是逐位扫描，把每一对相邻位单独取出来比较。这能解出本题，但它把一个"全局一致"的条件拆成了 <span class="arithmatex">\(k-1\)</span> 次独立比较——而二进制串上"所有相邻对同时满足同一条件"恰好是位运算能一次性表达的形态。下面从逐位扫描出发，看清它的笨拙之处，再把整个相邻位比较坍缩成一条字宽内的运算。</p>
 <h2 id="formulation">形式化 (Formulation)<a class="headerlink" href="#formulation" title="Permanent link">#</a></h2>
-<p><span class="arithmatex">\(n\)</span> 的二进制 <span class="arithmatex">\(b_{k-1} b_{k-2} \dots b_0\)</span> 满足 <span class="arithmatex">\(b_i \ne b_{i+1}\)</span> for all <span class="arithmatex">\(i = 0, \dots, k-2\)</span>。</p>
+<p>交替位的含义是：二进制串严格交替，因此只要知道某一位，其后所有位都被唯一确定。把这个直觉写成约束。</p>
+<p>设 <span class="arithmatex">\(n\)</span> 的二进制为 <span class="arithmatex">\(b_{k-1} b_{k-2} \dots b_0\)</span>。"交替"即</p>
+<div class="arithmatex">\[b_i \ne b_{i+1} \quad \text{for all } i = 0, \dots, k-2.\]</div>
+<p>这是一个对<strong>所有相邻对</strong>的全称约束。注意右边没有指定 <span class="arithmatex">\(b_i\)</span> 的具体值，只约束相邻两位的关系——这正提示我们应当处理"相邻位之间的差异"，而非各位本身。</p>
 <h2 id="approach">数据结构 / 想法 (Approach)<a class="headerlink" href="#approach" title="Permanent link">#</a></h2>
-<p><strong>核心位运算技巧</strong>：令 <span class="arithmatex">\(m = n \oplus (n \gg 1)\)</span>。若 <span class="arithmatex">\(n\)</span> 交替，则相邻位都不同 → 异或后每位为 1 → <span class="arithmatex">\(m\)</span> 全 1 → <span class="arithmatex">\(m \&amp; (m + 1) = 0\)</span>。</p>
+<p><strong>朴素解：逐位扫描。</strong> 取出最低位与次低位比较，右移一位，重复，直到处理完所有相邻对。</p>
+<div class="language-python highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">Solution</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">hasAlternatingBits_naive</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+        <span class="n">prev</span> <span class="o">=</span> <span class="n">n</span> <span class="o">&amp;</span> <span class="mi">1</span>
+        <span class="n">n</span> <span class="o">&gt;&gt;=</span> <span class="mi">1</span>
+        <span class="k">while</span> <span class="n">n</span><span class="p">:</span>
+            <span class="n">cur</span> <span class="o">=</span> <span class="n">n</span> <span class="o">&amp;</span> <span class="mi">1</span>
+            <span class="k">if</span> <span class="n">cur</span> <span class="o">==</span> <span class="n">prev</span><span class="p">:</span>          <span class="c1"># 相邻位相同 → 不交替</span>
+                <span class="k">return</span> <span class="kc">False</span>
+            <span class="n">prev</span> <span class="o">=</span> <span class="n">cur</span>
+            <span class="n">n</span> <span class="o">&gt;&gt;=</span> <span class="mi">1</span>
+        <span class="k">return</span> <span class="kc">True</span>
+</code></pre></div>
+<p>它是正确的，复杂度 <span class="arithmatex">\(O(\log n)\)</span>。但它逐位独立地检验 <span class="arithmatex">\(b_i \ne b_{i+1}\)</span>，一次只看一对。形式化告诉我们约束是对所有相邻对<strong>同时</strong>成立的同一条件——逐位扫描没有利用这个齐性，把一个本可一次表达的全局判定摊成了一串循环。</p>
+<p><strong>从约束推导。</strong> 约束的核心量是"相邻两位是否不同"。两位是否不同正是异或：<span class="arithmatex">\(b_i \oplus b_{i+1}\)</span> 当两位相反时为 1，相同时为 0。于是</p>
+<div class="arithmatex">\[b_i \ne b_{i+1} \iff b_i \oplus b_{i+1} = 1.\]</div>
+<p>要对所有 <span class="arithmatex">\(i\)</span> 同时计算 <span class="arithmatex">\(b_i \oplus b_{i+1}\)</span>，需要让 <span class="arithmatex">\(b_{i+1}\)</span> 与 <span class="arithmatex">\(b_i\)</span> 在同一位置对齐。右移一位 <span class="arithmatex">\(n \gg 1\)</span> 把原来的 <span class="arithmatex">\(b_{i+1}\)</span> 搬到位置 <span class="arithmatex">\(i\)</span>，因此</p>
+<div class="arithmatex">\[\bigl(n \oplus (n \gg 1)\bigr)_i = b_i \oplus b_{i+1}.\]</div>
+<p>记 <span class="arithmatex">\(m = n \oplus (n \gg 1)\)</span>。<span class="arithmatex">\(m\)</span> 的第 <span class="arithmatex">\(i\)</span> 位恰好记录了 <span class="arithmatex">\(n\)</span> 第 <span class="arithmatex">\(i\)</span> 对相邻位是否不同。约束 <span class="arithmatex">\(b_i \ne b_{i+1}\)</span> 对所有 <span class="arithmatex">\(i\)</span> 成立，当且仅当 <span class="arithmatex">\(m\)</span> 的每一位都是 1：</p>
+<div class="arithmatex">\[n \text{ 交替} \iff m = n \oplus (n \gg 1) \text{ 全为 1}.\]</div>
+<p>这样，逐位扫描的整个循环被一次异或所取代。剩下的问题是如何判定 <span class="arithmatex">\(m\)</span> 是否全 1。</p>
+<p><strong>判定全 1。</strong> 一个低位全为 1 的数形如 <span class="arithmatex">\(2^t - 1\)</span>（<span class="arithmatex">\(t\)</span> 个连续的 1）。给它加 1，进位会贯穿这 <span class="arithmatex">\(t\)</span> 个 1，得到 <span class="arithmatex">\(2^t\)</span>——一个 1 后面跟 <span class="arithmatex">\(t\)</span> 个 0。原数与加 1 后的数在每一位都不重叠，故</p>
+<div class="arithmatex">\[m = 2^t - 1 \implies m \mathbin{\&amp;} (m+1) = 0.\]</div>
+<p>反之，若 <span class="arithmatex">\(m\)</span> 在某位为 0，加 1 不会贯穿该位，<span class="arithmatex">\(m\)</span> 与 <span class="arithmatex">\(m+1\)</span> 在更高的 1 位上重叠，AND 非零。于是得到全 1 的紧凑判据：</p>
+<div class="arithmatex">\[m \text{ 全为 1} \iff m \mathbin{\&amp;} (m+1) = 0.\]</div>
+<p>将两步合并：</p>
 <div class="language-python highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">Solution</span><span class="p">:</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">hasAlternatingBits</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
         <span class="n">m</span> <span class="o">=</span> <span class="n">n</span> <span class="o">^</span> <span class="p">(</span><span class="n">n</span> <span class="o">&gt;&gt;</span> <span class="mi">1</span><span class="p">)</span>
@@ -22483,13 +22541,14 @@
 - <span class="arithmatex">\(n = 11 = 1011_2\)</span>：<span class="arithmatex">\(n \gg 1 = 0101\)</span>，<span class="arithmatex">\(m = 1110\)</span>，<span class="arithmatex">\(m + 1 = 1111\)</span>，<span class="arithmatex">\(m \&amp; (m+1) = 1110 \ne 0\)</span> → False。✓</p>
 <h2 id="complexity">复杂度 (Complexity)<a class="headerlink" href="#complexity" title="Permanent link">#</a></h2>
 <ul>
-<li>Time: <span class="arithmatex">\(O(1)\)</span>（固定 32 位整数下）。</li>
+<li>Time: <span class="arithmatex">\(O(1)\)</span>（固定 32 位整数下；朴素逐位扫描为 <span class="arithmatex">\(O(\log n)\)</span>）。</li>
 <li>Space: <span class="arithmatex">\(O(1)\)</span>。</li>
 </ul>
 <h2 id="pitfalls">陷阱 (Pitfalls)<a class="headerlink" href="#pitfalls" title="Permanent link">#</a></h2>
 <ul>
-<li>Python 整数任意精度，<code>n + 1</code> 不溢出；C++/Java 用 32 位无符号 <code>uint32_t</code> 避免符号位干扰。</li>
-<li>朴素解：逐位比较，<span class="arithmatex">\(O(\log n)\)</span>，也对，但失去 bit trick 训练价值。</li>
+<li>Python 整数任意精度，<code>n + 1</code> / <code>m + 1</code> 不溢出；C++/Java 用 32 位无符号 <code>uint32_t</code> 避免符号位干扰。</li>
+<li>边界 <span class="arithmatex">\(n = 1\)</span>（<code>1</code>）与 <span class="arithmatex">\(n = 2\)</span>（<code>10</code>）：<span class="arithmatex">\(m\)</span> 分别为 <code>1</code>、<code>11</code>，均全 1，返回 True，与定义一致。</li>
+<li>全 1 判据 <span class="arithmatex">\(m \&amp; (m+1) = 0\)</span> 检测的是"低位全 1"形态 <span class="arithmatex">\(2^t - 1\)</span>；若误用 <span class="arithmatex">\(m \&amp; (m-1) = 0\)</span>（检测 2 的幂）则判定完全不同，勿混。</li>
 </ul>
 <h2 id="related">相关题目 (Related)<a class="headerlink" href="#related" title="Permanent link">#</a></h2>
 <ul>
@@ -22606,6 +22665,8 @@
         <script src="../../../js/mathjax/tex-mml-chtml.js"></script>
       
         <script src="../../../js/mermaid.min.js"></script>
+      
+        <script src="../../../js/featured.js"></script>
       
     
   </body>

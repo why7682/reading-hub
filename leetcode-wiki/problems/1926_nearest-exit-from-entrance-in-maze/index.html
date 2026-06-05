@@ -1466,6 +1466,8 @@
       
         
       
+        
+      
     
     
     
@@ -1521,6 +1523,34 @@
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../featured/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ⭐ Featured（已验证）
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
               
             
               
@@ -1610,10 +1640,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_4" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
         
           
-          <label class="md-nav__link" for="__nav_4_4" id="__nav_4_4_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_5" id="__nav_4_5_label" tabindex="">
             
   
   
@@ -1631,8 +1661,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_4_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_4">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_5">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1915,7 +1945,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -1937,14 +1967,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_4_5" id="__nav_4_5_label" tabindex="">
+              <label class="md-nav__link " for="__nav_4_6" id="__nav_4_6_label" tabindex="">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_5">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_6">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -5321,10 +5351,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_7" checked>
         
           
-          <label class="md-nav__link" for="__nav_4_6" id="__nav_4_6_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_7" id="__nav_4_7_label" tabindex="">
             
   
   
@@ -5342,8 +5372,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_4_6">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_7_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4_7">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -22467,14 +22497,26 @@
 <h2 id="problem">Problem<a class="headerlink" href="#problem" title="Permanent link">#</a></h2>
 <p><span class="arithmatex">\(m \times n\)</span> 网格：<code>.</code> 空、<code>+</code> 墙。从 <code>entrance</code>（保证空）出发，每步上下左右走一格不能进墙、不能出界。<strong>exit</strong> 是位于<strong>边界</strong>的空格（entrance 本身不算）。求最少步数；不可达返回 -1。约束 <span class="arithmatex">\(1 \le m, n \le 100\)</span>。</p>
 <h2 id="background">背景 (Background)<a class="headerlink" href="#background" title="Permanent link">#</a></h2>
-<p><strong>无权图最短路径</strong>的标准实例 → <strong>BFS</strong>。BFS 在无权图（或所有边权相等）下计算单源最短距离，复杂度 <span class="arithmatex">\(O(V + E)\)</span>。</p>
-<p>更广的视角：网格上 BFS 等价于在隐式图 <span class="arithmatex">\(G = (V, E)\)</span> 上做层序遍历，其中 $V = $ 所有空格、$E = $ 相邻空格对。<span class="arithmatex">\(|V| = O(mn)\)</span>, <span class="arithmatex">\(|E| = O(mn)\)</span>（每格至多 4 度），所以 <span class="arithmatex">\(O(mn)\)</span>。</p>
+<p>我们要的不是"一条到出口的路"，而是<strong>最短</strong>的那条。这个"最短"约束改变了问题的难度。</p>
+<p>先看最朴素的想法：枚举从 entrance 出发的所有合法行走路径，对每条能到达边界出口的路径记录其长度，取最小值。这在逻辑上无懈可击，但代价是灾难性的——一条路径在每个空格最多有 4 个方向可走，路径数随步数指数增长，<span class="arithmatex">\(O(4^{mn})\)</span> 量级。绝大多数路径还彼此高度重复：它们反复经过同一批格子，只是顺序不同。</p>
+<p>朴素法的浪费指向一个修正方向：我们关心的从来不是路径本身，而是<strong>每个格子到 entrance 的最短步数</strong>。一旦把视角从"路径"切换到"格子的距离"，同一个格子就只需要算一次距离，而不是被无数条路径反复访问。</p>
+<p>这正是把网格看成图的契机。令隐式图 <span class="arithmatex">\(G = (V, E)\)</span>，其中 $V = $ 所有空格，$E = $ 相邻空格对。每个格子至多 4 度，故 <span class="arithmatex">\(|V| = O(mn)\)</span>，<span class="arithmatex">\(|E| = O(mn)\)</span>。entrance 是单一源点，每条边代价均为 1。于是原问题化为：在一个<strong>所有边权相等的图</strong>上，从单源出发，求到某个目标格子集合的最短距离。下一节把这件事写成精确的形式，第三节再从形式化推出具体算法。</p>
 <h2 id="formulation">形式化 (Formulation)<a class="headerlink" href="#formulation" title="Permanent link">#</a></h2>
-<p>设网格 <span class="arithmatex">\(G\)</span>，源点 $s = $ entrance。出口集 <span class="arithmatex">\(T = \{(r, c) \in \text{boundary} : G[r][c] = . \land (r, c) \ne s\}\)</span>。求</p>
-<div class="arithmatex">\[\min_{t \in T} d_G(s, t)\]</div>
-<p>不可达返回 <span class="arithmatex">\(-1\)</span>。</p>
+<p>设隐式图 <span class="arithmatex">\(G = (V, E)\)</span> 如上，源点 $s = $ entrance。对任意 <span class="arithmatex">\(u, v \in V\)</span>，记 <span class="arithmatex">\(d_G(u, v)\)</span> 为 <span class="arithmatex">\(G\)</span> 中 <span class="arithmatex">\(u\)</span> 到 <span class="arithmatex">\(v\)</span> 的最短路径长度（边数），不可达时为 <span class="arithmatex">\(+\infty\)</span>。在本问题中每条边代价为 1，故 <span class="arithmatex">\(d_G(s, v)\)</span> 恰等于从 entrance 走到格子 <span class="arithmatex">\(v\)</span> 的最少步数。</p>
+<p>出口集合为边界上、非起点的空格：</p>
+<div class="arithmatex">\[T = \{(r, c) \in \text{boundary} : G[r][c] = \texttt{.} \;\land\; (r, c) \ne s\}\]</div>
+<p>所求即</p>
+<div class="arithmatex">\[\text{ans} = \min_{t \in T} d_G(s, t),\]</div>
+<p>当 <span class="arithmatex">\(T\)</span> 中无可达点（最小值为 <span class="arithmatex">\(+\infty\)</span>）时返回 <span class="arithmatex">\(-1\)</span>。</p>
+<p>注意 <span class="arithmatex">\(T\)</span> 的定义中 <span class="arithmatex">\((r,c) \ne s\)</span> 是<strong>语义约束</strong>而非几何约束：起点恰好落在边界上只是巧合，它在距离 0 处，但题目规定它不算出口。把这条约束嵌进目标集合的定义，而不是事后特判，能避免"凡边界上距离 0 的格子都是出口"这类错误推广。</p>
 <h2 id="approach">数据结构 / 想法 (Approach)<a class="headerlink" href="#approach" title="Permanent link">#</a></h2>
-<p><strong>BFS</strong> 从 entrance 出发。维护队列（cell, distance），用 <code>visited</code> 数组（或直接修改原网格为 <code>+</code>）防止重复访问。每出队若是边界且非起点，立即返回距离（<strong>第一次到达即最短</strong>——BFS 性质）。</p>
+<p>形式化把任务压缩成一句话：求 <span class="arithmatex">\(\min_{t \in T} d_G(s, t)\)</span>。要高效求这个最小值，关键不在于逐个算出每个 <span class="arithmatex">\(t\)</span> 的距离再比较，而在于<strong>按距离从小到大的顺序发现格子</strong>——一旦能保证这种发现顺序，第一个被发现的出口就自动是最近的，无需再看其余出口。</p>
+<p><strong>直觉</strong>：从 entrance 出发，距离为 0 的只有 entrance 自己；距离为 1 的是它的空邻居；距离为 2 的是那些邻居的新空邻居……每走一步，距离恰好 +1（边权全为 1）。因此若我们先把所有距离为 <span class="arithmatex">\(k\)</span> 的格子全部发现完，再去发现距离为 <span class="arithmatex">\(k+1\)</span> 的格子，那么任何格子被发现时，携带的就是它的最短距离；而所有出口中<strong>最早被发现的那个</strong>，其距离不会大于任何其他出口的距离。</p>
+<p><strong>不变量（先于代码，作为正确性依据）</strong>：维护一个队列，按发现顺序存放待扩展的格子及其距离。则在整个过程中：
+1. 队列中各格子的距离沿出队顺序非减；
+2. 一个格子第一次被发现（入队）时，记录的距离即为 <span class="arithmatex">\(d_G(s, \cdot)\)</span>，此后不再被更新。</p>
+<p>这两条可对距离层数 <span class="arithmatex">\(k\)</span> 归纳证明：层 <span class="arithmatex">\(k\)</span> 全部入队后才开始产生层 <span class="arithmatex">\(k+1\)</span>，故出队顺序与距离单调一致（标准 BFS 正确性，见 CLRS §22.2 与下方 Further Reading）。</p>
+<p>这个"逐层、单调"的扩展过程正是<strong>广度优先搜索（BFS）</strong>。把不变量落实成代码：用队列存 (cell, distance)，用 <code>visited</code> 标记防止重复入队（或直接把已访问格改写成 <code>+</code>）。每当<strong>入队一个新格子</strong>时检查它是否在边界且非起点；若是，它就是最早发现的出口，其距离即答案，立即返回。</p>
 <div class="language-python highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">collections</span><span class="w"> </span><span class="kn">import</span> <span class="n">deque</span>
 <span class="k">class</span><span class="w"> </span><span class="nc">Solution</span><span class="p">:</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">nearestExit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">maze</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]],</span> <span class="n">entrance</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
@@ -22493,29 +22535,35 @@
                     <span class="n">q</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">nr</span><span class="p">,</span> <span class="n">nc</span><span class="p">,</span> <span class="n">d</span> <span class="o">+</span> <span class="mi">1</span><span class="p">))</span>
         <span class="k">return</span> <span class="o">-</span><span class="mi">1</span>
 </code></pre></div>
-<p><strong>不变量</strong>：队列里所有 cell 的距离按出队顺序非减；首次扩展到任何节点的距离即为最短距离（BFS 经典证明：归纳层数 + 队列单调）。</p>
-<p>Trace 例 2 <code>[["+","+","+"],[".",".","."],["+","+","+"]], entrance=[1,0]</code>：
-- (1,0,0) 出队 → mark；扩 (1,1,1) → 非边界（(1,1) 在内部 row=1, col=1, m=3, n=3, 都不是 0 也不是 m-1=2 或 n-1=2 — 等等 row=1, col=1，都不是边界）→ 入队。
-- (1,1,1) 出队，扩 (1,2,2) → 边界 col=n-1=2 ✓ 返回 2。</p>
+<p>为什么<strong>不能</strong>用 DFS？DFS 沿单一方向深入到底再回溯，发现顺序不按距离排序。在网格</p>
+<div class="language-text highlight"><pre><span></span><code>. . .
++ + .
+S + .
+</code></pre></div>
+<p>（<code>S</code> 为 entrance，左下角）上，若 DFS 先沿右侧长廊绕行，它会经一条较长路径先抵达某个边界出口，并把该出口当作答案返回；而正上方可能存在更短的出口尚未被发现。DFS 给出"某个可达出口"，但不保证最短——这正是不变量①（距离单调）在 DFS 中不成立的后果。</p>
+<p><strong>逐步 Trace（例 2）</strong><code>[["+","+","+"],[".",".","."],["+","+","+"]], entrance=[1,0]</code>，此处 <span class="arithmatex">\(m=n=3\)</span>，边界判定为 <code>row∈{0,2}</code> 或 <code>col∈{0,2}</code>：
+1. <code>(1,0,0)</code> 入队并标记。出队后扩展邻居：唯一空邻居为 <code>(1,1)</code>，其 <code>row=1, col=1</code> 均非边界，记距离 1 入队。
+2. <code>(1,1,1)</code> 出队，扩展邻居 <code>(1,2)</code>：<code>col = n-1 = 2</code> 在边界且非起点，是最早发现的出口，返回 <code>1 + 1 = 2</code>。</p>
 <h2 id="complexity">复杂度 (Complexity)<a class="headerlink" href="#complexity" title="Permanent link">#</a></h2>
 <ul>
-<li>Time: <span class="arithmatex">\(O(mn)\)</span>，每格至多入队一次。</li>
-<li>Space: <span class="arithmatex">\(O(mn)\)</span> 队列 + visited（in-place 修改可省 visited）。</li>
+<li>Time: <span class="arithmatex">\(O(mn)\)</span>。每格至多入队一次（入队即标记），总扩展次数 <span class="arithmatex">\(O(|V| + |E|) = O(mn)\)</span>。</li>
+<li>Space: <span class="arithmatex">\(O(mn)\)</span>。队列与 <code>visited</code> 各占 <span class="arithmatex">\(O(mn)\)</span>；in-place 改写 <code>+</code> 可省去独立的 visited 数组。</li>
 </ul>
 <h2 id="pitfalls">陷阱 (Pitfalls)<a class="headerlink" href="#pitfalls" title="Permanent link">#</a></h2>
+<p>以下实现细节都直接源于上一节的结构（单调发现顺序、出口的语义约束）。</p>
 <ul>
-<li><strong>entrance 不算 exit</strong> —— 检查 (nr, nc) 是否在边界，<strong>不能</strong>在出队 (r, c) 时检查（否则起点会被立即"返回 0"）。</li>
-<li><strong>判定边界</strong>时机：建议在<strong>入队</strong>前判（如代码所示），可省一次队列操作。也可在出队时判但要排除起点。</li>
-<li><strong>不要用 DFS</strong>——会得到任意可达 exit 但不一定最短。</li>
-<li><strong>修改输入</strong>：题目允许的话 in-place 标记最省空间；否则用 boolean visited 数组。</li>
-<li><strong>方向 tuple</strong> 不要漏一个或写错符号——经典 off-by-one 来源。</li>
+<li><strong>entrance 不算 exit</strong>：检查 <code>(nr, nc)</code>（即将入队的新邻居）是否在边界，<strong>不能</strong>在出队 <code>(r, c)</code> 时检查——否则起点会被立即当作距离 0 的出口返回。根因是 <span class="arithmatex">\(T\)</span> 的语义约束 <span class="arithmatex">\((r,c)\ne s\)</span>，代码靠循环前先把起点标记为 <code>+</code> 来落实。</li>
+<li><strong>判定边界的时机</strong>：在<strong>入队</strong>前判（如代码）可省一次出队操作。也可在出队时判，但必须显式排除起点。</li>
+<li><strong>不要用 DFS</strong>：见上节论证——DFS 的发现顺序不按距离单调，得到可达出口但未必最短。</li>
+<li><strong>修改输入</strong>：题目允许时 in-place 标记最省空间；否则用 boolean <code>visited</code> 数组。</li>
+<li><strong>方向 tuple</strong>：四个方向不要漏写或写错符号——经典 off-by-one 来源。</li>
 </ul>
 <h2 id="related">相关题目 (Related)<a class="headerlink" href="#related" title="Permanent link">#</a></h2>
 <ul>
 <li><a href="../3609_minimum-moves-to-reach-target-in-grid/">#3609. Minimum Moves to Reach Target in Grid</a> — 同 BFS on grid。</li>
 <li><a href="../1970_last-day-where-you-can-still-cross/">#1970. Last Day Where You Can Still Cross</a> — 同 batch，连通性 + BFS。</li>
 <li><code>#542. 01 Matrix (off-wiki)</code> — 多源 BFS。</li>
-<li><code>#994. Rotting Oranges (off-wiki)</code> — 同多源 BFS。</li>
+<li><a href="../0994_rotting-oranges/">#994. Rotting Oranges</a> — 同多源 BFS。</li>
 </ul>
 <h2 id="further-reading">Further Reading<a class="headerlink" href="#further-reading" title="Permanent link">#</a></h2>
 <ul>
@@ -22628,6 +22676,8 @@
         <script src="../../../js/mathjax/tex-mml-chtml.js"></script>
       
         <script src="../../../js/mermaid.min.js"></script>
+      
+        <script src="../../../js/featured.js"></script>
       
     
   </body>

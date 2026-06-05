@@ -1466,6 +1466,8 @@
       
         
       
+        
+      
     
     
     
@@ -1521,6 +1523,34 @@
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../featured/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ⭐ Featured（已验证）
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
               
             
               
@@ -1610,10 +1640,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_4" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
         
           
-          <label class="md-nav__link" for="__nav_4_4" id="__nav_4_4_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_5" id="__nav_4_5_label" tabindex="">
             
   
   
@@ -1631,8 +1661,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_4_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_4">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_5">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1915,7 +1945,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -1937,14 +1967,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_4_5" id="__nav_4_5_label" tabindex="">
+              <label class="md-nav__link " for="__nav_4_6" id="__nav_4_6_label" tabindex="">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_5">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_6">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -5321,10 +5351,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_7" checked>
         
           
-          <label class="md-nav__link" for="__nav_4_6" id="__nav_4_6_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_7" id="__nav_4_7_label" tabindex="">
             
   
   
@@ -5342,8 +5372,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_4_6">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_7_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4_7">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -22467,20 +22497,41 @@
 <h2 id="problem">Problem<a class="headerlink" href="#problem" title="Permanent link">#</a></h2>
 <p>给定字符串数组 <code>queries</code> 与模式 <code>pattern</code>。<code>queries[i]</code> 匹配 <code>pattern</code> 当且仅当可在 <code>pattern</code> 中插入任意（含零个）<strong>小写字母</strong>使之与 <code>queries[i]</code> 相等。返回布尔数组 <code>answer</code>。<span class="arithmatex">\(1 \leq |pattern|, |queries|, |queries[i]| \leq 100\)</span>。</p>
 <h2 id="background">背景 (Background)<a class="headerlink" href="#background" title="Permanent link">#</a></h2>
-<p>本题是「带限制的子序列匹配」：<code>pattern</code> 必须是 <code>query</code> 的子序列，且<strong>多余字符必须全为小写</strong>——大写字符在 <code>query</code> 中必须与 <code>pattern</code> 完全对齐。这是经典的 <em>subsequence with type constraint</em>，与 #392 Is Subsequence、glob 匹配（<code>a*b</code> 子集）同源。多 query 场景可用 Trie 把所有 <code>query</code> 一次性预处理，但本题 <span class="arithmatex">\(n \leq 100\)</span> 时双指针已足。</p>
+<p>最朴素的读法是：<code>pattern</code> 能不能由 <code>query</code> "拼出来"？也就是把 <code>pattern</code> 看成 <code>query</code> 的子序列——按顺序在 <code>query</code> 里找到 <code>pattern</code> 的每个字符即可。</p>
+<p>这个朴素判定会出错。取 <code>pattern = "FB"</code>，<code>query = "ForceFeedBack"</code>。纯子序列检查会通过：<code>F</code> 在位置 0、<code>B</code> 在位置 10，顺序正确。但题目要求被插入的字符<strong>只能是小写</strong>，而 <code>query</code> 在位置 5 有一个未被 <code>pattern</code> 覆盖的大写 <code>F</code>。它既不是 <code>pattern</code> 提供的，又不是合法的小写插入，于是这个 <code>query</code> 应当被拒绝。纯子序列判定看不到这一点。</p>
+<p>失败点暴露了问题的真正结构：<code>query</code> 的字符分成两类，且两类的"自由度"完全不同。</p>
+<ul>
+<li><strong>大写字符没有自由度</strong>：它不可能是插入的（插入只允许小写），所以每个大写字符都<strong>必须</strong>由 <code>pattern</code> 中对应位置的字符精确提供。</li>
+<li><strong>小写字符有自由度</strong>：它要么对齐 <code>pattern</code> 的某个字符，要么作为一次合法的小写插入被吸收。</li>
+</ul>
+<p>朴素子序列判定只检查了"能否对齐 <code>pattern</code>"，却放过了"未对齐的字符是否合法"。修正方向因此清楚：判定不仅要让 <code>pattern</code> 成为子序列，还要保证<strong>每个未被 <code>pattern</code> 覆盖的位置都是小写</strong>。下一节把这个修正写成精确条件。</p>
 <h2 id="formulation">形式化 (Formulation)<a class="headerlink" href="#formulation" title="Permanent link">#</a></h2>
+<p>直觉是：<code>query</code> 中有一组位置"承接"了 <code>pattern</code> 的字符（按序、逐字符相等），其余位置则必须全是小写。把"承接"用一个保序映射写出来，条件就变得精确。</p>
 <p><code>query</code> <span class="arithmatex">\(w\)</span> 匹配 <code>pattern</code> <span class="arithmatex">\(p\)</span> 当且仅当存在严格递增映射 <span class="arithmatex">\(\sigma : \{1,...,|p|\} \to \{1,...,|w|\}\)</span> 满足</p>
 <div class="arithmatex">\[w[\sigma(i)] = p[i] \quad \forall i,\]</div>
 <p>且未被 <span class="arithmatex">\(\sigma\)</span> 覆盖的位置 <span class="arithmatex">\(w[j]\)</span> 全为小写字母（<span class="arithmatex">\(j \notin \text{Image}(\sigma)\)</span>）。</p>
-<h2 id="approach">数据结构 / 想法 (Approach)<a class="headerlink" href="#approach" title="Permanent link">#</a></h2>
-<p><strong>双指针</strong>：<span class="arithmatex">\(i\)</span> 扫 <code>query</code>，<span class="arithmatex">\(j\)</span> 扫 <code>pattern</code>。</p>
-<p>不变量：处理完 <span class="arithmatex">\(w[1..i]\)</span> 后，<span class="arithmatex">\(j\)</span> 是已成功匹配的 <code>pattern</code> 前缀长度，且 <span class="arithmatex">\(w[1..i]\)</span> 中所有未匹配字符（即 <span class="arithmatex">\(i - j\)</span> 个）全为小写。</p>
+<p>这个定义把三件事一次性编码了：</p>
 <ul>
-<li>若 <span class="arithmatex">\(j &lt; |p|\)</span> 且 <span class="arithmatex">\(w[i] == p[j]\)</span>：消费两侧，<code>j += 1</code>。</li>
-<li>否则：若 <span class="arithmatex">\(w[i]\)</span> 是大写，则它必须由 <code>pattern</code> 提供，但当前不匹配 → 返回 <code>False</code>。</li>
-<li>若 <span class="arithmatex">\(w[i]\)</span> 是小写：跳过即可（作为允许插入的字符）。</li>
+<li><span class="arithmatex">\(\sigma\)</span> <strong>定义域是整个</strong> <span class="arithmatex">\(\{1,...,|p|\}\)</span> —— <code>pattern</code> 必须被完整匹配（无遗漏字符）；</li>
+<li>等式 <span class="arithmatex">\(w[\sigma(i)] = p[i]\)</span> —— 被覆盖的位置（含所有大写）与 <code>pattern</code> 精确对齐；</li>
+<li>未覆盖位置全小写 —— 插入只允许小写，并由此隐含强制"大写必须由 <code>pattern</code> 提供"（任何大写若未被覆盖就违反此条）。</li>
 </ul>
-<p>结束时还需 <span class="arithmatex">\(j = |p|\)</span>（<code>pattern</code> 全消费）。</p>
+<p>判定问题于是变成：<strong>这样的 <span class="arithmatex">\(\sigma\)</span> 是否存在？</strong> 下一节从这个存在性问题直接推出算法。</p>
+<h2 id="approach">数据结构 / 想法 (Approach)<a class="headerlink" href="#approach" title="Permanent link">#</a></h2>
+<p>存在性问题的关键在于：构造 <span class="arithmatex">\(\sigma\)</span> 时，每对齐一个 <code>pattern</code> 字符，我们是否需要"挑选"<code>query</code> 中的哪个位置？</p>
+<p>不需要。考虑从左到右扫描 <span class="arithmatex">\(w\)</span>，维护当前已对齐的 <code>pattern</code> 前缀长度 <span class="arithmatex">\(j\)</span>。遇到 <span class="arithmatex">\(w[i] = p[j]\)</span> 时，<strong>立即</strong>令 <span class="arithmatex">\(\sigma(j+1) = i\)</span> 并推进 <span class="arithmatex">\(j\)</span>，是安全的——因为放弃这次对齐、寄望于后面某个相等字符，并不会让任何被跳过的位置变得"更合法"：被跳过的 <span class="arithmatex">\(w[i]\)</span> 此刻仍要满足"未覆盖即小写"的约束，推迟匹配只会让它更难、绝不会更易。因此贪心地最早对齐每个 <code>pattern</code> 字符，构造出的正是定义域最早填满的 <span class="arithmatex">\(\sigma\)</span>；若它都不存在，则任何 <span class="arithmatex">\(\sigma\)</span> 都不存在。</p>
+<p>这把存在性判定化为一次线性扫描。扫描中维护如下不变量：</p>
+<blockquote>
+<p>处理完 <span class="arithmatex">\(w[1..i]\)</span> 后，<span class="arithmatex">\(j\)</span> 是已成功对齐的 <code>pattern</code> 前缀长度，且 <span class="arithmatex">\(w[1..i]\)</span> 中所有未对齐的字符（即 <span class="arithmatex">\(i - j\)</span> 个）全为小写。</p>
+</blockquote>
+<p>不变量直接对应形式化里的两个条件：<span class="arithmatex">\(j\)</span> 记录 <span class="arithmatex">\(\sigma\)</span> 已填的定义域，"未对齐者全小写"正是 <span class="arithmatex">\(\text{Image}(\sigma)\)</span> 之外的约束。每步只需在三种情形间分流以维持它：</p>
+<ul>
+<li>若 <span class="arithmatex">\(j &lt; |p|\)</span> 且 <span class="arithmatex">\(w[i] = p[j]\)</span>：把 <span class="arithmatex">\(w[i]\)</span> 设为 <span class="arithmatex">\(\sigma(j+1)\)</span> 的像，消费两侧，<code>j += 1</code>。新增的对齐位置满足等式，不变量保持。</li>
+<li>否则 <span class="arithmatex">\(w[i]\)</span> 未被对齐，它必须合法即小写。若 <span class="arithmatex">\(w[i]\)</span> 是<strong>大写</strong>：它无法成为插入、又没能对齐 <code>pattern</code>，违反不变量 → 返回 <code>False</code>。</li>
+<li>若 <span class="arithmatex">\(w[i]\)</span> 是<strong>小写</strong>：作为一次允许的插入吸收，跳过，不变量保持。</li>
+</ul>
+<p>走一步看不变量如何维持。以 <code>query="FooBar"</code>、<code>pattern="FB"</code> 为例，初始 <span class="arithmatex">\(j=0\)</span>。读 <span class="arithmatex">\(w[1]=\texttt{F}\)</span>：<span class="arithmatex">\(j&lt;2\)</span> 且 <span class="arithmatex">\(\texttt{F}=p[1]\)</span>，进入情形一，<span class="arithmatex">\(j\)</span> 变 1，未对齐字符 0 个，不变量成立。读 <span class="arithmatex">\(w[2]=\texttt{o}\)</span>：不等于 <span class="arithmatex">\(p[2]=\texttt{B}\)</span>，是小写，情形三吸收，未对齐字符 1 个且确为小写，不变量保持。后续 <code>o</code> 同理，<code>B</code> 触发情形一使 <span class="arithmatex">\(j=2\)</span>，<code>a</code>、<code>r</code> 被吸收。</p>
+<p>扫描结束后还须检查 <span class="arithmatex">\(j = |p|\)</span>。这不是额外补丁，而是形式化的直接推论：<span class="arithmatex">\(\sigma\)</span> 的定义域必须是<strong>整个</strong> <span class="arithmatex">\(\{1,...,|p|\}\)</span>，若扫完 <span class="arithmatex">\(w\)</span> 仍有 <span class="arithmatex">\(j &lt; |p|\)</span>，说明 <code>pattern</code> 有字符从未被对齐，<span class="arithmatex">\(\sigma\)</span> 不是全映射，匹配不成立。</p>
 <div class="language-python highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">Solution</span><span class="p">:</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">camelMatch</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">queries</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">pattern</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">bool</span><span class="p">]:</span>
         <span class="k">def</span><span class="w"> </span><span class="nf">match</span><span class="p">(</span><span class="n">w</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">p</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
@@ -22493,28 +22544,23 @@
             <span class="k">return</span> <span class="n">j</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
         <span class="k">return</span> <span class="p">[</span><span class="n">match</span><span class="p">(</span><span class="n">q</span><span class="p">,</span> <span class="n">pattern</span><span class="p">)</span> <span class="k">for</span> <span class="n">q</span> <span class="ow">in</span> <span class="n">queries</span><span class="p">]</span>
 </code></pre></div>
-<p><strong>手动 trace 样例 1</strong>：<code>pattern="FB"</code>。
-- <code>FooBar</code>: F→j=1, o(小写,跳), o(小写,跳), B→j=2, a(小写,跳), r(小写,跳). j=2=|p|. ✓
-- <code>FooBarTest</code>: 同上消费到 j=2，剩 Test 含 T (大写,且 j 已到尾不匹配) → False. ✓
-- <code>FootBall</code>: F→1, oot→跳, B→2, all→跳, j=2. True. ✓
-- <code>FrameBuffer</code>: F→1, rame→跳, B→2, uffer→跳. True. ✓
-- <code>ForceFeedBack</code>: F→1, orce→跳, F (大写, j=1, p[1]='B' 不匹配) → False. ✓</p>
+<p>把开篇的反例放回来验证逻辑：<code>pattern="FB"</code>、<code>query="ForceFeedBack"</code>。<code>F</code> 对齐使 <span class="arithmatex">\(j=1\)</span>；<code>orce</code> 是小写被吸收；接着读到大写 <code>F</code>，此时 <span class="arithmatex">\(j=1\)</span>、<span class="arithmatex">\(p[1]=\texttt{B}\)</span> 不相等，进入情形二——大写且未对齐 → <code>False</code>。正是朴素子序列判定放过、而本算法捕获的情形。</p>
 <h2 id="complexity">复杂度 (Complexity)<a class="headerlink" href="#complexity" title="Permanent link">#</a></h2>
 <ul>
-<li>Time: <span class="arithmatex">\(O(\sum_i |\text{queries}[i]|)\)</span>，每个 query 单次扫描。</li>
-<li>Space: <span class="arithmatex">\(O(1)\)</span> 额外（除输出）。</li>
-<li>若 query 大批量（<span class="arithmatex">\(\gg 100\)</span>）且需重复匹配多个 pattern，可用 Trie/Aho-Corasick 摊销，但本题不必。</li>
+<li>Time: <span class="arithmatex">\(O(\sum_i |\text{queries}[i]|)\)</span>。每个 <code>query</code> 单次从左到右扫描，每个字符做 <span class="arithmatex">\(O(1)\)</span> 工作；<span class="arithmatex">\(j\)</span> 只增不减且 <span class="arithmatex">\(j \le |p| \le |w|\)</span>，<code>pattern</code> 的推进被吸收进对 <span class="arithmatex">\(w\)</span> 的扫描，不构成独立的加项。</li>
+<li>Space: <span class="arithmatex">\(O(1)\)</span> 额外（除输出，仅一个整数 <span class="arithmatex">\(j\)</span>）。</li>
+<li>若 <code>query</code> 大批量（<span class="arithmatex">\(\gg 100\)</span>）且需对多个 <code>pattern</code> 重复匹配，可用 Trie / Aho-Corasick 把公共前缀摊销；本题 <span class="arithmatex">\(n \le 100\)</span> 不必。</li>
 </ul>
 <h2 id="pitfalls">陷阱 (Pitfalls)<a class="headerlink" href="#pitfalls" title="Permanent link">#</a></h2>
 <ul>
-<li>别忘了最后检查 <code>j == len(p)</code>：如 <code>pattern="FBT"</code>, <code>query="FooBar"</code> 会以 j=2 结束，应返 False。</li>
-<li>"大写字符必须由 pattern 提供" 是隐含约束，初学者常只判子序列忽略大写规则。</li>
+<li>结尾的 <span class="arithmatex">\(j = |p|\)</span> 检查不可省。它是 <span class="arithmatex">\(\sigma\)</span> 必须为全映射的直接编码：如 <code>pattern="FBT"</code>、<code>query="FooBar"</code> 会以 <span class="arithmatex">\(j=2\)</span> 结束，<code>pattern</code> 的 <code>T</code> 从未对齐，应返 <code>False</code>。漏掉它等于接受了一个未完整匹配 <code>pattern</code> 的 <code>query</code>。</li>
+<li>"大写字符必须由 <code>pattern</code> 提供"不是额外规则，而是"未覆盖位置全小写"的逻辑后果：任何未对齐的大写都违反该约束。初学者常只判子序列，正是放过了这一隐含条件（见 §背景 的 <code>ForceFeedBack</code> 反例）。</li>
 <li>字符判断用 <code>ch.isupper()</code> 而非 <code>ch.isalpha()</code> 或 ascii 比较；题面保证只有英文字母。</li>
 </ul>
 <h2 id="related">相关题目 (Related)<a class="headerlink" href="#related" title="Permanent link">#</a></h2>
 <ul>
 <li><a href="../3407_substring-matching-pattern/">#3407. Substring Matching Pattern</a> — 同为带通配符的字符串匹配。</li>
-<li><code>#392. Is Subsequence (Easy, off-wiki)</code> — 无大写约束的纯子序列版本。</li>
+<li><code>#392. Is Subsequence (Easy, off-wiki)</code> — 退化为纯子序列判定：去掉大小写的类型约束（即"未覆盖位置全小写"这一条），本题的 <span class="arithmatex">\(\sigma\)</span> 存在性问题就还原为 #392。</li>
 </ul>
 <h2 id="further-reading">Further Reading<a class="headerlink" href="#further-reading" title="Permanent link">#</a></h2>
 <ul>
@@ -22626,6 +22672,8 @@
         <script src="../../../js/mathjax/tex-mml-chtml.js"></script>
       
         <script src="../../../js/mermaid.min.js"></script>
+      
+        <script src="../../../js/featured.js"></script>
       
     
   </body>

@@ -1466,6 +1466,8 @@
       
         
       
+        
+      
     
     
     
@@ -1521,6 +1523,34 @@
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../featured/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ⭐ Featured（已验证）
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
               
             
               
@@ -1610,10 +1640,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_4" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
         
           
-          <label class="md-nav__link" for="__nav_4_4" id="__nav_4_4_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_5" id="__nav_4_5_label" tabindex="">
             
   
   
@@ -1631,8 +1661,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_4_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_4">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_5">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1915,7 +1945,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -1937,14 +1967,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_4_5" id="__nav_4_5_label" tabindex="">
+              <label class="md-nav__link " for="__nav_4_6" id="__nav_4_6_label" tabindex="">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_5">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_6">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -5321,10 +5351,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_7" checked>
         
           
-          <label class="md-nav__link" for="__nav_4_6" id="__nav_4_6_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_7" id="__nav_4_7_label" tabindex="">
             
   
   
@@ -5342,8 +5372,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_4_6">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_7_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4_7">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -6639,6 +6669,17 @@
     <span class="md-ellipsis">
       
         背景 (Background)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#where-naive-attempts-break" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        朴素尝试与它们为何失败 (Where Naive Attempts Break)
       
     </span>
   </a>
@@ -22380,6 +22421,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#where-naive-attempts-break" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        朴素尝试与它们为何失败 (Where Naive Attempts Break)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#formulation" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -22467,22 +22519,34 @@
 <h2 id="problem">Problem<a class="headerlink" href="#problem" title="Permanent link">#</a></h2>
 <p>给 <span class="arithmatex">\(m \times n\)</span> 矩阵，每行<strong>从左到右升序</strong>，每列<strong>从上到下升序</strong>（注意：<strong>不</strong>保证全局排序，与 #74 不同）。判断 <code>target</code> 是否存在。<span class="arithmatex">\(m, n \le 300\)</span>，<span class="arithmatex">\(|matrix[i][j]| \le 10^9\)</span>。</p>
 <h2 id="background">背景 (Background)<a class="headerlink" href="#background" title="Permanent link">#</a></h2>
-<p>本题是 <strong>Young 表 (Young tableau)</strong> 上的搜索——杨表是组合数学（特别是 RSK 对应、对称群表示论）中的核心对象，其搜索性质源于"双向单调"。</p>
-<p><strong>双向单调矩阵的搜索</strong> 是 1980 年代提出的经典问题，有三类典型解：
-1. <strong>阶梯搜索 (saddleback search)</strong>：从右上角或左下角出发，每步淘汰一行或一列；<span class="arithmatex">\(O(m + n)\)</span>。
-2. <strong>分治 (Divide and Conquer)</strong>：对每行做二分；<span class="arithmatex">\(O(m \log n)\)</span>（或 <span class="arithmatex">\(O(n \log m)\)</span>）。
-3. <strong>递归分块</strong>：选中心元素，按其与 target 关系把矩阵切成三块递归；最坏 <span class="arithmatex">\(O(n^{\log_2 3})\)</span>（劣于阶梯）。</p>
-<p>阶梯搜索由 Pohl 1969 提出（在"sorted by rows and columns"矩阵上），是本题最优解。</p>
+<p>矩阵只有两条性质可用：<strong>每行升序</strong>、<strong>每列升序</strong>。注意它们都是局部的——行内有序、列内有序，但行与行之间没有全序：<code>matrix[0][n-1]</code> 不一定 <span class="arithmatex">\(\le\)</span> <code>matrix[1][0]</code>。整道题的解法都要从这两条局部单调性、且仅从它们当中榨取信息。</p>
+<p>先问一个最小的问题：<strong>比较一个格子 <span class="arithmatex">\(M_{i,j}\)</span> 与 <span class="arithmatex">\(t\)</span>，能安全排除多少候选？</strong> 答案决定了搜索的效率，也直接逼出最优算法。</p>
+<ul>
+<li>若 <span class="arithmatex">\(M_{i,j} &lt; t\)</span>：由行升序，<span class="arithmatex">\(M_{i,j}\)</span> 左边的整段 <span class="arithmatex">\(M_{i,0..j}\)</span> 都 <span class="arithmatex">\(\le M_{i,j} &lt; t\)</span>，可排除。</li>
+<li>若 <span class="arithmatex">\(M_{i,j} &gt; t\)</span>：由列升序，<span class="arithmatex">\(M_{i,j}\)</span> 下方的整列 <span class="arithmatex">\(M_{i..m-1,j}\)</span> 都 <span class="arithmatex">\(\ge M_{i,j} &gt; t\)</span>，可排除。</li>
+</ul>
+<p>也就是说，一次比较至多能干净地砍掉<strong>一行的左段</strong>或<strong>一列的下段</strong>。要让每次比较都砍掉一整行或一整列，就得让被比较的格子恰好站在某段的端点上——这正是下面要推导的起点选择。</p>
+<h2 id="where-naive-attempts-break">朴素尝试与它们为何失败 (Where Naive Attempts Break)<a class="headerlink" href="#where-naive-attempts-break" title="Permanent link">#</a></h2>
+<p><strong>尝试 1：拍扁后二分。</strong> 把矩阵按行拼成长度 <span class="arithmatex">\(mn\)</span> 的数组再二分。这要求拼出的数组整体升序，即上一行末尾 <span class="arithmatex">\(\le\)</span> 下一行开头。本题没有这条保证：例如行 0 结尾是 15、行 1 开头是 2，拼接后不单调，二分在折返处失效。（#74 恰恰多了这条全序保证，故可拍扁二分——见末尾对比。）</p>
+<p><strong>尝试 2：从左上角 <span class="arithmatex">\((0,0)\)</span> 走。</strong> 左上角向右、向下都<strong>增大</strong>。若 <span class="arithmatex">\(M_{0,0} &lt; t\)</span>，target 既可能在右、也可能在下，两个方向都不能排除——一次比较砍不掉任何整行或整列，退化成逐格扫描 <span class="arithmatex">\(O(mn)\)</span>。对称地，右下角向左、向上都减小，同样无法剪枝。</p>
+<p>两次失败指向同一个要求：<strong>起点必须让两个可走方向一增一减</strong>，这样无论 <span class="arithmatex">\(M_{i,j}\)</span> 比 <span class="arithmatex">\(t\)</span> 大还是小，都能确定性地排除一整行或一整列。</p>
 <h2 id="formulation">形式化 (Formulation)<a class="headerlink" href="#formulation" title="Permanent link">#</a></h2>
-<p><span class="arithmatex">\(M \in \mathbb{Z}^{m \times n}\)</span> 满足</p>
-<div class="arithmatex">\[\forall i, j: M_{i, j} \le M_{i, j+1} \text{ 且 } M_{i, j} \le M_{i+1, j}.\]</div>
+<p><span class="arithmatex">\(M \in \mathbb{Z}^{m \times n}\)</span> 满足两条单调性约束：</p>
+<div class="arithmatex">\[\forall i, j:\quad M_{i, j} \le M_{i, j+1} \quad\text{(行升序)}\quad\text{且}\quad M_{i, j} \le M_{i+1, j} \quad\text{(列升序)}. \tag{1}\]</div>
 <p>给 <span class="arithmatex">\(t\)</span>，判断是否 <span class="arithmatex">\(\exists (i, j): M_{i, j} = t\)</span>。</p>
+<p>约束 (1) 是全部已知信息；下面的算法每一步剪枝都将直接引用它。</p>
 <h2 id="approach">数据结构 / 想法 (Approach)<a class="headerlink" href="#approach" title="Permanent link">#</a></h2>
-<p><strong>解法 A — 阶梯搜索（推荐）</strong>：从右上角 <span class="arithmatex">\((i, j) = (0, n-1)\)</span> 出发：
-- <span class="arithmatex">\(M_{ij} = t\)</span>：找到。
-- <span class="arithmatex">\(M_{ij} &gt; t\)</span>：本列下方更大、无希望，列指针左移 <span class="arithmatex">\(j \mathrel{-}= 1\)</span>。
-- <span class="arithmatex">\(M_{ij} &lt; t\)</span>：本行左侧更小、无希望，行指针下移 <span class="arithmatex">\(i \mathrel{+}= 1\)</span>。</p>
-<p><strong>不变量</strong>：每步排除"以 <span class="arithmatex">\((i, j)\)</span> 为右上 / 左下角的一整行 / 列"。因每步 <span class="arithmatex">\((i+j)\)</span> 严格变化（<span class="arithmatex">\(i\)</span> 增或 <span class="arithmatex">\(j\)</span> 减），最多 <span class="arithmatex">\(m + n\)</span> 步。</p>
+<p><strong>起点的选择。</strong> 由上节的要求，起点要满足"两个可走方向一增一减"。右上角 <span class="arithmatex">\((0, n-1)\)</span> 满足：向左走（<span class="arithmatex">\(j\)</span> 减）数值减小，向下走（<span class="arithmatex">\(i\)</span> 增）数值增大。左下角 <span class="arithmatex">\((m-1, 0)\)</span> 对称地满足。以下取右上角。</p>
+<p><strong>不变量。</strong> 维护指针 <span class="arithmatex">\((i, j)\)</span>，始终保证：若 <span class="arithmatex">\(t\)</span> 在矩阵中，则它必在尚未排除的子矩阵
+$<span class="arithmatex">\(R = \{(i', j') : i' \ge i,\ j' \le j\}\)</span>$
+内。初始 <span class="arithmatex">\(R\)</span> 是整个矩阵；每步用约束 (1) 把 <span class="arithmatex">\(R\)</span> 削掉一行或一列。</p>
+<p><strong>削减步骤（直接由 (1) 推出）。</strong> 在 <span class="arithmatex">\((i, j)\)</span> 比较 <span class="arithmatex">\(M_{i,j}\)</span> 与 <span class="arithmatex">\(t\)</span>：</p>
+<ul>
+<li><span class="arithmatex">\(M_{i,j} = t\)</span>：找到。</li>
+<li><span class="arithmatex">\(M_{i,j} &gt; t\)</span>：对所有 <span class="arithmatex">\(i' \ge i\)</span>，由列升序 <span class="arithmatex">\(M_{i',j} \ge M_{i,j} &gt; t\)</span>，故第 <span class="arithmatex">\(j\)</span> 列在 <span class="arithmatex">\(R\)</span> 内无解，整列排除，<span class="arithmatex">\(j \mathrel{-}= 1\)</span>。</li>
+<li><span class="arithmatex">\(M_{i,j} &lt; t\)</span>：对所有 <span class="arithmatex">\(j' \le j\)</span>，由行升序 <span class="arithmatex">\(M_{i,j'} \le M_{i,j} &lt; t\)</span>，故第 <span class="arithmatex">\(i\)</span> 行在 <span class="arithmatex">\(R\)</span> 内无解，整行排除，<span class="arithmatex">\(i \mathrel{+}= 1\)</span>。</li>
+</ul>
+<p>每步要么 <span class="arithmatex">\(i\)</span> 增 1、要么 <span class="arithmatex">\(j\)</span> 减 1，故 <span class="arithmatex">\(i + j\)</span> 严格变化；<span class="arithmatex">\(i\)</span> 从 <span class="arithmatex">\(0\)</span> 增到至多 <span class="arithmatex">\(m\)</span>，<span class="arithmatex">\(j\)</span> 从 <span class="arithmatex">\(n-1\)</span> 减到至多 <span class="arithmatex">\(-1\)</span>，合计至多 <span class="arithmatex">\(m + n\)</span> 步。算法是这一不变量的直接后果，而非额外技巧。</p>
 <div class="language-python highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">Solution</span><span class="p">:</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">searchMatrix</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">matrix</span><span class="p">,</span> <span class="n">target</span><span class="p">):</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">matrix</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">matrix</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span> <span class="k">return</span> <span class="kc">False</span>
@@ -22495,24 +22559,27 @@
             <span class="k">else</span><span class="p">:</span>           <span class="n">i</span> <span class="o">+=</span> <span class="mi">1</span>
         <span class="k">return</span> <span class="kc">False</span>
 </code></pre></div>
-<p>Trace 样例 1, target=5:
+<p><strong>验证（trace）。</strong> 用样例确认每步都在削去一行或一列。</p>
+<p>样例 1，target=5：
 - (0,4)=15 &gt; 5 → j=3, (0,3)=11 &gt; 5 → j=2, (0,2)=7 &gt; 5 → j=1, (0,1)=4 &lt; 5 → i=1, (1,1)=5 ✓</p>
-<p>Trace 样例 2, target=20:
+<p>样例 2，target=20：
 - (0,4)=15 &lt; 20 → i=1, (1,4)=19 &lt; 20 → i=2, (2,4)=22 &gt; 20 → j=3, (2,3)=16 &lt; 20 → i=3, (3,3)=17 &lt; 20 → i=4, (4,3)=26 &gt; 20 → j=2, (4,2)=23 &gt; 20 → j=1, (4,1)=21 &gt; 20 → j=0, (4,0)=18 &lt; 20 → i=5. 退出，未找到 → False ✓</p>
-<p><strong>解法 B — 逐行二分</strong>：对每行做 binary search，<span class="arithmatex">\(O(m \log n)\)</span>。比阶梯慢但更"机械"。</p>
-<p><strong>为何不能直接对扁平化矩阵二分</strong>：本题与 #74 关键差别是 "行与行之间没有全序"——<code>M[0][n-1]</code> 不一定 <span class="arithmatex">\(\le\)</span> <code>M[1][0]</code>，扁平后不再单调，朴素二分失效。</p>
+<p><strong>解法 B — 逐行二分。</strong> 若不引入"右上角"这一观察，退而求其次：每行单独二分，<span class="arithmatex">\(O(m \log n)\)</span>。它只用了行升序、丢掉了列升序，故慢于阶梯搜索，但实现更直接。</p>
+<p><strong>解法 C — 递归分块。</strong> 取中心元素，按其与 <span class="arithmatex">\(t\)</span> 的关系把矩阵切成三块递归，<span class="arithmatex">\(T(n) = 3T(n/2) + O(1) = O(n^{\log_2 3})\)</span>。它同时利用两条单调性，但常数与分支因子使其劣于阶梯搜索，仅作为完整性列出。</p>
 <h2 id="complexity">复杂度 (Complexity)<a class="headerlink" href="#complexity" title="Permanent link">#</a></h2>
+<p>削减不变量直接给出阶梯搜索的代价；其余两解一并对照。</p>
 <ul>
-<li>阶梯搜索：Time <span class="arithmatex">\(O(m + n)\)</span>，Space <span class="arithmatex">\(O(1)\)</span>。</li>
-<li>行二分：Time <span class="arithmatex">\(O(m \log n)\)</span>, Space <span class="arithmatex">\(O(1)\)</span>。</li>
-<li>分治分块：<span class="arithmatex">\(O(n^{\log_2 3}) \approx O(n^{1.58})\)</span>，劣于阶梯。</li>
+<li>阶梯搜索：Time <span class="arithmatex">\(O(m + n)\)</span>，Space <span class="arithmatex">\(O(1)\)</span>。（每步削一行或一列，至多 <span class="arithmatex">\(m+n\)</span> 步。）</li>
+<li>行二分：Time <span class="arithmatex">\(O(m \log n)\)</span>，Space <span class="arithmatex">\(O(1)\)</span>。</li>
+<li>递归分块：<span class="arithmatex">\(O(n^{\log_2 3}) \approx O(n^{1.58})\)</span>，劣于阶梯。</li>
 </ul>
 <h2 id="pitfalls">陷阱 (Pitfalls)<a class="headerlink" href="#pitfalls" title="Permanent link">#</a></h2>
+<p>以下每条都是同一条单调性约束 (1) 的直接推论，而非独立须记的规则。</p>
 <ul>
-<li><strong>不能从左上角出发</strong>：左上角向右、向下都增大，无法剪枝（两方向都"可能"含 target）。<strong>右上角</strong> 或 <strong>左下角</strong> 才有"一增一减"的二分性。</li>
-<li><strong>空矩阵 / 空行</strong>：先判 <code>not matrix or not matrix[0]</code>。</li>
-<li><strong>越界</strong>：<code>while i &lt; m and j &gt;= 0</code> 缺一不可。</li>
-<li><strong>#74 与 #240 易混淆</strong>：#74 行末 &lt; 下行首（全序），可直接扁平二分；#240 没有这个性质，必须阶梯。</li>
+<li><strong>不能从左上角（或右下角）出发</strong>：左上角向右、向下都增大，一次比较两方向都"可能"含 target，无法排除任何整行整列。只有<strong>右上角</strong>或<strong>左下角</strong>满足"一增一减"，才有确定性剪枝。</li>
+<li><strong>空矩阵 / 空行</strong>：先判 <code>not matrix or not matrix[0]</code>，否则 <code>matrix[0]</code> 越界。</li>
+<li><strong>越界</strong>：<code>while i &lt; m and j &gt;= 0</code> 两个条件缺一不可——<span class="arithmatex">\(i\)</span> 可能越过末行，<span class="arithmatex">\(j\)</span> 可能越过首列。</li>
+<li><strong>#74 与 #240 易混淆</strong>：#74 保证行末 &lt; 下行首（全序），可拍扁二分；#240 只有 (1) 的行/列局部有序，拍扁后在折返处不单调，必须用阶梯搜索。</li>
 </ul>
 <h2 id="related">相关题目 (Related)<a class="headerlink" href="#related" title="Permanent link">#</a></h2>
 <ul>
@@ -22523,10 +22590,10 @@
 </ul>
 <h2 id="further-reading">Further Reading<a class="headerlink" href="#further-reading" title="Permanent link">#</a></h2>
 <ul>
-<li>CLRS, 3e §6.5 + 习题 — Young 表搜索与 extract-min。</li>
-<li>Knuth, <em>TAOCP</em> Vol. 3 §5.1.4 — Young 表与 RSK 对应。</li>
-<li>cp-algorithms.com/num_methods/binary_search.html — 二分基础。</li>
-<li>Stanley, <em>Enumerative Combinatorics</em> Vol. 1/2 — Young 表的代数与组合背景。</li>
+<li>CLRS, 3e §6.5 + 习题 6-3 — Young 表（行/列均升序的矩阵）上的搜索与 extract-min，本题正是其搜索操作。</li>
+<li>Gries, <em>The Science of Programming</em>, 1981 — "saddleback search" 一词与本类双向单调搜索的来源。</li>
+<li>Knuth, <em>TAOCP</em> Vol. 3 §5.1.4 — Young 表与 RSK 对应（行/列单调矩阵的组合背景，非本算法所需）。</li>
+<li>cp-algorithms.com/num_methods/binary_search.html — 二分基础（解法 B 所用）。</li>
 </ul>
 
 
@@ -22633,6 +22700,8 @@
         <script src="../../../js/mathjax/tex-mml-chtml.js"></script>
       
         <script src="../../../js/mermaid.min.js"></script>
+      
+        <script src="../../../js/featured.js"></script>
       
     
   </body>

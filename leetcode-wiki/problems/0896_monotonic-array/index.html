@@ -1466,6 +1466,8 @@
       
         
       
+        
+      
     
     
     
@@ -1521,6 +1523,34 @@
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../featured/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ⭐ Featured（已验证）
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
               
             
               
@@ -1610,10 +1640,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_4" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
         
           
-          <label class="md-nav__link" for="__nav_4_4" id="__nav_4_4_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_5" id="__nav_4_5_label" tabindex="">
             
   
   
@@ -1631,8 +1661,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_4_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_4">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_5">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1915,7 +1945,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -1937,14 +1967,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_4_5" id="__nav_4_5_label" tabindex="">
+              <label class="md-nav__link " for="__nav_4_6" id="__nav_4_6_label" tabindex="">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_5">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_6">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -5321,10 +5351,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_7" checked>
         
           
-          <label class="md-nav__link" for="__nav_4_6" id="__nav_4_6_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_7" id="__nav_4_7_label" tabindex="">
             
   
   
@@ -5342,8 +5372,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_4_6">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_7_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4_7">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -22467,29 +22497,36 @@
 <h2 id="problem">Problem<a class="headerlink" href="#problem" title="Permanent link">#</a></h2>
 <p>判断数组 <code>nums</code> 是否单调（非递增或非递减）。<span class="arithmatex">\(1 \le n \le 10^5\)</span>，<span class="arithmatex">\(|\text{nums}[i]| \le 10^5\)</span>。</p>
 <h2 id="background">背景 (Background)<a class="headerlink" href="#background" title="Permanent link">#</a></h2>
-<p>本题为基础数组遍历，无特殊学科背景。可作为 stream/online detection 的最小例：单次扫描即可判定有序性。</p>
+<p>单调性是数组上最局部的全局性质：它对整体的要求，可以拆成对每一对相邻元素的要求。本题的全部内容，就是如何利用这种"全局谓词可拆为逐对检查"的结构，用一次扫描判定有序性——而无需提前决定要检查的是递增还是递减。</p>
 <h2 id="formulation">形式化 (Formulation)<a class="headerlink" href="#formulation" title="Permanent link">#</a></h2>
-<p>返回 true 当且仅当 <span class="arithmatex">\((\forall i)\ a_i \le a_{i+1}\)</span> 或 <span class="arithmatex">\((\forall i)\ a_i \ge a_{i+1}\)</span>。</p>
+<p>先看朴素的想法会卡在哪里。"单调"包含两种情况：非递减与非递增。最直接的做法是分别验证：先扫一遍判断是否处处 <span class="arithmatex">\(a_i \le a_{i+1}\)</span>，若不成立再扫一遍判断是否处处 <span class="arithmatex">\(a_i \ge a_{i+1}\)</span>。这给出正确答案，但它把"递增"和"递减"当成需要先后裁决的两件事，于是最坏情况要扫两遍数组。</p>
+<p>关键的观察是：这两个条件各自只关乎相邻对，而且它们检查的是同一串相邻对。判断非递减只需逐对验证 <span class="arithmatex">\(a_i \le a_{i+1}\)</span>；判断非递增只需逐对验证 <span class="arithmatex">\(a_i \ge a_{i+1}\)</span>；两次验证遍历的索引集合完全相同。既然两个谓词在同一组相邻对上独立成立或失败，就没有理由分两趟——可以在同一趟里同时跟踪它们。</p>
+<p>由此得到精确的形式化。返回 true 当且仅当</p>
+<div class="arithmatex">\[\Big(\forall i\ \ a_i \le a_{i+1}\Big) \ \lor\ \Big(\forall i\ \ a_i \ge a_{i+1}\Big).\]</div>
+<p>记左边的全称命题为 <span class="arithmatex">\(P\)</span>，右边为 <span class="arithmatex">\(Q\)</span>。整个问题就是判定析取式 <span class="arithmatex">\(P \lor Q\)</span> 的真值。下一节把这个析取式直接翻译成代码。</p>
 <h2 id="approach">数据结构 / 想法 (Approach)<a class="headerlink" href="#approach" title="Permanent link">#</a></h2>
-<p><strong>单次遍历同时检查两方向</strong>：用两个布尔标志 inc, dec，遇到反例时清零。最终至少一个仍为 true 则返回 true。</p>
+<p>要判定 <span class="arithmatex">\(P \lor Q\)</span>，分别判定 <span class="arithmatex">\(P\)</span> 与 <span class="arithmatex">\(Q\)</span> 即可。每一个都是对相邻对的全称量化，因此可以增量地维护：扫描过程中，只要尚未见到反例，该命题就暂定为真。</p>
+<p>这正是把一个布尔标志赋成 true 作初值的含义。<code>inc</code> 跟踪 <span class="arithmatex">\(P\)</span>（<span class="arithmatex">\(\forall i\ a_i \le a_{i+1}\)</span>），<code>dec</code> 跟踪 <span class="arithmatex">\(Q\)</span>（<span class="arithmatex">\(\forall i\ a_i \ge a_{i+1}\)</span>）。初值取 true 对应空前缀：尚未检查任何相邻对，"无反例"在此刻 vacuously 成立。扫描中每遇到一对相邻元素，就检验它是否构成某个命题的反例：若 <span class="arithmatex">\(a_i &gt; a_{i-1}\)</span>，则它违反非递增，将 <code>dec</code> 置为 false；若 <span class="arithmatex">\(a_i &lt; a_{i-1}\)</span>，则它违反非递减，将 <code>inc</code> 置为 false；若相等，则两个命题都不被违反，两标志均保持不变。</p>
+<p>因为 <span class="arithmatex">\(P\)</span> 与 <span class="arithmatex">\(Q\)</span> 在每一步互相独立，对它们的增量检查可以共用同一趟扫描，于是两标志的维护合并为一次遍历。扫描结束时，<code>inc</code> 为真当且仅当全程未见非递减的反例，即 <span class="arithmatex">\(P\)</span> 成立；<code>dec</code> 同理对应 <span class="arithmatex">\(Q\)</span>。最终返回 <code>inc or dec</code>，即 <span class="arithmatex">\(P \lor Q\)</span>。</p>
 <div class="language-python highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">Solution</span><span class="p">:</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">isMonotonic</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">nums</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
-        <span class="n">inc</span> <span class="o">=</span> <span class="n">dec</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="n">inc</span> <span class="o">=</span> <span class="n">dec</span> <span class="o">=</span> <span class="kc">True</span>  <span class="c1"># inc 跟踪 P: ∀i a_i ≤ a_{i+1}; dec 跟踪 Q: ∀i a_i ≥ a_{i+1}</span>
         <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">nums</span><span class="p">)):</span>
-            <span class="k">if</span> <span class="n">nums</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">nums</span><span class="p">[</span><span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]:</span> <span class="n">dec</span> <span class="o">=</span> <span class="kc">False</span>
-            <span class="k">if</span> <span class="n">nums</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">nums</span><span class="p">[</span><span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]:</span> <span class="n">inc</span> <span class="o">=</span> <span class="kc">False</span>
+            <span class="k">if</span> <span class="n">nums</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">nums</span><span class="p">[</span><span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]:</span> <span class="n">dec</span> <span class="o">=</span> <span class="kc">False</span>  <span class="c1"># 违反非递增</span>
+            <span class="k">if</span> <span class="n">nums</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">nums</span><span class="p">[</span><span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]:</span> <span class="n">inc</span> <span class="o">=</span> <span class="kc">False</span>  <span class="c1"># 违反非递减</span>
         <span class="k">return</span> <span class="n">inc</span> <span class="ow">or</span> <span class="n">dec</span>
 </code></pre></div>
-<p>样例：<code>[1,2,2,3]</code> → inc 始终 true → True；<code>[6,5,4,4]</code> → dec 始终 true → True；<code>[1,3,2]</code> → 第一个 <code>2&gt;1</code> 清 dec，第二个 <code>2&lt;3</code> 清 inc → False。✓</p>
+<p>代码逐行对应形式化：两标志是 <span class="arithmatex">\(P\)</span>、<span class="arithmatex">\(Q\)</span> 的运行时载体，循环体是逐对反例检验，返回值是析取式。验证三个样例可见标志语义无误：<code>[1,2,2,3]</code> 全程无 <span class="arithmatex">\(a_i&lt;a_{i-1}\)</span>，<code>inc</code> 始终为真，返回 True；<code>[6,5,4,4]</code> 全程无 <span class="arithmatex">\(a_i&gt;a_{i-1}\)</span>，<code>dec</code> 始终为真，返回 True；<code>[1,3,2]</code> 中 <span class="arithmatex">\(3&gt;1\)</span> 置 <code>dec</code> 为 false、<span class="arithmatex">\(2&lt;3\)</span> 置 <code>inc</code> 为 false，两标志皆假，返回 False。三例输出均正确。</p>
 <h2 id="complexity">复杂度 (Complexity)<a class="headerlink" href="#complexity" title="Permanent link">#</a></h2>
 <ul>
 <li>Time: <span class="arithmatex">\(O(n)\)</span></li>
 <li>Space: <span class="arithmatex">\(O(1)\)</span></li>
 </ul>
+<p>之所以能达到 <span class="arithmatex">\(O(n)\)</span> 时间、<span class="arithmatex">\(O(1)\)</span> 空间，根源在于背景中指出的结构：单调这一全局谓词分解为相邻对上的独立局部检查，每个检查只需一个布尔状态，故单趟扫描足矣。无需早退也能保证最优——循环固定遍历 <span class="arithmatex">\(n-1\)</span> 对相邻元素，最好、平均、最坏情形一致为 <span class="arithmatex">\(\Theta(n)\)</span>。</p>
 <h2 id="pitfalls">陷阱 (Pitfalls)<a class="headerlink" href="#pitfalls" title="Permanent link">#</a></h2>
 <ul>
-<li>"单调"包括非严格（相等 OK），用 <code>&gt;</code> 与 <code>&lt;</code> 而非 <code>&gt;=</code> / <code>&lt;=</code>。</li>
-<li><span class="arithmatex">\(n=1\)</span> 时直接 true（向量无相邻对）。</li>
+<li>"单调"含非严格情形，等号属于合法单调。故判别反例须用严格的 <code>&gt;</code> 与 <code>&lt;</code> 而非 <code>&gt;=</code> / <code>&lt;=</code>：相等时两标志均保持不变，否则相等元素会被误判为破坏某个方向。</li>
+<li><span class="arithmatex">\(n=1\)</span> 时直接返回 true。此时 <code>range(1,1)</code> 为空，无相邻对可检验，两标志维持初值，<code>inc or dec</code> 为真——这正是空前缀 vacuous truth 在边界上的体现。空数组 <code>[]</code> 出于同一原因也返回 true。</li>
 </ul>
 <h2 id="related">相关题目 (Related)<a class="headerlink" href="#related" title="Permanent link">#</a></h2>
 <ul>
@@ -22602,6 +22639,8 @@
         <script src="../../../js/mathjax/tex-mml-chtml.js"></script>
       
         <script src="../../../js/mermaid.min.js"></script>
+      
+        <script src="../../../js/featured.js"></script>
       
     
   </body>

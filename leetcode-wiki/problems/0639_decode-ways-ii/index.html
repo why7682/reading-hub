@@ -1466,6 +1466,8 @@
       
         
       
+        
+      
     
     
     
@@ -1521,6 +1523,34 @@
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../featured/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ⭐ Featured（已验证）
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
               
             
               
@@ -1610,10 +1640,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_4" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
         
           
-          <label class="md-nav__link" for="__nav_4_4" id="__nav_4_4_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_5" id="__nav_4_5_label" tabindex="">
             
   
   
@@ -1631,8 +1661,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_4_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_4">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_5">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1915,7 +1945,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -1937,14 +1967,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_4_5" id="__nav_4_5_label" tabindex="">
+              <label class="md-nav__link " for="__nav_4_6" id="__nav_4_6_label" tabindex="">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_5">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_6">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -5321,10 +5351,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_7" checked>
         
           
-          <label class="md-nav__link" for="__nav_4_6" id="__nav_4_6_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_7" id="__nav_4_7_label" tabindex="">
             
   
   
@@ -5342,8 +5372,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_4_6">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_7_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4_7">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -22467,64 +22497,117 @@
 <h2 id="problem">Problem<a class="headerlink" href="#problem" title="Permanent link">#</a></h2>
 <p>字符串 <span class="arithmatex">\(s\)</span> 由数字与通配符 <code>*</code>（代表 <code>1-9</code> 之一）组成。"A→1, B→2, …, Z→26" 的编码逆映射有多少种解码方式？模 <span class="arithmatex">\(10^9 + 7\)</span>。<span class="arithmatex">\(|s| \le 10^5\)</span>。</p>
 <h2 id="_1">背景<a class="headerlink" href="#_1" title="Permanent link">#</a></h2>
-<p>本题是 <em>#91. Decode Ways</em>（无通配符版）的<strong>符号化扩展</strong>，从"确定输入"过渡到"非确定输入"。等价于在 Aho–Corasick / regular language counting 框架下，对 NFA 路径计数 — 通配符对应"一字符任选"边。这种从单串到 pattern 串的推广是字符串 DP 教学的典型 progression（同类例：<code>#10. Regular Expression Matching</code>，<code>#44. Wildcard Matching</code>）。</p>
+<p>解码就是把数字串切成若干段，每段是一个落在 <span class="arithmatex">\([1, 26]\)</span> 的整数，再各自映射回一个字母。问题问的是合法切分的总数。当 <code>*</code> 出现时，它在被读到的位置可以是 <code>1-9</code> 中任意一个，于是同一个切分位置上会分叉出多条计数路径。</p>
+<p>最直接的想法是把每个 <code>*</code> 展开成它的 9 个可能数字，对每种展开结果分别用无通配符的解码计数。但一个长度为 <span class="arithmatex">\(k\)</span> 的通配符前缀有 <span class="arithmatex">\(9^k\)</span> 种展开，<span class="arithmatex">\(|s|\)</span> 可达 <span class="arithmatex">\(10^5\)</span>，这条路在指数处爆掉。</p>
+<p>爆炸的根源在于"先展开、再计数"重复计算了大量公共子结构：不同展开在某个位置之后的尾部完全相同，却被反复重数。要避开它，需要一个量，它对前缀的依赖<strong>不取决于前缀里具体填了哪些字母</strong>，只取决于前缀的长度。下一节把这个量精确化。</p>
+<p>本题是 <em>#91. Decode Ways</em>（无通配符版）的符号化扩展：从"确定输入"过渡到"每个字符可能有 9 种身份"。无通配符版相当于这里每个 <code>*</code> 退化为单一数字、<span class="arithmatex">\(\alpha, \beta\)</span> 取值非 0 即 1 的特例。</p>
 <h2 id="_2">形式化<a class="headerlink" href="#_2" title="Permanent link">#</a></h2>
-<p>设 <code>f(i)</code> = 解码 <span class="arithmatex">\(s[0..i)\)</span> 的方式数。考虑结尾 1 字符 / 2 字符两种切分：</p>
+<p><strong>直觉</strong>。任何一个合法解码读到末尾时，最后一段恰好消耗了 1 个或 2 个字符——不可能是 3 个，因为三位数最小是 100，已超出 <span class="arithmatex">\([1, 26]\)</span>。于是 <span class="arithmatex">\(s[0..i)\)</span> 的所有解码可以按"最后一段长度"划成互不相交的两类：</p>
+<ul>
+<li>最后一段长 1：它独立解码 <span class="arithmatex">\(s_{i-1}\)</span>，前面 <span class="arithmatex">\(s[0..i-1)\)</span> 是一个独立的子问题；</li>
+<li>最后一段长 2：它联合解码 <span class="arithmatex">\(s_{i-2}s_{i-1}\)</span>，前面 <span class="arithmatex">\(s[0..i-2)\)</span> 是一个独立的子问题。</li>
+</ul>
+<p>每类的计数等于"这一段的解码方式数"乘以"前缀子问题的解码方式数"。这正是我们要找的那个量：令 <span class="arithmatex">\(f(i)\)</span> 为 <span class="arithmatex">\(s[0..i)\)</span> 的解码方式数，它只依赖于 <span class="arithmatex">\(f(i-1)\)</span> 与 <span class="arithmatex">\(f(i-2)\)</span>，与前缀里出现过哪些字母无关。</p>
+<p><strong>形式化</strong>。</p>
 <div class="arithmatex">\[f(i) = f(i-1) \cdot \alpha(s_{i-1}) + f(i-2) \cdot \beta(s_{i-2}, s_{i-1}),\]</div>
-<p>其中 <span class="arithmatex">\(\alpha(c)\)</span> 是单字符解码方式数，<span class="arithmatex">\(\beta(c_1, c_2)\)</span> 是两字符联合解码为合法 <code>[1, 26]</code> 的方式数。
-- <span class="arithmatex">\(\alpha(\text{'0'}) = 0\)</span>, <span class="arithmatex">\(\alpha(\text{'1..9'}) = 1\)</span>, <span class="arithmatex">\(\alpha(\text{'*'}) = 9\)</span>。
-- <span class="arithmatex">\(\beta\)</span> 含 <span class="arithmatex">\(3 \times 3 = 9\)</span> 种 case，需逐一枚举。</p>
+<p>其中 <span class="arithmatex">\(\alpha(c)\)</span> 是单字符 <span class="arithmatex">\(c\)</span> 解码为合法字母（值落在 <span class="arithmatex">\([1,9]\)</span>，即不含前导切分歧义的单位段）的方式数，<span class="arithmatex">\(\beta(c_1, c_2)\)</span> 是两字符 <span class="arithmatex">\(c_1c_2\)</span> 联合解码为合法 <span class="arithmatex">\([10, 26]\)</span> 段的方式数。两项相加而非取交，是因为按末段长度划分得到的两类解码互斥且穷尽。</p>
+<p>边界由空串约定给出：<span class="arithmatex">\(f(0) = 1\)</span>（空串恰有一种"什么都不解码"的解码方式，作为乘法的单位元），<span class="arithmatex">\(f(1) = \alpha(s_0)\)</span>。</p>
+<p><strong><span class="arithmatex">\(\alpha\)</span> 的取值</strong>。单字符段合法当且仅当其值在 <span class="arithmatex">\([1, 9]\)</span>：</p>
+<ul>
+<li><span class="arithmatex">\(\alpha(\text{'0'}) = 0\)</span>（<code>0</code> 不对应任何字母）；</li>
+<li><span class="arithmatex">\(\alpha(\text{'1'..'9'}) = 1\)</span>；</li>
+<li><span class="arithmatex">\(\alpha(\text{'*'}) = 9\)</span>（<code>*</code> 取 <code>1-9</code> 全部合法）。</li>
+</ul>
+<p><strong><span class="arithmatex">\(\beta\)</span> 的取值——从约束推出，而非背诵</strong>。两字符段 <span class="arithmatex">\(c_1c_2\)</span> 合法当且仅当其十进制值 <span class="arithmatex">\(10c_1 + c_2\)</span> 落在 <span class="arithmatex">\([10, 26]\)</span>。这个区间立刻约束了首位：</p>
+<ul>
+<li>首位必须是 <code>1</code> 或 <code>2</code>（或 <code>*</code> 取这二者之一）；首位是 <code>0</code> 时值 <span class="arithmatex">\(&lt; 10\)</span>，首位 <span class="arithmatex">\(\ge 3\)</span> 时值 <span class="arithmatex">\(\ge 30\)</span>，都越界。</li>
+<li>首位为 <code>1</code> 时，次位 <code>0-9</code> 全合法（值域 <span class="arithmatex">\([10, 19] \subseteq [10, 26]\)</span>）。</li>
+<li>首位为 <code>2</code> 时，次位只能 <code>0-6</code>（值域 <span class="arithmatex">\([20, 26]\)</span>），<code>7-9</code> 越界。</li>
+</ul>
+<p>把 <span class="arithmatex">\(c_1, c_2\)</span> 各自的三种身份（具体数字 / <code>0</code> / <code>*</code>，更精确地按上面约束分类）代入，得到 <span class="arithmatex">\(3 \times 3 = 9\)</span> 种组合。逐一从区间约束算出方案数：</p>
+<table>
+<thead>
+<tr>
+<th><span class="arithmatex">\(c_1 \backslash c_2\)</span></th>
+<th><code>*</code></th>
+<th><code>0..6</code></th>
+<th><code>7..9</code></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>'1'</code></td>
+<td>9（<code>10-19</code> 中 <code>11-19</code> 取 <code>*</code>，即次位 <code>1-9</code>）</td>
+<td>1</td>
+<td>1</td>
+</tr>
+<tr>
+<td><code>'2'</code></td>
+<td>6（<code>21-26</code>，次位 <code>1-6</code>）</td>
+<td>1（<code>20-26</code>）</td>
+<td>0</td>
+</tr>
+<tr>
+<td><code>'*'</code>（取 <code>1</code> 或 <code>2</code>）</td>
+<td>15</td>
+<td>2</td>
+<td>1</td>
+</tr>
+</tbody>
+</table>
+<p>其中 <code>*</code>-<code>*</code> 的 15 这样得到：首位取 <code>1</code> 时次位 <code>1-9</code> 共 9 种（<code>11-19</code>），首位取 <code>2</code> 时次位 <code>1-6</code> 共 6 种（<code>21-26</code>），合计 <span class="arithmatex">\(9 + 6 = 15\)</span>。注意 <code>*</code> 不含 <code>0</code>，所以次位枚举从 <code>1</code> 起——这正是"<code>*</code> 不代表 <code>0</code>"在计数中起作用的地方。<code>*</code>-<code>0..6</code> 的 2 由 <code>10..16</code> 与 <code>20..26</code> 两条首位选择得到，<code>*</code>-<code>7..9</code> 的 1 则因首位只能取 <code>1</code>（<code>17..19</code> 合法，<code>27..29</code> 越界）。</p>
+<p>首位为 <code>'0'</code> 或 <code>'1','2'</code> 以外的具体数字时，<span class="arithmatex">\(\beta = 0\)</span>：这把 <code>0</code> 的处理收进了形式化本身。<code>0</code> 永远无法作为单字符段（<span class="arithmatex">\(\alpha(\text{'0'}) = 0\)</span>），也永远无法作为两字符段的首位（上表无 <code>'0'</code> 行），它唯一的合法去处是作为 <code>10</code> 或 <code>20</code> 的次位。若 <span class="arithmatex">\(s\)</span> 以 <code>0</code> 开头，则 <span class="arithmatex">\(f(1) = \alpha(\text{'0'}) = 0\)</span>，此后 <span class="arithmatex">\(f\)</span> 恒为 0。</p>
 <h2 id="_3">数据结构 / 想法<a class="headerlink" href="#_3" title="Permanent link">#</a></h2>
-<p><strong>一维 DP，滚动两变量</strong>（<span class="arithmatex">\(O(1)\)</span> 空间）：
+<p>递推只回看两步，所以无需保留整张 <span class="arithmatex">\(f\)</span> 数组，两个滚动变量即可，空间 <span class="arithmatex">\(O(1)\)</span>。</p>
+<p><strong>不变量</strong>（先于代码声明，便于边读边验证）。每次循环体执行前，<code>a = f(i-1)</code>，<code>b = f(i)</code>。基底：进入循环前 <code>a = f(0) = 1</code>，<code>b = f(1) = \alpha(s_0)</code>，对应 <span class="arithmatex">\(i = 1\)</span>。归纳步：循环体算出 <code>c = f(i+1)</code> 后，<code>a, b = b, c</code> 把窗口右移一位，使下一轮 <code>a = f(i)</code>，<code>b = f(i+1)</code>，不变量保持。循环结束时 <code>b = f(n)</code> 即答案。</p>
 <div class="language-python highlight"><pre><span></span><code><span class="n">MOD</span> <span class="o">=</span> <span class="mi">10</span><span class="o">**</span><span class="mi">9</span> <span class="o">+</span> <span class="mi">7</span>
 <span class="k">def</span><span class="w"> </span><span class="nf">numDecodings</span><span class="p">(</span><span class="n">s</span><span class="p">):</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">one</span><span class="p">(</span><span class="n">c</span><span class="p">):</span>  <span class="c1"># 单字符解码数</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">one</span><span class="p">(</span><span class="n">c</span><span class="p">):</span>  <span class="c1"># alpha: 单字符段合法解码数</span>
         <span class="k">if</span> <span class="n">c</span> <span class="o">==</span> <span class="s1">&#39;*&#39;</span><span class="p">:</span> <span class="k">return</span> <span class="mi">9</span>
         <span class="k">return</span> <span class="mi">0</span> <span class="k">if</span> <span class="n">c</span> <span class="o">==</span> <span class="s1">&#39;0&#39;</span> <span class="k">else</span> <span class="mi">1</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">two</span><span class="p">(</span><span class="n">c1</span><span class="p">,</span> <span class="n">c2</span><span class="p">):</span>  <span class="c1"># 两字符合法解码数（联合）</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">two</span><span class="p">(</span><span class="n">c1</span><span class="p">,</span> <span class="n">c2</span><span class="p">):</span>  <span class="c1"># beta: 两字符段联合合法解码数（值落在 [10,26]）</span>
         <span class="k">if</span> <span class="n">c1</span> <span class="o">==</span> <span class="s1">&#39;*&#39;</span><span class="p">:</span>
-            <span class="k">if</span> <span class="n">c2</span> <span class="o">==</span> <span class="s1">&#39;*&#39;</span><span class="p">:</span> <span class="k">return</span> <span class="mi">15</span>           <span class="c1"># 11–19, 21–26</span>
-            <span class="k">if</span> <span class="n">c2</span> <span class="o">&lt;=</span> <span class="s1">&#39;6&#39;</span><span class="p">:</span> <span class="k">return</span> <span class="mi">2</span>            <span class="c1"># _0..6 -&gt; 1_ or 2_</span>
-            <span class="k">return</span> <span class="mi">1</span>                          <span class="c1"># _7..9 -&gt; 1_ only</span>
+            <span class="k">if</span> <span class="n">c2</span> <span class="o">==</span> <span class="s1">&#39;*&#39;</span><span class="p">:</span> <span class="k">return</span> <span class="mi">15</span>           <span class="c1"># 11–19 (9) + 21–26 (6)</span>
+            <span class="k">if</span> <span class="n">c2</span> <span class="o">&lt;=</span> <span class="s1">&#39;6&#39;</span><span class="p">:</span> <span class="k">return</span> <span class="mi">2</span>            <span class="c1"># 10–16 或 20–26</span>
+            <span class="k">return</span> <span class="mi">1</span>                          <span class="c1"># 17–19（首位只能取 1）</span>
         <span class="k">elif</span> <span class="n">c1</span> <span class="o">==</span> <span class="s1">&#39;1&#39;</span><span class="p">:</span>
-            <span class="k">return</span> <span class="mi">9</span> <span class="k">if</span> <span class="n">c2</span> <span class="o">==</span> <span class="s1">&#39;*&#39;</span> <span class="k">else</span> <span class="mi">1</span>
+            <span class="k">return</span> <span class="mi">9</span> <span class="k">if</span> <span class="n">c2</span> <span class="o">==</span> <span class="s1">&#39;*&#39;</span> <span class="k">else</span> <span class="mi">1</span>      <span class="c1"># 首位 1：次位全合法</span>
         <span class="k">elif</span> <span class="n">c1</span> <span class="o">==</span> <span class="s1">&#39;2&#39;</span><span class="p">:</span>
-            <span class="k">if</span> <span class="n">c2</span> <span class="o">==</span> <span class="s1">&#39;*&#39;</span><span class="p">:</span> <span class="k">return</span> <span class="mi">6</span>            <span class="c1"># 21..26</span>
-            <span class="k">return</span> <span class="mi">1</span> <span class="k">if</span> <span class="n">c2</span> <span class="o">&lt;=</span> <span class="s1">&#39;6&#39;</span> <span class="k">else</span> <span class="mi">0</span>
+            <span class="k">if</span> <span class="n">c2</span> <span class="o">==</span> <span class="s1">&#39;*&#39;</span><span class="p">:</span> <span class="k">return</span> <span class="mi">6</span>            <span class="c1"># 21–26</span>
+            <span class="k">return</span> <span class="mi">1</span> <span class="k">if</span> <span class="n">c2</span> <span class="o">&lt;=</span> <span class="s1">&#39;6&#39;</span> <span class="k">else</span> <span class="mi">0</span>      <span class="c1"># 次位 7–9 越界</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="k">return</span> <span class="mi">0</span>  <span class="c1"># c1 &gt;= &#39;3&#39; or &#39;0&#39; -&gt; two-digit invalid</span>
+            <span class="k">return</span> <span class="mi">0</span>  <span class="c1"># c1 == &#39;0&#39; 或 &gt;= &#39;3&#39;：两位段首位非法</span>
     <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
-    <span class="n">a</span><span class="p">,</span> <span class="n">b</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">one</span><span class="p">(</span><span class="n">s</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>  <span class="c1"># a = f(i-2), b = f(i-1)</span>
+    <span class="n">a</span><span class="p">,</span> <span class="n">b</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">one</span><span class="p">(</span><span class="n">s</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>  <span class="c1"># a = f(0), b = f(1)</span>
     <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
         <span class="n">c</span> <span class="o">=</span> <span class="p">(</span><span class="n">b</span> <span class="o">*</span> <span class="n">one</span><span class="p">(</span><span class="n">s</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="o">+</span> <span class="n">a</span> <span class="o">*</span> <span class="n">two</span><span class="p">(</span><span class="n">s</span><span class="p">[</span><span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">s</span><span class="p">[</span><span class="n">i</span><span class="p">]))</span> <span class="o">%</span> <span class="n">MOD</span>
         <span class="n">a</span><span class="p">,</span> <span class="n">b</span> <span class="o">=</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span>
     <span class="k">return</span> <span class="n">b</span>
-</code></pre></div></p>
-<p><strong>不变量</strong>：循环开始时 <code>a = f(i-1)</code>, <code>b = f(i)</code>。<strong>正确性</strong>：状态转移覆盖了 "新字符独立解码" 与 "和前一字符联合解码" 两种最后一步可能。</p>
-<p><strong>预防 0 错误</strong>：<code>'0'</code> 必须依附 <code>'1'</code> 或 <code>'2'</code>，否则无法解码 → <span class="arithmatex">\(\beta(0, ...)\)</span> 在 c1 = '0' 时返回 0。<code>s</code> 以 <code>'0'</code> 开头 → <span class="arithmatex">\(f(1) = \alpha('0') = 0\)</span>，全程为 0。</p>
+</code></pre></div>
+<p>代码逐行对应形式化：<code>one</code> 是 <span class="arithmatex">\(\alpha\)</span>，<code>two</code> 是 <span class="arithmatex">\(\beta\)</span> 上表，循环体是递推式，<code>a, b = b, c</code> 维持不变量。正确性即递推式按末段长度对解码集合的互斥穷尽划分。</p>
 <h2 id="_4">复杂度<a class="headerlink" href="#_4" title="Permanent link">#</a></h2>
 <ul>
-<li>Time: <span class="arithmatex">\(O(n)\)</span>。</li>
-<li>Space: <span class="arithmatex">\(O(1)\)</span>（滚动）/ <span class="arithmatex">\(O(n)\)</span>（数组）。</li>
+<li>Time: <span class="arithmatex">\(O(n)\)</span>——单趟扫描，每步 <span class="arithmatex">\(\alpha, \beta\)</span> 为常数表查询。</li>
+<li>Space: <span class="arithmatex">\(O(1)\)</span>（滚动两变量）/ <span class="arithmatex">\(O(n)\)</span>（若保留整张 <span class="arithmatex">\(f\)</span> 数组）。</li>
 </ul>
 <h2 id="_5">陷阱<a class="headerlink" href="#_5" title="Permanent link">#</a></h2>
 <ul>
-<li><span class="arithmatex">\(\beta\)</span> 的 9 种 case 极易写错；建议先把 case 表写下再翻译。</li>
-<li>模运算每步都做，避免溢出（Python 不溢但其他语言会）。</li>
-<li>边界：<span class="arithmatex">\(f(0) = 1\)</span>（空串一种解码方式，是基础）；<span class="arithmatex">\(f(1) = \alpha(s_0)\)</span>。</li>
-<li><code>'*'</code> 不代表 <code>'0'</code>；常被误解。</li>
+<li><span class="arithmatex">\(\beta\)</span> 的 9 种取值若靠记忆极易出错。每种都应由约束 <span class="arithmatex">\(10 \le 10c_1 + c_2 \le 26\)</span> 现场推出，而非背表；上表里每个数字都附了它的合法区间正是为此。</li>
+<li><code>*</code> 不代表 <code>0</code>，只代表 <code>1-9</code>。这直接决定了 <code>*</code>-<code>*</code> 是 15 而非 16，<code>*</code> 作次位时枚举从 <code>1</code> 起。</li>
+<li>边界 <span class="arithmatex">\(f(0) = 1\)</span> 是乘法单位元（空串一种解码），不是"无解"的 0；<span class="arithmatex">\(f(1) = \alpha(s_0)\)</span>。混淆会把首字符的贡献算错。</li>
+<li>每步取模，避免溢出（Python 整数不溢，但 C++/Java 中 <span class="arithmatex">\(f(i-1)\cdot\alpha\)</span> 可超 <code>long</code>，需逐步取模）。</li>
 </ul>
 <h2 id="_6">相关题目<a class="headerlink" href="#_6" title="Permanent link">#</a></h2>
 <ul>
-<li><code>#91. Decode Ways (off-wiki)</code> — 无通配符的基础版。</li>
-<li><code>#10. Regular Expression Matching (off-wiki)</code> — 同款 DP 思维但更复杂（含 <code>*</code> 重复）。</li>
-<li><a href="../0072_edit-distance/">#0072. Edit Distance</a> — 同为 String × 一维 DP 的对照。</li>
-<li><a href="../0322_coin-change/">#0322. Coin Change</a> — 状态转移类比："硬币 vs 单字符"、"两枚组合 vs 两字符联合"。</li>
+<li><code>#91. Decode Ways (off-wiki)</code> — 无通配符的基础版；本题在每个字符上叠加 9 重身份后退化回它。</li>
+<li><code>#10. Regular Expression Matching (off-wiki)</code> — 同款"字符有多种身份 → 路径计数/匹配"的 DP，<code>*</code> 语义更复杂（含重复）。</li>
+<li><a href="../0072_edit-distance/">#0072. Edit Distance</a> — 同为 String × 一维/二维 DP 的对照。</li>
+<li><a href="../0322_coin-change/">#0322. Coin Change</a> — 同属"序列问题归约为定宽回看递推"，但回看权重的运算不同：本题对末段长度的两类<strong>求和计数</strong>，#322 对每种硬币<strong>取最小</strong>。二者递推形态相同、聚合算子相异，对照可看清"计数 DP"与"最优化 DP"的分界。</li>
 </ul>
 <h2 id="further-reading">Further Reading<a class="headerlink" href="#further-reading" title="Permanent link">#</a></h2>
 <ul>
-<li>CLRS, 3e §15 "Dynamic Programming" — DP 基础。</li>
-<li>Hopcroft, Motwani, Ullman. <em>Introduction to Automata Theory</em> (3e), §2 — 正则语言路径计数的理论框架。</li>
+<li>CLRS, 3e §15 "Dynamic Programming" — 最优子结构与计数 DP 的基础框架。</li>
+<li>Hopcroft, Motwani, Ullman. <em>Introduction to Automata Theory</em> (3e), §2 — 把每字符的多重身份视为自动机转移、对接受路径计数的理论背景。</li>
 <li>Aho, Hopcroft, Ullman. <em>The Design and Analysis of Computer Algorithms</em> (1974), §4 — DP 的奠基性讨论。</li>
 </ul>
 
@@ -22632,6 +22715,8 @@
         <script src="../../../js/mathjax/tex-mml-chtml.js"></script>
       
         <script src="../../../js/mermaid.min.js"></script>
+      
+        <script src="../../../js/featured.js"></script>
       
     
   </body>

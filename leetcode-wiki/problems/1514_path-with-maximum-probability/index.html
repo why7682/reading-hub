@@ -1466,6 +1466,8 @@
       
         
       
+        
+      
     
     
     
@@ -1521,6 +1523,34 @@
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../featured/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ⭐ Featured（已验证）
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
               
             
               
@@ -1610,10 +1640,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_4" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
         
           
-          <label class="md-nav__link" for="__nav_4_4" id="__nav_4_4_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_5" id="__nav_4_5_label" tabindex="">
             
   
   
@@ -1631,8 +1661,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_4_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_4">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_5">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1915,7 +1945,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -1937,14 +1967,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_4_5" id="__nav_4_5_label" tabindex="">
+              <label class="md-nav__link " for="__nav_4_6" id="__nav_4_6_label" tabindex="">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_5">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_6">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -5321,10 +5351,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_7" checked>
         
           
-          <label class="md-nav__link" for="__nav_4_6" id="__nav_4_6_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_7" id="__nav_4_7_label" tabindex="">
             
   
   
@@ -5342,8 +5372,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_4_6">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_7_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4_7">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -22467,12 +22497,37 @@
 <h2 id="problem">Problem<a class="headerlink" href="#problem" title="Permanent link">#</a></h2>
 <p>无向加权图：<span class="arithmatex">\(n \leq 10^4\)</span> 个节点，至多 <span class="arithmatex">\(2 \times 10^4\)</span> 条边，边 <span class="arithmatex">\((a, b)\)</span> 上有成功概率 <span class="arithmatex">\(p \in [0, 1]\)</span>。求 <code>start → end</code> 路径的最大成功概率（路径概率 = 边概率连乘）；无路径返回 0。误差容差 <span class="arithmatex">\(10^{-5}\)</span>。</p>
 <h2 id="background">背景 (Background)<a class="headerlink" href="#background" title="Permanent link">#</a></h2>
-<p><strong>Dijkstra 在 max-product 半环上的应用</strong>：标准 Dijkstra 求最小和路径（半环 <span class="arithmatex">\((\min, +)\)</span>），本题求最大积路径（半环 <span class="arithmatex">\((\max, \times)\)</span>）。两者都要求边权"良性"（这里 <span class="arithmatex">\(p \in [0, 1]\)</span> 保证 <span class="arithmatex">\(\times\)</span> 不减大值 → 单调性成立，证明 Dijkstra 正确性）。等价地，对 <span class="arithmatex">\(-\log p\)</span> 求最短和路径（取对数把 <span class="arithmatex">\(\times\)</span> 变 <span class="arithmatex">\(+\)</span>；<span class="arithmatex">\(p \in [0,1] \Rightarrow -\log p \geq 0\)</span>，仍可 Dijkstra）。</p>
+<p>先把问题摊开看清楚。一条路径的成功概率是沿途各边概率的连乘，我们要在所有 <code>start → end</code> 路径中找出连乘最大的那条。</p>
+<p>最直接的想法是枚举：对每条路径算出连乘，取最大值。但路径数随图规模指数增长，<span class="arithmatex">\(n = 10^4\)</span> 下不可行。退一步，能不能像求最短路那样，从起点逐层扩展，每个节点只记录"目前到它的最好概率"？</p>
+<p>这正是 BFS / Dijkstra 类算法的形态，但它们能用的前提并不显然。普通 BFS 假设每条边等代价、首次到达即最优；这里边权不等，首次到达未必最优。Dijkstra 进一步允许不等的非负边权，但它的正确性依赖一个特定结构：<strong>从前沿取出当前最优的节点时，该节点的值已经定型，后续不会再被改进</strong>。这个"已定型"性质在求最小和时靠"边权非负、路径越长和越大"保证。换到最大积，我们需要一个对应的单调性——而它恰好由 <span class="arithmatex">\(p \in [0, 1]\)</span> 提供：乘以一个 <span class="arithmatex">\([0,1]\)</span> 内的因子只会让积不增。</p>
+<p>所以本题不是"套 Dijkstra"，而是要问清楚：<strong>在什么条件下，贪心前沿策略对最大积目标成立？</strong> 下一节给出精确表述，并从这个条件把算法推导出来。等价地，也可对 <span class="arithmatex">\(-\log p\)</span> 求最短和路径——取对数把连乘变连加，<span class="arithmatex">\(p \in [0,1] \Rightarrow -\log p \geq 0\)</span> 保持非负边权，于是落回标准 Dijkstra（见法 3）。</p>
 <h2 id="formulation">形式化 (Formulation)<a class="headerlink" href="#formulation" title="Permanent link">#</a></h2>
-<p>设带权无向图 <span class="arithmatex">\(G = (V, E, w)\)</span>，<span class="arithmatex">\(w(e) \in [0, 1]\)</span>。路径 <span class="arithmatex">\(\pi = e_1, \dots, e_l\)</span> 的概率 <span class="arithmatex">\(P(\pi) = \prod_{i} w(e_i)\)</span>。求 <span class="arithmatex">\(\max_{\pi : s \to t} P(\pi)\)</span>。</p>
-<p><strong>Dijkstra 正确性条件</strong>：松弛操作 <span class="arithmatex">\(d[v] \leftarrow \max(d[v], d[u] \cdot w(u, v))\)</span> 中，由 <span class="arithmatex">\(w \in [0, 1]\)</span> 得 <span class="arithmatex">\(d[u] \cdot w \leq d[u]\)</span>，所以从堆顶取出节点 <span class="arithmatex">\(u\)</span> 时 <span class="arithmatex">\(d[u]\)</span> 已最终（任何绕远路径 <span class="arithmatex">\(d[u'] \cdot \pi' \leq d[u']\)</span> &lt; <span class="arithmatex">\(d[u]\)</span>）。</p>
+<p><strong>直觉先行。</strong> 一条路径成功，意味着沿途每条边都"通过"；若各边相互独立，路径成功的概率就是各边成功概率的乘积。我们要最大化这个乘积。乘法在这里不是任意选择，而是独立事件联合概率的自然模型——这决定了目标函数是连乘而非连加。</p>
+<p><strong>问题。</strong> 设带权无向图 <span class="arithmatex">\(G = (V, E, w)\)</span>，<span class="arithmatex">\(w(e) \in [0, 1]\)</span>。路径 <span class="arithmatex">\(\pi = e_1, \dots, e_l\)</span> 的概率定义为</p>
+<div class="arithmatex">\[
+P(\pi) = \prod_{i=1}^{l} w(e_i). \tag{1}
+\]</div>
+<p>目标是</p>
+<div class="arithmatex">\[
+\max_{\pi :\, s \to t} P(\pi). \tag{2}
+\]</div>
+<p>记 <span class="arithmatex">\(d[v]\)</span> 为当前已知的 <span class="arithmatex">\(s \to v\)</span> 最大概率，松弛操作为</p>
+<div class="arithmatex">\[
+d[v] \leftarrow \max\bigl(d[v],\; d[u] \cdot w(u, v)\bigr). \tag{3}
+\]</div>
+<p>把式 (3) 与标准最短路的 <span class="arithmatex">\(d[v] \leftarrow \min(d[v],\, d[u] + w(u,v))\)</span> 并排看：两者都是"用 <span class="arithmatex">\(d[u]\)</span> 结合一条边权得到候选值，再与 <span class="arithmatex">\(d[v]\)</span> 比较取优"。结合用的二元运算（<span class="arithmatex">\(+\)</span> 或 <span class="arithmatex">\(\times\)</span>）与比较用的取优运算（<span class="arithmatex">\(\min\)</span> 或 <span class="arithmatex">\(\max\)</span>）成对出现——这对运算就是半环 (semiring) 的抽象。本题工作在 <span class="arithmatex">\((\max, \times)\)</span> 半环上，标准最短路工作在 <span class="arithmatex">\((\min, +)\)</span> 半环上。给出这个名字不是为了形式，而是为了点明：Dijkstra 的正确性论证只依赖这对运算的一条性质，与具体是加还是乘无关。</p>
+<p><strong>Dijkstra 正确性。</strong> 那条性质是单调性。直觉是：式 (1) 里把一个概率再乘上 <span class="arithmatex">\([0,1]\)</span> 内的因子，结果只会不增；所以经过 <span class="arithmatex">\(u\)</span> 再往外走的任何路径，其概率都不超过到 <span class="arithmatex">\(u\)</span> 本身的概率。这正是贪心交换论证所需的全部。形式化为：从最大堆取出节点 <span class="arithmatex">\(u\)</span>（其值 <span class="arithmatex">\(d[u]\)</span> 在当前所有未取出节点中最大）时，<span class="arithmatex">\(d[u]\)</span> 已是最终值。证明分两步。</p>
+<p>(a) 任何尚未取出的节点 <span class="arithmatex">\(u'\)</span> 满足 <span class="arithmatex">\(d[u'] \leq d[u]\)</span>，因为 <span class="arithmatex">\(u\)</span> 是堆顶（当前最大）。</p>
+<p>(b) 任何从 <span class="arithmatex">\(u'\)</span> 继续延伸到 <span class="arithmatex">\(v\)</span> 的路径，其概率等于 <span class="arithmatex">\(d[u']\)</span> 再乘若干个 <span class="arithmatex">\(\leq 1\)</span> 的边权，故</p>
+<div class="arithmatex">\[
+d[u'] \cdot w_1 \cdots w_k \;\leq\; d[u'] \;\leq\; d[u]. \tag{4}
+\]</div>
+<p>于是绕经任何未取出节点都无法做出比 <span class="arithmatex">\(d[u]\)</span> 更大的概率，<span class="arithmatex">\(d[u]\)</span> 不会再被改进，已定型。<span class="arithmatex">\(\square\)</span></p>
+<p>式 (4) 是整个算法的承重步：它把"边权落在 <span class="arithmatex">\([0,1]\)</span>"这个输入约束，翻译成"取出即最终"这个算法不变量。注意论证只用到 <span class="arithmatex">\(w \in [0,1]\)</span> 带来的单调不增，没有用到乘法的任何其他特性——这就是为什么同一套 Dijkstra 框架能从 <span class="arithmatex">\((\min,+)\)</span> 平移到 <span class="arithmatex">\((\max,\times)\)</span>。</p>
 <h2 id="approach">数据结构 / 想法 (Approach)<a class="headerlink" href="#approach" title="Permanent link">#</a></h2>
-<p><strong>法 1（推荐）：Dijkstra + max-heap</strong>。Python 用负值技巧把 min-heap 当 max-heap。</p>
+<p>有了式 (3) 的松弛和式 (4) 的正确性保证，算法是直接的：维护一个按概率排序的前沿，每次取出概率最大的节点，用式 (3) 松弛其邻居。三种实现按"贴合本题结构的程度"递减排列，法 1 推荐。</p>
+<p><strong>法 1（推荐）：Dijkstra + max-heap。</strong> Python 的 <code>heapq</code> 是最小堆，而我们要每次取概率最大的节点。这里用负值技巧：把每个概率 <span class="arithmatex">\(p\)</span> 以 <span class="arithmatex">\(-p\)</span> 入堆。<code>heapq</code> 弹出最小的 <span class="arithmatex">\(-p\)</span>，对应最大的 <span class="arithmatex">\(p\)</span>；负号是单调递减映射，保持了顺序，所以弹出次序正是我们要的"概率从大到小"。这不是一个需要背的技巧，而是式 (4) 要求"按概率降序取出"在最小堆上的直接落地。</p>
+<p>堆中可能存在过时条目（stale entry）：同一节点在 <span class="arithmatex">\(d[\cdot]\)</span> 被多次改进的过程中会被多次入堆，旧的低概率条目没有删除而是留在堆里（lazy deletion，惰性删除）。取出时用 <code>p &lt; best[u]</code> 判断：若取出的概率已低于已知最优，说明这是过时条目，跳过。</p>
 <div class="language-python highlight"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">heapq</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">collections</span><span class="w"> </span><span class="kn">import</span> <span class="n">defaultdict</span>
 <span class="k">class</span><span class="w"> </span><span class="nc">Solution</span><span class="p">:</span>
@@ -22497,29 +22552,53 @@
                     <span class="n">best</span><span class="p">[</span><span class="n">v</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span>
                     <span class="n">heapq</span><span class="o">.</span><span class="n">heappush</span><span class="p">(</span><span class="n">pq</span><span class="p">,</span> <span class="p">(</span><span class="o">-</span><span class="n">np</span><span class="p">,</span> <span class="n">v</span><span class="p">))</span>
         <span class="k">return</span> <span class="mf">0.0</span>
-
-<span class="c1"># Trace 样例 1: n=3, edges=[[0,1],[1,2],[0,2]], p=[0.5,0.5,0.2], s=0,t=2</span>
-<span class="c1"># g[0]=[(1,0.5),(2,0.2)], g[1]=[(0,0.5),(2,0.5)], g[2]=[(1,0.5),(0,0.2)]</span>
-<span class="c1"># best=[1,0,0]. pq=[(-1, 0)]</span>
-<span class="c1"># Pop (1.0, 0). u=0. Push to 1: 1*0.5=0.5 &gt; 0 → best[1]=0.5, push (-0.5,1). </span>
-<span class="c1">#                Push to 2: 1*0.2=0.2 &gt; 0 → best[2]=0.2, push (-0.2,2).</span>
-<span class="c1"># Pop (0.5, 1). u=1. To 0: 0.5*0.5=0.25 &lt; best[0]=1, skip. To 2: 0.5*0.5=0.25 &gt; best[2]=0.2 → best[2]=0.25, push.</span>
-<span class="c1"># Pop (0.25, 2). u=2 == end → return 0.25 ✓</span>
 </code></pre></div>
+<p><strong>Worked Example（样例 1）。</strong> <code>n=3, edges=[[0,1],[1,2],[0,2]], p=[0.5,0.5,0.2], s=0, t=2</code>。邻接表 <code>g[0]=[(1,0.5),(2,0.2)]</code>、<code>g[1]=[(0,0.5),(2,0.5)]</code>、<code>g[2]=[(1,0.5),(0,0.2)]</code>，初始 <code>best=[1,0,0]</code>，<code>pq=[(-1,0)]</code>。逐步追踪 <code>best[]</code> 的演化：</p>
+<table>
+<thead>
+<tr>
+<th>取出</th>
+<th><span class="arithmatex">\(u\)</span></th>
+<th>松弛动作</th>
+<th>结果</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><span class="arithmatex">\((1.0, 0)\)</span></td>
+<td>0</td>
+<td><span class="arithmatex">\(0 \to 1\)</span>: <span class="arithmatex">\(1 \cdot 0.5 = 0.5 &gt; 0\)</span>；<span class="arithmatex">\(0 \to 2\)</span>: <span class="arithmatex">\(1 \cdot 0.2 = 0.2 &gt; 0\)</span></td>
+<td><code>best[1]=0.5</code>, <code>best[2]=0.2</code>，推入 <span class="arithmatex">\((-0.5,1),(-0.2,2)\)</span></td>
+</tr>
+<tr>
+<td><span class="arithmatex">\((0.5, 1)\)</span></td>
+<td>1</td>
+<td><span class="arithmatex">\(1 \to 0\)</span>: <span class="arithmatex">\(0.5 \cdot 0.5 = 0.25 &lt; \texttt{best[0]}=1\)</span>，跳过；<span class="arithmatex">\(1 \to 2\)</span>: <span class="arithmatex">\(0.5 \cdot 0.5 = 0.25 &gt; 0.2\)</span></td>
+<td><code>best[2]=0.25</code>，推入 <span class="arithmatex">\((-0.25,2)\)</span></td>
+</tr>
+<tr>
+<td><span class="arithmatex">\((0.25, 2)\)</span></td>
+<td>2</td>
+<td><span class="arithmatex">\(u = \texttt{end}\)</span>，提前返回</td>
+<td>返回 <span class="arithmatex">\(0.25\)</span> ✓</td>
+</tr>
+</tbody>
+</table>
+<p>这里也显出 early exit 的价值：弹出 <code>end</code> 即返回，不必扫完所有节点。由式 (4)，<code>end</code> 第一次被弹出时携带的就是它的最终最大概率，所以提前返回安全。</p>
 <p><strong>法 2：Bellman-Ford</strong> <span class="arithmatex">\(O(VE)\)</span>，可处理负边（这里无），可作 fallback。</p>
-<p><strong>法 3：取负对数 + 标准 Dijkstra</strong>。等价但浮点稳定性稍差（小概率累积时下溢；本题量级安全）。</p>
+<p><strong>法 3：取负对数 + 标准 Dijkstra。</strong> 对 <span class="arithmatex">\(-\log p\)</span> 求最短和路径，与法 1 等价；<span class="arithmatex">\(p \in [0,1] \Rightarrow -\log p \geq 0\)</span> 保持非负边权，可直接用标准 Dijkstra。代价是浮点稳定性稍差（大量小概率连乘时 <span class="arithmatex">\(-\log\)</span> 累积易放大误差；本题量级安全）。</p>
 <h2 id="complexity">复杂度 (Complexity)<a class="headerlink" href="#complexity" title="Permanent link">#</a></h2>
 <ul>
-<li>Time <span class="arithmatex">\(O((V + E) \log V)\)</span> Dijkstra with binary heap。<span class="arithmatex">\(V = 10^4, E = 2 \times 10^4\)</span> → <span class="arithmatex">\(\approx 4 \times 10^5 \log 10^4\)</span> 远小于限制。</li>
+<li>Time <span class="arithmatex">\(O((V + E) \log V)\)</span>，二叉堆 Dijkstra；best/avg/worst 同阶（除可选的 end-pop 提前返回外无输入相关的提前终止保证）。<span class="arithmatex">\(V = 10^4, E = 2 \times 10^4\)</span> → <span class="arithmatex">\((V+E)\log_2 V \approx 4 \times 10^5\)</span>，远小于限制。</li>
 <li>Space <span class="arithmatex">\(O(V + E)\)</span> 邻接表 + 堆。</li>
 </ul>
 <h2 id="pitfalls">陷阱 (Pitfalls)<a class="headerlink" href="#pitfalls" title="Permanent link">#</a></h2>
 <ul>
-<li><strong>stale entry</strong>：堆中可能有过时项；松弛时检查 <code>p &lt; best[u]</code> 跳过。</li>
-<li><strong><code>best</code> 初值</strong>：起点设 <span class="arithmatex">\(1.0\)</span>、其余 <span class="arithmatex">\(0.0\)</span>（注意不是 <span class="arithmatex">\(\infty\)</span>）。</li>
+<li><strong>stale entry</strong>：节点被多次入堆，旧条目过时（见法 1 的惰性删除说明）；松弛时检查 <code>p &lt; best[u]</code> 跳过。</li>
+<li><strong><code>best</code> 初值</strong>：起点设 <span class="arithmatex">\(1.0\)</span>、其余 <span class="arithmatex">\(0.0\)</span>（最大积问题，不是 <span class="arithmatex">\(\infty\)</span>）。</li>
 <li><strong>无向图</strong>：每条边正反两次加入邻接表。</li>
-<li><strong>浮点比较</strong>：<code>&gt;</code> 严格大于即可触发松弛，但避免循环更新（Dijkstra 不会，松弛只让 best 增大）。</li>
-<li><strong>early exit</strong>：弹出 end 时立即返回，比扫完所有节点快。</li>
+<li><strong>浮点比较</strong>：<code>&gt;</code> 严格大于即可触发松弛；由式 (4) 松弛只让 <code>best</code> 增大，不会循环更新。</li>
+<li><strong>early exit</strong>：弹出 <code>end</code> 时立即返回，比扫完所有节点快，正确性由式 (4) 保证。</li>
 </ul>
 <h2 id="related">相关题目 (Related)<a class="headerlink" href="#related" title="Permanent link">#</a></h2>
 <ul>
@@ -22639,6 +22718,8 @@
         <script src="../../../js/mathjax/tex-mml-chtml.js"></script>
       
         <script src="../../../js/mermaid.min.js"></script>
+      
+        <script src="../../../js/featured.js"></script>
       
     
   </body>

@@ -1466,6 +1466,8 @@
       
         
       
+        
+      
     
     
     
@@ -1521,6 +1523,34 @@
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../featured/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ⭐ Featured（已验证）
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
               
             
               
@@ -1610,10 +1640,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_4" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
         
           
-          <label class="md-nav__link" for="__nav_4_4" id="__nav_4_4_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_5" id="__nav_4_5_label" tabindex="">
             
   
   
@@ -1631,8 +1661,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_4_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_4">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_5">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1915,7 +1945,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -1937,14 +1967,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_4_5" id="__nav_4_5_label" tabindex="">
+              <label class="md-nav__link " for="__nav_4_6" id="__nav_4_6_label" tabindex="">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_5">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_6">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -5321,10 +5351,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_7" checked>
         
           
-          <label class="md-nav__link" for="__nav_4_6" id="__nav_4_6_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_7" id="__nav_4_7_label" tabindex="">
             
   
   
@@ -5342,8 +5372,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_4_6">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_7_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4_7">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -22467,10 +22497,36 @@
 <h2 id="problem">Problem<a class="headerlink" href="#problem" title="Permanent link">#</a></h2>
 <p>给定 <code>Students(student_id, student_name)</code>、<code>Subjects(subject_name)</code>、<code>Examinations(student_id, subject_name)</code>（可重复）。要求列出<strong>每个学生 × 每个科目</strong>的组合，附带该学生在该科目实际参加考试的次数，按 <code>student_id, subject_name</code> 升序排序。</p>
 <h2 id="background">背景 (Background)<a class="headerlink" href="#background" title="Permanent link">#</a></h2>
-<p>模式：<strong>笛卡尔积 + 左连接计数</strong>。这是报表场景下的"密集网格输出"——即使某 (student, subject) 没有记录，也要出现一行 <code>0</code>。SQL 用 <code>CROSS JOIN</code> 显式生成全网格，再 <code>LEFT JOIN</code> 事实表做 <code>COUNT</code>。</p>
+<p>先写出最直接的查询。我们要数每个学生在每个科目的考试次数，而考试记录都在 <code>Examinations</code> 里，所以第一反应是直接对它分组计数：</p>
+<div class="language-sql highlight"><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="n">student_id</span><span class="p">,</span><span class="w"> </span><span class="n">subject_name</span><span class="p">,</span><span class="w"> </span><span class="k">COUNT</span><span class="p">(</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">attended_exams</span>
+<span class="k">FROM</span><span class="w"> </span><span class="n">Examinations</span>
+<span class="k">GROUP</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">student_id</span><span class="p">,</span><span class="w"> </span><span class="n">subject_name</span><span class="p">;</span>
+</code></pre></div>
+<p>这条查询对<strong>出现过的</strong> <code>(student, subject)</code> 组合给出正确计数。但它有一个静默的缺陷：只有在 <code>Examinations</code> 中至少出现一次的组合才会成为一行。一个从没考过 Programming 的学生，不会有 <code>(他, Programming, 0)</code> 这一行；一个从没参加任何考试的学生（样例里的 Alex，id=6），干脆一行都不产生。</p>
+<p>而题目要求的恰恰相反——<strong>无论是否有考试记录，每个 <code>(学生, 科目)</code> 组合都必须出现，没有记录的填 0</strong>。换句话说，输出的行集合不由事实表 <code>Examinations</code> 决定，而由 <code>Students × Subjects</code> 这个完整组合决定。<code>GROUP BY Examinations</code> 的失败点就在这里：它让"哪些行存在"取决于数据，而题目要求"哪些行存在"是固定的全组合。</p>
+<p>这把问题拆成两个独立的子任务：先无中生有地<strong>枚举出全部 <code>(学生, 科目)</code> 组合</strong>（与 <code>Examinations</code> 无关），再对每个组合去<strong>数它的考试次数</strong>（可能是 0）。</p>
 <h2 id="formulation">形式化 (Formulation)<a class="headerlink" href="#formulation" title="Permanent link">#</a></h2>
-<p>输出关系 <span class="arithmatex">\(R(s, t, \text{name}(s), |\{e \in E : e.s = s \land e.t = t\}|)\)</span>，其中 <span class="arithmatex">\((s, t)\)</span> 取自 <span class="arithmatex">\(\text{Students} \times \text{Subjects}\)</span>。</p>
+<p>把上面的观察写成精确的输出关系。设</p>
+<ul>
+<li><span class="arithmatex">\(S\)</span> = <code>Students</code>，每行有 <span class="arithmatex">\((s, \text{name}(s))\)</span>，<span class="arithmatex">\(s\)</span> 是 <code>student_id</code>；</li>
+<li><span class="arithmatex">\(T\)</span> = <code>Subjects</code>，每行有一个科目 <span class="arithmatex">\(t\)</span> = <code>subject_name</code>；</li>
+<li><span class="arithmatex">\(E\)</span> = <code>Examinations</code>，每行有 <span class="arithmatex">\((e.s, e.t)\)</span>，可重复。</li>
+</ul>
+<p>要输出的关系是</p>
+<div class="arithmatex">\[
+R \;=\; \bigl\{\, (s,\ \text{name}(s),\ t,\ c_{s,t}) \ :\ (s,\text{name}(s)) \in S,\ t \in T \,\bigr\},
+\qquad
+c_{s,t} \;=\; \bigl|\{\, e \in E : e.s = s \ \land\ e.t = t \,\}\bigr|.
+\]</div>
+<p>两点要读出来。第一，<span class="arithmatex">\(R\)</span> 的定义域是 <span class="arithmatex">\(S \times T\)</span> —— 行集合枚举所有学生与所有科目的组合，<strong>不引用 <span class="arithmatex">\(E\)</span></strong>；这正是上一节"行集合固定"的形式化。第二，计数 <span class="arithmatex">\(c_{s,t}\)</span> 是满足条件的 <span class="arithmatex">\(E\)</span> 中元素个数，当没有任何 <span class="arithmatex">\(e\)</span> 匹配时 <span class="arithmatex">\(c_{s,t}=0\)</span>。输出基数 <span class="arithmatex">\(|R| = |S|\cdot|T|\)</span>（样例为 <span class="arithmatex">\(4 \times 3 = 12\)</span>），与是否有考试记录无关。</p>
+<p>这个形式化直接规定了下一节查询的两个部件：定义域 <span class="arithmatex">\(S \times T\)</span> 需要一个独立于 <span class="arithmatex">\(E\)</span> 的全组合枚举，计数 <span class="arithmatex">\(c_{s,t}\)</span> 需要一个对每个组合都成立、缺失时退化为 0 的计数。</p>
 <h2 id="approach">数据结构 / 想法 (Approach)<a class="headerlink" href="#approach" title="Permanent link">#</a></h2>
+<p>按形式化的两个部件逐个翻译成 SQL。</p>
+<p><strong>部件一：定义域 <span class="arithmatex">\(S \times T\)</span>。</strong> 全组合枚举正是关系代数里的笛卡尔积，SQL 对应 <code>CROSS JOIN</code>。它对 <code>Students</code> 的每一行配上 <code>Subjects</code> 的每一行，产生 <span class="arithmatex">\(|S|\cdot|T|\)</span> 行，完全不看 <code>Examinations</code>：</p>
+<div class="language-sql highlight"><pre><span></span><code><span class="k">FROM</span><span class="w"> </span><span class="n">Students</span><span class="w"> </span><span class="n">s</span><span class="w"> </span><span class="k">CROSS</span><span class="w"> </span><span class="k">JOIN</span><span class="w"> </span><span class="n">Subjects</span><span class="w"> </span><span class="n">sub</span>
+</code></pre></div>
+<p><strong>部件二：计数 <span class="arithmatex">\(c_{s,t}\)</span>。</strong> 现在每个 <code>(学生, 科目)</code> 组合都已经是一行了，要给它配上考试次数。用 <code>LEFT JOIN</code> 把 <code>Examinations</code> 接上去：匹配上的考试行被带进来，匹配不上的组合仍保留为一行，只是 <code>Examinations</code> 那侧的列全是 <code>NULL</code>。</p>
+<p>合起来：</p>
 <div class="language-sql highlight"><pre><span></span><code><span class="k">SELECT</span>
 <span class="w">    </span><span class="n">s</span><span class="p">.</span><span class="n">student_id</span><span class="p">,</span>
 <span class="w">    </span><span class="n">s</span><span class="p">.</span><span class="n">student_name</span><span class="p">,</span>
@@ -22484,21 +22540,37 @@
 <span class="k">GROUP</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">s</span><span class="p">.</span><span class="n">student_id</span><span class="p">,</span><span class="w"> </span><span class="n">s</span><span class="p">.</span><span class="n">student_name</span><span class="p">,</span><span class="w"> </span><span class="n">sub</span><span class="p">.</span><span class="n">subject_name</span>
 <span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">s</span><span class="p">.</span><span class="n">student_id</span><span class="p">,</span><span class="w"> </span><span class="n">sub</span><span class="p">.</span><span class="n">subject_name</span><span class="p">;</span>
 </code></pre></div>
-<p><strong>要点</strong>：</p>
-<ul>
-<li><code>COUNT(e.subject_name)</code> 在 <code>LEFT JOIN</code> 无匹配时 <code>e.subject_name = NULL</code>，<code>COUNT</code> 忽略 NULL → 自动得 0。若写成 <code>COUNT(*)</code> 则会把 <code>NULL</code> 行也算 1，错误。</li>
-<li><code>GROUP BY</code> 必须包含所有非聚合列（严格 SQL 模式下）。</li>
-</ul>
-<p>样例验证：Alex (id=6) 在 Examinations 无记录，输出 3 行 attended_exams=0；Alice (id=1) 在 Math 出现 3 次 → Alice/Math/3 ✓。</p>
+<p><strong>为什么是 <code>COUNT(e.subject_name)</code> 而不是 <code>COUNT(*)</code>。</strong> 关键不是记规则，而是看清 <code>LEFT JOIN</code> 之后、<code>GROUP BY</code> 之前的中间表长什么样。取 Alex (id=6) × Math 这个组合，他没考过任何试，<code>LEFT JOIN</code> 找不到匹配，于是这一组里恰好有一行，且 <code>Examinations</code> 侧的列全为 <code>NULL</code>：</p>
+<table>
+<thead>
+<tr>
+<th>student_id</th>
+<th>student_name</th>
+<th>subject_name (sub)</th>
+<th>e.subject_name</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>6</td>
+<td>Alex</td>
+<td>Math</td>
+<td>NULL</td>
+</tr>
+</tbody>
+</table>
+<p><code>COUNT(expr)</code> 的语义是：数这一组里 <code>expr</code> <strong>非 NULL</strong> 的个数。这里 <code>e.subject_name</code> 是 NULL，所以 <code>COUNT(e.subject_name) = 0</code> —— 正是我们要的 <span class="arithmatex">\(c_{6,\text{Math}}=0\)</span>。而 <code>COUNT(*)</code> 数的是行数，不看 NULL，这一行照样算 1，于是会错误地给出 <code>(6, Alex, Math, 1)</code>。两者的差别完全由"<code>LEFT JOIN</code> 无匹配时右侧列为 NULL"这一不变量决定。</p>
+<p><strong><code>GROUP BY</code> 的列。</strong> 严格 SQL 模式（<code>ONLY_FULL_GROUP_BY</code>）下，所有出现在 <code>SELECT</code> 里的非聚合列都必须出现在 <code>GROUP BY</code> 中，因此 <code>student_name</code> 也要写进去。</p>
+<p><strong>样例验证。</strong> Alex (id=6) 在 <code>Examinations</code> 无任何记录 → <code>CROSS JOIN</code> 仍为他生成 3 个科目的行，每行 <code>COUNT</code> 得 0，输出 3 行 <code>attended_exams=0</code>；Alice (id=1) 在 Math 出现 3 次 → <code>LEFT JOIN</code> 带进 3 行匹配，<code>COUNT(e.subject_name)=3</code> → <code>(1, Alice, Math, 3)</code> ✓。总输出 12 行，与 <span class="arithmatex">\(|S|\cdot|T|=12\)</span> 一致。</p>
 <h2 id="complexity">复杂度 (Complexity)<a class="headerlink" href="#complexity" title="Permanent link">#</a></h2>
 <ul>
-<li>Time: 朴素 <span class="arithmatex">\(O(|S| \cdot |T| + |E|)\)</span>，加 group/sort 多个 <span class="arithmatex">\(\log\)</span></li>
-<li>Space: <span class="arithmatex">\(O(|S| \cdot |T|)\)</span> 输出</li>
+<li><strong>Time</strong>：<code>CROSS JOIN</code> 枚举定义域产生 <span class="arithmatex">\(|S|\cdot|T|\)</span> 行，<code>LEFT JOIN</code> 把 <span class="arithmatex">\(|E|\)</span> 条考试记录配进去，主体是 <span class="arithmatex">\(O(|S|\cdot|T| + |E|)\)</span>；<code>GROUP BY</code> 与 <code>ORDER BY</code> 各引入一个排序/哈希的对数因子。</li>
+<li><strong>Space</strong>：<span class="arithmatex">\(O(|S|\cdot|T|)\)</span>，由输出基数（全组合）主导。</li>
 </ul>
 <h2 id="pitfalls">陷阱 (Pitfalls)<a class="headerlink" href="#pitfalls" title="Permanent link">#</a></h2>
 <ul>
-<li>用 <code>COUNT(*)</code> 而非 <code>COUNT(e.subject_name)</code> 会把无匹配行错算为 1。</li>
-<li>忘了 <code>CROSS JOIN</code> 而只 <code>INNER JOIN</code> 会丢掉 Alex（无任何考试记录）。</li>
+<li><strong>用 <code>COUNT(*)</code> 代替 <code>COUNT(e.subject_name)</code></strong>：<code>LEFT JOIN</code> 无匹配的行其右侧列为 NULL，<code>COUNT(*)</code> 数行数会把它算成 1，导致零次组合被错报为 1（样例中 Alex 的三行、Bob 的 Physics 都会从 0 变 1）。要用 <code>COUNT(右表列)</code>，靠 NULL 被跳过自然得到 0。</li>
+<li><strong>用 <code>INNER JOIN</code> 代替 <code>CROSS JOIN</code>（或直接 <code>GROUP BY Examinations</code>）</strong>：这会让行集合退回由数据决定，没考过试的组合整条消失。Alex 没有任何考试记录，于是一行都不输出，违反"全组合都要出现"的要求。</li>
 </ul>
 <h2 id="related">相关题目 (Related)<a class="headerlink" href="#related" title="Permanent link">#</a></h2>
 <ul>
@@ -22614,6 +22686,8 @@
         <script src="../../../js/mathjax/tex-mml-chtml.js"></script>
       
         <script src="../../../js/mermaid.min.js"></script>
+      
+        <script src="../../../js/featured.js"></script>
       
     
   </body>

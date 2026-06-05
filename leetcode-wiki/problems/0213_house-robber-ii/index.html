@@ -1466,6 +1466,8 @@
       
         
       
+        
+      
     
     
     
@@ -1521,6 +1523,34 @@
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../featured/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ⭐ Featured（已验证）
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
               
             
               
@@ -1610,10 +1640,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_4" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
         
           
-          <label class="md-nav__link" for="__nav_4_4" id="__nav_4_4_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_5" id="__nav_4_5_label" tabindex="">
             
   
   
@@ -1631,8 +1661,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_4_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_4">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_5">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1915,7 +1945,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -1937,14 +1967,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_4_5" id="__nav_4_5_label" tabindex="">
+              <label class="md-nav__link " for="__nav_4_6" id="__nav_4_6_label" tabindex="">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_5">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_6">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -5321,10 +5351,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_7" checked>
         
           
-          <label class="md-nav__link" for="__nav_4_6" id="__nav_4_6_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_7" id="__nav_4_7_label" tabindex="">
             
   
   
@@ -5342,8 +5372,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_4_6">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_7_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4_7">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -22467,49 +22497,59 @@
 <h2 id="problem">Problem<a class="headerlink" href="#problem" title="Permanent link">#</a></h2>
 <p>房屋值 <code>nums[0..n-1]</code> 排成<strong>环</strong>（首尾相邻），偷窃任意两相邻房屋会触发警报。求最大可偷金额。<span class="arithmatex">\(1 \le n \le 100\)</span>，<span class="arithmatex">\(0 \le nums[i] \le 1000\)</span>。</p>
 <h2 id="background">背景 (Background)<a class="headerlink" href="#background" title="Permanent link">#</a></h2>
-<p>本题是 <strong>House Robber I (线性 DP)</strong> 在 <strong>环形 (cyclic)</strong> 拓扑上的推广。在 DP 文献中，"线性 → 环形"通常通过 <strong>去除一个元素枚举可能性</strong> 的技巧化归——把环切断成两条线性子问题分别求解，再取最大。该套路在 <strong>环形子数组最大和 (#918 Maximum Sum Circular Subarray)</strong>、<strong>环形信使问题</strong> 等都见到。</p>
-<p>从图论看，原问题是 <strong>加权最大独立集 on path graph <span class="arithmatex">\(P_n\)</span></strong>（多项式时间），加上首尾连边后变为 <span class="arithmatex">\(C_n\)</span>（环）。<span class="arithmatex">\(C_n\)</span> 上的 MIS 仍可多项式时间，因 <span class="arithmatex">\(C_n\)</span> 是二部图 / 是 perfect 图。本题给出了一个简单的"枚举端点"实现。</p>
+<p>这道题与 <strong>House Robber I</strong> 只差一个约束：那里房屋排成一条直线，这里首尾相接成环，于是 <span class="arithmatex">\(0\)</span> 号与 <span class="arithmatex">\(n-1\)</span> 号也互为相邻。看上去只是多了一条边，但它恰好打破了线性 DP 赖以成立的结构，因此值得先弄清"多这一条边"到底改变了什么。</p>
+<p>先看线性版本如何解。设 <span class="arithmatex">\(a = nums\)</span>，<span class="arithmatex">\(f(i)\)</span> 表示在前缀 <span class="arithmatex">\(a_{0..i}\)</span> 上、不选相邻元素时能取到的最大和。要么不选 <span class="arithmatex">\(a_i\)</span>，结果是 <span class="arithmatex">\(f(i-1)\)</span>；要么选 <span class="arithmatex">\(a_i\)</span>，则 <span class="arithmatex">\(a_{i-1}\)</span> 不能选，结果是 <span class="arithmatex">\(f(i-2) + a_i\)</span>。于是</p>
+<div class="arithmatex">\[f(i) = \max\bigl(f(i-1),\; f(i-2) + a_i\bigr), \qquad f(-1) = 0,\ f(-2) = 0. \tag{1}\]</div>
+<p>答案是 <span class="arithmatex">\(f(n-1)\)</span>，可用两个滚动变量在 <span class="arithmatex">\(O(n)\)</span> 时间、<span class="arithmatex">\(O(1)\)</span> 空间内算完。</p>
+<p>现在把这条递推<strong>原样</strong>搬到环上，看它在哪里失效。递推 (1) 只检查 <span class="arithmatex">\(a_i\)</span> 与 <span class="arithmatex">\(a_{i-1}\)</span> 这一对相邻关系，它对下标取模一无所知，因此 <span class="arithmatex">\(0\)</span> 与 <span class="arithmatex">\(n-1\)</span> 这条新增的相邻边它根本看不见。取首个样例 <code>nums=[2,3,2]</code>：线性递推会同时选下标 <span class="arithmatex">\(0\)</span> 和 <span class="arithmatex">\(2\)</span>（和为 <span class="arithmatex">\(4\)</span>），但在环上 <span class="arithmatex">\(0\)</span> 与 <span class="arithmatex">\(2\)</span> 相邻，这个解非法；环上的正确答案是 <span class="arithmatex">\(3\)</span>。失效点很具体——<strong>线性递推唯一漏掉的，就是 <span class="arithmatex">\(0\)</span> 与 <span class="arithmatex">\(n-1\)</span> 不能同时选这一条约束</strong>，其余相邻约束它都已照顾到。</p>
 <h2 id="formulation">形式化 (Formulation)<a class="headerlink" href="#formulation" title="Permanent link">#</a></h2>
-<p>求 <span class="arithmatex">\(S \subseteq \{0, 1, \dots, n-1\}\)</span> 使</p>
-<div class="arithmatex">\[\max \sum_{i \in S} nums[i] \quad \text{s.t.} \quad \forall i \in S: (i+1) \bmod n \notin S.\]</div>
-<p>等价：MIS on <span class="arithmatex">\(C_n\)</span> with weights <span class="arithmatex">\(nums[\cdot]\)</span>。</p>
+<p>把上面的观察精确化。合法的偷窃方案是一个下标集合 <span class="arithmatex">\(S\)</span>，其中任意两个被选下标在环上不相邻；目标是最大化所选房屋值之和。求 <span class="arithmatex">\(S \subseteq \{0, 1, \dots, n-1\}\)</span> 使</p>
+<div class="arithmatex">\[\max \sum_{i \in S} a_i \quad \text{s.t.} \quad \forall i \in S:\ (i+1) \bmod n \notin S. \tag{2}\]</div>
+<p>约束 (2) 与线性问题的约束只差一处：当 <span class="arithmatex">\(i = n-1\)</span> 时，<span class="arithmatex">\((i+1)\bmod n = 0\)</span>，即它额外要求"<span class="arithmatex">\(0\)</span> 与 <span class="arithmatex">\(n-1\)</span> 不同时入选"。这正是上一节定位到的那条边。线性问题是去掉这一条约束后的松弛版本，其最优解 (1) 在环上未必合法。</p>
 <h2 id="approach">数据结构 / 想法 (Approach)<a class="headerlink" href="#approach" title="Permanent link">#</a></h2>
-<p><strong>核心观察</strong>：环上的约束 = 线性约束 + "0 与 n-1 不同选"。把"是否选 0" 分两种情况：
-- 选 0：那么 <span class="arithmatex">\(n-1\)</span> 不可选 → 子问题 = 在 <code>nums[0..n-2]</code> 上做 House Robber I。
-- 不选 0：约束自动满足 → 子问题 = 在 <code>nums[1..n-1]</code> 上做 House Robber I。</p>
-<p>答 = <span class="arithmatex">\(\max\)</span> 两者。</p>
-<p><strong>House Robber I 子例程</strong>：经典线性 DP。<span class="arithmatex">\(f(i) = \max(f(i-1), f(i-2) + a_i)\)</span>，<span class="arithmatex">\(f(-1) = 0, f(0) = a_0\)</span>。可滚动到 <span class="arithmatex">\(O(1)\)</span> 空间。</p>
-<p><strong>不变量</strong>：处理 <span class="arithmatex">\(i\)</span> 时，<span class="arithmatex">\(f(i)\)</span> 是 <span class="arithmatex">\(a_{0..i}\)</span> 上不选相邻的最优和；选 <span class="arithmatex">\(a_i\)</span> 必从 <span class="arithmatex">\(f(i-2)\)</span> 转移以保不相邻。</p>
+<p>既然环与直线的差别精确地落在"<span class="arithmatex">\(0\)</span> 与 <span class="arithmatex">\(n-1\)</span> 是否同时入选"这一对下标上，最自然的做法就是<strong>对下标 <span class="arithmatex">\(0\)</span> 是否入选做分类讨论</strong>，让这条多出来的约束在每个分支里自动消解。</p>
+<ul>
+<li><strong>选 <span class="arithmatex">\(0\)</span></strong>：由相邻约束，<span class="arithmatex">\(n-1\)</span> 必不可选。于是 <span class="arithmatex">\(0\)</span> 与 <span class="arithmatex">\(n-1\)</span> 不可能同时出现，新增约束已满足。剩下要在 <span class="arithmatex">\(a_{0..n-2}\)</span> 上不选相邻地取最大和——这正是一个线性子问题。</li>
+<li><strong>不选 <span class="arithmatex">\(0\)</span></strong>：那么不论 <span class="arithmatex">\(n-1\)</span> 是否入选，<span class="arithmatex">\(0\)</span> 与 <span class="arithmatex">\(n-1\)</span> 都不会同时出现，新增约束同样满足。剩下要在 <span class="arithmatex">\(a_{1..n-1}\)</span> 上做线性子问题。</li>
+</ul>
+<p>这两种情况覆盖了所有合法方案（任一方案要么选 <span class="arithmatex">\(0\)</span> 要么不选 <span class="arithmatex">\(0\)</span>），且每个分支内部只剩线性相邻约束，递推 (1) 在其上精确成立。最优环形方案必属于其中之一，故答案取两者较大值。注意第一支去掉了下标 <span class="arithmatex">\(n-1\)</span>、第二支去掉了下标 <span class="arithmatex">\(0\)</span>，两次扫描各自切去一个端点，所以不能用一次线性 DP"在末尾补一条首尾互斥"代替——端点的不对称只有分两次才能完整覆盖。</p>
+<p>把递推 (1) 写成在 <code>arr[start..end)</code> 区间上的线性子例程 <code>rob_linear</code>，用 <code>prev</code>、<code>curr</code> 两个滚动变量推进；初始 <code>prev = curr = 0</code> 表示空前缀（尚未消费任何元素）时的最优和为 <span class="arithmatex">\(0\)</span>，对应 <span class="arithmatex">\(f(-1)=f(-2)=0\)</span>。为避免切片产生 <span class="arithmatex">\(O(n)\)</span> 的临时列表，直接传下标边界而非切片。</p>
 <div class="language-python highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">Solution</span><span class="p">:</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">rob</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">nums</span><span class="p">):</span>
         <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">nums</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">n</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span> <span class="k">return</span> <span class="n">nums</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-        <span class="k">def</span><span class="w"> </span><span class="nf">rob_linear</span><span class="p">(</span><span class="n">arr</span><span class="p">):</span>
-            <span class="n">prev</span><span class="p">,</span> <span class="n">curr</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span>  <span class="c1"># f(-1), f(0) before any element</span>
-            <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">arr</span><span class="p">:</span>
-                <span class="n">prev</span><span class="p">,</span> <span class="n">curr</span> <span class="o">=</span> <span class="n">curr</span><span class="p">,</span> <span class="nb">max</span><span class="p">(</span><span class="n">curr</span><span class="p">,</span> <span class="n">prev</span> <span class="o">+</span> <span class="n">x</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">n</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">nums</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+        <span class="k">def</span><span class="w"> </span><span class="nf">rob_linear</span><span class="p">(</span><span class="n">arr</span><span class="p">,</span> <span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="p">):</span>  <span class="c1"># 在 arr[start:end] 上做线性 House Robber</span>
+            <span class="n">prev</span><span class="p">,</span> <span class="n">curr</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span>  <span class="c1"># 空前缀状态：f(-2)=f(-1)=0</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="p">):</span>
+                <span class="n">prev</span><span class="p">,</span> <span class="n">curr</span> <span class="o">=</span> <span class="n">curr</span><span class="p">,</span> <span class="nb">max</span><span class="p">(</span><span class="n">curr</span><span class="p">,</span> <span class="n">prev</span> <span class="o">+</span> <span class="n">arr</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
             <span class="k">return</span> <span class="n">curr</span>
-        <span class="k">return</span> <span class="nb">max</span><span class="p">(</span><span class="n">rob_linear</span><span class="p">(</span><span class="n">nums</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]),</span> <span class="n">rob_linear</span><span class="p">(</span><span class="n">nums</span><span class="p">[</span><span class="mi">1</span><span class="p">:]))</span>
+
+        <span class="c1"># 选 0：在 nums[0..n-2] 上；不选 0：在 nums[1..n-1] 上</span>
+        <span class="k">return</span> <span class="nb">max</span><span class="p">(</span><span class="n">rob_linear</span><span class="p">(</span><span class="n">nums</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">n</span> <span class="o">-</span> <span class="mi">1</span><span class="p">),</span>
+                   <span class="n">rob_linear</span><span class="p">(</span><span class="n">nums</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">n</span><span class="p">))</span>
 </code></pre></div>
-<p>Trace nums=[2,3,2]: rob_linear([2,3])=3 (选 3); rob_linear([3,2])=3. max=3. ✓
-Trace nums=[1,2,3,1]: rob_linear([1,2,3])=4 (1+3); rob_linear([2,3,1])=4 (2+ ?: prev=0,cur=0→cur=2; prev=2,cur=max(2,3)=3; prev=3,cur=max(3,2+1)=3 → 3). 等等，应 4。重 trace: rob_linear([2,3,1]): start prev=0,cur=0. x=2: prev=0,cur=max(0,0+2)=2. x=3: prev=2,cur=max(2,0+3)=3. x=1: prev=3,cur=max(3,2+1)=3. 答 3. max(4,3)=4. ✓</p>
+<p><code>n == 1</code> 必须特判：此时两个区间 <code>[0, 0)</code> 与 <code>[1, 1)</code> 都为空，<code>rob_linear</code> 返回 <span class="arithmatex">\(0\)</span>，会错误地丢掉唯一的房屋 <code>nums[0]</code>。环本身也要求 <span class="arithmatex">\(n \ge 2\)</span>；当 <span class="arithmatex">\(n = 2\)</span> 时两个子问题各只剩一个元素，结果是 <span class="arithmatex">\(\max(nums[0], nums[1])\)</span>，与"两座房屋互为相邻、至多偷一座"一致。</p>
+<p>把分类讨论落到样例上，可以看清每一支切掉了谁。取 <code>nums=[2,3,2]</code>：选 <span class="arithmatex">\(0\)</span> 这一支在 <code>[2,3]</code> 上做线性 DP，得 <span class="arithmatex">\(3\)</span>（选下标 <span class="arithmatex">\(1\)</span> 的 <span class="arithmatex">\(3\)</span>，下标 <span class="arithmatex">\(2\)</span> 已被排除）；不选 <span class="arithmatex">\(0\)</span> 这一支在 <code>[3,2]</code> 上做，得 <span class="arithmatex">\(3\)</span>。两支都为 <span class="arithmatex">\(3\)</span>，答案 <span class="arithmatex">\(\max(3,3)=3\)</span>，恰好避开了线性递推那个非法的 <span class="arithmatex">\(4\)</span>。再取 <code>nums=[1,2,3,1]</code>：选 <span class="arithmatex">\(0\)</span> 这一支在 <code>[1,2,3]</code> 上得 <span class="arithmatex">\(4\)</span>（<span class="arithmatex">\(1+3\)</span>）；不选 <span class="arithmatex">\(0\)</span> 这一支在 <code>[2,3,1]</code> 上得 <span class="arithmatex">\(3\)</span>；答案 <span class="arithmatex">\(\max(4,3)=4\)</span>。</p>
 <h2 id="complexity">复杂度 (Complexity)<a class="headerlink" href="#complexity" title="Permanent link">#</a></h2>
 <ul>
-<li>Time: <span class="arithmatex">\(O(n)\)</span>，跑两次线性 DP。</li>
-<li>Space: <span class="arithmatex">\(O(1)\)</span>（滚动两个变量）。</li>
+<li>Time：<span class="arithmatex">\(O(n)\)</span>。两次线性扫描，各自 <span class="arithmatex">\(O(n)\)</span>。</li>
+<li>Space：<span class="arithmatex">\(O(1)\)</span>。<code>rob_linear</code> 只用 <code>prev</code>、<code>curr</code> 两个滚动变量；传下标边界而非切片，因此不分配与 <span class="arithmatex">\(n\)</span> 成比例的临时数组。（若改用 <code>nums[:-1]</code>、<code>nums[1:]</code> 切片，则每次切片分配 <span class="arithmatex">\(O(n)\)</span> 辅助空间，空间退化为 <span class="arithmatex">\(O(n)\)</span>。）</li>
 </ul>
 <h2 id="pitfalls">陷阱 (Pitfalls)<a class="headerlink" href="#pitfalls" title="Permanent link">#</a></h2>
 <ul>
-<li><strong>n=1 特判</strong>：切片 <code>nums[:-1]</code> 与 <code>nums[1:]</code> 均为空，会导致返回 <span class="arithmatex">\(0\)</span> 而非 <code>nums[0]</code>。</li>
-<li><strong>不能简单地"在线性 DP 末尾加首尾互斥"</strong>：必须分两次跑，否则会错过 <code>选 0 + 不选 n-1</code> 与 <code>选 n-1 + 不选 0</code> 这种端点不对称情况。</li>
-<li>注意"环"成立需 <span class="arithmatex">\(n \ge 2\)</span>；<span class="arithmatex">\(n = 2\)</span> 时两子问题各只剩一个元素，结果 <span class="arithmatex">\(\max(nums[0], nums[1])\)</span>。</li>
-<li>不要被"必须形成环"误导：选空集 (和 = 0) 永远合法。</li>
+<li><strong>n=1 特判</strong>：传入的两个区间均为空，<code>rob_linear</code> 返回 <span class="arithmatex">\(0\)</span> 而非 <code>nums[0]</code>。必须在切分前单独处理。</li>
+<li><strong>不能用一次线性 DP "在末尾补首尾互斥"</strong>：端点约束是不对称的——"选 <span class="arithmatex">\(0\)</span> + 排除 <span class="arithmatex">\(n-1\)</span>"与"选 <span class="arithmatex">\(n-1\)</span> + 排除 <span class="arithmatex">\(0\)</span>"是两种不同的端点情形，只有分两次扫描、各切去一个端点才能都覆盖到。</li>
+<li><strong>环要求 <span class="arithmatex">\(n \ge 2\)</span></strong>：<span class="arithmatex">\(n = 2\)</span> 时两子问题各剩一个元素，结果 <span class="arithmatex">\(\max(nums[0], nums[1])\)</span>。</li>
+<li><strong>空集恒合法</strong>：选空集（和 <span class="arithmatex">\(= 0\)</span>）永远满足约束，故答案有下界 <span class="arithmatex">\(0\)</span>，不会因"必须形成环"而被迫选出非法解。</li>
+<li><strong>滚动变量的初值语义</strong>：<code>prev = curr = 0</code> 表示空前缀，对应 <span class="arithmatex">\(f(-1)=f(-2)=0\)</span>；它不是 <span class="arithmatex">\(f(0)\)</span>。第一次迭代消费首个元素后 <code>curr</code> 才成为 <span class="arithmatex">\(f(0)\)</span>。</li>
 </ul>
 <h2 id="related">相关题目 (Related)<a class="headerlink" href="#related" title="Permanent link">#</a></h2>
 <ul>
-<li><code>#198. House Robber (off-wiki)</code> — 本题的线性原型；本题调用它两次。</li>
-<li><a href="../0337_house-robber-iii/">#0337. House Robber III</a> — 同序列在树上的推广，转为树形 DP。</li>
-<li><code>#918. Maximum Sum Circular Subarray (off-wiki)</code> — 同样的"线性 → 环形"切断技巧。</li>
+<li><code>#198. House Robber (off-wiki)</code> — 本题的线性原型，即递推 (1)；本题在两个区间上各调用它一次。</li>
+<li><a href="../0337_house-robber-iii/">#0337. House Robber III</a> — 同样的"不选相邻"目标在树上的推广，转为树形 DP。</li>
+<li><code>#918. Maximum Sum Circular Subarray (off-wiki)</code> — 同属"线性 → 环形"主题，但其标准解是 <code>总和 - 最小子数组和</code>（Kadane 变体），与本题"去掉一个端点跑两次线性 DP"是不同机制，仅母题相近。</li>
 </ul>
 <h2 id="further-reading">Further Reading<a class="headerlink" href="#further-reading" title="Permanent link">#</a></h2>
 <ul>
@@ -22622,6 +22662,8 @@ Trace nums=[1,2,3,1]: rob_linear([1,2,3])=4 (1+3); rob_linear([2,3,1])=4 (2+ ?: 
         <script src="../../../js/mathjax/tex-mml-chtml.js"></script>
       
         <script src="../../../js/mermaid.min.js"></script>
+      
+        <script src="../../../js/featured.js"></script>
       
     
   </body>

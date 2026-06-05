@@ -1466,6 +1466,8 @@
       
         
       
+        
+      
     
     
     
@@ -1521,6 +1523,34 @@
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../featured/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ⭐ Featured（已验证）
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
               
             
               
@@ -1610,10 +1640,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_4" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
         
           
-          <label class="md-nav__link" for="__nav_4_4" id="__nav_4_4_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_5" id="__nav_4_5_label" tabindex="">
             
   
   
@@ -1631,8 +1661,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_4_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_4">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_5">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1915,7 +1945,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -1937,14 +1967,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_4_5" id="__nav_4_5_label" tabindex="">
+              <label class="md-nav__link " for="__nav_4_6" id="__nav_4_6_label" tabindex="">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_5">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_6">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -5321,10 +5351,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_7" checked>
         
           
-          <label class="md-nav__link" for="__nav_4_6" id="__nav_4_6_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_7" id="__nav_4_7_label" tabindex="">
             
   
   
@@ -5342,8 +5372,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_4_6">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_7_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4_7">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -22467,19 +22497,28 @@
 <h2 id="problem">Problem<a class="headerlink" href="#problem" title="Permanent link">#</a></h2>
 <p>给定数组 <code>nums</code> 和查询 <code>queries[i] = [val, idx]</code>。每次先做 <code>nums[idx] += val</code>，然后输出当前数组中所有偶数之和。<span class="arithmatex">\(1 \leq n, q \leq 10^4\)</span>，值域 <span class="arithmatex">\(\pm 10^4\)</span>。</p>
 <h2 id="background">背景 (Background)<a class="headerlink" href="#background" title="Permanent link">#</a></h2>
-<p>本题考察"维护一个聚合量的差分更新"：朴素 <span class="arithmatex">\(O(nq)\)</span> 每次重算偶数和不可接受（<span class="arithmatex">\(10^8\)</span>），增量法 <span class="arithmatex">\(O(1)\)</span> per query 是设计模式。同类思路在 streaming aggregation、Bloom filter counter 维护、SQL <code>SUM(... WHERE ...)</code> 的 materialized view 中常见。属于 amortization 入门。</p>
+<p>最直接的做法是把题面照搬：每收到一个查询，应用 <code>nums[idx] += val</code>，然后从头扫一遍数组，把所有偶数加起来作为答案。</p>
+<div class="language-python highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">brute</span><span class="p">(</span><span class="n">nums</span><span class="p">,</span> <span class="n">queries</span><span class="p">):</span>
+    <span class="n">ans</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">val</span><span class="p">,</span> <span class="n">idx</span> <span class="ow">in</span> <span class="n">queries</span><span class="p">:</span>
+        <span class="n">nums</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span> <span class="o">+=</span> <span class="n">val</span>
+        <span class="n">ans</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">sum</span><span class="p">(</span><span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">nums</span> <span class="k">if</span> <span class="n">x</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">0</span><span class="p">))</span>   <span class="c1"># 每次 O(n)</span>
+    <span class="k">return</span> <span class="n">ans</span>
+</code></pre></div>
+<p>这是正确的，但每个查询都要重扫整个数组，单次 <span class="arithmatex">\(O(n)\)</span>，总计 <span class="arithmatex">\(O(nq)\)</span>。在 <span class="arithmatex">\(n, q \le 10^4\)</span> 下是 <span class="arithmatex">\(10^8\)</span> 次运算，逼近超时。</p>
+<p>问题出在重扫的内容几乎全是重复劳动。一次查询只执行 <code>nums[idx] += val</code>，它<strong>只改动了一个位置</strong> <span class="arithmatex">\(idx\)</span>；其余 <span class="arithmatex">\(n-1\)</span> 个元素的值、奇偶性都没变。可上面的代码却为了得到答案，把这 <span class="arithmatex">\(n-1\)</span> 个没变的元素又加了一遍。如果我们能从上一次的答案出发，只结算 <span class="arithmatex">\(idx\)</span> 这一处的变化，单次代价就能从 <span class="arithmatex">\(O(n)\)</span> 降到 <span class="arithmatex">\(O(1)\)</span>。下面把这个想法精确化。</p>
 <h2 id="formulation">形式化 (Formulation)<a class="headerlink" href="#formulation" title="Permanent link">#</a></h2>
-<p>维护</p>
-<div class="arithmatex">\[E_t = \sum_{i : \text{nums}_t[i] \equiv 0 \pmod 2} \text{nums}_t[i]\]</div>
-<p>随每次更新 <span class="arithmatex">\(\text{nums}[idx] \leftarrow \text{nums}[idx] + \text{val}\)</span> 演化。要求 <span class="arithmatex">\(\text{ans}[t] = E_t\)</span>。</p>
+<p>设 <span class="arithmatex">\(t\)</span> 为查询编号，<span class="arithmatex">\(\text{nums}_t\)</span> 表示前 <span class="arithmatex">\(t\)</span> 次更新后的数组（<span class="arithmatex">\(\text{nums}_0\)</span> 为初始数组）。定义第 <span class="arithmatex">\(t\)</span> 步的偶数和</p>
+<div class="arithmatex">\[E_t = \sum_{i \,:\, \text{nums}_t[i] \,\equiv\, 0 \pmod 2} \text{nums}_t[i].\]</div>
+<p>题目要求的答案正是 <span class="arithmatex">\(\text{ans}[t] = E_t\)</span>。</p>
+<p>每次更新形如 <span class="arithmatex">\(\text{nums}[idx] \leftarrow \text{nums}[idx] + \text{val}\)</span>，只改写下标 <span class="arithmatex">\(idx\)</span>。我们要找的是 <span class="arithmatex">\(E_t\)</span> 到 <span class="arithmatex">\(E_{t+1}\)</span> 的演化规律。</p>
 <h2 id="approach">数据结构 / 想法 (Approach)<a class="headerlink" href="#approach" title="Permanent link">#</a></h2>
-<p><strong>关键不变量</strong>：偶数和 <span class="arithmatex">\(E\)</span> 维持 = 当前数组偶数元素之和。一次更新仅影响一个位置，故只需对该位置做"出 / 入"调整：</p>
-<ol>
-<li>若旧值是偶数，从 <span class="arithmatex">\(E\)</span> 减去旧值（先"出"）。</li>
-<li>应用更新。</li>
-<li>若新值是偶数，加回到 <span class="arithmatex">\(E\)</span>（再"入"）。</li>
-</ol>
-<p>这正是 incremental maintenance：<span class="arithmatex">\(E_{t+1} = E_t - [\text{old even}] \cdot \text{old} + [\text{new even}] \cdot \text{new}\)</span>。</p>
+<p>直接对 <span class="arithmatex">\(E_t\)</span> 的定义做差分。由于第 <span class="arithmatex">\(t+1\)</span> 次更新只动下标 <span class="arithmatex">\(idx\)</span>，求和式里除 <span class="arithmatex">\(i = idx\)</span> 外的每一项在前后两步取值完全相同，相减全部抵消：</p>
+<div class="arithmatex">\[E_{t+1} - E_t = \big(\text{idx 在第 } t{+}1 \text{ 步对偶数和的贡献}\big) - \big(\text{idx 在第 } t \text{ 步对偶数和的贡献}\big).\]</div>
+<p>记下标 <span class="arithmatex">\(idx\)</span> 更新前的值为 <span class="arithmatex">\(\text{old} = \text{nums}_t[idx]\)</span>，更新后的值为 <span class="arithmatex">\(\text{new} = \text{old} + \text{val}\)</span>。一个元素对偶数和有贡献，当且仅当它本身是偶数。于是 <span class="arithmatex">\(idx\)</span> 这一项的两步贡献只取决于 <span class="arithmatex">\(\text{old}\)</span>、<span class="arithmatex">\(\text{new}\)</span> 的奇偶。引入指示记号 <span class="arithmatex">\([\,P\,]\)</span>（命题 <span class="arithmatex">\(P\)</span> 为真时取 <span class="arithmatex">\(1\)</span>，否则取 <span class="arithmatex">\(0\)</span>），可写成</p>
+<div class="arithmatex">\[\Delta E = E_{t+1} - E_t = [\text{new even}] \cdot \text{new} - [\text{old even}] \cdot \text{old}. \tag{$\ast$}\]</div>
+<p>这就是从形式化定义读出的全部内容：答案的变化量只与被改位置的旧值、新值及其奇偶有关。<span class="arithmatex">\((\ast)\)</span> 把"更新一个元素"分成对称的两步——旧值若是偶数，先从 <span class="arithmatex">\(E\)</span> 中<strong>减去</strong>它（它即将离开偶数集合或改变取值）；新值若是偶数，再把它<strong>加回</strong> <span class="arithmatex">\(E\)</span>。<span class="arithmatex">\(\text{old}\)</span>、<span class="arithmatex">\(\text{new}\)</span> 奇偶共四种组合，<span class="arithmatex">\((\ast)\)</span> 用两个独立的指示项把四种情形一并覆盖，无需逐例分支。</p>
+<p>于是算法是：维护一个标量 <span class="arithmatex">\(E\)</span>，初始化为初始数组的偶数和（一次 <span class="arithmatex">\(O(n)\)</span> 扫描）；之后每个查询按 <span class="arithmatex">\((\ast)\)</span> 做 <span class="arithmatex">\(O(1)\)</span> 的"减旧偶 / 加新偶"调整，并记录当前 <span class="arithmatex">\(E\)</span>。</p>
 <div class="language-python highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">Solution</span><span class="p">:</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">sumEvenAfterQueries</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">nums</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">],</span> <span class="n">queries</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]])</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]:</span>
         <span class="n">E</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">nums</span> <span class="k">if</span> <span class="n">x</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span>
@@ -22500,16 +22539,18 @@
 - query <code>[-3,1]</code>: old=2 (偶, -2 → 6), new=-1 (奇, 不加), <span class="arithmatex">\(E=6\)</span>. ✓
 - query <code>[-4,0]</code>: old=2 (偶, -2 → 4), new=-2 (偶, -2 → 2), <span class="arithmatex">\(E=2\)</span>. ✓
 - query <code>[2,3]</code>: old=4 (偶, -4 → -2), new=6 (偶, +6 → 4), <span class="arithmatex">\(E=4\)</span>. ✓</p>
+<p>每一步都印证 <span class="arithmatex">\((\ast)\)</span>：奇数旧值不触发减、奇数新值不触发加，恰好对应指示项取 <span class="arithmatex">\(0\)</span>。</p>
 <h2 id="complexity">复杂度 (Complexity)<a class="headerlink" href="#complexity" title="Permanent link">#</a></h2>
 <ul>
-<li>Time: <span class="arithmatex">\(O(n + q)\)</span>，初始化 <span class="arithmatex">\(O(n)\)</span>，每次查询 <span class="arithmatex">\(O(1)\)</span>。</li>
-<li>Space: <span class="arithmatex">\(O(q)\)</span>（答案数组），原地修改 <code>nums</code>。</li>
+<li>Time: <span class="arithmatex">\(O(n + q)\)</span>，初始化偶数和 <span class="arithmatex">\(O(n)\)</span>，每次查询按 <span class="arithmatex">\((\ast)\)</span> 做常数次算术 <span class="arithmatex">\(O(1)\)</span>。</li>
+<li>Space: <span class="arithmatex">\(O(q)\)</span>（答案数组），原地修改 <code>nums</code>，不额外开 <span class="arithmatex">\(O(n)\)</span>。</li>
 </ul>
+<p>注意这是真正的每次 <span class="arithmatex">\(O(1)\)</span>，并非摊还 <span class="arithmatex">\(O(1)\)</span>：不存在某些查询偷偷做了 <span class="arithmatex">\(O(n)\)</span> 工作再均摊到别处。</p>
 <h2 id="pitfalls">陷阱 (Pitfalls)<a class="headerlink" href="#pitfalls" title="Permanent link">#</a></h2>
 <ul>
-<li>负数取模：Python 的 <code>-2 % 2 == 0</code> 正确；其它语言注意 <code>% 2</code> 对负数行为，最好用 <code>x &amp; 1 == 0</code> 但<strong>警告</strong>：C/Java 的 <code>&amp;</code> 对负数仍可用（二补码），Python 也 OK。</li>
-<li>别每次 <code>sum(x for x in nums if x%2==0)</code>——会变 <span class="arithmatex">\(O(nq)\)</span> 爆 <span class="arithmatex">\(10^8\)</span>。</li>
-<li><span class="arithmatex">\(0\)</span> 是偶数，要计入 <span class="arithmatex">\(E\)</span>。</li>
+<li><strong>不要回退到每次重扫</strong> <code>sum(x for x in nums if x%2==0)</code>——那正是开头被否定的 <span class="arithmatex">\(O(nq)\)</span> 做法，会在 <span class="arithmatex">\(10^4 \times 10^4\)</span> 下爆 <span class="arithmatex">\(10^8\)</span>。增量维护的全部意义就是避免这次重扫。</li>
+<li>负数取模：Python 的 <code>-2 % 2 == 0</code> 正确（取模结果随除数符号），故 <code>x % 2 == 0</code> 对负数仍是有效的偶数判定；其它语言注意 <code>% 2</code> 对负数的行为。也可用 <code>x &amp; 1 == 0</code>，C/Java 的 <code>&amp;</code> 对负数同样可用（二补码）。</li>
+<li><span class="arithmatex">\(0\)</span> 是偶数，必须计入 <span class="arithmatex">\(E\)</span>；初始扫描和 <span class="arithmatex">\((\ast)\)</span> 都按 <code>% 2 == 0</code> 处理，自然包含它。</li>
 </ul>
 <h2 id="related">相关题目 (Related)<a class="headerlink" href="#related" title="Permanent link">#</a></h2>
 <ul>
@@ -22625,6 +22666,8 @@
         <script src="../../../js/mathjax/tex-mml-chtml.js"></script>
       
         <script src="../../../js/mermaid.min.js"></script>
+      
+        <script src="../../../js/featured.js"></script>
       
     
   </body>
