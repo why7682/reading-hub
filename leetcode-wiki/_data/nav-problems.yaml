@@ -17,6 +17,7 @@
       - "#92. Reverse Linked List II": problems/0092_reverse-linked-list-ii.md
       - "#93. Restore IP Addresses": problems/0093_restore-ip-addresses.md
       - "#103. Binary Tree Zigzag Level Order Traversal": problems/0103_binary-tree-zigzag-level-order-traversal.md
+      - "#104. Maximum Depth of Binary Tree": problems/0104_maximum-depth-of-binary-tree.md
       - "#110. Balanced Binary Tree": problems/0110_balanced-binary-tree.md
       - "#113. Path Sum II": problems/0113_path-sum-ii.md
       - "#116. Populating Next Right Pointers in Each Node": problems/0116_populating-next-right-pointers-in-each-node.md
