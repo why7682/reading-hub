@@ -5485,6 +5485,8 @@
       
         
       
+        
+      
     
     
     
@@ -6024,6 +6026,34 @@
     
   
     #93. Restore IP Addresses
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../0102_binary-tree-level-order-traversal/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    #102. Binary Tree Level Order Traversal
   
 
     
@@ -22675,12 +22705,25 @@
 <h2 id="problem">Problem<a class="headerlink" href="#problem" title="Permanent link">#</a></h2>
 <p>字符串 <code>word</code>（长度 ≤ 100，全小写字母）。求"只由元音 a/e/i/o/u 组成、且 5 个元音都出现至少一次"的子串个数。</p>
 <h2 id="background">背景 (Background)<a class="headerlink" href="#background" title="Permanent link">#</a></h2>
-<p>本题是"恰好 K 个不同字符的子串数"模式的特例（这里 K = 5，元音字母集）。一种通用解是 <strong>atMost(K) − atMost(K-1)</strong> 的双滑窗减法（同 #992 Subarrays with K Different Integers）。但本题数据小，直接枚举每个"全元音"段并在其内部用滑窗也很清爽。</p>
+<p>合法子串要同时满足两个条件：它落在元音字母表之内（出现任何辅音即非法），并且把这个字母表用尽（5 个元音一个不缺）。第一个条件限制了子串能占据的下标范围，第二个条件对子串内的字符集合提出覆盖要求。计数的难点正源于这两个条件的张力：窗口太短凑不齐 5 个元音，窗口太长又可能撞上辅音；不存在一个"看一眼当前窗口就能决定下一步"的单一条件。</p>
+<p>先看最直接的做法。枚举所有 <span class="arithmatex">\(O(n^2)\)</span> 个子串 <span class="arithmatex">\((l, r)\)</span>，逐字符扫描：遇到辅音立即中断，否则记录已见过的元音；扫到末尾时若 5 种元音齐全则计数。<span class="arithmatex">\(n \le 100\)</span> 时这完全够用，它也确立了正确性基线和两条结构性事实——辅音是硬边界，"全元音"只是必要而非充分。</p>
+<p>枚举之所以慢，是因为它对每个起点都重新扫一遍。要做到线性，得让一个滑动窗口在移动时不重复劳动。但"恰好 5 种不同元音"这个条件本身不适合直接驱动滑窗：当窗口内元音种数超过 5 时（本题元音上限就是 5，不会超；但在一般的"恰好 K 种"问题里会），没有干净的准则告诉左指针何时前移——收缩多少才"刚好"是未定义的。下文从形式化出发，把这个卡点转化成一个有干净收缩准则的等价问题。</p>
 <h2 id="formulation">形式化 (Formulation)<a class="headerlink" href="#formulation" title="Permanent link">#</a></h2>
-<p>求 <span class="arithmatex">\(|\{(l, r) : 0 \le l \le r &lt; n,\; \forall i \in [l, r], s_i \in V,\; \{s_l, \dots, s_r\} \supseteq V\}|\)</span>，其中 <span class="arithmatex">\(V = \{a, e, i, o, u\}\)</span>。</p>
+<p>设 <span class="arithmatex">\(V = \{a, e, i, o, u\}\)</span>。所求为</p>
+<div class="arithmatex">\[
+\bigl|\{(l, r) : 0 \le l \le r &lt; n,\; \forall i \in [l, r],\, s_i \in V,\; \{s_l, \dots, s_r\} \supseteq V\}\bigr|. \tag{1}
+\]</div>
+<p>两个子条件各司其职。<span class="arithmatex">\(\forall i \in [l, r],\, s_i \in V\)</span> 把字符集合压进 <span class="arithmatex">\(V\)</span>，于是 <span class="arithmatex">\(\{s_l,\dots,s_r\} \subseteq V\)</span> 自动成立；再叠加 <span class="arithmatex">\(\{s_l,\dots,s_r\} \supseteq V\)</span>，两个包含一夹，集合恰好等于 <span class="arithmatex">\(V\)</span>。因此 (1) 等价于：子串全为元音，且其元音种数恰为 5。这正是"恰好 <span class="arithmatex">\(K\)</span> 种不同字符"计数在 <span class="arithmatex">\(K=5\)</span>、字符表为 <span class="arithmatex">\(V\)</span> 时的实例。下面分两步把 (1) 化简成可线性计算的形式。</p>
+<p><strong>第一步：辅音是边界，可独立分段。</strong> 因 <span class="arithmatex">\(\forall i,\, s_i \in V\)</span>，任何合法子串都不含辅音，故必整段落在被辅音（及串首串尾）切出的某个"极大全元音段"内。不同段互不重叠，跨段的子串必含辅音、不合法。于是 (1) 的总数等于各全元音段内部合法子串数之和——分段既不漏算也不重算。问题缩小为：在一个全由元音组成的串里，数"恰好含 5 种不同元音"的子串。</p>
+<p><strong>第二步：恰好 5 = atMost(5) − atMost(4)。</strong> 在全元音段内，"恰好 5 种"仍难直接滑窗（卡点同上：种数达标时无收缩准则）。改记 <span class="arithmatex">\(\mathrm{atMost}(k)\)</span> 为"种数 <span class="arithmatex">\(\le k\)</span>"的子串数。一个子串的元音种数若恰为 5，则它被 <span class="arithmatex">\(\mathrm{atMost}(5)\)</span> 计入、却不被 <span class="arithmatex">\(\mathrm{atMost}(4)\)</span> 计入；种数 <span class="arithmatex">\(\le 4\)</span> 的子串在两者中同时出现或同时缺席，相减抵消。故</p>
+<div class="arithmatex">\[
+\#\{\text{恰好 5 种}\} = \mathrm{atMost}(5) - \mathrm{atMost}(4). \tag{2}
+\]</div>
+<p>(2) 的价值在于把"恰好"换成了"至多"，而"至多 <span class="arithmatex">\(k\)</span> 种"恰恰有干净的收缩准则：窗口内种数一旦超过 <span class="arithmatex">\(k\)</span>，就右移左指针直到不超过。这个准则是单调的，使滑窗成立。</p>
 <h2 id="approach">数据结构 / 想法 (Approach)<a class="headerlink" href="#approach" title="Permanent link">#</a></h2>
-<p><strong>方法 1（暴力，n ≤ 100 足够）</strong>：枚举所有 <span class="arithmatex">\(O(n^2)\)</span> 子串，遇到辅音 break，统计 5 元音是否齐全。</p>
-<p><strong>方法 2（线性，atMost 减法）</strong>：对所有"全元音"段（被辅音/边界分隔），在段内做 "exactly 5 distinct = atMost 5 − atMost 4" 的滑窗。</p>
+<p>由 (2)，核心是计算单个全元音段的 <span class="arithmatex">\(\mathrm{atMost}(k)\)</span>。固定右端点 <span class="arithmatex">\(r\)</span>，维护最小的左端点 <span class="arithmatex">\(l\)</span> 使窗口 <span class="arithmatex">\([l, r]\)</span> 内不同字符数 <span class="arithmatex">\(\le k\)</span>；右移 <span class="arithmatex">\(r\)</span> 后若种数超标，就右移 <span class="arithmatex">\(l\)</span> 直到合规。此时所有以 <span class="arithmatex">\(r\)</span> 结尾、左端点在 <span class="arithmatex">\([l, r]\)</span> 内的子串都满足"种数 <span class="arithmatex">\(\le k\)</span>"，共 <span class="arithmatex">\(r - l + 1\)</span> 个，把它们一并累加。对每个 <span class="arithmatex">\(r\)</span> 做一次，即得整段的 <span class="arithmatex">\(\mathrm{atMost}(k)\)</span>。这里 <span class="arithmatex">\(\mathrm{cnt}\)</span> 字典记录窗口内各字符出现次数，<code>len(cnt)</code> 即当前种数。</p>
+<p><strong>方法 1（暴力，n ≤ 100 足够）</strong>：直接实现背景中的 <span class="arithmatex">\(O(n^2)\)</span> 枚举，遇辅音 break，统计 5 元音是否齐全。作为基线与对拍参照。</p>
+<p><strong>方法 2（线性，atMost 减法）</strong>：按 (1)→第一步分段，段内按 (2) 算 <span class="arithmatex">\(\mathrm{atMost}(5) - \mathrm{atMost}(4)\)</span>。</p>
 <div class="language-python highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">Solution</span><span class="p">:</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">countVowelSubstrings</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">word</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
         <span class="n">vowels</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="s2">&quot;aeiou&quot;</span><span class="p">)</span>
@@ -22712,17 +22755,17 @@
             <span class="n">i</span> <span class="o">=</span> <span class="n">j</span>
         <span class="k">return</span> <span class="n">total</span>
 </code></pre></div>
-<p>样例 1 trace：<code>"aeiouu"</code> 全元音。atMost(5)=21（所有 <span class="arithmatex">\(\binom{6+1}{2}=21\)</span> 个子串），atMost(4)=至多 4 种不同元音的子串。手算更直接：枚举每个起点 l，扫到右端 r 时检查 5 元音是否齐：l=0 时 "aeiou"(r=4) ✓ 长 1 个；"aeiouu" (r=5) ✓ → 2 个起自 0；l=1 "eiouu" 缺 a → 0；…。共 2 个 ✓。</p>
+<p>样例 1 trace：<code>"aeiouu"</code> 整串全元音，构成单一段。<span class="arithmatex">\(\mathrm{atMost}(5)\)</span> 计入该段全部子串，共 <span class="arithmatex">\(\binom{7}{2} = 21\)</span> 个（长度 6 的串有 <span class="arithmatex">\(\binom{6+1}{2}\)</span> 个满足 <span class="arithmatex">\(l \le r\)</span> 的下标对）；<span class="arithmatex">\(\mathrm{atMost}(4) = 19\)</span>（仅排除那 2 个含齐 5 种元音的子串）；由 (2) 差为 <span class="arithmatex">\(21 - 19 = 2\)</span>。逐起点核对：<span class="arithmatex">\(l=0\)</span> 时 <code>"aeiou"</code>（<span class="arithmatex">\(r=4\)</span>）与 <code>"aeiouu"</code>（<span class="arithmatex">\(r=5\)</span>）各凑齐 5 种，贡献 2；<span class="arithmatex">\(l=1\)</span> 起 <code>"eiouu"</code> 缺 a，往后皆缺，贡献 0。合计 2，与减法一致。</p>
 <h2 id="complexity">复杂度 (Complexity)<a class="headerlink" href="#complexity" title="Permanent link">#</a></h2>
 <ul>
-<li>Time: <span class="arithmatex">\(O(n)\)</span>（滑窗法）或 <span class="arithmatex">\(O(n^2)\)</span>（暴力，n ≤ 100 完全够）</li>
-<li>Space: <span class="arithmatex">\(O(1)\)</span>（元音集合大小为常数 5）</li>
+<li>Time: <span class="arithmatex">\(O(n)\)</span>（滑窗法：各段长之和为 <span class="arithmatex">\(n\)</span>，每段 <span class="arithmatex">\(\mathrm{atMost}\)</span> 为线性，无数据相关的提前退出，故最好=平均=最坏）或 <span class="arithmatex">\(O(n^2)\)</span>（暴力，n ≤ 100 完全够）。</li>
+<li>Space: <span class="arithmatex">\(O(1)\)</span> 辅助计数（<span class="arithmatex">\(\mathrm{cnt}\)</span> 至多 <span class="arithmatex">\(k \le 5\)</span> 个键）。注意 <code>seg = word[i:j]</code> 的切片在最坏情形（整串全元音）占 <span class="arithmatex">\(O(n)\)</span>；若改为传下标而非切片，可降到严格 <span class="arithmatex">\(O(1)\)</span>。</li>
 </ul>
 <h2 id="pitfalls">陷阱 (Pitfalls)<a class="headerlink" href="#pitfalls" title="Permanent link">#</a></h2>
 <ul>
-<li><strong>辅音重置</strong>：碰到辅音必须中断子串。</li>
-<li><strong>5 元音齐全</strong>：仅"全元音"不够，需要 5 种都出现。</li>
-<li><strong>重复元音不影响合法性</strong>：<code>"aeiouu"</code> 末尾两 u 仍算合法子串。</li>
+<li><strong>辅音重置</strong>：碰到辅音必须中断子串（对应 (1) 中 <span class="arithmatex">\(\forall i,\, s_i \in V\)</span>，也是分段的依据）。</li>
+<li><strong>5 元音齐全</strong>：仅"全元音"不够，需要 5 种都出现（对应 <span class="arithmatex">\(\supseteq V\)</span> 把集合钉为等于 <span class="arithmatex">\(V\)</span>）。</li>
+<li><strong>重复元音不影响合法性</strong>：<code>"aeiouu"</code> 末尾两 u 仍算合法子串（条件约束的是种数而非长度）。</li>
 </ul>
 <h2 id="related">相关题目 (Related)<a class="headerlink" href="#related" title="Permanent link">#</a></h2>
 <ul>

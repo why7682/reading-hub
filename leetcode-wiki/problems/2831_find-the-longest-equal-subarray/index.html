@@ -5485,6 +5485,8 @@
       
         
       
+        
+      
     
     
     
@@ -6024,6 +6026,34 @@
     
   
     #93. Restore IP Addresses
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../0102_binary-tree-level-order-traversal/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    #102. Binary Tree Level Order Traversal
   
 
     
@@ -22675,18 +22705,29 @@
 <h2 id="problem">Problem<a class="headerlink" href="#problem" title="Permanent link">#</a></h2>
 <p>给 <code>nums</code> 与 <span class="arithmatex">\(k\)</span>。可删除最多 <span class="arithmatex">\(k\)</span> 个元素，求剩余数组里最长的"全相等子数组"长度。约束 <span class="arithmatex">\(1 \le n \le 10^5\)</span>，<span class="arithmatex">\(1 \le \text{nums}[i] \le n\)</span>，<span class="arithmatex">\(0 \le k \le n\)</span>。</p>
 <h2 id="background">背景 (Background)<a class="headerlink" href="#background" title="Permanent link">#</a></h2>
-<p>本题是<strong>按值分桶 + 滑动窗口</strong>的组合应用。核心观察：最终的"全相等子数组"必由某个值 <span class="arithmatex">\(v\)</span> 的若干出现组成，删除的是夹在它们之间的其他值。问题独立分解为：对每个 <span class="arithmatex">\(v\)</span>，在其出现下标列表 <span class="arithmatex">\(I_v\)</span> 上做"窗口长度 - 窗口大小 ≤ k"的最长窗口搜索。</p>
-<p>这是 #1004 "Max Consecutive Ones III" 的"按值分桶" 推广——把 0/1 数组的滑窗模板移植到任意值。</p>
+<p>先看朴素做法在哪里失效，再据此导出正确的分解。</p>
+<p>最直接的想法：枚举删除后保留下来的那段连续区间。删除是一个全局操作——它从原数组任意位置抽走元素，被抽走元素左右两侧会拼接在一起。如果我们枚举原数组中的一个区间 <span class="arithmatex">\([i, j]\)</span>，问"把它变成全相等子数组要删几个"，那么删除数就是这段里非众数元素的个数。枚举所有 <span class="arithmatex">\([i, j]\)</span> 共 <span class="arithmatex">\(O(n^2)\)</span> 对，每对再扫一遍统计众数要 <span class="arithmatex">\(O(n)\)</span>，总计 <span class="arithmatex">\(O(n^3)\)</span>；即便用滑动窗口把统计降到摊销 <span class="arithmatex">\(O(1)\)</span>，枚举区间本身仍是 <span class="arithmatex">\(O(n^2)\)</span>。在 <span class="arithmatex">\(n = 10^5\)</span> 下两者都超时。朴素法之所以慢，是因为它把"区间"和"保留哪个值"两件事耦合在一个循环里同时枚举。</p>
+<p>要解耦，先看一个由定义直接得到的事实：删除完成后剩下的子数组"全相等"，意味着它里面只有一个值。设这个值是 <span class="arithmatex">\(v\)</span>。那么这段最终子数组里的每个元素，在原数组中都是 <span class="arithmatex">\(v\)</span> 的一次出现；中间被删掉的，全是夹在这些 <span class="arithmatex">\(v\)</span> 之间的其他值。</p>
+<p>这把问题拆成了两层。外层：枚举最终保留的值 <span class="arithmatex">\(v\)</span>（只有 <span class="arithmatex">\(O(\text{distinct})\)</span> 种）。内层：固定 <span class="arithmatex">\(v\)</span> 后，只需在 <span class="arithmatex">\(v\)</span> 的若干次出现里，选一段连续的出现，使得为了让它们贴在一起所需删除的非 <span class="arithmatex">\(v\)</span> 元素不超过 <span class="arithmatex">\(k\)</span>，并让保留的 <span class="arithmatex">\(v\)</span> 尽量多。区间和值不再耦合——值在外层定死，内层只在该值的出现位置上做选择。</p>
+<p>为此，对每个不同的值 <span class="arithmatex">\(v\)</span>，把它在 <code>nums</code> 中出现的下标按升序收集成一个列表 <span class="arithmatex">\(I_v\)</span>（即"按值分桶"：桶的键是值，桶的内容是该值出现的下标）。所有内层搜索都在这些下标列表上进行，原数组本身不再需要遍历。</p>
 <h2 id="formulation">形式化 (Formulation)<a class="headerlink" href="#formulation" title="Permanent link">#</a></h2>
-<p>对每个值 <span class="arithmatex">\(v\)</span>，设其出现下标 <span class="arithmatex">\(p_1 &lt; p_2 &lt; \dots &lt; p_m\)</span>。在窗口 <span class="arithmatex">\([p_l, p_r]\)</span> 中删除的元素数 = <span class="arithmatex">\((p_r - p_l + 1) - (r - l + 1)\)</span>。要求 <span class="arithmatex">\(\le k\)</span>。求最大 <span class="arithmatex">\(r - l + 1\)</span>。</p>
-<div class="arithmatex">\[\text{ans} = \max_v \max_{l, r : (p_r - p_l) - (r - l) \le k} (r - l + 1)\]</div>
+<p>固定值 <span class="arithmatex">\(v\)</span>，设其出现下标为 <span class="arithmatex">\(p_1 &lt; p_2 &lt; \dots &lt; p_m\)</span>，即 <span class="arithmatex">\(I_v = [p_1, \dots, p_m]\)</span>。注意：下标 <span class="arithmatex">\(l, r\)</span> 是 <span class="arithmatex">\(I_v\)</span> 内部的位置（第几次出现），而 <span class="arithmatex">\(p_l, p_r\)</span> 是这些出现在原数组 <code>nums</code> 中的真实位置——两者不要混淆。</p>
+<p>先用直觉说清楚"删几个"到底在数什么。取 <span class="arithmatex">\(v = 3\)</span>，假设它出现在原数组位置 <span class="arithmatex">\([1, 3, 5]\)</span>。若选取第 1 到第 3 次出现，即窗口跨越原位置 <span class="arithmatex">\([1, 5]\)</span>，这段在原数组里一共占 <span class="arithmatex">\(5 - 1 + 1 = 5\)</span> 个位置，其中只有 <span class="arithmatex">\(3\)</span> 个是 <span class="arithmatex">\(v\)</span>；剩下 <span class="arithmatex">\(5 - 3 = 2\)</span> 个位置坐着别的值，正是要删掉的。换句话说，删除数 = (这段在原数组里跨越的位置总数) − (其中 <span class="arithmatex">\(v\)</span> 的出现次数)。</p>
+<p>一般地，选第 <span class="arithmatex">\(l\)</span> 到第 <span class="arithmatex">\(r\)</span> 次出现（<span class="arithmatex">\(1 \le l \le r \le m\)</span>），窗口在原数组里从 <span class="arithmatex">\(p_l\)</span> 到 <span class="arithmatex">\(p_r\)</span>，跨越 <span class="arithmatex">\((p_r - p_l + 1)\)</span> 个位置，其中 <span class="arithmatex">\(v\)</span> 出现 <span class="arithmatex">\((r - l + 1)\)</span> 次。于是</p>
+<div class="arithmatex">\[
+\text{删除数}(l, r) = (p_r - p_l + 1) - (r - l + 1) = (p_r - p_l) - (r - l).
+\]</div>
+<p>约束是删除数 <span class="arithmatex">\(\le k\)</span>，目标是最大化保留的 <span class="arithmatex">\(v\)</span> 个数 <span class="arithmatex">\(r - l + 1\)</span>。整体目标：</p>
+<div class="arithmatex">\[\text{ans} = \max_v \ \max_{l \le r : \ (p_r - p_l) - (r - l) \le k} \ (r - l + 1).\]</div>
+<p>这个公式就是后续算法的脊柱：内层对每个 <span class="arithmatex">\(v\)</span> 求的就是它右侧的最大窗口。</p>
 <h2 id="approach">数据结构 / 想法 (Approach)<a class="headerlink" href="#approach" title="Permanent link">#</a></h2>
-<p><strong>解法 A：按值分桶 + 滑窗</strong>
-按值分桶下标。对每桶做双指针：
-- 扩 right：把 <span class="arithmatex">\(p_r\)</span> 加入。
-- 计算窗口内删除数 <span class="arithmatex">\((p_r - p_l) - (r - l)\)</span>（数值差减索引差）。
-- 若 &gt; <span class="arithmatex">\(k\)</span>，收 left。
-- 更新 ans。</p>
+<p>固定 <span class="arithmatex">\(v\)</span>，要在 <span class="arithmatex">\(I_v\)</span> 上找满足 <span class="arithmatex">\((p_r - p_l) - (r - l) \le k\)</span> 的最长窗口 <span class="arithmatex">\([l, r]\)</span>。</p>
+<p><strong>为什么双指针成立——单调性。</strong> 关键观察是：随着右端 <span class="arithmatex">\(r\)</span> 增大，使窗口合法的最小左端 <span class="arithmatex">\(l\)</span> 不会回退。证明只需看删除数随两端的变化方向。固定 <span class="arithmatex">\(l\)</span>，把右端从 <span class="arithmatex">\(r\)</span> 推进到 <span class="arithmatex">\(r+1\)</span>：新增的一项 <span class="arithmatex">\(p_{r+1}\)</span> 满足 <span class="arithmatex">\(p_{r+1} &gt; p_r\)</span>，代入公式 <span class="arithmatex">\((p_{r+1} - p_l) - (r+1 - l)\)</span>，数值差至少增加 <span class="arithmatex">\(p_{r+1} - p_r \ge 1\)</span>，索引差只增加 <span class="arithmatex">\(1\)</span>，故删除数单调不减。因此若窗口 <span class="arithmatex">\([l, r]\)</span> 已超过 <span class="arithmatex">\(k\)</span> 次删除，扩到 <span class="arithmatex">\([l, r+1]\)</span> 只会更糟；唯一的补救是抬高 <span class="arithmatex">\(l\)</span>。而抬高 <span class="arithmatex">\(l\)</span>（固定 <span class="arithmatex">\(r\)</span>）会同时减小数值差与索引差——去掉左端那个 <span class="arithmatex">\(v\)</span>，跨越变短、保留变少——删除数随 <span class="arithmatex">\(l\)</span> 增大单调不增。所以对每个 <span class="arithmatex">\(r\)</span>，存在一个临界的最小合法 <span class="arithmatex">\(l\)</span>，且这个临界 <span class="arithmatex">\(l\)</span> 随 <span class="arithmatex">\(r\)</span> 单调右移。这正是双指针（滑动窗口）适用的条件：左指针只前进、不回退，总移动量 <span class="arithmatex">\(O(m)\)</span>。</p>
+<p><strong>解法 A：按值分桶 + 滑窗。</strong> 按上述单调性，对每个桶 <span class="arithmatex">\(I_v\)</span> 维护左指针 <span class="arithmatex">\(l\)</span>，右指针 <span class="arithmatex">\(r\)</span> 逐个扫过：
+- 扩 right：纳入第 <span class="arithmatex">\(r\)</span> 次出现 <span class="arithmatex">\(p_r\)</span>。
+- 计算窗口删除数 <span class="arithmatex">\((p_r - p_l) - (r - l)\)</span>（数值差减索引差）。
+- 若 <span class="arithmatex">\(&gt; k\)</span>，前移 left 直到 <span class="arithmatex">\(\le k\)</span>。
+- 用 <span class="arithmatex">\(r - l + 1\)</span> 更新 ans。</p>
 <div class="language-python highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">collections</span><span class="w"> </span><span class="kn">import</span> <span class="n">defaultdict</span>
 
 <span class="k">def</span><span class="w"> </span><span class="nf">longestEqualSubarray</span><span class="p">(</span><span class="n">nums</span><span class="p">,</span> <span class="n">k</span><span class="p">):</span>
@@ -22703,9 +22744,8 @@
             <span class="n">ans</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">ans</span><span class="p">,</span> <span class="n">r</span> <span class="o">-</span> <span class="n">l</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">ans</span>
 </code></pre></div>
-<p><strong>解法 B：整体滑窗 + 频次最大值</strong>
-窗口 <span class="arithmatex">\([l, r]\)</span> 中保留最多频次的值 <span class="arithmatex">\(v^*\)</span> 占 <span class="arithmatex">\(\text{maxFreq}\)</span> 个，要删 <span class="arithmatex">\((r - l + 1) - \text{maxFreq}\)</span> 个。要求 <span class="arithmatex">\(\le k\)</span>。难点是 maxFreq 在 left++ 时不易精确维护，但经验上"懒维护"（不递减 maxFreq）仍能给出正确最大窗口长度——LeetCode #424 "Longest Repeating Character Replacement" 的标准技巧。这里因值域大需哈希。</p>
-<p><strong>不变量（A）</strong>：对每个 right，循环结束后 l 是使 <code>(ps[r] - ps[l]) - (r - l) ≤ k</code> 的最小 l；窗口内值差减索引差 = 期间被夹入的非 v 元素数 = 需删除数。</p>
+<p><strong>不变量。</strong> 对每个 <span class="arithmatex">\(r\)</span>，while 循环结束时 <span class="arithmatex">\(l\)</span> 恰是满足 <span class="arithmatex">\((ps[r] - ps[l]) - (r - l) \le k\)</span> 的最小下标——由上面的单调性保证它不会越过最优解，也不会停在非法位置。窗口内"数值差减索引差"等于被夹入这段的非 <span class="arithmatex">\(v\)</span> 元素数，即需删除数。</p>
+<p><strong>解法 B：整体滑窗 + 频次最大值。</strong> 回到不分桶的全局窗口 <span class="arithmatex">\([l, r]\)</span>：设其中出现最多的值占 <span class="arithmatex">\(\text{maxFreq}\)</span> 个，则把这段变成全相等需删 <span class="arithmatex">\((r - l + 1) - \text{maxFreq}\)</span> 个，约束 <span class="arithmatex">\(\le k\)</span>。难点在于左指针前移时，被移出的恰好是当前众数，<span class="arithmatex">\(\text{maxFreq}\)</span> 该不该减？精确维护需要一个能支持删除的频次结构，较繁。这里有一个由问题自身结构给出的捷径：我们要的是<strong>最长</strong>合法窗口，而答案长度是非递减的——一旦找到长度为 <span class="arithmatex">\(L\)</span> 的合法窗口，最终答案不会再小于 <span class="arithmatex">\(L\)</span>，后续只需检测是否存在严格更长的合法窗口。因此即使 left++ 时不递减 <span class="arithmatex">\(\text{maxFreq}\)</span>，窗口长度也只会停滞或增长，绝不会错过更长的合法窗口；当一个真正更优（<span class="arithmatex">\(\text{maxFreq}\)</span> 更大）的窗口出现时，<span class="arithmatex">\(\text{maxFreq}\)</span> 自然被刷新。这就让"懒维护"（left++ 时不回退 <span class="arithmatex">\(\text{maxFreq}\)</span>）依然给出正确的最大窗口长度。本题值域大，频次表需用哈希。解法 A 更直接，下面的追踪以 A 为准。</p>
 <p>样例 1 trace：<code>nums=[1,3,2,3,1,3], k=3</code>. 
 - pos[1]=[0,4]: r=0: 1-0=1. r=1: (4-0)-(1-0)=3 ≤3, len=2.
 - pos[3]=[1,3,5]: r=0: len=1. r=1: (3-1)-(1-0)=1, len=2. r=2: (5-1)-(2-0)=2, len=3.
@@ -22717,15 +22757,16 @@
 - ans=4。✓</p>
 <h2 id="complexity">复杂度 (Complexity)<a class="headerlink" href="#complexity" title="Permanent link">#</a></h2>
 <ul>
-<li>Time <span class="arithmatex">\(O(n)\)</span>：每个下标在双指针下 <span class="arithmatex">\(O(1)\)</span> 摊销。</li>
-<li>Space <span class="arithmatex">\(O(n)\)</span>：分桶。</li>
+<li>Time <span class="arithmatex">\(O(n)\)</span>：所有桶的右指针合计扫过每个下标恰一次；每个桶里左指针只前进、总前进量不超过桶大小，跨所有桶为 <span class="arithmatex">\(O(n)\)</span>，故双指针整体摊销 <span class="arithmatex">\(O(1)\)</span> 每下标。</li>
+<li>Space <span class="arithmatex">\(O(n)\)</span>：所有桶的下标总数等于 <span class="arithmatex">\(n\)</span>。</li>
 </ul>
 <h2 id="pitfalls">陷阱 (Pitfalls)<a class="headerlink" href="#pitfalls" title="Permanent link">#</a></h2>
+<p>下面几条都直接源于上面的删除数公式与边界分析。</p>
 <ul>
-<li><strong>删除数公式</strong>：<span class="arithmatex">\((p_r - p_l) - (r - l)\)</span>（数值索引差 - 列表索引差），不是 <code>r - l</code> 也不是 <code>ps[r] - ps[l] - 1</code>。</li>
-<li><strong>k=0</strong>：要求子数组本来就连续相等，算法仍正确。</li>
-<li><strong>空 nums</strong>：题目 <span class="arithmatex">\(n \ge 1\)</span>。</li>
-<li><strong>题目 "可能空"</strong>：题目说空子数组也算 equal，但 ans 至少为 1（任意单元素），不必特判。</li>
+<li><strong>删除数公式</strong>：是 <span class="arithmatex">\((p_r - p_l) - (r - l)\)</span>（数值索引差 − 列表索引差），不是 <code>r - l</code>，也不是 <code>ps[r] - ps[l] - 1</code>。用 <code>r - l</code> 会少算被夹入的元素（在出现稀疏分散时返回过小的答案，例如本该 4 却返回 2）；<code>ps[r] - ps[l] - 1</code> 是两个特定元素间的间隔数，不是整窗删除数。</li>
+<li><strong>k=0</strong>：要求子数组本来就连续相等，公式与算法无需特判仍正确。</li>
+<li><strong>空 nums</strong>：题目 <span class="arithmatex">\(n \ge 1\)</span>，不会出现。</li>
+<li><strong>空子数组</strong>：题目说空子数组也算 equal，但任意单元素就是长度 1 的合法全相等子数组，故 ans 至少为 1，不必特判。</li>
 </ul>
 <h2 id="related">相关题目 (Related)<a class="headerlink" href="#related" title="Permanent link">#</a></h2>
 <ul>

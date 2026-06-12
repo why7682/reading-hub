@@ -5485,6 +5485,8 @@
       
         
       
+        
+      
     
     
     
@@ -6024,6 +6026,34 @@
     
   
     #93. Restore IP Addresses
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../0102_binary-tree-level-order-traversal/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    #102. Binary Tree Level Order Traversal
   
 
     
@@ -22675,18 +22705,54 @@
 <h2 id="problem">Problem<a class="headerlink" href="#problem" title="Permanent link">#</a></h2>
 <p>给 <code>nums</code>、<code>modulo</code>、<code>k</code>。子数组 <span class="arithmatex">\(\text{nums}[l..r]\)</span> "有趣"当且仅当其中满足 <span class="arithmatex">\(\text{nums}[i] \bmod m = k\)</span> 的下标数 cnt 满足 <span class="arithmatex">\(\text{cnt} \bmod m = k\)</span>。求有趣子数组数。约束 <span class="arithmatex">\(1 \le n \le 10^5\)</span>，<span class="arithmatex">\(1 \le m, \text{nums}[i] \le 10^9\)</span>，<span class="arithmatex">\(0 \le k &lt; m\)</span>。</p>
 <h2 id="background">背景 (Background)<a class="headerlink" href="#background" title="Permanent link">#</a></h2>
-<p>本题是<strong>"前缀和 + 模数 + 哈希计数"</strong> 的标准三件套——同构于 #523 / #560 / #974 / #1248 等。把"区间满足某个数论条件的元素数"通过前缀计数 cumcnt 表达，区间 cnt = cumcnt[r+1] - cumcnt[l]，问题归为"求满足 <span class="arithmatex">\((P_r - P_l) \equiv k \pmod m\)</span> 的 <span class="arithmatex">\((l, r)\)</span> 对数"，即哈希表查询补码。</p>
-<p>这是中国剩余定理 / 模运算计数学结构最常见的实现方式，背后是群 <span class="arithmatex">\((\mathbb{Z}/m\mathbb{Z}, +)\)</span> 的 cosets 划分。</p>
+<p>先把问题做到能直接计算，再看它慢在哪里。</p>
+<p>对单个子数组 <span class="arithmatex">\(\text{nums}[l..r]\)</span>，判定"有趣"只需要一个量：区间内满足 <span class="arithmatex">\(\text{nums}[i] \bmod m = k\)</span> 的下标个数。把这个量记作 <span class="arithmatex">\(c(l, r)\)</span>，则"有趣"就是 <span class="arithmatex">\(c(l, r) \bmod m = k\)</span>。于是最朴素的算法是双重循环枚举所有 <span class="arithmatex">\((l, r)\)</span>，对每个区间数一遍合格下标：</p>
+<div class="language-python highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">brute</span><span class="p">(</span><span class="n">nums</span><span class="p">,</span> <span class="n">m</span><span class="p">,</span> <span class="n">k</span><span class="p">):</span>
+    <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">nums</span><span class="p">)</span>
+    <span class="n">ans</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">for</span> <span class="n">l</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+        <span class="n">c</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">l</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">nums</span><span class="p">[</span><span class="n">r</span><span class="p">]</span> <span class="o">%</span> <span class="n">m</span> <span class="o">==</span> <span class="n">k</span><span class="p">:</span>   <span class="c1"># 把 r 纳入区间，增量更新合格计数</span>
+                <span class="n">c</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="k">if</span> <span class="n">c</span> <span class="o">%</span> <span class="n">m</span> <span class="o">==</span> <span class="n">k</span><span class="p">:</span>
+                <span class="n">ans</span> <span class="o">+=</span> <span class="mi">1</span>
+    <span class="k">return</span> <span class="n">ans</span>
+</code></pre></div>
+<p>这段代码是正确的，并且已经做了一点优化：固定 <span class="arithmatex">\(l\)</span> 后让 <span class="arithmatex">\(r\)</span> 递增，<span class="arithmatex">\(c\)</span> 可以增量维护而不必每次重数。但它仍是 <span class="arithmatex">\(O(n^2)\)</span> —— 对 <span class="arithmatex">\(n = 10^5\)</span> 就是 <span class="arithmatex">\(10^{10}\)</span> 次操作，超时。</p>
+<p>慢的根源在于：每换一个左端点 <span class="arithmatex">\(l\)</span>，我们就把 <span class="arithmatex">\(c\)</span> 清零、从头再数一遍。不同的 <span class="arithmatex">\(l\)</span> 之间在重复统计同一段元素的合格个数。要提速，就得把"任意区间的合格个数"变成可以 <span class="arithmatex">\(O(1)\)</span> 取出的东西，不再为每个 <span class="arithmatex">\(l\)</span> 重新累加。这正是前缀和能消除的那种重复。下面从这个目标出发，导出一个 <span class="arithmatex">\(O(n)\)</span> 的解法。</p>
 <h2 id="formulation">形式化 (Formulation)<a class="headerlink" href="#formulation" title="Permanent link">#</a></h2>
-<p>定义 <span class="arithmatex">\(b_i = [\text{nums}[i] \bmod m = k]\)</span>。前缀和 <span class="arithmatex">\(P_j = \sum_{i&lt;j} b_i\)</span>（<span class="arithmatex">\(P_0 = 0\)</span>）。</p>
-<p>求 <span class="arithmatex">\(|\{(l, r) : 0 \le l \le r &lt; n,\ (P_{r+1} - P_l) \bmod m = k\}|\)</span>。</p>
-<p>把 <span class="arithmatex">\(P_j \bmod m\)</span> 记为 <span class="arithmatex">\(q_j\)</span>。条件变为 <span class="arithmatex">\((q_{r+1} - q_l) \bmod m = k\)</span>，即 <span class="arithmatex">\(q_l \equiv q_{r+1} - k \pmod m\)</span>。</p>
+<p><strong>直觉</strong>：我们想数的是"区间内合格下标的个数"。如果给每个下标贴一个 0/1 标记——合格记 1、不合格记 0——那么区间合格个数就是这些标记的区间和。而任意区间和都可以写成两个前缀和之差，于是"枚举区间数一遍"这件 <span class="arithmatex">\(O(n)\)</span> 的事，被前缀和压成两次 <span class="arithmatex">\(O(1)\)</span> 取值。这就把对 <span class="arithmatex">\((l, r)\)</span> 的双重依赖拆开了。形式化如下。</p>
+<p>定义指示量</p>
+<div class="arithmatex">\[
+b_i = [\,\text{nums}[i] \bmod m = k\,] \in \{0, 1\},
+\]</div>
+<p>以及它的前缀和</p>
+<div class="arithmatex">\[
+P_j = \sum_{i &lt; j} b_i, \qquad P_0 = 0. \tag{1}
+\]</div>
+<p>这样区间合格个数就是 <span class="arithmatex">\(c(l, r) = P_{r+1} - P_l\)</span>。于是要数的有趣子数组个数为</p>
+<div class="arithmatex">\[
+\bigl|\{(l, r) : 0 \le l \le r &lt; n,\ (P_{r+1} - P_l) \bmod m = k\}\bigr|. \tag{2}
+\]</div>
+<p>记 <span class="arithmatex">\(q_j = P_j \bmod m\)</span>。利用模减法的分配律
+<span class="arithmatex">\((a - b) \bmod m = \bigl((a \bmod m) - (b \bmod m)\bigr) \bmod m\)</span>，
+<span class="arithmatex">\((2)\)</span> 中的条件 <span class="arithmatex">\((P_{r+1} - P_l) \bmod m = k\)</span> 等价于</p>
+<div class="arithmatex">\[
+(q_{r+1} - q_l) \bmod m = k
+\quad\Longleftrightarrow\quad
+q_l \equiv q_{r+1} - k \pmod m. \tag{3}
+\]</div>
+<p>举个具体的数验证模减法这一步：设 <span class="arithmatex">\(P_{r+1} = 5,\ P_l = 2,\ m = 3\)</span>，则 <span class="arithmatex">\((5 - 2) \bmod 3 = 0\)</span>；而 <span class="arithmatex">\((5 \bmod 3 - 2 \bmod 3) \bmod 3 = (2 - 2) \bmod 3 = 0\)</span>，两者一致。</p>
+<p><span class="arithmatex">\((3)\)</span> 是整个解法的脊梁：判定一个 <span class="arithmatex">\((l, r)\)</span> 对是否有趣，不再需要同时看两端，而是看右端 <span class="arithmatex">\(r+1\)</span> 决定的目标余数 <span class="arithmatex">\((q_{r+1} - k) \bmod m\)</span>，再问"左端 <span class="arithmatex">\(q_l\)</span> 是否等于它"。</p>
 <h2 id="approach">数据结构 / 想法 (Approach)<a class="headerlink" href="#approach" title="Permanent link">#</a></h2>
-<p>扫描 <span class="arithmatex">\(P_0, P_1, \dots, P_n\)</span> 的模值 <span class="arithmatex">\(q_j\)</span>。用 <code>cnt[res]</code> 计数到目前为止 <span class="arithmatex">\(q_j = res\)</span> 的 <span class="arithmatex">\(j\)</span> 数。对每个新 <span class="arithmatex">\(q_{r+1}\)</span>，要找的 <span class="arithmatex">\(l\)</span> 满足 <span class="arithmatex">\(q_l = (q_{r+1} - k) \bmod m\)</span>，累加 <code>cnt[(q_{r+1} - k) % m]</code> 到答案。然后再把 <span class="arithmatex">\(q_{r+1}\)</span> 加入 cnt。</p>
+<p><span class="arithmatex">\((3)\)</span> 的右端 <span class="arithmatex">\((q_{r+1} - k) \bmod m\)</span> 只依赖当前位置 <span class="arithmatex">\(r+1\)</span>，是个可以 <span class="arithmatex">\(O(1)\)</span> 算出的定值。于是对固定的 <span class="arithmatex">\(r+1\)</span>，要做的不是逐个检查每个 <span class="arithmatex">\(l\)</span>，而是问：在 <span class="arithmatex">\(r+1\)</span> 左侧，有多少个 <span class="arithmatex">\(j = l\)</span> 的 <span class="arithmatex">\(q_j\)</span> 恰好等于这个目标余数？只要维护一张按余数计数的频率表 <code>cnt</code>，这个数就能 <span class="arithmatex">\(O(1)\)</span> 取出。</p>
+<p>由此得到单次扫描算法：从左到右遍历 <span class="arithmatex">\(q_0, q_1, \dots, q_n\)</span>。对每个新的 <span class="arithmatex">\(q_{r+1}\)</span>，先令 <span class="arithmatex">\(\text{target} = (q_{r+1} - k) \bmod m\)</span>，把 <code>cnt[target]</code> 累加进答案（这些是所有合法的左端 <span class="arithmatex">\(l\)</span>）；<strong>然后</strong>再把 <span class="arithmatex">\(q_{r+1}\)</span> 计入 <code>cnt</code>，供后续更大的右端使用。</p>
+<p>先查询、后写入的顺序不是约定俗成，而是由 <span class="arithmatex">\((2)\)</span> 的约束 <span class="arithmatex">\(l \le r\)</span>（即 <span class="arithmatex">\(l \le r+1\)</span> 中取 <span class="arithmatex">\(l &lt; r+1\)</span> 或 <span class="arithmatex">\(l = r+1\)</span> 落到边界）逼出来的：查询 <code>cnt[target]</code> 时，表里只含下标 <span class="arithmatex">\(\le\)</span> 当前右端之前的 <span class="arithmatex">\(q_j\)</span>，因此配出的每个 <span class="arithmatex">\(l\)</span> 都满足 <span class="arithmatex">\(l \le r\)</span>。若反过来先写入再查询，就会把当前 <span class="arithmatex">\(q_{r+1}\)</span> 自己算进去，配出 <span class="arithmatex">\(l = r+1 &gt; r\)</span> 这样的非法零宽或反向区间，造成多计。</p>
 <div class="language-python highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">countInterestingSubarrays</span><span class="p">(</span><span class="n">nums</span><span class="p">,</span> <span class="n">modulo</span><span class="p">,</span> <span class="n">k</span><span class="p">):</span>
     <span class="kn">from</span><span class="w"> </span><span class="nn">collections</span><span class="w"> </span><span class="kn">import</span> <span class="n">defaultdict</span>
     <span class="n">cnt</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
-    <span class="n">cnt</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>  <span class="c1"># P_0 = 0</span>
+    <span class="n">cnt</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>  <span class="c1"># P_0 = 0 对应空前缀, 即 l = 0 的边界</span>
     <span class="n">P</span> <span class="o">=</span> <span class="mi">0</span>
     <span class="n">ans</span> <span class="o">=</span> <span class="mi">0</span>
     <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">nums</span><span class="p">:</span>
@@ -22694,11 +22760,12 @@
             <span class="n">P</span> <span class="o">+=</span> <span class="mi">1</span>
         <span class="n">q</span> <span class="o">=</span> <span class="n">P</span> <span class="o">%</span> <span class="n">modulo</span>
         <span class="n">target</span> <span class="o">=</span> <span class="p">(</span><span class="n">q</span> <span class="o">-</span> <span class="n">k</span><span class="p">)</span> <span class="o">%</span> <span class="n">modulo</span>
-        <span class="n">ans</span> <span class="o">+=</span> <span class="n">cnt</span><span class="p">[</span><span class="n">target</span><span class="p">]</span>
-        <span class="n">cnt</span><span class="p">[</span><span class="n">q</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="n">ans</span> <span class="o">+=</span> <span class="n">cnt</span><span class="p">[</span><span class="n">target</span><span class="p">]</span>   <span class="c1"># 先查询: 只配对已入表的 l &lt;= r</span>
+        <span class="n">cnt</span><span class="p">[</span><span class="n">q</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>          <span class="c1"># 后写入: 当前 q 供后续右端使用</span>
     <span class="k">return</span> <span class="n">ans</span>
 </code></pre></div>
-<p><strong>不变量</strong>：扫到 nums[i] 处理完后，<code>cnt[res]</code> 是 <span class="arithmatex">\(\{j : 0 \le j \le i+1, q_j = res\}\)</span> 的大小。先查询（用旧 cnt 找配对的 <span class="arithmatex">\(l \le i\)</span> 处），再加入当前。</p>
+<p><code>cnt[0] = 1</code> 的初始化对应 <span class="arithmatex">\((1)\)</span> 中的 <span class="arithmatex">\(P_0 = 0\)</span>，即半开区间下 <span class="arithmatex">\(l = 0\)</span> 的空前缀。它必须在循环前就位，否则会漏掉"整段 <span class="arithmatex">\(\text{nums}[0..r]\)</span> 本身就有趣"的情形。一个最小例子：<span class="arithmatex">\(\text{nums} = [3],\ m = 3,\ k = 0\)</span>。此时 <span class="arithmatex">\(b_0 = 1\)</span>，<span class="arithmatex">\(P_1 = 1\)</span>，<span class="arithmatex">\(q_1 = 1\)</span>，<span class="arithmatex">\(\text{target} = (1 - 0) \bmod 3 = 1\)</span>。整段 <span class="arithmatex">\([0..0]\)</span> 的合格个数是 1，<span class="arithmatex">\(1 \bmod 3 \ne 0\)</span>，确实不有趣，答案应为 0——但若把 <span class="arithmatex">\(k\)</span> 换成例子里 target 能命中 <span class="arithmatex">\(q_0 = 0\)</span> 的场景，缺了 <code>cnt[0] = 1</code> 就会把以 <span class="arithmatex">\(l = 0\)</span> 起头的整段前缀全部漏掉。下面的样例 1 第一步 <code>ans += cnt[0] = 1</code> 正是靠它命中。</p>
+<p><strong>不变量</strong>：扫到 <code>nums[i]</code> 处理完后，<code>cnt[res]</code> 等于 <span class="arithmatex">\(\{j : 0 \le j \le i+1,\ q_j = res\}\)</span> 的大小。由于查询发生在写入之前，每次配对只会用到 <span class="arithmatex">\(l \le i\)</span> 的旧 <span class="arithmatex">\(q_l\)</span>。下面两条 trace 逐步印证这个不变量。</p>
 <p>样例 1 trace：<code>nums=[3,2,4], m=2, k=1</code>. b=[1,0,0]. P=[0,1,1,1]. q=[0,1,1,1].
 - 初 cnt={0:1}, P=0, ans=0.
 - v=3 (b=1): P=1, q=1. target=(1-1)%2=0. ans+=cnt[0]=1. cnt={0:1,1:1}.
@@ -22715,13 +22782,13 @@
 <h2 id="complexity">复杂度 (Complexity)<a class="headerlink" href="#complexity" title="Permanent link">#</a></h2>
 <ul>
 <li>Time <span class="arithmatex">\(O(n)\)</span> — 单次扫描 + 哈希 <span class="arithmatex">\(O(1)\)</span> 均摊。</li>
-<li>Space <span class="arithmatex">\(O(\min(m, n))\)</span> — cnt 的桶数。</li>
+<li>Space <span class="arithmatex">\(O(\min(m, n))\)</span> — <code>cnt</code> 的键是模 <span class="arithmatex">\(m\)</span> 的余数（至多 <span class="arithmatex">\(m\)</span> 个），而总插入次数为 <span class="arithmatex">\(n+1\)</span>（至多 <span class="arithmatex">\(n\)</span> 个不同键）。</li>
 </ul>
 <h2 id="pitfalls">陷阱 (Pitfalls)<a class="headerlink" href="#pitfalls" title="Permanent link">#</a></h2>
 <ul>
-<li><strong><code>P_0 = 0</code> 初始化</strong>：<code>cnt[0] = 1</code> 必须先放，对应空前缀的"<span class="arithmatex">\(l=0\)</span>"匹配。</li>
-<li><strong>模数负数</strong>：Python <code>%</code> 返回非负，C/C++/Java 需 <code>(target % m + m) % m</code>。</li>
-<li><strong>k ≥ m</strong>：题目保证 <span class="arithmatex">\(k &lt; m\)</span>，否则 target 计算错。</li>
+<li><strong><code>P_0 = 0</code> 初始化</strong>：<code>cnt[0] = 1</code> 必须先放，对应空前缀的"<span class="arithmatex">\(l = 0\)</span>"匹配；遗漏会漏掉以下标 0 起头的整段前缀（见上文最小例子）。</li>
+<li><strong>模数负数</strong>：当 <span class="arithmatex">\(k &gt; q\)</span> 时 <code>(q - k)</code> 为负。Python <code>%</code> 返回非负，C/C++/Java 需写 <code>(target % m + m) % m</code>。</li>
+<li><strong>k ≥ m</strong>：题目保证 <span class="arithmatex">\(k &lt; m\)</span>，否则 <span class="arithmatex">\((3)\)</span> 的目标余数计算无意义。</li>
 <li><strong><code>(q - k) % m</code></strong>：是 <span class="arithmatex">\(q\)</span> 减 <span class="arithmatex">\(k\)</span> 再取模，不是 <code>q % k</code>。</li>
 </ul>
 <h2 id="related">相关题目 (Related)<a class="headerlink" href="#related" title="Permanent link">#</a></h2>
@@ -22730,7 +22797,7 @@
 <li><a href="../0974_subarray-sums-divisible-by-k/">#974. Subarray Sums Divisible by K (Medium)</a> — 模意义前缀和。</li>
 <li><code>#1248. Count Number of Nice Subarrays (Medium) (off-wiki)</code> — 同思路 0/1 标记。</li>
 <li><a href="../2750_ways-to-split-array-into-good-subarrays/">#2750. Ways to Split Array Into Good Subarrays</a> — 同 batch 计数。</li>
-<li><a href="../0001_two-sum/">#0560. Subarray Sum Equals K</a> 是远亲（哈希 + 前缀）。</li>
+<li><a href="../0001_two-sum/">#1. Two Sum</a> 是远亲（哈希 + 补码查询的最早形态）。</li>
 </ul>
 <h2 id="further-reading">Further Reading<a class="headerlink" href="#further-reading" title="Permanent link">#</a></h2>
 <ul>

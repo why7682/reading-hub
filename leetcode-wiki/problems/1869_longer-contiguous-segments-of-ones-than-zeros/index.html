@@ -5485,6 +5485,8 @@
       
         
       
+        
+      
     
     
     
@@ -6024,6 +6026,34 @@
     
   
     #93. Restore IP Addresses
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../0102_binary-tree-level-order-traversal/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    #102. Binary Tree Level Order Traversal
   
 
     
@@ -22675,11 +22705,31 @@
 <h2 id="problem">Problem<a class="headerlink" href="#problem" title="Permanent link">#</a></h2>
 <p>给二进制串 <code>s</code>，判断<strong>最长</strong> <code>1</code> 段是否<strong>严格大于</strong>最长 <code>0</code> 段。约束 <span class="arithmatex">\(1 \le |s| \le 100\)</span>。</p>
 <h2 id="background">背景 (Background)<a class="headerlink" href="#background" title="Permanent link">#</a></h2>
-<p>本题为基础"分段统计扫描"。"游程长度 (run-length)" 是数据压缩 (RLE) 和位流分析的基础概念。</p>
+<p>一个二进制串可以被唯一地切成一串<strong>极大同字符块</strong>：从左到右，每当字符改变就开一个新块，于是 <code>"110100010"</code> 被切成 <code>11 | 0 | 1 | 000 | 1 | 0</code>。这个切分不是我们选择的，而是被串本身的结构强制的：相邻同字符必属同块，相邻异字符必跨块。本题问的，正是在这个被迫的切分里，哪个字符的最长块更长。这一节只确立一个事实——<strong>串唯一分解为极大同字符块</strong>——后面所有推理都从它出发。</p>
 <h2 id="formulation">形式化 (Formulation)<a class="headerlink" href="#formulation" title="Permanent link">#</a></h2>
-<p>设 <span class="arithmatex">\(L_c = \max\{r - l + 1 : s[l..r] \text{ 全为字符 } c\}\)</span>（若无则 0）。判定 <span class="arithmatex">\(L_1 &gt; L_0\)</span>。</p>
+<p>直觉先行。我们要比的是"最长 <code>1</code> 段"和"最长 <code>0</code> 段"，所以对每个字符，我们只关心它<strong>最长的那一个块</strong>，所有更短的块都与答案无关。把"字符 <span class="arithmatex">\(c\)</span> 的最长块长度"命名出来，就得到形式定义。</p>
+<p>设字符 <span class="arithmatex">\(c \in \{0, 1\}\)</span>。令</p>
+<div class="arithmatex">\[
+L_c \;=\; \max\{\, r - l + 1 \;:\; 0 \le l \le r &lt; |s|,\ s[l..r] \text{ 全为字符 } c \,\}
+\]</div>
+<p>即 <span class="arithmatex">\(L_c\)</span> 是 <span class="arithmatex">\(s\)</span> 中由字符 <span class="arithmatex">\(c\)</span> 构成的<strong>极大连续块</strong>的最大长度（若 <span class="arithmatex">\(c\)</span> 不出现则 <span class="arithmatex">\(L_c = 0\)</span>）。本题即判定</p>
+<div class="arithmatex">\[
+L_1 &gt; L_0 .
+\]</div>
+<p>注意只取最长块、且 <span class="arithmatex">\(l, r\)</span> 给出的是一个全 <span class="arithmatex">\(c\)</span> 的区间，已经同时编码了"连续"与"该字符"两个约束。下面的任务是把 <span class="arithmatex">\(L_0, L_1\)</span> 算出来。</p>
 <h2 id="approach">数据结构 / 想法 (Approach)<a class="headerlink" href="#approach" title="Permanent link">#</a></h2>
-<p>一次扫描，遇到与前一字符相同则累加 <code>run</code>，否则重置；分别维护 <span class="arithmatex">\(L_0, L_1\)</span>。</p>
+<p><strong>朴素尝试，及其卡点。</strong> 直接照定义做：枚举所有区间 <span class="arithmatex">\(s[l..r]\)</span>，检查是否全为同一字符，记录每个字符的最长全同区间。区间有 <span class="arithmatex">\(O(|s|^2)\)</span> 个，逐个检查再花 <span class="arithmatex">\(O(|s|)\)</span>，总计 <span class="arithmatex">\(O(|s|^3)\)</span>。<span class="arithmatex">\(|s| \le 100\)</span> 下能过，但它重复做了大量无用功：一旦某区间不全同，包含它的所有更大区间也不全同，枚举却不利用这一点。卡点在于——枚举把"块"当成需要搜索的对象，而块其实是由结构强制确定的，根本不必搜。</p>
+<p><strong>修复：让块沿着扫描自己生长。</strong> 既然分块由"字符是否改变"决定，就一次从左到右扫描，盯住<strong>以当前位置结尾的同字符块有多长</strong>。设 <span class="arithmatex">\(\mathrm{run}(i)\)</span> 为以下标 <span class="arithmatex">\(i\)</span> 结尾的极大同字符块长度，则它满足一步递推</p>
+<div class="arithmatex">\[
+\mathrm{run}(i) \;=\;
+\begin{cases}
+\mathrm{run}(i-1) + 1, &amp; s[i] = s[i-1] \\[2pt]
+1, &amp; \text{否则（含 } i = 0\text{）}
+\end{cases}
+\]</div>
+<p>这个递推之所以成立，是因为<strong>块在字符改变的那一刻立即结束</strong>：若 <span class="arithmatex">\(s[i] \ne s[i-1]\)</span>，那么任何以 <span class="arithmatex">\(i\)</span> 结尾的全同区间都不能跨过 <span class="arithmatex">\(i-1\)</span>，故新块长度归 <span class="arithmatex">\(1\)</span>；若相等，则上一块顺势延长一位。每个极大块的总长度，必定在该块<strong>最后一个位置</strong>上以 <span class="arithmatex">\(\mathrm{run}\)</span> 的形式出现，所以扫描时对每个字符取 <span class="arithmatex">\(\mathrm{run}\)</span> 的运行最大值，就等于 <span class="arithmatex">\(L_c\)</span>。</p>
+<p>为什么一遍扫描就够、不必回看？因为 <span class="arithmatex">\(\mathrm{run}(i)\)</span> 只依赖 <span class="arithmatex">\(\mathrm{run}(i-1)\)</span> 和 <span class="arithmatex">\(s[i]\)</span> 这一步信息；而后面的位置无法反过来加长前面已经结束的块，所以每步更新完 <span class="arithmatex">\(L_c\)</span> 即可丢弃 <span class="arithmatex">\(\mathrm{run}(i-1)\)</span>，单个标量足矣。这把 <span class="arithmatex">\(O(|s|^3)\)</span> 降到 <span class="arithmatex">\(O(|s|)\)</span>。</p>
+<p>代码里，字典 <code>L</code> 就是 <span class="arithmatex">\(L_c\)</span>（键 <code>'0'</code>/<code>'1'</code> 即字符 <span class="arithmatex">\(c\)</span>），<code>run</code> 就是 <span class="arithmatex">\(\mathrm{run}(i)\)</span>，<code>prev</code> 记 <span class="arithmatex">\(s[i-1]\)</span>：</p>
 <div class="language-python highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">Solution</span><span class="p">:</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">checkZeroOnes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">s</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
         <span class="n">L</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;0&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;1&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">}</span>
@@ -22692,26 +22742,94 @@
             <span class="n">prev</span> <span class="o">=</span> <span class="n">ch</span>
         <span class="k">return</span> <span class="n">L</span><span class="p">[</span><span class="s1">&#39;1&#39;</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">L</span><span class="p">[</span><span class="s1">&#39;0&#39;</span><span class="p">]</span>
 </code></pre></div>
-<p>Trace 例 3 <code>"110100010"</code>：runs = 1,2(11),1(0),1(1),1(0),1(0),1(0),1(1),1(0) — 跟踪：
-- '1': run=1, L['1']=1
-- '1': run=2, L['1']=2
-- '0': run=1, L['0']=1
-- '1': run=1
-- '0': run=1
-- '0': run=2, L['0']=2
-- '0': run=3, L['0']=3
-- '1': run=1
-- '0': run=1</p>
-<p>L['1']=2, L['0']=3 → False ✓</p>
+<p>哨兵 <code>prev = ''</code> 处理首字符：对第一个字符 <code>ch</code>，<code>ch == ''</code> 必为假（无真实字符等于空串），于是 <code>run</code> 归 <span class="arithmatex">\(1\)</span>——正是单字符块的正确长度，与递推中 <span class="arithmatex">\(i = 0\)</span> 的分支一致，无需特判。</p>
+<p>下面把递推与运行最大值落到例 3 <code>"110100010"</code>（字符序列 <span class="arithmatex">\(1,1,0,1,0,0,0,1,0\)</span>）上。每一步给出当前 <code>ch</code>、<code>run = run(i)</code>、以及被更新的 <span class="arithmatex">\(L_c\)</span>：</p>
+<table>
+<thead>
+<tr>
+<th><span class="arithmatex">\(i\)</span></th>
+<th><code>ch</code></th>
+<th><code>run</code></th>
+<th><code>L['0']</code></th>
+<th><code>L['1']</code></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>1</td>
+<td>1</td>
+<td>0</td>
+<td>1</td>
+</tr>
+<tr>
+<td>1</td>
+<td>1</td>
+<td>2</td>
+<td>0</td>
+<td><strong>2</strong></td>
+</tr>
+<tr>
+<td>2</td>
+<td>0</td>
+<td>1</td>
+<td>1</td>
+<td>2</td>
+</tr>
+<tr>
+<td>3</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>2</td>
+</tr>
+<tr>
+<td>4</td>
+<td>0</td>
+<td>1</td>
+<td>1</td>
+<td>2</td>
+</tr>
+<tr>
+<td>5</td>
+<td>0</td>
+<td>2</td>
+<td>2</td>
+<td>2</td>
+</tr>
+<tr>
+<td>6</td>
+<td>0</td>
+<td>3</td>
+<td><strong>3</strong></td>
+<td>2</td>
+</tr>
+<tr>
+<td>7</td>
+<td>1</td>
+<td>1</td>
+<td>3</td>
+<td>2</td>
+</tr>
+<tr>
+<td>8</td>
+<td>0</td>
+<td>1</td>
+<td>3</td>
+<td>2</td>
+</tr>
+</tbody>
+</table>
+<p>终值 <span class="arithmatex">\(L_1 = 2\)</span>、<span class="arithmatex">\(L_0 = 3\)</span>，故 <span class="arithmatex">\(L_1 &gt; L_0\)</span> 为假，返回 <code>False</code> ✓。可见 <span class="arithmatex">\(1\)</span>-块为 <span class="arithmatex">\(\{11, 1, 1\}\)</span> 最长 <span class="arithmatex">\(2\)</span>，<span class="arithmatex">\(0\)</span>-块为 <span class="arithmatex">\(\{0, 000, 0\}\)</span> 最长 <span class="arithmatex">\(3\)</span>，与扫描结果吻合。</p>
 <h2 id="complexity">复杂度 (Complexity)<a class="headerlink" href="#complexity" title="Permanent link">#</a></h2>
 <ul>
-<li>Time: <span class="arithmatex">\(O(|s|)\)</span></li>
-<li>Space: <span class="arithmatex">\(O(1)\)</span></li>
+<li>Time: <span class="arithmatex">\(O(|s|)\)</span>——单趟扫描，每位置常数工作；无提前退出，故最好=平均=最坏。</li>
+<li>Space: <span class="arithmatex">\(O(1)\)</span>——固定两键字典加若干标量。</li>
 </ul>
 <h2 id="pitfalls">陷阱 (Pitfalls)<a class="headerlink" href="#pitfalls" title="Permanent link">#</a></h2>
 <ul>
-<li><strong>"严格大于"</strong>：相等返回 <code>false</code>（例 2）。</li>
-<li>空段 <span class="arithmatex">\(L = 0\)</span> 的退化情况：若全为 <code>'1'</code>，<span class="arithmatex">\(L_0 = 0 &lt; L_1\)</span>，返回 true。</li>
+<li><strong>"严格大于"</strong>：判定是 <span class="arithmatex">\(L_1 &gt; L_0\)</span> 而非 <span class="arithmatex">\(\ge\)</span>。在第 5 行返回处，相等即返回 <code>false</code>（例 2 <code>"111000"</code> 给出 <span class="arithmatex">\(L_1 = L_0 = 3\)</span>，返回 <code>False</code>）。</li>
+<li><strong>空段 <span class="arithmatex">\(L_c = 0\)</span> 的退化情况</strong>：某字符不出现时其 <span class="arithmatex">\(L_c\)</span> 停在初值 <span class="arithmatex">\(0\)</span>。若全为 <code>'1'</code>，则 <span class="arithmatex">\(L_0 = 0 &lt; L_1\)</span>，返回 <code>True</code>；这一支由字典初始化 <code>{'0': 0, '1': 0}</code> 直接保证，无需在循环里特判缺席字符。</li>
 </ul>
 <h2 id="related">相关题目 (Related)<a class="headerlink" href="#related" title="Permanent link">#</a></h2>
 <ul>

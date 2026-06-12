@@ -5485,6 +5485,8 @@
       
         
       
+        
+      
     
     
     
@@ -6024,6 +6026,34 @@
     
   
     #93. Restore IP Addresses
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../0102_binary-tree-level-order-traversal/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    #102. Binary Tree Level Order Traversal
   
 
     
@@ -22675,13 +22705,24 @@
 <h2 id="problem">Problem<a class="headerlink" href="#problem" title="Permanent link">#</a></h2>
 <p>骰子（1..6）扔了 <code>n + m</code> 次，目前只能看到 <code>m</code> 次的结果 <code>rolls</code>，要求所有 <code>n + m</code> 次的均值恰好为 <code>mean</code>。构造一个长度 <code>n</code> 的数组（每个元素 ∈ [1,6]）作为丢失的观测；不存在则返回 <code>[]</code>。</p>
 <h2 id="background">背景 (Background)<a class="headerlink" href="#background" title="Permanent link">#</a></h2>
-<p>本题是经典的"整数划分到有界格"问题：把目标和 <span class="arithmatex">\(S\)</span> 拆成 <span class="arithmatex">\(n\)</span> 个 1..6 的整数。一个简单可行性判据：<span class="arithmatex">\(n \le S \le 6n\)</span>。构造法上一句话——尽量平均分（除法 + 余数）。</p>
+<p>最直接的尝试是把 <span class="arithmatex">\(n\)</span> 个丢失的观测当成 <span class="arithmatex">\(n\)</span> 个自由变量，每个独立地取 <span class="arithmatex">\(\{1, \dots, 6\}\)</span> 里的某个值。但这样想立刻发现：题目对这 <span class="arithmatex">\(n\)</span> 个值的唯一约束来自均值条件，而均值条件只关心它们的<strong>总和</strong>——具体哪一格取多少、各格之间如何分配，均值都察觉不到。于是任意赋值的自由度是个幻觉：问题不是"给每一格选一个值"，而是"让这 <span class="arithmatex">\(n\)</span> 个值之和恰好等于某个目标"。</p>
+<p>把均值条件翻译成总和。<span class="arithmatex">\(n+m\)</span> 次的均值为 <code>mean</code>，等价于这 <span class="arithmatex">\(n+m\)</span> 次之和等于 <span class="arithmatex">\((n+m)\cdot\text{mean}\)</span>。已观测的 <span class="arithmatex">\(m\)</span> 次贡献了 <span class="arithmatex">\(\sum\text{rolls}\)</span>，所以丢失的 <span class="arithmatex">\(n\)</span> 次必须补足差额。记这个差额为 <span class="arithmatex">\(S\)</span>，问题就收缩成一句话：能否用 <span class="arithmatex">\(n\)</span> 个 <span class="arithmatex">\(1..6\)</span> 的整数凑出和 <span class="arithmatex">\(S\)</span>。</p>
+<p>剩下的工作分两步：先判断这样的 <span class="arithmatex">\(S\)</span> 是否可达（可行性），再在可达时给出一组具体的值（构造）。下面两节分别回答。</p>
 <h2 id="formulation">形式化 (Formulation)<a class="headerlink" href="#formulation" title="Permanent link">#</a></h2>
-<p>设 <span class="arithmatex">\(T = (n+m) \cdot \text{mean}\)</span>，<span class="arithmatex">\(S = T - \sum \text{rolls}\)</span>。问是否存在 <span class="arithmatex">\(x_1, \dots, x_n \in \{1, \dots, 6\}\)</span> 满足 <span class="arithmatex">\(\sum x_i = S\)</span>；存在则给出任一构造。</p>
-<p>充要条件：<span class="arithmatex">\(n \le S \le 6n\)</span>。</p>
-<p>构造：令 <span class="arithmatex">\(q = \lfloor S/n \rfloor\)</span>，<span class="arithmatex">\(r = S \bmod n\)</span>，输出 <span class="arithmatex">\(r\)</span> 个 <span class="arithmatex">\(q+1\)</span> 和 <span class="arithmatex">\(n - r\)</span> 个 <span class="arithmatex">\(q\)</span>。当 <span class="arithmatex">\(n \le S \le 6n\)</span> 时 <span class="arithmatex">\(q \in [1, 6]\)</span> 且 <span class="arithmatex">\(q+1 \in [2, 7]\)</span>，但 <span class="arithmatex">\(r &gt; 0\)</span> 时 <span class="arithmatex">\(q &lt; 6\)</span>（否则 <span class="arithmatex">\(S = 6n\)</span> 导致 <span class="arithmatex">\(r=0\)</span>），所以 <span class="arithmatex">\(q+1 \le 6\)</span>，合法。</p>
+<p>设
+$<span class="arithmatex">\(T = (n+m)\cdot\text{mean}, \qquad S = T - \sum\text{rolls}.\)</span>$
+<span class="arithmatex">\(T\)</span> 是全部 <span class="arithmatex">\(n+m\)</span> 次的目标总和，<span class="arithmatex">\(S\)</span> 是丢失的 <span class="arithmatex">\(n\)</span> 次必须补足的总和。问题等价于：是否存在 <span class="arithmatex">\(x_1, \dots, x_n \in \{1, \dots, 6\}\)</span> 使得 <span class="arithmatex">\(\sum_{i=1}^n x_i = S\)</span>；若存在则给出任一组。</p>
+<p><strong>可行性。</strong> 每个 <span class="arithmatex">\(x_i\)</span> 至少取 <span class="arithmatex">\(1\)</span>、至多取 <span class="arithmatex">\(6\)</span>，所以无论怎么分配，
+$<span class="arithmatex">\(n = \underbrace{1 + \dots + 1}_{n} \;\le\; \sum x_i \;\le\; \underbrace{6 + \dots + 6}_{n} = 6n.\)</span>$
+这给出 <span class="arithmatex">\(S\)</span> 的必要范围 <span class="arithmatex">\(n \le S \le 6n\)</span>。它同时也是充分的：区间 <span class="arithmatex">\([n, 6n]\)</span> 里的每个整数都能凑到。从全取 <span class="arithmatex">\(1\)</span> 的配置（和为 <span class="arithmatex">\(n\)</span>）出发，每次把某个未达 <span class="arithmatex">\(6\)</span> 的格加 <span class="arithmatex">\(1\)</span>，总和正好上升 <span class="arithmatex">\(1\)</span>；如此一格一格地加，能连续覆盖 <span class="arithmatex">\(n\)</span> 到 <span class="arithmatex">\(6n\)</span> 之间的每个整数值，中间不跳过任何一个。因此</p>
+<div class="arithmatex">\[\boxed{\;n \le S \le 6n\;}\]</div>
+<p>是 <span class="arithmatex">\(S\)</span> 可达的充要条件。落在区间外（含 <span class="arithmatex">\(S\)</span> 因 <span class="arithmatex">\(\sum\text{rolls}\)</span> 过大而为负）即无解，返回 <code>[]</code>。</p>
+<p><strong>构造。</strong> 可达性证明里"逐格加一"的过程是存在性论证，但不必真的迭代——可达时有更直接的均分写法。直觉是：要让 <span class="arithmatex">\(n\)</span> 个值之和为 <span class="arithmatex">\(S\)</span>，最平衡的方式是每格都尽量取 <span class="arithmatex">\(S/n\)</span>；当 <span class="arithmatex">\(S/n\)</span> 不是整数时，把余数摊给其中几格。令
+$<span class="arithmatex">\(q = \lfloor S/n \rfloor, \qquad r = S \bmod n,\)</span>$
+则 <span class="arithmatex">\(S = qn + r\)</span>，于是取 <span class="arithmatex">\(r\)</span> 个格为 <span class="arithmatex">\(q+1\)</span>、其余 <span class="arithmatex">\(n-r\)</span> 个格为 <span class="arithmatex">\(q\)</span>，总和恰为 <span class="arithmatex">\((q+1)r + q(n-r) = qn + r = S\)</span>，长度恰为 <span class="arithmatex">\(n\)</span>。</p>
+<p><strong>构造的合法性。</strong> 还需确认所有取到的值都落在 <span class="arithmatex">\([1,6]\)</span> 内，即 <span class="arithmatex">\(q\)</span> 与 <span class="arithmatex">\(q+1\)</span> 都合法。把可行性不等式整除 <span class="arithmatex">\(n\)</span>：由 <span class="arithmatex">\(n \le S \le 6n\)</span> 得 <span class="arithmatex">\(1 \le S/n \le 6\)</span>，故 <span class="arithmatex">\(q = \lfloor S/n \rfloor \in [1,6]\)</span>，下界 <span class="arithmatex">\(q \ge 1\)</span> 已保证。上界需要 <span class="arithmatex">\(q+1 \le 6\)</span>，即 <span class="arithmatex">\(q \le 5\)</span>。这里用到一个不显然的事实：当 <span class="arithmatex">\(r &gt; 0\)</span>（确实有格要取 <span class="arithmatex">\(q+1\)</span>）时必有 <span class="arithmatex">\(q &lt; 6\)</span>。否则 <span class="arithmatex">\(q = 6\)</span>，结合 <span class="arithmatex">\(S \le 6n\)</span> 与 <span class="arithmatex">\(S = 6n + r\)</span> 推出 <span class="arithmatex">\(r \le 0\)</span>，与 <span class="arithmatex">\(r &gt; 0\)</span> 矛盾；换言之 <span class="arithmatex">\(q = 6\)</span> 只能发生在 <span class="arithmatex">\(S = 6n\)</span>、<span class="arithmatex">\(r = 0\)</span> 的情形，此时根本没有 <span class="arithmatex">\(q+1\)</span> 的格。因此凡是真正用到 <span class="arithmatex">\(q+1\)</span> 的格都满足 <span class="arithmatex">\(q+1 \le 6\)</span>，构造始终合法。</p>
 <h2 id="approach">数据结构 / 想法 (Approach)<a class="headerlink" href="#approach" title="Permanent link">#</a></h2>
-<p>直接计算 <span class="arithmatex">\(S\)</span> 并判定边界即可。</p>
+<p>上一节的论证直接翻译成代码：算出 <span class="arithmatex">\(S\)</span>，越界即返回 <code>[]</code>，否则用 <code>divmod</code> 得到 <span class="arithmatex">\(q, r\)</span> 并拼出数组。</p>
 <div class="language-python highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">Solution</span><span class="p">:</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">missingRolls</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rolls</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">],</span> <span class="n">mean</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">n</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]:</span>
         <span class="n">m</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">rolls</span><span class="p">)</span>
@@ -22691,18 +22732,18 @@
         <span class="n">q</span><span class="p">,</span> <span class="n">r</span> <span class="o">=</span> <span class="nb">divmod</span><span class="p">(</span><span class="n">S</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span>
         <span class="k">return</span> <span class="p">[</span><span class="n">q</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">r</span> <span class="o">+</span> <span class="p">[</span><span class="n">q</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="n">n</span> <span class="o">-</span> <span class="n">r</span><span class="p">)</span>
 </code></pre></div>
-<p>样例 1 trace：<code>rolls=[3,2,4,3], mean=4, n=2</code>。<span class="arithmatex">\(T = 6 \cdot 4 = 24\)</span>，<span class="arithmatex">\(S = 24 - 12 = 12\)</span>。<span class="arithmatex">\(n=2 \le 12 \le 12=6n\)</span> ✓。<span class="arithmatex">\(q=6, r=0\)</span> → <code>[6,6]</code> ✓。</p>
-<p>样例 3 trace：<code>rolls=[1,2,3,4], mean=6, n=4</code>。<span class="arithmatex">\(T = 8 \cdot 6 = 48\)</span>，<span class="arithmatex">\(S = 48 - 10 = 38\)</span>。<span class="arithmatex">\(6n = 24 &lt; 38\)</span> → 返回 <code>[]</code> ✓。</p>
+<p>样例 1 trace：<code>rolls=[3,2,4,3], mean=4, n=2</code>。<span class="arithmatex">\(T = 6 \cdot 4 = 24\)</span>（<span class="arithmatex">\(6 = n+m\)</span>），<span class="arithmatex">\(S = 24 - 12 = 12\)</span>。<span class="arithmatex">\(n=2 \le 12 \le 12=6n\)</span> ✓。<span class="arithmatex">\(q=6, r=0\)</span> → <code>[6,6]</code>，无 <span class="arithmatex">\(q+1\)</span> 的格 ✓。</p>
+<p>样例 3 trace：<code>rolls=[1,2,3,4], mean=6, n=4</code>。<span class="arithmatex">\(T = 8 \cdot 6 = 48\)</span>（<span class="arithmatex">\(8 = n+m\)</span>），<span class="arithmatex">\(S = 48 - 10 = 38\)</span>。<span class="arithmatex">\(6n = 24 &lt; 38\)</span>，落在区间右侧之外 → 返回 <code>[]</code> ✓。</p>
 <h2 id="complexity">复杂度 (Complexity)<a class="headerlink" href="#complexity" title="Permanent link">#</a></h2>
 <ul>
-<li>Time: <span class="arithmatex">\(O(n + m)\)</span></li>
-<li>Space: <span class="arithmatex">\(O(n)\)</span> 输出数组</li>
+<li>Time: <span class="arithmatex">\(O(n + m)\)</span>——求 <span class="arithmatex">\(\sum\text{rolls}\)</span> 是 <span class="arithmatex">\(O(m)\)</span>，构造输出数组是 <span class="arithmatex">\(O(n)\)</span>。</li>
+<li>Space: <span class="arithmatex">\(O(n)\)</span> 输出数组。</li>
 </ul>
 <h2 id="pitfalls">陷阱 (Pitfalls)<a class="headerlink" href="#pitfalls" title="Permanent link">#</a></h2>
 <ul>
-<li><strong>必须用 <code>n + m</code> 而非 <code>n</code> 计算总和</strong>：均值乘的是总扔数。</li>
-<li><strong>下界 <code>S &lt; n</code> 不能漏</strong>：可能因 sum(rolls) 太大导致 S 为负或太小，输出空数组。</li>
-<li><strong>整数运算</strong>：题面保证 mean 是整数，所以 <span class="arithmatex">\(T\)</span> 是整数；不要引入浮点。</li>
+<li><strong>必须用 <code>n + m</code> 而非 <code>n</code> 计算总和</strong>：均值是对全部 <span class="arithmatex">\(n+m\)</span> 次而言，所以 <span class="arithmatex">\(T = (n+m)\cdot\text{mean}\)</span>。误写成 <span class="arithmatex">\(n\cdot\text{mean}\)</span> 会算出错误的差额 <span class="arithmatex">\(S\)</span>，进而构造出与真实均值不符的数组。</li>
+<li><strong>下界 <code>S &lt; n</code> 不能漏</strong>：当 <span class="arithmatex">\(\sum\text{rolls}\)</span> 过大时 <span class="arithmatex">\(S\)</span> 可能小于 <span class="arithmatex">\(n\)</span> 甚至为负，此时无解。漏掉这一判断会让 <span class="arithmatex">\(q = \lfloor S/n \rfloor\)</span> 取到 <span class="arithmatex">\(0\)</span>，输出越界的 <code>0</code>。</li>
+<li><strong>整数运算</strong>：题面保证 <code>mean</code> 是整数，故 <span class="arithmatex">\(T = (n+m)\cdot\text{mean}\)</span> 必为整数；全程用整数算术，不要引入浮点。</li>
 </ul>
 <h2 id="related">相关题目 (Related)<a class="headerlink" href="#related" title="Permanent link">#</a></h2>
 <ul>

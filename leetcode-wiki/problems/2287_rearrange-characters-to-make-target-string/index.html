@@ -5485,6 +5485,8 @@
       
         
       
+        
+      
     
     
     
@@ -6024,6 +6026,34 @@
     
   
     #93. Restore IP Addresses
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../0102_binary-tree-level-order-traversal/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    #102. Binary Tree Level Order Traversal
   
 
     
@@ -22675,18 +22705,65 @@
 <h2 id="problem">Problem<a class="headerlink" href="#problem" title="Permanent link">#</a></h2>
 <p>给字符串 <code>s</code> 与 <code>target</code>。从 <code>s</code> 中取字符（不重复使用同一位置）重排，最多能拼出多少份 <code>target</code>？</p>
 <h2 id="background">背景 (Background)<a class="headerlink" href="#background" title="Permanent link">#</a></h2>
-<p>本题为基础字符计数（multiset 覆盖），无特殊学科背景。本质等价于"用 multiset <span class="arithmatex">\(A\)</span> 装入 multiset <span class="arithmatex">\(B\)</span> 的最大整数倍"。</p>
+<p>每拼出一份 <code>target</code>，就要从 <code>s</code> 的字符库存里取走 <code>target</code> 所需的每个字符各若干个。库存是固定的，需求按份计量——所以问题归结为：固定供给的字符，最多够分多少份固定需求。下面从一个最直接的想法出发，看它在哪里失效，再补上缺的那一步。</p>
+<p>一个最朴素的尝试：检查 <code>s</code> 是否包含 <code>target</code> 的每一个字符，若都包含就算"能拼"。但这只能判断能不能拼出<strong>一份</strong>，且连一份都判错——它忽略了同一字符在 <code>target</code> 中可能出现多次。例如 <code>target="aab"</code> 需要两个 <code>a</code>，而 <code>s</code> 只含一个 <code>a</code> 时，"包含 <code>a</code>"成立但其实拼不出。要拼出一份，必须 <code>s</code> 中每个字符的数量都 <strong>不少于</strong> <code>target</code> 中该字符的数量；要拼出 <span class="arithmatex">\(k\)</span> 份，则需 <span class="arithmatex">\(k\)</span> 倍的量。朴素判断失效的根源，是它没有按数量记账。补上记账，问题就变成纯粹的计数。</p>
 <h2 id="formulation">形式化 (Formulation)<a class="headerlink" href="#formulation" title="Permanent link">#</a></h2>
-<p>设 <span class="arithmatex">\(c_s, c_t : \Sigma \to \mathbb{N}\)</span> 为字符计数函数。答案 <span class="arithmatex">\(= \min_{\sigma : c_t(\sigma) &gt; 0} \lfloor c_s(\sigma) / c_t(\sigma) \rfloor\)</span>.</p>
+<p>把"按数量记账"写清楚。设 <span class="arithmatex">\(c_s, c_t : \Sigma \to \mathbb{N}\)</span> 为字符计数函数，<span class="arithmatex">\(c_s(\sigma)\)</span> 是字符 <span class="arithmatex">\(\sigma\)</span> 在 <code>s</code> 中出现的次数，<span class="arithmatex">\(c_t(\sigma)\)</span> 同理之于 <code>target</code>。</p>
+<p>直观上，<code>target</code> 中每个所需字符都是一道<strong>独立</strong>的约束：拼 <span class="arithmatex">\(k\)</span> 份要消耗 <span class="arithmatex">\(k\,c_t(\sigma)\)</span> 个 <span class="arithmatex">\(\sigma\)</span>，而库存只有 <span class="arithmatex">\(c_s(\sigma)\)</span> 个。最紧的那个字符决定上限。形式化推导：</p>
+<ul>
+<li>拼出 <span class="arithmatex">\(k\)</span> 份合法，当且仅当对每个 <span class="arithmatex">\(c_t(\sigma) &gt; 0\)</span> 的字符都有 <span class="arithmatex">\(k\,c_t(\sigma) \le c_s(\sigma)\)</span>，即 <span class="arithmatex">\(k \le \lfloor c_s(\sigma)/c_t(\sigma) \rfloor\)</span>。</li>
+<li>各字符约束须同时满足，故 <span class="arithmatex">\(k \le \min_{\sigma:\, c_t(\sigma) &gt; 0} \lfloor c_s(\sigma)/c_t(\sigma) \rfloor\)</span>。</li>
+<li>该上界可取到（取等的 <span class="arithmatex">\(k\)</span> 对每个字符都满足约束），故为答案：</li>
+</ul>
+<div class="arithmatex">\[\text{answer} = \min_{\sigma:\, c_t(\sigma) &gt; 0} \left\lfloor c_s(\sigma) / c_t(\sigma) \right\rfloor.\]</div>
+<p>min 只对 <code>target</code> 出现的字符（<span class="arithmatex">\(c_t(\sigma) &gt; 0\)</span>）取——<code>s</code> 中多余的字符不构成约束，纳入会引入除以零。</p>
+<p><strong>先用样例验证公式。</strong> <code>s = "ilovecodingonleetcode"</code>, <code>target = "code"</code>。逐字符数 <code>s</code>：</p>
+<table>
+<thead>
+<tr>
+<th>字符</th>
+<th><span class="arithmatex">\(c_s\)</span></th>
+<th><span class="arithmatex">\(c_t\)</span></th>
+<th><span class="arithmatex">\(\lfloor c_s/c_t \rfloor\)</span></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>c</td>
+<td>2</td>
+<td>1</td>
+<td>2</td>
+</tr>
+<tr>
+<td>o</td>
+<td>4</td>
+<td>1</td>
+<td>4</td>
+</tr>
+<tr>
+<td>d</td>
+<td>2</td>
+<td>1</td>
+<td>2</td>
+</tr>
+<tr>
+<td>e</td>
+<td>4</td>
+<td>1</td>
+<td>4</td>
+</tr>
+</tbody>
+</table>
+<p><span class="arithmatex">\(\min(2, 4, 2, 4) = 2\)</span>。瓶颈是 <code>c</code> 和 <code>d</code>，与答案 2 一致。</p>
 <h2 id="approach">数据结构 / 想法 (Approach)<a class="headerlink" href="#approach" title="Permanent link">#</a></h2>
+<p>公式直接翻译成代码：用计数表（hash table）算出 <span class="arithmatex">\(c_s, c_t\)</span>，再对 <code>target</code> 的每个字符取 <span class="arithmatex">\(\lfloor c_s/c_t \rfloor\)</span> 的最小值。代码里 <code>ch</code> 即公式中的 <span class="arithmatex">\(\sigma\)</span>，<code>n</code> 即 <span class="arithmatex">\(c_t(\sigma)\)</span>。</p>
 <div class="language-python highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">collections</span><span class="w"> </span><span class="kn">import</span> <span class="n">Counter</span>
 <span class="k">class</span><span class="w"> </span><span class="nc">Solution</span><span class="p">:</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">rearrangeCharacters</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span> <span class="n">target</span><span class="p">):</span>
         <span class="n">cs</span><span class="p">,</span> <span class="n">ct</span> <span class="o">=</span> <span class="n">Counter</span><span class="p">(</span><span class="n">s</span><span class="p">),</span> <span class="n">Counter</span><span class="p">(</span><span class="n">target</span><span class="p">)</span>
         <span class="k">return</span> <span class="nb">min</span><span class="p">(</span><span class="n">cs</span><span class="p">[</span><span class="n">ch</span><span class="p">]</span> <span class="o">//</span> <span class="n">n</span> <span class="k">for</span> <span class="n">ch</span><span class="p">,</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">ct</span><span class="o">.</span><span class="n">items</span><span class="p">())</span>
 </code></pre></div>
-<p>样例 1：<code>s="ilovecodingonleetcode", target="code"</code>. ct={c:1, o:1, d:1, e:1}. cs: c=2, o=3, d:1, e:4. min(2,3,1,4)=1? 实际答案是 2. 让我重数 s：i l o v e c o d i n g o n l e e t c o d e
-- c: 2, o: 4, d: 2, e: 4. min(2,4,2,4)=2. ✅</p>
+<p><code>Counter</code> 在两个字符串上各扫一遍得到计数；生成器只遍历 <code>ct.items()</code>，正好对应"只对 <span class="arithmatex">\(c_t(\sigma)&gt;0\)</span> 的字符取 min"。</p>
 <h2 id="complexity">复杂度 (Complexity)<a class="headerlink" href="#complexity" title="Permanent link">#</a></h2>
 <ul>
 <li>Time: <span class="arithmatex">\(O(|s| + |t|)\)</span>。</li>
@@ -22694,13 +22771,13 @@
 </ul>
 <h2 id="pitfalls">陷阱 (Pitfalls)<a class="headerlink" href="#pitfalls" title="Permanent link">#</a></h2>
 <ul>
-<li>若 <code>target</code> 包含某字符在 <code>s</code> 中完全缺失，<code>cs[ch] = 0</code>，min 自然为 0——结果正确。</li>
-<li>注意只对 <code>ct</code> 中的字符做 min，不要遍历 <code>cs</code> 中多余字符。</li>
+<li>若 <code>target</code> 含某字符在 <code>s</code> 中完全缺失：<code>Counter.__getitem__</code> 对缺失键返回 <code>0</code>（不抛 <code>KeyError</code>），于是 <span class="arithmatex">\(\lfloor 0/n \rfloor = 0\)</span>，min 取到 0——结果正确。</li>
+<li>只对 <code>ct</code> 中的字符做 min，不要遍历 <code>cs</code> 中多余字符（它们不构成约束，且会引入除以零）。</li>
 </ul>
 <h2 id="related">相关题目 (Related)<a class="headerlink" href="#related" title="Permanent link">#</a></h2>
 <ul>
 <li><a href="../0387_first-unique-character-in-a-string/">#0387. First Unique Character in a String</a> — 同款 Counter 应用。</li>
-<li><code>#1189. Maximum Number of Balloons (off-wiki)</code> — 完全等价的题。</li>
+<li><code>#1189. Maximum Number of Balloons (off-wiki)</code> — 同款技巧；它是本题 <code>target="balloon"</code> 固定后的特例，本题为其泛化。</li>
 </ul>
 <h2 id="further-reading">Further Reading<a class="headerlink" href="#further-reading" title="Permanent link">#</a></h2>
 <p>无推荐外部资源（题目难度不足以需要专题文献）。</p>

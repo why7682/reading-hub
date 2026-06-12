@@ -5485,6 +5485,8 @@
       
         
       
+        
+      
     
     
     
@@ -6024,6 +6026,34 @@
     
   
     #93. Restore IP Addresses
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../0102_binary-tree-level-order-traversal/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    #102. Binary Tree Level Order Traversal
   
 
     
@@ -22675,52 +22705,77 @@
 <h2 id="problem">Problem<a class="headerlink" href="#problem" title="Permanent link">#</a></h2>
 <p>字符串 <code>s</code> 与升序整数数组 <code>spaces</code>。在每个 <code>spaces[i]</code> 处的字符<strong>前</strong>插入一个空格，返回结果。<span class="arithmatex">\(|s|, |\text{spaces}| \le 3 \times 10^5\)</span>。</p>
 <h2 id="background">背景 (Background)<a class="headerlink" href="#background" title="Permanent link">#</a></h2>
-<p>字符串构造的典型问题：朴素 <code>result += char</code> 在 Python（及 Java 的 String）中是 <span class="arithmatex">\(O(n^2)\)</span> 因为字符串不可变 + 复制。正确做法是用 <code>list</code> / <code>StringBuilder</code> 收集后一次 <code>''.join</code>。这是"摊销 <span class="arithmatex">\(O(1)\)</span> 追加"在不可变字符串语言里的必要技巧。</p>
+<p>最直接的想法是逐字符构造答案：扫描 <code>s</code>，遇到需要插空格的位置就先拼一个空格，再拼当前字符。</p>
+<div class="language-python highlight"><pre><span></span><code><span class="n">result</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+<span class="n">j</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">c</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">s</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">j</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">spaces</span><span class="p">)</span> <span class="ow">and</span> <span class="n">i</span> <span class="o">==</span> <span class="n">spaces</span><span class="p">[</span><span class="n">j</span><span class="p">]:</span>
+        <span class="n">result</span> <span class="o">+=</span> <span class="s2">&quot; &quot;</span>
+        <span class="n">j</span> <span class="o">+=</span> <span class="mi">1</span>
+    <span class="n">result</span> <span class="o">+=</span> <span class="n">c</span>
+</code></pre></div>
+<p>这段逻辑是对的，但有一个隐藏的性能问题：在 Python（以及 Java 的 <code>String</code>）中字符串是<strong>不可变</strong>的。每次 <code>result += c</code> 不能就地追加，而是分配一个新字符串并把已有内容整体复制过去。设当前 <code>result</code> 长度为 <span class="arithmatex">\(k\)</span>，这一步复制 <span class="arithmatex">\(O(k)\)</span> 个字符。整个过程 <code>result</code> 从长度 <span class="arithmatex">\(0\)</span> 增长到 <span class="arithmatex">\(n\)</span>，总复制量是</p>
+<div class="arithmatex">\[
+\sum_{k=0}^{n} O(k) = O(n^2).
+\]</div>
+<p>当 <span class="arithmatex">\(n = 3 \times 10^5\)</span> 时 <span class="arithmatex">\(n^2 = 9 \times 10^{10}\)</span>，必然超时。瓶颈不在算法逻辑，而在不可变字符串上的反复复制。</p>
+<p>修复方法直接来自这个失败点：既然问题是"每次追加都复制整个前缀"，就把字符先收集进一个<strong>可变</strong> buffer（Python 的 <code>list</code>，Java 的 <code>StringBuilder</code>），最后一次性 <code>''.join</code>。<code>list.append</code> 的摊销代价是 <span class="arithmatex">\(O(1)\)</span>——底层数组按容量翻倍扩容，从空增长到长度 <span class="arithmatex">\(n\)</span> 的总搬移量是 <span class="arithmatex">\(\sum_{k} 2^k = O(n)\)</span>，而非每次都搬整个前缀。这样总时间降到 <span class="arithmatex">\(O(n)\)</span>。这一节先用朴素做法暴露了瓶颈，下面的形式化将给出一个把"插空格"看成纯结构操作的精确描述，从中可以直接读出两种正确实现。</p>
 <h2 id="formulation">形式化 (Formulation)<a class="headerlink" href="#formulation" title="Permanent link">#</a></h2>
-<p>输出 <span class="arithmatex">\(t\)</span>，满足 <span class="arithmatex">\(|t| = |s| + |\text{spaces}|\)</span>，且按顺序：
-- 对 <span class="arithmatex">\(j = 0, 1, \dots\)</span>，在 <span class="arithmatex">\(s\)</span> 中第 <span class="arithmatex">\(\text{spaces}[j]\)</span> 个字符前插入空格。</p>
+<p>直观上，插入的空格把 <code>s</code> 切成若干段：从开头到第一个插入点是一段，相邻两个插入点之间各是一段，最后一个插入点到结尾是一段。结果就是这些段用空格连接起来。把这个直观写成精确的划分。</p>
+<p>记插入位置 <span class="arithmatex">\(p_0 &lt; p_1 &lt; \dots &lt; p_{m-1}\)</span>，即 <span class="arithmatex">\(p_j = \text{spaces}[j]\)</span>，且令 <span class="arithmatex">\(p_{-1} = 0\)</span>、<span class="arithmatex">\(p_m = |s|\)</span>。定义子串切片 <span class="arithmatex">\(s[a{:}b]\)</span> 为下标 <span class="arithmatex">\(a\)</span> 到 <span class="arithmatex">\(b-1\)</span> 的字符。则输出 <span class="arithmatex">\(t\)</span> 是</p>
+<div class="arithmatex">\[
+t = s[p_{-1}{:}p_0] \;\Vert\; \sigma \;\Vert\; s[p_0{:}p_1] \;\Vert\; \sigma \;\Vert\; \cdots \;\Vert\; \sigma \;\Vert\; s[p_{m-1}{:}p_m],
+\]</div>
+<p>其中 <span class="arithmatex">\(\sigma\)</span> 是单个空格、<span class="arithmatex">\(\Vert\)</span> 是拼接。等价地：把 <code>s</code> 按 <span class="arithmatex">\(m\)</span> 个插入点划分成 <span class="arithmatex">\(m+1\)</span> 个连续段，再用 <span class="arithmatex">\(\sigma\)</span> 作分隔符连接。</p>
+<p>每个分隔符 <span class="arithmatex">\(\sigma\)</span> 恰好出现在某段的起点之前，即下标 <span class="arithmatex">\(p_j\)</span> 处的字符<strong>前</strong>——这正是题意要求的"前插入"，验证了划分的边界。由此 <span class="arithmatex">\(|t| = |s| + m = |s| + |\text{spaces}|\)</span>：原字符全部保留，每个插入点贡献一个空格。</p>
+<p>这个划分式是后续所有实现的母本：算法的任务就是高效地枚举这些段并在段间放入 <span class="arithmatex">\(\sigma\)</span>。</p>
 <h2 id="approach">数据结构 / 想法 (Approach)<a class="headerlink" href="#approach" title="Permanent link">#</a></h2>
-<p><strong>双指针 + 输出 buffer</strong>。<code>i</code> 扫 <code>s</code>，<code>j</code> 扫 <code>spaces</code>。每次到 <code>i == spaces[j]</code> 就追加空格并 <code>j++</code>；总是追加 <code>s[i]</code> 并 <code>i++</code>。</p>
+<p>划分式给出两种直接实现，区别只在"如何枚举段"。</p>
+<p><strong>实现一：双指针单趟扫描。</strong> 注意 <code>spaces</code> 升序，所以插入点本身就是从左到右出现的；而 <code>s</code> 也是从左到右扫描的。两个序列同向消费，于是在每个下标 <span class="arithmatex">\(i\)</span> 处只需回答一个问题：当前 <span class="arithmatex">\(i\)</span> 是否等于下一个未处理的插入点 <span class="arithmatex">\(p_j\)</span>？用一个游标 <code>j</code> 指向 <code>spaces</code> 中下一个待匹配的插入点就够了，不需要回退或二分。这恰好是划分式按下标线性展开的过程——每跨过一个 <span class="arithmatex">\(p_j\)</span>，就先放 <span class="arithmatex">\(\sigma\)</span> 再继续抄段内字符。</p>
 <div class="language-python highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">Solution</span><span class="p">:</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">addSpaces</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">s</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">spaces</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
         <span class="n">out</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="n">j</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="n">m</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">spaces</span><span class="p">)</span>
         <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">c</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">s</span><span class="p">):</span>
-            <span class="k">if</span> <span class="n">j</span> <span class="o">&lt;</span> <span class="n">m</span> <span class="ow">and</span> <span class="n">i</span> <span class="o">==</span> <span class="n">spaces</span><span class="p">[</span><span class="n">j</span><span class="p">]:</span>
-                <span class="n">out</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="p">)</span>
-                <span class="n">j</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="k">if</span> <span class="n">j</span> <span class="o">&lt;</span> <span class="n">m</span> <span class="ow">and</span> <span class="n">i</span> <span class="o">==</span> <span class="n">spaces</span><span class="p">[</span><span class="n">j</span><span class="p">]:</span>   <span class="c1"># i 命中下一个插入点</span>
+                <span class="n">out</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="p">)</span>             <span class="c1"># 放分隔符 σ</span>
+                <span class="n">j</span> <span class="o">+=</span> <span class="mi">1</span>                       <span class="c1"># 该插入点已处理</span>
             <span class="n">out</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">c</span><span class="p">)</span>
         <span class="k">return</span> <span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">out</span><span class="p">)</span>
 </code></pre></div>
-<p>样例 1 trace：<code>s="LeetcodeHelpsMeLearn", spaces=[8,13,15]</code>。
-- i=0..7 拷贝 "Leetcode"
-- i=8 (spaces[0]=8) → 加空格 → "Leetcode ", 再加 'H'
-- i=9..12 拷贝 "elps"
-- i=13 (spaces[1]=13) → 空格 + 'M'
-- i=14 拷贝 'e'
-- i=15 (spaces[2]=15) → 空格 + 'L'
-- i=16..19 拷贝 "earn"
-结果："Leetcode Helps Me Learn" ✓。</p>
-<p><strong>等价实现：切片拼接</strong></p>
+<p>游标的不变式：循环中 <code>j</code> 始终指向第一个尚未匹配的插入点，已处理的插入点都在 <code>j</code> 左侧。守卫 <code>j &lt; m</code> 表示插入点已全部用完（<code>j == m</code>），此后只剩抄写 <code>s</code> 的尾段，不再插空格——这把越界检查和"尾段无分隔符"这一边界统一处理掉了。</p>
+<p><strong>实现一在样例 1 上的 trace：</strong> <code>s="LeetcodeHelpsMeLearn", spaces=[8,13,15]</code>。</p>
+<ul>
+<li>i=0..7 拷贝 "Leetcode"</li>
+<li>i=8（spaces[0]=8）→ 加空格 → "Leetcode "，再加 'H'</li>
+<li>i=9..12 拷贝 "elps"</li>
+<li>i=13（spaces[1]=13）→ 空格 + 'M'</li>
+<li>i=14 拷贝 'e'</li>
+<li>i=15（spaces[2]=15）→ 空格 + 'L'</li>
+<li>i=16..19 拷贝 "earn"</li>
+</ul>
+<p>结果："Leetcode Helps Me Learn" ✓。各段 <code>"Leetcode" | "Helps" | "Me" | "Learn"</code> 正是划分式 <span class="arithmatex">\(s[0{:}8],s[8{:}13],s[13{:}15],s[15{:}20]\)</span>，与公式逐项吻合。</p>
+<p><strong>实现二：切片拼接。</strong> 划分式本身就是"段的列表用 <span class="arithmatex">\(\sigma\)</span> 连接"，于是可以不逐字符扫描，而是直接按公式取出每一段：</p>
 <div class="language-python highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">addSpaces</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span> <span class="n">spaces</span><span class="p">):</span>
-    <span class="n">parts</span> <span class="o">=</span> <span class="p">[</span><span class="n">s</span><span class="p">[:</span><span class="n">spaces</span><span class="p">[</span><span class="mi">0</span><span class="p">]]]</span>
+    <span class="n">parts</span> <span class="o">=</span> <span class="p">[</span><span class="n">s</span><span class="p">[:</span><span class="n">spaces</span><span class="p">[</span><span class="mi">0</span><span class="p">]]]</span>                       <span class="c1"># 段 s[0:p_0]</span>
     <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">spaces</span><span class="p">)):</span>
-        <span class="n">parts</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">s</span><span class="p">[</span><span class="n">spaces</span><span class="p">[</span><span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="p">]:</span><span class="n">spaces</span><span class="p">[</span><span class="n">i</span><span class="p">]])</span>
-    <span class="n">parts</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">s</span><span class="p">[</span><span class="n">spaces</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]:])</span>
+        <span class="n">parts</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">s</span><span class="p">[</span><span class="n">spaces</span><span class="p">[</span><span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="p">]:</span><span class="n">spaces</span><span class="p">[</span><span class="n">i</span><span class="p">]])</span>    <span class="c1"># 段 s[p_{i-1}:p_i]</span>
+    <span class="n">parts</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">s</span><span class="p">[</span><span class="n">spaces</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]:])</span>                  <span class="c1"># 尾段 s[p_{m-1}:|s|]</span>
     <span class="k">return</span> <span class="s1">&#39; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">parts</span><span class="p">)</span>
 </code></pre></div>
-<p>更短，且利用 Python 切片的 <span class="arithmatex">\(O(k)\)</span> 复制（共 <span class="arithmatex">\(O(n)\)</span>）。</p>
+<p><code>parts</code> 恰是划分式的 <span class="arithmatex">\(m+1\)</span> 个段，<code>' '.join</code> 完成段间插 <span class="arithmatex">\(\sigma\)</span>。它比实现一更短，因为把"枚举段"交给了 Python 切片：每个切片复制 <span class="arithmatex">\(O(p_j - p_{j-1})\)</span> 个字符，所有段加起来共复制 <span class="arithmatex">\(O(n)\)</span>，与单趟扫描同阶。两种实现是同一个划分式的两种枚举方式，因此输出必然一致。</p>
 <h2 id="complexity">复杂度 (Complexity)<a class="headerlink" href="#complexity" title="Permanent link">#</a></h2>
 <ul>
-<li>Time: <span class="arithmatex">\(O(n + m)\)</span>，<span class="arithmatex">\(n = |s|, m = |\text{spaces}|\)</span></li>
-<li>Space: <span class="arithmatex">\(O(n + m)\)</span> 输出</li>
+<li>Time: <span class="arithmatex">\(O(n + m)\)</span>，<span class="arithmatex">\(n = |s|, m = |\text{spaces}|\)</span>。每个字符与每个插入点各被访问常数次，无最好/最坏之分。</li>
+<li>Space: <span class="arithmatex">\(O(n + m)\)</span> 输出 buffer（结果长度 <span class="arithmatex">\(n + m\)</span>）。</li>
 </ul>
 <h2 id="pitfalls">陷阱 (Pitfalls)<a class="headerlink" href="#pitfalls" title="Permanent link">#</a></h2>
+<p>下面三点都直接源自前面的推导，而非孤立提醒。</p>
 <ul>
-<li><strong>不要用字符串 <code>+=</code></strong>：在 Python/Java 中 <span class="arithmatex">\(O(n^2)\)</span>，对 <span class="arithmatex">\(n = 3 \times 10^5\)</span> 严重超时。</li>
-<li><strong>空格在字符</strong>前<strong>插入</strong>：常见 off-by-one 错误是写成"插入到下标之后"。</li>
-<li><strong>j 超界检查</strong>：<code>j &lt; m</code> 不能漏，否则越界。</li>
+<li><strong>不要用字符串 <code>+=</code></strong>：如背景所推导，不可变字符串上逐次拼接是 <span class="arithmatex">\(O(n^2)\)</span>，对 <span class="arithmatex">\(n = 3 \times 10^5\)</span> 严重超时；用 <code>list</code> + <code>join</code>（或 <code>StringBuilder</code>）把摊销代价降到 <span class="arithmatex">\(O(1)\)</span> 每次。</li>
+<li><strong>空格在字符<em>前</em>插入</strong>：划分式中 <span class="arithmatex">\(\sigma\)</span> 出现在 <span class="arithmatex">\(s[p_j{:}p_{j+1}]\)</span> 这一段的起点之前，即下标 <span class="arithmatex">\(p_j\)</span> 的字符前。常见 off-by-one 是误写成"插到下标之后"。</li>
+<li><strong><code>j &lt; m</code> 守卫不可省</strong>：当 <code>j == m</code> 时插入点已耗尽，缺这个守卫会在 <code>spaces[j]</code> 上越界；它同时承担了"尾段不再插空格"的边界。</li>
 </ul>
 <h2 id="related">相关题目 (Related)<a class="headerlink" href="#related" title="Permanent link">#</a></h2>
 <ul>

@@ -5485,6 +5485,8 @@
       
         
       
+        
+      
     
     
     
@@ -6024,6 +6026,34 @@
     
   
     #93. Restore IP Addresses
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../0102_binary-tree-level-order-traversal/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    #102. Binary Tree Level Order Traversal
   
 
     
@@ -17625,6 +17655,56 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="数据结构 / 想法 (Approach)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        朴素实现与它的瓶颈
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        修复：把求和换成前缀和的差
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        算法
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#trace-example-1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Trace example 1
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -22607,6 +22687,56 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="数据结构 / 想法 (Approach)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        朴素实现与它的瓶颈
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        修复：把求和换成前缀和的差
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        算法
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#trace-example-1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Trace example 1
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -22675,27 +22805,44 @@
 <h2 id="problem">Problem<a class="headerlink" href="#problem" title="Permanent link">#</a></h2>
 <p>给非负整数数组 <code>nums</code> 与区间 <span class="arithmatex">\([l, r]\)</span>。求 <code>nums</code> 的 <strong>sub-multiset</strong> 数量，其元素和在 <span class="arithmatex">\([l, r]\)</span> 内，模 <span class="arithmatex">\(10^9+7\)</span>。<code>sub-multiset</code> 即对每个值 <span class="arithmatex">\(v\)</span> 取 <span class="arithmatex">\(0\)</span> 到 <span class="arithmatex">\(\text{occ}(v)\)</span> 次。<span class="arithmatex">\(n \le 2 \cdot 10^4\)</span>, <span class="arithmatex">\(\sum a_i \le 2 \cdot 10^4\)</span>, <span class="arithmatex">\(a_i \le 2 \cdot 10^4\)</span>, <span class="arithmatex">\(r \le 2 \cdot 10^4\)</span>。</p>
 <h2 id="background">背景 (Background)<a class="headerlink" href="#background" title="Permanent link">#</a></h2>
-<p>本题是 <strong>有界背包 / multiset partition 计数</strong> 的经典形式。两个关键约束：</p>
+<p>要数的对象是 sub-multiset：对每个不同的值 <span class="arithmatex">\(v\)</span>，独立决定取它 <span class="arithmatex">\(0, 1, \dots, \text{occ}(v)\)</span> 次。一旦各值的取法定了，整个 sub-multiset 就定了，且它的元素和等于各值贡献之和。这两点——<strong>各值之间相互独立</strong>，<strong>和是各值贡献的累加</strong>——是全题的结构起点。</p>
+<p>独立性立刻给出第一个观察。若只关心"和为 <span class="arithmatex">\(x\)</span> 的 sub-multiset 有几个"，那么把值一个一个加进考虑范围时，新值带来的选择不与旧值耦合：选 <span class="arithmatex">\(j\)</span> 个 <span class="arithmatex">\(v\)</span> 与旧值如何选无关，只是把和整体抬高 <span class="arithmatex">\(jv\)</span>。于是"和的分布"可以<strong>逐值更新</strong>——这正是计数 DP 的形状，后面 §形式化 会把它写成精确的递推。</p>
+<p>题目还给了两个易被忽略但很省事的约束：</p>
 <ol>
-<li><span class="arithmatex">\(\sum a_i \le 2 \cdot 10^4 = S\)</span>（注意是<strong>和</strong>有界，不是个数有界）—— 故不同非零值数量 <span class="arithmatex">\(\le 200\)</span>（由 <span class="arithmatex">\(1 + 2 + \dots + 200 = 20100 &gt; S\)</span> 推出）。这是 <code>nums</code> 整体集合稀疏性的关键。</li>
-<li><strong>0 的特殊性</strong>：0 不影响和但每个 0 选/不选独立。<span class="arithmatex">\(c_0\)</span> 个 0 贡献因子 <span class="arithmatex">\(2^{c_0}\)</span>。</li>
+<li><span class="arithmatex">\(\sum a_i \le 2 \cdot 10^4 = S\)</span>。注意有界的是<strong>和</strong>而不是个数。和有界直接限制了<strong>不同非零值的个数</strong> <span class="arithmatex">\(D\)</span>：<span class="arithmatex">\(D\)</span> 个不同正值的最小可能和是 <span class="arithmatex">\(1 + 2 + \dots + D = D(D+1)/2\)</span>，要 <span class="arithmatex">\(\le S\)</span> 就得 <span class="arithmatex">\(D \le 199\)</span>（§复杂度 给出推导）。所以尽管 <span class="arithmatex">\(n\)</span> 可达 <span class="arithmatex">\(2 \cdot 10^4\)</span>，真正要逐个处理的"不同值"最多两百个。</li>
+<li>值 <span class="arithmatex">\(0\)</span> 是退化情形：取任意多个 <span class="arithmatex">\(0\)</span> 都不改变和。<span class="arithmatex">\(c_0\)</span> 个 <span class="arithmatex">\(0\)</span> 提供 <span class="arithmatex">\(c_0 + 1\)</span> 种取法（取 <span class="arithmatex">\(0, 1, \dots, c_0\)</span> 个），且与所有非零值的选择完全独立，因此它对答案只是一个统一的乘性因子 <span class="arithmatex">\(c_0 + 1\)</span>。把 <span class="arithmatex">\(0\)</span> 先剥离，剩下的就是纯粹的"正值有界背包计数"。</li>
 </ol>
-<p><strong>算法核心</strong>：把每个非零值 <span class="arithmatex">\(v\)</span> 视为容量 <span class="arithmatex">\(v\)</span>、重复上限 <span class="arithmatex">\(\text{occ}(v)\)</span> 的物品，做"有界完全背包"。每个 <span class="arithmatex">\(v\)</span> 的转移可以用<strong>前缀和优化的滑窗</strong> 在 <span class="arithmatex">\(O(S)\)</span> 完成（而不是朴素 <span class="arithmatex">\(O(S \cdot \text{occ})\)</span>）。</p>
-<p><strong>有界背包的 prefix-sum trick</strong>：把 <span class="arithmatex">\(\text{dp}[s]\)</span> 改成"以 <span class="arithmatex">\(v\)</span> 为步长的局部和"——令 <span class="arithmatex">\(g[s] = \text{dp}[s] + \text{dp}[s - v] + \text{dp}[s - 2v] + \dots\)</span>（停在 <span class="arithmatex">\(\ge 0\)</span>），再去掉超出 <span class="arithmatex">\(\text{occ}\)</span> 次的项 <span class="arithmatex">\(\text{dp}[s - (\text{occ}+1)v]\)</span>。</p>
 <h2 id="formulation">形式化 (Formulation)<a class="headerlink" href="#formulation" title="Permanent link">#</a></h2>
-<p>设 <span class="arithmatex">\(f(x)\)</span> = 和为 <span class="arithmatex">\(x\)</span> 的 sub-multiset 数。答 <span class="arithmatex">\(= \sum_{x=l}^{r} f(x) \bmod M\)</span>。</p>
-<p>对每个不同值 <span class="arithmatex">\(v\)</span>（出现 <span class="arithmatex">\(c\)</span> 次）做卷积转移：</p>
-<div class="arithmatex">\[\text{dp}_v[s] = \sum_{j=0}^{c} \text{dp}_{v-1}[s - jv].\]</div>
+<p>设
+$<span class="arithmatex">\(f(x) = \#\{\text{sub-multiset of } \mathtt{nums} : \text{元素和} = x\},\)</span>$
+答案就是
+$<span class="arithmatex">\(\text{ans} = \sum_{x=l}^{r} f(x) \pmod M, \qquad M = 10^9 + 7. \tag{1}\)</span>$</p>
+<p>要算 <span class="arithmatex">\(f\)</span>，把不同的非零值按任意顺序排成 <span class="arithmatex">\(v_1, v_2, \dots, v_D\)</span>，出现次数分别为 <span class="arithmatex">\(c_1, \dots, c_D\)</span>。定义阶段状态
+$<span class="arithmatex">\(\text{dp}_t[s] = \#\{\text{sub-multiset 只用 } v_1,\dots,v_t : \text{和} = s\}.\)</span>$</p>
+<p>初值是"只有空集"，但要先把 <span class="arithmatex">\(0\)</span> 的因子乘进去：<span class="arithmatex">\(\text{dp}_0[0] = c_0 + 1\)</span>，其余为 <span class="arithmatex">\(0\)</span>（§背景 解释了为何 <span class="arithmatex">\(0\)</span> 退化成乘性常数）。</p>
+<p>加入第 <span class="arithmatex">\(t\)</span> 个值时，独立性给出转移：一个和为 <span class="arithmatex">\(s\)</span>、只用前 <span class="arithmatex">\(t\)</span> 个值的 multiset，必然恰好取了某个 <span class="arithmatex">\(j \in \{0, \dots, c_t\}\)</span> 个 <span class="arithmatex">\(v_t\)</span>，其余部分是一个和为 <span class="arithmatex">\(s - j v_t\)</span>、只用前 <span class="arithmatex">\(t-1\)</span> 个值的 multiset。对 <span class="arithmatex">\(j\)</span> 求和：
+$<span class="arithmatex">\(\text{dp}_t[s] = \sum_{j=0}^{c_t} \text{dp}_{t-1}[s - j v_t]. \tag{2}\)</span>$</p>
+<p>递推 <span class="arithmatex">\((2)\)</span> 是全题的脊柱：它是 sub-multiset 独立性的直接转写（"选 <span class="arithmatex">\(j\)</span> 个当前值"对应右端第 <span class="arithmatex">\(j\)</span> 项），后面所有实现都只是在<strong>不改变 <span class="arithmatex">\((2)\)</span> 的结果</strong>前提下把它算快。处理完全部 <span class="arithmatex">\(D\)</span> 个值后 <span class="arithmatex">\(\text{dp}_D = f\)</span>，代入 <span class="arithmatex">\((1)\)</span> 即得答案。和只关心到 <span class="arithmatex">\(r\)</span>，故状态范围取 <span class="arithmatex">\(s \le \min(\sum a_i, r) =: S\)</span>。</p>
 <h2 id="approach">数据结构 / 想法 (Approach)<a class="headerlink" href="#approach" title="Permanent link">#</a></h2>
-<p><strong>算法</strong>：</p>
+<h3 id="_1">朴素实现与它的瓶颈<a class="headerlink" href="#_1" title="Permanent link">#</a></h3>
+<p>直接照 <span class="arithmatex">\((2)\)</span> 写：对每个值 <span class="arithmatex">\(v\)</span>（出现 <span class="arithmatex">\(c\)</span> 次），对每个 <span class="arithmatex">\(s\)</span> 从大到小，累加 <span class="arithmatex">\(c+1\)</span> 项 <span class="arithmatex">\(\text{dp}[s] + \text{dp}[s-v] + \dots + \text{dp}[s - cv]\)</span>。单个值的代价是 <span class="arithmatex">\(O(S \cdot c)\)</span>：每个状态都要扫一段长 <span class="arithmatex">\(c+1\)</span> 的求和。</p>
+<p>这在本题会爆。<span class="arithmatex">\(c\)</span> 是某个值的出现次数，可大到 <span class="arithmatex">\(O(S / v)\)</span>（例如全是 <span class="arithmatex">\(1\)</span>，则 <span class="arithmatex">\(c \approx 2 \cdot 10^4\)</span>）。极端情形下单个值就要 <span class="arithmatex">\(O(S \cdot c) = O(S^2) = O(4 \cdot 10^8)\)</span> 次操作。瓶颈很具体：<span class="arithmatex">\((2)\)</span> 右端是一段<strong>连续 <span class="arithmatex">\(c+1\)</span> 项的滑动求和</strong>，朴素写法对每个 <span class="arithmatex">\(s\)</span> 都从头加一遍这段，重复劳动。</p>
+<h3 id="_2">修复：把求和换成前缀和的差<a class="headerlink" href="#_2" title="Permanent link">#</a></h3>
+<p>相邻状态的求和窗高度重叠。比较 <span class="arithmatex">\(s\)</span> 与 <span class="arithmatex">\(s - v\)</span> 处 <span class="arithmatex">\((2)\)</span> 的右端：
+$<span class="arithmatex">\(\text{dp}_t[s] = \text{dp}_{t-1}[s] + \text{dp}_{t-1}[s-v] + \dots + \text{dp}_{t-1}[s - cv],\)</span>$
+$<span class="arithmatex">\(\text{dp}_t[s-v] = \text{dp}_{t-1}[s-v] + \text{dp}_{t-1}[s-2v] + \dots + \text{dp}_{t-1}[s - (c+1)v].\)</span>$
+两者共享中间 <span class="arithmatex">\(c\)</span> 项，只在两端各差一项。这说明这是一个<strong>固定宽度 <span class="arithmatex">\(c+1\)</span> 的滑动窗口求和</strong>，应当用前缀和在 <span class="arithmatex">\(O(1)\)</span> 算出每个窗。</p>
+<p>但前缀和必须沿正确的方向。窗里的下标 <span class="arithmatex">\(s, s-v, s-2v, \dots\)</span> 步长是 <span class="arithmatex">\(v\)</span>，它们彼此关于 <span class="arithmatex">\(v\)</span> <strong>同余</strong>。下标 <span class="arithmatex">\(s\)</span> 与 <span class="arithmatex">\(s-1\)</span>（若 <span class="arithmatex">\(v \ne 1\)</span>）在转移里从不相遇——把整条 dp 数组做普通前缀和会把不同余数类的项混进一个窗口，算错。因此要把 <span class="arithmatex">\(\{0,1,\dots,S\}\)</span> 按 <span class="arithmatex">\(\bmod\, v\)</span> 分成 <span class="arithmatex">\(v\)</span> 条<strong>余数链</strong>
+$<span class="arithmatex">\(\text{链}_{\text{rem}} = (\text{rem},\ \text{rem}+v,\ \text{rem}+2v,\ \dots),\)</span>$
+<span class="arithmatex">\((2)\)</span> 在每条链上独立地变成"宽度 <span class="arithmatex">\(c+1\)</span> 的一维滑窗"。在链上记 <span class="arithmatex">\(x_k = \text{dp}_{t-1}[\text{rem} + kv]\)</span>，其前缀和 <span class="arithmatex">\(\text{pre}[m] = \sum_{i&lt;m} x_i\)</span>，则
+$<span class="arithmatex">\(\text{dp}_t[\text{rem} + kv] = \sum_{i = \max(0,\,k-c)}^{k} x_i = \text{pre}[k+1] - \text{pre}[\max(0,\,k-c)]. \tag{3}\)</span>$
+下界 <span class="arithmatex">\(\max(0, k-c)\)</span> 把窗口截到 <span class="arithmatex">\(c+1\)</span> 项（不足时取到链头），正是 <span class="arithmatex">\((2)\)</span> 求和上限 <span class="arithmatex">\(j \le c\)</span> 的体现。每条链 <span class="arithmatex">\(O(\text{链长})\)</span>，所有链总长 <span class="arithmatex">\(S+1\)</span>，故单个值 <span class="arithmatex">\(O(S)\)</span>，全程 <span class="arithmatex">\(O(D \cdot S)\)</span>。</p>
+<h3 id="_3">算法<a class="headerlink" href="#_3" title="Permanent link">#</a></h3>
 <ol>
-<li>计数 <span class="arithmatex">\(\text{cnt}[v]\)</span>。设 <span class="arithmatex">\(c_0 = \text{cnt}[0]\)</span>，从 <code>nums</code> 中去除 0。</li>
-<li>初始化 <code>dp[0] = c_0 + 1</code>（0 选取 0..<span class="arithmatex">\(c_0\)</span> 次都是和为 0 的不同 multiset；共 <span class="arithmatex">\(c_0 + 1\)</span> 种<strong>包含 0 的子集</strong>，与非零元素无关）。<span class="arithmatex">\(\text{dp}[s&gt;0] = 0\)</span>。</li>
-</ol>
-<p>等价地：可以先把 dp 全空集 <code>dp[0]=1</code> 初始化，再"0 是上限 <span class="arithmatex">\(c_0\)</span> 的物品（贡献和 0）"等价于乘 <span class="arithmatex">\((c_0+1)\)</span>。</p>
-<ol>
-<li>遍历每个非零 <span class="arithmatex">\(v\)</span>（<span class="arithmatex">\(c = \text{cnt}[v]\)</span>）：用 prefix-sum trick 更新 dp（<span class="arithmatex">\(O(S)\)</span> 每个 <span class="arithmatex">\(v\)</span>）。</li>
-<li>答 = <span class="arithmatex">\((\sum_{x=l}^{r} \text{dp}[x]) \bmod M\)</span>。</li>
+<li>用 <code>Counter</code> 数出 <span class="arithmatex">\(\text{cnt}[v]\)</span>。令 <span class="arithmatex">\(c_0 = \text{cnt}[0]\)</span> 并从计数中弹出 <span class="arithmatex">\(0\)</span>。</li>
+<li>初始化 <span class="arithmatex">\(\text{dp}[0] = c_0 + 1\)</span>（<span class="arithmatex">\(0\)</span> 的乘性因子，见 §形式化），其余 <span class="arithmatex">\(\text{dp}[s] = 0\)</span>，状态范围 <span class="arithmatex">\(s \le S = \min(\sum a_i, r)\)</span>。</li>
+<li>对每个非零值 <span class="arithmatex">\(v\)</span>（出现 <span class="arithmatex">\(c\)</span> 次），按 <span class="arithmatex">\(\bmod\, v\)</span> 分余数链，用前缀和 <span class="arithmatex">\((3)\)</span> 在 <span class="arithmatex">\(O(S)\)</span> 内整体更新 dp。</li>
+<li>答案 <span class="arithmatex">\(= \big(\sum_{x=l}^{r} \text{dp}[x]\big) \bmod M\)</span>，见 <span class="arithmatex">\((1)\)</span>。</li>
 </ol>
 <div class="language-python highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">Solution</span><span class="p">:</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">countSubMultisets</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">nums</span><span class="p">,</span> <span class="n">l</span><span class="p">,</span> <span class="n">r</span><span class="p">):</span>
@@ -22703,90 +22850,53 @@
         <span class="kn">from</span><span class="w"> </span><span class="nn">collections</span><span class="w"> </span><span class="kn">import</span> <span class="n">Counter</span>
         <span class="n">cnt</span> <span class="o">=</span> <span class="n">Counter</span><span class="p">(</span><span class="n">nums</span><span class="p">)</span>
         <span class="n">zeros</span> <span class="o">=</span> <span class="n">cnt</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
-        <span class="n">S</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">nums</span><span class="p">)</span>
-        <span class="n">S</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">S</span><span class="p">,</span> <span class="n">r</span><span class="p">)</span>
-        <span class="n">dp</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="n">S</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
-        <span class="n">dp</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">zeros</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">%</span> <span class="n">MOD</span>  <span class="c1"># 空集已乘 0 的 (zeros+1) 倍</span>
-
-        <span class="k">for</span> <span class="n">v</span><span class="p">,</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">cnt</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-            <span class="c1"># 有界背包 with prefix-sum trick</span>
-            <span class="n">new</span> <span class="o">=</span> <span class="n">dp</span><span class="p">[:]</span>
-            <span class="c1"># 按 mod v 的剩余类分组</span>
-            <span class="k">for</span> <span class="n">rem</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">v</span><span class="p">):</span>
-                <span class="c1"># 在余数链 [rem, rem+v, rem+2v, ...] 上做滑窗</span>
-                <span class="n">s</span> <span class="o">=</span> <span class="mi">0</span>
-                <span class="c1"># 维护窗口和：当前 s 处累加最近 c+1 项 (含 dp[i] 本身)</span>
-                <span class="c1"># 实际滑窗：g[i] = dp[i] + dp[i-v] + ... + dp[i-c*v]</span>
-                <span class="n">idx</span> <span class="o">=</span> <span class="n">rem</span>
-                <span class="c1"># 用队列 / 直接前缀和</span>
-                <span class="c1"># 简单实现：对每个 i = rem + k*v, k = 0,1,...</span>
-                <span class="n">pre</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-                <span class="n">xs</span> <span class="o">=</span> <span class="p">[]</span>
-                <span class="k">while</span> <span class="n">idx</span> <span class="o">&lt;=</span> <span class="n">S</span><span class="p">:</span>
-                    <span class="n">xs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">dp</span><span class="p">[</span><span class="n">idx</span><span class="p">])</span>
-                    <span class="n">pre</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">pre</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">dp</span><span class="p">[</span><span class="n">idx</span><span class="p">])</span> <span class="o">%</span> <span class="n">MOD</span><span class="p">)</span>
-                    <span class="n">idx</span> <span class="o">+=</span> <span class="mi">1</span> <span class="o">*</span> <span class="n">v</span> <span class="k">if</span> <span class="kc">False</span> <span class="k">else</span> <span class="n">v</span>  <span class="c1"># noqa</span>
-                <span class="c1"># 用 pre 求每个位置的窗口和</span>
-                <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">xs</span><span class="p">)):</span>
-                    <span class="n">lo</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">k</span> <span class="o">-</span> <span class="n">c</span><span class="p">)</span>
-                    <span class="n">g</span> <span class="o">=</span> <span class="p">(</span><span class="n">pre</span><span class="p">[</span><span class="n">k</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">pre</span><span class="p">[</span><span class="n">lo</span><span class="p">])</span> <span class="o">%</span> <span class="n">MOD</span>
-                    <span class="n">new</span><span class="p">[</span><span class="n">rem</span> <span class="o">+</span> <span class="n">k</span> <span class="o">*</span> <span class="n">v</span><span class="p">]</span> <span class="o">=</span> <span class="n">g</span>
-            <span class="n">dp</span> <span class="o">=</span> <span class="n">new</span>
-
-        <span class="n">ans</span> <span class="o">=</span> <span class="mi">0</span>
-        <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">l</span><span class="p">,</span> <span class="nb">min</span><span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="n">S</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
-            <span class="n">ans</span> <span class="o">=</span> <span class="p">(</span><span class="n">ans</span> <span class="o">+</span> <span class="n">dp</span><span class="p">[</span><span class="n">x</span><span class="p">])</span> <span class="o">%</span> <span class="n">MOD</span>
-        <span class="k">return</span> <span class="n">ans</span>
-</code></pre></div>
-<p><strong>Trace example 1</strong> <code>nums=[1,2,2,3], l=r=6</code>：cnt={1:1, 2:2, 3:1}, zeros=0, S=8。dp 长度 9, dp[0]=1。
-- v=1, c=1: 每个 rem=0 链。dp 此时 [1,0,0,0,0,0,0,0,0]，xs 长度 9。pre=[0,1,1,1,1,1,1,1,1,1]. 窗口大小 c+1=2: new[k]=pre[k+1]-pre[max(0,k-1)]. k=0:1-0=1; k=1:1-0=1; k=2:1-1=0; k=3..8:0. dp = [1,1,0,0,0,0,0,0,0].
-- v=2, c=2: 余数链 rem=0: indices [0,2,4,6,8]; rem=1: [1,3,5,7]. 
-  - rem=0: xs=[dp[0],dp[2],dp[4],dp[6],dp[8]]=[1,0,0,0,0]. pre=[0,1,1,1,1,1]. 窗口 c+1=3: new[idx]=pre[k+1]-pre[max(0,k-2)]. k=0:1-0=1; k=1:1-0=1; k=2:1-0=1; k=3:1-1=0; k=4:1-1=0. 
-  - rem=1: xs=[dp[1],dp[3],dp[5],dp[7]]=[1,0,0,0]. 同理 new[1]=1, new[3]=1, new[5]=1, new[7]=0.
-  - dp = [1,1,1,1,1,1,0,0,0]. 校验：和 ≤8 的 sub-multiset 含 v∈{1,2,2}: 空集; {1}; {2}; {1,2}; {2,2}; {1,2,2}; → 和 0,1,2,3,4,5 各 1 种。✓
-- v=3, c=1: 余数链 rem=0: [0,3,6]; rem=1: [1,4,7]; rem=2: [2,5,8].
-  - rem=0 xs=[1,1,0]. 窗口 c+1=2. new[0]=1, new[3]=pre[2]-pre[0]=2, new[6]=pre[3]-pre[1]=1.
-  - rem=1 xs=[1,1,0]. new[1]=1, new[4]=2, new[7]=1.
-  - rem=2 xs=[1,1,0]. new[2]=1, new[5]=2, new[8]=1.
-- dp[6]=1，答 1 ✓.</p>
-<div class="language-python highlight"><pre><span></span><code><span class="c1"># 注意：上面伪代码的 idx += 1 * v if False else v 写法乱，干净版：</span>
-<span class="k">class</span><span class="w"> </span><span class="nc">Solution</span><span class="p">:</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">countSubMultisets</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">nums</span><span class="p">,</span> <span class="n">l</span><span class="p">,</span> <span class="n">r</span><span class="p">):</span>
-        <span class="n">MOD</span> <span class="o">=</span> <span class="mi">10</span><span class="o">**</span><span class="mi">9</span> <span class="o">+</span> <span class="mi">7</span>
-        <span class="kn">from</span><span class="w"> </span><span class="nn">collections</span><span class="w"> </span><span class="kn">import</span> <span class="n">Counter</span>
-        <span class="n">cnt</span> <span class="o">=</span> <span class="n">Counter</span><span class="p">(</span><span class="n">nums</span><span class="p">)</span>
-        <span class="n">zeros</span> <span class="o">=</span> <span class="n">cnt</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
         <span class="n">S</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="nb">sum</span><span class="p">(</span><span class="n">nums</span><span class="p">),</span> <span class="n">r</span><span class="p">)</span>
         <span class="n">dp</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="n">S</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
-        <span class="n">dp</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">zeros</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">%</span> <span class="n">MOD</span>
+        <span class="n">dp</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">zeros</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">%</span> <span class="n">MOD</span>          <span class="c1"># 0 的乘性因子 c_0 + 1</span>
         <span class="k">for</span> <span class="n">v</span><span class="p">,</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">cnt</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
             <span class="n">new</span> <span class="o">=</span> <span class="n">dp</span><span class="p">[:]</span>
-            <span class="k">for</span> <span class="n">rem</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">v</span><span class="p">):</span>
-                <span class="n">xs</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">for</span> <span class="n">rem</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">v</span><span class="p">):</span>           <span class="c1"># 按 mod v 的余数链分组</span>
+                <span class="n">xs</span> <span class="o">=</span> <span class="p">[]</span>                     <span class="c1"># 链上的 dp 值 x_k</span>
                 <span class="n">k</span> <span class="o">=</span> <span class="n">rem</span>
                 <span class="k">while</span> <span class="n">k</span> <span class="o">&lt;=</span> <span class="n">S</span><span class="p">:</span>
                     <span class="n">xs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">dp</span><span class="p">[</span><span class="n">k</span><span class="p">]);</span> <span class="n">k</span> <span class="o">+=</span> <span class="n">v</span>
-                <span class="n">pre</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+                <span class="n">pre</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span>                   <span class="c1"># 链的前缀和</span>
                 <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">xs</span><span class="p">:</span>
                     <span class="n">pre</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">pre</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">x</span><span class="p">)</span> <span class="o">%</span> <span class="n">MOD</span><span class="p">)</span>
-                <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">xs</span><span class="p">)):</span>
+                <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">xs</span><span class="p">)):</span>    <span class="c1"># 宽度 c+1 的滑窗，见式 (3)</span>
                     <span class="n">lo</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">j</span> <span class="o">-</span> <span class="n">c</span><span class="p">)</span>
                     <span class="n">new</span><span class="p">[</span><span class="n">rem</span> <span class="o">+</span> <span class="n">j</span> <span class="o">*</span> <span class="n">v</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">pre</span><span class="p">[</span><span class="n">j</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">pre</span><span class="p">[</span><span class="n">lo</span><span class="p">])</span> <span class="o">%</span> <span class="n">MOD</span>
             <span class="n">dp</span> <span class="o">=</span> <span class="n">new</span>
         <span class="k">return</span> <span class="nb">sum</span><span class="p">(</span><span class="n">dp</span><span class="p">[</span><span class="n">x</span><span class="p">]</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">l</span><span class="p">,</span> <span class="n">S</span> <span class="o">+</span> <span class="mi">1</span><span class="p">))</span> <span class="o">%</span> <span class="n">MOD</span>
 </code></pre></div>
+<h3 id="trace-example-1">Trace example 1<a class="headerlink" href="#trace-example-1" title="Permanent link">#</a></h3>
+<p><code>nums=[1,2,2,3], l=r=6</code>：<code>cnt={1:1, 2:2, 3:1}</code>，<code>zeros=0</code>，<span class="arithmatex">\(S = \min(\text{sum}=8,\ r=6) = 6\)</span>，故 dp 长 7，初值 <code>dp=[1,0,0,0,0,0,0]</code>。下面每步按余数链应用式 <span class="arithmatex">\((3)\)</span>；窗宽 <span class="arithmatex">\(= c+1\)</span>。</p>
+<ul>
+<li><strong>v=1, c=1</strong>（窗宽 2）。<span class="arithmatex">\(v=1\)</span> 只有一条链 rem=0，下标 <span class="arithmatex">\([0,1,2,3,4,5,6]\)</span>，<span class="arithmatex">\(x=[1,0,0,0,0,0,0]\)</span>，pre<span class="arithmatex">\(=[0,1,1,1,1,1,1,1]\)</span>。<span class="arithmatex">\(\text{new}[0]=\text{pre}[1]-\text{pre}[0]=1\)</span>，<span class="arithmatex">\(\text{new}[1]=\text{pre}[2]-\text{pre}[0]=1\)</span>，其余 <span class="arithmatex">\(0\)</span>。
+  → <code>dp=[1,1,0,0,0,0,0]</code>。</li>
+<li><strong>v=2, c=2</strong>（窗宽 3），两条链。</li>
+<li>rem=0：下标 <span class="arithmatex">\([0,2,4,6]\)</span>，<span class="arithmatex">\(x=[1,0,0,0]\)</span>，pre<span class="arithmatex">\(=[0,1,1,1,1]\)</span> → <span class="arithmatex">\(\text{new}[0]=1,\ \text{new}[2]=1,\ \text{new}[4]=1,\ \text{new}[6]=\text{pre}[4]-\text{pre}[1]=0\)</span>。</li>
+<li>rem=1：下标 <span class="arithmatex">\([1,3,5]\)</span>，<span class="arithmatex">\(x=[1,0,0]\)</span>，pre<span class="arithmatex">\(=[0,1,1,1]\)</span> → <span class="arithmatex">\(\text{new}[1]=1,\ \text{new}[3]=1,\ \text{new}[5]=1\)</span>。</li>
+<li>→ <code>dp=[1,1,1,1,1,1,0]</code>。校验：只用 <span class="arithmatex">\(\{1,2,2\}\)</span>、和 <span class="arithmatex">\(\le 6\)</span> 的 sub-multiset 为 空集 / {1} / {2} / {1,2} / {2,2} / {1,2,2}，和 <span class="arithmatex">\(0..5\)</span> 各 1 种。✓</li>
+<li><strong>v=3, c=1</strong>（窗宽 2），三条链。</li>
+<li>rem=0：下标 <span class="arithmatex">\([0,3,6]\)</span>，<span class="arithmatex">\(x=[1,1,0]\)</span>，pre<span class="arithmatex">\(=[0,1,2,2]\)</span> → <span class="arithmatex">\(\text{new}[0]=1,\ \text{new}[3]=\text{pre}[2]-\text{pre}[0]=2,\ \text{new}[6]=\text{pre}[3]-\text{pre}[1]=1\)</span>。</li>
+<li>rem=1：下标 <span class="arithmatex">\([1,4]\)</span>，<span class="arithmatex">\(x=[1,1]\)</span> → <span class="arithmatex">\(\text{new}[1]=1,\ \text{new}[4]=2\)</span>。</li>
+<li>rem=2：下标 <span class="arithmatex">\([2,5]\)</span>，<span class="arithmatex">\(x=[1,1]\)</span> → <span class="arithmatex">\(\text{new}[2]=1,\ \text{new}[5]=2\)</span>。</li>
+<li>→ <code>dp=[1,1,1,2,2,2,1]</code>。</li>
+<li>答案取 <span class="arithmatex">\(x=6\)</span>：<span class="arithmatex">\(\text{dp}[6]=1\)</span>。✓（唯一和为 6 的 sub-multiset 是 {1,2,3}。）</li>
+</ul>
 <h2 id="complexity">复杂度 (Complexity)<a class="headerlink" href="#complexity" title="Permanent link">#</a></h2>
 <ul>
-<li>Time: <span class="arithmatex">\(O(D \cdot S)\)</span>，<span class="arithmatex">\(D\)</span> = 不同非零值数 <span class="arithmatex">\(\le 200\)</span>，<span class="arithmatex">\(S \le 2 \cdot 10^4\)</span>。约 <span class="arithmatex">\(4 \cdot 10^6\)</span>，可过。</li>
-<li>Space: <span class="arithmatex">\(O(S)\)</span>。</li>
+<li>Time: <span class="arithmatex">\(O(D \cdot S)\)</span>，<span class="arithmatex">\(D\)</span> = 不同非零值数 <span class="arithmatex">\(\le 199\)</span>，<span class="arithmatex">\(S \le 2 \cdot 10^4\)</span>。约 <span class="arithmatex">\(4 \cdot 10^6\)</span> 次操作，可过。无数据相关分支，best = avg = worst。</li>
+<li>Space: <span class="arithmatex">\(O(S)\)</span>（<code>dp</code>、<code>new</code>，以及每条链的 <code>xs</code>/<code>pre</code> 链长之和为 <span class="arithmatex">\(O(S)\)</span>）。</li>
 </ul>
-<p><strong>为何 <span class="arithmatex">\(D \le 200\)</span></strong>：sum 限 <span class="arithmatex">\(S = 2 \cdot 10^4\)</span>，若有 <span class="arithmatex">\(D\)</span> 个不同正值，最小和 <span class="arithmatex">\(\ge 1+2+\dots+D = D(D+1)/2\)</span>；<span class="arithmatex">\(D(D+1)/2 \le 2 \cdot 10^4 \Rightarrow D \le 199\)</span>。</p>
+<p><strong>为何 <span class="arithmatex">\(D \le 199\)</span></strong>：和上限 <span class="arithmatex">\(S = 2 \cdot 10^4\)</span>。<span class="arithmatex">\(D\)</span> 个不同正值的最小可能和 <span class="arithmatex">\(\ge 1 + 2 + \dots + D = D(D+1)/2\)</span>。<span class="arithmatex">\(D(D+1)/2 \le 2 \cdot 10^4\)</span> 给出 <span class="arithmatex">\(D \le 199\)</span>（<span class="arithmatex">\(199 \cdot 200 / 2 = 19900 \le S\)</span>，而 <span class="arithmatex">\(200 \cdot 201 / 2 = 20100 &gt; S\)</span>）。<span class="arithmatex">\(199\)</span> 是紧界。</p>
 <h2 id="pitfalls">陷阱 (Pitfalls)<a class="headerlink" href="#pitfalls" title="Permanent link">#</a></h2>
 <ul>
-<li><strong>0 必须单独处理</strong>——0 不增加和，每个独立 in/out，所以贡献 <span class="arithmatex">\(2^{c_0}\)</span> 因子（这里写成 <span class="arithmatex">\(c_0 + 1\)</span> 是 multiset：取 0..<span class="arithmatex">\(c_0\)</span> 个 0，每种唯一）。<code>Counter</code> 后弹出 0 这条<strong>容易漏</strong>。</li>
-<li>prefix-sum trick 必须按 <span class="arithmatex">\(\bmod v\)</span> 分<strong>剩余类链</strong>做——直接在 dp 数组上前缀和会把不同步长的物品混叠。</li>
-<li>减法后取模：<code>(pre[j+1] - pre[lo]) % MOD</code> 在 Python 自动正归一，C++/Java 要 <code>(... + MOD) % MOD</code>。</li>
-<li><span class="arithmatex">\(r\)</span> 可能 &gt; <span class="arithmatex">\(\sum a_i\)</span>：dp 数组只开到 <span class="arithmatex">\(\min(r, S)\)</span>；超出部分贡献为 0。</li>
+<li><strong><span class="arithmatex">\(0\)</span> 必须单独处理为乘性因子</strong>。<span class="arithmatex">\(c_0\)</span> 个 <span class="arithmatex">\(0\)</span> 提供 <span class="arithmatex">\(c_0 + 1\)</span> 种取法（取 <span class="arithmatex">\(0..c_0\)</span> 个，每种是不同的 multiset），与非零值独立，故只是常数因子 <span class="arithmatex">\(c_0 + 1\)</span>——<strong>不是</strong> <span class="arithmatex">\(2^{c_0}\)</span>。<span class="arithmatex">\(2^{c_0}\)</span> 是把各个 <span class="arithmatex">\(0\)</span> 当成可区分元素的子集数，与 multiset 模型不符（例：<code>nums=[0,0,0], [l,r]=[0,0]</code> 的答案是 <span class="arithmatex">\(c_0+1=4\)</span>，而非 <span class="arithmatex">\(8\)</span>）。实现里 <code>Counter</code> 后弹出 <span class="arithmatex">\(0\)</span> 这步<strong>容易漏</strong>。</li>
+<li><strong>前缀和必须按 <span class="arithmatex">\(\bmod\, v\)</span> 的余数链做</strong>。直接在整条 dp 上做前缀和，会把不同余数类（步长不为 <span class="arithmatex">\(v\)</span>）的项混进同一个窗口，算错——见 §修复 中余数链的论证。</li>
+<li><strong>减法后取模</strong>。<code>(pre[j+1] - pre[lo]) % MOD</code> 在 Python 会自动归一到非负；C++/Java 需写成 <code>((... ) % MOD + MOD) % MOD</code>。</li>
+<li><strong><span class="arithmatex">\(r\)</span> 可能 <span class="arithmatex">\(&gt; \sum a_i\)</span></strong>。dp 只开到 <span class="arithmatex">\(S = \min(r, \sum a_i)\)</span>，超出 <span class="arithmatex">\(\sum a_i\)</span> 的和无 sub-multiset 可达，贡献为 <span class="arithmatex">\(0\)</span>（例：<code>nums=[1,2], l=10, r=20</code> 答案 <span class="arithmatex">\(0\)</span>）。</li>
 </ul>
 <h2 id="related">相关题目 (Related)<a class="headerlink" href="#related" title="Permanent link">#</a></h2>
 <ul>

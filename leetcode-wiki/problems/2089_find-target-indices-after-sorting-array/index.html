@@ -5485,6 +5485,8 @@
       
         
       
+        
+      
     
     
     
@@ -6024,6 +6026,34 @@
     
   
     #93. Restore IP Addresses
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../0102_binary-tree-level-order-traversal/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    #102. Binary Tree Level Order Traversal
   
 
     
@@ -22675,12 +22705,21 @@
 <h2 id="problem">Problem<a class="headerlink" href="#problem" title="Permanent link">#</a></h2>
 <p>整数数组 <code>nums</code>（长度 ≤ 100）与 <code>target</code>。排序后返回所有等于 <code>target</code> 的下标（升序）。</p>
 <h2 id="background">背景 (Background)<a class="headerlink" href="#background" title="Permanent link">#</a></h2>
-<p>注意题目其实<strong>不要求实际排序</strong>——排序后 <code>target</code> 出现的下标范围只取决于"小于 target 的元素个数 cnt&lt;"和"等于 target 的元素个数 cnt="，下标恰为 <span class="arithmatex">\([\text{cnt}_&lt;,\; \text{cnt}_&lt; + \text{cnt}_= - 1]\)</span>。这是排序与计数（counting sort 中的位移定位）的一个微型应用。</p>
+<p>最直接的做法照搬题面：把 <code>nums</code> 排序，再线性扫一遍，收集所有等于 <code>target</code> 的下标。它正确，代价是 <span class="arithmatex">\(O(n \log n)\)</span>——排序的钱花在了给<strong>全部</strong>元素定序上。</p>
+<p>但答案只关心 <code>target</code> 落在哪些下标。在已排序的数组里，每个 <code>target</code> 前面紧贴着的，恰好是所有严格小于它的元素；这些小元素彼此之间谁先谁后、相等元素彼此之间谁先谁后，都不改变 <code>target</code> 占据的那段下标。换句话说，决定答案的只是两个<strong>计数</strong>，而排序顺带算出的全序信息，对本题是多余的。</p>
+<p>这把问题从"如何排序"转成"<code>target</code> 排序后落在第几位"。要回答后者，不需要真的排序。</p>
 <h2 id="formulation">形式化 (Formulation)<a class="headerlink" href="#formulation" title="Permanent link">#</a></h2>
-<p>设 <span class="arithmatex">\(a = (a_0, \dots, a_{n-1})\)</span>。设 <span class="arithmatex">\(c_&lt; = |\{i : a_i &lt; \text{target}\}|\)</span>，<span class="arithmatex">\(c_= = |\{i : a_i = \text{target}\}|\)</span>。则答案为 <span class="arithmatex">\([c_&lt;, c_&lt; + c_= - 1]\)</span>（若 <span class="arithmatex">\(c_= = 0\)</span> 则为空）。</p>
+<p>直觉先行：在升序数组里，一个元素的下标等于"严格小于它的元素个数"——因为正好这么多元素必须排在它前面。于是定位 <code>target</code> 只需数两件事。</p>
+<p>设 <span class="arithmatex">\(a = (a_0, \dots, a_{n-1})\)</span>，定义</p>
+<div class="arithmatex">\[c_&lt; = |\{i : a_i &lt; \text{target}\}|, \qquad c_= = |\{i : a_i = \text{target}\}|.\]</div>
+<p>排序后，所有严格小于 <code>target</code> 的元素占据下标 <span class="arithmatex">\(0, \dots, c_&lt; - 1\)</span>；紧随其后的 <span class="arithmatex">\(c_=\)</span> 个 <code>target</code> 占据</p>
+<div class="arithmatex">\[\boxed{[\,c_&lt;,\; c_&lt; + c_= - 1\,]} \tag{1}\]</div>
+<p>这就是答案。当 <span class="arithmatex">\(c_= = 0\)</span> 时，区间 <span class="arithmatex">\([c_&lt;, c_&lt; - 1]\)</span> 为空——无需单列特例，空区间正是"<code>target</code> 不存在"的定义性结果。</p>
+<p><strong>验证 (1)</strong>：<code>nums=[1,2,5,2,3], target=2</code>。严格小于 2 的只有元素 <code>1</code>，故 <span class="arithmatex">\(c_&lt; = 1\)</span>；等于 2 的有两个，故 <span class="arithmatex">\(c_= = 2\)</span>。代入 (1) 得 <span class="arithmatex">\([1, 2]\)</span>。排序后 <code>nums=[1,2,2,3,5]</code>，下标 1、2 确为两个 2，吻合。</p>
 <h2 id="approach">数据结构 / 想法 (Approach)<a class="headerlink" href="#approach" title="Permanent link">#</a></h2>
-<p><strong>方法 1（排序 + 线性扫）</strong>：直接排序后线性扫描，简单直接。<span class="arithmatex">\(O(n \log n)\)</span>。</p>
-<p><strong>方法 2（计数 + 范围生成）</strong>：一遍扫数组统计 <span class="arithmatex">\(c_&lt;, c_=\)</span>，直接输出连续下标，<span class="arithmatex">\(O(n)\)</span>。</p>
+<p>两种方法都在求同一个公式 (1)，区别只在如何拿到 <span class="arithmatex">\(c_&lt;\)</span> 和 <span class="arithmatex">\(c_=\)</span>。</p>
+<p><strong>方法 1（排序 + 线性扫）</strong>：排序后扫描收集下标，本质是用一次全排序间接物化出 <span class="arithmatex">\(c_&lt;\)</span>（<code>target</code> 第一次出现的位置就是 <span class="arithmatex">\(c_&lt;\)</span>）。它附带算出了无关的全序，代价 <span class="arithmatex">\(O(n \log n)\)</span>。</p>
+<p><strong>方法 2（计数）</strong>：既然只需两个计数，一遍遍历直接累加，不排序、不物化全序，再由 (1) 输出连续下标。<span class="arithmatex">\(O(n)\)</span>。</p>
 <div class="language-python highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">Solution</span><span class="p">:</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">targetIndices</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">nums</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">],</span> <span class="n">target</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]:</span>
         <span class="n">lt</span> <span class="o">=</span> <span class="n">eq</span> <span class="o">=</span> <span class="mi">0</span>
@@ -22691,16 +22730,16 @@
                 <span class="n">eq</span> <span class="o">+=</span> <span class="mi">1</span>
         <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">lt</span><span class="p">,</span> <span class="n">lt</span> <span class="o">+</span> <span class="n">eq</span><span class="p">))</span>
 </code></pre></div>
-<p>样例 1 trace：<code>nums=[1,2,5,2,3], target=2</code>。lt = 1 (元素 1), eq = 2 (两个 2)。返回 [1, 2] ✓。</p>
+<p><code>range(lt, lt + eq)</code> 恰好生成 <span class="arithmatex">\([\,c_&lt;, c_&lt; + c_= - 1\,]\)</span> 即公式 (1)。<span class="arithmatex">\(O(n)\)</span> 已是下界：任何方法都得读完整个数组才能确定计数，故方法 2 在渐进意义下最优。</p>
 <h2 id="complexity">复杂度 (Complexity)<a class="headerlink" href="#complexity" title="Permanent link">#</a></h2>
 <ul>
-<li>Time: <span class="arithmatex">\(O(n)\)</span>（计数法）；<span class="arithmatex">\(O(n \log n)\)</span>（排序法）</li>
-<li>Space: <span class="arithmatex">\(O(1)\)</span>（计数法）；<span class="arithmatex">\(O(\log n)\)</span>（原地排序栈）</li>
+<li>Time: <span class="arithmatex">\(O(n)\)</span>（计数法，单趟遍历，最优）；<span class="arithmatex">\(O(n \log n)\)</span>（排序法）</li>
+<li>Space: <span class="arithmatex">\(O(1)\)</span>（计数法，两个计数器；返回列表是必需输出，不计）；<span class="arithmatex">\(O(\log n)\)</span>（原地排序递归栈）</li>
 </ul>
 <h2 id="pitfalls">陷阱 (Pitfalls)<a class="headerlink" href="#pitfalls" title="Permanent link">#</a></h2>
 <ul>
-<li><strong>target 不在数组中</strong>：eq=0，<code>range(lt, lt)</code> 为空，自然处理。</li>
-<li><strong>多重相等</strong>：必须输出所有相同下标，不是只输出第一个。</li>
+<li><strong>target 不在数组中</strong>：<span class="arithmatex">\(c_= = 0\)</span>，<code>range(lt, lt)</code> 返回空迭代器，由 (1) 的空区间直接覆盖，无需特判。</li>
+<li><strong>多重相等</strong>：必须输出全部相同下标。例如 <code>[2,2,2], target=2</code> 应得 <code>[0,1,2]</code>，而非只输出首个。</li>
 </ul>
 <h2 id="related">相关题目 (Related)<a class="headerlink" href="#related" title="Permanent link">#</a></h2>
 <ul>

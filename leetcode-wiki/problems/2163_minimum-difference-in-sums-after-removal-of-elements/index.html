@@ -5485,6 +5485,8 @@
       
         
       
+        
+      
     
     
     
@@ -6024,6 +6026,34 @@
     
   
     #93. Restore IP Addresses
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../0102_binary-tree-level-order-traversal/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    #102. Binary Tree Level Order Traversal
   
 
     
@@ -22673,19 +22703,26 @@
 <h1 id="2163-minimum-difference-in-sums-after-removal-of-elements-hard">2163. Minimum Difference in Sums After Removal of Elements  🔴 Hard<a class="headerlink" href="#2163-minimum-difference-in-sums-after-removal-of-elements-hard" title="Permanent link">#</a></h1>
 <p><strong>Tags</strong>: Array, Dynamic Programming, Heap (Priority Queue)</p>
 <h2 id="problem">Problem<a class="headerlink" href="#problem" title="Permanent link">#</a></h2>
-<p><code>nums</code> 长 <span class="arithmatex">\(3n\)</span>。删除一个长 <span class="arithmatex">\(n\)</span> 的子序列，剩 <span class="arithmatex">\(2n\)</span> 个元素按原下标顺序分两半（前 n、后 n）。前半和减后半和的差称为 <code>diff</code>。求 <code>diff</code> 的最小值。<span class="arithmatex">\(1 \le n \le 10^5\)</span>。</p>
+<p><code>nums</code> 长 <span class="arithmatex">\(3n\)</span>。删除一个长 <span class="arithmatex">\(n\)</span> 的子序列，剩 <span class="arithmatex">\(2n\)</span> 个元素按原下标顺序分两半（前 n、后 n）。前半和减后半和的差称为 <code>diff</code>。求 <code>diff</code> 的最小值。<span class="arithmatex">\(1 \le n \le 10^5\)</span>，<span class="arithmatex">\(1 \le \texttt{nums}[i] \le 10^5\)</span>。</p>
 <h2 id="background">背景 (Background)<a class="headerlink" href="#background" title="Permanent link">#</a></h2>
-<p>模型可改写为：选切分下标 <span class="arithmatex">\(k \in [n, 2n]\)</span>，让前缀 <span class="arithmatex">\([0, k)\)</span> 中保留 <span class="arithmatex">\(n\)</span> 个数（其余作为被删的子序列的一部分），后缀 <span class="arithmatex">\([k, 3n)\)</span> 中保留 <span class="arithmatex">\(n\)</span> 个数。最小化"前缀保留和 − 后缀保留和"。<strong>最优策略</strong>：前缀 n 个保留要尽量小（前缀里取最小的 n 个），后缀 n 个保留要尽量大（后缀里取最大的 n 个）。这两步是独立的，可分别用 <strong>大顶堆 / 小顶堆</strong> 在线维护"已扫过的元素中最小 n 个之和 / 最大 n 个之和"。</p>
-<p>经典模式：<strong>前后缀堆扫描</strong>，与 #1383 Maximum Performance of a Team 同型。</p>
+<p>直接照定义枚举：从 <span class="arithmatex">\(3n\)</span> 个下标里选 <span class="arithmatex">\(n\)</span> 个删除，剩下的 <span class="arithmatex">\(2n\)</span> 个按原序前后对半分，算 <code>diff</code>，取最小。要删的子序列有 <span class="arithmatex">\(\binom{3n}{n}\)</span> 种，<span class="arithmatex">\(n = 10^5\)</span> 时这个数远超任何可计算的规模。暴力不可行，所以先看问题本身有什么结构能省掉这次枚举。</p>
+<p>关键的观察来自"剩下的 <span class="arithmatex">\(2n\)</span> 个元素如何被切成两半"。删完之后，前一半恰好是保留元素里下标最小的 <span class="arithmatex">\(n\)</span> 个，后一半是下标最大的 <span class="arithmatex">\(n\)</span> 个。设这条分界落在原数组下标 <span class="arithmatex">\(k\)</span> 处：保留元素中前 <span class="arithmatex">\(n\)</span> 个全部落在 <span class="arithmatex">\([0, k)\)</span>，后 <span class="arithmatex">\(n\)</span> 个全部落在 <span class="arithmatex">\([k, 3n)\)</span>。于是每个合法的删除方案都对应唯一一个切点 <span class="arithmatex">\(k\)</span>，反过来固定 <span class="arithmatex">\(k\)</span> 后，"前一半用到 <span class="arithmatex">\([0,k)\)</span>、后一半用到 <span class="arithmatex">\([k,3n)\)</span>"这个划分也就定了。前一半要在 <span class="arithmatex">\([0,k)\)</span> 里保留 <span class="arithmatex">\(n\)</span> 个、后一半要在 <span class="arithmatex">\([k,3n)\)</span> 里保留 <span class="arithmatex">\(n\)</span> 个，二者用到的下标区间不相交，因此<strong>前一半选哪些、后一半选哪些互不影响</strong>——这是把一次 <span class="arithmatex">\(\binom{3n}{n}\)</span> 的联合枚举拆开的支点。</p>
+<p>切点的范围也被两侧"各需 <span class="arithmatex">\(n\)</span> 个"卡死：前缀 <span class="arithmatex">\([0,k)\)</span> 至少要有 <span class="arithmatex">\(n\)</span> 个元素，故 <span class="arithmatex">\(k \ge n\)</span>；后缀 <span class="arithmatex">\([k, 3n)\)</span> 至少要有 <span class="arithmatex">\(n\)</span> 个元素，故 <span class="arithmatex">\(k \le 2n\)</span>。于是只需让 <span class="arithmatex">\(k\)</span> 在 <span class="arithmatex">\([n, 2n]\)</span> 上滑动，对每个 <span class="arithmatex">\(k\)</span> 求两侧的最优保留，再取全局最小。枚举量从 <span class="arithmatex">\(\binom{3n}{n}\)</span> 降到 <span class="arithmatex">\(n+1\)</span> 个切点。</p>
+<p>固定 <span class="arithmatex">\(k\)</span> 后，每一侧的最优保留各自独立可解。<code>diff</code> <span class="arithmatex">\(=\)</span> 前一半和 <span class="arithmatex">\(-\)</span> 后一半和：要让它小，就让前一半和尽量小、后一半和尽量大。前一半在 <span class="arithmatex">\([0,k)\)</span> 里任取 <span class="arithmatex">\(n\)</span> 个，其和不小于该区间最小的 <span class="arithmatex">\(n\)</span> 个之和（把任一非最小元素换成区间内更小且未选的元素，和只会变小，故取最小的 <span class="arithmatex">\(n\)</span> 个最优）；后一半对称地取 <span class="arithmatex">\([k,3n)\)</span> 里最大的 <span class="arithmatex">\(n\)</span> 个。这两个贪心由交换论证保证最优，下面把它们写成两个量。</p>
 <h2 id="formulation">形式化 (Formulation)<a class="headerlink" href="#formulation" title="Permanent link">#</a></h2>
-<p>设 <span class="arithmatex">\(L_k = \min\{\sum_{i \in S} a_i : S \subseteq [0, k),\; |S| = n\}\)</span>（前 <span class="arithmatex">\(k\)</span> 个中取 n 个最小和）；<span class="arithmatex">\(R_k = \max\{\sum_{i \in S} a_i : S \subseteq [k, 3n),\; |S| = n\}\)</span>（后段中取 n 个最大和）。答案为</p>
-<div class="arithmatex">\[\min_{n \le k \le 2n} L_k - R_k\]</div>
+<p>承上：对固定切点 <span class="arithmatex">\(k\)</span>，最优的 <code>diff</code> 等于"前缀能达到的最小保留和"减去"后缀能达到的最大保留和"，而这两个量各自只依赖于切点一侧。把它们记为</p>
+<div class="arithmatex">\[L_k = \min\Big\{\textstyle\sum_{i \in S} \texttt{nums}[i] : S \subseteq [0, k),\ |S| = n\Big\}, \qquad R_k = \max\Big\{\textstyle\sum_{i \in S} \texttt{nums}[i] : S \subseteq [k, 3n),\ |S| = n\Big\},\]</div>
+<p>其中 <span class="arithmatex">\([0,k)\)</span>、<span class="arithmatex">\([k,3n)\)</span> 是下标集合。<span class="arithmatex">\(L_k\)</span> 是前 <span class="arithmatex">\(k\)</span> 个里取 <span class="arithmatex">\(n\)</span> 个的最小和，<span class="arithmatex">\(R_k\)</span> 是后 <span class="arithmatex">\(3n-k\)</span> 个里取 <span class="arithmatex">\(n\)</span> 个的最大和。由上面的独立性与贪心，切点 <span class="arithmatex">\(k\)</span> 下的最优 <code>diff</code> 是 <span class="arithmatex">\(L_k - R_k\)</span>，整体答案是对所有合法切点取最小：</p>
+<div class="arithmatex">\[\texttt{ans} = \min_{n \le k \le 2n} \big(L_k - R_k\big). \tag{$\star$}\]</div>
+<p>求解就落在 <span class="arithmatex">\((\star)\)</span> 上：需要对 <span class="arithmatex">\(k = n, \dots, 2n\)</span> 全体高效地拿到 <span class="arithmatex">\(L_k\)</span> 与 <span class="arithmatex">\(R_k\)</span>。</p>
 <h2 id="approach">数据结构 / 想法 (Approach)<a class="headerlink" href="#approach" title="Permanent link">#</a></h2>
-<p><strong>两次扫描 + 堆</strong>：</p>
+<p><span class="arithmatex">\((\star)\)</span> 要的是一族 <span class="arithmatex">\(L_k\)</span>（<span class="arithmatex">\(k\)</span> 从 <span class="arithmatex">\(n\)</span> 到 <span class="arithmatex">\(2n\)</span>），而非单个值。相邻切点只差一个元素：<span class="arithmatex">\([0,k+1)\)</span> 比 <span class="arithmatex">\([0,k)\)</span> 多了下标 <span class="arithmatex">\(k\)</span>。如果每个 <span class="arithmatex">\(k\)</span> 都重新排序取最小 <span class="arithmatex">\(n\)</span> 个，是 <span class="arithmatex">\(O(n)\)</span> 每步、总 <span class="arithmatex">\(O(n^2)\)</span>。要做到增量更新，得在"已扫过的元素中维护当前最小的 <span class="arithmatex">\(n\)</span> 个之和"，并在加入新元素时 <span class="arithmatex">\(O(\log n)\)</span> 完成调整。</p>
+<p>维护这样一个集合，每步只需一个判断：新元素是否该挤掉当前集合里<strong>最大</strong>的那个。所以需要 <span class="arithmatex">\(O(1)\)</span> 拿到集合内最大值、<span class="arithmatex">\(O(\log n)\)</span> 弹出它——这正是大顶堆的职责。<strong>不变量</strong>：当堆大小达到 <span class="arithmatex">\(n\)</span> 后，堆中恰是"目前为止最小的 <span class="arithmatex">\(n\)</span> 个元素"，<code>cur_sum</code> 等于它们的和。每读入一个新元素，先入堆并累加，若堆大小超过 <span class="arithmatex">\(n\)</span> 就弹出堆顶（当前最大值）并从 <code>cur_sum</code> 扣除；堆大小恰为 <span class="arithmatex">\(n\)</span> 时，把 <code>cur_sum</code> 记为 <span class="arithmatex">\(L_{k}\)</span>。对称地，从右向左扫、用小顶堆维护"最大的 <span class="arithmatex">\(n\)</span> 个之和"，得到 <span class="arithmatex">\(R_k\)</span>。</p>
+<p>具体三步：</p>
 <ol>
-<li>从左到右扫 <span class="arithmatex">\(i = 0, \dots, 2n - 1\)</span>：用<strong>大顶堆</strong>维护"目前为止保留的 n 个最小元素"；当堆 size = n 时进入"维护态"——新元素若小于堆顶则换入；记录 <span class="arithmatex">\(L_{i+1}\)</span> = 堆里 n 个元素之和。</li>
-<li>从右到左扫 <span class="arithmatex">\(i = 3n - 1, \dots, n\)</span>：对称地用<strong>小顶堆</strong>维护"n 个最大元素"，记录 <span class="arithmatex">\(R_i\)</span>。</li>
-<li>答案 <span class="arithmatex">\(\min_{k = n}^{2n} (L_k - R_k)\)</span>。</li>
+<li>从左到右扫 <span class="arithmatex">\(i = 0, \dots, 2n - 1\)</span>，大顶堆维护最小 <span class="arithmatex">\(n\)</span> 个，堆 size <span class="arithmatex">\(= n\)</span> 时记 <span class="arithmatex">\(L_{i+1}\)</span>。</li>
+<li>从右到左扫 <span class="arithmatex">\(i = 3n - 1, \dots, n\)</span>，小顶堆维护最大 <span class="arithmatex">\(n\)</span> 个，堆 size <span class="arithmatex">\(= n\)</span> 时记 <span class="arithmatex">\(R_i\)</span>。</li>
+<li>按 <span class="arithmatex">\((\star)\)</span> 枚举 <span class="arithmatex">\(k \in [n, 2n]\)</span>，取 <span class="arithmatex">\(\min(L_k - R_k)\)</span>。</li>
 </ol>
 <div class="language-python highlight"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">heapq</span>
 
@@ -22723,35 +22760,108 @@
             <span class="n">ans</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">ans</span><span class="p">,</span> <span class="n">L</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">-</span> <span class="n">R</span><span class="p">[</span><span class="n">k</span><span class="p">])</span>
         <span class="k">return</span> <span class="n">ans</span>
 </code></pre></div>
-<p>样例 2 trace：<code>nums=[7,9,5,8,1,3]</code> (n=2, total=6)。
-左扫维护 2 个最小：
-- i=0: heap=[-7] sum=7, size=1, 不记录
-- i=1: heap=[-9,-7] sum=16, size=2 → L[2]=16
-- i=2: push -5 → heap=[-9,-7,-5] size=3 &gt; 2 → 弹 -9（绝对值最大 9 出），sum=7+5=12 → L[3]=12
-- i=3: push -8 → heap=[-8,-7,-5] size=3 &gt; 2 → 弹 -8（实际堆是 max-heap by -nums，所以 push 后 sift；-8 是新 push，堆顶是 -8？不对，max-heap of original 用负值 min-heap，堆顶是最大原值即 -最小负数 = -(-8)=8…）</p>
-<p>让我用最大值（要弹掉）= heap.pop 返 -8 转正 8。push -8 后实际堆 = [-8, -7, -5] 排序 min-heap：堆顶 -8。pop -8 → 弹原 8。sum = 12 + 8 − 8 = 12。L[4] = 12.</p>
-<p>但我们只关心 k ∈ [n, 2n] = [2, 4]，所以 L[2]=16, L[3]=12, L[4]=12。</p>
-<p>右扫维护 2 个最大（min-heap）：
-- i=5: heap=[3], sum=3
-- i=4: heap=[1,3], sum=4 → R[4]=4
-- i=3: push 8 → heap=[1,3,8] size 3 → 弹 1 → heap=[3,8], sum=11 → R[3]=11
-- i=2: push 5 → heap=[3,5,8] → 弹 3 → heap=[5,8], sum=13 → R[2]=13</p>
-<p>枚举 k=2,3,4: L-R = 16-13=3, 12-11=1, 12-4=8. min=1 ✓。</p>
+<p>Python <code>heapq</code> 只有最小堆，左扫要 <span class="arithmatex">\(O(1)\)</span> 拿最大值，故存入相反数 <code>-nums[i]</code>，堆顶 <code>heapq.heappop</code> 弹出的负数取反即原区间最大值。</p>
+<p><strong>样例 2 trace</strong>：<code>nums = [7,9,5,8,1,3]</code>（<span class="arithmatex">\(n = 2\)</span>，<span class="arithmatex">\(total = 6\)</span>，合法切点 <span class="arithmatex">\(k \in [2, 4]\)</span>）。</p>
+<p>左扫维护 2 个最小，记 <span class="arithmatex">\(L_k\)</span>：</p>
+<table>
+<thead>
+<tr>
+<th><span class="arithmatex">\(i\)</span></th>
+<th>入堆后</th>
+<th>size</th>
+<th>操作</th>
+<th>记录</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td><span class="arithmatex">\(\{7\}\)</span></td>
+<td>1</td>
+<td>不足 <span class="arithmatex">\(n\)</span></td>
+<td>—</td>
+</tr>
+<tr>
+<td>1</td>
+<td><span class="arithmatex">\(\{7,9\}\)</span></td>
+<td>2</td>
+<td>size<span class="arithmatex">\(=n\)</span></td>
+<td><span class="arithmatex">\(L_2 = 16\)</span></td>
+</tr>
+<tr>
+<td>2</td>
+<td><span class="arithmatex">\(\{7,9,5\}\)</span></td>
+<td>3</td>
+<td>弹出最大 9</td>
+<td><span class="arithmatex">\(L_3 = 7+5 = 12\)</span></td>
+</tr>
+<tr>
+<td>3</td>
+<td><span class="arithmatex">\(\{7,5,8\}\)</span></td>
+<td>3</td>
+<td>弹出最大 8</td>
+<td><span class="arithmatex">\(L_4 = 7+5 = 12\)</span></td>
+</tr>
+</tbody>
+</table>
+<p>右扫维护 2 个最大，记 <span class="arithmatex">\(R_k\)</span>：</p>
+<table>
+<thead>
+<tr>
+<th><span class="arithmatex">\(i\)</span></th>
+<th>入堆后</th>
+<th>size</th>
+<th>操作</th>
+<th>记录</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>5</td>
+<td><span class="arithmatex">\(\{3\}\)</span></td>
+<td>1</td>
+<td>不足 <span class="arithmatex">\(n\)</span></td>
+<td>—</td>
+</tr>
+<tr>
+<td>4</td>
+<td><span class="arithmatex">\(\{1,3\}\)</span></td>
+<td>2</td>
+<td>size<span class="arithmatex">\(=n\)</span></td>
+<td><span class="arithmatex">\(R_4 = 4\)</span></td>
+</tr>
+<tr>
+<td>3</td>
+<td><span class="arithmatex">\(\{1,3,8\}\)</span></td>
+<td>3</td>
+<td>弹出最小 1</td>
+<td><span class="arithmatex">\(R_3 = 3+8 = 11\)</span></td>
+</tr>
+<tr>
+<td>2</td>
+<td><span class="arithmatex">\(\{3,5,8\}\)</span></td>
+<td>3</td>
+<td>弹出最小 3</td>
+<td><span class="arithmatex">\(R_2 = 5+8 = 13\)</span></td>
+</tr>
+</tbody>
+</table>
+<p>按 <span class="arithmatex">\((\star)\)</span> 枚举 <span class="arithmatex">\(k = 2,3,4\)</span>：<span class="arithmatex">\(L_k - R_k = 16-13,\ 12-11,\ 12-4 = 3,\ 1,\ 8\)</span>，最小为 <span class="arithmatex">\(1\)</span>。✓</p>
 <h2 id="complexity">复杂度 (Complexity)<a class="headerlink" href="#complexity" title="Permanent link">#</a></h2>
 <ul>
-<li>Time: <span class="arithmatex">\(O(n \log n)\)</span></li>
-<li>Space: <span class="arithmatex">\(O(n)\)</span></li>
+<li>Time: <span class="arithmatex">\(O(n \log n)\)</span>。两次扫描共 <span class="arithmatex">\(O(n)\)</span> 个元素，每个元素一次入堆、至多一次出堆，单次堆操作 <span class="arithmatex">\(O(\log n)\)</span>；末尾按 <span class="arithmatex">\((\star)\)</span> 枚举 <span class="arithmatex">\(n+1\)</span> 个切点为 <span class="arithmatex">\(O(n)\)</span>。</li>
+<li>Space: <span class="arithmatex">\(O(n)\)</span>。堆与辅助数组 <span class="arithmatex">\(L, R\)</span> 均线性规模。</li>
 </ul>
 <h2 id="pitfalls">陷阱 (Pitfalls)<a class="headerlink" href="#pitfalls" title="Permanent link">#</a></h2>
 <ul>
-<li><strong><code>L[k] - R[k]</code> 在 <span class="arithmatex">\(k = n\)</span> 也合法</strong>：此时前缀只能保留前 n 个全部（无删除自由），后缀保留 n 个最大。</li>
-<li><strong>大顶堆要存负值</strong>：Python <code>heapq</code> 是 min-heap。</li>
-<li><strong>堆大小恰为 n 时才记录</strong>：size &lt; n 表示前缀长度不够。</li>
-<li><strong><code>L</code> 与 <code>R</code> 用同一下标 <code>k</code></strong>：表示前 <code>k</code> 个 vs 后 <code>total − k</code> 个的切分位置。</li>
+<li><strong><span class="arithmatex">\(k = n\)</span> 也是合法切点</strong>：此时前缀 <span class="arithmatex">\([0, n)\)</span> 恰好 <span class="arithmatex">\(n\)</span> 个，只能全保留（无删除自由），后缀取最大的 <span class="arithmatex">\(n\)</span> 个。<span class="arithmatex">\((\star)\)</span> 的下界必须包含它。</li>
+<li><strong>大顶堆要存负值</strong>：Python <code>heapq</code> 是最小堆，左扫需要相反数技巧才能 <span class="arithmatex">\(O(1)\)</span> 拿到当前最大、<span class="arithmatex">\(O(\log n)\)</span> 弹出。</li>
+<li><strong>堆大小恰为 <span class="arithmatex">\(n\)</span> 时才记录</strong>：size <span class="arithmatex">\(&lt; n\)</span> 表示该侧元素还不足 <span class="arithmatex">\(n\)</span> 个，<span class="arithmatex">\(L_k\)</span> / <span class="arithmatex">\(R_k\)</span> 尚未定义。</li>
+<li><strong><span class="arithmatex">\(L\)</span> 与 <span class="arithmatex">\(R\)</span> 共用下标 <span class="arithmatex">\(k\)</span></strong>：<span class="arithmatex">\(k\)</span> 是切点，含义是前 <span class="arithmatex">\(k\)</span> 个 vs 后 <span class="arithmatex">\(3n - k\)</span> 个；两数组在同一 <span class="arithmatex">\(k\)</span> 上对齐才能做 <span class="arithmatex">\(L_k - R_k\)</span>。</li>
 </ul>
 <h2 id="related">相关题目 (Related)<a class="headerlink" href="#related" title="Permanent link">#</a></h2>
 <ul>
-<li><code>#1383 Maximum Performance of a Team (off-wiki)</code> — 同型的前后缀堆扫描。</li>
+<li><code>#1383 Maximum Performance of a Team (off-wiki)</code> — 同样靠前后缀堆扫描增量维护一侧的 top-<span class="arithmatex">\(k\)</span> 聚合。</li>
 <li><a href="../2104_sum-of-subarray-ranges/">#2104 Sum of Subarray Ranges</a> — 单调结构与极值聚合。</li>
 </ul>
 <h2 id="further-reading">Further Reading<a class="headerlink" href="#further-reading" title="Permanent link">#</a></h2>

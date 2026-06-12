@@ -5485,6 +5485,8 @@
       
         
       
+        
+      
     
     
     
@@ -6024,6 +6026,34 @@
     
   
     #93. Restore IP Addresses
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../0102_binary-tree-level-order-traversal/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    #102. Binary Tree Level Order Traversal
   
 
     
@@ -22675,67 +22705,79 @@
 <h2 id="problem">Problem<a class="headerlink" href="#problem" title="Permanent link">#</a></h2>
 <p>给三个整数 <span class="arithmatex">\(a, b, n\)</span>，求 <span class="arithmatex">\(\max_{0 \le x &lt; 2^n} (a \oplus x) \cdot (b \oplus x) \bmod (10^9 + 7)\)</span>。<span class="arithmatex">\(0 \le a, b &lt; 2^{50}\)</span>, <span class="arithmatex">\(0 \le n \le 50\)</span>。</p>
 <h2 id="background">背景 (Background)<a class="headerlink" href="#background" title="Permanent link">#</a></h2>
-<p>经典 <strong>AM-GM 启发的位贪心</strong>：当两数和固定，乘积在两数<strong>尽量接近</strong>时最大（即 <span class="arithmatex">\((s/2)^2 \ge ab\)</span> 取等于 <span class="arithmatex">\(a=b\)</span>）。本题中 <span class="arithmatex">\(x\)</span> 只在低 <span class="arithmatex">\(n\)</span> 位有效，对每位贪心决策：</p>
+<p>先把问题写成可优化的形式。令</p>
+<div class="arithmatex">\[A = a \oplus x, \qquad B = b \oplus x, \qquad 0 \le x &lt; 2^n.\]</div>
+<p>我们要最大化乘积 <span class="arithmatex">\(A \cdot B\)</span>。约束 <span class="arithmatex">\(x &lt; 2^n\)</span> 意味着 <span class="arithmatex">\(x\)</span> 只能改动 <strong>低 <span class="arithmatex">\(n\)</span> 位</strong>（位 <span class="arithmatex">\(0\)</span> 到 <span class="arithmatex">\(n-1\)</span>），位 <span class="arithmatex">\(i \ge n\)</span> 处 <span class="arithmatex">\(x_i = 0\)</span>，因此那些高位上 <span class="arithmatex">\(A_i = a_i\)</span>、<span class="arithmatex">\(B_i = b_i\)</span> 固定不可动。真正可选的只有低 <span class="arithmatex">\(n\)</span> 位。</p>
+<p><strong>朴素尝试</strong>。要让乘积大，自然想让两个因子各自尽量大，于是对每一位都让 <span class="arithmatex">\(A_i = 1\)</span> 且 <span class="arithmatex">\(B_i = 1\)</span>。但 XOR 把两边耦合了：在同一位 <span class="arithmatex">\(i\)</span>，<span class="arithmatex">\(A_i = a_i \oplus x_i\)</span> 与 <span class="arithmatex">\(B_i = b_i \oplus x_i\)</span> 共用同一个 <span class="arithmatex">\(x_i\)</span>。如果 <span class="arithmatex">\(a_i \ne b_i\)</span>，那么无论 <span class="arithmatex">\(x_i\)</span> 取 <span class="arithmatex">\(0\)</span> 还是 <span class="arithmatex">\(1\)</span>，<span class="arithmatex">\(A_i\)</span> 和 <span class="arithmatex">\(B_i\)</span> 恰好一个为 <span class="arithmatex">\(1\)</span>、一个为 <span class="arithmatex">\(0\)</span>——不可能两边同时为 <span class="arithmatex">\(1\)</span>。所以"每位都拉满"在 <span class="arithmatex">\(a_i \ne b_i\)</span> 的位上根本做不到，朴素目标失效。需要一个能处理这种耦合的判据。</p>
+<p><strong>关键结构：逐位独立</strong>。XOR 是 <span class="arithmatex">\(\mathrm{GF}(2)\)</span> 上的按位运算，第 <span class="arithmatex">\(i\)</span> 位的结果 <span class="arithmatex">\(a_i \oplus x_i\)</span> 只依赖 <span class="arithmatex">\(x_i\)</span>，与其他位无关。于是对 <span class="arithmatex">\(x\)</span> 的优化分解成 <span class="arithmatex">\(n\)</span> 个互不干扰的单比特决策：选定每个 <span class="arithmatex">\(x_i\)</span>，就独立决定了 <span class="arithmatex">\(A,B\)</span> 在第 <span class="arithmatex">\(i\)</span> 位的贡献。这把"在 <span class="arithmatex">\(2^n\)</span> 个 <span class="arithmatex">\(x\)</span> 上搜索"降成"逐位定夺"，是贪心可行的根基。</p>
+<p><strong>逐位决策依据什么？</strong> 设此刻除第 <span class="arithmatex">\(i\)</span> 位外、其余位都已（或将）取到各自最优，把已定的高位和写成 <span class="arithmatex">\(S\)</span>。第 <span class="arithmatex">\(i\)</span> 位给 <span class="arithmatex">\(A,B\)</span> 带来的增量 <span class="arithmatex">\(2^i\)</span> 该如何分配，取决于它对乘积的影响。这里用一个由乘积本身导出的恒等式，而非外部不等式：对任意实数 <span class="arithmatex">\(A,B\)</span>，</p>
+<div class="arithmatex">\[A \cdot B = \frac{(A+B)^2 - (A-B)^2}{4}. \tag{1}\]</div>
+<p>(1) 把乘积拆成"和的平方"减"差的平方"。它直接给出两条优先级：<strong>和 <span class="arithmatex">\(A+B\)</span> 越大，乘积越大；在和固定时，差 <span class="arithmatex">\(|A-B|\)</span> 越小，乘积越大。</strong> 这两条都只用到 <span class="arithmatex">\(A,B\)</span> 自身，不借助任何外部类比。</p>
+<p><strong>两类位</strong>。回到第 <span class="arithmatex">\(i\)</span> 位（<span class="arithmatex">\(i &lt; n\)</span>），按 <span class="arithmatex">\(a_i\)</span> 与 <span class="arithmatex">\(b_i\)</span> 是否相等分两种情形：</p>
 <ul>
-<li><strong>位 <span class="arithmatex">\(i \ge n\)</span></strong>：<span class="arithmatex">\(a, b\)</span> 的高位无法修改，原样保留。</li>
-<li><strong>位 <span class="arithmatex">\(i &lt; n\)</span></strong>：可以选 <span class="arithmatex">\(x_i \in \{0, 1\}\)</span>。</li>
-<li>若 <span class="arithmatex">\(a_i = b_i\)</span>：选 <span class="arithmatex">\(x_i = 1 - a_i\)</span> 使两个结果的此位都为 1（同时加 <span class="arithmatex">\(2^i\)</span> 到二者）。这总比都 0 好。</li>
-<li>若 <span class="arithmatex">\(a_i \ne b_i\)</span>：恰一个结果的此位会是 1。把这 1 加给当前<strong>较小</strong>的那一方（让两数更接近）。</li>
+<li><strong><span class="arithmatex">\(a_i = b_i\)</span>（同位）</strong>：此时 <span class="arithmatex">\(A_i = a_i \oplus x_i\)</span> 与 <span class="arithmatex">\(B_i = b_i \oplus x_i\)</span> 必然相等，要么同为 <span class="arithmatex">\(1\)</span>、要么同为 <span class="arithmatex">\(0\)</span>。取 <span class="arithmatex">\(x_i = 1 - a_i\)</span> 让两边此位都为 <span class="arithmatex">\(1\)</span>，相当于给 <span class="arithmatex">\(A,B\)</span> 各加 <span class="arithmatex">\(2^i\)</span>。由 (1)，把和增大严格增大乘积：</li>
 </ul>
-<p>注意：这个"位贪心"基于一个反直觉但正确的事实——<strong>先保证 <span class="arithmatex">\(A+B\)</span> 最大</strong>（两位都 1 时），<strong>再在和相等的位上保证 <span class="arithmatex">\(A, B\)</span> 尽量接近</strong>。这是 AM-GM 在 bit-level 的形式化。</p>
+<div class="arithmatex">\[(A + 2^i)(B + 2^i) - AB = 2^i (A + B + 2^i) &gt; 0 \quad (A,B \ge 0). \tag{2}\]</div>
+<p>所以同位一律取两边为 <span class="arithmatex">\(1\)</span>，无条件最优——它先把和 <span class="arithmatex">\(A+B\)</span> 顶满。</p>
+<ul>
+<li><strong><span class="arithmatex">\(a_i \ne b_i\)</span>（异位）</strong>：此时 <span class="arithmatex">\(A_i\)</span> 与 <span class="arithmatex">\(B_i\)</span> 必然相反，恰一边为 <span class="arithmatex">\(1\)</span>、一边为 <span class="arithmatex">\(0\)</span>。无论怎么选 <span class="arithmatex">\(x_i\)</span>，这一位给和 <span class="arithmatex">\(A+B\)</span> 的贡献都恰是 <span class="arithmatex">\(2^i\)</span>（一边 <span class="arithmatex">\(+2^i\)</span>，另一边 <span class="arithmatex">\(+0\)</span>），<strong>和是固定的</strong>。既然和定了，按 (1) 只剩"让差最小"：把这 <span class="arithmatex">\(2^i\)</span> 加到当前<strong>较小</strong>的一方，使 <span class="arithmatex">\(A,B\)</span> 更接近，乘积更大。</li>
+</ul>
+<p><strong>为什么比较时只看高位</strong>。异位时要判断"当前谁更小"。低于第 <span class="arithmatex">\(i\)</span> 位的那些位还没定，且后续都会被填到各自最优，因此它们不应参与此刻的大小判断——只比较已经确定的高位部分（第 <span class="arithmatex">\(i\)</span> 位以上）即可。这正是正确性的关键：用未定的低位去比较会得出错误的"谁更小"。</p>
+<p>至此判据完整：从高位往低位扫，同位顶满（先最大化和），异位把 <span class="arithmatex">\(1\)</span> 给较小侧（再最小化差），两条都是 (1) 的直接推论。</p>
 <h2 id="formulation">形式化 (Formulation)<a class="headerlink" href="#formulation" title="Permanent link">#</a></h2>
-<p>令 <span class="arithmatex">\(A = a \oplus x, B = b \oplus x\)</span>。目标 <span class="arithmatex">\(\max AB\)</span> 且 <span class="arithmatex">\(x &lt; 2^n\)</span>。</p>
+<p>记 <span class="arithmatex">\(A = a \oplus x\)</span>，<span class="arithmatex">\(B = b \oplus x\)</span>，目标</p>
+<div class="arithmatex">\[\max_{0 \le x &lt; 2^n} A \cdot B, \qquad A \cdot B = \frac{(A+B)^2 - (A-B)^2}{4}.\]</div>
+<p>由逐位独立，最优解由每位的独立决策拼成：位 <span class="arithmatex">\(i \ge n\)</span> 保留 <span class="arithmatex">\(a_i, b_i\)</span>；位 <span class="arithmatex">\(i &lt; n\)</span> 按上节两条规则取定。</p>
 <h2 id="approach">数据结构 / 想法 (Approach)<a class="headerlink" href="#approach" title="Permanent link">#</a></h2>
-<p>从最高位 (bit 49) 向下扫，维护当前 <span class="arithmatex">\(A, B\)</span>：</p>
+<p>高位 <span class="arithmatex">\(i \ge n\)</span> 处 <span class="arithmatex">\(A_i=a_i\)</span>、<span class="arithmatex">\(B_i=b_i\)</span> 固定，由初始化 <code>A, B = a, b</code> 直接保留；只需从第 <span class="arithmatex">\(n-1\)</span> 位向下扫，逐位定夺：</p>
 <div class="language-python highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">Solution</span><span class="p">:</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">maximumXorProduct</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
         <span class="n">MOD</span> <span class="o">=</span> <span class="mi">10</span><span class="o">**</span><span class="mi">9</span> <span class="o">+</span> <span class="mi">7</span>
-        <span class="c1"># 处理高位 i &gt;= n：x 在此位必为 0，A_i = a_i, B_i = b_i</span>
-        <span class="c1"># 先把高位组分离出来</span>
-        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">49</span><span class="p">,</span> <span class="n">n</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">):</span>
-            <span class="k">pass</span>  <span class="c1"># x 不能动这些位</span>
+        <span class="c1"># 高位 i &gt;= n：x 此位必为 0，A_i=a_i, B_i=b_i，由下面的初始化原样保留。</span>
         <span class="n">A</span><span class="p">,</span> <span class="n">B</span> <span class="o">=</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span>
         <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">):</span>
             <span class="n">ai</span> <span class="o">=</span> <span class="p">(</span><span class="n">a</span> <span class="o">&gt;&gt;</span> <span class="n">i</span><span class="p">)</span> <span class="o">&amp;</span> <span class="mi">1</span>
             <span class="n">bi</span> <span class="o">=</span> <span class="p">(</span><span class="n">b</span> <span class="o">&gt;&gt;</span> <span class="n">i</span><span class="p">)</span> <span class="o">&amp;</span> <span class="mi">1</span>
             <span class="k">if</span> <span class="n">ai</span> <span class="o">==</span> <span class="n">bi</span><span class="p">:</span>
-                <span class="c1"># 设 x_i = 1 - ai，使 A,B 该位都变 1（如果原本是 0），或者保持 1。</span>
-                <span class="c1"># 若 ai=0：x_i=1 → A_i=1, B_i=1 ↑↑</span>
-                <span class="c1"># 若 ai=1：x_i=0 → A_i=1, B_i=1 保持 1</span>
-                <span class="c1"># 都不变更好（已经 1）；要变 0→1 也是赚。统一：把 A,B 当前 i 位强制设 1。</span>
+                <span class="c1"># 同位：A,B 此位必相等。取两边都为 1，给 A+B 各加 2^i（先最大化和）。</span>
                 <span class="n">A</span> <span class="o">|=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="n">i</span><span class="p">);</span> <span class="n">B</span> <span class="o">|=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="n">i</span><span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="c1"># 一个 1 一个 0，x_i 决定哪边变 1。把这个 1 给较小者。</span>
-                <span class="c1"># 当前 A, B 在低位 &lt; i 还没设；仅比较高位部分（已确定）。</span>
+                <span class="c1"># 异位：A,B 此位必相反，这一位对 A+B 的贡献恒为 2^i（和固定）。</span>
+                <span class="c1"># 只剩最小化 |A-B|：把这个 1 给当前较小者。</span>
+                <span class="c1"># 比较时只看已确定的高位（&gt; i）；低位尚未定夺，不参与比较。</span>
                 <span class="n">Ahi</span> <span class="o">=</span> <span class="n">A</span> <span class="o">&gt;&gt;</span> <span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
                 <span class="n">Bhi</span> <span class="o">=</span> <span class="n">B</span> <span class="o">&gt;&gt;</span> <span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
-                <span class="c1"># 注意：A,B 此时 i 位下方仍是 a, b 的原始 bits，但低位决定可被后续覆盖；</span>
-                <span class="c1"># 为正确比较&quot;已确定&quot; 部分，只看 &gt; i 的 bits.</span>
                 <span class="k">if</span> <span class="n">Ahi</span> <span class="o">&lt;=</span> <span class="n">Bhi</span><span class="p">:</span>
-                    <span class="c1"># 把 1 给 A：A 的 i 位 = 1, B 的 i 位 = 0</span>
+                    <span class="c1"># 把 1 给 A：A 的 i 位 = 1，B 的 i 位 = 0</span>
                     <span class="n">A</span> <span class="o">|=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="n">i</span><span class="p">);</span> <span class="n">B</span> <span class="o">&amp;=</span> <span class="o">~</span><span class="p">(</span><span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="n">i</span><span class="p">)</span>
                 <span class="k">else</span><span class="p">:</span>
                     <span class="n">A</span> <span class="o">&amp;=</span> <span class="o">~</span><span class="p">(</span><span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="n">i</span><span class="p">);</span> <span class="n">B</span> <span class="o">|=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="n">i</span><span class="p">)</span>
         <span class="k">return</span> <span class="p">(</span><span class="n">A</span> <span class="o">%</span> <span class="n">MOD</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">B</span> <span class="o">%</span> <span class="n">MOD</span><span class="p">)</span> <span class="o">%</span> <span class="n">MOD</span>
 </code></pre></div>
-<p><strong>正确性论证</strong>：bit <span class="arithmatex">\(i\)</span> 时，若 <span class="arithmatex">\(a_i = b_i\)</span> 则两个结果该位<strong>必同</strong>（因为 <span class="arithmatex">\(a_i \oplus x_i = b_i \oplus x_i\)</span>），同 1 显然比同 0 好（加 <span class="arithmatex">\(2 \cdot 2^i\)</span> 到和；乘积只会增大因为 AM-GM）。若 <span class="arithmatex">\(a_i \ne b_i\)</span> 则该位<strong>必异</strong>（恰好一个 1），此时把 1 给当前较小一侧使二者更接近，乘积更大（AM-GM）。</p>
-<p><strong>Trace example 1</strong> <code>a=12 (1100), b=5 (0101), n=4</code>：
-- 高位无（49..4 都 0）。
-- bit 3: a=1,b=0，不同。Ahi=Bhi=0，把 1 给 A：A=8, B=0 ⇒ A=12 (原 12), B=0... 等等，我重新追：A 初始 12=1100, B 初始 5=0101。bit 3: a_3=1, b_3=0 ⇒ 不同。Ahi=A&gt;&gt;4=0, Bhi=B&gt;&gt;4=0，相等，把 1 给 A：A|=8 → A=12（已含 8），B&amp;=~8 → B=5（本来无 8）。无变化。
-- bit 2: a_2=1, b_2=1，相同。强制 A,B 第 2 位为 1：A|=4 → A=12（已含 4），B|=4 → B=5|4=7。
-- bit 1: a_1=0, b_1=0，相同。强制为 1：A|=2 → A=14, B|=2 → B=7。
-- bit 0: a_0=0, b_0=1，不同。Ahi=A&gt;&gt;1=7, Bhi=B&gt;&gt;1=3，A&gt;B，把 1 给 B：B|=1 → B=7（已含），A&amp;=~1 → A=14。
-- 最终 A=14, B=7，积 98 ✓。</p>
+<p><strong>正确性论证</strong>。逐位从高到低决策，每步只看已确定的高位。</p>
+<ul>
+<li>同位（<span class="arithmatex">\(a_i = b_i\)</span>）：<span class="arithmatex">\(A_i \oplus B_i = (a_i \oplus x_i) \oplus (b_i \oplus x_i) = a_i \oplus b_i = 0\)</span>，两边此位必同。取两边为 <span class="arithmatex">\(1\)</span> 由 (2) 严格增大乘积，故同位顶满最优。</li>
+<li>异位（<span class="arithmatex">\(a_i \ne b_i\)</span>）：<span class="arithmatex">\(A_i \oplus B_i = a_i \oplus b_i = 1\)</span>，两边此位必异，恰一个 <span class="arithmatex">\(1\)</span>。此位对和 <span class="arithmatex">\(A+B\)</span> 的贡献恒为 <span class="arithmatex">\(2^i\)</span>，和固定；由 (1)，在和固定时乘积随 <span class="arithmatex">\(|A-B|\)</span> 减小而增大，故把 <span class="arithmatex">\(2^i\)</span> 给较小侧最优。比较只用高位 <code>A &gt;&gt; (i+1)</code>、<code>B &gt;&gt; (i+1)</code>，剔除尚未定夺的低位，保证比较的是"已确定"部分。</li>
+</ul>
+<p>(注：异位分支里 <code>Ahi &lt;= Bhi</code> 用 <code>&lt;=</code> 还是 <code>&lt;</code> 都正确——当 <code>Ahi == Bhi</code> 时两种分配对称，乘积相同。)</p>
+<p><strong>Trace example 1</strong> <code>a=12 (1100), b=5 (0101), n=4</code>，初始 <span class="arithmatex">\(A=12=1100_2\)</span>，<span class="arithmatex">\(B=5=0101_2\)</span>：</p>
+<ul>
+<li>bit 3：<span class="arithmatex">\(a_3=1, b_3=0\)</span>，异位。<span class="arithmatex">\(A_{\text{hi}}=A\gg4=0,\ B_{\text{hi}}=B\gg4=0\)</span>，相等（<code>&lt;=</code>），把 <span class="arithmatex">\(1\)</span> 给 <span class="arithmatex">\(A\)</span>：<code>A|=8</code>→<span class="arithmatex">\(A=12\)</span>（本就含 <span class="arithmatex">\(8\)</span>），<code>B&amp;=~8</code>→<span class="arithmatex">\(B=5\)</span>（本就无 <span class="arithmatex">\(8\)</span>）。无变化，<span class="arithmatex">\(A=12,B=5\)</span>。</li>
+<li>bit 2：<span class="arithmatex">\(a_2=1, b_2=1\)</span>，同位。两边此位设 <span class="arithmatex">\(1\)</span>：<code>A|=4</code>→<span class="arithmatex">\(A=12\)</span>（本就含 <span class="arithmatex">\(4\)</span>），<code>B|=4</code>→<span class="arithmatex">\(5\,|\,4=5\)</span>（<span class="arithmatex">\(5=101_2\)</span> 本就含 <span class="arithmatex">\(4\)</span>）。无变化，<span class="arithmatex">\(A=12,B=5\)</span>。</li>
+<li>bit 1：<span class="arithmatex">\(a_1=0, b_1=0\)</span>，同位。两边此位设 <span class="arithmatex">\(1\)</span>：<code>A|=2</code>→<span class="arithmatex">\(A=14\)</span>，<code>B|=2</code>→<span class="arithmatex">\(5\,|\,2=7\)</span>。<span class="arithmatex">\(A=14,B=7\)</span>。</li>
+<li>bit 0：<span class="arithmatex">\(a_0=0, b_0=1\)</span>，异位。<span class="arithmatex">\(A_{\text{hi}}=A\gg1=7,\ B_{\text{hi}}=B\gg1=3\)</span>，<span class="arithmatex">\(A_{\text{hi}}&gt;B_{\text{hi}}\)</span>，把 <span class="arithmatex">\(1\)</span> 给 <span class="arithmatex">\(B\)</span>：<code>B|=1</code>→<span class="arithmatex">\(B=7\)</span>（本就含 <span class="arithmatex">\(1\)</span>），<code>A&amp;=~1</code>→<span class="arithmatex">\(A=14\)</span>。<span class="arithmatex">\(A=14,B=7\)</span>。</li>
+<li>最终 <span class="arithmatex">\(A=14, B=7\)</span>，积 <span class="arithmatex">\(98\)</span> ✓。</li>
+</ul>
 <h2 id="complexity">复杂度 (Complexity)<a class="headerlink" href="#complexity" title="Permanent link">#</a></h2>
 <ul>
-<li>Time: <span class="arithmatex">\(O(n)\)</span> = <span class="arithmatex">\(O(50)\)</span>。</li>
+<li>Time: <span class="arithmatex">\(O(n)\)</span> = <span class="arithmatex">\(O(50)\)</span>。单层循环恰好 <span class="arithmatex">\(n\)</span> 次。</li>
 <li>Space: <span class="arithmatex">\(O(1)\)</span>。</li>
 </ul>
 <h2 id="pitfalls">陷阱 (Pitfalls)<a class="headerlink" href="#pitfalls" title="Permanent link">#</a></h2>
 <ul>
-<li><strong>取模时机</strong>：贪心时<strong>不要</strong>对 <span class="arithmatex">\(A, B\)</span> 取 mod——会破坏大小比较，导致选错把 1 给谁。只在最终乘法时取 mod。</li>
-<li>比较 "<span class="arithmatex">\(A\)</span> 与 <span class="arithmatex">\(B\)</span> 谁更小" 必须看<strong>已确定的高位</strong>——这是 bit-level AM-GM 正确性的关键。</li>
-<li><span class="arithmatex">\(a_i = b_i = 1\)</span> 的位也要"强制设 1"——其实已经是 1，但代码统一处理更安全。</li>
+<li><strong>比较谁更小只看已确定的高位</strong>：异位分支用 <code>A &gt;&gt; (i+1)</code>、<code>B &gt;&gt; (i+1)</code>，剔除第 <span class="arithmatex">\(i\)</span> 位及以下尚未定夺的位。若把未定的低位也算进去，会得出错误的"谁更小"，把 <span class="arithmatex">\(2^i\)</span> 给错一侧——这是正确性的命门，详见背景与正确性论证。</li>
+<li><strong>取模时机</strong>：贪心时<strong>不要</strong>对 <span class="arithmatex">\(A, B\)</span> 取 mod——取模会破坏大小比较（异位分支的 <code>Ahi &lt;= Bhi</code>），导致选错把 <span class="arithmatex">\(1\)</span> 给谁。只在最终乘法时取一次 mod。</li>
+<li><span class="arithmatex">\(a_i = b_i = 1\)</span> 的同位也走"两边设 <span class="arithmatex">\(1\)</span>"分支：其实已是 <span class="arithmatex">\(1\)</span>，<code>|=</code> 无副作用，代码统一处理更安全。</li>
 </ul>
 <h2 id="related">相关题目 (Related)<a class="headerlink" href="#related" title="Permanent link">#</a></h2>
 <ul>

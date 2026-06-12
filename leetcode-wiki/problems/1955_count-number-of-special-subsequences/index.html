@@ -5485,6 +5485,8 @@
       
         
       
+        
+      
     
     
     
@@ -6024,6 +6026,34 @@
     
   
     #93. Restore IP Addresses
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../0102_binary-tree-level-order-traversal/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    #102. Binary Tree Level Order Traversal
   
 
     
@@ -22675,19 +22705,28 @@
 <h2 id="problem">Problem<a class="headerlink" href="#problem" title="Permanent link">#</a></h2>
 <p>数组 <code>nums</code> 只含 0,1,2。<strong>special 子序列</strong> = 正数个 0 后跟正数个 1 后跟正数个 2。求 special 子序列个数 mod <span class="arithmatex">\(10^9 + 7\)</span>。约束 <span class="arithmatex">\(1 \le n \le 10^5\)</span>。</p>
 <h2 id="background">背景 (Background)<a class="headerlink" href="#background" title="Permanent link">#</a></h2>
-<p>本题是<strong>自动机上的子序列计数 DP</strong> 经典实例。</p>
-<p>可视为在状态机</p>
-<div class="arithmatex">\[S_0 \xrightarrow{0} S_0 \xrightarrow{0/1} S_1 \xrightarrow{1} S_1 \xrightarrow{1/2} S_2 \xrightarrow{2} S_2\]</div>
-<p>上对每个输入位置决定"取/不取"，记三个状态在第 <span class="arithmatex">\(i\)</span> 步的子序列数。是 #940 Distinct Subsequences II、#552 Student Attendance Record II 等的同族。</p>
-<p>更一般地：当目标语言由 DFA <span class="arithmatex">\(M\)</span> 接受，"原串中接受的子序列数"可用 DP $f_q[i] = $ 前 <span class="arithmatex">\(i\)</span> 位有多少子序列以状态 <span class="arithmatex">\(q\)</span> 结尾，转移 <span class="arithmatex">\(f_{q'}[i+1] = f_{q'}[i] + \sum_{a: q \xrightarrow{a} q'} f_q[i] \cdot [\text{nums}[i+1] = a]\)</span>（不取该位 + 从能转入 q' 的 q 取）。</p>
+<p>先把要数的对象写清楚。一个 special 子序列是一组下标 <span class="arithmatex">\(i_1 &lt; i_2 &lt; \cdots &lt; i_k\)</span>，使得读出来的字符依次是若干个 0、再若干个 1、再若干个 2，三段都非空。直接的想法是枚举三段的边界：选一段连续的 0、再一段 1、再一段 2。但这立刻碰壁——子序列不要求连续。<code>[0,2,1,2]</code> 里的 <code>0,1,2</code> 是合法子序列，可中间的 2 被跳过了。任何"按位置切三刀"的枚举都漏掉这种跳着取的组合。</p>
+<p>退一步，按子序列本身枚举：枚举所有 <span class="arithmatex">\(i_1 &lt; \cdots &lt; i_k\)</span> 再检查模式。子序列有 <span class="arithmatex">\(2^n\)</span> 个，<span class="arithmatex">\(n\)</span> 到 <span class="arithmatex">\(10^5\)</span>，不可行。即便先定下三段各取几个、再选下标，仍是对组合数求和的多重循环，<span class="arithmatex">\(O(n^3)\)</span> 起步，照样 TLE。</p>
+<p>枚举之所以贵，是因为它把每个子序列当成独立对象重数。但我们其实不需要列出子序列，只需要<strong>数</strong>它们。关键在于：一个 special 子序列是逐字符增长的，而它在任意时刻的"完成进度"只有三种——已经取了一些 0（还没碰 1）、已经进入 1 段、已经进入 2 段。一个尚未结束的子序列，未来能怎么接续，<strong>只取决于它当前停在哪个进度</strong>，与它前面具体取了哪些下标无关。这正是可以用计数 DP 折叠掉指数枚举的结构：把"以某个进度结尾的子序列"聚成一个计数，整体推进。</p>
 <h2 id="formulation">形式化 (Formulation)<a class="headerlink" href="#formulation" title="Permanent link">#</a></h2>
-<p>设 <span class="arithmatex">\(\text{dp}_s[i]\)</span> = 处理完 <code>nums[0..i]</code> 后，以状态 <span class="arithmatex">\(s \in \{0, 1, 2\}\)</span> 结尾（即最后一个取的字符 = <span class="arithmatex">\(s\)</span>）的子序列数。答案 = <span class="arithmatex">\(\text{dp}_2[n-1]\)</span>。</p>
+<p>把上面的"进度"形式化为子序列<strong>最后一个被取字符</strong>的取值。定义</p>
+<div class="arithmatex">\[\text{dp}_s[i] = \#\{\text{nums}[0..i] \text{ 中合法的、以字符 } s \text{ 结尾的子序列}\}, \quad s \in \{0,1,2\}.\]</div>
+<p>"合法"指各段非空且按 <span class="arithmatex">\(0 \to 1 \to 2\)</span> 顺序出现。以 0 结尾即只取了 0；以 1 结尾即已进入 1 段；以 2 结尾即已进入 2 段。一个完整的 special 子序列恰好是以 2 结尾的合法子序列，所以</p>
+<div class="arithmatex">\[\text{答案} = \text{dp}_2[n-1].\]</div>
+<p>这个定义就是整套解法的脊柱：三条转移全部从它推导出来，下面逐条展开。</p>
+<p><strong>循环不变量</strong>（先立在这里，作为验证每步转移的依据）：处理完 <code>nums[0..i]</code> 后，<span class="arithmatex">\(\text{dp}_s[i]\)</span> 等于 <code>nums[0..i]</code> 中所有以状态 <span class="arithmatex">\(s\)</span> 结尾的合法子序列数。每条转移都必须在读入 <code>nums[i]</code> 后维持这个等式。</p>
 <h2 id="approach">数据结构 / 想法 (Approach)<a class="headerlink" href="#approach" title="Permanent link">#</a></h2>
-<p><strong>转移</strong>（处理 <span class="arithmatex">\(\text{nums}[i] = v\)</span>）：
-- <strong><span class="arithmatex">\(v = 0\)</span></strong>：<span class="arithmatex">\(\text{dp}_0 \gets 2 \cdot \text{dp}_0 + 1\)</span>。解释：可以 (a) 单独开始一个新的"0"段子序列（贡献 1）；(b) 已有"以 0 结尾"子序列对当前 0 出现"取/不取"两种选择，所以 <span class="arithmatex">\(\text{dp}_0\)</span> 乘 2。
-- <strong><span class="arithmatex">\(v = 1\)</span></strong>：<span class="arithmatex">\(\text{dp}_1 \gets 2 \cdot \text{dp}_1 + \text{dp}_0\)</span>。可以 (a) 把这个 1 接到"以 0 结尾"子序列后（变成"以 1 结尾"）；(b) 接到"以 1 结尾"子序列后（仍以 1 结尾）取或不取。
-- <strong><span class="arithmatex">\(v = 2\)</span></strong>：<span class="arithmatex">\(\text{dp}_2 \gets 2 \cdot \text{dp}_2 + \text{dp}_1\)</span>。同理。</p>
-<p>初始 <span class="arithmatex">\(\text{dp}_0 = \text{dp}_1 = \text{dp}_2 = 0\)</span>。</p>
+<p>逐位推进。读到 <span class="arithmatex">\(\text{nums}[i] = v\)</span> 时，只有结尾字符等于 <span class="arithmatex">\(v\)</span> 的那类计数会变——别的字符不会改变"以 <span class="arithmatex">\(v\)</span> 结尾"的子序列集合。所以三条转移互不干扰，每次只更新一个。下面从定义出发推导每一条，先给计数论证，再落成公式。</p>
+<p><strong>读到 <span class="arithmatex">\(v = 0\)</span>。</strong> 我们要更新 <span class="arithmatex">\(\text{dp}_0\)</span>，即以 0 结尾的合法子序列数。这个新的 0 给每个<strong>已有的</strong>以 0 结尾的子序列两个选择：把它接在末尾（仍以 0 结尾，段更长），或者不取（子序列原样保留）。两条都合法，于是原有的每个子序列分裂成两个——计数乘 2。此外还多出一个全新的子序列：单独取这个 0，得到 <code>[0]</code>，这是以 0 结尾的合法子序列里以前不存在的一个。合并：</p>
+<div class="arithmatex">\[\text{dp}_0 \;\gets\; 2\,\text{dp}_0 + 1. \tag{1}\]</div>
+<p>第一次遇到 0 时 <span class="arithmatex">\(\text{dp}_0\)</span> 从 0 变成 1，对应唯一的 <code>[0]</code>，与不变量相符。</p>
+<p><strong>读到 <span class="arithmatex">\(v = 1\)</span>。</strong> 同样地，每个已有的以 1 结尾的子序列对这个新 1 有取/不取两种选择，贡献 <span class="arithmatex">\(2\,\text{dp}_1\)</span>。新增的部分来自<strong>升段</strong>：任何以 0 结尾的合法子序列，末尾接上这个 1，就成了一个以 1 结尾的合法子序列（0 段非空保证了合法）。这样的子序列恰有 <span class="arithmatex">\(\text{dp}_0\)</span> 个，每个贡献一个新结果：</p>
+<div class="arithmatex">\[\text{dp}_1 \;\gets\; 2\,\text{dp}_1 + \text{dp}_0. \tag{2}\]</div>
+<p>注意这里没有 <span class="arithmatex">\(+1\)</span>：以 1 结尾的子序列必须先有 0 段，不能凭一个孤立的 1 开头。升段项 <span class="arithmatex">\(\text{dp}_0\)</span> 已经把"从 0 段进来"的全部情形数清。</p>
+<p><strong>读到 <span class="arithmatex">\(v = 2\)</span>。</strong> 完全对称。已有以 2 结尾的子序列取/不取贡献 <span class="arithmatex">\(2\,\text{dp}_2\)</span>；每个以 1 结尾的子序列接上这个 2 升入 2 段，贡献 <span class="arithmatex">\(\text{dp}_1\)</span>：</p>
+<div class="arithmatex">\[\text{dp}_2 \;\gets\; 2\,\text{dp}_2 + \text{dp}_1. \tag{3}\]</div>
+<p>三条转移共享同一结构：<strong><span class="arithmatex">\(\times 2\)</span> 是同段内对当前字符取或不取，加项是从上一段升入本段</strong>。初始 <span class="arithmatex">\(\text{dp}_0 = \text{dp}_1 = \text{dp}_2 = 0\)</span>（空前缀没有任何合法子序列）。</p>
+<p>由于读 <code>nums[i]</code> 时只用到自己当前的值和相邻较低状态的当前计数，下标 <span class="arithmatex">\(i\)</span> 不必显式保留——三个标量滚动更新即可，空间降到 <span class="arithmatex">\(O(1)\)</span>：</p>
 <div class="language-python highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">Solution</span><span class="p">:</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">countSpecialSubsequences</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">nums</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
         <span class="n">MOD</span> <span class="o">=</span> <span class="mi">10</span><span class="o">**</span><span class="mi">9</span> <span class="o">+</span> <span class="mi">7</span>
@@ -22701,30 +22740,38 @@
                 <span class="n">d2</span> <span class="o">=</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">d2</span> <span class="o">+</span> <span class="n">d1</span><span class="p">)</span> <span class="o">%</span> <span class="n">MOD</span>
         <span class="k">return</span> <span class="n">d2</span>
 </code></pre></div>
-<p>Trace 例 1 <code>[0,1,2,2]</code>:
-- v=0: d0 = 1
-- v=1: d1 = 0 + 1 = 1
-- v=2: d2 = 0 + 1 = 1
-- v=2: d2 = 2*1 + 1 = 3 ✓</p>
-<p>Trace 例 3 <code>[0,1,2,0,1,2]</code>:
-- v=0: d0=1
-- v=1: d1=0+1=1
-- v=2: d2=0+1=1
-- v=0: d0=2<em>1+1=3
-- v=1: d1=2</em>1+3=5
-- v=2: d2=2*1+5=7 ✓</p>
-<p><strong>不变量</strong>：循环结束时 <span class="arithmatex">\(d_s\)</span> = <code>nums[0..i]</code> 中所有以状态 <span class="arithmatex">\(s\)</span> 结尾的合法子序列数（"合法"指各段至少 1 个且按 0→1→2 顺序）。</p>
+<p>用不变量逐步核对例 1 <code>[0,1,2,2]</code>：</p>
+<ul>
+<li>v=0: <span class="arithmatex">\(d_0 = 2\cdot 0 + 1 = 1\)</span>（唯一子序列 <code>[0]</code>）</li>
+<li>v=1: <span class="arithmatex">\(d_1 = 2\cdot 0 + 1 = 1\)</span>（<code>[0,1]</code>）</li>
+<li>v=2: <span class="arithmatex">\(d_2 = 2\cdot 0 + 1 = 1\)</span>（<code>[0,1,2]</code>）</li>
+<li>v=2: <span class="arithmatex">\(d_2 = 2\cdot 1 + 1 = 3\)</span>（旧的 <code>[0,1,2]</code> 取/不取这个新 2，再加 <code>[0,1]</code> 接新 2，共 3 个）→ 答案 3 ✓</li>
+</ul>
+<p>再核对例 3 <code>[0,1,2,0,1,2]</code>：</p>
+<ul>
+<li>v=0: <span class="arithmatex">\(d_0 = 1\)</span></li>
+<li>v=1: <span class="arithmatex">\(d_1 = 0 + 1 = 1\)</span></li>
+<li>v=2: <span class="arithmatex">\(d_2 = 0 + 1 = 1\)</span></li>
+<li>v=0: <span class="arithmatex">\(d_0 = 2\cdot 1 + 1 = 3\)</span></li>
+<li>v=1: <span class="arithmatex">\(d_1 = 2\cdot 1 + 3 = 5\)</span></li>
+<li>v=2: <span class="arithmatex">\(d_2 = 2\cdot 1 + 5 = 7\)</span> → 答案 7 ✓</li>
+</ul>
+<p><strong>回看结构</strong>：三个状态按 <span class="arithmatex">\(0 \to 1 \to 2\)</span> 单向升段、每段内可任意取舍，本质就是一台三状态顺序自动机上的子序列计数。把它写成自动机</p>
+<div class="arithmatex">\[S_0 \xrightarrow{\,0\,} S_0 \xrightarrow{\,1\,} S_1 \xrightarrow{\,1\,} S_1 \xrightarrow{\,2\,} S_2 \xrightarrow{\,2\,} S_2\]</div>
+<p>（自环 = 同段内取当前字符即 <span class="arithmatex">\(\times 2\)</span> 的取项；跨状态边 = 升段即加项），就得到一个一般模板：当目标语言由 DFA <span class="arithmatex">\(M\)</span> 接受时，原串中被接受的子序列数可用 <span class="arithmatex">\(f_q[i]\)</span>（前 <span class="arithmatex">\(i\)</span> 位以状态 <span class="arithmatex">\(q\)</span> 结尾的子序列数）DP，转移
+$<span class="arithmatex">\(f_{q'}[i+1] = f_{q'}[i] + \sum_{a:\, q \xrightarrow{a} q'} f_q[i]\cdot[\text{nums}[i+1] = a],\)</span>$
+再额外注入起始项（本题即 <span class="arithmatex">\(\text{dp}_0\)</span> 的 <span class="arithmatex">\(+1\)</span>，对应从空串首次进入 <span class="arithmatex">\(S_0\)</span>）。本题是这个模板取定特定三状态机的实例——但这只是事后的归类，解法本身已由上面的计数论证从头导出。</p>
 <h2 id="complexity">复杂度 (Complexity)<a class="headerlink" href="#complexity" title="Permanent link">#</a></h2>
 <ul>
-<li>Time: <span class="arithmatex">\(O(n)\)</span></li>
-<li>Space: <span class="arithmatex">\(O(1)\)</span></li>
+<li>Time: <span class="arithmatex">\(O(n)\)</span> — 单趟扫描。</li>
+<li>Space: <span class="arithmatex">\(O(1)\)</span> — 三个标量。</li>
 </ul>
 <h2 id="pitfalls">陷阱 (Pitfalls)<a class="headerlink" href="#pitfalls" title="Permanent link">#</a></h2>
 <ul>
-<li><strong>每个 <code>dp_v ← 2 · dp_v + ...</code> 的"2"</strong>：表示已有以 <span class="arithmatex">\(v\)</span> 结尾的子序列对当前 <span class="arithmatex">\(v\)</span> 出现一次有"取 / 不取"两种选择。漏掉这个 2 就<strong>没有计入"不取当前位置"的路径</strong>——但事实上"不取当前位置" 也是合法的（保持原子序列不变）。所以需要 2 因子。</li>
-<li><strong><code>d0 = 2*d0 + 1</code></strong> 中的 <code>+1</code> 是"单独取此 0 作为新子序列开端"，初始时 d0=0 → 第一个 0 时 d0=1（恰好一种以 0 结尾的子序列：[0]）。</li>
-<li><strong>取模时机</strong>：每个赋值后立即 % MOD，否则 Python 不溢出但慢；其它语言会溢出。</li>
-<li><strong>不要尝试枚举三段长度</strong>——<span class="arithmatex">\(O(n^3)\)</span> TLE。</li>
+<li><strong>式 (1)–(3) 里的 <span class="arithmatex">\(\times 2\)</span> 不能省</strong>：它编码"同段内不取当前位置"这条路径——不取就保持原子序列不变，这同样是合法结果。漏掉 2 就只数了"必取"，系统性少计。</li>
+<li><strong>只有 <span class="arithmatex">\(v=0\)</span> 有 <span class="arithmatex">\(+1\)</span></strong>：<code>+1</code> 是"单独取此 0 开一个新子序列 <code>[0]</code>"。以 1 / 以 2 结尾的子序列不能凭空起头，必须从前一段升入，所以式 (2)(3) 没有常数项——升段项已数全。</li>
+<li><strong>取模时机</strong>：每个赋值后立即 <code>% MOD</code>。中间量 <span class="arithmatex">\(2\,d+\cdots\)</span> 可达约 <span class="arithmatex">\(2\times 10^9\)</span>，Python 不溢出但放任会变慢；C/C++/Java 的 32 位 <code>int</code> 会溢出，必须每步取模。</li>
+<li><strong>不要枚举三段长度或边界</strong>：子序列可跳着取，按边界切刀会漏组合；硬枚举是 <span class="arithmatex">\(O(n^3)\)</span>，<span class="arithmatex">\(n=10^5\)</span> 即 TLE。</li>
 </ul>
 <h2 id="related">相关题目 (Related)<a class="headerlink" href="#related" title="Permanent link">#</a></h2>
 <ul>

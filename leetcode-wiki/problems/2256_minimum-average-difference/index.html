@@ -5485,6 +5485,8 @@
       
         
       
+        
+      
     
     
     
@@ -6024,6 +6026,34 @@
     
   
     #93. Restore IP Addresses
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../0102_binary-tree-level-order-traversal/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    #102. Binary Tree Level Order Traversal
   
 
     
@@ -15128,7 +15158,7 @@
   <a href="#approach" class="md-nav__link">
     <span class="md-ellipsis">
       
-        数据结构 / 想法 (Approach)
+        线性扫描：把公式逐行翻译成代码 (Approach)
       
     </span>
   </a>
@@ -22602,7 +22632,7 @@
   <a href="#approach" class="md-nav__link">
     <span class="md-ellipsis">
       
-        数据结构 / 想法 (Approach)
+        线性扫描：把公式逐行翻译成代码 (Approach)
       
     </span>
   </a>
@@ -22675,45 +22705,95 @@
 <h2 id="problem">Problem<a class="headerlink" href="#problem" title="Permanent link">#</a></h2>
 <p>定义索引 <span class="arithmatex">\(i\)</span> 处的「平均差」为 <span class="arithmatex">\(\bigl|\lfloor \text{lavg}(i) \rfloor - \lfloor \text{ravg}(i) \rfloor\bigr|\)</span>，其中 lavg 是前 <span class="arithmatex">\(i+1\)</span> 个元素的均值，ravg 是后 <span class="arithmatex">\(n-i-1\)</span> 个元素的均值（约定 0 个元素均值为 0）。求平均差最小的下标，ties 取最小。<span class="arithmatex">\(n \le 10^5\)</span>，<span class="arithmatex">\(0 \le \text{nums}[i] \le 10^5\)</span>。</p>
 <h2 id="background">背景 (Background)<a class="headerlink" href="#background" title="Permanent link">#</a></h2>
-<p>本题是 <strong>前缀和 + 一次扫描</strong> 的入门题：每个分裂点处的左右总和可以由全局总和与前缀和 <span class="arithmatex">\(O(1)\)</span> 得到。Floor 函数引入了"非线性"，所以不能用平均收敛性简化，必须老老实实分位计算。</p>
+<p>每个下标 <span class="arithmatex">\(i\)</span> 把数组切成左右两段，我们要在所有 <span class="arithmatex">\(n\)</span> 个切点里挑出左右两段「取整均值」最接近的那一个。先看最朴素的做法：对每个 <span class="arithmatex">\(i\)</span>，从头加出左段的和，再从尾加出右段的和，各算一个均值。</p>
+<p>这样单个切点要花 <span class="arithmatex">\(O(n)\)</span> 把两段元素都扫一遍，<span class="arithmatex">\(n\)</span> 个切点就是 <span class="arithmatex">\(O(n^2)\)</span>。代入上界 <span class="arithmatex">\(n = 10^5\)</span>，约 <span class="arithmatex">\(10^{10}\)</span> 次加法，必然超时。所以朴素法在「每次都从零重算两段和」这一步崩掉了——它没有复用相邻切点之间共享的计算。</p>
+<p>这恰好提示了出路：从切点 <span class="arithmatex">\(i\)</span> 走到 <span class="arithmatex">\(i+1\)</span>，左段只多了一个元素 <span class="arithmatex">\(\text{nums}[i+1]\)</span>。如果维护一个「跑到当前位置的左段和」，每步只需加上这一个元素就能更新，右段和则用「全局总和减左段和」立即得到。这样每个切点降到 <span class="arithmatex">\(O(1)\)</span>，整体 <span class="arithmatex">\(O(n)\)</span>。这就是前缀和要解决的问题，下面把它写成精确的形式。</p>
 <h2 id="formulation">形式化 (Formulation)<a class="headerlink" href="#formulation" title="Permanent link">#</a></h2>
-<p>设 <span class="arithmatex">\(P_i = \sum_{k=0}^{i} a_k\)</span>（前缀和），<span class="arithmatex">\(S = P_{n-1}\)</span>. 则 <span class="arithmatex">\(\text{lavg}(i) = \lfloor P_i / (i+1) \rfloor\)</span>；当 <span class="arithmatex">\(i &lt; n - 1\)</span> 时 <span class="arithmatex">\(\text{ravg}(i) = \lfloor (S - P_i) / (n - i - 1) \rfloor\)</span>，当 <span class="arithmatex">\(i = n - 1\)</span> 时 <span class="arithmatex">\(\text{ravg}(i) = 0\)</span>. 答案 <span class="arithmatex">\(= \arg\min_i \bigl|\text{lavg}(i) - \text{ravg}(i)\bigr|\)</span>.</p>
-<h2 id="approach">数据结构 / 想法 (Approach)<a class="headerlink" href="#approach" title="Permanent link">#</a></h2>
-<p>线性扫描，维护前缀和 <code>pre</code> 与后缀和 <code>suf = total - pre</code>：</p>
+<p>记输入数组为 <span class="arithmatex">\(a_0, a_1, \dots, a_{n-1}\)</span>（即题目的 <code>nums</code>）。直觉是：要让每个切点的代价降到 <span class="arithmatex">\(O(1)\)</span>，必须把左段和写成一个可以增量维护的量。定义前缀和</p>
+<div class="arithmatex">\[P_i = \sum_{k=0}^{i} a_k, \qquad S = P_{n-1}. \tag{1}\]</div>
+<p>则左段（前 <span class="arithmatex">\(i+1\)</span> 个元素）的和恰是 <span class="arithmatex">\(P_i\)</span>，右段（后 <span class="arithmatex">\(n-i-1\)</span> 个元素）的和是 <span class="arithmatex">\(S - P_i\)</span>，二者都不必重新累加。取整均值随之写出：</p>
+<div class="arithmatex">\[\text{lavg}(i) = \Bigl\lfloor \frac{P_i}{\,i+1\,} \Bigr\rfloor, \qquad
+\text{ravg}(i) = \begin{cases} \Bigl\lfloor \dfrac{S - P_i}{\,n - i - 1\,} \Bigr\rfloor, &amp; i &lt; n-1, \\[2mm] 0, &amp; i = n-1. \end{cases} \tag{2}\]</div>
+<p><span class="arithmatex">\(i = n-1\)</span> 时右段为空，分母 <span class="arithmatex">\(n-i-1 = 0\)</span>，按题目约定取 ravg <span class="arithmatex">\(= 0\)</span>。这不是代码技巧，而是定义的一部分：右段没有元素时它的均值被指定为 0。最终答案为</p>
+<div class="arithmatex">\[\text{ans} = \arg\min_{0 \le i \le n-1} \bigl|\text{lavg}(i) - \text{ravg}(i)\bigr|, \tag{3}\]</div>
+<p>并取使该值最小的最小下标。</p>
+<p>这里必须强调 (2) 中的取整不能提前合并。<span class="arithmatex">\(\lfloor \cdot \rfloor\)</span> 不满足可加性：一般地 <span class="arithmatex">\(\lfloor a/m \rfloor + \lfloor b/k \rfloor \neq \lfloor (a+b)/(m+k) \rfloor\)</span>。例如 <span class="arithmatex">\(a=3, m=2, b=1, k=1\)</span> 时左边是 <span class="arithmatex">\(1 + 1 = 2\)</span>，右边是 <span class="arithmatex">\(\lfloor 4/3 \rfloor = 1\)</span>。所以两段的取整均值只能各自算完再相减，不能先把分子分母合起来取整——这正是必须逐切点显式计算 (2) 的原因。</p>
+<h2 id="approach">线性扫描：把公式逐行翻译成代码 (Approach)<a class="headerlink" href="#approach" title="Permanent link">#</a></h2>
+<p>算法就是 (1)–(3) 的机械翻译。一次从左到右扫描，维护跑动前缀和 <code>pre</code>（对应 <span class="arithmatex">\(P_i\)</span>），右段和 <code>suf = total - pre</code>（对应 <span class="arithmatex">\(S - P_i\)</span>），每步按 (2) 算两个取整均值、按 (3) 比较更新：</p>
 <div class="language-python highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">Solution</span><span class="p">:</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">minimumAverageDifference</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">nums</span><span class="p">):</span>
         <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">nums</span><span class="p">)</span>
-        <span class="n">total</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">nums</span><span class="p">)</span>
+        <span class="n">total</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">nums</span><span class="p">)</span>               <span class="c1"># S</span>
         <span class="n">pre</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="n">best_idx</span><span class="p">,</span> <span class="n">best_val</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="nb">float</span><span class="p">(</span><span class="s1">&#39;inf&#39;</span><span class="p">)</span>
         <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
-            <span class="n">pre</span> <span class="o">+=</span> <span class="n">nums</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
-            <span class="n">suf</span> <span class="o">=</span> <span class="n">total</span> <span class="o">-</span> <span class="n">pre</span>
-            <span class="n">lavg</span> <span class="o">=</span> <span class="n">pre</span> <span class="o">//</span> <span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+            <span class="n">pre</span> <span class="o">+=</span> <span class="n">nums</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>              <span class="c1"># P_i：增量更新，O(1)</span>
+            <span class="n">suf</span> <span class="o">=</span> <span class="n">total</span> <span class="o">-</span> <span class="n">pre</span>           <span class="c1"># S - P_i</span>
+            <span class="n">lavg</span> <span class="o">=</span> <span class="n">pre</span> <span class="o">//</span> <span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>       <span class="c1"># floor(P_i / (i+1))</span>
             <span class="n">ravg</span> <span class="o">=</span> <span class="mi">0</span> <span class="k">if</span> <span class="n">i</span> <span class="o">==</span> <span class="n">n</span> <span class="o">-</span> <span class="mi">1</span> <span class="k">else</span> <span class="n">suf</span> <span class="o">//</span> <span class="p">(</span><span class="n">n</span> <span class="o">-</span> <span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
             <span class="n">diff</span> <span class="o">=</span> <span class="nb">abs</span><span class="p">(</span><span class="n">lavg</span> <span class="o">-</span> <span class="n">ravg</span><span class="p">)</span>
-            <span class="k">if</span> <span class="n">diff</span> <span class="o">&lt;</span> <span class="n">best_val</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">diff</span> <span class="o">&lt;</span> <span class="n">best_val</span><span class="p">:</span>         <span class="c1"># 严格小于 → ties 自动取最小下标</span>
                 <span class="n">best_val</span><span class="p">,</span> <span class="n">best_idx</span> <span class="o">=</span> <span class="n">diff</span><span class="p">,</span> <span class="n">i</span>
         <span class="k">return</span> <span class="n">best_idx</span>
 </code></pre></div>
-<p>样例 1：<code>nums=[2,5,3,9,5,3]</code>. total=27. 
-- i=0: pre=2, lavg=2, suf=25, ravg=5, diff=3.
-- i=1: pre=7, lavg=3, suf=20, ravg=5, diff=2.
-- i=2: pre=10, lavg=3, suf=17, ravg=5, diff=2.
-- i=3: pre=19, lavg=4, suf=8, ravg=4, diff=0 ← 最小.
-- i=4: pre=24, lavg=4, suf=3, ravg=3, diff=1.
-- i=5: pre=27, lavg=4, ravg=0, diff=4.</p>
-<p>答案 3。✅</p>
+<p>形式层与代码层的对应关系：</p>
+<table>
+<thead>
+<tr>
+<th>公式</th>
+<th>代码</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><span class="arithmatex">\(P_i\)</span></td>
+<td><code>pre</code></td>
+<td>左段（前 <span class="arithmatex">\(i+1\)</span> 个）之和</td>
+</tr>
+<tr>
+<td><span class="arithmatex">\(S\)</span></td>
+<td><code>total</code></td>
+<td>全局总和</td>
+</tr>
+<tr>
+<td><span class="arithmatex">\(S - P_i\)</span></td>
+<td><code>suf</code></td>
+<td>右段之和</td>
+</tr>
+<tr>
+<td><span class="arithmatex">\(\lfloor P_i/(i+1)\rfloor\)</span></td>
+<td><code>pre // (i + 1)</code></td>
+<td><span class="arithmatex">\(\text{lavg}(i)\)</span></td>
+</tr>
+<tr>
+<td><span class="arithmatex">\(\lfloor (S-P_i)/(n-i-1)\rfloor\)</span></td>
+<td><code>suf // (n - i - 1)</code></td>
+<td><span class="arithmatex">\(\text{ravg}(i)\)</span></td>
+</tr>
+</tbody>
+</table>
+<p>注意 Python 的 <code>//</code> 就是 (2) 里 <span class="arithmatex">\(\lfloor \cdot \rfloor\)</span> 的实现；用浮点 <code>/</code> 会破坏取整语义。更新条件用严格的 <code>diff &lt; best_val</code>：相等时不更新，于是先到的（更小的）下标胜出，正好实现 (3) 的最小下标 tie-break。</p>
+<p>样例 1：<code>nums=[2,5,3,9,5,3]</code>，<span class="arithmatex">\(S = 27\)</span>。逐切点追踪 (2)：</p>
+<ul>
+<li>i=0: pre=2, lavg=2, suf=25, ravg=5, diff=3.</li>
+<li>i=1: pre=7, lavg=3, suf=20, ravg=5, diff=2.</li>
+<li>i=2: pre=10, lavg=3, suf=17, ravg=5, diff=2.</li>
+<li>i=3: pre=19, lavg=4, suf=8, ravg=4, diff=0 ← 最小.</li>
+<li>i=4: pre=24, lavg=4, suf=3, ravg=3, diff=1.</li>
+<li>i=5: pre=27, lavg=4, ravg=0, diff=4.</li>
+</ul>
+<p>答案 3。✅ 注意 diff 在 i=3 取到唯一最小值，tie-break 没有被触发，但严格更新保证了一旦出现并列也会保留更早的下标。</p>
 <h2 id="complexity">复杂度 (Complexity)<a class="headerlink" href="#complexity" title="Permanent link">#</a></h2>
 <ul>
-<li>Time: <span class="arithmatex">\(O(n)\)</span>。</li>
-<li>Space: <span class="arithmatex">\(O(1)\)</span>。</li>
+<li>Time: <span class="arithmatex">\(O(n)\)</span>。一趟扫描，每个切点 <span class="arithmatex">\(O(1)\)</span>，相比朴素 <span class="arithmatex">\(O(n^2)\)</span> 由前缀和复用换来。</li>
+<li>Space: <span class="arithmatex">\(O(1)\)</span>。只维护跑动前缀和与当前最优值，不存整条前缀和数组。</li>
 </ul>
 <h2 id="pitfalls">陷阱 (Pitfalls)<a class="headerlink" href="#pitfalls" title="Permanent link">#</a></h2>
 <ul>
-<li><span class="arithmatex">\(i = n - 1\)</span> 时 <code>n - i - 1 = 0</code>，除零陷阱：直接令 ravg=0（题目约定）。</li>
-<li>必须 <code>//</code>（floor），不能 <code>/</code>（浮点），否则可能因精度误差给错 tie-breaker。</li>
-<li>大数：<span class="arithmatex">\(n \cdot \max = 10^{10}\)</span>，C++ 需 <code>long long</code>，Python 安全。</li>
+<li><span class="arithmatex">\(i = n - 1\)</span> 时 <code>n - i - 1 = 0</code>，除零陷阱：直接令 ravg=0（题目约定，见 (2)）。</li>
+<li>必须 <code>//</code>（floor，对应 (2) 中 <span class="arithmatex">\(\lfloor \cdot \rfloor\)</span>），不能 <code>/</code>（浮点），否则可能因精度误差给错 tie-breaker。</li>
+<li>大数：<span class="arithmatex">\(n \cdot \max = 10^{10}\)</span>，超过 int32 上限，C++ 需 <code>long long</code>，Python 整数任意精度安全。</li>
 </ul>
 <h2 id="related">相关题目 (Related)<a class="headerlink" href="#related" title="Permanent link">#</a></h2>
 <ul>

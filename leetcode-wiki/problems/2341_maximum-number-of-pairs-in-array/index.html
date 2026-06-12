@@ -5485,6 +5485,8 @@
       
         
       
+        
+      
     
     
     
@@ -6024,6 +6026,34 @@
     
   
     #93. Restore IP Addresses
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../0102_binary-tree-level-order-traversal/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    #102. Binary Tree Level Order Traversal
   
 
     
@@ -22675,31 +22705,49 @@
 <h2 id="problem">Problem<a class="headerlink" href="#problem" title="Permanent link">#</a></h2>
 <p>每次操作选两个相等的元素配对并移除。返回 <code>[配对数, 剩余元素数]</code>。<span class="arithmatex">\(n \le 100\)</span>。</p>
 <h2 id="background">背景 (Background)<a class="headerlink" href="#background" title="Permanent link">#</a></h2>
-<p>本题为基础频次统计 + 整除。无特殊学科背景。</p>
+<p>一个操作只消耗一对<strong>相等</strong>的元素。问题要求在所有可能的配对方式中，使配对数最大，并报告无法配对的剩余元素数。难点不在算法，而在于看清这个操作对结构施加了什么限制：能否配对完全取决于元素的值，与元素在数组中的位置或处理顺序无关。</p>
+<p>最直接的尝试是逐对扫描：维护一个"待配对"的元素集合，遍历数组，每遇到一个元素就看集合里有没有与它相等的——有就配成一对并都移除，没有就把它放进集合。这能得到正确答案，但需要显式跟踪"哪些具体元素已被用掉"，并隐含地依赖处理顺序。一旦意识到同值元素彼此可互换、配对只关心<strong>数量</strong>，这套簿记就是多余的：决定一个值能配出几对的，只有它出现的次数。这一观察把问题从"在数组上操作"压缩为"在频次上做算术"，下面的形式化正是这一压缩的结果。</p>
 <h2 id="formulation">形式化 (Formulation)<a class="headerlink" href="#formulation" title="Permanent link">#</a></h2>
-<p>设 <span class="arithmatex">\(c(v)\)</span> 为值 <span class="arithmatex">\(v\)</span> 的频次。配对数 = <span class="arithmatex">\(\sum_v \lfloor c(v) / 2 \rfloor\)</span>，剩余 = <span class="arithmatex">\(\sum_v c(v) \bmod 2\)</span>.</p>
+<p>直觉先行：一次操作从某个值的元素中拿走恰好两个，因此对单个值而言，能反复操作多少次，等于"它的出现次数里能拆出多少个 2"。又因为一对必须同值，不同值的元素永远不会进入同一对，所以全局配对数就是各值独立配对数之和。把这两点写成等式即可。</p>
+<p>设 <span class="arithmatex">\(c(v)\)</span> 为值 <span class="arithmatex">\(v\)</span> 在数组中的频次。</p>
+<ul>
+<li><strong>单值子问题</strong>：一个大小为 <span class="arithmatex">\(c(v)\)</span> 的同值集合中，每对消耗 2 个元素，故最多形成 <span class="arithmatex">\(\lfloor c(v)/2 \rfloor\)</span> 对，剩下 <span class="arithmatex">\(c(v) \bmod 2\)</span> 个（即 0 或 1 个）无法配对。</li>
+<li><strong>跨值独立</strong>：不同值不共享任何一对，故可对每个值分别求解再求和。</li>
+</ul>
+<div class="arithmatex">\[
+\text{pairs} = \sum_v \left\lfloor \frac{c(v)}{2} \right\rfloor,
+\qquad
+\text{left} = \sum_v \bigl(c(v) \bmod 2\bigr).
+\]</div>
+<p>注意 <span class="arithmatex">\(\text{left}\)</span> 是<strong>逐值取奇偶后再求和</strong>，括号不可省：写成 <span class="arithmatex">\(\bigl(\sum_v c(v)\bigr) \bmod 2 = n \bmod 2\)</span> 是错的。反例 <code>nums = [1,1,1,2,2,2]</code>，<span class="arithmatex">\(c=\{1:3,\,2:3\}\)</span>，正确剩余 <span class="arithmatex">\(= 1 + 1 = 2\)</span>，而 <span class="arithmatex">\(n \bmod 2 = 6 \bmod 2 = 0\)</span>，两者不符。</p>
+<p>由这两式直接得到恒等式 <span class="arithmatex">\(\text{left} + 2\cdot\text{pairs} = \sum_v \bigl(2\lfloor c(v)/2\rfloor + c(v)\bmod 2\bigr) = \sum_v c(v) = n\)</span>，因为对任意整数 <span class="arithmatex">\(c\)</span> 有 <span class="arithmatex">\(2\lfloor c/2\rfloor + (c \bmod 2) = c\)</span>。这个等式可作 sanity check（见陷阱）。</p>
 <h2 id="approach">数据结构 / 想法 (Approach)<a class="headerlink" href="#approach" title="Permanent link">#</a></h2>
+<p>形式化是实现的脊柱：先用一遍计数得到所有 <span class="arithmatex">\(c(v)\)</span>，再把上面两个求和逐项翻译成代码。</p>
 <div class="language-python highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">collections</span><span class="w"> </span><span class="kn">import</span> <span class="n">Counter</span>
 <span class="k">class</span><span class="w"> </span><span class="nc">Solution</span><span class="p">:</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">numberOfPairs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">nums</span><span class="p">):</span>
         <span class="n">c</span> <span class="o">=</span> <span class="n">Counter</span><span class="p">(</span><span class="n">nums</span><span class="p">)</span>
-        <span class="n">pairs</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">v</span> <span class="o">//</span> <span class="mi">2</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">c</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
-        <span class="n">left</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">v</span> <span class="o">%</span> <span class="mi">2</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">c</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
+        <span class="n">pairs</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">v</span> <span class="o">//</span> <span class="mi">2</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">c</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>   <span class="c1"># v // 2 即 floor(c(v)/2)</span>
+        <span class="n">left</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">v</span> <span class="o">%</span> <span class="mi">2</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">c</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>      <span class="c1"># v % 2 即 c(v) mod 2</span>
         <span class="k">return</span> <span class="p">[</span><span class="n">pairs</span><span class="p">,</span> <span class="n">left</span><span class="p">]</span>
 </code></pre></div>
-<p>样例 1：<code>[1,3,2,1,3,2,2]</code>. c={1:2, 3:2, 2:3}. pairs=1+1+1=3, left=0+0+1=1. ✅</p>
+<p><code>Counter(nums)</code> 给出频次表 <span class="arithmatex">\(c\)</span>；其值 <code>c.values()</code> 就是各个 <span class="arithmatex">\(c(v)\)</span>。两个生成式分别对应形式化中的两个求和：<code>v // 2</code> 是 <span class="arithmatex">\(\lfloor c(v)/2 \rfloor\)</span>，逐值求和得 pairs；<code>v % 2</code> 是 <span class="arithmatex">\(c(v) \bmod 2\)</span>，逐值求和得 left。每个 <span class="arithmatex">\(c(v)\)</span> 都被求值两次（floor 与 parity），二者之和恰为 <span class="arithmatex">\(c(v)\)</span>，对应恒等式 <span class="arithmatex">\(\text{left} + 2\cdot\text{pairs} = n\)</span>。</p>
+<p>样例 1：<code>[1,3,2,1,3,2,2]</code>，<span class="arithmatex">\(c=\{1:2,\,3:2,\,2:3\}\)</span>。
+逐值：值 1 贡献 <span class="arithmatex">\(\lfloor 2/2\rfloor=1\)</span> 对、剩 0；值 3 贡献 1 对、剩 0；值 2 贡献 <span class="arithmatex">\(\lfloor 3/2\rfloor=1\)</span> 对、剩 1。求和得 pairs <span class="arithmatex">\(=3\)</span>、left <span class="arithmatex">\(=1\)</span>，即 <code>[3,1]</code>。验证 <span class="arithmatex">\(1 + 2\cdot 3 = 7 = n\)</span>。</p>
 <h2 id="complexity">复杂度 (Complexity)<a class="headerlink" href="#complexity" title="Permanent link">#</a></h2>
+<p>记 <span class="arithmatex">\(u\)</span> 为不同值的个数（<span class="arithmatex">\(u \le n \le 100\)</span>）。</p>
 <ul>
-<li>Time: <span class="arithmatex">\(O(n)\)</span>。</li>
-<li>Space: <span class="arithmatex">\(O(u)\)</span>。</li>
+<li>Time: <span class="arithmatex">\(O(n)\)</span>。构建 <code>Counter</code> 单遍扫描 <span class="arithmatex">\(O(n)\)</span>，两个求和各遍历值集合 <span class="arithmatex">\(O(u) \le O(n)\)</span>。</li>
+<li>Space: <span class="arithmatex">\(O(u)\)</span>。<code>Counter</code> 存储 <span class="arithmatex">\(u\)</span> 个键值对。</li>
 </ul>
 <h2 id="pitfalls">陷阱 (Pitfalls)<a class="headerlink" href="#pitfalls" title="Permanent link">#</a></h2>
 <ul>
-<li>注意 left + 2*pairs == n（恒等式，可做 sanity check）。</li>
+<li>形式化中的 left 必须逐值取奇偶再求和，即 <span class="arithmatex">\(\sum_v (c(v)\bmod 2)\)</span>，而非 <span class="arithmatex">\(\bigl(\sum_v c(v)\bigr)\bmod 2\)</span>；后者退化为 <span class="arithmatex">\(n\bmod 2\)</span>，仅在所有值恰好都出现奇数次且其个数同奇偶时才偶然相等。代码里的 <code>sum(v % 2 ...)</code> 是对的。</li>
+<li>恒等式 <span class="arithmatex">\(\text{left} + 2\cdot\text{pairs} = n\)</span> 由形式化直接导出，可作返回前的 sanity check；它成立当且仅当 left 用的是逐值奇偶定义。</li>
 </ul>
 <h2 id="related">相关题目 (Related)<a class="headerlink" href="#related" title="Permanent link">#</a></h2>
 <ul>
-<li><a href="../0387_first-unique-character-in-a-string/">#0387. First Unique Character in a String</a> — 同款频次统计。</li>
+<li><a href="../0387_first-unique-character-in-a-string/">#0387. First Unique Character in a String</a> — 同样以频次表为脊柱：先 <code>Counter</code> 一遍，再在频次上判定（这里取 <span class="arithmatex">\(c(v)=1\)</span> 的首个位置）。</li>
 </ul>
 <h2 id="further-reading">Further Reading<a class="headerlink" href="#further-reading" title="Permanent link">#</a></h2>
 <p>无推荐外部资源（题目难度不足以需要专题文献）。</p>

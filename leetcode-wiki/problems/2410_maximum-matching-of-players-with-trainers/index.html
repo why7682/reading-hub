@@ -5485,6 +5485,8 @@
       
         
       
+        
+      
     
     
     
@@ -6024,6 +6026,34 @@
     
   
     #93. Restore IP Addresses
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../0102_binary-tree-level-order-traversal/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    #102. Binary Tree Level Order Traversal
   
 
     
@@ -22675,13 +22705,31 @@
 <h2 id="problem">Problem<a class="headerlink" href="#problem" title="Permanent link">#</a></h2>
 <p>两数组 <code>players, trainers</code>。每 player ability ≤ trainer capacity 才能配对，最多 1 对 1。求最大配对数。</p>
 <h2 id="_1">背景<a class="headerlink" href="#_1" title="Permanent link">#</a></h2>
-<p>经典<strong>贪心 + 双指针匹配</strong>：分别排序两数组，从小到大让每个 player 匹配"目前能用的最小 trainer"。</p>
-<p><strong>贪心正确性 (exchange argument)</strong>：设最优方案中 player <span class="arithmatex">\(p_1\)</span> 匹配 trainer <span class="arithmatex">\(t_1\)</span>，且贪心方案中 <span class="arithmatex">\(p_1\)</span> 匹配 <span class="arithmatex">\(t_1'\)</span>。若 <span class="arithmatex">\(t_1' \neq t_1\)</span> 且二者皆能匹配 <span class="arithmatex">\(p_1\)</span>，可以互换不减少总匹配数 → 贪心方案与最优等价。</p>
-<p>这就是 LeetCode #455 <em>Assign Cookies</em> 的相同形式（题面已注明）。属于<strong>离散资源最大匹配</strong>的最朴素子情况。</p>
-<p>更一般的二部图最大匹配需要 König 定理 / 匈牙利算法 / Hopcroft-Karp，但本题的"区间偏序"结构允许贪心 <span class="arithmatex">\(O(n \log n)\)</span>。</p>
+<p>先把问题本身的张力说清楚。我们要在两组数之间连尽量多的边，约束只有一条：player 的 ability 不超过它所连 trainer 的 capacity，且每个元素至多用一次。难点不在判定单条边是否合法——那只是一个比较——而在于<strong>配对之间互相争夺资源</strong>：把某个 trainer 分给当前 player，就意味着后面的 player 再也用不上它。任何策略都得回答同一个问题：怎样分配才不浪费 capacity。</p>
+<p><strong>先试最朴素的想法。</strong> 不排序、按输入顺序逐个 player 找一个还没用过、capacity 够的 trainer。这会错。考虑 <code>players = [4, 1]</code>，<code>trainers = [4, 5]</code>。若先处理 player <span class="arithmatex">\(4\)</span>，它随手抓到 trainer <span class="arithmatex">\(4\)</span>；再处理 player <span class="arithmatex">\(1\)</span>，剩下 trainer <span class="arithmatex">\(5\)</span>，匹配成功，共 <span class="arithmatex">\(2\)</span> 对——这次碰巧对了。但把 trainer 换成 <code>[4]</code> 一个：先处理 player <span class="arithmatex">\(4\)</span> 抓走 trainer <span class="arithmatex">\(4\)</span>，player <span class="arithmatex">\(1\)</span> 无 trainer 可用，得 <span class="arithmatex">\(1\)</span> 对；而正确做法是让 player <span class="arithmatex">\(1\)</span> 用 trainer <span class="arithmatex">\(4\)</span>，player <span class="arithmatex">\(4\)</span> 落空，同样 <span class="arithmatex">\(1\)</span> 对——数目相等却暴露了问题：<strong>谁先挑、挑哪个，会改变剩下的可用集合</strong>。当 trainer 稀缺时，让 ability 大的 player 抢走一个其实小 player 也够用的 trainer，就是浪费。</p>
+<p><strong>问题出在两处：挑选顺序，和挑选标准。</strong> 修掉它们需要两个观察。</p>
+<p>其一，<strong>按 ability 从小到大处理 player</strong>。小 player 的约束最松（能配它的 trainer 最多），大 player 约束最紧。若先满足大 player，可能用掉本可留给小 player 的 trainer，反之则不会:先满足的小 player 只会占用"它够得着"的 trainer，这些 trainer 大 player 未必用得上，但小 player 一定用得上。</p>
+<p>其二，给定要处理的 player，<strong>配给它"capacity 足够且最小"的那个 trainer</strong>。任何更大的 trainer 都该留着——它更可能是某个大 player 唯一够得着的资源。这条标准直接来自约束的<strong>单调性</strong>：capacity 越大越"通用"，所以应优先消耗最不通用（最小）的合法 trainer。</p>
+<p>把两数组都排序后，这两条标准合成一次同向扫描：player 指针与 trainer 指针都只增不减。下面先把它形式化，再证明这个贪心确实最优，最后落到代码。</p>
 <h2 id="_2">形式化<a class="headerlink" href="#_2" title="Permanent link">#</a></h2>
-<p>设 <span class="arithmatex">\(p_1 \le \dots \le p_n\)</span>, <span class="arithmatex">\(t_1 \le \dots \le t_m\)</span>。求最大 <span class="arithmatex">\(k\)</span> 满足 <span class="arithmatex">\(\exists\, 0 = i_0 &lt; i_1 &lt; \dots &lt; i_k\)</span> 且 <span class="arithmatex">\(\exists\, j_1 &lt; j_2 &lt; \dots &lt; j_k\)</span> 使 <span class="arithmatex">\(p_{i_l} \le t_{j_l}\)</span>。</p>
+<p>设两数组已排序：<span class="arithmatex">\(p_1 \le p_2 \le \dots \le p_n\)</span> 为 players，<span class="arithmatex">\(t_1 \le t_2 \le \dots \le t_m\)</span> 为 trainers。一个配对是单射 <span class="arithmatex">\(\sigma\)</span>，把被选中的 player 下标映到互异的 trainer 下标，且每对满足可行性约束 <span class="arithmatex">\(p_i \le t_{\sigma(i)}\)</span>。目标是最大化配对数 <span class="arithmatex">\(|\sigma|\)</span>。</p>
+<p><strong>命题（贪心最优）.</strong> 存在一个最大配对，其中下标小的 player 配下标小的 trainer——即被匹配的 player 与其 trainer 在排序后都保持同序。</p>
+<p><strong>直觉</strong>先于证明：若两条边"交叉"（小 player 配了大 trainer、大 player 配了小 trainer），把它们解开成同序不会破坏可行性，因为小 player 既然能用大 trainer，更能用那个小 trainer。证明就是把这条直觉写实。</p>
+<p><strong>证明（exchange argument）.</strong> 取任一最大配对。若存在两对 <span class="arithmatex">\((p_a, t_x)\)</span> 与 <span class="arithmatex">\((p_b, t_y)\)</span> 满足 <span class="arithmatex">\(p_a \le p_b\)</span> 但 <span class="arithmatex">\(t_x &gt; t_y\)</span>（交叉），交换 trainer 得到 <span class="arithmatex">\((p_a, t_y)\)</span> 与 <span class="arithmatex">\((p_b, t_x)\)</span>，检验两条新边都合法：</p>
+<ul>
+<li>第一对：由原配对 <span class="arithmatex">\(p_b \le t_y\)</span> 及 <span class="arithmatex">\(p_a \le p_b\)</span>，得 <span class="arithmatex">\(p_a \le t_y\)</span>。</li>
+<li>第二对：由 <span class="arithmatex">\(t_y &lt; t_x\)</span> 及刚得的 <span class="arithmatex">\(p_b \le t_y\)</span>，得 <span class="arithmatex">\(p_b \le t_x\)</span>。</li>
+</ul>
+<p>两对仍可行，配对数不变。反复解开所有交叉，最终得到一个同序的最大配对。<span class="arithmatex">\(\;\blacksquare\)</span></p>
+<p>这条命题把搜索空间从"所有单射"压成"同序配对"。同序配对可以<strong>贪心地、自左向右一次构造出来</strong>：依次考虑每个 player，给它当前最小的可行 trainer；下一节的扫描就是这个构造。</p>
 <h2 id="_3">数据结构 / 想法<a class="headerlink" href="#_3" title="Permanent link">#</a></h2>
+<p>排序后，维护两个指针 <code>i</code>（指向当前待匹配的最小未处理 player）、<code>j</code>（指向当前最小未使用的 trainer）。</p>
+<p><strong>循环不变量</strong>（先于代码，它解释循环为何正确）：每轮循环开始时，下标在 <span class="arithmatex">\([0, j)\)</span> 的 trainer 里凡是没被匹配的，都因 capacity 严格小于所有剩余 player 的 ability 而<strong>永久不可用</strong>——丢弃它们不损失任何配对。<code>i</code> 始终等于已经成功配出的对数。</p>
+<p>由不变量推出转移：比较 <code>players[i]</code> 与 <code>trainers[j]</code>。</p>
+<ul>
+<li>若 <code>players[i] &lt;= trainers[j]</code>：trainer <span class="arithmatex">\(j\)</span> 是当前 player 的最小可行 trainer（更小的都已被前面的 player 用掉或证明太弱），按贪心配对，两指针同进。</li>
+<li>否则 <code>players[i] &gt; trainers[j]</code>：trainer <span class="arithmatex">\(j\)</span> 连当前最小的剩余 player 都喂不饱，对更大的 player 更无望，弃之，<code>j</code> 前进。</li>
+</ul>
 <div class="language-python highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">matchPlayersAndTrainers</span><span class="p">(</span><span class="n">players</span><span class="p">,</span> <span class="n">trainers</span><span class="p">):</span>
     <span class="n">players</span><span class="o">.</span><span class="n">sort</span><span class="p">();</span> <span class="n">trainers</span><span class="o">.</span><span class="n">sort</span><span class="p">()</span>
     <span class="n">i</span> <span class="o">=</span> <span class="n">j</span> <span class="o">=</span> <span class="n">matches</span> <span class="o">=</span> <span class="mi">0</span>
@@ -22692,16 +22740,18 @@
             <span class="n">j</span> <span class="o">+=</span> <span class="mi">1</span>  <span class="c1"># current trainer too weak, skip</span>
     <span class="k">return</span> <span class="n">matches</span>
 </code></pre></div>
-<p><strong>不变量</strong>：循环开始时，已处理的 trainer <span class="arithmatex">\(0..j-1\)</span> 中那些没匹配的都太弱（无法匹配剩余 player）。<strong>正确性</strong>：贪心 + 双指针。</p>
+<p>每个分支都维持不变量：配对分支把 <span class="arithmatex">\(j\)</span> 移过一个已用的 trainer，跳过分支把 <span class="arithmatex">\(j\)</span> 移过一个永久不可用的 trainer，两者都不会漏掉任何本可成立的配对。循环在任一数组耗尽时停止，<code>matches</code> 即为答案。</p>
 <h2 id="_4">复杂度<a class="headerlink" href="#_4" title="Permanent link">#</a></h2>
+<p>设 <span class="arithmatex">\(n = |\text{players}|\)</span>，<span class="arithmatex">\(m = |\text{trainers}|\)</span>。</p>
 <ul>
-<li>Time: <span class="arithmatex">\(O(n \log n + m \log m)\)</span> 排序主导。</li>
-<li>Space: <span class="arithmatex">\(O(1)\)</span>（原地排序，或 <span class="arithmatex">\(O(\log)\)</span> 栈）。</li>
+<li>Time: <span class="arithmatex">\(O(n \log n + m \log m)\)</span>，由两次排序主导；其后的双指针扫描是 <span class="arithmatex">\(O(n + m)\)</span>，被吸收。</li>
+<li>Space: <span class="arithmatex">\(O(1)\)</span> 额外空间（原地排序），或计入排序递归栈则 <span class="arithmatex">\(O(\log n)\)</span>。</li>
 </ul>
 <h2 id="_5">陷阱<a class="headerlink" href="#_5" title="Permanent link">#</a></h2>
 <ul>
-<li>用 <code>&lt;=</code> 而非 <code>&lt;</code> —— 等于 capacity 可以匹配。</li>
-<li>不排序直接贪心会错（贪心要求单调）。</li>
+<li>用 <code>&lt;=</code> 而非 <code>&lt;</code>——ability 恰等于 capacity 时<strong>可以</strong>匹配。</li>
+<li>不排序直接贪心会错：贪心的最优性依赖"按 ability 升序处理 + 配最小可行 trainer"，单调序是前提（见背景中的反例）。</li>
+<li>跳过分支必须无条件 <code>j += 1</code>：被判定太弱的 trainer 不会因后续更小的 player 而复活（player 也在升序处理），丢弃是安全的。</li>
 </ul>
 <h2 id="_6">相关题目<a class="headerlink" href="#_6" title="Permanent link">#</a></h2>
 <ul>

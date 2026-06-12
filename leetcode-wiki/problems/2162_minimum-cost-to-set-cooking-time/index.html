@@ -5485,6 +5485,8 @@
       
         
       
+        
+      
     
     
     
@@ -6024,6 +6026,34 @@
     
   
     #93. Restore IP Addresses
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../0102_binary-tree-level-order-traversal/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    #102. Binary Tree Level Order Traversal
   
 
     
@@ -22675,64 +22705,88 @@
 <h2 id="problem">Problem<a class="headerlink" href="#problem" title="Permanent link">#</a></h2>
 <p>微波炉接受 1..4 位数字输入，前两位作分钟、后两位作秒，最终时间 = 分×60 + 秒。手指起始在 <code>startAt</code>；移动到任意键花 <code>moveCost</code>，按键花 <code>pushCost</code>。给目标 <code>targetSeconds</code>（1..6039），求最低代价。</p>
 <h2 id="background">背景 (Background)<a class="headerlink" href="#background" title="Permanent link">#</a></h2>
-<p>题面<strong>关键</strong>："秒 ≥ 60"也合法（例如 81:30 表示 81<em>60 + 30）。所以同一个 targetSeconds 可能有</em><em>多种 (mm, ss) 组合</em>*：枚举 mm ∈ [0, 99]，对应 ss = targetSeconds − 60·mm，只要 0 ≤ ss ≤ 99 即合法。组合数 ≤ 100，逐一计算键入代价取最小即可。</p>
+<p>把问题拆成两部分会更清楚。第一部分：哪些数字序列能表示 <code>targetSeconds</code>？第二部分：在这些序列里，哪个键入起来最便宜？难点全在两部分的耦合——代价取决于<strong>实际键入的数字序列</strong>，而同一个总时间往往能被不止一种序列表示，不同序列的代价不同。</p>
+<p>先看最自然的写法。给定 <span class="arithmatex">\(T\)</span> 秒，谁都会想到“<span class="arithmatex">\(T\)</span> 秒就是 <span class="arithmatex">\(T \div 60\)</span> 分零 <span class="arithmatex">\(T \bmod 60\)</span> 秒”，于是取</p>
+<div class="arithmatex">\[\text{mm} = \lfloor T / 60 \rfloor, \qquad \text{ss} = T \bmod 60,\]</div>
+<p>把这一对 <span class="arithmatex">\((\text{mm}, \text{ss})\)</span> 键进去算代价。这个分解唯一、合法（<span class="arithmatex">\(\text{ss} \in [0,59]\)</span>），看上去无可指摘。</p>
+<p>它在哪里坏掉？取样例 2：<code>startAt=0, moveCost=1, pushCost=2, targetSeconds=76</code>。朴素分解给 <span class="arithmatex">\(\text{mm}=1, \text{ss}=16\)</span>，即键入序列 <span class="arithmatex">\(1,1,6\)</span>（前导零省略），代价为 <span class="arithmatex">\(1+2\)</span>（移到 1 并按）<span class="arithmatex">\(+\,2\)</span>（已在 1，再按）<span class="arithmatex">\(+\,1+2\)</span>（移到 6 并按）<span class="arithmatex">\(=8\)</span>。但 <span class="arithmatex">\(76\)</span> 秒还能直接写成秒：<span class="arithmatex">\(\text{mm}=0, \text{ss}=76\)</span>，键入 <span class="arithmatex">\(7,6\)</span>，代价 <span class="arithmatex">\(1+2+1+2=6 &lt; 8\)</span>。朴素分解漏掉了更便宜的写法，于是返回了非最优解。</p>
+<p>它为什么会漏？因为输入编码并不要求秒数 <span class="arithmatex">\(&lt; 60\)</span>。秒字段同样占两位，能取到 <span class="arithmatex">\([0,99]\)</span>。一旦允许 <span class="arithmatex">\(\text{ss} \ge 60\)</span>，给定 <span class="arithmatex">\(T\)</span> 的分解就<strong>不唯一</strong>了：把 <span class="arithmatex">\(\text{mm}\)</span> 减 <span class="arithmatex">\(1\)</span>、<span class="arithmatex">\(\text{ss}\)</span> 加 <span class="arithmatex">\(60\)</span>，总时间 <span class="arithmatex">\(\text{mm}\cdot 60+\text{ss}\)</span> 不变，只要新的 <span class="arithmatex">\(\text{ss}\)</span> 仍落在 <span class="arithmatex">\([0,99]\)</span>，就是另一个合法写法。换句话说，输入空间（两位分 + 两位秒，秒可达 99）比输出空间（一个总秒数）多了自由度，同一个 <span class="arithmatex">\(T\)</span> 对应一族 <span class="arithmatex">\((\text{mm}, \text{ss})\)</span>。朴素分解只摸到这族里的一个成员，自然可能错过最便宜的那个。</p>
+<p>修复方向因此明确：不要钦定唯一分解，而要<strong>枚举所有合法写法</strong>，逐一算代价取最小。</p>
 <h2 id="formulation">形式化 (Formulation)<a class="headerlink" href="#formulation" title="Permanent link">#</a></h2>
-<p>枚举 <span class="arithmatex">\(\text{mm} \in [0, 99]\)</span>，<span class="arithmatex">\(\text{ss} = T - 60 \cdot \text{mm}\)</span>。约束 <span class="arithmatex">\(0 \le \text{ss} \le 99\)</span>。键入序列为 mm 和 ss 各两位（mm 高位为 0 时可省略前导零）。最少代价 = <span class="arithmatex">\(\min_{\text{合法 (mm, ss)}} \text{cost}(\text{mm}, \text{ss})\)</span>。</p>
+<p><strong>直觉</strong>：固定总秒数 <span class="arithmatex">\(T\)</span>，合法写法是一族而非一个；这族由 <span class="arithmatex">\(\text{mm}\)</span> 参数化，<span class="arithmatex">\(\text{mm}\)</span> 每加 <span class="arithmatex">\(1\)</span>，<span class="arithmatex">\(\text{ss}\)</span> 就减 <span class="arithmatex">\(60\)</span> 来抵消，直到 <span class="arithmatex">\(\text{ss}\)</span> 越出 <span class="arithmatex">\([0,99]\)</span>。我们要在这一整族上取代价最小者。</p>
+<p><strong>搜索空间</strong>。设 <span class="arithmatex">\(\text{mm}\)</span> 为分钟字段，<span class="arithmatex">\(\text{ss}\)</span> 为秒字段。给定 <span class="arithmatex">\(\text{mm}\)</span>，秒由总时间反解：</p>
+<div class="arithmatex">\[\text{ss} = T - 60\cdot\text{mm}.\]</div>
+<p>一对 <span class="arithmatex">\((\text{mm}, \text{ss})\)</span> <strong>合法</strong>当且仅当两字段都能塞进两位数字：</p>
+<div class="arithmatex">\[\text{mm} \in [0, 99], \qquad \text{ss} \in [0, 99].\]</div>
+<p>记合法对的集合为 <span class="arithmatex">\(\mathcal{R}(T) = \{(\text{mm}, T - 60\,\text{mm}) : 0 \le \text{mm} \le 99,\ 0 \le T - 60\,\text{mm} \le 99\}\)</span>。由于 <span class="arithmatex">\(\text{mm}\)</span> 只有 <span class="arithmatex">\(100\)</span> 个取值，<span class="arithmatex">\(|\mathcal{R}(T)| \le 100\)</span>，可逐一枚举。</p>
+<p><strong>数字序列</strong>。一对 <span class="arithmatex">\((\text{mm}, \text{ss})\)</span> 先展成定长四元组（高位补零）：</p>
+<div class="arithmatex">\[d_0 d_1 d_2 d_3 = \Big\lfloor \tfrac{\text{mm}}{10}\Big\rfloor,\ \text{mm}\bmod 10,\ \Big\lfloor \tfrac{\text{ss}}{10}\Big\rfloor,\ \text{ss}\bmod 10.\]</div>
+<p>左侧前导零可以不键（少按几下只会更便宜，且面板把缺位当作零）。于是真正键入的序列是去掉左侧极大零段后的后缀，但<strong>至少保留一位</strong>（哪怕是单个 <span class="arithmatex">\(0\)</span>）：</p>
+<div class="arithmatex">\[D(\text{mm}, \text{ss}) = (d_k, d_{k+1}, \dots, d_3),\quad k = \min\{\,i : d_i \ne 0\,\}\ \text{(若全为零则 } k=3).\]</div>
+<p><strong>代价函数</strong>。手指起点为 <code>startAt</code>。设键入序列为 <span class="arithmatex">\(D = (e_1, \dots, e_m)\)</span>，置 <span class="arithmatex">\(e_0 = \texttt{startAt}\)</span>。键入每一位：若与手指当前所在位不同，先付 <code>moveCost</code> 把手指移过去；无论是否移动，都要付一次 <code>pushCost</code> 按下。于是</p>
+<div class="arithmatex">\[\text{cost}(D) = \sum_{j=1}^{m} \Big( \texttt{moveCost}\cdot[\,e_j \ne e_{j-1}\,] + \texttt{pushCost} \Big).\]</div>
+<p>指示函数 <span class="arithmatex">\([\,e_j \ne e_{j-1}\,]\)</span> 编码了“手指停留”：上一位按完手指仍在该数字上，若下一位相同则免移动费。</p>
+<p><strong>目标</strong>。在合法写法族上最小化键入代价：</p>
+<div class="arithmatex">\[\text{answer} = \min_{(\text{mm}, \text{ss}) \in \mathcal{R}(T)} \text{cost}\big(D(\text{mm}, \text{ss})\big).\]</div>
+<p>约束保证 <span class="arithmatex">\(\mathcal{R}(T)\)</span> 非空：<span class="arithmatex">\(T \in [1, 6039]\)</span>，而 <span class="arithmatex">\(6039 = 99\cdot 60 + 99\)</span> 恰是可达上界，任何此范围内的 <span class="arithmatex">\(T\)</span> 至少有一个合法写法。</p>
 <h2 id="approach">数据结构 / 想法 (Approach)<a class="headerlink" href="#approach" title="Permanent link">#</a></h2>
-<p><strong>枚举所有合法 (mm, ss) 对</strong>，对每对模拟键入：去掉左侧前导零（因为可少按几位），逐位计算"移动 + 按键"代价。</p>
+<p>形式化已把算法定死：遍历 <span class="arithmatex">\(\text{mm} \in [0, 99]\)</span>，对每个 <span class="arithmatex">\(\text{mm}\)</span> 反解 <span class="arithmatex">\(\text{ss}\)</span> 并检查 <span class="arithmatex">\(\text{ss} \in [0, 99]\)</span>；合法则按 <span class="arithmatex">\(D(\text{mm}, \text{ss})\)</span> 与 <span class="arithmatex">\(\text{cost}\)</span> 的定义算代价，全程取最小。代码是上面公式的逐行誊写——<code>while</code> 循环实现前导零裁剪 <span class="arithmatex">\(D\)</span>，<code>for</code> 循环实现 <span class="arithmatex">\(\text{cost}\)</span> 的求和与“手指停留”指示。</p>
 <div class="language-python highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">Solution</span><span class="p">:</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">minCostSetTime</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">startAt</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">moveCost</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">pushCost</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">targetSeconds</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
         <span class="k">def</span><span class="w"> </span><span class="nf">cost</span><span class="p">(</span><span class="n">mm</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">ss</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
-            <span class="c1"># 4 位数 digits = mm 两位 + ss 两位</span>
+            <span class="c1"># 定长四元组 d0 d1 d2 d3 = mm 两位 + ss 两位</span>
             <span class="n">digits</span> <span class="o">=</span> <span class="p">[</span><span class="n">mm</span> <span class="o">//</span> <span class="mi">10</span><span class="p">,</span> <span class="n">mm</span> <span class="o">%</span> <span class="mi">10</span><span class="p">,</span> <span class="n">ss</span> <span class="o">//</span> <span class="mi">10</span><span class="p">,</span> <span class="n">ss</span> <span class="o">%</span> <span class="mi">10</span><span class="p">]</span>
-            <span class="c1"># 去掉左侧前导零（最多去 3 个，至少保留 1 位）</span>
+            <span class="c1"># 裁掉左侧前导零得到 D（最多裁 3 个，至少保留 1 位）</span>
             <span class="k">while</span> <span class="nb">len</span><span class="p">(</span><span class="n">digits</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span> <span class="ow">and</span> <span class="n">digits</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
                 <span class="n">digits</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
-            <span class="n">cur</span> <span class="o">=</span> <span class="n">startAt</span>
+            <span class="n">cur</span> <span class="o">=</span> <span class="n">startAt</span>          <span class="c1"># 手指当前所在位 e_{j-1}，初始为 startAt</span>
             <span class="n">c</span> <span class="o">=</span> <span class="mi">0</span>
             <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">digits</span><span class="p">:</span>
-                <span class="k">if</span> <span class="n">d</span> <span class="o">!=</span> <span class="n">cur</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">d</span> <span class="o">!=</span> <span class="n">cur</span><span class="p">:</span>       <span class="c1"># [e_j != e_{j-1}]：需要移动</span>
                     <span class="n">c</span> <span class="o">+=</span> <span class="n">moveCost</span>
                     <span class="n">cur</span> <span class="o">=</span> <span class="n">d</span>
-                <span class="n">c</span> <span class="o">+=</span> <span class="n">pushCost</span>
+                <span class="n">c</span> <span class="o">+=</span> <span class="n">pushCost</span>      <span class="c1"># 无论是否移动，按一次</span>
             <span class="k">return</span> <span class="n">c</span>
 
         <span class="n">ans</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="s1">&#39;inf&#39;</span><span class="p">)</span>
-        <span class="k">for</span> <span class="n">mm</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">100</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">mm</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">100</span><span class="p">):</span>                  <span class="c1"># 枚举合法写法族 R(T)</span>
             <span class="n">ss</span> <span class="o">=</span> <span class="n">targetSeconds</span> <span class="o">-</span> <span class="mi">60</span> <span class="o">*</span> <span class="n">mm</span>
             <span class="k">if</span> <span class="mi">0</span> <span class="o">&lt;=</span> <span class="n">ss</span> <span class="o">&lt;=</span> <span class="mi">99</span><span class="p">:</span>
                 <span class="n">ans</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">ans</span><span class="p">,</span> <span class="n">cost</span><span class="p">(</span><span class="n">mm</span><span class="p">,</span> <span class="n">ss</span><span class="p">))</span>
         <span class="k">return</span> <span class="n">ans</span>
 </code></pre></div>
-<p>样例 1 trace：<code>startAt=1, moveCost=2, pushCost=1, targetSeconds=600</code>。
-- mm=10, ss=0: digits=[1,0,0,0]。startAt=1: '1' 不动 push=1 → c=1; '0' 移动+按 2+1 → c=4; '0' 不动 push → c=5; '0' 不动 push → c=6。
-- mm=9, ss=60: digits=[0,9,6,0] → 去前导零 → [9,6,0]。move 1→9 (2) +push (1) = 3; move 9→6 (2) +push (1) = 6; move 6→0 (2) +push (1) = 9。
-- mm=0, ss=600 不合法。
-- mm=11, ss=-60 不合法。</p>
-<p>min = 6 ✓。</p>
-<p>样例 2 trace：<code>startAt=0, moveCost=1, pushCost=2, targetSeconds=76</code>。
-- mm=0, ss=76: digits=[0,0,7,6] → 去前导 → [7,6]。startAt=0: move (1)+push (2)=3; move 7→6 (1) +push (2)=6. c=6.
-- mm=1, ss=16: digits=[0,1,1,6] → [1,1,6]. move 0→1 (1)+push (2)=3; 1==1 push (2)=5; move 1→6 (1)+push (2)=8.
-- mm=2, ss=-44 不合法。</p>
-<p>最优 6 ✓。</p>
+<p>把朴素分解的反例放进来验证修复确实生效。样例 2：<code>startAt=0, moveCost=1, pushCost=2, targetSeconds=76</code>。</p>
+<ul>
+<li><span class="arithmatex">\(\text{mm}=0, \text{ss}=76\)</span>：四元组 <span class="arithmatex">\([0,0,7,6] \to D=[7,6]\)</span>。<code>0→7</code> 移动+按 <span class="arithmatex">\(=1+2\)</span>；<code>7→6</code> 移动+按 <span class="arithmatex">\(=1+2\)</span>。<span class="arithmatex">\(\text{cost}=6\)</span>。</li>
+<li><span class="arithmatex">\(\text{mm}=1, \text{ss}=16\)</span>（朴素分解）：四元组 <span class="arithmatex">\([0,1,1,6] \to D=[1,1,6]\)</span>。<code>0→1</code> <span class="arithmatex">\(=1+2\)</span>；<code>1→1</code> 免移动只按 <span class="arithmatex">\(=2\)</span>；<code>1→6</code> <span class="arithmatex">\(=1+2\)</span>。<span class="arithmatex">\(\text{cost}=8\)</span>。</li>
+</ul>
+<p>最优 <span class="arithmatex">\(=6\)</span>，正是被朴素分解漏掉的写法 ✓。</p>
+<p>再看样例 1：<code>startAt=1, moveCost=2, pushCost=1, targetSeconds=600</code>。</p>
+<ul>
+<li><span class="arithmatex">\(\text{mm}=10, \text{ss}=0\)</span>：四元组 <span class="arithmatex">\([1,0,0,0]\)</span>，无前导零，<span class="arithmatex">\(D=[1,0,0,0]\)</span>。<code>1→1</code> 免移动只按 <span class="arithmatex">\(=1\)</span>；<code>1→0</code> <span class="arithmatex">\(=2+1\)</span>；<code>0→0</code> 只按 <span class="arithmatex">\(=1\)</span>；<code>0→0</code> 只按 <span class="arithmatex">\(=1\)</span>。<span class="arithmatex">\(\text{cost}=6\)</span>。</li>
+<li><span class="arithmatex">\(\text{mm}=9, \text{ss}=60\)</span>：四元组 <span class="arithmatex">\([0,9,6,0] \to D=[9,6,0]\)</span>。<code>1→9</code> <span class="arithmatex">\(=2+1\)</span>；<code>9→6</code> <span class="arithmatex">\(=2+1\)</span>；<code>6→0</code> <span class="arithmatex">\(=2+1\)</span>。<span class="arithmatex">\(\text{cost}=9\)</span>。</li>
+</ul>
+<p>最优 <span class="arithmatex">\(=6\)</span> ✓。</p>
 <h2 id="complexity">复杂度 (Complexity)<a class="headerlink" href="#complexity" title="Permanent link">#</a></h2>
 <ul>
-<li>Time: <span class="arithmatex">\(O(100 \cdot 4) = O(1)\)</span></li>
+<li>Time: <span class="arithmatex">\(O(100 \cdot 4) = O(1)\)</span>（至多 <span class="arithmatex">\(100\)</span> 个合法写法，每个做 <span class="arithmatex">\(4\)</span> 位的常数工作）</li>
 <li>Space: <span class="arithmatex">\(O(1)\)</span></li>
 </ul>
+<p>工作量与输入大小无关，恒为常数，故无需区分最好/平均/最坏。</p>
 <h2 id="pitfalls">陷阱 (Pitfalls)<a class="headerlink" href="#pitfalls" title="Permanent link">#</a></h2>
+<p>这些陷阱都直接对应形式化里的某一条约束，逐一对照即可避免。</p>
 <ul>
-<li><strong>必须考虑 ss ≥ 60 的写法</strong>：仅枚举 (mm = T÷60, ss = T%60) 会漏 (mm-1, ss+60)，可能错过最优。</li>
-<li><strong>左侧前导零可省略</strong>：不省略可能多按几下；正确做法是从最高位向后扫，第一个非零位之前的零全部去掉。</li>
-<li><strong><code>mm == 0</code> 时不能把 4 位全省</strong>：至少保留 1 位（按一下 0 也行）。约束 targetSeconds ≥ 1 保证至少需要按一个非零。但若 T = 1 → mm=0, ss=1 → digits=[0,0,0,1] → [1]，OK。</li>
-<li><strong><code>startAt</code> 复用</strong>：上一位 push 后手指仍在该数字位置，下一位若相同则无 move 代价。</li>
+<li><strong>必须枚举整个 <span class="arithmatex">\(\mathcal{R}(T)\)</span>，而非只取朴素分解</strong>。仅算 <span class="arithmatex">\((\text{mm}=T\div 60,\ \text{ss}=T\bmod 60)\)</span> 会漏掉 <span class="arithmatex">\((\text{mm}-1,\ \text{ss}+60)\)</span> 一族，可能错过最优——这正是开头样例 2 的反例。</li>
+<li><strong>左侧前导零应裁掉</strong>。不裁会多按几下；正确做法是从最高位扫起，第一个非零位之前的零全部去掉，即定义里的 <span class="arithmatex">\(D(\text{mm}, \text{ss})\)</span>。</li>
+<li><strong>裁零至少保留一位</strong>。<span class="arithmatex">\(\text{mm}=0\)</span> 时不能把四位全省；形式化的 <span class="arithmatex">\(k=3\)</span> 兜底与代码的 <code>len(digits) &gt; 1</code> 守卫都在保证这点。例如 <span class="arithmatex">\(T=1 \to \text{mm}=0, \text{ss}=1 \to [0,0,0,1] \to D=[1]\)</span>，正确。</li>
+<li><strong>手指停留要复用 <code>cur</code></strong>。上一位按完手指仍停在该数字位，下一位若相同则 <span class="arithmatex">\([\,e_j \ne e_{j-1}\,]=0\)</span>，无移动费；代码靠 <code>cur = d</code> 把这个状态带到下一轮。</li>
 </ul>
 <h2 id="related">相关题目 (Related)<a class="headerlink" href="#related" title="Permanent link">#</a></h2>
 <ul>
 <li><code>#2151 Maximum Good People Based on Statements (off-wiki)</code> — 同样的小规模枚举。</li>
 </ul>
 <h2 id="further-reading">Further Reading<a class="headerlink" href="#further-reading" title="Permanent link">#</a></h2>
-<p>无推荐外部资源（题目难度不足以需要专题文献）。</p>
+<p>无推荐外部资源（问题规模有限，标准枚举即可，无需专题文献）。</p>
 
 
 

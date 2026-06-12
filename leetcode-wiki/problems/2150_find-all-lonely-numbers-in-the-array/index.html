@@ -5485,6 +5485,8 @@
       
         
       
+        
+      
     
     
     
@@ -6024,6 +6026,34 @@
     
   
     #93. Restore IP Addresses
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../0102_binary-tree-level-order-traversal/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    #102. Binary Tree Level Order Traversal
   
 
     
@@ -14741,6 +14771,34 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="数据结构 / 想法 (Approach)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        朴素做法及其瓶颈
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        预先回答所有频次问题
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -22607,6 +22665,34 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="数据结构 / 想法 (Approach)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        朴素做法及其瓶颈
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        预先回答所有频次问题
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -22675,11 +22761,29 @@
 <h2 id="problem">Problem<a class="headerlink" href="#problem" title="Permanent link">#</a></h2>
 <p><code>nums</code> 中元素 <span class="arithmatex">\(x\)</span> 称为"孤独"当且仅当 <span class="arithmatex">\(x\)</span> 恰出现一次，且 <span class="arithmatex">\(x-1\)</span> 和 <span class="arithmatex">\(x+1\)</span> 都不出现。返回所有孤独元素（顺序任意）。<span class="arithmatex">\(|\text{nums}| \le 10^5\)</span>，<span class="arithmatex">\(0 \le \text{nums}[i] \le 10^6\)</span>。</p>
 <h2 id="background">背景 (Background)<a class="headerlink" href="#background" title="Permanent link">#</a></h2>
-<p>经典"用哈希表对每个元素 <span class="arithmatex">\(O(1)\)</span> 查询邻居"的范式，与 Longest Consecutive Sequence (#128) 同源。任何关于"相邻整数"或"相邻字典序串"的查询，先把序列丢进 <code>Counter</code> / <code>set</code> 是几乎万能的预处理。</p>
+<p>固定一个候选值 <span class="arithmatex">\(x\)</span>，判定它是否孤独只依赖三件事：<span class="arithmatex">\(x\)</span> 在数组里出现几次，<span class="arithmatex">\(x-1\)</span> 是否出现，<span class="arithmatex">\(x+1\)</span> 是否出现。这三件事都是"某个具体整数出现了多少次"的问题。因此整道题归结为一个操作的反复执行——按值查询出现次数——而我们要找的，是让这个查询尽可能便宜的方式。</p>
 <h2 id="formulation">形式化 (Formulation)<a class="headerlink" href="#formulation" title="Permanent link">#</a></h2>
-<p>设 <span class="arithmatex">\(f : \mathbb{Z}_{\ge 0} \to \mathbb{Z}_{\ge 0}\)</span> 为频次函数。返回 <span class="arithmatex">\(\{x \in \text{nums} : f(x) = 1 \land f(x - 1) = 0 \land f(x + 1) = 0\}\)</span>。</p>
+<p>把上面三件事写成对出现次数的约束。直观上，<span class="arithmatex">\(x\)</span> 孤独当且仅当它本身唯一、且左右两个相邻整数都不在数组里。</p>
+<p>设 <span class="arithmatex">\(f : \mathbb{Z}_{\ge 0} \to \mathbb{Z}_{\ge 0}\)</span> 为频次函数，<span class="arithmatex">\(f(v)\)</span> 是值 <span class="arithmatex">\(v\)</span> 在 <code>nums</code> 中出现的次数。则要返回的集合是</p>
+<div class="arithmatex">\[
+\{\, x \in \text{nums} : f(x) = 1 \ \land\ f(x - 1) = 0 \ \land\ f(x + 1) = 0 \,\}. \tag{1}
+\]</div>
+<p>三个合取项各对应一件事：<span class="arithmatex">\(f(x)=1\)</span> 说"<span class="arithmatex">\(x\)</span> 唯一"，<span class="arithmatex">\(f(x-1)=0\)</span> 与 <span class="arithmatex">\(f(x+1)=0\)</span> 说"两个邻居都缺席"。整个解法就是把 (1) 算出来，下面的代码会逐项对应这三个约束。</p>
 <h2 id="approach">数据结构 / 想法 (Approach)<a class="headerlink" href="#approach" title="Permanent link">#</a></h2>
-<p><code>Counter</code> 一次构造 + 一次过滤。</p>
+<h3 id="_1">朴素做法及其瓶颈<a class="headerlink" href="#_1" title="Permanent link">#</a></h3>
+<p>(1) 直接照搬：对每个 <span class="arithmatex">\(x\)</span>，扫一遍数组数出 <span class="arithmatex">\(f(x)\)</span>，再扫两遍数出 <span class="arithmatex">\(f(x-1)\)</span>、<span class="arithmatex">\(f(x+1)\)</span>。</p>
+<div class="language-python highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">findLonely_naive</span><span class="p">(</span><span class="n">nums</span><span class="p">):</span>
+    <span class="n">res</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">nums</span><span class="p">:</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">nums</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span>
+                <span class="ow">and</span> <span class="n">nums</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="n">x</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span>
+                <span class="ow">and</span> <span class="n">nums</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="n">x</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">):</span>
+            <span class="n">res</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">res</span>
+</code></pre></div>
+<p>这是对的，但每个 <code>count</code> 都重新扫一遍全数组：<span class="arithmatex">\(n\)</span> 个元素 <span class="arithmatex">\(\times\)</span> 每个 <span class="arithmatex">\(O(n)\)</span> 次扫描 <span class="arithmatex">\(= O(n^2)\)</span>。瓶颈很具体——同一个频次问题（"值 <span class="arithmatex">\(v\)</span> 出现几次"）被反复重算，而 <span class="arithmatex">\(f\)</span> 在整个过程中根本没变。</p>
+<h3 id="_2">预先回答所有频次问题<a class="headerlink" href="#_2" title="Permanent link">#</a></h3>
+<p>既然每次查询的是同一个不变的 <span class="arithmatex">\(f\)</span>，就一次性把它全部算出来存好。一趟遍历建立频次表，之后每个 <span class="arithmatex">\(f(v)\)</span> 都是 <span class="arithmatex">\(O(1)\)</span> 查表：</p>
 <div class="language-python highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">collections</span><span class="w"> </span><span class="kn">import</span> <span class="n">Counter</span>
 
 <span class="k">class</span><span class="w"> </span><span class="nc">Solution</span><span class="p">:</span>
@@ -22688,6 +22792,7 @@
         <span class="k">return</span> <span class="p">[</span><span class="n">x</span> <span class="k">for</span> <span class="n">x</span><span class="p">,</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">cnt</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
                 <span class="k">if</span> <span class="n">c</span> <span class="o">==</span> <span class="mi">1</span> <span class="ow">and</span> <span class="n">cnt</span><span class="p">[</span><span class="n">x</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">cnt</span><span class="p">[</span><span class="n">x</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">]</span>
 </code></pre></div>
+<p><code>cnt</code> 就是 <span class="arithmatex">\(f\)</span> 的具体实现，过滤条件逐项对应 (1) 的三个合取：<code>c == 1</code> 是 <span class="arithmatex">\(f(x)=1\)</span>，<code>cnt[x-1] == 0</code> 是 <span class="arithmatex">\(f(x-1)=0\)</span>，<code>cnt[x+1] == 0</code> 是 <span class="arithmatex">\(f(x+1)=0\)</span>。<code>Counter</code> 对缺失键返回 <span class="arithmatex">\(0\)</span>（且不会插入该键），所以两个邻居查询天然给出"未出现"的 <span class="arithmatex">\(0\)</span>，无需特判。遍历 <code>cnt.items()</code> 而非 <code>nums</code>，去重后规模更小。</p>
 <p>样例 1 trace：<code>nums=[10,6,5,8]</code>。cnt={10:1,6:1,5:1,8:1}。
 - 10: cnt[9]=0, cnt[11]=0 ✓ 加入
 - 6: cnt[5]=1 ✗
@@ -22696,18 +22801,18 @@
 <p>输出 [10, 8] ✓。</p>
 <p>样例 2 trace：<code>nums=[1,3,5,3]</code>。cnt={1:1, 3:2, 5:1}。
 - 1: cnt[0]=0, cnt[2]=0 ✓
-- 3: c=2 ✗
+- 3: c=2 ✗（出现两次，<span class="arithmatex">\(f(3)=2\ne1\)</span>，第一项就被否决）
 - 5: cnt[4]=0, cnt[6]=0 ✓</p>
 <p>输出 [1, 5] ✓。</p>
 <h2 id="complexity">复杂度 (Complexity)<a class="headerlink" href="#complexity" title="Permanent link">#</a></h2>
 <ul>
-<li>Time: <span class="arithmatex">\(O(n)\)</span></li>
-<li>Space: <span class="arithmatex">\(O(n)\)</span> 哈希表</li>
+<li>Time: <span class="arithmatex">\(O(n)\)</span>——建 <code>Counter</code> 一趟，过滤一趟，每次查表 <span class="arithmatex">\(O(1)\)</span>。</li>
+<li>Space: <span class="arithmatex">\(O(n)\)</span> 哈希表。</li>
 </ul>
 <h2 id="pitfalls">陷阱 (Pitfalls)<a class="headerlink" href="#pitfalls" title="Permanent link">#</a></h2>
 <ul>
-<li><strong>不能用 <code>set</code></strong>：必须区分出现 1 次和 &gt;1 次（重复元素本身不算孤独）。</li>
-<li><strong><code>cnt[x ± 1] == 0</code></strong>：用 <code>Counter</code> 的默认 0 行为（不要用 <code>dict</code>）；或显式 <code>cnt.get(x-1, 0)</code>。</li>
+<li><strong>不能用 <code>set</code> 替代 <code>Counter</code></strong>：(1) 的第一个约束是 <span class="arithmatex">\(f(x)=1\)</span>，需要区分"出现 1 次"与"出现 <span class="arithmatex">\(\ge 2\)</span> 次"。<code>set</code> 把这两种情况压成同一个"存在"比特，<span class="arithmatex">\(f(x)=1\)</span> 就无法判定。例如 <code>nums=[2,2]</code>，集合 <code>{2}</code> 里 <code>2</code> 存在、左右邻居都缺席，若只看存在性会误判 <code>2</code> 孤独；而 <span class="arithmatex">\(f(2)=2\)</span> 立刻排除它。重复元素本身永远不孤独，正由这一项保证。</li>
+<li><strong>邻居查询依赖 <code>Counter</code> 的默认 0</strong>：<code>cnt[x-1]</code>、<code>cnt[x+1]</code> 用的是 <code>Counter</code> 对缺失键返回 <span class="arithmatex">\(0\)</span> 的行为。若换成普通 <code>dict</code>，缺失键会抛 <code>KeyError</code>；需要时改用 <code>cnt.get(x-1, 0)</code>。</li>
 </ul>
 <h2 id="related">相关题目 (Related)<a class="headerlink" href="#related" title="Permanent link">#</a></h2>
 <ul>

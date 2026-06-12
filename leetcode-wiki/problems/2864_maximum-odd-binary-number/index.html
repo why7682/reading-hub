@@ -5485,6 +5485,8 @@
       
         
       
+        
+      
     
     
     
@@ -6024,6 +6026,34 @@
     
   
     #93. Restore IP Addresses
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../0102_binary-tree-level-order-traversal/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    #102. Binary Tree Level Order Traversal
   
 
     
@@ -22675,27 +22705,37 @@
 <h2 id="problem">Problem<a class="headerlink" href="#problem" title="Permanent link">#</a></h2>
 <p>给至少含一个 <code>'1'</code> 的二进制字符串 <span class="arithmatex">\(s\)</span>。重排比特使结果是最大奇数，返回该字符串（可有前导零，但本题贪心一定无前导零）。约束 <span class="arithmatex">\(1 \le |s| \le 100\)</span>。</p>
 <h2 id="background">背景 (Background)<a class="headerlink" href="#background" title="Permanent link">#</a></h2>
-<p>本题是位串重排 + 贪心字典序最大化。<strong>奇数</strong>等价二进制末位为 <code>1</code>。最大化要求把更多 <code>1</code> 往高位放。两条规则同时满足：把一个 <code>1</code> 留给末位，其余 <code>1</code> 全堆到最高位，中间填 <code>0</code>。</p>
-<p>类似贪心模式：构造满足某性质的最大/最小字符串（#179 Largest Number、#316 去重最小子串等）。</p>
+<p>我们可以任意重排 <span class="arithmatex">\(s\)</span> 的比特，只要 <code>0</code>、<code>1</code> 的个数不变。设 <span class="arithmatex">\(s\)</span> 中有 <span class="arithmatex">\(c_1\)</span> 个 <code>1</code>、<span class="arithmatex">\(c_0\)</span> 个 <code>0</code>。问题是：在所有这些排列中，哪一个表示的整数既是奇数、又尽可能大？</p>
+<p>先看一个无约束的版本：如果只要求“最大”，不要求奇数，该怎么排？回忆二进制串的取值——下标从右往左记为 <span class="arithmatex">\(0,1,2,\dots\)</span>，第 <span class="arithmatex">\(k\)</span> 位为 <code>1</code> 时贡献 <span class="arithmatex">\(2^k\)</span>。两个等长二进制串比大小，从最高位往低位逐位比较：第一处不同的位上是 <code>1</code> 的那个更大。关键的数值事实是</p>
+<div class="arithmatex">\[2^k &gt; \sum_{j=0}^{k-1} 2^j = 2^k - 1,\]</div>
+<p>即任何一位的权重，严格大于它下方所有位权重之和。所以把一个 <code>1</code> 往左移一位带来的增益，比把它下方所有空位全填满还要多。结论是：要最大化，就把每个 <code>1</code> 尽量往高位放——也就是所有 <code>1</code> 排在最前、所有 <code>0</code> 排在最后。</p>
+<p>现在加回奇数约束。奇数当且仅当最低位（第 <span class="arithmatex">\(0\)</span> 位）为 <code>1</code>，所以末位必须占用一个 <code>1</code>。这里只有一个末位可放，因此恰好“锁定”一个 <code>1</code> 在末位，不多也不少。锁定之后，剩下 <span class="arithmatex">\(c_1 - 1\)</span> 个 <code>1</code> 和 <span class="arithmatex">\(c_0\)</span> 个 <code>0</code> 可自由安排到更高的位上——这正是上一段那个无约束子问题，于是把这 <span class="arithmatex">\(c_1 - 1\)</span> 个 <code>1</code> 全堆到最前。</p>
+<p>一个容易踩的反面尝试：先把全部 <span class="arithmatex">\(c_1\)</span> 个 <code>1</code> 堆到最前，再到结尾“补”出一个 <code>1</code>。但 <code>1</code> 的总数固定，从前面挪一个 <code>1</code> 到末位，会让最高的若干位中有一位由 <code>1</code> 变 <code>0</code>，反而变小；而若不从前面挪、直接在末位额外加 <code>1</code>，又改变了 <code>1</code> 的个数，不是合法重排。正确做法是先扣掉末位的那个 <code>1</code>，剩下的才往前堆。</p>
 <h2 id="formulation">形式化 (Formulation)<a class="headerlink" href="#formulation" title="Permanent link">#</a></h2>
-<p>设 <span class="arithmatex">\(c_1\)</span> = <span class="arithmatex">\(s\)</span> 中 <code>1</code> 数，<span class="arithmatex">\(c_0\)</span> = <code>0</code> 数。输出：<span class="arithmatex">\((c_1 - 1)\)</span> 个 <code>1</code> ++ <span class="arithmatex">\(c_0\)</span> 个 <code>0</code> ++ <code>1</code>。</p>
+<p>直观已经给出构造：末位放一个 <code>1</code> 满足奇数约束，其余 <code>1</code> 全部前置以最大化高位。形式化地，设 <span class="arithmatex">\(c_1\)</span> = <span class="arithmatex">\(s\)</span> 中 <code>1</code> 的个数，<span class="arithmatex">\(c_0\)</span> = <code>0</code> 的个数（<span class="arithmatex">\(c_1 \ge 1\)</span> 由题目保证）。最优输出为</p>
+<div class="arithmatex">\[\underbrace{1\cdots 1}_{c_1 - 1\ \text{个}} \;\Vert\; \underbrace{0\cdots 0}_{c_0\ \text{个}} \;\Vert\; 1,\]</div>
+<p>即 <span class="arithmatex">\((c_1 - 1)\)</span> 个 <code>1</code>，接 <span class="arithmatex">\(c_0\)</span> 个 <code>0</code>，再接末位的一个 <code>1</code>。</p>
+<p><strong>最优性（交换论证）</strong>：任何合法解的末位必为 <code>1</code>（否则是偶数），所以所有合法解共享同一个末位 <code>1</code>，只在前 <span class="arithmatex">\(c_1 + c_0 - 1\)</span> 位上分布剩余的 <span class="arithmatex">\(c_1 - 1\)</span> 个 <code>1</code>。设某解在前缀中存在一对位置 <span class="arithmatex">\(i &lt; j\)</span>（这里下标 <span class="arithmatex">\(i\)</span> 比 <span class="arithmatex">\(j\)</span> 更靠高位），满足高位 <span class="arithmatex">\(i\)</span> 是 <code>0</code> 而低位 <span class="arithmatex">\(j\)</span> 是 <code>1</code>。交换这两位：高位由 <code>0</code> 变 <code>1</code>、低位由 <code>1</code> 变 <code>0</code>，由 <span class="arithmatex">\(2^i &gt; 2^j\)</span> 知整数严格变大。可见只要存在“高位 <code>0</code>、低位 <code>1</code>”就还能改进；无法改进的解，必然所有 <code>1</code> 都集中在前、所有 <code>0</code> 都在后。这唯一确定了上面的构造，即为最优。</p>
 <h2 id="approach">数据结构 / 想法 (Approach)<a class="headerlink" href="#approach" title="Permanent link">#</a></h2>
+<p>构造不需要排序，只需数出 <span class="arithmatex">\(c_1\)</span> 与 <span class="arithmatex">\(c_0\)</span>，再按公式拼串。</p>
 <div class="language-python highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">maximumOddBinaryNumber</span><span class="p">(</span><span class="n">s</span><span class="p">):</span>
     <span class="n">c1</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="s1">&#39;1&#39;</span><span class="p">)</span>
     <span class="n">c0</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">s</span><span class="p">)</span> <span class="o">-</span> <span class="n">c1</span>
     <span class="k">return</span> <span class="s1">&#39;1&#39;</span> <span class="o">*</span> <span class="p">(</span><span class="n">c1</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;0&#39;</span> <span class="o">*</span> <span class="n">c0</span> <span class="o">+</span> <span class="s1">&#39;1&#39;</span>
 </code></pre></div>
-<p>样例 1：<code>s="010"</code>. c1=1, c0=2. 输出 <code>"" + "00" + "1" = "001"</code>。✓
-样例 2：<code>s="0101"</code>. c1=2, c0=2. 输出 <code>"1" + "00" + "1" = "1001"</code>。✓</p>
-<p><strong>贪心正确性</strong>：末位必须为 <code>1</code>（奇数）。剩 <span class="arithmatex">\(c_1 - 1\)</span> 个 <code>1</code>、<span class="arithmatex">\(c_0\)</span> 个 <code>0</code> 自由放高位。把所有 <code>1</code> 排在前面最大化字典序——这是基础贪心（高位优先 + 大数字优先）。</p>
+<p>用两个样例核对公式：</p>
+<ul>
+<li><code>s="010"</code>：<span class="arithmatex">\(c_1=1,\ c_0=2\)</span>，输出 <code>"" + "00" + "1" = "001"</code>。末位 <code>1</code> 为奇数，其余位无 <code>1</code> 可前置。</li>
+<li><code>s="0101"</code>：<span class="arithmatex">\(c_1=2,\ c_0=2\)</span>，输出 <code>"1" + "00" + "1" = "1001"</code>。一个 <code>1</code> 前置、一个 <code>1</code> 锁末位。</li>
+</ul>
 <h2 id="complexity">复杂度 (Complexity)<a class="headerlink" href="#complexity" title="Permanent link">#</a></h2>
 <ul>
-<li>Time / Space <span class="arithmatex">\(O(n)\)</span>.</li>
+<li>Time / Space <span class="arithmatex">\(O(n)\)</span>：一次计数加一次拼接，输出长度为 <span class="arithmatex">\(n\)</span>。</li>
 </ul>
 <h2 id="pitfalls">陷阱 (Pitfalls)<a class="headerlink" href="#pitfalls" title="Permanent link">#</a></h2>
 <ul>
-<li><strong><span class="arithmatex">\(c_1 = 1\)</span></strong>：<span class="arithmatex">\(c_1 - 1 = 0\)</span>，全部 <code>0</code> 在前，末位 <code>1</code>。</li>
-<li><strong>题目保证至少一个 <code>1</code></strong>：不必处理 <span class="arithmatex">\(c_1 = 0\)</span>。</li>
+<li><strong><span class="arithmatex">\(c_1 = 1\)</span></strong>：<span class="arithmatex">\(c_1 - 1 = 0\)</span>，前缀无 <code>1</code>，全部 <code>0</code> 在前、末位 <code>1</code>（如 <code>"001"</code>）。此时输出确实带前导零——这并不矛盾，目标是数值最大而非消除前导零，把仅有的 <code>1</code> 留给末位是被奇数约束强制的。</li>
+<li><strong>题目保证至少一个 <code>1</code></strong>：<span class="arithmatex">\(c_1 \ge 1\)</span>，不必处理 <span class="arithmatex">\(c_1 = 0\)</span> 导致 <span class="arithmatex">\(c_1 - 1 &lt; 0\)</span> 的情形。</li>
 </ul>
 <h2 id="related">相关题目 (Related)<a class="headerlink" href="#related" title="Permanent link">#</a></h2>
 <ul>

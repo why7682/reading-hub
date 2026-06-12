@@ -5485,6 +5485,8 @@
       
         
       
+        
+      
     
     
     
@@ -6024,6 +6026,34 @@
     
   
     #93. Restore IP Addresses
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../0102_binary-tree-level-order-traversal/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    #102. Binary Tree Level Order Traversal
   
 
     
@@ -22675,11 +22705,16 @@
 <h2 id="problem">Problem<a class="headerlink" href="#problem" title="Permanent link">#</a></h2>
 <p>两个等长字符串 <code>word1</code> 和 <code>word2</code>（长度 ≤ 100，小写字母）。如果每个字母 a..z 在两串中出现次数之差 ≤ 3，则称为"几乎等价"。返回布尔值。</p>
 <h2 id="background">背景 (Background)<a class="headerlink" href="#background" title="Permanent link">#</a></h2>
-<p>本题对应"字符频次直方图的 <span class="arithmatex">\(L_\infty\)</span> 距离 ≤ 3"。频次向量比较是字符串近似匹配（anagram, near-anagram）的基础原语。</p>
+<p>题目的判定条件已经把要做的事说清楚了：对<strong>每一个</strong>字母 a..z，看它在两串中出现次数的差是否不超过 3。这里有一个值得停下来看的结构性事实——这 26 个字母的判定是彼此独立的。字母 <code>a</code> 出现多少次，和字母 <code>b</code> 出现多少次互不影响；最终结论"几乎等价"只是这 26 个单字母条件的<strong>合取</strong>（全部成立才成立）。</p>
+<p>于是问题被拆成 26 个互不干扰的子问题，每个子问题只需要两个数：该字母在 <code>word1</code> 中的次数、在 <code>word2</code> 中的次数。只要能算出这两组次数，剩下的就是 26 次独立比较。这个观察直接决定了下面要用什么数据结构、要检查什么量。</p>
 <h2 id="formulation">形式化 (Formulation)<a class="headerlink" href="#formulation" title="Permanent link">#</a></h2>
-<p>设 <span class="arithmatex">\(f_1, f_2 \in \mathbb{Z}_{\ge 0}^{26}\)</span> 为两串的字符频次向量。返回 <span class="arithmatex">\(\|f_1 - f_2\|_\infty \le 3\)</span>。</p>
+<p>把"某字母在某串中的出现次数"组织成向量：设 <span class="arithmatex">\(f_1, f_2 \in \mathbb{Z}_{\ge 0}^{26}\)</span> 为两串的字符频次向量，其中 <span class="arithmatex">\(f_1[c]\)</span> 是字母 <span class="arithmatex">\(c\)</span> 在 <code>word1</code> 中的出现次数，<span class="arithmatex">\(f_2[c]\)</span> 同理。这两个向量由输入直接构造：扫一遍 <code>word1</code>，把每个字符对应的分量加一，得到 <span class="arithmatex">\(f_1\)</span>；对 <code>word2</code> 同理得到 <span class="arithmatex">\(f_2\)</span>。</p>
+<p>单字母条件是 <span class="arithmatex">\(|f_1[c] - f_2[c]| \le 3\)</span>。"对所有 26 个字母都成立"就是对差向量 <span class="arithmatex">\(f_1 - f_2\)</span> 的每个分量取绝对值后都不超过 3——也就是这个向量中<strong>绝对值最大的那个分量</strong>不超过 3。这个"各分量绝对值的最大值"正是 <span class="arithmatex">\(L_\infty\)</span> 范数 <span class="arithmatex">\(\|\cdot\|_\infty\)</span>。于是整个判定压缩成一句：</p>
+<div class="arithmatex">\[\|f_1 - f_2\|_\infty \le 3.\]</div>
+<p>范数符号在这里只是上一段那句话的简写，不是额外的前置知识：它说的就是"最坏的单字母差距不超过 3"。</p>
 <h2 id="approach">数据结构 / 想法 (Approach)<a class="headerlink" href="#approach" title="Permanent link">#</a></h2>
-<p>直接用长 26 的计数数组（或 <code>Counter</code>），逐字母比较差的绝对值。</p>
+<p>形式化告诉我们真正需要的是差向量 <span class="arithmatex">\(f_1 - f_2\)</span> 的每个分量，而不是 <span class="arithmatex">\(f_1\)</span>、<span class="arithmatex">\(f_2\)</span> 本身。最直接的写法是开两个长度 26 的数组分别统计 <span class="arithmatex">\(f_1\)</span>、<span class="arithmatex">\(f_2\)</span>，再逐分量相减比较——这当然可行，但既然结尾只用到差，就没必要把两组次数都留到最后。</p>
+<p>把构造直接合并：扫 <code>word1</code> 时对应分量 <span class="arithmatex">\(+1\)</span>，扫 <code>word2</code> 时对应分量 <span class="arithmatex">\(-1\)</span>。同一个长度 26 的数组扫完两串后，第 <span class="arithmatex">\(c\)</span> 个分量恰好就是 <span class="arithmatex">\(f_1[c] - f_2[c]\)</span>，省掉了结尾的逐分量减法。最后按形式化的判据，检查每个分量的绝对值是否都 <span class="arithmatex">\(\le 3\)</span> 即可。</p>
 <div class="language-python highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">Solution</span><span class="p">:</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">checkAlmostEquivalent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">word1</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">word2</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
         <span class="n">cnt</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="mi">26</span>
@@ -22689,16 +22724,18 @@
             <span class="n">cnt</span><span class="p">[</span><span class="nb">ord</span><span class="p">(</span><span class="n">c</span><span class="p">)</span> <span class="o">-</span> <span class="mi">97</span><span class="p">]</span> <span class="o">-=</span> <span class="mi">1</span>
         <span class="k">return</span> <span class="nb">all</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="mi">3</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">cnt</span><span class="p">)</span>
 </code></pre></div>
-<p>样例 1 trace：<code>"aaaa"</code> vs <code>"bccb"</code> → diff[a]=4, diff[b]=-2, diff[c]=-2，max abs = 4 &gt; 3 → False ✓。</p>
+<p>样例 1 trace：<code>"aaaa"</code> vs <code>"bccb"</code> → <code>cnt[a]=4</code>, <code>cnt[b]=-2</code>, <code>cnt[c]=-2</code>，绝对值最大为 4 &gt; 3 → False ✓。这里 <code>cnt[b]</code> 为负正说明了为何收尾要取绝对值——差向量的分量两个方向都可能出现。</p>
+<p>形式化里那句"频次向量比较"也是字符串近似匹配的基础原语：anagram（变位词，相同字母任意顺序，即 <span class="arithmatex">\(f_1 = f_2\)</span>）、near-anagram（允许小偏差）都建立在同一个差向量上，本题是其中"偏差用 <span class="arithmatex">\(L_\infty\)</span> 度量、阈值为 3"的特例。</p>
 <h2 id="complexity">复杂度 (Complexity)<a class="headerlink" href="#complexity" title="Permanent link">#</a></h2>
 <ul>
 <li>Time: <span class="arithmatex">\(O(n + 26) = O(n)\)</span></li>
 <li>Space: <span class="arithmatex">\(O(26) = O(1)\)</span></li>
 </ul>
 <h2 id="pitfalls">陷阱 (Pitfalls)<a class="headerlink" href="#pitfalls" title="Permanent link">#</a></h2>
+<p>下面两点都是形式化的直接推论，不是额外要记的规则：</p>
 <ul>
-<li><strong>必须取绝对值</strong>：差可正可负，单向比较会漏。</li>
-<li><strong>遍历完整 26 字母</strong>：仅遍历出现过的字母会漏掉"只在一串中出现"的情况（差值 = 出现次数）。</li>
+<li><strong>必须取绝对值</strong>：差向量 <span class="arithmatex">\(f_1 - f_2\)</span> 的分量可正可负（如样例中 <code>cnt[b]=-2</code>）。<span class="arithmatex">\(L_\infty\)</span> 范数取的是绝对值的最大，漏掉绝对值就只检查了一个方向，会放过反向超标的字母。</li>
+<li><strong>遍历完整 26 字母</strong>：<span class="arithmatex">\(L_\infty\)</span> 是对全部 26 个分量取最大，必须每个都查。若改用 <code>Counter</code> 只遍历"出现过的字母"，会漏掉只在一串中出现的字母（其差值正好等于该字母的出现次数）。上面的单数组实现因为固定扫 26 个分量，已经天然避开了这个坑，这条提醒针对的是 <code>Counter</code> 取交集式的替代写法。</li>
 </ul>
 <h2 id="related">相关题目 (Related)<a class="headerlink" href="#related" title="Permanent link">#</a></h2>
 <ul>

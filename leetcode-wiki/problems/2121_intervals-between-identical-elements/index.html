@@ -5485,6 +5485,8 @@
       
         
       
+        
+      
     
     
     
@@ -6024,6 +6026,34 @@
     
   
     #93. Restore IP Addresses
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../0102_binary-tree-level-order-traversal/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    #102. Binary Tree Level Order Traversal
   
 
     
@@ -22675,13 +22705,23 @@
 <h2 id="problem">Problem<a class="headerlink" href="#problem" title="Permanent link">#</a></h2>
 <p>数组 <code>arr</code>。对每个 <span class="arithmatex">\(i\)</span>，求 <span class="arithmatex">\(\sum_{j: arr[j] = arr[i]} |i - j|\)</span>。<span class="arithmatex">\(n \le 10^5\)</span>。</p>
 <h2 id="_1">背景<a class="headerlink" href="#_1" title="Permanent link">#</a></h2>
-<p><strong>按值分组 + 前缀和</strong> 的经典：对每个值的所有出现下标 <span class="arithmatex">\(\{p_1 &lt; p_2 &lt; \dots &lt; p_m\}\)</span>，"距离之和"形如 <span class="arithmatex">\(\sum_j |p_i - p_j|\)</span>，可用前缀和 <span class="arithmatex">\(O(1)\)</span> per element。</p>
-<p>数学公式：对 <span class="arithmatex">\(p_i\)</span>，与左侧 <span class="arithmatex">\(i-1\)</span> 个下标的距离之和 = <span class="arithmatex">\((i-1) p_i - (p_1 + \dots + p_{i-1})\)</span>；与右侧 <span class="arithmatex">\(m - i\)</span> 个的距离之和 = <span class="arithmatex">\((p_{i+1} + \dots + p_m) - (m - i) p_i\)</span>。两者相加即可。</p>
-<p>同样思想出现在 <em>#1685 Sum of Absolute Differences in a Sorted Array</em>、运筹学中的 <em>1-center / 1-median on a line</em>（最优位置是中位数）。</p>
+<p>对每个下标 <span class="arithmatex">\(i\)</span>，只有与 <code>arr[i]</code> 取值相同的那些下标才进入求和。于是问题天然按值分裂：把相同取值的所有下标收成一组，组与组之间互不影响，每组内部各自求"两两距离之和"。固定一个取值，设它出现在下标 <span class="arithmatex">\(p_1 &lt; p_2 &lt; \dots &lt; p_m\)</span>（按出现顺序收集，天然升序），要算的是对每个 <span class="arithmatex">\(p_i\)</span>：</p>
+<div class="arithmatex">\[f(p_i) = \sum_{j=1}^{m} |p_i - p_j|.\]</div>
+<p>最直接的做法是照定义枚举：对每个 <span class="arithmatex">\(p_i\)</span> 扫一遍整组求和，单组 <span class="arithmatex">\(O(m^2)\)</span>。当某个值占满整个数组时 <span class="arithmatex">\(m = n = 10^5\)</span>，<span class="arithmatex">\(O(n^2) = 10^{10}\)</span>，必然 TLE。<span class="arithmatex">\(O(m^2)\)</span> 的浪费在哪里？相邻的 <span class="arithmatex">\(p_i\)</span> 与 <span class="arithmatex">\(p_{i+1}\)</span> 算的几乎是同一批距离，却各自从头加了一遍——partial sum 被反复重算。要去掉这层重复，就得让每个 <span class="arithmatex">\(p_i\)</span> 复用前一个位置已经累出来的和，这正是 prefix sum 能提供的。</p>
+<p>下面先把 <span class="arithmatex">\(f(p_i)\)</span> 拆成左右两半，看清"复用"具体复用什么。</p>
 <h2 id="_2">形式化<a class="headerlink" href="#_2" title="Permanent link">#</a></h2>
-<p>对值 <span class="arithmatex">\(v\)</span> 的下标列表 <span class="arithmatex">\(p_1 &lt; \dots &lt; p_m\)</span>，定义 <span class="arithmatex">\(S_k = p_1 + \dots + p_k\)</span>。对 <span class="arithmatex">\(p_i\)</span>：</p>
-<div class="arithmatex">\[\text{ans}[p_i] = (i-1) p_i - S_{i-1} + (S_m - S_i) - (m-i) p_i.\]</div>
+<p>关键的结构事实是：下标列表已按升序排好，所以对固定的 <span class="arithmatex">\(i\)</span>，左边的 <span class="arithmatex">\(j &lt; i\)</span> 全部满足 <span class="arithmatex">\(p_j &lt; p_i\)</span>，右边的 <span class="arithmatex">\(j &gt; i\)</span> 全部满足 <span class="arithmatex">\(p_j &gt; p_i\)</span>。绝对值的正负号由此完全确定，无需逐项判断：</p>
+<div class="arithmatex">\[|p_i - p_j| = \begin{cases} p_i - p_j, &amp; j &lt; i \quad(\text{左侧}),\\[2pt] p_j - p_i, &amp; j &gt; i \quad(\text{右侧}).\end{cases}\]</div>
+<p>于是 <span class="arithmatex">\(f(p_i)\)</span> 自然分成左右两部分。左侧有 <span class="arithmatex">\(i-1\)</span> 个下标，每项贡献 <span class="arithmatex">\(p_i - p_j\)</span>：</p>
+<div class="arithmatex">\[\sum_{j&lt;i}(p_i - p_j) = (i-1)\,p_i - \sum_{j&lt;i} p_j.\]</div>
+<p>直观地说，左侧每一项都带一个 <span class="arithmatex">\(+p_i\)</span>（共 <span class="arithmatex">\(i-1\)</span> 个），再减去左侧所有 <span class="arithmatex">\(p_j\)</span> 之和；后者只与"左侧下标的和"有关，与 <span class="arithmatex">\(p_i\)</span> 无关。右侧对称，有 <span class="arithmatex">\(m-i\)</span> 个下标，每项贡献 <span class="arithmatex">\(p_j - p_i\)</span>：</p>
+<div class="arithmatex">\[\sum_{j&gt;i}(p_j - p_i) = \sum_{j&gt;i} p_j - (m-i)\,p_i.\]</div>
+<p>两个求和里出现的都是前缀和 <span class="arithmatex">\(\sum_{j&lt;i} p_j\)</span> 与后缀和 <span class="arithmatex">\(\sum_{j&gt;i} p_j\)</span>。定义前缀和 <span class="arithmatex">\(S_k = p_1 + \dots + p_k\)</span>（<span class="arithmatex">\(S_0 = 0\)</span>），则左侧和为 <span class="arithmatex">\(S_{i-1}\)</span>，右侧和为 <span class="arithmatex">\(S_m - S_i\)</span>。代入得（<span class="arithmatex">\(i\)</span> 为 1-indexed）：</p>
+<div class="arithmatex">\[f(p_i) = (i-1)\,p_i - S_{i-1} + (S_m - S_i) - (m-i)\,p_i.\]</div>
+<p>每个 <span class="arithmatex">\(S_k\)</span> 都从 <span class="arithmatex">\(S_{k-1}\)</span> 一步累出，所以扫完一组的所有 <span class="arithmatex">\(S_k\)</span> 只需 <span class="arithmatex">\(O(m)\)</span>，之后每个 <span class="arithmatex">\(f(p_i)\)</span> 都是 <span class="arithmatex">\(O(1)\)</span> 查表——这就是上面想复用的 partial sum 被落实成前缀和的结果。</p>
+<p>举个最小例子（<span class="arithmatex">\(m = 3\)</span>，看 <span class="arithmatex">\(i = 1\)</span>）：左侧无项贡献 <span class="arithmatex">\(0\)</span>，公式给 <span class="arithmatex">\((1-1)p_1 - S_0 = 0\)</span>，吻合；右侧 <span class="arithmatex">\(\sum_{j&gt;1} p_j - 2p_1 = (p_2 + p_3) - 2p_1\)</span>，正是 <span class="arithmatex">\(|p_1-p_2| + |p_1-p_3|\)</span>。</p>
 <h2 id="_3">数据结构 / 想法<a class="headerlink" href="#_3" title="Permanent link">#</a></h2>
+<p>实现把上面的推导逐行落地。下标按值分组用 hash table；每组先 <span class="arithmatex">\(O(m)\)</span> 建前缀和 <code>S</code>，再 <span class="arithmatex">\(O(m)\)</span> 按公式回填。代码用 0-indexed 的 <code>i</code>，对应关系是：左侧个数 <span class="arithmatex">\(i-1 \to\)</span> <code>i</code>、左侧和 <span class="arithmatex">\(S_{i-1} \to\)</span> <code>S[i]</code>、右侧和 <span class="arithmatex">\(S_m - S_i \to\)</span> <code>S[m] - S[i+1]</code>、右侧个数 <span class="arithmatex">\(m-i \to\)</span> <code>m - 1 - i</code>。</p>
 <div class="language-python highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">getDistances</span><span class="p">(</span><span class="n">arr</span><span class="p">):</span>
     <span class="kn">from</span><span class="w"> </span><span class="nn">collections</span><span class="w"> </span><span class="kn">import</span> <span class="n">defaultdict</span>
     <span class="n">groups</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="nb">list</span><span class="p">)</span>
@@ -22700,7 +22740,7 @@
             <span class="n">res</span><span class="p">[</span><span class="n">p</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">i</span> <span class="o">*</span> <span class="n">p</span> <span class="o">-</span> <span class="n">left_sum</span><span class="p">)</span> <span class="o">+</span> <span class="p">(</span><span class="n">right_sum</span> <span class="o">-</span> <span class="p">(</span><span class="n">m</span> <span class="o">-</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">i</span><span class="p">)</span> <span class="o">*</span> <span class="n">p</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">res</span>
 </code></pre></div>
-<p><strong>不变量</strong>：每个 <code>groups[v]</code> 按出现顺序天然有序（按 <span class="arithmatex">\(i\)</span> 升序入 list）。<strong>正确性</strong>：上述公式由把绝对值按左右拆出得到。</p>
+<p><strong>不变量</strong>：每个 <code>groups[v]</code> 按出现顺序天然有序（按 <span class="arithmatex">\(i\)</span> 升序入 list），这正是"形式化"里去掉绝对值符号所依赖的前提。<strong>正确性</strong>：<code>res[p]</code> 的两个括号分别对应左侧贡献 <span class="arithmatex">\(i\,p - S[i]\)</span> 与右侧贡献 <span class="arithmatex">\((S[m]-S[i+1]) - (m-1-i)\,p\)</span>，与公式逐项一致。</p>
 <h2 id="_4">复杂度<a class="headerlink" href="#_4" title="Permanent link">#</a></h2>
 <ul>
 <li>Time: <span class="arithmatex">\(O(n)\)</span>（所有 groups 加起来恰 <span class="arithmatex">\(n\)</span> 元素）。</li>
@@ -22708,13 +22748,14 @@
 </ul>
 <h2 id="_5">陷阱<a class="headerlink" href="#_5" title="Permanent link">#</a></h2>
 <ul>
-<li>必须用前缀和；朴素双循环 <span class="arithmatex">\(\sum |p_i - p_j|\)</span> 是 <span class="arithmatex">\(O(m^2)\)</span>，最坏 <span class="arithmatex">\(n^2 = 10^{10}\)</span> TLE。</li>
+<li>朴素双循环按定义算 <span class="arithmatex">\(\sum |p_i - p_j|\)</span> 是 <span class="arithmatex">\(O(m^2)\)</span>，最坏 <span class="arithmatex">\(n^2 = 10^{10}\)</span> TLE——这正是"背景"里要用前缀和复用 partial sum 的原因。</li>
 <li>公式中 <code>m - 1 - i</code> 不要写错（右侧个数为 <span class="arithmatex">\(m - 1 - i\)</span>，因 <span class="arithmatex">\(i\)</span> 是 0-indexed）。</li>
-<li><span class="arithmatex">\(v\)</span> 只出现一次时答案为 0（公式仍正确：<span class="arithmatex">\(i = 0, m = 1\)</span>）。</li>
+<li>注意 markdown 公式用 1-indexed 的 <span class="arithmatex">\(i\)</span>（<span class="arithmatex">\(p_1 \dots p_m\)</span>、<span class="arithmatex">\(S_{i-1}\)</span>），代码用 0-indexed 的 <code>i</code>，两套下标互相一致，勿混用。</li>
+<li><span class="arithmatex">\(v\)</span> 只出现一次时答案为 0（公式仍正确：<span class="arithmatex">\(i = 0, m = 1\)</span>，左右两半各为 0）。</li>
 </ul>
 <h2 id="_6">相关题目<a class="headerlink" href="#_6" title="Permanent link">#</a></h2>
 <ul>
-<li><code>#1685. Sum of Absolute Differences in a Sorted Array (off-wiki)</code> — 同款前缀和公式，但作用在已排序数组上。</li>
+<li><code>#1685. Sum of Absolute Differences in a Sorted Array (off-wiki)</code> — 同款左右拆分 + 前缀和公式，但作用在已排序数组上。</li>
 <li><code>#2615. Sum of Distances (off-wiki)</code> — 完全相同的问题，标题不同。</li>
 <li><a href="../2104_sum-of-subarray-ranges/">#2104. Sum of Subarray Ranges</a> — 子数组求和的另一变体。</li>
 </ul>

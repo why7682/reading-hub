@@ -5485,6 +5485,8 @@
       
         
       
+        
+      
     
     
     
@@ -6024,6 +6026,34 @@
     
   
     #93. Restore IP Addresses
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../0102_binary-tree-level-order-traversal/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    #102. Binary Tree Level Order Traversal
   
 
     
@@ -22675,15 +22705,29 @@
 <h2 id="problem">Problem<a class="headerlink" href="#problem" title="Permanent link">#</a></h2>
 <p>链表 <code>head</code>，删除其中间节点（0-indexed 的第 <span class="arithmatex">\(\lfloor n/2 \rfloor\)</span> 个），返回头。链表长度 <span class="arithmatex">\(1 \le n \le 10^5\)</span>。</p>
 <h2 id="background">背景 (Background)<a class="headerlink" href="#background" title="Permanent link">#</a></h2>
-<p><strong>Floyd 慢/快指针</strong> 的经典应用（用速度比 1:2 的两指针在线性时间内一次扫描定位中点），亦称"乌龟与兔子"算法。源自 Floyd 的循环检测算法（1967，未正式发表，由 Knuth TAOCP Vol 2 §3.1 习题归功）。</p>
+<p>要删除中间节点，先得知道"中间"在哪里。对数组这是平凡的——下标直接算出来。但单链表没有随机访问：要到第 <span class="arithmatex">\(i\)</span> 个节点只能从头逐步走 <code>next</code>，而且<strong>长度 <span class="arithmatex">\(n\)</span> 事先未知</strong>，必须靠遍历才能数出来。</p>
+<p>于是最直接的做法是两趟扫描：第一趟从头走到尾，数出 <span class="arithmatex">\(n\)</span>；第二趟再从头走 <span class="arithmatex">\(\lfloor n/2 \rfloor - 1\)</span> 步，停在待删节点的前驱，改它的 <code>next</code> 跳过中点。这能工作，时间 <span class="arithmatex">\(O(n)\)</span>，但它把链表走了两遍。这就引出本题真正要回答的问题：<strong>能不能只走一趟，就在到达表尾的同一时刻知道中点在哪？</strong> 下面的形式化把这个问题钉死，技术部分再从它推出答案。</p>
 <h2 id="formulation">形式化 (Formulation)<a class="headerlink" href="#formulation" title="Permanent link">#</a></h2>
 <p>链表 <span class="arithmatex">\(L_0 \to L_1 \to \dots \to L_{n-1}\)</span>，删除节点 <span class="arithmatex">\(L_{\lfloor n/2 \rfloor}\)</span>（设其前驱为 <span class="arithmatex">\(L_{\lfloor n/2 \rfloor - 1}\)</span>，让前驱 next 指向后继）。<span class="arithmatex">\(n = 1\)</span> 时返回 <code>None</code>。</p>
+<p>删除一个单链表节点，本质操作是改它<strong>前驱</strong>的指针。所以问题精确地归约为一个定位子问题：</p>
+<blockquote>
+<p>在 <span class="arithmatex">\(O(n)\)</span> 时间、<span class="arithmatex">\(O(1)\)</span> 额外空间、且<strong>不预先知道 <span class="arithmatex">\(n\)</span></strong> 的前提下，单趟遍历定位 <span class="arithmatex">\(L_{\lfloor n/2 \rfloor}\)</span> 的前驱 <span class="arithmatex">\(L_{\lfloor n/2 \rfloor - 1}\)</span>。</p>
+</blockquote>
+<p>两趟法的浪费在于：第一趟纯粹用来测长度，测完信息就丢了。要省掉它，得让"走到表尾"这件事本身<strong>携带</strong>中点的位置信息。下面的技术部分就是这个子问题的解。</p>
 <h2 id="approach">数据结构 / 想法 (Approach)<a class="headerlink" href="#approach" title="Permanent link">#</a></h2>
-<p><strong>慢/快指针 + 滞后慢指针保留前驱</strong>。</p>
-<p>不变量：当 <code>fast</code> 走到末尾（<code>fast</code> 或 <code>fast.next</code> 为 None）时，<code>slow</code> 恰好指向中点。证明：每步 <code>slow += 1</code>, <code>fast += 2</code>，所以 slow 走 k 步时 fast 走 2k 步；当 2k 达到 n（fast 越界）或 2k+1 达到 n（fast.next 是 None）时 k = ⌊n/2⌋。</p>
-<p>为了删除，需要 <code>slow</code> 的前驱。两种实现：
-1. 让 <code>slow</code> 滞后一步（先空走一次 <code>fast</code> 再开始同步）。
-2. 用 <code>prev</code> 指针跟随 <code>slow</code>。</p>
+<p>先看一个指针在遍历中携带了什么信息：一个从头出发、每步走 1 的指针，走 <span class="arithmatex">\(k\)</span> 步后正好停在下标 <span class="arithmatex">\(k\)</span>。把这个观察反过来用——</p>
+<p>要让某个指针在<strong>表尾</strong>（下标约 <span class="arithmatex">\(n\)</span>）时恰好停在下标 <span class="arithmatex">\(\lfloor n/2 \rfloor\)</span>，需要它的"位置"是行进总量的一半。这只能靠两个速度不同的指针耦合来实现：若 <code>fast</code> 每步走 2、<code>slow</code> 每步走 1，二者同时出发，则 <code>slow</code> 的下标永远是 <code>fast</code> 的一半。当 <code>fast</code> 抵达表尾（约下标 <span class="arithmatex">\(n\)</span>）时，<code>slow</code> 自动落在 <span class="arithmatex">\(\lfloor n/2 \rfloor\)</span>——中点的位置不需要先数出 <span class="arithmatex">\(n\)</span>，它由两指针的速度比 <span class="arithmatex">\(1:2\)</span> 直接产生。这就是单趟定位中点的全部依据。</p>
+<p>把这个观察写成可证明的不变量：</p>
+<blockquote>
+<p><strong>不变量</strong>：设两指针同时从 <code>head</code> 出发，每步 <code>slow</code> 前进 1、<code>fast</code> 前进 2。当 <code>fast</code> 走到末尾（<code>fast</code> 或 <code>fast.next</code> 为 <code>None</code>）时，<code>slow</code> 恰好指向下标 <span class="arithmatex">\(\lfloor n/2 \rfloor\)</span>。</p>
+</blockquote>
+<p><strong>证明</strong>：每步 <code>slow += 1</code>，<code>fast += 2</code>，所以 <code>slow</code> 走 <span class="arithmatex">\(k\)</span> 步时 <code>fast</code> 走 <span class="arithmatex">\(2k\)</span> 步，二者下标分别是 <span class="arithmatex">\(k\)</span> 与 <span class="arithmatex">\(2k\)</span>。循环按 <code>fast</code> 的两个终止条件退出：</p>
+<ul>
+<li><code>fast</code> 越界（<code>fast is None</code>）对应偶数 <span class="arithmatex">\(n\)</span>，此时 <span class="arithmatex">\(2k = n\)</span>，得 <span class="arithmatex">\(k = n/2 = \lfloor n/2 \rfloor\)</span>；</li>
+<li><code>fast.next is None</code> 对应奇数 <span class="arithmatex">\(n\)</span>，此时 <span class="arithmatex">\(2k + 1 = n\)</span>，得 <span class="arithmatex">\(k = (n-1)/2 = \lfloor n/2 \rfloor\)</span>。</li>
+</ul>
+<p>两种情形都给出 <span class="arithmatex">\(k = \lfloor n/2 \rfloor\)</span>，即 <code>slow</code> 停在中点。<span class="arithmatex">\(\blacksquare\)</span></p>
+<p>但形式化要的不是中点本身，而是它的<strong>前驱</strong> <span class="arithmatex">\(L_{\lfloor n/2 \rfloor - 1}\)</span>。上面的标准配置让 <code>slow</code> 停在中点；要它早停一步、落在 <span class="arithmatex">\(\lfloor n/2 \rfloor - 1\)</span>，只需让 <code>slow</code> 比标准配置<strong>滞后一步出发</strong>——等价地，让 <code>fast</code> 比标准多消耗两个节点再开始同步循环。于是 <code>fast</code> 的起点不是 <code>head</code> 而是 <code>head.next.next</code>：这两步偏移正是"前驱"相对"中点"的一格之差，经速度比 <span class="arithmatex">\(1:2\)</span> 折算回 <code>fast</code> 端的两格。<code>slow</code> 仍从 <code>head</code> 出发。</p>
 <div class="language-python highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">ListNode</span><span class="p">:</span>
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">val</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="nb">next</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">val</span> <span class="o">=</span> <span class="n">val</span>
@@ -22702,10 +22746,13 @@
         <span class="n">slow</span><span class="o">.</span><span class="n">next</span> <span class="o">=</span> <span class="n">slow</span><span class="o">.</span><span class="n">next</span><span class="o">.</span><span class="n">next</span>
         <span class="k">return</span> <span class="n">head</span>
 </code></pre></div>
+<p>三个 trace 把上面的不变量在具体输入上走一遍，看 <code>slow</code> 如何恰好停在前驱：</p>
 <p>样例 1 trace：<code>[1,3,4,7,1,2,6]</code> (n=7, mid=3, 节点值 7)。slow=1, fast=4。迭代 1：slow=3, fast=1。迭代 2：slow=4, fast=6。fast.next=None 退出。slow.next = 节点 7，slow.next = 7.next = 节点 1。结果 <code>[1,3,4,1,2,6]</code> ✓。</p>
 <p>样例 3 trace：<code>[2,1]</code> (n=2, mid=1)。head.next.next = None，所以 fast=None，循环不入。slow=head=2，slow.next = 1.next = None。结果 <code>[2]</code> ✓。</p>
 <p>样例 2 trace：<code>[1,2,3,4]</code> (n=4, mid=2)。slow=1, fast=3。迭代 1：slow=2, fast=None。退出。slow.next = 3.next = 4。结果 <code>[1,2,4]</code> ✓。</p>
+<p>这三例覆盖了奇数、最短偶数、一般偶数三种长度，<code>slow</code> 都正好停在中点前驱，验证了从形式化推出的定位结论。这一指针配速技术在文献中被称为 Floyd 慢/快指针（slow/fast pointer），最初为环检测而提出；本题只借用了其速度比 <span class="arithmatex">\(1:2\)</span> 的算术结构，与环检测并非同一问题。</p>
 <h2 id="complexity">复杂度 (Complexity)<a class="headerlink" href="#complexity" title="Permanent link">#</a></h2>
+<p>单趟扫描直接给出复杂度——这正是相对两趟法省下的那一趟：</p>
 <ul>
 <li>Time: <span class="arithmatex">\(O(n)\)</span>，单趟扫描</li>
 <li>Space: <span class="arithmatex">\(O(1)\)</span></li>
@@ -22713,7 +22760,7 @@
 <h2 id="pitfalls">陷阱 (Pitfalls)<a class="headerlink" href="#pitfalls" title="Permanent link">#</a></h2>
 <ul>
 <li><strong>n = 1 边界</strong>：必须直接返回 <code>None</code>，否则后续 <code>head.next.next</code> 解引用 NPE。</li>
-<li><strong>慢指针的初始偏移</strong>：常见错误是 fast 起点 = head.next（偏一步而非两步），会导致偶数长度时停在中点而非前驱，需要额外 prev 指针。</li>
+<li><strong>慢指针的初始偏移</strong>：常见错误是 fast 起点 = head.next（偏一步而非两步）。这是上面"两格偏移"推导的直接反面：少偏一步，<code>slow</code> 会停在中点而非前驱。具体地，偶数长度时它恰好仍落在前驱（删除正确），但<strong>奇数长度时</strong>它落到中点本身，<code>slow.next.next</code> 会多删一个节点（结果错误）。</li>
 <li><strong>奇数 vs 偶数长度</strong>：⌊n/2⌋ 在奇数 n=5 时是 2（第三个），偶数 n=4 时是 2（第三个），算法都需处理。</li>
 </ul>
 <h2 id="related">相关题目 (Related)<a class="headerlink" href="#related" title="Permanent link">#</a></h2>

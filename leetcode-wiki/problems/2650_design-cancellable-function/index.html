@@ -5485,6 +5485,8 @@
       
         
       
+        
+      
     
     
     
@@ -6024,6 +6026,34 @@
     
   
     #93. Restore IP Addresses
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../0102_binary-tree-level-order-traversal/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    #102. Binary Tree Level Order Traversal
   
 
     
@@ -16589,10 +16619,49 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="数据结构 / 想法">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        第一版：只驱动，不取消
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        它在哪里断
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        修复：让取消信号参与竞速
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
-  <a href="#_4" class="md-nav__link">
+  <a href="#_7" class="md-nav__link">
     <span class="md-ellipsis">
       
         复杂度
@@ -16603,7 +16672,7 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#_5" class="md-nav__link">
+  <a href="#_8" class="md-nav__link">
     <span class="md-ellipsis">
       
         陷阱
@@ -16614,7 +16683,7 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#_6" class="md-nav__link">
+  <a href="#_9" class="md-nav__link">
     <span class="md-ellipsis">
       
         相关题目
@@ -22607,10 +22676,49 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="数据结构 / 想法">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        第一版：只驱动，不取消
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        它在哪里断
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        修复：让取消信号参与竞速
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
-  <a href="#_4" class="md-nav__link">
+  <a href="#_7" class="md-nav__link">
     <span class="md-ellipsis">
       
         复杂度
@@ -22621,7 +22729,7 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#_5" class="md-nav__link">
+  <a href="#_8" class="md-nav__link">
     <span class="md-ellipsis">
       
         陷阱
@@ -22632,7 +22740,7 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#_6" class="md-nav__link">
+  <a href="#_9" class="md-nav__link">
     <span class="md-ellipsis">
       
         相关题目
@@ -22675,31 +22783,82 @@
 <h2 id="problem">Problem<a class="headerlink" href="#problem" title="Permanent link">#</a></h2>
 <p>实现 <code>cancellable(generator)</code> 返回 <code>[cancel, promise]</code>：generator 只 yield Promise，函数负责把 resolved 值传回 generator；若 reject 则 throw 回 generator。<code>cancel()</code> 在 generator 完成前调用，需 throw <code>"Cancelled"</code> 字符串到 generator；若 generator 捕获后继续 yield/return，则 promise resolve 该值，否则 reject。</p>
 <h2 id="_1">背景<a class="headerlink" href="#_1" title="Permanent link">#</a></h2>
-<p>本题是 JS 中 <strong>协程 (coroutines) 与 effect handler</strong> 的小型实现，本质模拟 <strong>async/await</strong> 的早期 polyfill (Q.spawn, co.js)。这种模式称为 "generator-based async control flow"，是 redux-saga、Koa.js v1 中间件、JavaScript spec async/await 在底层 desugaring 时使用的同构机制。</p>
-<p>数学上：generator 是<strong>协程 (coroutine)</strong>，可挂起 / 恢复执行；Promise 是 monadic effect。两者结合 = 任意 effect 序列的"线程化"控制流，等价于带 effect handler 的 algebraic effects。</p>
+<p>要建一个东西之前，先看清它的执行单元。本题的执行单元只有一步：generator 在某个 <code>yield</code> 处挂起，把一个 Promise 交给外部，然后等外部决定怎么继续。把这一步的语义钉死，整道题就是把它放进循环。</p>
+<p><code>yield</code> 不是单向输出。当 generator 执行到 <code>const x = yield p</code> 时，它做两件事并停下：</p>
+<ul>
+<li>向外<strong>交出</strong> <code>p</code>（外部通过 <code>result.value</code> 拿到）；</li>
+<li>把执行<strong>冻结</strong>在这个 <code>yield</code> 表达式上，等外部唤醒。</li>
+</ul>
+<p>唤醒有两条通道，对应外部两种决定：</p>
+<ul>
+<li><code>generator.next(v)</code>：恢复执行，并让那个挂起的 <code>yield</code> 表达式<strong>求值为 <code>v</code></strong>。于是 <code>x</code> 拿到 <code>v</code>，generator 从这里继续往下跑。</li>
+<li><code>generator.throw(e)</code>：恢复执行，但在那个 <code>yield</code> 表达式处<strong>抛出 <code>e</code></strong>。若该 <code>yield</code> 在 <code>try</code> 块内，控制权进入对应的 <code>catch</code>；若没有，异常穿透 generator 向外传播。</li>
+</ul>
+<p>这两条通道就是全部工具。题目要求的"把 resolved 值送回""把 reject 当异常 throw 回""cancel 时 throw 一个字符串"——都只是在不同时机选择走 <code>next</code> 还是 <code>throw</code>。下面的任务是把这个选择装进一个驱动循环。</p>
 <h2 id="_2">形式化<a class="headerlink" href="#_2" title="Permanent link">#</a></h2>
-<p>设 generator <span class="arithmatex">\(g\)</span> yield Promise 序列 <span class="arithmatex">\(p_1, p_2, \dots\)</span>；外部循环负责"等待 <span class="arithmatex">\(p_i\)</span> resolve / reject → 把结果送回 <span class="arithmatex">\(g\)</span>"；若 cancel signal 触发，则向 <span class="arithmatex">\(g\)</span> throw <code>"Cancelled"</code>。</p>
+<p>把上面那一步推广到整个生命周期。Generator <span class="arithmatex">\(g\)</span> 不是一次性吐出全部，而是按需产出一个 Promise 序列 <span class="arithmatex">\(p_1, p_2, \dots\)</span>：每喂回一个值，它才挂起到下一个 <code>yield</code> 并交出下一个 <span class="arithmatex">\(p_i\)</span>。</p>
+<p>外部需要维护的全部状态，就是 <span class="arithmatex">\(g\)</span> 最近一次交回的 <code>{value, done}</code>。记第 <span class="arithmatex">\(i\)</span> 轮的状态为 <span class="arithmatex">\(r_i\)</span>。驱动器在每一轮做一个三选一的决策：</p>
+<div class="arithmatex">\[
+r_{i+1} =
+\begin{cases}
+\text{停机，promise resolve } r_i.\texttt{value} &amp; r_i.\texttt{done} = \text{true} \\[4pt]
+g.\texttt{next}(v) &amp; p_i \text{ resolve 出 } v,\ \text{且 cancel 未先到} \\[4pt]
+g.\texttt{throw}(e) &amp; p_i \text{ reject 出 } e,\ \text{或 cancel 先到（}e=\texttt{"Cancelled"}\text{）}
+\end{cases}
+\]</div>
+<p>这个递推式就是整道题的脊柱。它给出一个<strong>循环不变量</strong>：每轮开始时，<code>result</code> 恰好持有 <span class="arithmatex">\(g\)</span> 的最新 <code>{value, done}</code>。下面的代码逐行实现这三个分支——先实现前两行（无 cancel 的版本），看它在哪卡住，再补第三行。</p>
 <h2 id="_3">数据结构 / 想法<a class="headerlink" href="#_3" title="Permanent link">#</a></h2>
+<h3 id="_4">第一版：只驱动，不取消<a class="headerlink" href="#_4" title="Permanent link">#</a></h3>
+<p>先不管 cancel，只让 generator 跑完。按递推式的前两行直译：取出 <code>value</code> 处的 Promise，等它 resolve，把结果喂回去；reject 就 throw 回去；<code>done</code> 时停机。</p>
+<div class="language-javascript highlight"><pre><span></span><code><span class="k">async</span><span class="w"> </span><span class="kd">function</span><span class="w"> </span><span class="nx">drive</span><span class="p">(</span><span class="nx">generator</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kd">let</span><span class="w"> </span><span class="nx">result</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">generator</span><span class="p">.</span><span class="nx">next</span><span class="p">();</span><span class="w">        </span><span class="c1">// r_1</span>
+<span class="w">    </span><span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="nx">result</span><span class="p">.</span><span class="nx">done</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">try</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="kd">const</span><span class="w"> </span><span class="nx">v</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="nx">result</span><span class="p">.</span><span class="nx">value</span><span class="p">;</span><span class="w">        </span><span class="c1">// 等待 p_i</span>
+<span class="w">            </span><span class="nx">result</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">generator</span><span class="p">.</span><span class="nx">next</span><span class="p">(</span><span class="nx">v</span><span class="p">);</span><span class="w">          </span><span class="c1">// resolve -&gt; next(v)</span>
+<span class="w">        </span><span class="p">}</span><span class="w"> </span><span class="k">catch</span><span class="w"> </span><span class="p">(</span><span class="nx">err</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="nx">result</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">generator</span><span class="p">.</span><span class="k">throw</span><span class="p">(</span><span class="nx">err</span><span class="p">);</span><span class="w">       </span><span class="c1">// reject -&gt; throw(err)</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="nx">result</span><span class="p">.</span><span class="nx">value</span><span class="p">;</span><span class="w">                   </span><span class="c1">// done -&gt; resolve</span>
+<span class="p">}</span>
+</code></pre></div>
+<p>这一版正确处理了"resolved 值传回"和"reject throw 回"。问题只剩一个：<strong>它没有任何外部入口能让它提前停下</strong>。<code>cancel()</code> 想做的事，是在 <code>await result.value</code> 还没 settle 时，强行让这一轮走 <code>throw("Cancelled")</code> 分支。</p>
+<h3 id="_5">它在哪里断<a class="headerlink" href="#_5" title="Permanent link">#</a></h3>
+<p>设想给第一版加一个最朴素的取消：一个布尔标志。</p>
+<div class="language-javascript highlight"><pre><span></span><code><span class="kd">let</span><span class="w"> </span><span class="nx">cancelled</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">false</span><span class="p">;</span>
+<span class="kd">const</span><span class="w"> </span><span class="nx">cancel</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">()</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">cancelled</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">true</span><span class="p">;</span><span class="w"> </span><span class="p">};</span>
+<span class="c1">// ...循环里：</span>
+<span class="kd">const</span><span class="w"> </span><span class="nx">v</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="nx">result</span><span class="p">.</span><span class="nx">value</span><span class="p">;</span>
+<span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nx">cancelled</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">result</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">generator</span><span class="p">.</span><span class="k">throw</span><span class="p">(</span><span class="s2">&quot;Cancelled&quot;</span><span class="p">);</span><span class="w"> </span><span class="k">continue</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
+<span class="nx">result</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">generator</span><span class="p">.</span><span class="nx">next</span><span class="p">(</span><span class="nx">v</span><span class="p">);</span>
+</code></pre></div>
+<p>这个标志检查得<strong>太晚</strong>。<code>await result.value</code> 这一行会一直挂起，直到 <span class="arithmatex">\(p_i\)</span> 自己 settle。如果 <span class="arithmatex">\(p_i\)</span> 要 5 秒后才 resolve，那么在这 5 秒内 <code>cancel()</code> 把标志置 true 也没用——代码卡在 <code>await</code> 上，根本走不到检查标志的那一行。等它终于走到，<span class="arithmatex">\(p_i\)</span> 早已 resolve，generator 也即将被喂回正常值。</p>
+<p>症结清楚了：我们不需要"等 <span class="arithmatex">\(p_i\)</span> settle 之后再看要不要取消"，我们需要<strong>让等待本身可以被打断</strong>。<code>await</code> 等的是一个 Promise；要打断这次等待，唯一的办法是让 <code>await</code> 去等一个"<span class="arithmatex">\(p_i\)</span> 与 cancel 信号谁先到就算谁"的复合 Promise。</p>
+<h3 id="_6">修复：让取消信号参与竞速<a class="headerlink" href="#_6" title="Permanent link">#</a></h3>
+<p><code>Promise.race([a, b])</code> 返回的 Promise，随 <code>a</code> 与 <code>b</code> 中<strong>第一个 settle</strong> 的那个一起 settle。于是把 cancel 做成一个 Promise，让它和 <span class="arithmatex">\(p_i\)</span> 一起进 race，等待就成了可中断的：</p>
+<ul>
+<li><span class="arithmatex">\(p_i\)</span> 先 resolve：race resolve，走 <code>next(v)</code>，和第一版一致；</li>
+<li><span class="arithmatex">\(p_i\)</span> 先 reject：race reject，走 <code>throw(err)</code>，和第一版一致；</li>
+<li>cancel 先触发：race 因 cancel 那个 Promise 被 reject 而 reject，<code>catch</code> 捕获 <code>"Cancelled"</code>，走 <code>throw("Cancelled")</code>。</li>
+</ul>
+<p>cancel 信号是一个"只会 reject、永不 resolve"的 Promise。reject 函数只在 <code>Promise</code> 构造器回调内部可见，要从外部（<code>cancel()</code> 被调用时）触发它，必须在构造时用闭包把 <code>reject</code> 捞出来：</p>
 <div class="language-javascript highlight"><pre><span></span><code><span class="kd">var</span><span class="w"> </span><span class="nx">cancellable</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kd">function</span><span class="p">(</span><span class="nx">generator</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
 <span class="w">    </span><span class="kd">let</span><span class="w"> </span><span class="nx">cancel</span><span class="p">;</span>
 <span class="w">    </span><span class="kd">const</span><span class="w"> </span><span class="nx">cancelPromise</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="ow">new</span><span class="w"> </span><span class="nb">Promise</span><span class="p">((</span><span class="nx">_</span><span class="p">,</span><span class="w"> </span><span class="nx">reject</span><span class="p">)</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">{</span>
-<span class="w">        </span><span class="nx">cancel</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">()</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="nx">reject</span><span class="p">(</span><span class="s2">&quot;Cancelled&quot;</span><span class="p">);</span>
+<span class="w">        </span><span class="nx">cancel</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">()</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="nx">reject</span><span class="p">(</span><span class="s2">&quot;Cancelled&quot;</span><span class="p">);</span><span class="w">   </span><span class="c1">// 把 reject 经闭包暴露给外部</span>
 <span class="w">    </span><span class="p">});</span>
 
 <span class="w">    </span><span class="kd">const</span><span class="w"> </span><span class="nx">promise</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="k">async</span><span class="w"> </span><span class="p">()</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">{</span>
-<span class="w">        </span><span class="kd">let</span><span class="w"> </span><span class="nx">result</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">generator</span><span class="p">.</span><span class="nx">next</span><span class="p">();</span>
-<span class="w">        </span><span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="nx">result</span><span class="p">.</span><span class="nx">done</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="kd">let</span><span class="w"> </span><span class="nx">result</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">generator</span><span class="p">.</span><span class="nx">next</span><span class="p">();</span><span class="w">                 </span><span class="c1">// r_1</span>
+<span class="w">        </span><span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="nx">result</span><span class="p">.</span><span class="nx">done</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">                         </span><span class="c1">// done=true -&gt; 退出，resolve value</span>
 <span class="w">            </span><span class="k">try</span><span class="w"> </span><span class="p">{</span>
-<span class="w">                </span><span class="c1">// Race yielded promise against cancel signal</span>
+<span class="w">                </span><span class="c1">// 等待变成可中断：p_i 与 cancel 谁先 settle 谁说了算</span>
 <span class="w">                </span><span class="kd">const</span><span class="w"> </span><span class="nx">v</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="nb">Promise</span><span class="p">.</span><span class="nx">race</span><span class="p">([</span><span class="nx">result</span><span class="p">.</span><span class="nx">value</span><span class="p">,</span><span class="w"> </span><span class="nx">cancelPromise</span><span class="p">]);</span>
-<span class="w">                </span><span class="nx">result</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">generator</span><span class="p">.</span><span class="nx">next</span><span class="p">(</span><span class="nx">v</span><span class="p">);</span>
+<span class="w">                </span><span class="nx">result</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">generator</span><span class="p">.</span><span class="nx">next</span><span class="p">(</span><span class="nx">v</span><span class="p">);</span><span class="w">            </span><span class="c1">// 谁赢是 p_i 的 resolve -&gt; 喂回</span>
 <span class="w">            </span><span class="p">}</span><span class="w"> </span><span class="k">catch</span><span class="w"> </span><span class="p">(</span><span class="nx">err</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<span class="w">                </span><span class="c1">// Either yielded promise rejected, or cancel was triggered</span>
-<span class="w">                </span><span class="k">try</span><span class="w"> </span><span class="p">{</span>
-<span class="w">                    </span><span class="nx">result</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">generator</span><span class="p">.</span><span class="k">throw</span><span class="p">(</span><span class="nx">err</span><span class="p">);</span>
-<span class="w">                </span><span class="p">}</span><span class="w"> </span><span class="k">catch</span><span class="w"> </span><span class="p">(</span><span class="nx">uncaught</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<span class="w">                    </span><span class="k">throw</span><span class="w"> </span><span class="nx">uncaught</span><span class="p">;</span>
-<span class="w">                </span><span class="p">}</span>
+<span class="w">                </span><span class="c1">// p_i reject，或 cancel 先到；err 即注入 generator 的异常</span>
+<span class="w">                </span><span class="nx">result</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">generator</span><span class="p">.</span><span class="k">throw</span><span class="p">(</span><span class="nx">err</span><span class="p">);</span>
 <span class="w">            </span><span class="p">}</span>
 <span class="w">        </span><span class="p">}</span>
 <span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="nx">result</span><span class="p">.</span><span class="nx">value</span><span class="p">;</span>
@@ -22708,20 +22867,20 @@
 <span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="p">[</span><span class="nx">cancel</span><span class="p">,</span><span class="w"> </span><span class="nx">promise</span><span class="p">];</span>
 <span class="p">};</span>
 </code></pre></div>
-<p><strong>核心 trick</strong>：<code>Promise.race([yieldValue, cancelPromise])</code> —— 谁先 settle 谁就决定 generator 的下一步动作。<code>generator.throw(err)</code> 把异常注入到 generator 当前 yield 点，相当于在 generator 内部 <code>throw</code> —— 若 generator 用 <code>try/catch</code> 包裹，能正常恢复；否则异常向外抛出（async 函数 → 拒绝 promise）。</p>
-<p><strong>不变量</strong>：每次循环开始时 <code>result</code> 是 generator 的最新返回 <code>{value, done}</code>；若 done = false，下一步等待 value（promise）；done = true，return value 作为 promise resolved。</p>
-<h2 id="_4">复杂度<a class="headerlink" href="#_4" title="Permanent link">#</a></h2>
+<p>每个组件都能对回形式化的某一行：<code>while (!result.done)</code> 是停机判据，对应递推式第一行；<code>Promise.race</code> 赢家是 resolve 时走 <code>generator.next(v)</code>，对应第二行；<code>catch</code> 里的 <code>generator.throw(err)</code> 同时承接 <span class="arithmatex">\(p_i\)</span> 的 reject 和 cancel，对应第三行。<code>generator.throw(err)</code> 把 <code>err</code> 抛在 generator 当前挂起的 <code>yield</code> 表达式处：若 generator 用 <code>try/catch</code> 包住该 <code>yield</code>，它捕获后可继续 yield 或 return，循环就接着跑或停机 resolve；若没包，异常穿透 generator，由外层 async IIFE 转成 promise 的 reject。这正是题目要的"捕获则 resolve，否则 reject"。</p>
+<p>一处易漏的细节：<code>catch</code> 里调用的是 <code>generator.throw(err)</code>，它的返回值同样是 <code>{value, done}</code>，并赋回 <code>result</code>。所以 generator 在 <code>catch</code> 块里直接 <code>return</code> 时，<code>generator.throw</code> 返回的是 <code>done = true</code>，循环顶部的 <code>while (!result.done)</code> 会立刻命中而退出——不变量在 <code>next</code> 路径和 <code>throw</code> 路径上都成立。</p>
+<h2 id="_7">复杂度<a class="headerlink" href="#_7" title="Permanent link">#</a></h2>
 <ul>
-<li>不适合传统的时空复杂度分析；每次 yield 的 await 开销是 microtask 调度。</li>
+<li>不适合传统的时空复杂度分析；没有随输入规模增长的有意义 big-O。每次 yield 的 await 开销是一次 microtask 调度。</li>
 </ul>
-<h2 id="_5">陷阱<a class="headerlink" href="#_5" title="Permanent link">#</a></h2>
+<h2 id="_8">陷阱<a class="headerlink" href="#_8" title="Permanent link">#</a></h2>
 <ul>
-<li><code>generator.throw</code> 后 generator 可能立即 <code>return</code> 而非 <code>yield</code> — 必须再走 loop 检查 <code>done</code>。</li>
-<li>cancel 在 generator 已完成后调用：cancelPromise 仍 reject，但因没在 <code>await</code>，无影响。</li>
-<li>不能 await 一个非 Promise 值；JS 引擎自动包成 resolved Promise（Promise.resolve(x)），无需额外处理。</li>
-<li>多次 cancel：cancelPromise 只能 reject 一次；冗余调用静默忽略。</li>
+<li><code>generator.throw(err)</code> 后 generator 可能立即 <code>return</code> 而非再次 <code>yield</code>——此时返回 <code>{done: true}</code>，必须让循环回到顶部由 <code>while (!result.done)</code> 重新判定，不能假定 <code>throw</code> 之后一定还有下一个 <code>yield</code>。</li>
+<li>cancel 在 generator 已完成后调用：循环已退出，<code>cancelPromise</code> 仍会 reject，但它已不在任何 <code>await</code>/<code>race</code> 中，因此无副作用。它也不会触发 <code>unhandledRejection</code>——race 在循环期间已给它挂过 <code>.then</code> 处理器，这个 handler 让后来的 reject 不算"未处理"。</li>
+<li>题目保证只 yield Promise；即便 yield 了非 Promise 值，<code>Promise.race</code> 与 <code>await</code> 都会用 <code>Promise.resolve(x)</code> 包装，故仍按一次立即 resolve 流过，无需特殊处理。</li>
+<li>多次 <code>cancel()</code>：<code>cancelPromise</code> 只能 settle 一次，首次 reject 之后的重复调用被静默忽略。</li>
 </ul>
-<h2 id="_6">相关题目<a class="headerlink" href="#_6" title="Permanent link">#</a></h2>
+<h2 id="_9">相关题目<a class="headerlink" href="#_9" title="Permanent link">#</a></h2>
 <ul>
 <li><a href="../2629_function-composition/">#2629. Function Composition</a> — 同 JS / functional family 入门。</li>
 <li><code>#2776. Convert Callback Based Function To Promise (off-wiki)</code> — promisify 模式。</li>
@@ -22730,9 +22889,9 @@
 <h2 id="further-reading">Further Reading<a class="headerlink" href="#further-reading" title="Permanent link">#</a></h2>
 <ul>
 <li>TC39 Async Iteration proposal — async generator 的标准化讨论。</li>
-<li>Koa.js v1 <code>co</code> library 源码 ⭐ — 工业级 generator-based 协程，本题的"完整版"。</li>
+<li>Koa.js v1 <code>co</code> library 源码 ⭐ — 工业级 generator-based 协程，本题驱动循环的"完整版"。</li>
 <li>redux-saga 文档 — generator + effects 在状态管理中的应用范例。</li>
-<li>Plotkin &amp; Pretnar (2009). <em>Handlers of Algebraic Effects</em>. ESOP. — Algebraic effects 的理论基础。</li>
+<li>Plotkin &amp; Pretnar (2009). <em>Handlers of Algebraic Effects</em>. ESOP. — <code>generator.throw</code> 拦截并决定如何恢复执行，与 effect handler "拦截 effect、决定如何续延" 的对应关系在此有形式化基础（注意：generator 只给一次性续延，非完整代数效应的多次可恢复 handler）。</li>
 <li>"You Don't Know JS" (Kyle Simpson), book 6 "Async &amp; Performance", Ch. 4 "Generators" — JS generator 与 async 的详尽解释。</li>
 </ul>
 

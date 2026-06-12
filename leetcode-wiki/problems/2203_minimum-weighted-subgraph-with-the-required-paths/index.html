@@ -5485,6 +5485,8 @@
       
         
       
+        
+      
     
     
     
@@ -6024,6 +6026,34 @@
     
   
     #93. Restore IP Addresses
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../0102_binary-tree-level-order-traversal/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    #102. Binary Tree Level Order Traversal
   
 
     
@@ -14999,10 +15029,38 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="背景">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        先试最朴素的做法，看它在哪里坏掉
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        任何可行子图都有一个汇合节点
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
-  <a href="#_2" class="md-nav__link">
+  <a href="#_4" class="md-nav__link">
     <span class="md-ellipsis">
       
         形式化
@@ -15013,7 +15071,7 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#_3" class="md-nav__link">
+  <a href="#_5" class="md-nav__link">
     <span class="md-ellipsis">
       
         数据结构 / 想法
@@ -15021,10 +15079,27 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="数据结构 / 想法">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#sink" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        反图把"到 sink 的距离"变回单源问题
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
-  <a href="#_4" class="md-nav__link">
+  <a href="#_6" class="md-nav__link">
     <span class="md-ellipsis">
       
         复杂度
@@ -15035,7 +15110,7 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#_5" class="md-nav__link">
+  <a href="#_7" class="md-nav__link">
     <span class="md-ellipsis">
       
         陷阱
@@ -15046,7 +15121,7 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#_6" class="md-nav__link">
+  <a href="#_8" class="md-nav__link">
     <span class="md-ellipsis">
       
         相关题目
@@ -22585,10 +22660,38 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="背景">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        先试最朴素的做法，看它在哪里坏掉
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        任何可行子图都有一个汇合节点
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
-  <a href="#_2" class="md-nav__link">
+  <a href="#_4" class="md-nav__link">
     <span class="md-ellipsis">
       
         形式化
@@ -22599,7 +22702,7 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#_3" class="md-nav__link">
+  <a href="#_5" class="md-nav__link">
     <span class="md-ellipsis">
       
         数据结构 / 想法
@@ -22607,10 +22710,27 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="数据结构 / 想法">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#sink" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        反图把"到 sink 的距离"变回单源问题
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
-  <a href="#_4" class="md-nav__link">
+  <a href="#_6" class="md-nav__link">
     <span class="md-ellipsis">
       
         复杂度
@@ -22621,7 +22741,7 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#_5" class="md-nav__link">
+  <a href="#_7" class="md-nav__link">
     <span class="md-ellipsis">
       
         陷阱
@@ -22632,7 +22752,7 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#_6" class="md-nav__link">
+  <a href="#_8" class="md-nav__link">
     <span class="md-ellipsis">
       
         相关题目
@@ -22675,24 +22795,61 @@
 <h2 id="problem">Problem<a class="headerlink" href="#problem" title="Permanent link">#</a></h2>
 <p>有向带权图，给 <code>src1, src2, dest</code> 三个不同节点。求最小权子图，使 <code>src1 → dest</code> 和 <code>src2 → dest</code> 各自可达。返回总权或 -1。<span class="arithmatex">\(n \le 10^5\)</span>。</p>
 <h2 id="_1">背景<a class="headerlink" href="#_1" title="Permanent link">#</a></h2>
-<p>本题是 <strong>Steiner Tree on Directed Graph</strong> 的一个特例（终端集 3）。Steiner Tree 一般 NP-Hard，但本题终端数固定（且其中一个是 sink），可以转化为 <strong>3 次 Dijkstra</strong>：</p>
-<p><strong>关键洞察</strong>：最优子图必由两条路径在某中转节点 <span class="arithmatex">\(u\)</span> 处汇合，然后共用一条到 <span class="arithmatex">\(dest\)</span>。设：
-- <span class="arithmatex">\(d_1(u)\)</span> = <code>src1 → u</code> 最短路（原图 Dijkstra）。
-- <span class="arithmatex">\(d_2(u)\)</span> = <code>src2 → u</code> 最短路（原图 Dijkstra）。
-- <span class="arithmatex">\(d_3(u)\)</span> = <code>u → dest</code> 最短路（<strong>反图</strong> Dijkstra）。</p>
-<p>答案 = <span class="arithmatex">\(\min_u (d_1(u) + d_2(u) + d_3(u))\)</span>。</p>
-<p><strong>证明草图</strong>：(1) 若两条最优路径有任意公共节点 <span class="arithmatex">\(u\)</span>，则将"共享段"算一次最优。(2) 若无公共节点，取"汇合点" <span class="arithmatex">\(u = dest\)</span> 退化情形 <span class="arithmatex">\(d_3(dest) = 0\)</span> 给出 <span class="arithmatex">\(d_1(dest) + d_2(dest)\)</span>。任意候选 <span class="arithmatex">\(u\)</span> 都对应一种合法子图，遍历取最优。</p>
-<h2 id="_2">形式化<a class="headerlink" href="#_2" title="Permanent link">#</a></h2>
-<p>设 <span class="arithmatex">\(G = (V, E, w)\)</span> 有向带权图。求 <span class="arithmatex">\(\min \sum_{e \in E'} w_e\)</span> 使得 <span class="arithmatex">\(E' \subseteq E\)</span> 满足 <span class="arithmatex">\(G[E']\)</span> 含 <span class="arithmatex">\(\text{src1} \to \text{dest}\)</span> 与 <span class="arithmatex">\(\text{src2} \to \text{dest}\)</span> 的路径。等价于求公共"汇合节点" <span class="arithmatex">\(u\)</span> 使三段最短路之和最小。</p>
-<h2 id="_3">数据结构 / 想法<a class="headerlink" href="#_3" title="Permanent link">#</a></h2>
-<p><strong>3 次 Dijkstra</strong>：
+<h3 id="_2">先试最朴素的做法，看它在哪里坏掉<a class="headerlink" href="#_2" title="Permanent link">#</a></h3>
+<p>我们要的是一个子图，里面同时存在 <span class="arithmatex">\(src_1 \to dest\)</span> 和 <span class="arithmatex">\(src_2 \to dest\)</span> 两条有向路径，且所选边的总权最小。最直接的想法：分别求 <span class="arithmatex">\(src_1 \to dest\)</span> 的最短路和 <span class="arithmatex">\(src_2 \to dest\)</span> 的最短路，把两条路径的边并起来。</p>
+<p>这个做法在一种情况下是对的——两条最短路完全不相交时，子图就是它们的并，总权恰好是两段最短路之和。问题出在它们<strong>相交</strong>的时候。考虑下面四个节点：</p>
+<div class="arithmatex">\[
+src_1 \to u,\quad src_2 \to u,\quad u \to dest .
+\]</div>
+<p>若两条最短路都经过中间节点 <span class="arithmatex">\(u\)</span>，再共用 <span class="arithmatex">\(u \to dest\)</span> 这一段抵达 <span class="arithmatex">\(dest\)</span>，那么 <span class="arithmatex">\(u \to dest\)</span> 的边在两条路径里各出现一次。但子图是<strong>边的集合</strong>，同一条边只计一次权重。把两段最短路的权简单相加，就把共享段重复计了一次，得到的值严格大于真实最小权。</p>
+<p>朴素做法坏掉的根源是：它把两条路径当成独立对象，没有任何手柄去描述、更没有去优化它们<strong>共享的那一段</strong>。要修好它，必须把"在哪里汇合、汇合后共用哪一段"纳入优化变量。</p>
+<h3 id="_3">任何可行子图都有一个汇合节点<a class="headerlink" href="#_3" title="Permanent link">#</a></h3>
+<p>把视角从"边"转回"路径的结构"。任取一个可行子图，里面有一条 <span class="arithmatex">\(src_1 \to dest\)</span> 路径 <span class="arithmatex">\(P_1\)</span> 和一条 <span class="arithmatex">\(src_2 \to dest\)</span> 路径 <span class="arithmatex">\(P_2\)</span>，两者都终止于 <span class="arithmatex">\(dest\)</span>。从 <span class="arithmatex">\(dest\)</span> 沿各自路径<strong>往回走</strong>，记两条路径<strong>最后一次相遇</strong>的节点为 <span class="arithmatex">\(u\)</span>（若除 <span class="arithmatex">\(dest\)</span> 外不相遇，则取 <span class="arithmatex">\(u = dest\)</span>）。从 <span class="arithmatex">\(u\)</span> 到 <span class="arithmatex">\(dest\)</span> 这一段，<span class="arithmatex">\(P_1\)</span> 与 <span class="arithmatex">\(P_2\)</span> 走的可以取为同一条（否则把较贵的那条换成较便宜的，权不增），于是这条尾段只需计一次。</p>
+<p>这给出可行子图的统一结构：存在一个汇合节点 <span class="arithmatex">\(u\)</span>，子图由三段组成——</p>
+<ul>
+<li><span class="arithmatex">\(src_1 \to u\)</span> 的一段，权至少为 <span class="arithmatex">\(src_1 \to u\)</span> 的最短路 <span class="arithmatex">\(d_1(u)\)</span>；</li>
+<li><span class="arithmatex">\(src_2 \to u\)</span> 的一段，权至少为 <span class="arithmatex">\(src_2 \to u\)</span> 的最短路 <span class="arithmatex">\(d_2(u)\)</span>；</li>
+<li><span class="arithmatex">\(u \to dest\)</span> 的共享尾段，权至少为 <span class="arithmatex">\(u \to dest\)</span> 的最短路 <span class="arithmatex">\(d_3(u)\)</span>。</li>
+</ul>
+<p>因此该子图的总权下界是 <span class="arithmatex">\(d_1(u) + d_2(u) + d_3(u)\)</span>；反过来，对任一节点 <span class="arithmatex">\(u\)</span>，把这三段各自的最短路取出来并起来就是一个合法子图，其权不超过这个和。最优解就在所有候选汇合点上取最小：</p>
+<div class="arithmatex">\[
+\text{ans} \;=\; \min_{u \in V} \bigl( d_1(u) + d_2(u) + d_3(u) \bigr). \tag{$\star$}
+\]</div>
+<p>枚举单个汇合点 <span class="arithmatex">\(u\)</span> 之所以<strong>完备</strong>（不漏任何可行解），正是因为上面的结构性论证：每个可行子图都对应到它自己的"最后相遇点" <span class="arithmatex">\(u\)</span>，没有遗漏。这一步把朴素做法缺的"共享段手柄"补上了——<span class="arithmatex">\(d_3(u)\)</span> 恰好把共享尾段只计一次。</p>
+<blockquote>
+<p>顺带一提，本题是 <strong>有向 Steiner Tree</strong> 的特例（终端集为 3，且其中 <span class="arithmatex">\(dest\)</span> 是公共 sink）。一般 Steiner Tree 是 NP-Hard，但终端数固定时可在多项式时间内用最短路解决；式 <span class="arithmatex">\((\star)\)</span> 就是这一特例的显式形式。这个归类不是解题前提，只是为它在文献中定位。</p>
+</blockquote>
+<h2 id="_4">形式化<a class="headerlink" href="#_4" title="Permanent link">#</a></h2>
+<p>设 <span class="arithmatex">\(G = (V, E, w)\)</span> 为有向带权图，<span class="arithmatex">\(w_e \ge 1\)</span>。原始问题是
+$$
+\min_{E' \subseteq E} \ \sum_{e \in E'} w_e
+\quad \text{s.t. } G[E'] \text{ 中存在 } src_1 \to dest \text{ 与 } src_2 \to dest \text{ 的路径},
+$$
+无可行解时返回 <span class="arithmatex">\(-1\)</span>。定义三个最短路距离函数
+$$
+d_1(u) = \mathrm{dist}_G(src_1, u),\quad
+d_2(u) = \mathrm{dist}_G(src_2, u),\quad
+d_3(u) = \mathrm{dist}_G(u, dest),
+$$
+约定不可达时取 <span class="arithmatex">\(+\infty\)</span>。上一节的结构性论证给出等价命题：</p>
+<p><strong>命题.</strong> 原始最小权子图问题的最优值等于 <span class="arithmatex">\(\displaystyle \min_{u \in V}\bigl(d_1(u)+d_2(u)+d_3(u)\bigr)\)</span>，即式 <span class="arithmatex">\((\star)\)</span>；若该最小值为 <span class="arithmatex">\(+\infty\)</span> 则无解。</p>
+<p>退化情形被式 <span class="arithmatex">\((\star)\)</span> 自动覆盖：两条路径除 <span class="arithmatex">\(dest\)</span> 外不相交时取 <span class="arithmatex">\(u = dest\)</span>，此时 <span class="arithmatex">\(d_3(dest) = 0\)</span>，和退化为 <span class="arithmatex">\(d_1(dest) + d_2(dest)\)</span>，正是两段独立最短路之和。这正是朴素做法唯一正确的那种情形，作为枚举的一个候选项被包含进来。</p>
+<h2 id="_5">数据结构 / 想法<a class="headerlink" href="#_5" title="Permanent link">#</a></h2>
+<p>由命题，只需算出三个距离函数即可对所有 <span class="arithmatex">\(u\)</span> 取式 <span class="arithmatex">\((\star)\)</span> 的最小。<span class="arithmatex">\(d_1, d_2\)</span> 是从固定源点出发的单源最短路，各跑一次原图 Dijkstra 即可。难点在 <span class="arithmatex">\(d_3(u) = \mathrm{dist}_G(u, dest)\)</span>：它是各点<strong>到固定终点</strong> <span class="arithmatex">\(dest\)</span> 的距离，方向与单源最短路相反。</p>
+<h3 id="sink">反图把"到 sink 的距离"变回单源问题<a class="headerlink" href="#sink" title="Permanent link">#</a></h3>
+<p>逐个 <span class="arithmatex">\(u\)</span> 求 <span class="arithmatex">\(u \to dest\)</span> 需要 <span class="arithmatex">\(O(n)\)</span> 次 Dijkstra，在 <span class="arithmatex">\(n = 10^5\)</span> 下会 TLE。但 Dijkstra 只会算"从某固定源出发"的距离，而我们要的是"到某固定汇点"的距离。把图中所有边反向，得到反图 <span class="arithmatex">\(G_{\text{rev}}\)</span>：原图的一条路径 <span class="arithmatex">\(u \to dest\)</span> 在 <span class="arithmatex">\(G_{\text{rev}}\)</span> 中恰好对应一条 <span class="arithmatex">\(dest \to u\)</span> 的路径，权重相同。于是
+$$
+\mathrm{dist}<em _text_rev="\text{rev">{G</em>_G(u, dest) = d_3(u).
+$$
+在 }}}(dest, u) = \mathrm{dist<span class="arithmatex">\(G_{\text{rev}}\)</span> 上从 <span class="arithmatex">\(dest\)</span> 跑<strong>一次</strong>单源 Dijkstra，就同时得到了所有 <span class="arithmatex">\(u\)</span> 的 <span class="arithmatex">\(d_3(u)\)</span>。这就是把 <span class="arithmatex">\(O(n)\)</span> 次 Dijkstra 压到一次的关键一步。</p>
+<p>把它代入式 <span class="arithmatex">\((\star)\)</span>，整道题就是三次 Dijkstra：</p>
 <div class="language-python highlight"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">heapq</span>
 <span class="k">def</span><span class="w"> </span><span class="nf">minimumWeight</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">edges</span><span class="p">,</span> <span class="n">s1</span><span class="p">,</span> <span class="n">s2</span><span class="p">,</span> <span class="n">dest</span><span class="p">):</span>
     <span class="n">fwd</span> <span class="o">=</span> <span class="p">[[]</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">)]</span>
     <span class="n">rev</span> <span class="o">=</span> <span class="p">[[]</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">)]</span>
     <span class="k">for</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">w</span> <span class="ow">in</span> <span class="n">edges</span><span class="p">:</span>
         <span class="n">fwd</span><span class="p">[</span><span class="n">u</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">v</span><span class="p">,</span> <span class="n">w</span><span class="p">))</span>
-        <span class="n">rev</span><span class="p">[</span><span class="n">v</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">u</span><span class="p">,</span> <span class="n">w</span><span class="p">))</span>
+        <span class="n">rev</span><span class="p">[</span><span class="n">v</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">u</span><span class="p">,</span> <span class="n">w</span><span class="p">))</span>   <span class="c1"># 反图：v -&gt; u</span>
     <span class="n">INF</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="s1">&#39;inf&#39;</span><span class="p">)</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">dijkstra</span><span class="p">(</span><span class="n">start</span><span class="p">,</span> <span class="n">graph</span><span class="p">):</span>
         <span class="n">dist</span> <span class="o">=</span> <span class="p">[</span><span class="n">INF</span><span class="p">]</span> <span class="o">*</span> <span class="n">n</span>
@@ -22706,26 +22863,25 @@
                     <span class="n">dist</span><span class="p">[</span><span class="n">v</span><span class="p">]</span> <span class="o">=</span> <span class="n">d</span> <span class="o">+</span> <span class="n">w</span>
                     <span class="n">heapq</span><span class="o">.</span><span class="n">heappush</span><span class="p">(</span><span class="n">h</span><span class="p">,</span> <span class="p">(</span><span class="n">dist</span><span class="p">[</span><span class="n">v</span><span class="p">],</span> <span class="n">v</span><span class="p">))</span>
         <span class="k">return</span> <span class="n">dist</span>
-    <span class="n">d1</span> <span class="o">=</span> <span class="n">dijkstra</span><span class="p">(</span><span class="n">s1</span><span class="p">,</span> <span class="n">fwd</span><span class="p">)</span>
-    <span class="n">d2</span> <span class="o">=</span> <span class="n">dijkstra</span><span class="p">(</span><span class="n">s2</span><span class="p">,</span> <span class="n">fwd</span><span class="p">)</span>
-    <span class="n">d3</span> <span class="o">=</span> <span class="n">dijkstra</span><span class="p">(</span><span class="n">dest</span><span class="p">,</span> <span class="n">rev</span><span class="p">)</span>  <span class="c1"># 反图上从 dest 出发 = 原图各点到 dest 的距离</span>
+    <span class="n">d1</span> <span class="o">=</span> <span class="n">dijkstra</span><span class="p">(</span><span class="n">s1</span><span class="p">,</span> <span class="n">fwd</span><span class="p">)</span>        <span class="c1"># d1(u) = src1 -&gt; u</span>
+    <span class="n">d2</span> <span class="o">=</span> <span class="n">dijkstra</span><span class="p">(</span><span class="n">s2</span><span class="p">,</span> <span class="n">fwd</span><span class="p">)</span>        <span class="c1"># d2(u) = src2 -&gt; u</span>
+    <span class="n">d3</span> <span class="o">=</span> <span class="n">dijkstra</span><span class="p">(</span><span class="n">dest</span><span class="p">,</span> <span class="n">rev</span><span class="p">)</span>      <span class="c1"># d3(u) = u -&gt; dest（反图上从 dest 出发）</span>
     <span class="n">ans</span> <span class="o">=</span> <span class="nb">min</span><span class="p">((</span><span class="n">d1</span><span class="p">[</span><span class="n">u</span><span class="p">]</span> <span class="o">+</span> <span class="n">d2</span><span class="p">[</span><span class="n">u</span><span class="p">]</span> <span class="o">+</span> <span class="n">d3</span><span class="p">[</span><span class="n">u</span><span class="p">])</span> <span class="k">for</span> <span class="n">u</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">))</span>
     <span class="k">return</span> <span class="n">ans</span> <span class="k">if</span> <span class="n">ans</span> <span class="o">&lt;</span> <span class="n">INF</span> <span class="k">else</span> <span class="o">-</span><span class="mi">1</span>
-</code></pre></div></p>
-<p><strong>关键 trick</strong>：在<strong>反图</strong>上从 <code>dest</code> 跑 Dijkstra 即获得"原图各点到 dest 的最短路"，避免对每节点单独求源最短路（<span class="arithmatex">\(O(n)\)</span> 次 Dijkstra）。</p>
-<p><strong>不变量</strong>（Dijkstra）：每次 pop 出的节点已确定最短路距离。<strong>正确性</strong>：经典证明 (Dijkstra 1959)，对非负权图成立。</p>
-<h2 id="_4">复杂度<a class="headerlink" href="#_4" title="Permanent link">#</a></h2>
+</code></pre></div>
+<p>正确性的两块基石各就各位：式 <span class="arithmatex">\((\star)\)</span> 保证"枚举汇合点 <span class="arithmatex">\(u\)</span> 取最小"等于原问题最优值；Dijkstra 的不变量保证三个距离函数算得正确——每次 pop 出的节点其最短路距离已确定，对非负权图成立（经典结果，Dijkstra 1959；本题 <span class="arithmatex">\(w_e \ge 1\)</span> 满足）。不可达点的 <span class="arithmatex">\(d_i(u) = +\infty\)</span>，相加仍为 <span class="arithmatex">\(+\infty\)</span>，在式 <span class="arithmatex">\((\star)\)</span> 的取最小中自然被排除，最终 <code>ans &lt; INF</code> 即区分有解与 <span class="arithmatex">\(-1\)</span>。</p>
+<h2 id="_6">复杂度<a class="headerlink" href="#_6" title="Permanent link">#</a></h2>
 <ul>
-<li>Time: <span class="arithmatex">\(O((n + m) \log n)\)</span> — 3 次 Dijkstra。</li>
-<li>Space: <span class="arithmatex">\(O(n + m)\)</span> — 邻接表 + 距离数组。</li>
+<li>Time: <span class="arithmatex">\(O((n + m) \log n)\)</span> — 三次 Dijkstra，<span class="arithmatex">\(m = |E|\)</span>。</li>
+<li>Space: <span class="arithmatex">\(O(n + m)\)</span> — 正图 / 反图邻接表 + 三个距离数组。</li>
 </ul>
-<h2 id="_5">陷阱<a class="headerlink" href="#_5" title="Permanent link">#</a></h2>
+<h2 id="_7">陷阱<a class="headerlink" href="#_7" title="Permanent link">#</a></h2>
 <ul>
-<li>必须用反图算 <span class="arithmatex">\(d_3\)</span>；否则需要从每节点跑 Dijkstra (<span class="arithmatex">\(O(n m \log n)\)</span>) TLE。</li>
-<li>整数溢出：边权 <span class="arithmatex">\(\le 10^5\)</span>, 路径长 <span class="arithmatex">\(\le 10^5\)</span> 边，最大权 <span class="arithmatex">\(10^{10}\)</span>，超 int32。Python 不溢；C++ 需 int64。</li>
-<li><span class="arithmatex">\(u = s_1\)</span> 时 <span class="arithmatex">\(d_2(u) + d_3(u)\)</span> 是另一选择（不一定有解，因 <code>src1</code>、<code>src2</code>、<code>dest</code> 三者距离可能 ∞）。</li>
+<li><strong>必须用反图算 <span class="arithmatex">\(d_3\)</span></strong>：否则要从每个节点单独跑 Dijkstra（<span class="arithmatex">\(O(n m \log n)\)</span>），在 <span class="arithmatex">\(n = 10^5\)</span> 下 TLE。这是 <span class="arithmatex">\(d_3\)</span> 与 <span class="arithmatex">\(d_1, d_2\)</span> 方向相反所逼出的关键改写。</li>
+<li><strong>整数溢出</strong>：边权 <span class="arithmatex">\(\le 10^5\)</span>，路径最多 <span class="arithmatex">\(\le 10^5\)</span> 条边，单段最大权 <span class="arithmatex">\(10^{10}\)</span>，超出 int32（<span class="arithmatex">\(2^{31}-1 \approx 2.1\times 10^9\)</span>）。Python 整数不溢出；C++ 需 int64（<code>long long</code>）。</li>
+<li><strong>退化候选 <span class="arithmatex">\(u = src_1\)</span></strong>：此时和退化为 <span class="arithmatex">\(d_2(u) + d_3(u)\)</span>（<span class="arithmatex">\(d_1(src_1)=0\)</span>），是式 <span class="arithmatex">\((\star)\)</span> 的一个合法候选项；但因 <span class="arithmatex">\(src_1, src_2, dest\)</span> 间距离可能为 <span class="arithmatex">\(\infty\)</span>，该候选不一定给出有限解，靠 <code>ans &lt; INF</code> 统一判定。</li>
 </ul>
-<h2 id="_6">相关题目<a class="headerlink" href="#_6" title="Permanent link">#</a></h2>
+<h2 id="_8">相关题目<a class="headerlink" href="#_8" title="Permanent link">#</a></h2>
 <ul>
 <li><code>#1976. Number of Ways to Arrive at Destination (off-wiki)</code> — Dijkstra + 路径计数。</li>
 <li><code>#787. Cheapest Flights Within K Stops (off-wiki)</code> — Bellman-Ford / 受限 Dijkstra。</li>

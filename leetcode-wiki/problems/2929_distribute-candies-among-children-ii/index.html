@@ -5485,6 +5485,8 @@
       
         
       
+        
+      
     
     
     
@@ -6024,6 +6026,34 @@
     
   
     #93. Restore IP Addresses
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../0102_binary-tree-level-order-traversal/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    #102. Binary Tree Level Order Traversal
   
 
     
@@ -17737,6 +17767,34 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="数据结构 / 想法 (Approach)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#a" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        解法 A：固定一个变量，把计数降到一维
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#b" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        解法 B：先去掉上界，再用容斥补回
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -22607,6 +22665,34 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="数据结构 / 想法 (Approach)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#a" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        解法 A：固定一个变量，把计数降到一维
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#b" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        解法 B：先去掉上界，再用容斥补回
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -22675,14 +22761,24 @@
 <h2 id="problem">Problem<a class="headerlink" href="#problem" title="Permanent link">#</a></h2>
 <p>给两正整数 <span class="arithmatex">\(n, \text{limit}\)</span>（<span class="arithmatex">\(\le 10^6\)</span>），求将 <span class="arithmatex">\(n\)</span> 颗糖分给 <span class="arithmatex">\(3\)</span> 个孩子使每人不超过 <span class="arithmatex">\(\text{limit}\)</span> 颗的方案总数。</p>
 <h2 id="background">背景 (Background)<a class="headerlink" href="#background" title="Permanent link">#</a></h2>
-<p>经典 <strong>stars-and-bars</strong> 计数 + <strong>容斥原理</strong> 的入门题。无上界时：<span class="arithmatex">\(x_1 + x_2 + x_3 = n,\ x_i \ge 0\)</span> 的非负整数解数为 <span class="arithmatex">\(\binom{n+2}{2}\)</span>（隔板法 Feller Vol. 1）。加上界 <span class="arithmatex">\(x_i \le L\)</span> 时，标准做法是<strong>容斥</strong>：</p>
-<div class="arithmatex">\[\#\{x_i \le L\} = \sum_{S \subseteq \{1,2,3\}} (-1)^{|S|} \binom{n - (L+1)|S| + 2}{2}_+\]</div>
-<p>其中 <span class="arithmatex">\(\binom{m}{2}_+ = \binom{m}{2}\)</span> 若 <span class="arithmatex">\(m \ge 2\)</span> 否则 <span class="arithmatex">\(0\)</span>。这是 Inclusion-Exclusion 在"上界约束的非负解计数"上的教科书应用。</p>
-<p>另一思路是<strong>枚举 + 区间长</strong>：枚举第一个孩子 <span class="arithmatex">\(i \in [0, \min(n, L)]\)</span>，第二个孩子 <span class="arithmatex">\(j\)</span> 合法区间是 <span class="arithmatex">\([\max(0, n-i-L), \min(L, n-i)]\)</span>，贡献 <span class="arithmatex">\(\max(0, \text{右}-\text{左}+1)\)</span>。<span class="arithmatex">\(O(n)\)</span> 容易实现。</p>
+<p>最朴素的想法是直接枚举三个孩子各拿多少：让 <span class="arithmatex">\(x_1, x_2, x_3\)</span> 各自跑遍 <span class="arithmatex">\([0, L]\)</span>，统计满足 <span class="arithmatex">\(x_1 + x_2 + x_3 = n\)</span> 的三元组。这是个三重循环，代价 <span class="arithmatex">\(O(L^3)\)</span>。</p>
+<p>它在哪里崩？题目给的范围是 <span class="arithmatex">\(n, L \le 10^6\)</span>。<span class="arithmatex">\(L^3\)</span> 到了 <span class="arithmatex">\(10^{18}\)</span> 量级，单是循环次数就远超任何时限。我们需要一种<strong>不逐个枚举三元组、而是直接数出方案个数</strong>的方法。本页给出两条路线：一条把三重循环压成单重循环（解法 A，<span class="arithmatex">\(O(\min(n, L))\)</span>），一条把循环彻底消掉、化为一个闭式公式（解法 B，<span class="arithmatex">\(O(1)\)</span>）。两条路线都从下面这个精确计数对象出发。</p>
 <h2 id="formulation">形式化 (Formulation)<a class="headerlink" href="#formulation" title="Permanent link">#</a></h2>
-<p><span class="arithmatex">\(\#\{ (x_1, x_2, x_3) \in \mathbb{Z}_{\ge 0}^3 : x_1+x_2+x_3 = n,\ 0 \le x_i \le L \}\)</span>。</p>
+<p>记答案为
+$<span class="arithmatex">\(N(n, L) \;=\; \#\bigl\{ (x_1, x_2, x_3) \in \mathbb{Z}_{\ge 0}^3 \;:\; x_1 + x_2 + x_3 = n,\ \ 0 \le x_i \le L \bigr\}. \tag{1}\)</span>$
+注意三个孩子是<strong>有标号</strong>的：<span class="arithmatex">\((2,1,2)\)</span> 与 <span class="arithmatex">\((2,2,1)\)</span> 计为两种不同方案，故 <span class="arithmatex">\((1)\)</span> 直接数有序三元组，不除以任何排列数。下面两节都从 <span class="arithmatex">\((1)\)</span> 推导。</p>
 <h2 id="approach">数据结构 / 想法 (Approach)<a class="headerlink" href="#approach" title="Permanent link">#</a></h2>
-<p><strong>解法 A：枚举 <span class="arithmatex">\(O(\min(n, L))\)</span></strong>：</p>
+<h3 id="a">解法 A：固定一个变量，把计数降到一维<a class="headerlink" href="#a" title="Permanent link">#</a></h3>
+<p>三重循环的浪费在于：一旦 <span class="arithmatex">\(x_1, x_2\)</span> 定下，<span class="arithmatex">\(x_3 = n - x_1 - x_2\)</span> 就唯一确定，第三层循环只是在做一次合法性检查。更进一步，<strong>只要固定 <span class="arithmatex">\(x_1\)</span>，剩下的 <span class="arithmatex">\(x_2, x_3\)</span> 就不必逐个枚举</strong>——它们的合法取值是一段连续区间，区间长度可以直接算出。</p>
+<p>把 <span class="arithmatex">\(x_1 = i\)</span> 固定。剩余约束变为 <span class="arithmatex">\(x_2 + x_3 = n - i\)</span>，且 <span class="arithmatex">\(0 \le x_2, x_3 \le L\)</span>。由于 <span class="arithmatex">\(x_3 = (n-i) - x_2\)</span> 被 <span class="arithmatex">\(x_2\)</span> 唯一决定，方案数就等于<strong>合法 <span class="arithmatex">\(x_2\)</span> 的个数</strong>。<span class="arithmatex">\(x_2\)</span> 要同时满足：</p>
+<ul>
+<li><span class="arithmatex">\(x_2 \ge 0\)</span> 且 <span class="arithmatex">\(x_2 \le L\)</span>（<span class="arithmatex">\(x_2\)</span> 自身的上下界）；</li>
+<li><span class="arithmatex">\(x_3 = n - i - x_2 \ge 0 \Rightarrow x_2 \le n - i\)</span>；</li>
+<li><span class="arithmatex">\(x_3 = n - i - x_2 \le L \Rightarrow x_2 \ge n - i - L\)</span>。</li>
+</ul>
+<p>四个不等式交起来，<span class="arithmatex">\(x_2\)</span> 落在闭区间 <span class="arithmatex">\([\,\text{lo}, \text{hi}\,]\)</span>，其中
+$<span class="arithmatex">\(\text{lo} = \max(0,\ n - i - L), \qquad \text{hi} = \min(L,\ n - i). \tag{2}\)</span>$
+该区间含 <span class="arithmatex">\(\max(0,\ \text{hi} - \text{lo} + 1)\)</span> 个整数，即固定 <span class="arithmatex">\(x_1 = i\)</span> 时的方案数。最后让 <span class="arithmatex">\(i\)</span> 跑遍其合法范围 <span class="arithmatex">\([0, \min(n, L)]\)</span> 求和（<span class="arithmatex">\(i &gt; n\)</span> 时 <span class="arithmatex">\(n - i &lt; 0\)</span> 已无解，<span class="arithmatex">\(i &gt; L\)</span> 越上界）：</p>
 <div class="language-python highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">Solution</span><span class="p">:</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">distributeCandies</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">limit</span><span class="p">):</span>
         <span class="n">ans</span> <span class="o">=</span> <span class="mi">0</span>
@@ -22704,28 +22800,42 @@
 - i=2: lo=0, hi=min(3,1)=1 → 2。
 - i=3: lo=0, hi=0 → 1。
 - 总 10 ✓。</p>
-<p><strong>解法 B：容斥 <span class="arithmatex">\(O(1)\)</span></strong>：</p>
-<div class="arithmatex">\[\text{ans} = c(n) - 3 c(n - L - 1) + 3 c(n - 2(L+1)) - c(n - 3(L+1))\]</div>
-<p>其中 <span class="arithmatex">\(c(m) = \binom{m+2}{2}\)</span> 若 <span class="arithmatex">\(m \ge 0\)</span> 否则 <span class="arithmatex">\(0\)</span>。</p>
+<p>解法 A 的循环跑 <span class="arithmatex">\(\min(n, L) + 1\)</span> 次，最坏约 <span class="arithmatex">\(10^6\)</span> 次，在限制下可过。但它仍带一层循环——能否连这层也消掉？这就引出解法 B。</p>
+<h3 id="b">解法 B：先去掉上界，再用容斥补回<a class="headerlink" href="#b" title="Permanent link">#</a></h3>
+<p>若<strong>完全没有上界约束</strong>，<span class="arithmatex">\((1)\)</span> 退化为：<span class="arithmatex">\(x_1 + x_2 + x_3 = n\)</span> 的非负整数解有几组？把每组解 <span class="arithmatex">\((x_1, x_2, x_3)\)</span> 与一个长度 <span class="arithmatex">\(n+2\)</span> 的 0/1 序列对应——序列里恰有 <span class="arithmatex">\(2\)</span> 个位置取 <span class="arithmatex">\(1\)</span>（作分隔），其余 <span class="arithmatex">\(n\)</span> 个位置取 <span class="arithmatex">\(0\)</span>；两个分隔把 <span class="arithmatex">\(n\)</span> 个 <span class="arithmatex">\(0\)</span> 切成三段，三段长度即 <span class="arithmatex">\(x_1, x_2, x_3\)</span>。这是<strong>双射</strong>：每组非负解对应唯一一个序列，反之亦然。于是无上界解数等于从 <span class="arithmatex">\(n+2\)</span> 个位置中选 <span class="arithmatex">\(2\)</span> 个的方法数：
+$<span class="arithmatex">\(U(n) = \binom{n+2}{2}. \tag{3}\)</span>$
+这就是所谓 stars-and-bars 计数；这里我们用上面的双射直接证它，不依赖外部记号。</p>
+<p>现在把上界 <span class="arithmatex">\(x_i \le L\)</span> 装回去。<span class="arithmatex">\((3)\)</span> 多算了那些<strong>至少一个孩子超界</strong>（<span class="arithmatex">\(x_i \ge L+1\)</span>）的解，要减掉。关键技巧：「<span class="arithmatex">\(x_1 \ge L+1\)</span> 的解」可以与「一个更小的无上界问题」一一对应——令 <span class="arithmatex">\(x_1' = x_1 - (L+1) \ge 0\)</span>，则
+$<span class="arithmatex">\(x_1' + x_2 + x_3 = n - (L+1),\)</span>$
+其非负解数正是 <span class="arithmatex">\(U\!\bigl(n - (L+1)\bigr)\)</span>。三个孩子各有一个这样的「超界」对应，故「至少一人超界」初看要减 <span class="arithmatex">\(3\,U(n - (L+1))\)</span>。</p>
+<p>但若直接减三遍，<strong>两人同时超界</strong>的解被减了两次，需加回一次；类似地三人同时超界又被多处理一轮，需再减。这正是容斥原理：对违规集合 <span class="arithmatex">\(S \subseteq \{1,2,3\}\)</span> 交替加减。强制 <span class="arithmatex">\(S\)</span> 中每人都超界，等价于各做一次平移 <span class="arithmatex">\(x_i' = x_i - (L+1)\)</span>，剩下一个总和为 <span class="arithmatex">\(n - (L+1)|S|\)</span> 的无上界问题。于是
+$<span class="arithmatex">\(N(n, L) = \sum_{S \subseteq \{1,2,3\}} (-1)^{|S|}\, U\!\bigl(n - (L+1)|S|\bigr) = \sum_{S \subseteq \{1,2,3\}} (-1)^{|S|} \binom{\,n - (L+1)|S| + 2\,}{2}_+. \tag{4}\)</span>$
+按 <span class="arithmatex">\(|S| = 0,1,2,3\)</span> 合并同类项（各有 <span class="arithmatex">\(\binom{3}{|S|}\)</span> 个集合），并记
+$<span class="arithmatex">\(c(m) = \binom{m+2}{2} = \frac{(m+2)(m+1)}{2}\ \ (m \ge 0),\qquad c(m) = 0\ \ (m &lt; 0), \tag{5}\)</span>$
+<span class="arithmatex">\((4)\)</span> 化为闭式
+$<span class="arithmatex">\(N(n, L) = c(n) - 3\,c\!\bigl(n - (L{+}1)\bigr) + 3\,c\!\bigl(n - 2(L{+}1)\bigr) - c\!\bigl(n - 3(L{+}1)\bigr). \tag{6}\)</span>$
+<span class="arithmatex">\((5)\)</span> 中 <span class="arithmatex">\(m &lt; 0 \Rightarrow c(m)=0\)</span> 这一截断不可省：当 <span class="arithmatex">\(n - k(L{+}1) &lt; 0\)</span> 时对应的无上界子问题无解，必须贡献 <span class="arithmatex">\(0\)</span>，否则公式给出错误的负项或正项。</p>
 <div class="language-python highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="n">m</span><span class="p">):</span>
-    <span class="k">return</span> <span class="n">m</span><span class="o">*</span><span class="p">(</span><span class="n">m</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="o">//</span><span class="mi">2</span> <span class="k">if</span> <span class="n">m</span> <span class="o">&gt;=</span> <span class="mi">0</span> <span class="k">else</span> <span class="mi">0</span>
+    <span class="c1"># c(m) = C(m+2, 2) = (m+2)(m+1)/2，对应总和为 m 的无上界三元组解数；m&lt;0 截断为 0</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">m</span> <span class="o">+</span> <span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">m</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">//</span> <span class="mi">2</span> <span class="k">if</span> <span class="n">m</span> <span class="o">&gt;=</span> <span class="mi">0</span> <span class="k">else</span> <span class="mi">0</span>
 
 <span class="k">def</span><span class="w"> </span><span class="nf">distributeCandies</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">limit</span><span class="p">):</span>
     <span class="n">L</span> <span class="o">=</span> <span class="n">limit</span>
-    <span class="k">return</span> <span class="n">c</span><span class="p">(</span><span class="n">n</span><span class="o">+</span><span class="mi">2</span><span class="p">)</span> <span class="o">-</span> <span class="mi">3</span><span class="o">*</span><span class="n">c</span><span class="p">(</span><span class="n">n</span><span class="o">+</span><span class="mi">2</span> <span class="o">-</span> <span class="p">(</span><span class="n">L</span><span class="o">+</span><span class="mi">1</span><span class="p">))</span> <span class="o">+</span> <span class="mi">3</span><span class="o">*</span><span class="n">c</span><span class="p">(</span><span class="n">n</span><span class="o">+</span><span class="mi">2</span> <span class="o">-</span> <span class="mi">2</span><span class="o">*</span><span class="p">(</span><span class="n">L</span><span class="o">+</span><span class="mi">1</span><span class="p">))</span> <span class="o">-</span> <span class="n">c</span><span class="p">(</span><span class="n">n</span><span class="o">+</span><span class="mi">2</span> <span class="o">-</span> <span class="mi">3</span><span class="o">*</span><span class="p">(</span><span class="n">L</span><span class="o">+</span><span class="mi">1</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">c</span><span class="p">(</span><span class="n">n</span><span class="p">)</span> <span class="o">-</span> <span class="mi">3</span><span class="o">*</span><span class="n">c</span><span class="p">(</span><span class="n">n</span> <span class="o">-</span> <span class="p">(</span><span class="n">L</span> <span class="o">+</span> <span class="mi">1</span><span class="p">))</span> <span class="o">+</span> <span class="mi">3</span><span class="o">*</span><span class="n">c</span><span class="p">(</span><span class="n">n</span> <span class="o">-</span> <span class="mi">2</span><span class="o">*</span><span class="p">(</span><span class="n">L</span> <span class="o">+</span> <span class="mi">1</span><span class="p">))</span> <span class="o">-</span> <span class="n">c</span><span class="p">(</span><span class="n">n</span> <span class="o">-</span> <span class="mi">3</span><span class="o">*</span><span class="p">(</span><span class="n">L</span> <span class="o">+</span> <span class="mi">1</span><span class="p">))</span>
 </code></pre></div>
-<p>注：<code>c(m) = m*(m+1)//2</code> 是 <span class="arithmatex">\(\binom{m}{2}\)</span>，调用时传 <span class="arithmatex">\(n + 2\)</span> 等参数对齐 <span class="arithmatex">\(\binom{n+2}{2}\)</span>。</p>
+<p>注意 <span class="arithmatex">\(c\)</span> 的参数直接传 <span class="arithmatex">\(n,\ n-(L{+}1),\dots\)</span>（即 <span class="arithmatex">\((6)\)</span> 中的 <span class="arithmatex">\(m\)</span>），<span class="arithmatex">\(+2\)</span> 偏移已包含在 <span class="arithmatex">\(c\)</span> 的定义 <span class="arithmatex">\((5)\)</span> 里，<strong>不要</strong>在调用处再加 <span class="arithmatex">\(2\)</span>，否则相当于算 <span class="arithmatex">\(\binom{m+3}{2}\)</span>，结果全错。</p>
+<p><strong>复核两例</strong>：<code>distributeCandies(5,2)</code> <span class="arithmatex">\(= c(5) - 3c(2) + 3c(-1) - c(-4) = 21 - 3\cdot 6 + 0 - 0 = 3\)</span> ✓；<code>distributeCandies(3,3)</code> <span class="arithmatex">\(= c(3) - 3c(-1) + \dots = 10 - 0 = 10\)</span> ✓。两例均与解法 A 一致。</p>
 <h2 id="complexity">复杂度 (Complexity)<a class="headerlink" href="#complexity" title="Permanent link">#</a></h2>
 <ul>
-<li>A: Time <span class="arithmatex">\(O(\min(n, L))\)</span>，最坏 <span class="arithmatex">\(10^6\)</span> — 在限制下可过。</li>
-<li>B: Time <span class="arithmatex">\(O(1)\)</span>。</li>
-<li>Space: <span class="arithmatex">\(O(1)\)</span>。</li>
+<li>解法 A（公式 <span class="arithmatex">\((2)\)</span> 求和）：Time <span class="arithmatex">\(O(\min(n, L))\)</span>，最坏约 <span class="arithmatex">\(10^6\)</span> 次迭代，在限制下可过；Space <span class="arithmatex">\(O(1)\)</span>。</li>
+<li>解法 B（闭式 <span class="arithmatex">\((6)\)</span>）：Time <span class="arithmatex">\(O(1)\)</span>（四项常数计算）；Space <span class="arithmatex">\(O(1)\)</span>。</li>
 </ul>
 <h2 id="pitfalls">陷阱 (Pitfalls)<a class="headerlink" href="#pitfalls" title="Permanent link">#</a></h2>
 <ul>
-<li>容斥公式里 <span class="arithmatex">\(\binom{m}{2}_+\)</span> 要把 <span class="arithmatex">\(m &lt; 0\)</span> 截断为 0；否则会得负数答案。</li>
-<li>三人<strong>有标号</strong>：<code>(2,1,2)</code> 和 <code>(2,2,1)</code> 是不同方案——本题样例已暗示，不要除以排列数。</li>
-<li><span class="arithmatex">\(i\)</span> 上限是 <span class="arithmatex">\(\min(n, L)\)</span>；若直接 <code>range(L+1)</code> 可能让 <span class="arithmatex">\(n - i &lt; 0\)</span> 越界，需 <code>max(0, ...)</code>。</li>
+<li>公式 <span class="arithmatex">\((6)\)</span> 中 <span class="arithmatex">\(c(m)\)</span> 必须在 <span class="arithmatex">\(m &lt; 0\)</span> 时截断为 <span class="arithmatex">\(0\)</span>（见 <span class="arithmatex">\((5)\)</span>）；否则 <span class="arithmatex">\(n - k(L{+}1)\)</span> 为负的项会贡献非零垃圾值，导致结果错误。</li>
+<li>调用 <span class="arithmatex">\(c\)</span> 时传的是 <span class="arithmatex">\((6)\)</span> 里的 <span class="arithmatex">\(m\)</span> 本身，<strong>不要</strong>额外加 <span class="arithmatex">\(2\)</span>。<span class="arithmatex">\(+2\)</span> 偏移已写进 <span class="arithmatex">\(c\)</span> 的定义；重复施加会把 <span class="arithmatex">\(\binom{m+2}{2}\)</span> 错算成 <span class="arithmatex">\(\binom{m+3}{2}\)</span>，两个给定样例都会失败。</li>
+<li>三人<strong>有标号</strong>：<span class="arithmatex">\((2,1,2)\)</span> 和 <span class="arithmatex">\((2,2,1)\)</span> 是不同方案——公式 <span class="arithmatex">\((1)\)</span> 直接数有序三元组，不要除以排列数。</li>
+<li>解法 A 中 <span class="arithmatex">\(i\)</span> 上限是 <span class="arithmatex">\(\min(n, L)\)</span>；若直接 <code>range(L+1)</code> 可能让 <span class="arithmatex">\(n - i &lt; 0\)</span>，需 <span class="arithmatex">\((2)\)</span> 里的 <code>max(0, ...)</code> 与 <code>hi &gt;= lo</code> 守卫。</li>
 </ul>
 <h2 id="related">相关题目 (Related)<a class="headerlink" href="#related" title="Permanent link">#</a></h2>
 <ul>

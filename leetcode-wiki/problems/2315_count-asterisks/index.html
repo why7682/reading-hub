@@ -5485,6 +5485,8 @@
       
         
       
+        
+      
     
     
     
@@ -6024,6 +6026,34 @@
     
   
     #93. Restore IP Addresses
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../0102_binary-tree-level-order-traversal/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    #102. Binary Tree Level Order Traversal
   
 
     
@@ -22675,44 +22705,105 @@
 <h2 id="problem">Problem<a class="headerlink" href="#problem" title="Permanent link">#</a></h2>
 <p>字符串 <code>s</code> 中 <code>|</code> 个数为偶数。每两个连续的 <code>|</code> 形成一对。统计<strong>不在任意一对 <code>|</code> 之间</strong>的 <code>*</code> 数量。<span class="arithmatex">\(|s| \le 1000\)</span>。</p>
 <h2 id="background">背景 (Background)<a class="headerlink" href="#background" title="Permanent link">#</a></h2>
-<p>本题为基础字符串状态机扫描——一个最小的有限状态自动机 (FSA)，与正则解析中"是否在某个 quoting 区间内"完全同源。</p>
+<p>最直接的想法是把字符串切成「成对的 <code>|</code> 围出的区间」与「区间外」两部分，先定位每一对 <code>|</code> 的位置，再统计落在区间外的 <code>*</code>。把所有 <code>|</code> 的下标取出来记为 <span class="arithmatex">\(p_0 &lt; p_1 &lt; \dots &lt; p_{2m-1}\)</span>，区间就是 <span class="arithmatex">\([p_0,p_1],[p_2,p_3],\dots\)</span>；一个 <code>*</code> 计入答案当且仅当它不落在任何一个 <span class="arithmatex">\([p_{2k},p_{2k+1}]\)</span> 内。</p>
+<p>这能算对，但它做了多余的事：它把整个 <code>|</code> 的下标序列都存了下来，再回头对每个 <code>*</code> 判断属于哪个区间。真正决定一个 <code>*</code> 是否计数的，并不是它在第几对区间里，而只是一件事——它前面已经出现了多少个 <code>|</code>。</p>
+<p>沿字符串从左往右扫，把「至今见过的 <code>|</code> 个数」记下来。出现偶数个 <code>|</code> 时，下一个字符位于某对 <code>|</code> 之外；出现奇数个时，位于某对 <code>|</code> 之内。因为题目保证 <code>|</code> 总数为偶数，每个 <code>|</code> 都能与另一个配对，这个奇偶判据在整个串上都成立。于是判断一个 <code>*</code> 是否计数，只需要一个比特——前缀 <code>|</code> 数的奇偶性——而无需任何下标列表。</p>
 <h2 id="formulation">形式化 (Formulation)<a class="headerlink" href="#formulation" title="Permanent link">#</a></h2>
-<p>设 <span class="arithmatex">\(b(i) \in \{0, 1\}\)</span> 表示位置 <span class="arithmatex">\(i\)</span> 之前已遇到偶数 (0) 还是奇数 (1) 个 <code>|</code>. 答案 = <span class="arithmatex">\(|\{i : s_i = *, b(i) = 0\}|\)</span>.</p>
+<p>设 <span class="arithmatex">\(s_i\)</span> 为 <span class="arithmatex">\(s\)</span> 的第 <span class="arithmatex">\(i\)</span> 个字符（<span class="arithmatex">\(0 \le i &lt; |s|\)</span>）。定义</p>
+<div class="arithmatex">\[b(i) = \Big(\big|\{\, j &lt; i : s_j = \texttt{|} \,\}\big|\Big) \bmod 2 \in \{0, 1\},\]</div>
+<p>即位置 <span class="arithmatex">\(i\)</span> 之前 <code>|</code> 的个数的奇偶性。<span class="arithmatex">\(b(i) = 0\)</span> 表示位置 <span class="arithmatex">\(i\)</span> 在某对 <code>|</code> 之外，<span class="arithmatex">\(b(i) = 1\)</span> 表示在某对之内。要求的答案是</p>
+<div class="arithmatex">\[\big|\{\, i : s_i = \texttt{*},\ b(i) = 0 \,\}\big|.\]</div>
+<p><span class="arithmatex">\(b\)</span> 满足一条递推，它正是上面「逐字符扫描」的形式化：<span class="arithmatex">\(b(0) = 0\)</span>，且</p>
+<div class="arithmatex">\[b(i+1) = \begin{cases} 1 - b(i), &amp; s_i = \texttt{|} \\ b(i), &amp; \text{otherwise.} \end{cases}\]</div>
+<p>只有 <code>|</code> 翻转奇偶性，其余字符不改变它。因此扫描时无需保存任何前缀，单个比特 <span class="arithmatex">\(b\)</span> 足以从 <span class="arithmatex">\(b(i)\)</span> 推进到 <span class="arithmatex">\(b(i+1)\)</span>。</p>
 <h2 id="approach">数据结构 / 想法 (Approach)<a class="headerlink" href="#approach" title="Permanent link">#</a></h2>
+<p>把 <span class="arithmatex">\(b(i)\)</span> 直接读成代码：布尔变量 <code>inside</code> 即 <span class="arithmatex">\(b(i)\)</span>（<code>inside = False</code> <span class="arithmatex">\(\Leftrightarrow b(i) = 0\)</span>）；遇到 <code>|</code> 执行翻转 <code>inside = not inside</code>，对应递推 <span class="arithmatex">\(b(i+1) = 1 - b(i)\)</span>；遇到 <code>*</code> 且 <code>inside</code> 为假时累加，对应集合 <span class="arithmatex">\(\{i : s_i = \texttt{*},\ b(i) = 0\}\)</span> 的计数。</p>
 <div class="language-python highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">Solution</span><span class="p">:</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">countAsterisks</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">s</span><span class="p">):</span>
-        <span class="n">inside</span> <span class="o">=</span> <span class="kc">False</span>  <span class="c1"># 当前是否在一对 | 之间</span>
+        <span class="n">inside</span> <span class="o">=</span> <span class="kc">False</span>  <span class="c1"># b(i): 当前是否在一对 | 之间</span>
         <span class="n">ans</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">s</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">c</span> <span class="o">==</span> <span class="s1">&#39;|&#39;</span><span class="p">:</span>
-                <span class="n">inside</span> <span class="o">=</span> <span class="ow">not</span> <span class="n">inside</span>
+                <span class="n">inside</span> <span class="o">=</span> <span class="ow">not</span> <span class="n">inside</span>          <span class="c1"># b(i+1) = 1 - b(i)</span>
             <span class="k">elif</span> <span class="n">c</span> <span class="o">==</span> <span class="s1">&#39;*&#39;</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">inside</span><span class="p">:</span>
-                <span class="n">ans</span> <span class="o">+=</span> <span class="mi">1</span>
+                <span class="n">ans</span> <span class="o">+=</span> <span class="mi">1</span>                      <span class="c1"># 计入 b(i)=0 处的 *</span>
         <span class="k">return</span> <span class="n">ans</span>
 </code></pre></div>
-<p>样例 1：<code>"l|*e*et|c**o|*de|"</code>. 扫描：
-- <code>l</code>: outside, not *.
-- <code>|</code>: toggle inside=True.
-- <code>*e*et</code>: inside, skip.
-- <code>|</code>: toggle inside=False.
-- <code>c**o</code>: outside, <code>*</code> 计 2 个，但等等：<code>c**o</code> 中两个 <code>*</code> 都在 inside=False 时计数. 答案应为 2.
-- <code>|</code>: inside=True.
-- <code>*de</code>: skip.
-- <code>|</code>: inside=False.</p>
-<p>总 ans = 2. ✅</p>
+<p><strong>验证。</strong> 取样例 <code>"l|*e*et|c**o|*de|"</code>，逐段记录扫描后 <code>inside</code> 的状态与对答案的贡献：</p>
+<table>
+<thead>
+<tr>
+<th>段</th>
+<th>进入时 <code>inside</code></th>
+<th>段内 <code>*</code></th>
+<th>计入答案</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>l</code></td>
+<td>False</td>
+<td>0</td>
+<td>0</td>
+</tr>
+<tr>
+<td><code>|</code></td>
+<td>False → True</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>*e*et</code></td>
+<td>True</td>
+<td>2</td>
+<td>0（inside）</td>
+</tr>
+<tr>
+<td><code>|</code></td>
+<td>True → False</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>c**o</code></td>
+<td>False</td>
+<td>2</td>
+<td>2</td>
+</tr>
+<tr>
+<td><code>|</code></td>
+<td>False → True</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>*de</code></td>
+<td>True</td>
+<td>1</td>
+<td>0（inside）</td>
+</tr>
+<tr>
+<td><code>|</code></td>
+<td>True → False</td>
+<td>—</td>
+<td>—</td>
+</tr>
+</tbody>
+</table>
+<p>只有 <code>c**o</code> 段在 <code>inside = False</code> 下扫描，其两个 <code>*</code> 各计一次，其余段或不含 <code>*</code> 或处于 inside；累加得 <code>ans = 2</code>，与期望一致。</p>
 <h2 id="complexity">复杂度 (Complexity)<a class="headerlink" href="#complexity" title="Permanent link">#</a></h2>
 <ul>
-<li>Time: <span class="arithmatex">\(O(|s|)\)</span>。</li>
-<li>Space: <span class="arithmatex">\(O(1)\)</span>。</li>
+<li>Time: <span class="arithmatex">\(O(|s|)\)</span>，单趟无条件扫描，无提前退出。</li>
+<li>Space: <span class="arithmatex">\(O(1)\)</span>，仅一个布尔状态与一个计数器。</li>
 </ul>
 <h2 id="pitfalls">陷阱 (Pitfalls)<a class="headerlink" href="#pitfalls" title="Permanent link">#</a></h2>
 <ul>
-<li>状态机起点是 outside (inside=False)，第一个 <code>|</code> 切换到 inside=True。</li>
-<li>边界假设：题目保证 <code>|</code> 数为偶数，否则末尾状态可能不一致——无需特判。</li>
+<li>状态机起点是 <span class="arithmatex">\(b(0) = 0\)</span>（<code>inside = False</code>）：扫描尚未见到任何 <code>|</code> 时位于区间外，第一个 <code>|</code> 才翻转到 inside。</li>
+<li>奇偶判据依赖「<code>|</code> 总数为偶」这一保证：它确保每个 <code>|</code> 都能配对，递推在整串成立，因此末尾状态必回到 False，无需对收尾做特判。</li>
 </ul>
 <h2 id="related">相关题目 (Related)<a class="headerlink" href="#related" title="Permanent link">#</a></h2>
 <ul>
-<li><a href="../0722_remove-comments/">#0722. Remove Comments</a> — 同款 FSA-based string scanning。</li>
+<li><a href="../0722_remove-comments/">#0722. Remove Comments</a> — 同类基于状态扫描的字符串处理：用一个「是否在注释/字符串内」的状态比特逐字符决定当前字符是否计入输出。</li>
 </ul>
 <h2 id="further-reading">Further Reading<a class="headerlink" href="#further-reading" title="Permanent link">#</a></h2>
 <p>无推荐外部资源（题目难度不足以需要专题文献）。</p>

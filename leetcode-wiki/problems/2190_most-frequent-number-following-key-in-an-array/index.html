@@ -5485,6 +5485,8 @@
       
         
       
+        
+      
     
     
     
@@ -6024,6 +6026,34 @@
     
   
     #93. Restore IP Addresses
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../0102_binary-tree-level-order-traversal/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    #102. Binary Tree Level Order Traversal
   
 
     
@@ -22675,11 +22705,26 @@
 <h2 id="problem">Problem<a class="headerlink" href="#problem" title="Permanent link">#</a></h2>
 <p>给数组 <code>nums</code> 与一个一定存在的 <code>key</code>。对每个 <code>target</code>，统计满足 <code>nums[i] == key &amp;&amp; nums[i+1] == target</code> 的下标 <code>i</code> 数量，返回计数最大的 <code>target</code>（题目保证唯一）。<span class="arithmatex">\(2 \le n \le 1000\)</span>。</p>
 <h2 id="background">背景 (Background)<a class="headerlink" href="#background" title="Permanent link">#</a></h2>
-<p>本题为基础数组遍历 + 哈希计数，无特殊学科背景。</p>
+<p>问题要的不是某个值出现的总次数，而是它紧跟在 <code>key</code> 之后出现的次数。决定答案的只有「相邻对」<code>(nums[i], nums[i+1])</code>，且只有其中左元素等于 <code>key</code> 的那些对才计入。一旦看清「计数对象是 <code>key</code> 后继的相邻对」，数据结构就被唯一确定为一张以后继值为键的频次表——这正是下面形式化与解法的出发点。</p>
 <h2 id="formulation">形式化 (Formulation)<a class="headerlink" href="#formulation" title="Permanent link">#</a></h2>
-<p>求 <span class="arithmatex">\(\arg\max_t \bigl|\{i : 0 \le i \le n-2,\ a_i = \text{key},\ a_{i+1} = t\}\bigr|\)</span>.</p>
+<p>直觉先行：把数组从左到右扫一遍，每当看到 <code>key</code>，就让它紧随其后的那个元素「得一票」。我们要找的，是得票最多的那个值。每个下标 <span class="arithmatex">\(i\)</span> 至多投出一票（当且仅当 <span class="arithmatex">\(a_i = \text{key}\)</span>），所以总票数就是 <code>key</code> 出现并有后继的次数，不存在重复计票。</p>
+<p>令 <span class="arithmatex">\(\mathbf{a} = (a_0, \dots, a_{n-1})\)</span> 为 <code>nums</code>。变量 <span class="arithmatex">\(t\)</span> 取遍数组中出现过的各个值，定义其得票数为</p>
+<div class="arithmatex">\[
+c(t) = \bigl|\{\, i : 0 \le i \le n-2,\ a_i = \text{key},\ a_{i+1} = t \,\}\bigr|,
+\]</div>
+<p>要求的答案即</p>
+<div class="arithmatex">\[
+\arg\max_{t} \; c(t).
+\]</div>
+<p>下标窗口取 <span class="arithmatex">\(0 \le i \le n-2\)</span>，因为 <span class="arithmatex">\(a_{i+1}\)</span> 必须存在；题目保证 <span class="arithmatex">\(\arg\max\)</span> 唯一。</p>
 <h2 id="approach">数据结构 / 想法 (Approach)<a class="headerlink" href="#approach" title="Permanent link">#</a></h2>
-<p>一次线性扫描：遇到 <code>nums[i] == key</code> 就给 <code>cnt[nums[i+1]] += 1</code>，最后取最大。</p>
+<p><strong>先看朴素做法在哪里碰壁。</strong> 直接照搬形式化：候选 <span class="arithmatex">\(t\)</span> 取遍数组中的不同值，对每个 <span class="arithmatex">\(t\)</span> 重新扫一遍数组，按定义数出 <span class="arithmatex">\(c(t)\)</span>，再比较取最大。设不同值有 <span class="arithmatex">\(u\)</span> 个，这是 <span class="arithmatex">\(u\)</span> 次独立扫描，时间 <span class="arithmatex">\(O(n \cdot u)\)</span>，最坏 <span class="arithmatex">\(O(n^2)\)</span>。瓶颈很清楚：同一个 <span class="arithmatex">\(i\)</span> 被反复访问了 <span class="arithmatex">\(u\)</span> 次，而每次访问 <span class="arithmatex">\(i\)</span> 真正贡献的信息只有一条——「若 <span class="arithmatex">\(a_i = \text{key}\)</span>，则 <span class="arithmatex">\(a_{i+1}\)</span> 得一票」。这条信息与候选 <span class="arithmatex">\(t\)</span> 无关。</p>
+<p><strong>修正：把「按 <span class="arithmatex">\(t\)</span> 分组后再数」翻转成「边扫边记票」。</strong> 既然每个 <span class="arithmatex">\(i\)</span> 的贡献独立于 <span class="arithmatex">\(t\)</span>，就不必为每个 <span class="arithmatex">\(t\)</span> 单独扫描。只扫一遍，遇到 <span class="arithmatex">\(a_i = \text{key}\)</span> 时直接给 <span class="arithmatex">\(a_{i+1}\)</span> 这个键加一票。扫完时，所有 <span class="arithmatex">\(c(t)\)</span> 已被同时算出——一张频次表 <code>cnt</code> 恰好就是函数 <span class="arithmatex">\(c\)</span> 的列表化：<code>cnt[t]</code> 即 <span class="arithmatex">\(c(t)\)</span>。这把 <span class="arithmatex">\(u\)</span> 次扫描压成一次。</p>
+<p>这一步把形式化逐项落实为代码：</p>
+<ul>
+<li>集合 <span class="arithmatex">\(\{\, i : a_i = \text{key},\ a_{i+1} = t \,\}\)</span> 的基数 <span class="arithmatex">\(c(t)\)</span> —— 由 <code>if nums[i] == key: cnt[nums[i+1]] += 1</code> 在单次扫描中累加得到；</li>
+<li>外层 <span class="arithmatex">\(\arg\max_t\)</span> —— 由 <code>max(cnt, key=cnt.get)</code> 取频次最大的键得到。</li>
+</ul>
 <div class="language-python highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">collections</span><span class="w"> </span><span class="kn">import</span> <span class="n">Counter</span>
 <span class="k">class</span><span class="w"> </span><span class="nc">Solution</span><span class="p">:</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">mostFrequent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">nums</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
@@ -22689,16 +22734,19 @@
                 <span class="n">cnt</span><span class="p">[</span><span class="n">nums</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]]</span> <span class="o">+=</span> <span class="mi">1</span>
         <span class="k">return</span> <span class="nb">max</span><span class="p">(</span><span class="n">cnt</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="n">cnt</span><span class="o">.</span><span class="n">get</span><span class="p">)</span>
 </code></pre></div>
-<p>样例 1：<code>nums=[1,100,200,1,100], key=1</code>，i=0→cnt[100]=1, i=3→cnt[100]=2，答案 100。✅</p>
+<p>样例 1：<code>nums=[1,100,200,1,100], key=1</code>。<span class="arithmatex">\(i=0\)</span> 时 <span class="arithmatex">\(a_0=1=\text{key}\)</span>，<code>cnt[100]</code> 升为 1；<span class="arithmatex">\(i=3\)</span> 时 <span class="arithmatex">\(a_3=1=\text{key}\)</span>，<code>cnt[100]</code> 升为 2；其余 <span class="arithmatex">\(i\)</span> 的 <span class="arithmatex">\(a_i \ne \text{key}\)</span> 不投票。最终 <code>cnt={100: 2}</code>，答案 100，与 <span class="arithmatex">\(\arg\max\)</span> 一致。</p>
+<p>为什么一遍就够、不会重复计票：每个下标 <span class="arithmatex">\(i\)</span> 至多触发一次 <code>cnt[...] += 1</code>，对应形式化中「至多一票」，因此扫一遍即得到精确的 <span class="arithmatex">\(c\)</span>，第二遍无新信息可加。</p>
 <h2 id="complexity">复杂度 (Complexity)<a class="headerlink" href="#complexity" title="Permanent link">#</a></h2>
+<p>设 <span class="arithmatex">\(u = \bigl|\{\, a_{i+1} : a_i = \text{key} \,\}\bigr|\)</span> 为出现在 <code>key</code> 之后的不同值的数量（<span class="arithmatex">\(u \le n\)</span>）。</p>
 <ul>
-<li>Time: <span class="arithmatex">\(O(n)\)</span>。</li>
-<li>Space: <span class="arithmatex">\(O(u)\)</span>，<span class="arithmatex">\(u\)</span> 为不同 target 数量。</li>
+<li>Time: <span class="arithmatex">\(O(n)\)</span>——单次线性扫描，每个 <code>Counter</code> 自增 <span class="arithmatex">\(O(1)\)</span> 摊还，末尾 <code>max</code> 遍历 <span class="arithmatex">\(u\)</span> 个键为 <span class="arithmatex">\(O(u) \le O(n)\)</span>。</li>
+<li>Space: <span class="arithmatex">\(O(u)\)</span>——频次表 <code>cnt</code> 的键数即 <span class="arithmatex">\(u\)</span>。</li>
 </ul>
 <h2 id="pitfalls">陷阱 (Pitfalls)<a class="headerlink" href="#pitfalls" title="Permanent link">#</a></h2>
 <ul>
-<li>注意只扫到 <code>n-2</code>，否则 <code>nums[i+1]</code> 越界。</li>
-<li>不需要担心 tie：题目保证答案唯一。</li>
+<li>扫描上界取 <span class="arithmatex">\(i \le n-2\)</span>（<code>range(len(nums) - 1)</code>），否则访问 <code>nums[i+1]</code> 在 <span class="arithmatex">\(i=n-1\)</span> 处越界。</li>
+<li>无需处理平局情形：题目保证 <span class="arithmatex">\(\arg\max\)</span> 唯一，故无歧义。</li>
+<li><code>max(cnt, ...)</code> 在 <code>cnt</code> 为空时会抛 <code>ValueError</code>；本题题目保证 <code>key</code> 至少在某个 <span class="arithmatex">\(i \le n-2\)</span> 处出现，故 <code>cnt</code> 对合法输入恒非空，无需额外判空。</li>
 </ul>
 <h2 id="related">相关题目 (Related)<a class="headerlink" href="#related" title="Permanent link">#</a></h2>
 <ul>

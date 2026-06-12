@@ -5485,6 +5485,8 @@
       
         
       
+        
+      
     
     
     
@@ -6024,6 +6026,34 @@
     
   
     #93. Restore IP Addresses
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../0102_binary-tree-level-order-traversal/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    #102. Binary Tree Level Order Traversal
   
 
     
@@ -17653,6 +17683,34 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="数据结构 / 想法 (Approach)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#a" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        解法 A（暴力）
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#bon-ii" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        解法 B（\(O(n)\)，为 II 版铺路）
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -22607,6 +22665,34 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="数据结构 / 想法 (Approach)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#a" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        解法 A（暴力）
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#bon-ii" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        解法 B（\(O(n)\)，为 II 版铺路）
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -22675,11 +22761,14 @@
 <h2 id="problem">Problem<a class="headerlink" href="#problem" title="Permanent link">#</a></h2>
 <p>给数组 <code>nums</code> 与两整数 <code>indexDifference</code>、<code>valueDifference</code>，找下标对 <span class="arithmatex">\((i,j)\)</span>（允许 <span class="arithmatex">\(i=j\)</span>）满足 <span class="arithmatex">\(|i-j| \ge \text{indexDifference}\)</span> 且 <span class="arithmatex">\(|\text{nums}[i] - \text{nums}[j]| \ge \text{valueDifference}\)</span>。返回任一对，无解返回 <code>[-1,-1]</code>。<span class="arithmatex">\(n \le 100\)</span>。</p>
 <h2 id="background">背景 (Background)<a class="headerlink" href="#background" title="Permanent link">#</a></h2>
-<p>本题是 #2905 (II) 的小数据弱化版（<span class="arithmatex">\(n \le 10^5\)</span> 才需线性算法）。Easy 版本数据极小，暴力即可。Medium 版本利用了一个经典技巧：<strong>固定 <span class="arithmatex">\(j\)</span>，维护 <span class="arithmatex">\(j\)</span> 左侧距离 <span class="arithmatex">\(\ge d\)</span> 处的 prefix max / prefix min</strong>——这是"双指针 + 滑窗最值"模板。</p>
+<p>最直接的做法是检查每一对下标 <span class="arithmatex">\((i,j)\)</span>：是否满足下标间隔 <span class="arithmatex">\(\ge D_I\)</span>，再测值差 <span class="arithmatex">\(\ge D_V\)</span>。<span class="arithmatex">\(n \le 100\)</span> 时这 <span class="arithmatex">\(O(n^2)\)</span> 枚举完全够用，本题（Easy）到此就能通过。</p>
+<p>但同一题在 #2905 (II) 把规模放大到 <span class="arithmatex">\(n \le 10^5\)</span>，<span class="arithmatex">\(O(n^2)\)</span> 就会超时。于是值得追问：两个约束里，下标约束 <span class="arithmatex">\(|i-j| \ge D_I\)</span> 是否可以被利用，从而省掉冗余比较？下文先把暴力跑通，再指出它的冗余在哪里，最后从这个冗余推出一个 <span class="arithmatex">\(O(n)\)</span> 的扫描算法。两个解法回答的是同一个问题，只是后者多榨出了下标约束的结构。</p>
 <h2 id="formulation">形式化 (Formulation)<a class="headerlink" href="#formulation" title="Permanent link">#</a></h2>
-<p>求 <span class="arithmatex">\((i,j) \in [0,n)^2\)</span> 使 <span class="arithmatex">\(|i-j| \ge D_I \land |a_i - a_j| \ge D_V\)</span>，或证明不存在。</p>
+<p>求 <span class="arithmatex">\((i,j) \in [0,n)^2\)</span> 使 <span class="arithmatex">\(|i-j| \ge D_I \land |a_i - a_j| \ge D_V\)</span>，或证明不存在。其中 <span class="arithmatex">\(a_k = \text{nums}[k]\)</span>。</p>
+<p>值差约束含绝对值，但绝对值对调换 <span class="arithmatex">\(i,j\)</span> 不变，因此只需枚举 <span class="arithmatex">\(i \le j\)</span>（即 <span class="arithmatex">\(j - i \ge D_I\)</span>）就覆盖了所有无序对，不丢解。</p>
 <h2 id="approach">数据结构 / 想法 (Approach)<a class="headerlink" href="#approach" title="Permanent link">#</a></h2>
-<p><strong>解法 A（暴力）</strong>：双层枚举 <span class="arithmatex">\(O(n^2)\)</span>。<span class="arithmatex">\(n \le 100\)</span> 完全够。</p>
+<h3 id="a">解法 A（暴力）<a class="headerlink" href="#a" title="Permanent link">#</a></h3>
+<p>直接照形式化枚举所有 <span class="arithmatex">\(i \le j\)</span>，先查下标间隔再查值差，命中即返回。</p>
 <div class="language-python highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">Solution</span><span class="p">:</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">findIndices</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">nums</span><span class="p">,</span> <span class="n">indexDifference</span><span class="p">,</span> <span class="n">valueDifference</span><span class="p">):</span>
         <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">nums</span><span class="p">)</span>
@@ -22689,8 +22778,15 @@
                     <span class="k">return</span> <span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span>
         <span class="k">return</span> <span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">]</span>
 </code></pre></div>
-<p><strong>解法 B（<span class="arithmatex">\(O(n)\)</span>，为 II 版铺路）</strong>：扫 <span class="arithmatex">\(j\)</span> 从 <span class="arithmatex">\(D_I\)</span> 到 <span class="arithmatex">\(n-1\)</span>，维护 <span class="arithmatex">\([0, j - D_I]\)</span> 范围内 <code>nums</code> 的 <strong>最大值索引 <code>mx</code></strong> 与 <strong>最小值索引 <code>mn</code></strong>。则只需检查 <span class="arithmatex">\(\max(|a_{mx} - a_j|, |a_{mn} - a_j|) \ge D_V\)</span>。</p>
-<p><strong>不变量</strong>：扫到 <span class="arithmatex">\(j\)</span> 时，<code>mx, mn</code> 是 <span class="arithmatex">\([0, j - D_I]\)</span> 闭区间内的 argmax/argmin。每步 <span class="arithmatex">\(O(1)\)</span> 更新。</p>
+<p><span class="arithmatex">\(n \le 100\)</span> 时这就是终点。</p>
+<h3 id="bon-ii">解法 B（<span class="arithmatex">\(O(n)\)</span>，为 II 版铺路）<a class="headerlink" href="#bon-ii" title="Permanent link">#</a></h3>
+<p><strong>冗余在哪里。</strong> 把解法 A 反过来看：固定右端 <span class="arithmatex">\(j\)</span>，合法的左端 <span class="arithmatex">\(i\)</span> 是满足 <span class="arithmatex">\(i \le j - D_I\)</span> 的全部下标，即一段前缀 <span class="arithmatex">\([0, j - D_I]\)</span>。当 <span class="arithmatex">\(j\)</span> 增加 1，这段前缀只多出一个新下标 <span class="arithmatex">\(j - D_I\)</span>；其余下标在上一步 <span class="arithmatex">\(j-1\)</span> 时已经被检查过。换句话说，暴力对每个 <span class="arithmatex">\(j\)</span> 重新扫整段前缀，绝大部分比较是上一步做过的。</p>
+<p><strong>只看极值就够。</strong> 对固定的 <span class="arithmatex">\(j\)</span>，我们关心的是这段前缀里能否找到满足 <span class="arithmatex">\(|a_i - a_j| \ge D_V\)</span> 的 <span class="arithmatex">\(i\)</span>。等价地，看这段前缀里
+$<span class="arithmatex">\(\max_{\,i \in [0,\, j - D_I]} |a_i - a_j| \ge D_V\)</span>$
+是否成立。绝对值拆成两侧：<span class="arithmatex">\(|a_i - a_j|\)</span> 要么由较大的 <span class="arithmatex">\(a_i\)</span> 贡献（取 <span class="arithmatex">\(a_i - a_j\)</span>，在前缀最大值处达到上界），要么由较小的 <span class="arithmatex">\(a_i\)</span> 贡献（取 <span class="arithmatex">\(a_j - a_i\)</span>，在前缀最小值处达到上界）。所以这段前缀里值差最大的候选 <span class="arithmatex">\(i\)</span>，只可能是前缀的 argmax 或 argmin——其余下标都被这两者支配，不必单独检查。</p>
+<p><strong>不变量（先于代码）。</strong> 扫描到 <span class="arithmatex">\(j\)</span> 时，维护两个下标：
+$<span class="arithmatex">\(\texttt{mx} = \arg\max_{i \in [0,\, j - D_I]} a_i, \qquad \texttt{mn} = \arg\min_{i \in [0,\, j - D_I]} a_i.\)</span>$
+由上一段，命中条件就化简为两个单边判断：<span class="arithmatex">\(a_{\texttt{mx}} - a_j \ge D_V\)</span> 或 <span class="arithmatex">\(a_j - a_{\texttt{mn}} \ge D_V\)</span>。因为窗口随 <span class="arithmatex">\(j\)</span> 每步只扩展一个新下标 <span class="arithmatex">\(j - D_I\)</span>，把这个新下标并入极值只需 <span class="arithmatex">\(O(1)\)</span>，无需重扫。</p>
 <div class="language-python highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">Solution</span><span class="p">:</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">findIndices</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">nums</span><span class="p">,</span> <span class="n">indexDifference</span><span class="p">,</span> <span class="n">valueDifference</span><span class="p">):</span>
         <span class="n">mn</span> <span class="o">=</span> <span class="n">mx</span> <span class="o">=</span> <span class="mi">0</span>
@@ -22702,19 +22798,23 @@
             <span class="k">if</span> <span class="n">nums</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">-</span> <span class="n">nums</span><span class="p">[</span><span class="n">mn</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="n">valueDifference</span><span class="p">:</span> <span class="k">return</span> <span class="p">[</span><span class="n">mn</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span>
         <span class="k">return</span> <span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">]</span>
 </code></pre></div>
+<p><strong>初始状态与边界。</strong> <span class="arithmatex">\(j\)</span> 从 <span class="arithmatex">\(D_I\)</span> 起，保证窗口 <span class="arithmatex">\([0, j-D_I]\)</span> 至少含下标 0；<code>mn = mx = 0</code> 是窗口仅含 <span class="arithmatex">\(\{0\}\)</span> 时的正确 argmin/argmax。若 <span class="arithmatex">\(D_I \ge n\)</span>，<code>range</code> 为空、循环不执行，直接返回 <code>[-1,-1]</code>（此时 <code>mn=mx=0</code> 的初值从不被读取，无越界）。</p>
 <p><strong>Trace example 1</strong> <code>nums=[5,1,4,1], indexDifference=2, valueDifference=4</code>：
-- <span class="arithmatex">\(j=2\)</span>, <span class="arithmatex">\(i=0\)</span>, mn=mx=0；|5-4|=1 &lt; 4。
-- <span class="arithmatex">\(j=3\)</span>, <span class="arithmatex">\(i=1\)</span>, 更新 mn=1（1&lt;5）；mx=0；|5-1|=4 ≥ 4 → 返回 [0,3] ✓</p>
+- 初始 <code>mn=mx=0</code>。
+- <span class="arithmatex">\(j=2\)</span>, <span class="arithmatex">\(i=0\)</span>：窗口 <span class="arithmatex">\([0,0]\)</span>，<code>mn=mx=0</code>。检查 <span class="arithmatex">\(a_{0}-a_2=5-4=1 &lt; 4\)</span>，<span class="arithmatex">\(a_2-a_0=4-5&lt;0\)</span>，无命中。
+- <span class="arithmatex">\(j=3\)</span>, <span class="arithmatex">\(i=1\)</span>：新下标 1 并入窗口 <span class="arithmatex">\([0,1]\)</span>，<span class="arithmatex">\(a_1=1&lt;a_{\texttt{mn}}=5\)</span> 故 <code>mn=1</code>；<code>mx</code> 仍 0。检查 <span class="arithmatex">\(a_{\texttt{mx}}-a_3=5-1=4 \ge 4\)</span> → 返回 <code>[0,3]</code> ✓</p>
+<p>至此 <span class="arithmatex">\(O(n)\)</span> 扫描成立，这正是 #2905 (II) 在大数据下必须采用的形态。</p>
 <h2 id="complexity">复杂度 (Complexity)<a class="headerlink" href="#complexity" title="Permanent link">#</a></h2>
 <ul>
-<li>A: Time <span class="arithmatex">\(O(n^2)\)</span>, Space <span class="arithmatex">\(O(1)\)</span>。</li>
-<li>B: Time <span class="arithmatex">\(O(n)\)</span>, Space <span class="arithmatex">\(O(1)\)</span>。</li>
+<li>解法 A：Time <span class="arithmatex">\(O(n^2)\)</span>，Space <span class="arithmatex">\(O(1)\)</span>。</li>
+<li>解法 B：Time <span class="arithmatex">\(O(n)\)</span>，Space <span class="arithmatex">\(O(1)\)</span>。</li>
 </ul>
+<p>两者都提前返回，故最好情况更快；上表为最坏情况上界，<span class="arithmatex">\(n \le 100\)</span> 时均成立。</p>
 <h2 id="pitfalls">陷阱 (Pitfalls)<a class="headerlink" href="#pitfalls" title="Permanent link">#</a></h2>
 <ul>
 <li>题目允许 <span class="arithmatex">\(i = j\)</span>（当 <span class="arithmatex">\(D_I = D_V = 0\)</span>，任何 <span class="arithmatex">\((i,i)\)</span> 即可）。</li>
-<li><span class="arithmatex">\(|i-j|\)</span> 是绝对值，但 <span class="arithmatex">\(j \ge i + D_I\)</span> 已覆盖全部排序无关对。</li>
-<li>解法 B 中 mn/mx 用<strong>索引</strong>而非值——返回需要索引。</li>
+<li><span class="arithmatex">\(|i-j|\)</span> 是绝对值，但只枚举 <span class="arithmatex">\(j \ge i + D_I\)</span> 已覆盖全部无序对——绝对值对调换不变。</li>
+<li>解法 B 中 <code>mn</code>/<code>mx</code> 存的是<strong>索引</strong>而非值——返回需要索引，比较时再取 <code>nums[mn]</code>/<code>nums[mx]</code>。</li>
 </ul>
 <h2 id="related">相关题目 (Related)<a class="headerlink" href="#related" title="Permanent link">#</a></h2>
 <ul>

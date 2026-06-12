@@ -5485,6 +5485,8 @@
       
         
       
+        
+      
     
     
     
@@ -6024,6 +6026,34 @@
     
   
     #93. Restore IP Addresses
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../0102_binary-tree-level-order-traversal/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    #102. Binary Tree Level Order Traversal
   
 
     
@@ -22675,32 +22705,36 @@
 <h2 id="problem">Problem<a class="headerlink" href="#problem" title="Permanent link">#</a></h2>
 <p>给 <span class="arithmatex">\(m\)</span> 种轮胎，第 <span class="arithmatex">\(i\)</span> 种第 <span class="arithmatex">\(x\)</span> 圈用时 <span class="arithmatex">\(f_i \cdot r_i^{x-1}\)</span>。每次换胎额外耗时 <code>changeTime</code>。求跑完 <code>numLaps</code> 圈的最短总时间。约束：<span class="arithmatex">\(\text{numLaps} \le 1000\)</span>，<span class="arithmatex">\(f_i \ge 1\)</span>，<span class="arithmatex">\(r_i \ge 2\)</span>。</p>
 <h2 id="background">背景 (Background)<a class="headerlink" href="#background" title="Permanent link">#</a></h2>
-<p>经典「换胎 / 维修间隔决策」DP：连续使用同一资源时单步代价指数增长（疲劳模型），与「重启代价 + 新一轮线性递归」之间做 trade-off。同类问题：油料消耗 + 加油站、机器人电池衰减、批处理任务的 setup 成本。指数增长 + 加性 setup 是 amortized 分析里"<span class="arithmatex">\(O(\log)\)</span> truncation"的标准触发器。</p>
+<p>考虑用单只轮胎连续跑下去会发生什么。第 <span class="arithmatex">\(x\)</span> 圈用时 <span class="arithmatex">\(f_i \cdot r_i^{x-1}\)</span>，每多跑一圈耗时至少翻倍（<span class="arithmatex">\(r_i \ge 2\)</span>）。于是存在一个临界点：继续跑的下一圈太贵，不如停下、付一次 <code>changeTime</code>、换上新胎从第一圈重新开始。</p>
+<p>整道题就是对这个张力的精确回答：临界点在哪里，以及它如何拼成全程的最优解。所有结构都从这一个观察里长出来——换胎会把状态完全清零（圈时回到 <span class="arithmatex">\(f\)</span>，下一只胎可任选），所以一段「连续骑行」之后的子问题与之前用过哪只胎无关。这种<strong>重启即清零</strong>的性质是后面 DP 能拆分的唯一依据，下文据此推导。</p>
 <h2 id="formulation">形式化 (Formulation)<a class="headerlink" href="#formulation" title="Permanent link">#</a></h2>
-<p>设 <span class="arithmatex">\(\text{best}[x]\)</span> 为「不换胎、连续跑 <span class="arithmatex">\(x\)</span> 圈」的最小用时。设 <span class="arithmatex">\(\text{dp}[i]\)</span> 为「跑完 <span class="arithmatex">\(i\)</span> 圈」的最小总时间。则</p>
-<div class="arithmatex">\[\mathrm{dp}[i] = \min_{1 \le x \le X^*} \bigl(\mathrm{dp}[i - x] + \text{changeTime} + \text{best}[x]\bigr), \quad \mathrm{dp}[0] = -\text{changeTime}.\]</div>
-<p>其中 <span class="arithmatex">\(X^*\)</span> 是「连续跑」的上界（见下方推导）。</p>
+<p><strong>先界定连续段的长度上界。</strong> 单只轮胎从第一圈连续跑到第 <span class="arithmatex">\(x\)</span> 圈是否划算，取决于第 <span class="arithmatex">\(x\)</span> 圈本身的代价 <span class="arithmatex">\(f_i \cdot r_i^{x-1}\)</span>。把它与「换一只新胎、立刻跑它的第一圈」的代价 <span class="arithmatex">\(\text{changeTime} + f_i\)</span> 比较：一旦</p>
+<div class="arithmatex">\[f_i \cdot r_i^{x-1} \ge f_i + \text{changeTime},\]</div>
+<p>继续留在旧胎上跑第 <span class="arithmatex">\(x\)</span> 圈就不比换胎更优，因此最优解里没有任何一段连续骑行需要超过这个长度。由 <span class="arithmatex">\(r_i \ge 2,\ f_i \ge 1,\ \text{changeTime} \le 10^5\)</span> 得 <span class="arithmatex">\(r_i^{x-1} \le 1 + 10^5\)</span>，即</p>
+<div class="arithmatex">\[x \le 1 + \log_{2}\!\bigl(10^5 + 1\bigr) \approx 17.6.\]</div>
+<p>所以<strong>任何最优连续段长度都不超过 <span class="arithmatex">\(X^* = 18\)</span></strong>，取 <span class="arithmatex">\(X^* = 20\)</span> 作安全上界即可。这个有限且很小的界，是下面递推得以成立的前提。</p>
+<p><strong>再定义两层量。</strong> 设 <span class="arithmatex">\(\text{best}[x]\)</span> 为「不换胎、用某只轮胎连续跑 <span class="arithmatex">\(x\)</span> 圈」的最小用时（对所有轮胎取最小），<span class="arithmatex">\(x\)</span> 只需取到 <span class="arithmatex">\(X^*\)</span>。设 <span class="arithmatex">\(\text{dp}[i]\)</span> 为「跑完前 <span class="arithmatex">\(i\)</span> 圈」的最小总时间。</p>
+<p>直觉上，最优解的最后一段是某只胎连续跑了 <span class="arithmatex">\(x\)</span> 圈（<span class="arithmatex">\(1 \le x \le X^*\)</span>）。由重启即清零性质，这一段之前的 <span class="arithmatex">\(i - x\)</span> 圈是一个独立子问题，其最优解就是 <span class="arithmatex">\(\text{dp}[i-x]\)</span>；两段之间隔着一次换胎，计 <span class="arithmatex">\(\text{changeTime}\)</span>。枚举最后一段的长度 <span class="arithmatex">\(x\)</span> 取最小，即得递推：</p>
+<div class="arithmatex">\[\mathrm{dp}[i] = \min_{1 \le x \le \min(X^*,\, i)} \bigl(\mathrm{dp}[i - x] + \text{changeTime} + \text{best}[x]\bigr).\]</div>
+<p><strong>边界。</strong> 朴素地写 <span class="arithmatex">\(\mathrm{dp}[0] = 0\)</span>，则上式给每段都加了一次 <code>changeTime</code>，包括第一段——但第一段前面并没有换胎动作，全程恰好多算了一次。令 <span class="arithmatex">\(\mathrm{dp}[0] = -\text{changeTime}\)</span> 即可抵消这一次多算：此时第一段的转移 <span class="arithmatex">\(\mathrm{dp}[0] + \text{changeTime} + \text{best}[x] = \text{best}[x]\)</span> 正好不含换胎费。答案即 <span class="arithmatex">\(\mathrm{dp}[\text{numLaps}]\)</span>，无需再额外加减。</p>
 <h2 id="approach">数据结构 / 想法 (Approach)<a class="headerlink" href="#approach" title="Permanent link">#</a></h2>
-<p><strong>关键观察：<span class="arithmatex">\(X^*\)</span> 很小</strong>。一只轮胎连续跑 <span class="arithmatex">\(x\)</span> 圈的累计代价</p>
-<div class="arithmatex">\[\sum_{k=0}^{x-1} f_i \cdot r_i^{k} = f_i \cdot \frac{r_i^x - 1}{r_i - 1}.\]</div>
-<p>若 <span class="arithmatex">\(f_i \cdot r_i^{x-1} \ge f_i + \text{changeTime}\)</span>，则第 <span class="arithmatex">\(x\)</span> 圈"直接换新胎再跑"比"继续跑"更划算。由 <span class="arithmatex">\(r_i \ge 2, f_i \ge 1, \text{changeTime} \le 10^5\)</span> 得 <span class="arithmatex">\(r_i^{x-1} \le 1 + 10^5\)</span>，即 <span class="arithmatex">\(x \le 1 + \log_2(10^5 + 1) \approx 18\)</span>。所以只需枚举 <span class="arithmatex">\(x \in [1, 20]\)</span> 左右。</p>
-<p><strong>算法</strong>：
-1. 预处理 <code>best[x]</code>，<span class="arithmatex">\(x = 1, \dots, X^*\)</span>：对每种轮胎模拟，提前 break 当当前圈时长溢出 <span class="arithmatex">\(10^{18}\)</span>。
-2. DP <code>dp[i] = min over x in [1, min(X*, i)]: dp[i-x] + changeTime + best[x]</code>，最后答案 <code>dp[numLaps] + changeTime</code>（因为 <code>dp[0] = -changeTime</code> 把首段的 changeTime 抵消掉）。或者写成 <code>dp[i] = min(best[i], ...)</code> 处理 <span class="arithmatex">\(i \le X^*\)</span> 的情况。</p>
-<p><strong>不变量</strong>：DP 第 <span class="arithmatex">\(i\)</span> 项已经包含「最后一段连续骑行 <span class="arithmatex">\(x\)</span> 圈」的最优选择，前 <span class="arithmatex">\(i - x\)</span> 圈也是最优——subproblem 独立可拼接。</p>
+<p>递推的两层量分别预处理与填表。</p>
+<ol>
+<li>预处理 <span class="arithmatex">\(\text{best}[x]\)</span>（<span class="arithmatex">\(x = 1, \dots, X^*\)</span>）：对每种轮胎逐圈累加圈时。圈时按 <span class="arithmatex">\(r_i\)</span> 倍增，很快超过任何可能有用的范围；一旦下一圈的圈时 <code>cur</code> 大到「再跑一圈也绝不可能优于换胎」，就提前 break——代码用 <code>cur &gt; 2 * 10**9</code> 作护栏。由于换胎重启的代价上界约 <span class="arithmatex">\(f_{\max} + \text{changeTime} \approx 2 \times 10^5\)</span>，任何单圈耗时超过 <span class="arithmatex">\(2 \times 10^9\)</span> 的连续段都不可能出现在最优解里，这道护栏既防溢出又不丢最优。</li>
+<li>填表 <span class="arithmatex">\(\text{dp}\)</span>：按 <span class="arithmatex">\(i\)</span> 从小到大，枚举最后一段长度 <span class="arithmatex">\(x \in [1, \min(X^*, i)]\)</span> 转移。</li>
+</ol>
 <div class="language-python highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">Solution</span><span class="p">:</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">minimumFinishTime</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tires</span><span class="p">,</span> <span class="n">changeTime</span><span class="p">,</span> <span class="n">numLaps</span><span class="p">):</span>
         <span class="n">INF</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="s1">&#39;inf&#39;</span><span class="p">)</span>
-        <span class="n">X</span> <span class="o">=</span> <span class="mi">20</span>  <span class="c1"># 安全上界</span>
+        <span class="n">X</span> <span class="o">=</span> <span class="mi">20</span>  <span class="c1"># X* 的安全上界</span>
         <span class="n">best</span> <span class="o">=</span> <span class="p">[</span><span class="n">INF</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="n">X</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
         <span class="k">for</span> <span class="n">f</span><span class="p">,</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">tires</span><span class="p">:</span>
             <span class="n">cur</span><span class="p">,</span> <span class="n">total</span> <span class="o">=</span> <span class="n">f</span><span class="p">,</span> <span class="mi">0</span>
             <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">X</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
                 <span class="n">total</span> <span class="o">+=</span> <span class="n">cur</span>
-                <span class="k">if</span> <span class="n">total</span> <span class="o">&gt;=</span> <span class="n">INF</span><span class="p">:</span> <span class="k">break</span>
                 <span class="k">if</span> <span class="n">total</span> <span class="o">&lt;</span> <span class="n">best</span><span class="p">[</span><span class="n">x</span><span class="p">]:</span> <span class="n">best</span><span class="p">[</span><span class="n">x</span><span class="p">]</span> <span class="o">=</span> <span class="n">total</span>
                 <span class="n">cur</span> <span class="o">*=</span> <span class="n">r</span>
-                <span class="k">if</span> <span class="n">cur</span> <span class="o">&gt;</span> <span class="mi">2</span> <span class="o">*</span> <span class="mi">10</span><span class="o">**</span><span class="mi">9</span><span class="p">:</span> <span class="k">break</span>
+                <span class="k">if</span> <span class="n">cur</span> <span class="o">&gt;</span> <span class="mi">2</span> <span class="o">*</span> <span class="mi">10</span><span class="o">**</span><span class="mi">9</span><span class="p">:</span> <span class="k">break</span>  <span class="c1"># 再跑一圈绝不优于换胎，截断防溢出</span>
         <span class="n">X</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">numLaps</span><span class="p">)</span>
         <span class="n">dp</span> <span class="o">=</span> <span class="p">[</span><span class="n">INF</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="n">numLaps</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
         <span class="n">dp</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
@@ -22711,17 +22745,18 @@
                     <span class="n">dp</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">cand</span>
         <span class="k">return</span> <span class="n">dp</span><span class="p">[</span><span class="n">numLaps</span><span class="p">]</span>
 </code></pre></div>
-<p>样例 1：<code>tires=[[2,3],[3,4]]</code>, <code>changeTime=5</code>, <code>numLaps=4</code>。<code>best[1]=2, best[2]=2+6=8, best[3]=8+18=26, best[4]=26+54=80</code>。<code>dp[1]=2, dp[2]=8, dp[3]=min(dp[0]+0+26, dp[1]+5+8, dp[2]+5+2)=min(26,15,15)=15, dp[4]=min(dp[0]+0+80, dp[1]+5+26, dp[2]+5+8, dp[3]+5+2)=min(80,33,21,22)=21</code>. ✅</p>
+<p>代码用 <code>dp[0] = 0</code> 加上条件项 <code>(changeTime if i - x &gt; 0 else 0)</code> 来实现上节的边界，效果与 <span class="arithmatex">\(\mathrm{dp}[0] = -\text{changeTime}\)</span> 完全等价：当 <span class="arithmatex">\(i - x = 0\)</span>（即这是第一段）时不计换胎费，否则计。两种写法选其一即可，下文沿用代码这一版，返回值就是 <span class="arithmatex">\(\text{dp}[\text{numLaps}]\)</span>。</p>
+<p>样例 1：<code>tires=[[2,3],[3,4]]</code>, <code>changeTime=5</code>, <code>numLaps=4</code>。逐圈累加得 <code>best[1]=2, best[2]=2+6=8, best[3]=8+18=26, best[4]=26+54=80</code>（轮胎 <code>[2,3]</code> 占优）。填表：<code>dp[1]=2</code>，<code>dp[2]=8</code>，<code>dp[3]=min(dp[0]+0+26, dp[1]+5+8, dp[2]+5+2)=min(26,15,15)=15</code>，<code>dp[4]=min(dp[0]+0+80, dp[1]+5+26, dp[2]+5+8, dp[3]+5+2)=min(80,33,21,22)=21</code>。返回 <code>dp[4]=21</code>。</p>
 <h2 id="complexity">复杂度 (Complexity)<a class="headerlink" href="#complexity" title="Permanent link">#</a></h2>
 <ul>
-<li>Time: <span class="arithmatex">\(O(m \cdot X^* + \text{numLaps} \cdot X^*) = O((m + L) \log C)\)</span>。</li>
+<li>Time: <span class="arithmatex">\(O(m \cdot X^* + \text{numLaps} \cdot X^*) = O\bigl((m + L)\log C\bigr)\)</span>，其中 <span class="arithmatex">\(X^* = O(\log C)\)</span>。</li>
 <li>Space: <span class="arithmatex">\(O(\text{numLaps} + X^*)\)</span>。</li>
 </ul>
 <h2 id="pitfalls">陷阱 (Pitfalls)<a class="headerlink" href="#pitfalls" title="Permanent link">#</a></h2>
 <ul>
-<li>不能枚举到 <span class="arithmatex">\(x = \text{numLaps}\)</span>，否则单胎用时溢出（<span class="arithmatex">\(f \cdot r^{1000}\)</span>）。必须用 <span class="arithmatex">\(X^* \approx 18\text{-}20\)</span> 截断。</li>
-<li><code>dp[0]</code> 与 changeTime 的初始相容：要么 <code>dp[0] = -changeTime</code> 然后 <code>dp[i] += changeTime</code>，要么如上代码用条件加 changeTime。两个边界不当会多算或少算一次换胎。</li>
-<li>即便 <code>best[x]</code> 用了 <span class="arithmatex">\(10^{18}\)</span> 安全护栏，DP 转移加法仍要保证不溢出（C++ 用 <code>long long</code>）。</li>
+<li>不能把连续段长度 <span class="arithmatex">\(x\)</span> 枚举到 <code>numLaps</code>，否则单胎用时 <span class="arithmatex">\(f \cdot r^{1000}\)</span> 直接溢出。必须用 <span class="arithmatex">\(X^* \approx 18\text{-}20\)</span> 截断；正是「第 <span class="arithmatex">\(x\)</span> 圈代价 <span class="arithmatex">\(\ge\)</span> 换胎代价」这条不等式保证了截断不丢最优。</li>
+<li><code>dp[0]</code> 与 <code>changeTime</code> 的边界要前后一致：本文代码用 <code>dp[0]=0</code> + 条件 <code>changeTime</code>，等价的 <span class="arithmatex">\(\mathrm{dp}[0]=-\text{changeTime}\)</span> 写法每段无条件加 <code>changeTime</code>。两者答案都是 <span class="arithmatex">\(\text{dp}[\text{numLaps}]\)</span>，不要再额外 <code>+ changeTime</code>；混用边界会多算或少算一次换胎。</li>
+<li>即便 <code>best[x]</code> 的累加在 Python 里不会溢出，移植到 C++ 时 <code>best</code> 与 DP 转移的加法都需 <code>long long</code>，并保留 <code>cur &gt; 2*10^9</code> 这类护栏避免中间量越界。</li>
 </ul>
 <h2 id="related">相关题目 (Related)<a class="headerlink" href="#related" title="Permanent link">#</a></h2>
 <ul>

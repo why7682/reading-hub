@@ -5485,6 +5485,8 @@
       
         
       
+        
+      
     
     
     
@@ -6024,6 +6026,34 @@
     
   
     #93. Restore IP Addresses
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../0102_binary-tree-level-order-traversal/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    #102. Binary Tree Level Order Traversal
   
 
     
@@ -22675,31 +22705,65 @@
 <h2 id="problem">Problem<a class="headerlink" href="#problem" title="Permanent link">#</a></h2>
 <p>"continuous" 子数组：任意两元素差 <span class="arithmatex">\(\le 2\)</span>。返回所有 continuous 子数组数。<span class="arithmatex">\(n \le 10^5\)</span>。</p>
 <h2 id="_1">背景<a class="headerlink" href="#_1" title="Permanent link">#</a></h2>
-<p>"最大-最小 ≤ 2" 是<strong>滑动窗口的可保持性质</strong>：窗口右扩时新元素若让 max - min &gt; 2 则需左缩。维护窗口内 max / min 需要 <strong>单调双端队列 (monotonic deque)</strong> —— 一种 <span class="arithmatex">\(O(n)\)</span> 摊销的数据结构，<strong>支持 <span class="arithmatex">\(O(1)\)</span> 查询当前 max/min</strong>。</p>
-<p>这是 <em>#239 Sliding Window Maximum</em> 标准技巧的双调版（同时维护 max 和 min）。也可用 multiset / SortedList <span class="arithmatex">\(O(n \log n)\)</span>。</p>
+<p>一个子数组里"任意两元素差 <span class="arithmatex">\(\le 2\)</span>"等价于它的 <span class="arithmatex">\(\max - \min \le 2\)</span>——只需检查最远的两端。于是问题变成：在 <span class="arithmatex">\(\binom{n}{2} + n = O(n^2)\)</span> 个候选子数组中，数出满足 <span class="arithmatex">\(\max - \min \le 2\)</span> 的那些。直接枚举每个 <span class="arithmatex">\([l..r]\)</span> 并求其 max/min 是 <span class="arithmatex">\(O(n^3)\)</span>，预处理后也至少 <span class="arithmatex">\(O(n^2)\)</span>；<span class="arithmatex">\(n \le 10^5\)</span> 下不可行。我们需要一个不逐个检查的办法。</p>
+<p>先观察约束本身的结构。固定右端点 <span class="arithmatex">\(r\)</span>，把左端点 <span class="arithmatex">\(l\)</span> 从 <span class="arithmatex">\(r\)</span> 一路往左移：</p>
+<ul>
+<li>每往左加入一个元素，窗口 <span class="arithmatex">\([l..r]\)</span> 只会变大不会变小，所以 <span class="arithmatex">\(\max\)</span> 只增不减、<span class="arithmatex">\(\min\)</span> 只减不增，区间宽度 <span class="arithmatex">\(\max - \min\)</span> <strong>单调不减</strong>。</li>
+</ul>
+<p>因此对固定的 <span class="arithmatex">\(r\)</span>，合法的 <span class="arithmatex">\(l\)</span> 构成一段连续前缀：存在某个最小的 <span class="arithmatex">\(l_r\)</span>，使得 <span class="arithmatex">\(l \ge l_r\)</span> 时 <span class="arithmatex">\([l..r]\)</span> 合法，<span class="arithmatex">\(l &lt; l_r\)</span> 时一定不合法。这一<strong>可保持性</strong>直接来自上面的单调性，不是外部约定。它有两个后果：</p>
+<ol>
+<li><strong>可以双指针</strong>：<span class="arithmatex">\(r\)</span> 右移时窗口可能变宽超过 <span class="arithmatex">\(2\)</span>，此时把 <span class="arithmatex">\(l\)</span> 右移收缩即可恢复合法——且 <span class="arithmatex">\(l\)</span> 永不回退（下面在形式化里说明），整个扫描是线性的。</li>
+<li><strong>可以按右端点计数</strong>：以 <span class="arithmatex">\(r\)</span> 结尾的合法子数组，恰是 <span class="arithmatex">\(l \in [l_r, r]\)</span> 共 <span class="arithmatex">\(r - l_r + 1\)</span> 个；对所有 <span class="arithmatex">\(r\)</span> 求和，每个合法子数组按其右端点被数恰好一次，不重不漏。</li>
+</ol>
+<p>剩下唯一的难点：双指针每步都要知道当前窗口的 <span class="arithmatex">\(\max\)</span> 和 <span class="arithmatex">\(\min\)</span>。下一节先看朴素做法卡在哪里。</p>
 <h2 id="_2">形式化<a class="headerlink" href="#_2" title="Permanent link">#</a></h2>
-<p>对每个 <span class="arithmatex">\(r\)</span> 求最小 <span class="arithmatex">\(l\)</span> 使 <span class="arithmatex">\([l..r]\)</span> 内 <span class="arithmatex">\(\max - \min \le 2\)</span>。答案 <span class="arithmatex">\(= \sum_r (r - l + 1)\)</span>。</p>
+<p>把上面的直觉写成精确目标。对每个右端点 <span class="arithmatex">\(r\)</span>，定义</p>
+<div class="arithmatex">\[
+l_r = \min\{\, l : \max_{l \le i \le r} \texttt{nums}[i] - \min_{l \le i \le r} \texttt{nums}[i] \le 2 \,\}.
+\]</div>
+<p>答案为</p>
+<div class="arithmatex">\[
+\text{ans} = \sum_{r=0}^{n-1} (r - l_r + 1).
+\]</div>
+<p>求和式的正确性即上一节第 2 点：<span class="arithmatex">\([l_r .. r]\)</span> 内每个左端点都给出一个合法子数组，且按右端点分组不会重复计数。</p>
+<p><strong><span class="arithmatex">\(l\)</span> 不回退</strong>：因为 <span class="arithmatex">\(\max - \min\)</span> 沿窗口加宽单调不减，<span class="arithmatex">\(r\)</span> 增大时合法前缀的起点只会前进或不动，即 <span class="arithmatex">\(l_r\)</span> 关于 <span class="arithmatex">\(r\)</span> 单调不减。于是双指针中的 <span class="arithmatex">\(l\)</span> 是一个只增不减的指针，整个过程 <span class="arithmatex">\(l\)</span> 至多前进 <span class="arithmatex">\(n\)</span> 步。这把"对每个 <span class="arithmatex">\(r\)</span> 重新搜 <span class="arithmatex">\(l_r\)</span>"降为一次线性扫描——前提是每步能廉价地维护窗口的 <span class="arithmatex">\(\max\)</span> 与 <span class="arithmatex">\(\min\)</span>。</p>
 <h2 id="_3">数据结构 / 想法<a class="headerlink" href="#_3" title="Permanent link">#</a></h2>
-<p><strong>双 monotonic deque</strong>：
+<p><strong>朴素做法及其瓶颈。</strong> 双指针的骨架已经定了：<span class="arithmatex">\(r\)</span> 右移加入元素，循环判断 <span class="arithmatex">\(\max - \min &gt; 2\)</span> 就右移 <span class="arithmatex">\(l\)</span>。问题只剩"如何取窗口 max/min"。最直接的写法是每次需要时遍历 <span class="arithmatex">\([l..r]\)</span> 现算：</p>
+<div class="language-python highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">continuousSubarrays_naive</span><span class="p">(</span><span class="n">nums</span><span class="p">):</span>
+    <span class="n">l</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">ans</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">nums</span><span class="p">)):</span>
+        <span class="k">while</span> <span class="nb">max</span><span class="p">(</span><span class="n">nums</span><span class="p">[</span><span class="n">l</span><span class="p">:</span><span class="n">r</span><span class="o">+</span><span class="mi">1</span><span class="p">])</span> <span class="o">-</span> <span class="nb">min</span><span class="p">(</span><span class="n">nums</span><span class="p">[</span><span class="n">l</span><span class="p">:</span><span class="n">r</span><span class="o">+</span><span class="mi">1</span><span class="p">])</span> <span class="o">&gt;</span> <span class="mi">2</span><span class="p">:</span>  <span class="c1"># 每次 O(window)</span>
+            <span class="n">l</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="n">ans</span> <span class="o">+=</span> <span class="n">r</span> <span class="o">-</span> <span class="n">l</span> <span class="o">+</span> <span class="mi">1</span>
+    <span class="k">return</span> <span class="n">ans</span>
+</code></pre></div>
+<p>它正确，但 <code>max</code>/<code>min</code> 每次重扫窗口是 <span class="arithmatex">\(O(n)\)</span>，外层 <span class="arithmatex">\(O(n)\)</span>，合计 <span class="arithmatex">\(O(n^2)\)</span>——和暴力枚举同阶，没省下来。瓶颈很具体：<strong>窗口在两端各自变化（右端 append、左端 pop）时，我们需要在 <span class="arithmatex">\(O(1)\)</span> 摊销内拿到当前 max/min，而不是每次从头算。</strong></p>
+<p>能否用一个有序结构（堆 / 平衡树）撑住？堆能 <span class="arithmatex">\(O(1)\)</span> 看顶、<span class="arithmatex">\(O(\log n)\)</span> 插入，但左端弹出的元素未必在堆顶，删除任意元素代价高（朴素堆 <span class="arithmatex">\(O(n)\)</span>）；实践中用惰性删除可把堆压到 <span class="arithmatex">\(O(n \log n)\)</span>（见陷阱），但仍带 <span class="arithmatex">\(\log\)</span>。我们想要的是一个恰好贴合"一端进、一端出"两个操作、且摊销 <span class="arithmatex">\(O(1)\)</span> 的结构。</p>
+<p><strong>关键观察：很多元素永远当不了 max。</strong> 设窗口里有 <span class="arithmatex">\(i &lt; j\)</span> 且 <span class="arithmatex">\(\texttt{nums}[i] \le \texttt{nums}[j]\)</span>。只要 <span class="arithmatex">\(j\)</span> 还在窗口内，<span class="arithmatex">\(i\)</span> 就既比 <span class="arithmatex">\(j\)</span> 旧又不比 <span class="arithmatex">\(j\)</span> 大——它永远不可能成为窗口的最大值。所以 <span class="arithmatex">\(i\)</span> 一旦被这样一个更新更大的 <span class="arithmatex">\(j\)</span> "压住"，就可以从候选中永久剔除。把所有"还可能当 max"的下标按这一规则保留下来，剩下的下标其 <code>nums</code> 值必然<strong>严格递减</strong>：这正是一个单调队列（monotonic deque）。求 min 对称，保留一个值严格递增的队列即可。</p>
+<p><strong>先确立不变量，再看代码。</strong> 每轮迭代开始前维护：</p>
+<blockquote>
+<p><code>maxq</code> 存窗口内"可能成为 max"的下标，其对应 <code>nums</code> 值严格递减；故队首 <code>maxq[0]</code> 永远是窗口当前 <span class="arithmatex">\(\max\)</span>。<code>minq</code> 对称，值严格递增，队首是当前 <span class="arithmatex">\(\min\)</span>。两队的下标都落在 <span class="arithmatex">\([l, r]\)</span> 内。</p>
+</blockquote>
+<p>加入新右端元素 <span class="arithmatex">\(x = \texttt{nums}[r]\)</span> 时，为恢复"严格递减"，需把队尾所有 <span class="arithmatex">\(\le x\)</span> 的下标弹掉（它们被 <span class="arithmatex">\(x\)</span> 压住），再把 <span class="arithmatex">\(r\)</span> 入队——这两步就是下面 <code>while ... pop()</code> 加 <code>append</code> 的全部含义。左端收缩时，若队首下标已 <span class="arithmatex">\(&lt; l\)</span>，说明它滑出窗口，从队首弹出。每个下标至多入队、出队各一次，故摊销 <span class="arithmatex">\(O(1)\)</span>。</p>
 <div class="language-python highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">collections</span><span class="w"> </span><span class="kn">import</span> <span class="n">deque</span>
 <span class="k">def</span><span class="w"> </span><span class="nf">continuousSubarrays</span><span class="p">(</span><span class="n">nums</span><span class="p">):</span>
-    <span class="n">maxq</span> <span class="o">=</span> <span class="n">deque</span><span class="p">()</span>  <span class="c1"># decreasing</span>
-    <span class="n">minq</span> <span class="o">=</span> <span class="n">deque</span><span class="p">()</span>  <span class="c1"># increasing</span>
+    <span class="n">maxq</span> <span class="o">=</span> <span class="n">deque</span><span class="p">()</span>  <span class="c1"># 值严格递减</span>
+    <span class="n">minq</span> <span class="o">=</span> <span class="n">deque</span><span class="p">()</span>  <span class="c1"># 值严格递增</span>
     <span class="n">l</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">ans</span> <span class="o">=</span> <span class="mi">0</span>
     <span class="k">for</span> <span class="n">r</span><span class="p">,</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">nums</span><span class="p">):</span>
-        <span class="k">while</span> <span class="n">maxq</span> <span class="ow">and</span> <span class="n">nums</span><span class="p">[</span><span class="n">maxq</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]]</span> <span class="o">&lt;=</span> <span class="n">x</span><span class="p">:</span> <span class="n">maxq</span><span class="o">.</span><span class="n">pop</span><span class="p">()</span>
+        <span class="k">while</span> <span class="n">maxq</span> <span class="ow">and</span> <span class="n">nums</span><span class="p">[</span><span class="n">maxq</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]]</span> <span class="o">&lt;=</span> <span class="n">x</span><span class="p">:</span> <span class="n">maxq</span><span class="o">.</span><span class="n">pop</span><span class="p">()</span>   <span class="c1"># 弹掉被 x 压住的旧下标</span>
         <span class="n">maxq</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">r</span><span class="p">)</span>
         <span class="k">while</span> <span class="n">minq</span> <span class="ow">and</span> <span class="n">nums</span><span class="p">[</span><span class="n">minq</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]]</span> <span class="o">&gt;=</span> <span class="n">x</span><span class="p">:</span> <span class="n">minq</span><span class="o">.</span><span class="n">pop</span><span class="p">()</span>
         <span class="n">minq</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">r</span><span class="p">)</span>
-        <span class="k">while</span> <span class="n">nums</span><span class="p">[</span><span class="n">maxq</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span> <span class="o">-</span> <span class="n">nums</span><span class="p">[</span><span class="n">minq</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span> <span class="o">&gt;</span> <span class="mi">2</span><span class="p">:</span>
+        <span class="k">while</span> <span class="n">nums</span><span class="p">[</span><span class="n">maxq</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span> <span class="o">-</span> <span class="n">nums</span><span class="p">[</span><span class="n">minq</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span> <span class="o">&gt;</span> <span class="mi">2</span><span class="p">:</span>          <span class="c1"># 窗口太宽，左缩</span>
             <span class="n">l</span> <span class="o">+=</span> <span class="mi">1</span>
             <span class="k">if</span> <span class="n">maxq</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">l</span><span class="p">:</span> <span class="n">maxq</span><span class="o">.</span><span class="n">popleft</span><span class="p">()</span>
             <span class="k">if</span> <span class="n">minq</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">l</span><span class="p">:</span> <span class="n">minq</span><span class="o">.</span><span class="n">popleft</span><span class="p">()</span>
-        <span class="n">ans</span> <span class="o">+=</span> <span class="n">r</span> <span class="o">-</span> <span class="n">l</span> <span class="o">+</span> <span class="mi">1</span>
+        <span class="n">ans</span> <span class="o">+=</span> <span class="n">r</span> <span class="o">-</span> <span class="n">l</span> <span class="o">+</span> <span class="mi">1</span>                                  <span class="c1"># 以 r 结尾的合法子数组数</span>
     <span class="k">return</span> <span class="n">ans</span>
-</code></pre></div></p>
-<p><strong>不变量</strong>：<code>maxq</code> 中元素的索引对应的 <code>nums</code> 值<strong>严格递减</strong>（同值则保留较新）；<code>minq</code> 类似单调递增。所以 <code>maxq[0]</code> 和 <code>minq[0]</code> 总是窗口内当前 max / min。每元素入队出队各一次 → 摊销 <span class="arithmatex">\(O(n)\)</span>。</p>
-<p><strong>SortedList 替代</strong>：
+</code></pre></div>
+<p>代码逐行对应形式化：<code>maxq[0]</code>、<code>minq[0]</code> 给出 <span class="arithmatex">\(\max\)</span>、<span class="arithmatex">\(\min\)</span>，<code>while</code> 把 <span class="arithmatex">\(l\)</span> 推到 <span class="arithmatex">\(l_r\)</span>，<code>r - l + 1</code> 是该右端点的贡献。每个下标入队出队各一次，故时间摊销 <span class="arithmatex">\(O(n)\)</span>。</p>
+<p><strong>SortedList 替代。</strong> 若不想手写单调队列，可直接维护一个有序的窗口元素多重集：右端 <code>add</code>、左端 <code>remove</code>，最值就是首尾。</p>
 <div class="language-python highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">sortedcontainers</span><span class="w"> </span><span class="kn">import</span> <span class="n">SortedList</span>
 <span class="k">def</span><span class="w"> </span><span class="nf">continuousSubarrays</span><span class="p">(</span><span class="n">nums</span><span class="p">):</span>
     <span class="n">sl</span> <span class="o">=</span> <span class="n">SortedList</span><span class="p">();</span> <span class="n">l</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">ans</span> <span class="o">=</span> <span class="mi">0</span>
@@ -22710,7 +22774,7 @@
         <span class="n">ans</span> <span class="o">+=</span> <span class="n">r</span> <span class="o">-</span> <span class="n">l</span> <span class="o">+</span> <span class="mi">1</span>
     <span class="k">return</span> <span class="n">ans</span>
 </code></pre></div>
-<span class="arithmatex">\(O(n \log n)\)</span>，代码更短但常数大。</p>
+<p>每次 <code>add</code> / <code>remove</code> 是 <span class="arithmatex">\(O(\log n)\)</span>，故整体 <span class="arithmatex">\(O(n \log n)\)</span>——比单调队列多一个 <span class="arithmatex">\(\log\)</span>，因为有序集合支持任意删除，而单调队列只支持两端操作、用这一限制换来了摊销 <span class="arithmatex">\(O(1)\)</span>。代码更短但常数更大。</p>
 <h2 id="_4">复杂度<a class="headerlink" href="#_4" title="Permanent link">#</a></h2>
 <ul>
 <li>Time: 摊销 <span class="arithmatex">\(O(n)\)</span> (deque) / <span class="arithmatex">\(O(n \log n)\)</span> (sortedlist)。</li>
@@ -22718,14 +22782,15 @@
 </ul>
 <h2 id="_5">陷阱<a class="headerlink" href="#_5" title="Permanent link">#</a></h2>
 <ul>
-<li>计数 "以 <span class="arithmatex">\(r\)</span> 为右端点的合法子数组数" = <span class="arithmatex">\(r - l + 1\)</span>，累加给出总数（避免重复）。</li>
-<li>单调队列的"等号"处理：max queue 用 <code>&lt;=</code> (新元素 ≥ 旧时旧元素出队)，能正确处理相等值。</li>
-<li>不要用堆 — 堆中删除非堆顶元素 <span class="arithmatex">\(O(n)\)</span>，会 TLE。</li>
+<li>计数用"以 <span class="arithmatex">\(r\)</span> 为右端点的合法子数组数" <span class="arithmatex">\(= r - l + 1\)</span>，对 <span class="arithmatex">\(r\)</span> 累加（见形式化的求和式）——按右端点分组保证不重不漏。</li>
+<li>单调队列的"等号"处理：max queue 弹出条件用 <code>&lt;=</code>（新元素 <span class="arithmatex">\(\ge\)</span> 旧元素时旧的出队），相等值也被压住，从而保持值严格递减、队首始终为真正的 max；min queue 对称用 <code>&gt;=</code>。</li>
+<li>用堆要走<strong>惰性删除</strong>：把 <code>(值, 下标)</code> 压入 max-heap / min-heap，左指针前移后不立即删，只在该下标浮到堆顶时弹掉过期项。这样是 <span class="arithmatex">\(O(n \log n)\)</span>，与 SortedList 同阶、不会 TLE。会 TLE 的是对普通二叉堆<strong>急切删除任意非堆顶元素</strong>（<span class="arithmatex">\(O(n)\)</span> 一次），那不是标准写法。</li>
+<li>答案上界为 <span class="arithmatex">\(n(n+1)/2 \approx 5 \times 10^9\)</span>，超 32 位整型。Python 无此问题；若用 C++ / Java 移植，须用 64 位（<code>long long</code>）累加。</li>
 </ul>
 <h2 id="_6">相关题目<a class="headerlink" href="#_6" title="Permanent link">#</a></h2>
 <ul>
-<li><code>#239. Sliding Window Maximum (off-wiki)</code> — monotonic deque 原型。</li>
-<li><code>#1438. Longest Continuous Subarray With Absolute Diff &lt;= Limit (off-wiki)</code> — 几乎相同问题。</li>
+<li><code>#239. Sliding Window Maximum (off-wiki)</code> — 只维护单边 max 的单调队列；本题是同时维护 max 与 min 的双队列版。</li>
+<li><code>#1438. Longest Continuous Subarray With Absolute Diff &lt;= Limit (off-wiki)</code> — 几乎相同问题：同样的双单调队列维护窗口 max/min。</li>
 <li><a href="../2104_sum-of-subarray-ranges/">#2104. Sum of Subarray Ranges</a> — 子数组 max/min 聚合的另一例。</li>
 </ul>
 <h2 id="further-reading">Further Reading<a class="headerlink" href="#further-reading" title="Permanent link">#</a></h2>

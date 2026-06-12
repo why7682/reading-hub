@@ -5485,6 +5485,8 @@
       
         
       
+        
+      
     
     
     
@@ -6024,6 +6026,34 @@
     
   
     #93. Restore IP Addresses
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../0102_binary-tree-level-order-traversal/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    #102. Binary Tree Level Order Traversal
   
 
     
@@ -22675,28 +22705,32 @@
 <h2 id="problem">Problem<a class="headerlink" href="#problem" title="Permanent link">#</a></h2>
 <p>两长度 4 串 <code>s1, s2</code>。任意次操作：交换某串中下标差为 2 的两字符。判定能否使二者相等。</p>
 <h2 id="_1">背景<a class="headerlink" href="#_1" title="Permanent link">#</a></h2>
-<p><strong>置换群视角</strong>：长度 4 串上，"交换 (0,2)" 和 "交换 (1,3)" 是两个 transposition。它们不与同一字符接触，所以生成的群是 <span class="arithmatex">\(S_2 \times S_2\)</span> —— 偶下标 <span class="arithmatex">\(\{0, 2\}\)</span> 内可任意排，奇下标 <span class="arithmatex">\(\{1, 3\}\)</span> 内可任意排，但偶 / 奇下标之间不能混。</p>
-<p>故 <code>s1</code> 与 <code>s2</code> 可达 ↔ <strong>偶下标多重集相同</strong> 且 <strong>奇下标多重集相同</strong>。</p>
-<p>这是 <strong>置换群的轨道 (orbit)</strong> 分析的最小例：生成元决定可达的状态空间。</p>
+<p>先试最朴素的猜想：操作只是在重排字符，能否相等，应当只取决于两串是不是同一组字符的重排——即 <code>s1</code> 与 <code>s2</code> 互为 anagram（整体多重集相同）？</p>
+<p>这个猜想是错的。取 <code>s1 = "abcd"</code>、<code>s2 = "badc"</code>，两者整体多重集都是 <code>{a,b,c,d}</code>，按朴素猜想应可达；但实际不可达。原因要回到操作本身：长度为 4 的串上，下标差为 2 的下标对<strong>只有两组</strong>——<code>(0,2)</code> 和 <code>(1,3)</code>。一次操作要么交换位置 0 与 2 的字符，要么交换位置 1 与 3 的字符，没有第三种选择。</p>
+<p>关键由此而来：这两组下标<strong>不相交</strong>。反复做 <code>(0,2)</code> 交换，只能在偶下标 <code>{0,2}</code> 内部移动字符，碰不到位置 1、3；反复做 <code>(1,3)</code> 交换同理只动奇下标 <code>{1,3}</code>。任何操作都不会把字符从偶下标搬到奇下标，反之亦然。所以「下标的奇偶性」是一个不变量：位置 0 的字符无论怎么操作，永远停留在偶下标位置上。</p>
+<p>回到反例 <code>"abcd" → "badc"</code>：要把它变过去，需要让 <code>a</code>（原本在偶下标 0）出现在奇下标 1，这跨越了奇偶分界，不可能。朴素的「整体 anagram」猜想之所以失败，正是因为它忽略了奇偶下标各自封闭、互不相通。</p>
+<p>修正后的判据：偶下标这一组能在自身内部任意重排，奇下标那一组也能在自身内部任意重排，但两组之间永不交换。于是 <code>s1</code> 与 <code>s2</code> 可达，当且仅当<strong>偶下标多重集相同</strong>且<strong>奇下标多重集相同</strong>。</p>
 <h2 id="_2">形式化<a class="headerlink" href="#_2" title="Permanent link">#</a></h2>
-<p><span class="arithmatex">\(s_1 \sim s_2 \iff \{s_1[0], s_1[2]\} = \{s_2[0], s_2[2]\}\)</span> (multiset 相等) 且 <span class="arithmatex">\(\{s_1[1], s_1[3]\} = \{s_2[1], s_2[3]\}\)</span>。</p>
+<p>将每个下标按奇偶分到两组。记偶下标多重集 <span class="arithmatex">\(E(s) = \{\!\{ s[0], s[2] \}\!\}\)</span>、奇下标多重集 <span class="arithmatex">\(O(s) = \{\!\{ s[1], s[3] \}\!\}\)</span>（<span class="arithmatex">\(\{\!\{\cdot\}\!\}\)</span> 表示多重集，计重数）。一次操作只在某一组内交换两元素，故 <span class="arithmatex">\(E(s)\)</span> 与 <span class="arithmatex">\(O(s)\)</span> 在操作下都不变；又因两组各自可达全部内部排列，操作能产生的串恰好遍历所有保持 <span class="arithmatex">\(E\)</span>、<span class="arithmatex">\(O\)</span> 不变的串。于是</p>
+<div class="arithmatex">\[s_1 \sim s_2 \iff E(s_1) = E(s_2) \ \text{且}\ O(s_1) = O(s_2).\]</div>
+<p>即 <span class="arithmatex">\(\{\!\{ s_1[0], s_1[2] \}\!\} = \{\!\{ s_2[0], s_2[2] \}\!\}\)</span> 且 <span class="arithmatex">\(\{\!\{ s_1[1], s_1[3] \}\!\} = \{\!\{ s_2[1], s_2[3] \}\!\}\)</span>。</p>
 <h2 id="_3">数据结构 / 想法<a class="headerlink" href="#_3" title="Permanent link">#</a></h2>
+<p>判据直接落到代码：把每组的两个字符排序后逐组比较，等价于比较多重集。</p>
 <div class="language-python highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">canBeEqual</span><span class="p">(</span><span class="n">s1</span><span class="p">,</span> <span class="n">s2</span><span class="p">):</span>
     <span class="k">return</span> <span class="nb">sorted</span><span class="p">([</span><span class="n">s1</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">s1</span><span class="p">[</span><span class="mi">2</span><span class="p">]])</span> <span class="o">==</span> <span class="nb">sorted</span><span class="p">([</span><span class="n">s2</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">s2</span><span class="p">[</span><span class="mi">2</span><span class="p">]])</span> <span class="ow">and</span> \
            <span class="nb">sorted</span><span class="p">([</span><span class="n">s1</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">s1</span><span class="p">[</span><span class="mi">3</span><span class="p">]])</span> <span class="o">==</span> <span class="nb">sorted</span><span class="p">([</span><span class="n">s2</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">s2</span><span class="p">[</span><span class="mi">3</span><span class="p">]])</span>
 </code></pre></div>
-<p>或更紧凑用集合（因长度仅 2，sorted == sorted 等价于 set + count）：
+<p>每组恰好 2 个字符，规模固定。这里也可以直接用集合比较：</p>
 <div class="language-python highlight"><pre><span></span><code><span class="k">return</span> <span class="p">{</span><span class="n">s1</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">s1</span><span class="p">[</span><span class="mi">2</span><span class="p">]}</span> <span class="o">==</span> <span class="p">{</span><span class="n">s2</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">s2</span><span class="p">[</span><span class="mi">2</span><span class="p">]}</span> <span class="ow">and</span> <span class="p">{</span><span class="n">s1</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">s1</span><span class="p">[</span><span class="mi">3</span><span class="p">]}</span> <span class="o">==</span> <span class="p">{</span><span class="n">s2</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">s2</span><span class="p">[</span><span class="mi">3</span><span class="p">]}</span>
 </code></pre></div>
-注意若两字符相同（如 <code>s1 = "aaXY"</code>），set 大小不对，需用 sorted/Counter。</p>
+<p>集合形式同样正确。因为每组固定为 2 个字符，两个<strong>等长</strong>集合相等与多重集相等是等价的：若一组两字符不同，集合大小为 2，要相等就强制两字符一一对应；若一组是 <code>{a,a}</code>，集合退化为 <code>{a}</code>，要与之相等就强制另一组也是 <code>{a,a}</code>。集合与多重集只在两侧长度可能不同时才分歧，而本题两侧恒为长度 2，不会出现这种情形。</p>
 <h2 id="_4">复杂度<a class="headerlink" href="#_4" title="Permanent link">#</a></h2>
 <ul>
-<li>Time / Space: <span class="arithmatex">\(O(1)\)</span>（固定 4 字符）。</li>
+<li>Time / Space: <span class="arithmatex">\(O(1)\)</span>（固定 4 字符，排序与比较都是常数规模）。</li>
 </ul>
 <h2 id="_5">陷阱<a class="headerlink" href="#_5" title="Permanent link">#</a></h2>
 <ul>
-<li>字符相同时 set 大小退化为 1；要用 Counter 或 sorted 比较多重集。</li>
-<li>偶 / 奇下标不可混 — 即使整体多重集相同，分组不同就不可达。</li>
+<li>偶 / 奇下标不可混 —— 即使整体多重集相同，按奇偶分组后不同就不可达。如 <code>"abcd"</code> 与 <code>"badc"</code>：整体多重集都是 <code>{a,b,c,d}</code>，但偶下标组 <code>{a,c}</code> 与 <code>{b,d}</code> 不同（奇下标组同理），故不可达。核对时务必按奇偶分组逐组比较，而非比较整串多重集。</li>
 </ul>
 <h2 id="_6">相关题目<a class="headerlink" href="#_6" title="Permanent link">#</a></h2>
 <ul>
@@ -22705,7 +22739,7 @@
 </ul>
 <h2 id="further-reading">Further Reading<a class="headerlink" href="#further-reading" title="Permanent link">#</a></h2>
 <ul>
-<li>Dummit &amp; Foote, <em>Abstract Algebra</em> (3e), §1.3 "Permutation Groups" — 置换群与生成元基础。</li>
+<li>Dummit &amp; Foote, <em>Abstract Algebra</em> (3e), §1.3 "Permutation Groups" —— 把本题的「奇偶下标各自封闭」精确化：两个不相交对换 <span class="arithmatex">\((0\,2)\)</span> 与 <span class="arithmatex">\((1\,3)\)</span> 生成 <span class="arithmatex">\(S_2 \times S_2\)</span>，可达串集即初始串在此群作用下的轨道。</li>
 <li>无需更深资源（题目难度低）。</li>
 </ul>
 

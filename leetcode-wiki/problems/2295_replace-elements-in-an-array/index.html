@@ -5485,6 +5485,8 @@
       
         
       
+        
+      
     
     
     
@@ -6024,6 +6026,34 @@
     
   
     #93. Restore IP Addresses
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../0102_binary-tree-level-order-traversal/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    #102. Binary Tree Level Order Traversal
   
 
     
@@ -22675,42 +22705,57 @@
 <h2 id="problem">Problem<a class="headerlink" href="#problem" title="Permanent link">#</a></h2>
 <p>数组 <code>nums</code> 含 <span class="arithmatex">\(n\)</span> 个不同的正整数。给 <span class="arithmatex">\(m\)</span> 条替换操作 <code>[old, new]</code>：把 nums 中等于 old 的元素替换成 new。保证：操作时 old 存在于 nums，new 不存在。返回最终数组。<span class="arithmatex">\(n, m \le 10^5\)</span>。</p>
 <h2 id="background">背景 (Background)<a class="headerlink" href="#background" title="Permanent link">#</a></h2>
-<p>本题是 <strong>union-find / hash map indirection</strong> 的最简形态：每次操作要在 <span class="arithmatex">\(O(1)\)</span> 时间内"找到 old 的位置"，等价于维护 value → index 的活的字典。结构上与「持久化字典」、「versioned hash map」同源。</p>
+<p>最直接的做法照搬题目语义：对每条操作 <code>(old, new)</code>，扫一遍 <code>nums</code> 找到等于 old 的那个元素，写成 new。</p>
+<div class="language-python highlight"><pre><span></span><code><span class="k">for</span> <span class="n">old</span><span class="p">,</span> <span class="n">new</span> <span class="ow">in</span> <span class="n">operations</span><span class="p">:</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">nums</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="n">old</span><span class="p">:</span>
+            <span class="n">nums</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">new</span>
+            <span class="k">break</span>
+</code></pre></div>
+<p>这是正确的，但每条操作都要线性扫描整个数组。<span class="arithmatex">\(m\)</span> 条操作各扫 <span class="arithmatex">\(O(n)\)</span>，总代价 <span class="arithmatex">\(O(nm)\)</span>；当 <span class="arithmatex">\(n = m = 10^5\)</span> 时是 <span class="arithmatex">\(10^{10}\)</span> 次比较，必然 TLE。</p>
+<p>失败点很具体：我们反复在做同一件事——<strong>按值定位元素的下标</strong>。每条操作给的是一个值 old，问题却要求改某个下标处的内容。线性扫描每次从头重建"值 → 下标"这条信息，扫完即丢。如果把这条信息<strong>存下来并随修改维护</strong>，每次定位就能降到 <span class="arithmatex">\(O(1)\)</span>。这正是接下来要构造的对象。</p>
 <h2 id="formulation">形式化 (Formulation)<a class="headerlink" href="#formulation" title="Permanent link">#</a></h2>
-<p>维护映射 <span class="arithmatex">\(\pi : V \to [n]\)</span>，初始 <span class="arithmatex">\(\pi(\text{nums}[i]) = i\)</span>. 操作 <code>(old, new)</code>：取 <span class="arithmatex">\(j = \pi(\text{old})\)</span>, 令 <span class="arithmatex">\(\text{nums}[j] = \text{new}\)</span>, 删 <span class="arithmatex">\(\pi(\text{old})\)</span>, 加 <span class="arithmatex">\(\pi(\text{new}) = j\)</span>. 最终返回 nums。</p>
+<p>直觉：操作通过<strong>值</strong>而非下标来指认元素，且 nums 中所有值互不相同。因此"当前值 → 当前下标"是一个良定义的双射，把它显式维护下来，按值定位就是一次字典查询。</p>
+<p>形式化。维护映射 <span class="arithmatex">\(\pi : V \to [n]\)</span>，其中 <span class="arithmatex">\(V\)</span> 是 nums 当前出现的值集合，初始 <span class="arithmatex">\(\pi(\text{nums}[i]) = i\)</span>。处理操作 <code>(old, new)</code>：</p>
+<div class="arithmatex">\[j \leftarrow \pi(\text{old}), \quad \text{nums}[j] \leftarrow \text{new}, \quad \text{删除 } \pi(\text{old}), \quad \text{置 } \pi(\text{new}) = j.\]</div>
+<p>最终返回 nums。这里 <span class="arithmatex">\(\pi\)</span> 始终是当前 nums 的"值 → 下标"双射——这是整个解法要维护的<strong>不变量</strong>，下面的代码不过是它的逐行转写。</p>
 <h2 id="approach">数据结构 / 想法 (Approach)<a class="headerlink" href="#approach" title="Permanent link">#</a></h2>
-<p><strong>方法 1：value → index 字典 + 原地修改</strong>（顺序处理操作）</p>
+<p><strong>方法 1：直接转写 <span class="arithmatex">\(\pi\)</span></strong>（顺序处理操作）</p>
+<p>用字典 <code>pos</code> 作为 <span class="arithmatex">\(\pi\)</span> 的具体表示。形式化里的四步逐行对应：<span class="arithmatex">\(j \leftarrow \pi(\text{old})\)</span> 是 <code>pos.pop(old)</code>（取出旧绑定并删除），<span class="arithmatex">\(\text{nums}[j] \leftarrow \text{new}\)</span> 是原地写数组，<span class="arithmatex">\(\text{置 } \pi(\text{new}) = j\)</span> 是 <code>pos[new] = i</code>。</p>
 <div class="language-python highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">Solution</span><span class="p">:</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">arrayChange</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">nums</span><span class="p">,</span> <span class="n">operations</span><span class="p">):</span>
-        <span class="n">pos</span> <span class="o">=</span> <span class="p">{</span><span class="n">v</span><span class="p">:</span> <span class="n">i</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">nums</span><span class="p">)}</span>
+        <span class="n">pos</span> <span class="o">=</span> <span class="p">{</span><span class="n">v</span><span class="p">:</span> <span class="n">i</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">nums</span><span class="p">)}</span>   <span class="c1"># π 初始化</span>
         <span class="k">for</span> <span class="n">old</span><span class="p">,</span> <span class="n">new</span> <span class="ow">in</span> <span class="n">operations</span><span class="p">:</span>
-            <span class="n">i</span> <span class="o">=</span> <span class="n">pos</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">old</span><span class="p">)</span>
-            <span class="n">nums</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">new</span>
-            <span class="n">pos</span><span class="p">[</span><span class="n">new</span><span class="p">]</span> <span class="o">=</span> <span class="n">i</span>
+            <span class="n">i</span> <span class="o">=</span> <span class="n">pos</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">old</span><span class="p">)</span>        <span class="c1"># j = π(old)，并删除 π(old)</span>
+            <span class="n">nums</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">new</span>           <span class="c1"># nums[j] = new</span>
+            <span class="n">pos</span><span class="p">[</span><span class="n">new</span><span class="p">]</span> <span class="o">=</span> <span class="n">i</span>            <span class="c1"># π(new) = j</span>
         <span class="k">return</span> <span class="n">nums</span>
 </code></pre></div>
-<p>样例 1：<code>nums=[1,2,4,6], ops=[[1,3],[4,7],[6,1]]</code>. 
-- pos={1:0,2:1,4:2,6:3}. (1,3): i=0, nums=[3,2,4,6], pos={2:1,4:2,6:3,3:0}.
-- (4,7): i=2, nums=[3,2,7,6], pos={2:1,6:3,3:0,7:2}.
-- (6,1): i=3, nums=[3,2,7,1], pos={2:1,3:0,7:2,1:3}. ✅</p>
-<p><strong>方法 2：倒序追溯</strong>（不维护索引）
-反向遍历操作维护 <code>final[v]</code> = 值 <span class="arithmatex">\(v\)</span> 最终会被替换成什么。从最后一条操作往前：<code>final[old] = final.get(new, new)</code>. 然后对每个 nums[i] 查 <code>final.get(nums[i], nums[i])</code>. 复杂度同为 <span class="arithmatex">\(O(n + m)\)</span>。</p>
-<p><strong>不变量</strong>（方法 1）：<span class="arithmatex">\(\pi\)</span> 始终精确反映当前 nums 中"值 → 位置"的双射。</p>
+<p>不变量为何在每步后仍成立：<code>pop(old)</code> 移除已失效的绑定 <span class="arithmatex">\((\text{old} \to j)\)</span>；<code>pos[new] = i</code> 补上新绑定 <span class="arithmatex">\((\text{new} \to j)\)</span>。题目保证操作时 new 不在 nums 中，故 <code>pos</code> 里没有 new 的旧条目，不会冲突。于是一次更新后，<code>pos</code> 仍精确反映 nums 的"值 → 下标"双射，归纳即得全程成立。</p>
+<p>样例 1：<code>nums=[1,2,4,6], ops=[[1,3],[4,7],[6,1]]</code>。
+- pos={1:0,2:1,4:2,6:3}。(1,3): i=0, nums=[3,2,4,6], pos={2:1,4:2,6:3,3:0}。
+- (4,7): i=2, nums=[3,2,7,6], pos={2:1,6:3,3:0,7:2}。
+- (6,1): i=3, nums=[3,2,7,1], pos={2:1,3:0,7:2,1:3}。 ✅</p>
+<p><strong>方法 2：不维护下标，倒序追溯最终值</strong></p>
+<p>换一个问题：能不能完全不碰下标？方法 1 维护 <span class="arithmatex">\(\pi\)</span> 是为了定位下标再写值；但我们真正想知道的只是每个初始值<strong>最终</strong>变成了什么。</p>
+<p>观察操作序列的结构：一个值可能被链式替换，<code>a → b → c → ...</code>，即某条操作把 a 改成 b，之后又有操作把 b 改成 c。定义 <span class="arithmatex">\(\text{final}[v]\)</span> 为值 <span class="arithmatex">\(v\)</span> 顺着这条链走到底的结果。关键在于追溯方向——<strong>倒序</strong>遍历操作即可一次定下每个链尾：处理到操作 <code>(old, new)</code> 时，若 new 已知其终点（更晚的操作已记录），则 old 的终点就是 new 的终点，否则就是 new 自己。</p>
+<div class="arithmatex">\[\text{final}[\text{old}] = \text{final}.\text{get}(\text{new},\ \text{new}).\]</div>
+<p>倒序保证了读 <code>final[new]</code> 时，所有发生在该操作<strong>之后</strong>的替换都已并入，故得到的是真正的链尾。最后对每个 <code>nums[i]</code> 查 <code>final.get(nums[i], nums[i])</code> 即得答案。两种方法都是 <span class="arithmatex">\(O(n + m)\)</span>，方法 1 在原数组上就地完成、常数更小，方法 2 的价值是说明下标维护并非必需。</p>
 <h2 id="complexity">复杂度 (Complexity)<a class="headerlink" href="#complexity" title="Permanent link">#</a></h2>
 <ul>
-<li>Time: <span class="arithmatex">\(O(n + m)\)</span> 均摊。</li>
+<li>Time: <span class="arithmatex">\(O(n + m)\)</span> 均摊。建字典 <span class="arithmatex">\(O(n)\)</span>；每条操作一次哈希 pop + 一次 insert，均摊 <span class="arithmatex">\(O(1)\)</span>，共 <span class="arithmatex">\(m\)</span> 条。</li>
 <li>Space: <span class="arithmatex">\(O(n)\)</span> 字典。</li>
 </ul>
 <h2 id="pitfalls">陷阱 (Pitfalls)<a class="headerlink" href="#pitfalls" title="Permanent link">#</a></h2>
 <ul>
-<li>必须按 <strong>操作顺序</strong> 处理（题目语义），不能并行。</li>
-<li>不能对每次操作 <span class="arithmatex">\(O(n)\)</span> 线性扫描查 old 位置（<span class="arithmatex">\(10^{10}\)</span> TLE）。</li>
-<li><code>pos.pop(old)</code> 与 <code>pos[new] = i</code> 顺序很重要——如果先 <code>pos[new]</code>，理论上 old != new（题目保证），不会冲突，但还是先 pop 再 set 更稳健。</li>
+<li>必须按 <strong>操作顺序</strong> 处理（题目语义）：某条操作的 new 可能成为更晚操作的 old，存在顺序依赖，不能并行。</li>
+<li>不能对每次操作 <span class="arithmatex">\(O(n)\)</span> 线性扫描查 old 位置——这正是背景里被否决的 <span class="arithmatex">\(O(nm) \approx 10^{10}\)</span> TLE 做法。</li>
+<li><code>pos.pop(old)</code> 与 <code>pos[new] = i</code> 顺序：题目保证 old ≠ new 且 new 不在 nums 中，先 set 后 pop 在本题也正确，但先 pop 再 set 更稳健（万一约束放宽，old == new 时不会误删刚写入的绑定）。</li>
 </ul>
 <h2 id="related">相关题目 (Related)<a class="headerlink" href="#related" title="Permanent link">#</a></h2>
 <ul>
 <li><a href="../0535_encode-and-decode-tinyurl/">#0535. Encode and Decode TinyURL</a> — 用 hash 字典做双向映射。</li>
-<li><code>#380. Insert Delete GetRandom O(1) (off-wiki)</code> — 同款 value↔index 映射模板。</li>
+<li><code>#380. Insert Delete GetRandom O(1) (off-wiki)</code> — 维护 value↔index 映射，与本题 <span class="arithmatex">\(\pi\)</span> 同构。</li>
 </ul>
 <h2 id="further-reading">Further Reading<a class="headerlink" href="#further-reading" title="Permanent link">#</a></h2>
 <p>无推荐外部资源（核心是字典间接指针，无需专题文献）。</p>

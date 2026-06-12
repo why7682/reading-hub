@@ -5485,6 +5485,8 @@
       
         
       
+        
+      
     
     
     
@@ -6024,6 +6026,34 @@
     
   
     #93. Restore IP Addresses
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../0102_binary-tree-level-order-traversal/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    #102. Binary Tree Level Order Traversal
   
 
     
@@ -22675,12 +22705,23 @@
 <h2 id="problem">Problem<a class="headerlink" href="#problem" title="Permanent link">#</a></h2>
 <p>数组 <code>security</code>，整数 <code>time</code>。"好日子" <span class="arithmatex">\(i\)</span>：前 <code>time</code> 天非升 (<span class="arithmatex">\(s_{i-t} \ge \dots \ge s_i\)</span>) 且后 <code>time</code> 天非降 (<span class="arithmatex">\(s_i \le \dots \le s_{i+t}\)</span>)。返回所有好日子下标。<span class="arithmatex">\(n \le 10^5\)</span>。</p>
 <h2 id="_1">背景<a class="headerlink" href="#_1" title="Permanent link">#</a></h2>
-<p>这是 <strong>"以每个点为中心的山谷形 (valley) 检测"</strong>：对每个位置 <span class="arithmatex">\(i\)</span>，左侧连续非升长度 <span class="arithmatex">\(\ge t\)</span> 且右侧连续非降长度 <span class="arithmatex">\(\ge t\)</span>。预计算每点的"向左非升段长度"和"向右非降段长度" → <span class="arithmatex">\(O(1)\)</span> 查询。这是 <em>#1671 Minimum Mountain Array</em> / <em>#2210 Hills and Valleys</em> 同款"局部结构扫描" 范式。</p>
-<p>实质上是<strong>"以 <span class="arithmatex">\(i\)</span> 为中心的 mountain valley 长度"</strong> 的预处理。</p>
+<p>把题目条件原样写出来。下标 <span class="arithmatex">\(i\)</span> 是好日子，当且仅当
+$<span class="arithmatex">\(s_{i-t} \ge s_{i-t+1} \ge \dots \ge s_i \le s_{i+1} \le \dots \le s_{i+t}.\)</span>$
+也就是说：从 <span class="arithmatex">\(i\)</span> 往左数 <span class="arithmatex">\(t\)</span> 步必须一路非升（不增），从 <span class="arithmatex">\(i\)</span> 往右数 <span class="arithmatex">\(t\)</span> 步必须一路非降（不减）。<span class="arithmatex">\(i\)</span> 自身同时是左段的终点和右段的起点。</p>
+<p>最直接的验证：对每个 <span class="arithmatex">\(i\)</span>，向左逐个比较 <span class="arithmatex">\(t\)</span> 对相邻元素、向右逐个比较 <span class="arithmatex">\(t\)</span> 对相邻元素。单个 <span class="arithmatex">\(i\)</span> 花 <span class="arithmatex">\(O(t)\)</span>，全部 <span class="arithmatex">\(n\)</span> 个下标共 <span class="arithmatex">\(O(n \cdot t)\)</span>。当 <span class="arithmatex">\(n\)</span> 和 <span class="arithmatex">\(t\)</span> 都到 <span class="arithmatex">\(10^5\)</span> 时这是 <span class="arithmatex">\(10^{10}\)</span> 量级，太慢。</p>
+<p>慢在哪里？关键是这两条扫描在相邻下标之间高度重叠。考虑 <span class="arithmatex">\(i\)</span> 向左的非升检查与 <span class="arithmatex">\(i+1\)</span> 向左的非升检查：它们走过的几乎是同一段元素，只差端点附近的一两个比较。重复检查同一对相邻元素，正是 <span class="arithmatex">\(O(n\cdot t)\)</span> 里多出来的那个 <span class="arithmatex">\(t\)</span>。</p>
+<p>要去掉这个 <span class="arithmatex">\(t\)</span>，就不能在每个 <span class="arithmatex">\(i\)</span> 重新扫一遍，而要把"向左非升能延伸多远"这件事一次扫描算出来、并复用。注意到一个纯粹来自数组自身顺序的事实：若 <span class="arithmatex">\(s_i \le s_{i-1}\)</span>，那么以 <span class="arithmatex">\(i\)</span> 结尾的非升段，恰好是以 <span class="arithmatex">\(i-1\)</span> 结尾的那一段再接上 <span class="arithmatex">\(i\)</span>，长度正好多 1；若 <span class="arithmatex">\(s_i &gt; s_{i-1}\)</span>，非升在 <span class="arithmatex">\(i\)</span> 处断开，以 <span class="arithmatex">\(i\)</span> 结尾的段只剩 <span class="arithmatex">\(i\)</span> 自己。这条递推让"非升段长度"可以从左到右一遍累加得到，每个下标 <span class="arithmatex">\(O(1)\)</span>。向右的非降段对称同理。于是把每个下标的左、右段长度预处理出来，判定好日子就退化成两次 <span class="arithmatex">\(O(1)\)</span> 比较。</p>
 <h2 id="_2">形式化<a class="headerlink" href="#_2" title="Permanent link">#</a></h2>
-<p>定义 $L(i) = $ 以 <span class="arithmatex">\(i\)</span> 为右端的"非升后缀"长度（即最大 <span class="arithmatex">\(\ell\)</span> 使 <span class="arithmatex">\(s_{i-\ell+1} \ge \dots \ge s_i\)</span>）。$R(i) = $ 以 <span class="arithmatex">\(i\)</span> 为左端的"非降前缀"长度。
-好日子 <span class="arithmatex">\(\iff L(i) \ge t+1 \land R(i) \ge t+1\)</span>。</p>
+<p>先说为什么要追踪"段长度"这个量。判定 <span class="arithmatex">\(i\)</span> 是否好日子，本质上只需要两件事：以 <span class="arithmatex">\(i\)</span> 结尾的非升段能向左延伸多长，以 <span class="arithmatex">\(i\)</span> 开头的非降段能向右延伸多长。只要这两个长度都够 <span class="arithmatex">\(t+1\)</span> 个元素，左右各 <span class="arithmatex">\(t\)</span> 步的约束就被覆盖。把这两个量命名出来：</p>
+<p>定义 <span class="arithmatex">\(L(i)\)</span> 为以 <span class="arithmatex">\(i\)</span> 为右端点的最长非升段长度，即最大的 <span class="arithmatex">\(\ell\)</span> 使得 <span class="arithmatex">\(s_{i-\ell+1} \ge \dots \ge s_i\)</span>。定义 <span class="arithmatex">\(R(i)\)</span> 为以 <span class="arithmatex">\(i\)</span> 为左端点的最长非降段长度。两者都把 <span class="arithmatex">\(i\)</span> 自身计入，所以最小值为 1。</p>
+<p>它们满足下面的递推（这正是上一节那条数组顺序事实的形式化）：
+$<span class="arithmatex">\(L(i) = \begin{cases} L(i-1)+1, &amp; s_i \le s_{i-1} \\ 1, &amp; \text{otherwise} \end{cases}, \qquad R(i) = \begin{cases} R(i+1)+1, &amp; s_i \le s_{i+1} \\ 1, &amp; \text{otherwise} \end{cases}\)</span>$
+边界取 <span class="arithmatex">\(L(0)=1\)</span>、<span class="arithmatex">\(R(n-1)=1\)</span>。</p>
+<p>判定条件：
+$<span class="arithmatex">\(i \text{ 是好日子} \iff L(i) \ge t+1 \ \land\ R(i) \ge t+1.\)</span>$</p>
+<p>阈值为什么是 <span class="arithmatex">\(t+1\)</span> 而不是 <span class="arithmatex">\(t\)</span>？左段约束要求 <span class="arithmatex">\(s_{i-t} \ge \dots \ge s_i\)</span>，这串里的元素是 <span class="arithmatex">\(s_{i-t}, s_{i-t+1}, \dots, s_i\)</span>，从 <span class="arithmatex">\(i-t\)</span> 到 <span class="arithmatex">\(i\)</span> 共 <span class="arithmatex">\(t+1\)</span> 个。<span class="arithmatex">\(L(i)\)</span> 计入了 <span class="arithmatex">\(i\)</span> 自身，所以"向左 <span class="arithmatex">\(t\)</span> 步非升"等价于"以 <span class="arithmatex">\(i\)</span> 结尾的非升段至少含 <span class="arithmatex">\(t+1\)</span> 个元素"，即 <span class="arithmatex">\(L(i) \ge t+1\)</span>。具体地，<span class="arithmatex">\(t=2\)</span>、<span class="arithmatex">\(i=3\)</span> 时左段是 <span class="arithmatex">\(s_1,s_2,s_3\)</span> 三个元素，需要 <span class="arithmatex">\(L(3)\ge 3\)</span>。<span class="arithmatex">\(R\)</span> 同理。</p>
 <h2 id="_3">数据结构 / 想法<a class="headerlink" href="#_3" title="Permanent link">#</a></h2>
+<p>递推是单向累加，左段一遍正向扫描、右段一遍反向扫描即可。代码是上述递推的直接转写：</p>
 <div class="language-python highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">goodDaysToRobBank</span><span class="p">(</span><span class="n">security</span><span class="p">,</span> <span class="n">time</span><span class="p">):</span>
     <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">security</span><span class="p">)</span>
     <span class="n">L</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">n</span><span class="p">;</span> <span class="n">R</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">n</span>
@@ -22690,18 +22731,18 @@
         <span class="k">if</span> <span class="n">security</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="n">security</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">]:</span> <span class="n">R</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">R</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span>
     <span class="k">return</span> <span class="p">[</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">)</span> <span class="k">if</span> <span class="n">L</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="n">time</span><span class="o">+</span><span class="mi">1</span> <span class="ow">and</span> <span class="n">R</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="n">time</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span>
 </code></pre></div>
-<p><strong>不变量</strong>：<code>L[i]</code> = 以 <span class="arithmatex">\(i\)</span> 结尾的最长非升段长度 (含 <span class="arithmatex">\(i\)</span>)；<code>R[i]</code> = 以 <span class="arithmatex">\(i\)</span> 开始的最长非降段长度 (含 <span class="arithmatex">\(i\)</span>)。<strong>正确性</strong>：两次单向扫描，标准 DP 递推。</p>
-<p><strong>判定</strong>：<span class="arithmatex">\(L[i] \ge t+1\)</span> 表示 <span class="arithmatex">\(s_{i-t}, \dots, s_i\)</span> 非升（含 <span class="arithmatex">\(i\)</span> 自身共 <span class="arithmatex">\(t+1\)</span> 个）。同理 <span class="arithmatex">\(R\)</span>。</p>
+<p><strong>不变量</strong>：循环每一步后，<code>L[i]</code> 恒等于以 <span class="arithmatex">\(i\)</span> 结尾的最长非升段长度（含 <span class="arithmatex">\(i\)</span>），<code>R[i]</code> 恒等于以 <span class="arithmatex">\(i\)</span> 开始的最长非降段长度（含 <span class="arithmatex">\(i\)</span>）。<strong>正确性</strong>：每个 <code>L[i]</code> 只依赖已算好的 <code>L[i-1]</code>，正向扫描保证依赖就绪；<code>R[i]</code> 只依赖 <code>R[i+1]</code>，反向扫描同理。两条递推与形式化中的定义逐字对应。</p>
 <h2 id="_4">复杂度<a class="headerlink" href="#_4" title="Permanent link">#</a></h2>
 <ul>
 <li>Time: <span class="arithmatex">\(O(n)\)</span></li>
 <li>Space: <span class="arithmatex">\(O(n)\)</span></li>
 </ul>
+<p>两遍线性扫描加一次线性列表推导，无数据相关的提前终止，best = avg = worst 同为 <span class="arithmatex">\(O(n)\)</span>。</p>
 <h2 id="_5">陷阱<a class="headerlink" href="#_5" title="Permanent link">#</a></h2>
 <ul>
-<li><code>time = 0</code> → 每天都是好日子（前后各 0 个约束自动满足）。</li>
-<li>边界：<span class="arithmatex">\(i &lt; t\)</span> 或 <span class="arithmatex">\(i &gt; n-1-t\)</span> 必非好日子（不够 <code>time</code> 天前后）。<span class="arithmatex">\(L/R\)</span> 含 <span class="arithmatex">\(i\)</span> 自身的 +1 自动处理。</li>
-<li>"non-increasing" / "non-decreasing" 允许相等。</li>
+<li><code>time = 0</code> → 每天都是好日子（前后各 0 个约束自动满足）。<span class="arithmatex">\(t+1=1\)</span>，而 <span class="arithmatex">\(L(i),R(i)\ge 1\)</span> 恒成立。</li>
+<li>边界：<span class="arithmatex">\(i &lt; t\)</span> 或 <span class="arithmatex">\(i &gt; n-1-t\)</span> 必非好日子（不够 <code>time</code> 天前后）。<span class="arithmatex">\(L/R\)</span> 含 <span class="arithmatex">\(i\)</span> 自身的 +1 自动处理——靠左端时左段顶多含 <span class="arithmatex">\(i+1\)</span> 个元素，达不到 <span class="arithmatex">\(t+1\)</span>。</li>
+<li>"non-increasing" / "non-decreasing" 允许相等，故用 <code>&lt;=</code> 而非 <code>&lt;</code>。</li>
 </ul>
 <h2 id="_6">相关题目<a class="headerlink" href="#_6" title="Permanent link">#</a></h2>
 <ul>

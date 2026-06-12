@@ -5485,6 +5485,8 @@
       
         
       
+        
+      
     
     
     
@@ -6024,6 +6026,34 @@
     
   
     #93. Restore IP Addresses
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../0102_binary-tree-level-order-traversal/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    #102. Binary Tree Level Order Traversal
   
 
     
@@ -17989,6 +18019,34 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="数据结构 / 想法 (Approach)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#on3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        暴力 \(O(n^3)\)：直接枚举上式
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#on-ii-2972" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        \(O(n)\) 双指针：利用三条件的单调性（II 版 #2972 用得上）
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -22607,6 +22665,34 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="数据结构 / 想法 (Approach)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#on3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        暴力 \(O(n^3)\)：直接枚举上式
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#on-ii-2972" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        \(O(n)\) 双指针：利用三条件的单调性（II 版 #2972 用得上）
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -22675,17 +22761,27 @@
 <h2 id="problem">Problem<a class="headerlink" href="#problem" title="Permanent link">#</a></h2>
 <p>给正整数数组 <code>nums</code>，称连续子数组 <span class="arithmatex">\([l..r]\)</span> 为 <strong>incremovable</strong> 若移除它后剩余数组<strong>严格递增</strong>（空数组视为严格递增）。返回 incremovable 子数组的个数。<span class="arithmatex">\(n \le 50\)</span>。</p>
 <h2 id="background">背景 (Background)<a class="headerlink" href="#background" title="Permanent link">#</a></h2>
-<p>本题 Easy 数据规模允许 <span class="arithmatex">\(O(n^3)\)</span> 暴力；II 版 (#2972) <span class="arithmatex">\(n \le 10^5\)</span> 需要 <span class="arithmatex">\(O(n)\)</span> 双指针。<strong>核心观察</strong>：剩余数组 = <code>nums[:l] + nums[r+1:]</code>，要严格增需同时满足：</p>
+<p>最直接的想法是把定义照搬成代码：枚举每个非空连续子数组 <span class="arithmatex">\([l..r]\)</span>，删掉它，检查剩下的数组是否严格递增。这是完全合法的，也直接给出第一版算法——只是我们随后会发现，那个"检查剩下数组"的步骤里其实藏着结构，把它拆开就能看清这道题的全部内容。</p>
+<p>先看检查本身在做什么。删除 <span class="arithmatex">\([l..r]\)</span> 后，剩余数组是</p>
+<div class="arithmatex">\[\texttt{rest} = \texttt{nums[:l]} \parallel \texttt{nums[r+1:]},\]</div>
+<p>即把后段 <code>nums[r+1:]</code> 接在前段 <code>nums[:l]</code> 之后（<span class="arithmatex">\(\parallel\)</span> 表示拼接）。朴素检查 <code>all(rest[i] &lt; rest[i+1])</code> 把 <code>rest</code> 当成一个整体扫一遍。但 <code>rest</code> 不是任意数组，它由两段拼成，相邻比较只在三个地方发生：前段内部、后段内部、以及前段末尾与后段开头的那一处接缝。于是整体严格递增等价于这三处同时成立：</p>
 <ol>
-<li><code>nums[:l]</code> 严格增；</li>
-<li><code>nums[r+1:]</code> 严格增；</li>
-<li>若两段都非空：<code>nums[l-1] &lt; nums[r+1]</code>。</li>
+<li>前段 <code>nums[:l]</code> 内部严格递增；</li>
+<li>后段 <code>nums[r+1:]</code> 内部严格递增；</li>
+<li>若两段都非空，接缝处 <code>nums[l-1] &lt; nums[r+1]</code>。</li>
 </ol>
-<p>这把 enumeration 转化成"找最长前缀增段 <span class="arithmatex">\(L\)</span> 和最长后缀增段 <span class="arithmatex">\(R\)</span>，再两指针扫合法 <span class="arithmatex">\((L, R)\)</span> 对"——经典 prefix/suffix 双扫模板。</p>
+<p>这一拆分纯粹来自"在拼接序列上做相邻比较"这件事，没有用到任何额外技巧。它的价值是把"对每个 <span class="arithmatex">\((l,r)\)</span> 重扫整个 <code>rest</code>"换成"判定三个相互独立的条件"，而这三个条件各自只关心前缀、后缀、一处接缝——正是后面把复杂度从 <span class="arithmatex">\(O(n^3)\)</span> 降到 <span class="arithmatex">\(O(n)\)</span> 的入口。</p>
+<p>下面把上述判定写成精确的计数对象，再由它推导两版算法。</p>
 <h2 id="formulation">形式化 (Formulation)<a class="headerlink" href="#formulation" title="Permanent link">#</a></h2>
-<p><span class="arithmatex">\(\#\{ (l, r) : 0 \le l \le r &lt; n,\; a[0..l-1] \oplus a[r+1..n-1] \text{ 严格递增} \}\)</span>。</p>
+<p>设 <span class="arithmatex">\(a = \texttt{nums}\)</span>，长度 <span class="arithmatex">\(n\)</span>。要计数的是满足"删除后严格递增"的子数组端点对：</p>
+<div class="arithmatex">\[\#\bigl\{ (l, r) : 0 \le l \le r &lt; n,\; a[0..l{-}1] \parallel a[r{+}1..n{-}1] \text{ 严格递增} \bigr\}.\]</div>
+<p>边界 <span class="arithmatex">\(0 \le l \le r &lt; n\)</span> 恰好刻画"非空连续子数组"：<span class="arithmatex">\(l \le r\)</span> 保证子数组至少含一个元素，<span class="arithmatex">\(r &lt; n\)</span> 保证右端不越界。当 <span class="arithmatex">\(l=0\)</span> 且 <span class="arithmatex">\(r=n-1\)</span> 时整段被删，<code>rest</code> 为空，按约定算严格递增并计入。</p>
+<p>由背景中的拆分，这个集合等价于</p>
+<div class="arithmatex">\[\#\bigl\{ (l,r): a[:l]\text{ 严增} \;\wedge\; a[r{+}1:]\text{ 严增} \;\wedge\; (\text{两段非空时 } a_{l-1}&lt;a_{r+1}) \bigr\}.\]</div>
+<p>第一版算法是对上式逐项枚举；第二版算法利用三个条件各自的单调结构，避免重复扫描。</p>
 <h2 id="approach">数据结构 / 想法 (Approach)<a class="headerlink" href="#approach" title="Permanent link">#</a></h2>
-<p><strong>Easy 暴力 <span class="arithmatex">\(O(n^3)\)</span></strong>：</p>
+<h3 id="on3">暴力 <span class="arithmatex">\(O(n^3)\)</span>：直接枚举上式<a class="headerlink" href="#on3" title="Permanent link">#</a></h3>
+<p>对每个 <span class="arithmatex">\((l,r)\)</span> 构造 <code>rest</code> 并整体检查，就是形式化集合的逐元素计数：</p>
 <div class="language-python highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">Solution</span><span class="p">:</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">incremovableSubarrayCount</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">nums</span><span class="p">):</span>
         <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">nums</span><span class="p">)</span>
@@ -22697,37 +22793,84 @@
                     <span class="n">cnt</span> <span class="o">+=</span> <span class="mi">1</span>
         <span class="k">return</span> <span class="n">cnt</span>
 </code></pre></div>
-<p><strong>Trace example 2</strong> <code>nums=[6,5,7,8]</code>：
-- [6,5,7,8] (l=0,r=3) → rest [] ✓
-- [6,5,7] (l=0,r=2) → rest [8] ✓
-- [6,5] (l=0,r=1) → rest [7,8] ✓
-- [6] (l=0,r=0) → rest [5,7,8] ✓
-- [5,7,8] (l=1,r=3) → rest [6] ✓
-- [5,7] (l=1,r=2) → rest [6,8] ✓
-- [5] (l=1,r=1) → rest [6,7,8] ✓
-- 其它子数组都失败。共 7 ✓。</p>
-<p><strong><span class="arithmatex">\(O(n)\)</span> 双指针（II 版）</strong>：</p>
-<ol>
-<li>求最长严增前缀长度 <span class="arithmatex">\(L\)</span>（<span class="arithmatex">\(a_0 &lt; a_1 &lt; \dots &lt; a_{L-1}\)</span>）。</li>
-<li>求最长严增后缀起点 <span class="arithmatex">\(R\)</span>（<span class="arithmatex">\(a_R &lt; \dots &lt; a_{n-1}\)</span>）。</li>
-<li>若 <span class="arithmatex">\(L = n\)</span>（全部严增）：答案 <span class="arithmatex">\(= n(n+1)/2\)</span>。</li>
-<li>否则枚举右端点 <span class="arithmatex">\(r\)</span> 从 <span class="arithmatex">\(R\)</span> 到 <span class="arithmatex">\(n\)</span>，对每个 <span class="arithmatex">\(r\)</span> 在前缀中找最大 <span class="arithmatex">\(l\)</span> 满足 <span class="arithmatex">\(a_{l-1} &lt; a_r\)</span>（或允许 <span class="arithmatex">\(l = 0\)</span>）。</li>
-</ol>
+<p>为了看清三条件如何决定成败，在 <code>nums=[6,5,7,8]</code> 上对照一个<strong>通过</strong>与一个<strong>失败</strong>的候选：</p>
+<table>
+<thead>
+<tr>
+<th>子数组 <span class="arithmatex">\((l,r)\)</span></th>
+<th><code>rest</code></th>
+<th>条件 1 前段严增</th>
+<th>条件 2 后段严增</th>
+<th>条件 3 接缝</th>
+<th>结果</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><span class="arithmatex">\((0,3)\)</span></td>
+<td><code>[]</code></td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>✓（空段）</td>
+</tr>
+<tr>
+<td><span class="arithmatex">\((1,1)\)</span> 删 <code>[5]</code></td>
+<td><code>[6,7,8]</code></td>
+<td><code>[6]</code> 成立</td>
+<td><code>[7,8]</code> 成立</td>
+<td><span class="arithmatex">\(6&lt;7\)</span></td>
+<td>✓</td>
+</tr>
+<tr>
+<td><span class="arithmatex">\((0,0)\)</span> 删 <code>[6]</code></td>
+<td><code>[5,7,8]</code></td>
+<td>空段成立</td>
+<td><code>[5,7,8]</code> 成立</td>
+<td>单段免检</td>
+<td>✓</td>
+</tr>
+<tr>
+<td><span class="arithmatex">\((1,3)\)</span> 删 <code>[5,7,8]</code></td>
+<td><code>[6]</code></td>
+<td><code>[6]</code> 成立</td>
+<td>空段成立</td>
+<td>单段免检</td>
+<td>✓</td>
+</tr>
+<tr>
+<td><span class="arithmatex">\((2,2)\)</span> 删 <code>[7]</code></td>
+<td><code>[6,5,8]</code></td>
+<td><code>[6,5]</code> <strong>不严增</strong></td>
+<td>—</td>
+<td>—</td>
+<td>✗（条件 1 已破）</td>
+</tr>
+</tbody>
+</table>
+<p>最后一行说明三条件不是装饰：候选 <span class="arithmatex">\((2,2)\)</span> 之所以非法，是因为前段 <code>[6,5]</code> 本身就不严格递增——条件 1 在接缝之前就否决了它。把全部 <span class="arithmatex">\((l,r)\)</span> 这样判一遍，合法者共 7 个，与官方答案一致。</p>
+<p><span class="arithmatex">\(n=50\)</span> 时 <span class="arithmatex">\(n^3 \approx 1.25\times 10^5\)</span> 次操作，足以在时限内通过。但相同的判定在不同 <span class="arithmatex">\((l,r)\)</span> 间大量重复——同一个前段会被反复检查是否严增。第二版正是消除这种重复。</p>
+<h3 id="on-ii-2972"><span class="arithmatex">\(O(n)\)</span> 双指针：利用三条件的单调性（II 版 #2972 用得上）<a class="headerlink" href="#on-ii-2972" title="Permanent link">#</a></h3>
+<p>当 <span class="arithmatex">\(n \le 10^5\)</span>（即 #2972）时 <span class="arithmatex">\(O(n^3)\)</span> 不再可行，需要把三条件从"逐对判定"压成"线性一遍"。关键是三个条件各自都有单调结构，不必对每个 <span class="arithmatex">\((l,r)\)</span> 重算。</p>
+<p><strong>先固定前两个条件可取的范围。</strong> 条件 1 要求 <span class="arithmatex">\(a[:l]\)</span> 严增，所以合法的 <span class="arithmatex">\(l\)</span> 只能落在数组<strong>最长严格递增前缀</strong>之内：设该前缀长度为 <span class="arithmatex">\(L\)</span>（即 <span class="arithmatex">\(a_0&lt;a_1&lt;\dots&lt;a_{L-1}\)</span> 而 <span class="arithmatex">\(a_{L-1}\ge a_L\)</span>），则 <span class="arithmatex">\(l\)</span> 可取 <span class="arithmatex">\(0,1,\dots,L\)</span>。同理条件 2 要求 <span class="arithmatex">\(a[r+1:]\)</span> 严增，所以 <span class="arithmatex">\(r+1\)</span> 只能落在<strong>最长严格递增后缀</strong>的起点之后；设该后缀从下标 <span class="arithmatex">\(R\)</span> 起严增。<span class="arithmatex">\(L\)</span> 与 <span class="arithmatex">\(R\)</span> 各扫一遍即可得到，是 <span class="arithmatex">\(O(n)\)</span> 的。</p>
+<p><strong>特例：整段已严增（<span class="arithmatex">\(L=n\)</span>）。</strong> 此时数组本身严格递增，删掉任何一段连续元素后，<code>rest</code> 是它的子序列，仍然严格递增——条件 1、2、3 自动成立。于是<strong>每一个</strong>非空连续子数组都合法。长度为 <span class="arithmatex">\(n\)</span> 的数组有 <span class="arithmatex">\(n(n+1)/2\)</span> 个非空连续子数组，故答案直接为 <span class="arithmatex">\(n(n+1)/2\)</span>，无需枚举。</p>
+<p><strong>一般情形：固定右端点，左端点单调右移。</strong> 当 <span class="arithmatex">\(L&lt;n\)</span>，对每个合法的 <span class="arithmatex">\(r\)</span>（其右段 <span class="arithmatex">\(a[r+1:]\)</span> 严增），条件 2 已被 <span class="arithmatex">\(r\)</span> 钉死，剩下要数的是有多少 <span class="arithmatex">\(l\)</span> 同时满足条件 1（<span class="arithmatex">\(l\le L\)</span>）和条件 3（两段非空时 <span class="arithmatex">\(a_{l-1}&lt;a_{r+1}\)</span>）。条件 3 是 <span class="arithmatex">\(a_{l-1}&lt;a_{r+1}\)</span>，即合法的最大 <span class="arithmatex">\(l\)</span> 由阈值 <span class="arithmatex">\(a_{r+1}\)</span> 决定。注意当 <span class="arithmatex">\(r\)</span> 增大、扫到的右段开头 <span class="arithmatex">\(a_{r+1}\)</span> 也随之增大（右段严增），阈值只升不降，因而满足 <span class="arithmatex">\(a_{l-1}&lt;a_{r+1}\)</span> 的最大 <span class="arithmatex">\(l\)</span> 只会右移、不会左移。这种"阈值单调 → 指针单调"正是双指针成立的原因：一根指针随 <span class="arithmatex">\(r\)</span> 单向前进扫过前缀即可，总代价 <span class="arithmatex">\(O(n)\)</span>，不必对每个 <span class="arithmatex">\(r\)</span> 重新从头查找。</p>
+<p>把三步合起来：求 <span class="arithmatex">\(L\)</span>、求 <span class="arithmatex">\(R\)</span>、若 <span class="arithmatex">\(L=n\)</span> 直接返回 <span class="arithmatex">\(n(n+1)/2\)</span>，否则用单调指针在前缀上对每个合法 <span class="arithmatex">\(r\)</span> 累计可行 <span class="arithmatex">\(l\)</span> 的个数。这就是 #2972 的标准 <span class="arithmatex">\(O(n)\)</span> 解。本题 <span class="arithmatex">\(n\le 50\)</span> 用暴力已足够，列出 <span class="arithmatex">\(O(n)\)</span> 版是为了说明同一形式化如何支撑两种规模。</p>
 <h2 id="complexity">复杂度 (Complexity)<a class="headerlink" href="#complexity" title="Permanent link">#</a></h2>
 <ul>
-<li>暴力：Time <span class="arithmatex">\(O(n^3)\)</span>, Space <span class="arithmatex">\(O(n)\)</span>。本题 <span class="arithmatex">\(n=50\)</span> → <span class="arithmatex">\(10^5\)</span> 操作，瞬完。</li>
-<li>双指针：Time <span class="arithmatex">\(O(n)\)</span>, Space <span class="arithmatex">\(O(1)\)</span>。</li>
+<li>暴力：Time <span class="arithmatex">\(O(n^3)\)</span>，Space <span class="arithmatex">\(O(n)\)</span>。本题 <span class="arithmatex">\(n=50\)</span> → 约 <span class="arithmatex">\(10^5\)</span> 次操作，远低于时限约束。</li>
+<li>双指针：Time <span class="arithmatex">\(O(n)\)</span>，Space <span class="arithmatex">\(O(1)\)</span>。</li>
 </ul>
 <h2 id="pitfalls">陷阱 (Pitfalls)<a class="headerlink" href="#pitfalls" title="Permanent link">#</a></h2>
 <ul>
-<li>"严格" 而非"非递减"——<code>[1,1]</code> 不算严增。</li>
-<li>移除空数组<strong>不算合法选择</strong>——题目要求 incremovable 子数组<strong>非空</strong>（至少 1 元素）。</li>
-<li>全数组移除使 rest 为空，按题意空数组算严增，计入答案。</li>
+<li>"严格"而非"非递减"——<code>[1,1]</code> 不算严增，接缝与段内都按 <span class="arithmatex">\(&lt;\)</span> 判。</li>
+<li>移除空数组<strong>不算合法选择</strong>——题目要求 incremovable 子数组<strong>非空</strong>（至少 1 元素），故枚举从 <span class="arithmatex">\(l\le r\)</span> 开始。</li>
+<li>全数组移除使 <code>rest</code> 为空，按题意空数组算严增，计入答案。</li>
 </ul>
 <h2 id="related">相关题目 (Related)<a class="headerlink" href="#related" title="Permanent link">#</a></h2>
 <ul>
 <li><code>#2972. Count the Number of Incremovable Subarrays II (off-wiki)</code> — II 版 <span class="arithmatex">\(n \le 10^5\)</span>，需双指针。</li>
-<li><a href="../0915_partition-array-into-disjoint-intervals/">#915. Partition Array into Disjoint Intervals</a> — 同类"前缀 max / 后缀 min" 思路。</li>
+<li><a href="../0915_partition-array-into-disjoint-intervals/">#915. Partition Array into Disjoint Intervals</a> — 同样靠前缀/后缀的单调段刻画合法切点。</li>
 </ul>
 <h2 id="further-reading">Further Reading<a class="headerlink" href="#further-reading" title="Permanent link">#</a></h2>
 <ul>

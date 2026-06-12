@@ -5485,6 +5485,8 @@
       
         
       
+        
+      
     
     
     
@@ -6024,6 +6026,34 @@
     
   
     #93. Restore IP Addresses
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../0102_binary-tree-level-order-traversal/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    #102. Binary Tree Level Order Traversal
   
 
     
@@ -22675,11 +22705,29 @@
 <h2 id="problem">Problem<a class="headerlink" href="#problem" title="Permanent link">#</a></h2>
 <p><span class="arithmatex">\(m \times n\)</span> 网格上有若干 guards 和 walls。每个 guard 沿 4 个方向看出去，被 wall 或另一个 guard 阻断；被任一 guard 看到的格子称为「guarded」。求既不是 guard / wall、又不被 guarded 的格子数量。<span class="arithmatex">\(m \cdot n \le 10^5\)</span>。</p>
 <h2 id="background">背景 (Background)<a class="headerlink" href="#background" title="Permanent link">#</a></h2>
-<p>本题是 <strong>网格上的方向性可见性 (visibility from a point)</strong> 问题的离散版。物理上对应"一光源 + 不透光障碍物"的可见域。经典解法是按 4 方向独立扫描，每行 / 每列 <span class="arithmatex">\(O(n)\)</span> 一遍——总共 <span class="arithmatex">\(O(mn)\)</span>。</p>
+<p>最直接的想法是从每个 guard 出发模拟它的视线：朝 4 个方向逐格走，直到撞上 wall、撞上另一个 guard 或越界为止，沿途经过的空格全部标记为 guarded。正确性显而易见，但代价是：单个 guard 的一条视线最长可达整行 / 整列，即 <span class="arithmatex">\(O(m + n)\)</span>；若有 <span class="arithmatex">\(g\)</span> 个 guard，总开销 <span class="arithmatex">\(O\big(g \cdot (m+n)\big)\)</span>。当 guard 密集排布（例如某行几乎站满 guard），同一行会被反复横扫，最坏退化到 <span class="arithmatex">\(O(g \cdot mn)\)</span>，在 <span class="arithmatex">\(m \cdot n \le 10^5\)</span> 下足以 TLE。</p>
+<p>退化的根源是重复劳动：每个 guard 各自扫一遍自己所在的行 / 列，而同一行被不同 guard 扫了很多次。但「一行从左往右看出去的可见性」其实只由这一行内格子的相对位置决定——与有几个 guard 无关。这提示我们：不该以 guard 为单位扫描，而该以行 / 列为单位，每行 / 每列只扫一遍。下面把这件事精确化。</p>
 <h2 id="formulation">形式化 (Formulation)<a class="headerlink" href="#formulation" title="Permanent link">#</a></h2>
-<p>给 <span class="arithmatex">\(G, W \subseteq [m] \times [n]\)</span> 分别表示 guards / walls 位置。一个空位 <span class="arithmatex">\((i, j) \notin G \cup W\)</span> 是 unguarded 当且仅当沿 4 个方向出发到第一个非空格时遇到的是 wall 或越界。求 unguarded 数量。</p>
+<p>记 <span class="arithmatex">\([m] = \{0, 1, \dots, m-1\}\)</span>，<span class="arithmatex">\([n] = \{0, 1, \dots, n-1\}\)</span>。给定 <span class="arithmatex">\(G, W \subseteq [m] \times [n]\)</span> 分别为 guards / walls 的位置集合（不相交）。称一个格子为<strong>空格</strong>当且仅当它不在 <span class="arithmatex">\(G \cup W\)</span> 中。</p>
+<p>固定一个方向 <span class="arithmatex">\(d \in \{\leftarrow, \rightarrow, \uparrow, \downarrow\}\)</span>。从空格 <span class="arithmatex">\((i,j)\)</span> 沿方向 <span class="arithmatex">\(d\)</span> 走，记 <span class="arithmatex">\(\text{first}_d(i,j)\)</span> 为第一个非空格（落在 <span class="arithmatex">\(G\)</span> 或 <span class="arithmatex">\(W\)</span> 中）的格子；若一路到越界都没遇到非空格，则 <span class="arithmatex">\(\text{first}_d(i,j)\)</span> 为空。定义可见性谓词</p>
+<div class="arithmatex">\[
+\text{vis}_d(i,j) \;=\; \big[\, \text{first}_d(i,j) \in G \,\big].
+\]</div>
+<p>即沿方向 <span class="arithmatex">\(d\)</span> 看出去，第一个非空格是 guard 才算被它看到。于是</p>
+<div class="arithmatex">\[
+(i,j) \text{ 是 guarded} \iff \bigvee_{d} \text{vis}_d(i,j),
+\qquad
+(i,j) \text{ 是 unguarded} \iff (i,j) \notin G \cup W \;\wedge\; \bigwedge_{d} \neg\,\text{vis}_d(i,j).
+\]</div>
+<p>所求即满足后一条件的格子数。</p>
+<p>这个形式化是后续算法的脊柱。关键在于：<span class="arithmatex">\(\text{vis}_d(i,j)\)</span> 只依赖<strong>沿 <span class="arithmatex">\(d\)</span> 方向、<span class="arithmatex">\((i,j)\)</span> 之前最近的那个非空格的类型</strong>。对固定方向 <span class="arithmatex">\(d = \rightarrow\)</span>（向左看，即扫描方向从左往右），整行的所有格子的 <span class="arithmatex">\(\text{vis}\)</span> 值可以在一次从左到右的遍历中算出来：遍历时只需记住「上一个非空格是不是 guard」。这把「对每个格子各算一次最近非空格」压成「每行一遍线性扫描」，正是去掉重复劳动的那一步。</p>
 <h2 id="approach">数据结构 / 想法 (Approach)<a class="headerlink" href="#approach" title="Permanent link">#</a></h2>
-<p><strong>4 次方向扫描</strong>：构建 <span class="arithmatex">\(m \times n\)</span> 字符网格，标 <code>G/W/.</code>。对每行从左到右扫一遍：维护「最近看到的 guard 是否还在 active」状态；遇到 <code>.</code> 且 active 就标 <code>S</code>(seen)；遇到 wall 或新 guard 重置 active；遇到 guard active=True。然后从右到左、从上到下、从下到上各扫一遍。</p>
+<p><strong>从形式化直接读出不变量。</strong> 把网格存成字符矩阵，guard 标 <code>G</code>、wall 标 <code>W</code>、空格标 <code>.</code>。固定扫描方向为从左到右处理某一行，维护一个布尔量 <code>active</code>，约定它的含义就是上面 <span class="arithmatex">\(\text{vis}_\rightarrow\)</span> 的判据：</p>
+<blockquote>
+<p><strong>不变量</strong>：扫到位置 <span class="arithmatex">\((i, j)\)</span> 时，<code>active = True</code> 当且仅当从当前扫描方向看，<span class="arithmatex">\((i, j)\)</span> 之前最近的那个非空格是一个 guard。</p>
+</blockquote>
+<p>由此 <code>active</code> 的更新规则被不变量唯一确定：遇到 <code>G</code>，最近非空格变成 guard，置 <code>active = True</code>；遇到 <code>W</code>，最近非空格变成 wall，置 <code>active = False</code>；遇到空格 <code>.</code>，最近非空格不变，于是若 <code>active</code> 为真，则该空格被向左方向看到，标记为 seen。注意遇到新 guard 时是<strong>置 True</strong>（最近非空格更新成了 guard），而不是「先 reset 再继续」——guard 自己也会阻断它身后的视线，但身前（已扫过的方向）不受影响。</p>
+<p>四个方向各对应一次这样的扫描：从左到右、从右到左、从上到下、从下到上。四遍跑完，仍为 <code>.</code> 的格子既非 guard / wall、也没被任何方向看到，正是 unguarded。</p>
 <div class="language-python highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">Solution</span><span class="p">:</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">countUnguarded</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">m</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">guards</span><span class="p">,</span> <span class="n">walls</span><span class="p">):</span>
         <span class="n">g</span> <span class="o">=</span> <span class="p">[[</span><span class="s1">&#39;.&#39;</span><span class="p">]</span> <span class="o">*</span> <span class="n">n</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">m</span><span class="p">)]</span>
@@ -22701,18 +22749,19 @@
         <span class="n">sweep</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">),</span> <span class="nb">range</span><span class="p">(</span><span class="n">m</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">),</span> <span class="kc">False</span><span class="p">)</span>  <span class="c1"># B→T</span>
         <span class="k">return</span> <span class="nb">sum</span><span class="p">(</span><span class="mi">1</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">m</span><span class="p">)</span> <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">)</span> <span class="k">if</span> <span class="n">g</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;.&#39;</span><span class="p">)</span>
 </code></pre></div>
-<p><strong>不变量</strong>：扫到位置 <span class="arithmatex">\((i, j)\)</span> 时，<code>active = True</code> 当且仅当从当前扫描方向看，在 <span class="arithmatex">\((i, j)\)</span> 之前的最近一个非 <code>.</code> 格子是一个 guard。被 wall 或新 guard 阻断后重新建模——这与「光在该方向上的可见域」严格一致。</p>
+<p>代码是不变量的直接编码：内层 <code>if/elif/elif</code> 三分支恰好对应「最近非空格 = guard / wall / 不变」三种情形。<code>S</code>（seen）格在后续扫描中与 <code>.</code> 同样处理——它不影响 <code>active</code>，因此某一方向的标记绝不会阻断其它方向的视线，四遍扫描互不干扰。</p>
 <p>样例 2：m=3, n=3, guard at (1,1)，walls 在四个邻居。从 (1,1) 向四方向都立即被 wall 阻挡，只能看到自己。空位 (0,0)(0,2)(2,0)(2,2) 都看不到 → 4 个 unguarded。✅</p>
 <h2 id="complexity">复杂度 (Complexity)<a class="headerlink" href="#complexity" title="Permanent link">#</a></h2>
+<p>每个方向的扫描恰好访问每个格子一次，故单次扫描 <span class="arithmatex">\(O(mn)\)</span>；4 个方向共 4 遍，仍是 <span class="arithmatex">\(O(mn)\)</span>。</p>
 <ul>
-<li>Time: <span class="arithmatex">\(O(mn)\)</span>，4 次方向扫描各 <span class="arithmatex">\(O(mn)\)</span>。</li>
-<li>Space: <span class="arithmatex">\(O(mn)\)</span> 用于网格。</li>
+<li>Time: <span class="arithmatex">\(O(mn)\)</span>。所有扫描都是无条件的整网格遍历，故时间在最好 / 平均 / 最坏情形下均为 <span class="arithmatex">\(\Theta(mn)\)</span>。</li>
+<li>Space: <span class="arithmatex">\(O(mn)\)</span> 用于字符网格。</li>
 </ul>
 <h2 id="pitfalls">陷阱 (Pitfalls)<a class="headerlink" href="#pitfalls" title="Permanent link">#</a></h2>
 <ul>
-<li>必须用 4 次方向扫描而不是从每个 guard 出发 BFS（最坏 <span class="arithmatex">\(O(g \cdot mn)\)</span> TLE）。</li>
-<li>guard 之间也会互相阻挡——「另一个 guard」会重置 active，<strong>新 guard 又把 active 设为 True</strong>，注意此处不是 reset 成 False 再继续。</li>
-<li>不能直接在原 wall 数组上 mark seen——需要副本以区分 wall/guard/seen。</li>
+<li>必须用 4 次方向扫描而不是从每个 guard 出发 BFS / 射线模拟（最坏 <span class="arithmatex">\(O(g \cdot mn)\)</span> TLE）——这正是背景里那个朴素做法在 guard 密集时退化的点。</li>
+<li>guard 之间也会互相阻挡——「另一个 guard」会更新 active，<strong>新 guard 把 active 设为 True</strong>（因为最近非空格变成了 guard），注意此处不是 reset 成 False 再继续。</li>
+<li>不能直接在原 wall 数组上 mark seen——需要副本以区分 wall / guard / seen，否则会破坏阻断语义。</li>
 </ul>
 <h2 id="related">相关题目 (Related)<a class="headerlink" href="#related" title="Permanent link">#</a></h2>
 <ul>

@@ -5485,6 +5485,8 @@
       
         
       
+        
+      
     
     
     
@@ -6024,6 +6026,34 @@
     
   
     #93. Restore IP Addresses
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../0102_binary-tree-level-order-traversal/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    #102. Binary Tree Level Order Traversal
   
 
     
@@ -22675,12 +22705,44 @@
 <h2 id="problem">Problem<a class="headerlink" href="#problem" title="Permanent link">#</a></h2>
 <p><code>piles[i]</code> 堆石子数。恰执行 <span class="arithmatex">\(k\)</span> 次操作：每次选一堆 <span class="arithmatex">\(p\)</span>，移除 <span class="arithmatex">\(\lfloor p/2 \rfloor\)</span>。求最小剩余总数。</p>
 <h2 id="_1">背景<a class="headerlink" href="#_1" title="Permanent link">#</a></h2>
-<p>此题是<strong>贪心 + 优先队列</strong>的入门题。<strong>关键洞察</strong>：每次都应该操作"当前最大"的那堆，因为 <span class="arithmatex">\(\lfloor p/2 \rfloor\)</span> 是关于 <span class="arithmatex">\(p\)</span> 单调增的，操作大堆带来的减少最大。</p>
-<p><strong>为何贪心最优</strong>：操作是"独立"的（操作一堆不影响其他堆），且每次操作的"边际收益"<span class="arithmatex">\(= \lfloor p/2 \rfloor\)</span>，所以总收益 = <span class="arithmatex">\(k\)</span> 次最大边际收益之和 — 即始终选当前最大堆。这是 <strong>exchange argument</strong> 贪心证明的范式。</p>
-<p>最大堆 (Max-Heap) 实现 <span class="arithmatex">\(O(\log n)\)</span> per op；Python 的 <code>heapq</code> 是 min-heap，存负数即可。</p>
+<p>设有 <span class="arithmatex">\(n\)</span> 堆，第 <span class="arithmatex">\(i\)</span> 堆的石子数记为 <span class="arithmatex">\(p_i\)</span>。一次操作选定某堆，把它的石子数从 <span class="arithmatex">\(p\)</span> 变成 <span class="arithmatex">\(p - \lfloor p/2 \rfloor\)</span>，即移除 <span class="arithmatex">\(\lfloor p/2 \rfloor\)</span> 颗。我们要在恰好 <span class="arithmatex">\(k\)</span> 次操作后让 <span class="arithmatex">\(\sum_i p_i\)</span> 最小。</p>
+<p>这里有真正的选择：每一步都要决定操作哪一堆，而约束量级（<span class="arithmatex">\(k\)</span> 最大到 <span class="arithmatex">\(10^5\)</span>，<span class="arithmatex">\(n\)</span> 最大到 <span class="arithmatex">\(10^5\)</span>）让"枚举所有操作序列"不可行——每步有 <span class="arithmatex">\(n\)</span> 个候选，序列共有 <span class="arithmatex">\(n^k\)</span> 种。所以问题不是"能不能算出来"，而是"哪一堆该被操作"。</p>
+<p>先看一个朴素策略会在哪里出错，再看修正它的规则。</p>
+<p><strong>朴素尝试：把 <span class="arithmatex">\(k\)</span> 次操作平摊给各堆，或随便挑一堆。</strong> 取 <span class="arithmatex">\(\text{piles} = [4,3,2]\)</span>，<span class="arithmatex">\(k=2\)</span>。</p>
+<ul>
+<li>若两次操作都落在那堆 <span class="arithmatex">\(4\)</span> 上：<span class="arithmatex">\(4 \to 4-2=2 \to 2-1=1\)</span>，最终 <span class="arithmatex">\([1,3,2]\)</span>，总数 <span class="arithmatex">\(6\)</span>。</li>
+<li>若一次给 <span class="arithmatex">\(4\)</span>、一次给 <span class="arithmatex">\(3\)</span>：<span class="arithmatex">\(4\to 2\)</span>、<span class="arithmatex">\(3\to 2\)</span>，最终 <span class="arithmatex">\([2,2,2]\)</span>，总数 <span class="arithmatex">\(6\)</span>。</li>
+<li>若一次给 <span class="arithmatex">\(4\)</span>、一次给最小的 <span class="arithmatex">\(2\)</span>：<span class="arithmatex">\(4\to 2\)</span>、<span class="arithmatex">\(2\to 1\)</span>，最终 <span class="arithmatex">\([2,3,1]\)</span>，总数 <span class="arithmatex">\(6\)</span>。</li>
+</ul>
+<p>三个总数恰好相等，看不出差别——因为 <span class="arithmatex">\(4,3,2\)</span> 太接近。把堆拉开就暴露问题：取 <span class="arithmatex">\(\text{piles}=[6,1]\)</span>，<span class="arithmatex">\(k=2\)</span>。</p>
+<ul>
+<li>两次都操作 <span class="arithmatex">\(6\)</span>：<span class="arithmatex">\(6\to 3\to 2\)</span>，加上那堆 <span class="arithmatex">\(1\)</span>，总数 <span class="arithmatex">\(3\)</span>。</li>
+<li>一次操作 <span class="arithmatex">\(6\)</span>、一次操作 <span class="arithmatex">\(1\)</span>：<span class="arithmatex">\(6\to 3\)</span>、<span class="arithmatex">\(1\to 1\)</span>（<span class="arithmatex">\(\lfloor 1/2\rfloor=0\)</span>，白费一次），总数 <span class="arithmatex">\(4\)</span>。</li>
+</ul>
+<p>把操作"浪费"在小堆上严格更差。差距的来源很具体：一次操作移除的颗数是 <span class="arithmatex">\(\lfloor p/2 \rfloor\)</span>，它随 <span class="arithmatex">\(p\)</span> 单调不减；堆越大，单次移除越多。把操作用在小堆上，等于放弃了在大堆上本可拿到的更大减少量。</p>
+<p>这给出贪心规则的雏形：<strong>每次都操作当前最大的那堆</strong>。但"单次移除随 <span class="arithmatex">\(p\)</span> 单调"只说明了单步最优，还不能直接断定"每步选最大"在 <span class="arithmatex">\(k\)</span> 步整体上最优——一步贪心未必导致全局最优。要确立这一点，需要先把问题写成精确形式，再证明局部贪心选择不会被任何其他序列超过。</p>
 <h2 id="_2">形式化<a class="headerlink" href="#_2" title="Permanent link">#</a></h2>
-<p>重复 <span class="arithmatex">\(k\)</span> 次：<span class="arithmatex">\(p \leftarrow \arg\max p\)</span>；<span class="arithmatex">\(p \leftarrow \lceil p/2 \rceil\)</span> (等价于 <span class="arithmatex">\(p - \lfloor p/2 \rfloor\)</span>)。最终 <span class="arithmatex">\(\sum p\)</span>。</p>
+<p>状态是各堆当前石子数的多重集 <span class="arithmatex">\(S = \{p_1,\dots,p_n\}\)</span>。定义单步算子：选一堆，把数值 <span class="arithmatex">\(p\)</span> 替换为</p>
+<div class="arithmatex">\[
+f(p) = p - \lfloor p/2 \rfloor = \lceil p/2 \rceil. \tag{1}
+\]</div>
+<p>末等式对所有非负整数成立：<span class="arithmatex">\(p\)</span> 偶时 <span class="arithmatex">\(\lfloor p/2\rfloor = p/2\)</span>，故 <span class="arithmatex">\(f(p)=p/2=\lceil p/2\rceil\)</span>；<span class="arithmatex">\(p\)</span> 奇时 <span class="arithmatex">\(\lfloor p/2\rfloor=(p-1)/2\)</span>，故 <span class="arithmatex">\(f(p)=(p+1)/2=\lceil p/2\rceil\)</span>。因此一次操作把 <span class="arithmatex">\(p\)</span> 留下 <span class="arithmatex">\(\lceil p/2\rceil\)</span>，移除 <span class="arithmatex">\(g(p) := \lfloor p/2\rfloor\)</span>。</p>
+<p>目标：在恰好 <span class="arithmatex">\(k\)</span> 次操作后，最小化 <span class="arithmatex">\(\sum_{p\in S} p\)</span>。等价地，每次操作的"收益"是它移除的颗数 <span class="arithmatex">\(g(p)\)</span>；初始总和固定，所以<strong>最小化剩余 <span class="arithmatex">\(\Leftrightarrow\)</span> 最大化 <span class="arithmatex">\(k\)</span> 次操作的总移除量</strong> <span class="arithmatex">\(\sum_{t=1}^{k} g(p^{(t)})\)</span>，其中 <span class="arithmatex">\(p^{(t)}\)</span> 是第 <span class="arithmatex">\(t\)</span> 步被操作那堆当时的数值。</p>
+<p>这个形式暴露了两条结构性质，正是它们让贪心可证：</p>
+<ol>
+<li><strong>独立性</strong>：操作一堆只改变那一堆的数值，不影响其余任何堆。<span class="arithmatex">\(S\)</span> 的更新是局部的。</li>
+<li><strong>收益只依赖当前值</strong>：第 <span class="arithmatex">\(t\)</span> 步的收益 <span class="arithmatex">\(g(p^{(t)})\)</span> 只取决于该堆此刻的数值，与历史无关。</li>
+</ol>
+<p><strong>贪心规则</strong>：每一步操作当前数值最大的那堆。</p>
+<p>需要强调一处易混淆点：各步收益 <span class="arithmatex">\(g(p^{(t)})\)</span> 不是从一个固定的多重集里"取最大的 <span class="arithmatex">\(k\)</span> 个"。一堆被操作后数值变小，它下次能提供的收益也随之改变，所以这是一个动态重估的过程——每步都要在更新后的状态上重新取最大堆，这正是后面用堆来做的事。</p>
 <h2 id="_3">数据结构 / 想法<a class="headerlink" href="#_3" title="Permanent link">#</a></h2>
+<p><strong>为什么贪心最优（exchange argument）。</strong> 设某个最优操作序列在某两个相邻步骤 <span class="arithmatex">\(t, t+1\)</span> 上分别操作了 <span class="arithmatex">\(a\)</span>、<span class="arithmatex">\(b\)</span> 两堆，且在第 <span class="arithmatex">\(t\)</span> 步开始时 <span class="arithmatex">\(a &lt; b\)</span>（即此刻它没有先操作更大的那堆）。比较交换这两步顺序前后的总移除量。</p>
+<ul>
+<li>原顺序：第 <span class="arithmatex">\(t\)</span> 步操作 <span class="arithmatex">\(a\)</span> 收益 <span class="arithmatex">\(g(a)\)</span>；之后 <span class="arithmatex">\(a\)</span> 变成 <span class="arithmatex">\(\lceil a/2\rceil\)</span>，但第 <span class="arithmatex">\(t+1\)</span> 步操作的是另一堆 <span class="arithmatex">\(b\)</span>，收益 <span class="arithmatex">\(g(b)\)</span>。两步合计 <span class="arithmatex">\(g(a)+g(b)\)</span>。</li>
+<li>交换后：第 <span class="arithmatex">\(t\)</span> 步先操作 <span class="arithmatex">\(b\)</span> 收益 <span class="arithmatex">\(g(b)\)</span>，第 <span class="arithmatex">\(t+1\)</span> 步再操作 <span class="arithmatex">\(a\)</span> 收益 <span class="arithmatex">\(g(a)\)</span>。由独立性，两堆互不干扰，合计仍是 <span class="arithmatex">\(g(a)+g(b)\)</span>。</li>
+</ul>
+<p>两步的合计收益相同（这是独立性的直接推论），交换不会让总移除量变小。所以"先操作较大者"的序列至少和原序列一样好。反复应用这一交换，可把任意序列逐步整理成"每一步都操作当前最大堆"的形式而收益不减。因此贪心序列取到最优。这个"假设最优解里存在一对违反贪心的相邻选择，证明交换它们不变差"的论证方式，就叫 <strong>exchange argument</strong>。</p>
+<p><strong>实现。</strong> 形式化把每步归结为"取当前最大堆 → 替换为 <span class="arithmatex">\(\lceil p/2\rceil\)</span> → 放回"。支持高效"取最大并更新"的结构是最大堆（max-heap），单次 <span class="arithmatex">\(O(\log n)\)</span>。Python 的 <code>heapq</code> 只提供最小堆；对所有数值取负即可获得最大堆语义——堆顶的最小负数对应最大的原值。</p>
 <div class="language-python highlight"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">heapq</span>
 <span class="k">def</span><span class="w"> </span><span class="nf">minStoneSum</span><span class="p">(</span><span class="n">piles</span><span class="p">,</span> <span class="n">k</span><span class="p">):</span>
     <span class="n">h</span> <span class="o">=</span> <span class="p">[</span><span class="o">-</span><span class="n">p</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">piles</span><span class="p">];</span> <span class="n">heapq</span><span class="o">.</span><span class="n">heapify</span><span class="p">(</span><span class="n">h</span><span class="p">)</span>
@@ -22690,18 +22752,18 @@
         <span class="n">heapq</span><span class="o">.</span><span class="n">heappush</span><span class="p">(</span><span class="n">h</span><span class="p">,</span> <span class="o">-</span><span class="n">p</span><span class="p">)</span>
     <span class="k">return</span> <span class="o">-</span><span class="nb">sum</span><span class="p">(</span><span class="n">h</span><span class="p">)</span>
 </code></pre></div>
-<p><strong>不变量</strong>：每次循环后，<code>h</code> 仍是当前所有堆的最大堆（min-heap of negatives）。<strong>正确性</strong>：贪心 + exchange argument。</p>
-<p><strong>复杂度优化</strong>：若 <span class="arithmatex">\(k \gg n\)</span>，可考虑批处理（同一堆多次操作合并），但本题 <span class="arithmatex">\(k \le 10^5\)</span> 直接堆即可。</p>
+<p><strong>循环不变量。</strong> 每次循环体执行前后，<code>h</code>（取负后的最小堆）始终是当前所有堆数值的有效最大堆。初始 <code>heapify</code> 建立该性质；循环体只做"弹出当前最大、按 <span class="arithmatex">\((1)\)</span> 更新、压回"三步，恰是堆上的一次合法 pop/push，故性质保持。配合上面的贪心正确性，每次弹出的都是当前最大堆，循环结束时 <span class="arithmatex">\(-\sum h\)</span> 即为最优剩余总数。</p>
+<p><strong>关于批处理。</strong> 若 <span class="arithmatex">\(k \gg n\)</span>，可注意单堆最多被有效操作 <span class="arithmatex">\(O(\log_2 p_{\max})\)</span> 次便降到 <span class="arithmatex">\(1\)</span>（此后 <span class="arithmatex">\(\lfloor 1/2\rfloor=0\)</span>，再操作无收益）。本题约束 <span class="arithmatex">\(k \le 10^5\)</span>，直接每步走堆已足够，无需批处理优化。</p>
 <h2 id="_4">复杂度<a class="headerlink" href="#_4" title="Permanent link">#</a></h2>
 <ul>
-<li>Time: <span class="arithmatex">\(O((n + k) \log n)\)</span></li>
-<li>Space: <span class="arithmatex">\(O(n)\)</span></li>
+<li>Time: <span class="arithmatex">\(O(n + k \log n)\)</span>（<code>heapify</code> 为 <span class="arithmatex">\(O(n)\)</span>；其后 <span class="arithmatex">\(k\)</span> 次 pop/push 各 <span class="arithmatex">\(O(\log n)\)</span>）。</li>
+<li>Space: <span class="arithmatex">\(O(n)\)</span>（单个大小为 <span class="arithmatex">\(n\)</span> 的堆）。</li>
 </ul>
 <h2 id="_5">陷阱<a class="headerlink" href="#_5" title="Permanent link">#</a></h2>
 <ul>
-<li><span class="arithmatex">\(\lfloor p/2 \rfloor\)</span> 移除后剩 <span class="arithmatex">\(\lceil p/2 \rceil\)</span>，注意奇偶（<code>p - p//2</code>）。</li>
+<li><span class="arithmatex">\(\lfloor p/2 \rfloor\)</span> 移除后剩 <span class="arithmatex">\(\lceil p/2 \rceil\)</span>，注意奇偶（用 <code>p - p//2</code>，不要写成 <code>p//2</code>）。</li>
 <li>Python <code>heapq</code> 没有 max-heap，存负数或用 <code>heapq._heapify_max</code>（私有 API，不推荐）。</li>
-<li>若 <span class="arithmatex">\(p = 0\)</span> 操作不变（<span class="arithmatex">\(\lfloor 0/2 \rfloor = 0\)</span>）；题目保证 <span class="arithmatex">\(p \ge 1\)</span> 但操作多次可能到 0，需照常处理。</li>
+<li>若 <span class="arithmatex">\(p = 0\)</span> 操作不变（<span class="arithmatex">\(\lfloor 0/2 \rfloor = 0\)</span>）；题目保证初始 <span class="arithmatex">\(p \ge 1\)</span>，但多次操作后某堆可能降到 <span class="arithmatex">\(0\)</span>，照常处理即可（收益为 <span class="arithmatex">\(0\)</span>，不破坏正确性）。</li>
 </ul>
 <h2 id="_6">相关题目<a class="headerlink" href="#_6" title="Permanent link">#</a></h2>
 <ul>

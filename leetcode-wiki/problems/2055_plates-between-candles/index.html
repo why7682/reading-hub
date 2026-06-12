@@ -5485,6 +5485,8 @@
       
         
       
+        
+      
     
     
     
@@ -6024,6 +6026,34 @@
     
   
     #93. Restore IP Addresses
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../0102_binary-tree-level-order-traversal/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    #102. Binary Tree Level Order Traversal
   
 
     
@@ -22675,21 +22705,39 @@
 <h2 id="problem">Problem<a class="headerlink" href="#problem" title="Permanent link">#</a></h2>
 <p>字符串 <span class="arithmatex">\(s\)</span> 由 <code>*</code>（盘子）和 <code>|</code>（蜡烛）组成。给若干查询 <span class="arithmatex">\([l_i, r_i]\)</span>，每个查询求子串 <span class="arithmatex">\(s[l..r]\)</span> 中"两侧都有蜡烛"的盘子数。要求 <span class="arithmatex">\(O((n + q) \log n)\)</span> 或 <span class="arithmatex">\(O(n + q)\)</span>。</p>
 <h2 id="background">背景 (Background)<a class="headerlink" href="#background" title="Permanent link">#</a></h2>
-<p>经典的"区间内某种受约束计数"问题，模板：<strong>前缀和 + 索引数组 + 二分</strong>（或预计算最近邻蜡烛达成 <span class="arithmatex">\(O(n + q)\)</span>）。同类思想出现在 Range Sum Query Immutable、Subarray Sum Equals K、各种 offline 区间统计中。</p>
+<p>先把"两侧都有蜡烛"这个条件读清楚。一个盘子被计入答案，当且仅当在子串 <span class="arithmatex">\(s[l..r]\)</span> 内，它的左边某处和右边某处各至少有一根蜡烛。等价地：子串内最靠左的蜡烛和最靠右的蜡烛之间的所有盘子都合法，这之外的盘子至少缺一侧蜡烛，全部不算。</p>
+<p>最直接的做法就是照定义逐查询扫描。对查询 <span class="arithmatex">\([l, r]\)</span>，从 <span class="arithmatex">\(l\)</span> 向右找到第一根蜡烛的位置 <span class="arithmatex">\(L\)</span>，从 <span class="arithmatex">\(r\)</span> 向左找到最后一根蜡烛的位置 <span class="arithmatex">\(R\)</span>，再数一遍 <span class="arithmatex">\((L, R)\)</span> 之间有多少个 <code>*</code>：</p>
+<div class="language-python highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">brute</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">l</span><span class="p">,</span> <span class="n">r</span><span class="p">):</span>
+    <span class="n">L</span> <span class="o">=</span> <span class="nb">next</span><span class="p">((</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">l</span><span class="p">,</span> <span class="n">r</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="k">if</span> <span class="n">s</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;|&#39;</span><span class="p">),</span> <span class="kc">None</span><span class="p">)</span>
+    <span class="n">R</span> <span class="o">=</span> <span class="nb">next</span><span class="p">((</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="n">l</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="k">if</span> <span class="n">s</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;|&#39;</span><span class="p">),</span> <span class="kc">None</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">L</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">R</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">L</span> <span class="o">&gt;=</span> <span class="n">R</span><span class="p">:</span>
+        <span class="k">return</span> <span class="mi">0</span>
+    <span class="k">return</span> <span class="nb">sum</span><span class="p">(</span><span class="mi">1</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">L</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">R</span><span class="p">)</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">if</span> <span class="n">s</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;*&#39;</span><span class="p">)</span>
+</code></pre></div>
+<p>这段代码对每个查询都要在最坏情况下扫过整个子串，单次 <span class="arithmatex">\(O(r - l)\)</span>，即 <span class="arithmatex">\(O(n)\)</span>。<span class="arithmatex">\(q\)</span> 个查询合起来是 <span class="arithmatex">\(O(nq)\)</span>。题目里 <span class="arithmatex">\(n\)</span> 与 <span class="arithmatex">\(q\)</span> 都可达 <span class="arithmatex">\(2 \times 10^5\)</span>，乘起来是 <span class="arithmatex">\(4 \times 10^{10}\)</span> 量级，必然超时。</p>
+<p>瓶颈在哪？每个查询都在做两类重复劳动：(1) 重新数一段区间里的盘子个数；(2) 重新从边界出发线性寻找最近的蜡烛。两者都和子串长度成正比，且查询之间毫无复用。要把单次查询压到 <span class="arithmatex">\(O(\log n)\)</span> 甚至 <span class="arithmatex">\(O(1)\)</span>，就得把这两件事各自预处理成可以快速回答的形式。下面先把"答案到底是什么"写成精确的式子，再让数据结构从式子里长出来。</p>
 <h2 id="formulation">形式化 (Formulation)<a class="headerlink" href="#formulation" title="Permanent link">#</a></h2>
-<p>设 <span class="arithmatex">\(\text{ps}(i) = |\{j &lt; i : s_j = *\}|\)</span>。对查询 <span class="arithmatex">\([l, r]\)</span>，求最左蜡烛 <span class="arithmatex">\(L = \min\{j \ge l : s_j = |\}\)</span> 与最右蜡烛 <span class="arithmatex">\(R = \max\{j \le r : s_j = |\}\)</span>。若 <span class="arithmatex">\(L &lt; R\)</span>，答案为 <span class="arithmatex">\(\text{ps}(R) - \text{ps}(L+1)\)</span>；否则为 0。</p>
+<p>承接上面对条件的拆解：对查询 <span class="arithmatex">\([l, r]\)</span>，设 <span class="arithmatex">\(L\)</span> 为子串内最左的蜡烛下标、<span class="arithmatex">\(R\)</span> 为最右的蜡烛下标，则合法盘子恰好是落在开区间 <span class="arithmatex">\((L, R)\)</span> 里的那些 <code>*</code>。于是只剩两个子问题——怎样快速求 <span class="arithmatex">\(L, R\)</span>，怎样快速数 <span class="arithmatex">\((L, R)\)</span> 内的盘子。</p>
+<p><strong>子问题一：数盘子。</strong> 区间盘子个数是典型的前缀和场景。设</p>
+<div class="arithmatex">\[\text{ps}(i) = |\{\, j &lt; i : s_j = *\,\}|,\]</div>
+<p>即下标 <span class="arithmatex">\(0 \dots i-1\)</span> 中盘子的个数。那么下标落在 <span class="arithmatex">\([a, b]\)</span>（含两端）内的盘子数就是 <span class="arithmatex">\(\text{ps}(b+1) - \text{ps}(a)\)</span>。我们要的是开区间 <span class="arithmatex">\((L, R)\)</span>，即下标 <span class="arithmatex">\([L+1, R-1]\)</span> 内的盘子，等于 <span class="arithmatex">\(\text{ps}(R) - \text{ps}(L+1)\)</span>。这里 <span class="arithmatex">\(+1\)</span> 的来历很具体：<span class="arithmatex">\(s_L\)</span> 是蜡烛不是盘子，把它排除在外，下界取 <span class="arithmatex">\(L+1\)</span>；而 <span class="arithmatex">\(\text{ps}(R)\)</span> 已经把下标 <span class="arithmatex">\(R\)</span> 排除（定义里是 <span class="arithmatex">\(j &lt; i\)</span>），自然不含右蜡烛。</p>
+<blockquote>
+<p>拿一个小窗口手验：$s = $ <code>**|**</code> 而 <span class="arithmatex">\(L = 2\)</span>（窗口里这根蜡烛），它右边只有两个盘子。<span class="arithmatex">\(\text{ps}(R) - \text{ps}(L+1)\)</span> 中 <span class="arithmatex">\(\text{ps}(L+1) = \text{ps}(3)\)</span> 已经数过了下标 <span class="arithmatex">\(0,1,2\)</span> 三个字符里的盘子，正好跨过了蜡烛 <span class="arithmatex">\(s_2\)</span>；若误写成 <span class="arithmatex">\(\text{ps}(L)=\text{ps}(2)\)</span>，结果不变（因为 <span class="arithmatex">\(s_2\)</span> 不是盘子，前缀和在此不增），但 <span class="arithmatex">\(L+1\)</span> 才是语义正确、对一般"盘子前缀和"都成立的下界。</p>
+</blockquote>
+<p><strong>子问题二：求 <span class="arithmatex">\(L, R\)</span>。</strong> 形式上</p>
+<div class="arithmatex">\[L = \min\{\, j \ge l : s_j = |\,\}, \qquad R = \max\{\, j \le r : s_j = |\,\}.\]</div>
+<p>若子串内没有两根可用蜡烛（即 <span class="arithmatex">\(L\)</span> 不存在、<span class="arithmatex">\(R\)</span> 不存在，或 <span class="arithmatex">\(L \ge R\)</span>），答案为 <span class="arithmatex">\(0\)</span>；否则答案为 <span class="arithmatex">\(\text{ps}(R) - \text{ps}(L+1)\)</span>。</p>
+<p>至此目标完全确定：预处理 <span class="arithmatex">\(\text{ps}\)</span> 让子问题一变成 <span class="arithmatex">\(O(1)\)</span> 的相减；再想办法让子问题二的"找最近蜡烛"也快起来。下一节把这两步落成数据结构。</p>
 <h2 id="approach">数据结构 / 想法 (Approach)<a class="headerlink" href="#approach" title="Permanent link">#</a></h2>
-<p><strong>方法 1：前缀和 + 蜡烛索引数组 + 二分</strong></p>
+<p>形式化把任务切成了两件事：用前缀和 <span class="arithmatex">\(O(1)\)</span> 数盘子，用某种结构快速求 <span class="arithmatex">\(L, R\)</span>。子问题一的实现没有悬念——一遍扫描填 <code>prefix</code> 数组即可。分歧只在子问题二，下面两种方法都在回答完全相同的 <span class="arithmatex">\(L, R\)</span>，只是查找手段不同。</p>
+<p><strong>方法 1：蜡烛索引数组 + 二分（<span class="arithmatex">\(O(n + q \log n)\)</span>）</strong></p>
+<p>把所有蜡烛的下标按升序收进一个列表 <code>candles</code>。子问题二里 <span class="arithmatex">\(L\)</span> 是"第一个 <span class="arithmatex">\(\ge l\)</span> 的蜡烛"，<span class="arithmatex">\(R\)</span> 是"最后一个 <span class="arithmatex">\(\le r\)</span> 的蜡烛"——在有序列表上这正是二分查找的两端：</p>
 <ul>
-<li><code>prefix[i+1]</code> = <code>s[0..i]</code> 中 <code>*</code> 的个数</li>
-<li><code>candles</code> = 所有 <code>|</code> 的下标列表（升序）</li>
-<li>查询 <span class="arithmatex">\((l, r)\)</span>：对 <code>candles</code> 二分查找 <span class="arithmatex">\(\ge l\)</span> 的第一个（得 <span class="arithmatex">\(L\)</span>）和 <span class="arithmatex">\(\le r\)</span> 的最后一个（得 <span class="arithmatex">\(R\)</span>）</li>
+<li>第一个 <span class="arithmatex">\(\ge l\)</span>：<code>bisect_left(candles, l)</code> 给出该位置的下标 <span class="arithmatex">\(i\)</span>；</li>
+<li>最后一个 <span class="arithmatex">\(\le r\)</span>：<code>bisect_right(candles, r) - 1</code> 给出该位置的下标 <span class="arithmatex">\(j\)</span>。</li>
 </ul>
-<p><strong>方法 2：预处理最近邻蜡烛（更优 <span class="arithmatex">\(O(n+q)\)</span>）</strong></p>
-<ul>
-<li><code>nextCandle[i]</code> = <span class="arithmatex">\(\ge i\)</span> 的第一个蜡烛下标（不存在则 <span class="arithmatex">\(\infty\)</span>）</li>
-<li><code>prevCandle[i]</code> = <span class="arithmatex">\(\le i\)</span> 的最后一个蜡烛下标（不存在则 <span class="arithmatex">\(-\infty\)</span>）</li>
-</ul>
+<p>为什么左用 <code>bisect_left</code>、右用 <code>bisect_right</code>，不能混？关键在 <span class="arithmatex">\(l\)</span> 或 <span class="arithmatex">\(r\)</span> 自己正好落在某根蜡烛上的情形。若 <span class="arithmatex">\(l\)</span> 处就是蜡烛，这根蜡烛是合法的 <span class="arithmatex">\(L\)</span>，必须保留；<code>bisect_left(candles, l)</code> 返回等于 <span class="arithmatex">\(l\)</span> 的那个位置，正好留下它，而 <code>bisect_right(candles, l)</code> 会跳过它。对称地，若 <span class="arithmatex">\(r\)</span> 处是蜡烛，它是合法的 <span class="arithmatex">\(R\)</span>；<code>bisect_right(candles, r) - 1</code> 指到这根蜡烛本身，而 <code>bisect_left(candles, r) - 1</code> 会把它越过。两个调用的不对称，正是为了在边界压线时各自把那根蜡烛收进区间。</p>
+<p>得到 <span class="arithmatex">\(i, j\)</span> 后，<span class="arithmatex">\(L \ge R\)</span> 的判定转化为索引判定：因为蜡烛下标严格递增，<span class="arithmatex">\(L &lt; R\)</span> 当且仅当 <span class="arithmatex">\(i &lt; j\)</span>。<span class="arithmatex">\(i = j\)</span> 意味着两端落在同一根蜡烛上，中间没有盘子，答案为 <span class="arithmatex">\(0\)</span>；<span class="arithmatex">\(i &gt; j\)</span> 意味着子串内不足两根蜡烛。</p>
 <div class="language-python highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">bisect</span><span class="w"> </span><span class="kn">import</span> <span class="n">bisect_left</span><span class="p">,</span> <span class="n">bisect_right</span>
 
 <span class="k">class</span><span class="w"> </span><span class="nc">Solution</span><span class="p">:</span>
@@ -22712,17 +22760,74 @@
                 <span class="n">ans</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">ans</span>
 </code></pre></div>
-<p>样例 1 trace：<code>s = "**|**|***|"</code>，candles=[2,5,9]，prefix=[0,1,2,2,3,4,4,5,6,7,7]。query [2,5]：bisect_left([2,5,9],2)=0 (L=2)，bisect_right([2,5,9],5)-1=1 (R=5)，prefix[5]-prefix[3] = 4 - 2 = 2 ✓。query [5,9]：L=5,R=9，prefix[9]-prefix[6] = 7 - 4 = 3 ✓。</p>
-<h2 id="complexity">复杂度 (Complexity)<a class="headerlink" href="#complexity" title="Permanent link">#</a></h2>
+<p>先用一个查询把流程走一遍，再读代码会更顺。取 $s = $ <code>**|**|***|</code>，扫描后 <code>candles = [2, 5, 9]</code>，<code>prefix = [0,1,2,2,3,4,4,5,6,7,7]</code>。查询 <span class="arithmatex">\([2, 5]\)</span>：<code>bisect_left([2,5,9], 2) = 0</code>，故 <span class="arithmatex">\(L = 2\)</span>；<code>bisect_right([2,5,9], 5) - 1 = 1</code>，故 <span class="arithmatex">\(R = 5\)</span>；<span class="arithmatex">\(i = 0 &lt; j = 1\)</span>，答案 <code>prefix[5] - prefix[3] = 4 - 2 = 2</code> ✓。查询 <span class="arithmatex">\([5, 9]\)</span>：<span class="arithmatex">\(L = 5, R = 9\)</span>，答案 <code>prefix[9] - prefix[6] = 7 - 4 = 3</code> ✓。注意 <span class="arithmatex">\([2,5]\)</span> 的左端 <span class="arithmatex">\(l = 2\)</span> 正好压在蜡烛上，<code>bisect_left</code> 把它留了下来，印证了上面对左右不对称的说明。</p>
+<p>再补一个 <span class="arithmatex">\(i = j\)</span> 的反例确认边界：若某查询的两次二分都落到下标 <span class="arithmatex">\(1\)</span>（同一根蜡烛 <span class="arithmatex">\(5\)</span>），则 <span class="arithmatex">\(i = j\)</span>，进入 <code>else</code> 返回 <span class="arithmatex">\(0\)</span>——这不是记忆规则，而是"同一根蜡烛之间没有盘子"的直接后果。</p>
+<p><strong>方法 2：预处理最近邻蜡烛（<span class="arithmatex">\(O(n + q)\)</span>）</strong></p>
+<p>二分把单次查询压到 <span class="arithmatex">\(O(\log n)\)</span>，但子问题二其实可以做到 <span class="arithmatex">\(O(1)\)</span>：与其每次在有序列表里搜索最近蜡烛，不如把"每个位置最近的蜡烛在哪"提前算好。</p>
 <ul>
-<li>Time: <span class="arithmatex">\(O(n + q \log n)\)</span>（二分）或 <span class="arithmatex">\(O(n + q)\)</span>（最近邻数组）</li>
-<li>Space: <span class="arithmatex">\(O(n)\)</span></li>
+<li><code>nextCandle[i]</code> = <span class="arithmatex">\(\ge i\)</span> 的第一个蜡烛下标（不存在则记 <span class="arithmatex">\(+\infty\)</span>）；</li>
+<li><code>prevCandle[i]</code> = <span class="arithmatex">\(\le i\)</span> 的最后一个蜡烛下标（不存在则记 <span class="arithmatex">\(-\infty\)</span>）。</li>
 </ul>
+<p>这两个数组都能用一遍线性扫描填出，因为"最近蜡烛"沿扫描方向单调传播：从左往右扫时维护"上一次见到的蜡烛下标"，遇到蜡烛就更新它，每个位置抄下当前值即得 <code>prevCandle</code>；从右往左同理得 <code>nextCandle</code>。查询 <span class="arithmatex">\([l, r]\)</span> 时 <span class="arithmatex">\(L = \text{nextCandle}[l]\)</span>、<span class="arithmatex">\(R = \text{prevCandle}[r]\)</span> 都是 <span class="arithmatex">\(O(1)\)</span> 查表，配合前缀和的 <span class="arithmatex">\(O(1)\)</span> 相减，单次查询 <span class="arithmatex">\(O(1)\)</span>。</p>
+<div class="language-python highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">Solution</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">platesBetweenCandles</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">s</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">queries</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]])</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]:</span>
+        <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
+        <span class="n">prefix</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="n">n</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="n">prevCandle</span> <span class="o">=</span> <span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">n</span>      <span class="c1"># -1 表示左侧无蜡烛</span>
+        <span class="n">nextCandle</span> <span class="o">=</span> <span class="p">[</span><span class="n">n</span><span class="p">]</span> <span class="o">*</span> <span class="n">n</span>       <span class="c1"># n  表示右侧无蜡烛</span>
+        <span class="n">last</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">c</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">s</span><span class="p">):</span>
+            <span class="n">prefix</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">prefix</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+</span> <span class="p">(</span><span class="n">c</span> <span class="o">==</span> <span class="s1">&#39;*&#39;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">c</span> <span class="o">==</span> <span class="s1">&#39;|&#39;</span><span class="p">:</span>
+                <span class="n">last</span> <span class="o">=</span> <span class="n">i</span>
+            <span class="n">prevCandle</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">last</span>
+        <span class="n">last</span> <span class="o">=</span> <span class="n">n</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">s</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;|&#39;</span><span class="p">:</span>
+                <span class="n">last</span> <span class="o">=</span> <span class="n">i</span>
+            <span class="n">nextCandle</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">last</span>
+        <span class="n">ans</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">l</span><span class="p">,</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">queries</span><span class="p">:</span>
+            <span class="n">L</span><span class="p">,</span> <span class="n">R</span> <span class="o">=</span> <span class="n">nextCandle</span><span class="p">[</span><span class="n">l</span><span class="p">],</span> <span class="n">prevCandle</span><span class="p">[</span><span class="n">r</span><span class="p">]</span>
+            <span class="n">ans</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">prefix</span><span class="p">[</span><span class="n">R</span><span class="p">]</span> <span class="o">-</span> <span class="n">prefix</span><span class="p">[</span><span class="n">L</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span> <span class="k">if</span> <span class="n">L</span> <span class="o">&lt;</span> <span class="n">R</span> <span class="k">else</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">ans</span>
+</code></pre></div>
+<p>两种方法回答的是同一个 <span class="arithmatex">\(L, R\)</span>，只是把"找最近蜡烛"分别交给了二分（<span class="arithmatex">\(O(\log n)\)</span>/次）和查表（<span class="arithmatex">\(O(1)\)</span>/次）。<span class="arithmatex">\(q\)</span> 与 <span class="arithmatex">\(n\)</span> 同量级时方法 2 渐近更优；但二分版更短、缓存友好，实际多数评测里都足够。</p>
+<h2 id="complexity">复杂度 (Complexity)<a class="headerlink" href="#complexity" title="Permanent link">#</a></h2>
+<table>
+<thead>
+<tr>
+<th>方法</th>
+<th>预处理</th>
+<th>单次查询</th>
+<th>总时间</th>
+<th>空间</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>方法 1（二分）</td>
+<td><span class="arithmatex">\(O(n)\)</span> 建 <code>prefix</code> 与 <code>candles</code></td>
+<td><span class="arithmatex">\(O(\log n)\)</span></td>
+<td><span class="arithmatex">\(O(n + q \log n)\)</span></td>
+<td><span class="arithmatex">\(O(n)\)</span></td>
+</tr>
+<tr>
+<td>方法 2（最近邻数组）</td>
+<td><span class="arithmatex">\(O(n)\)</span> 建三个数组</td>
+<td><span class="arithmatex">\(O(1)\)</span></td>
+<td><span class="arithmatex">\(O(n + q)\)</span></td>
+<td><span class="arithmatex">\(O(n)\)</span></td>
+</tr>
+</tbody>
+</table>
+<p>方法 1 的最好/平均/最坏都是 <span class="arithmatex">\(O(n + q \log n)\)</span>：无论输入分布，<code>bisect</code> 在蜡烛列表上恒为 <span class="arithmatex">\(O(\log n)\)</span>。</p>
 <h2 id="pitfalls">陷阱 (Pitfalls)<a class="headerlink" href="#pitfalls" title="Permanent link">#</a></h2>
+<p>下面三条都不是要背的规则，而是上文推导里已经各自落地的结论，列出来便于复查：</p>
 <ul>
-<li><strong><code>prefix[L+1]</code> 不是 <code>prefix[L]</code></strong>：要排除左蜡烛本身的位置（虽然蜡烛不是盘子，所以 prefix 在那一点不增，但写 <code>L+1</code> 让公式更直观且对"盘子前缀和"通用）。</li>
-<li><strong><code>i &lt; j</code> 不可改为 <code>i &lt;= j</code></strong>：相等说明同一个蜡烛，中间没有盘子。</li>
-<li><strong><code>bisect_left</code> vs <code>bisect_right</code></strong>：第一个 <span class="arithmatex">\(\ge l\)</span> 用 <code>bisect_left</code>；最后一个 <span class="arithmatex">\(\le r\)</span> 用 <code>bisect_right - 1</code>。</li>
+<li><strong>下界用 <span class="arithmatex">\(\text{ps}(L+1)\)</span> 而非 <span class="arithmatex">\(\text{ps}(L)\)</span></strong>：左蜡烛 <span class="arithmatex">\(s_L\)</span> 自身要排除在盘子区间之外（见形式化的小窗口手验）。本题里两者数值相同（蜡烛不是盘子，前缀和在 <span class="arithmatex">\(L\)</span> 处不增），但 <span class="arithmatex">\(L+1\)</span> 是语义正确、对一般盘子前缀和都成立的下界。</li>
+<li><strong>判定用 <span class="arithmatex">\(i &lt; j\)</span> 而非 <span class="arithmatex">\(i \le j\)</span></strong>：<span class="arithmatex">\(i = j\)</span> 表示两端二分落到同一根蜡烛，其间无盘子，应返回 <span class="arithmatex">\(0\)</span>。这是"同一蜡烛间无盘子"的直接后果，已在方法 1 的反例中验证。</li>
+<li><strong>左 <code>bisect_left</code>、右 <code>bisect_right</code></strong>：当 <span class="arithmatex">\(l\)</span>（或 <span class="arithmatex">\(r\)</span>）恰好压在蜡烛上时，这组不对称的调用才能把该蜡烛正确收进 <span class="arithmatex">\([L, R]\)</span>；换成同一种会在边界压线时漏掉一根蜡烛。</li>
 </ul>
 <h2 id="related">相关题目 (Related)<a class="headerlink" href="#related" title="Permanent link">#</a></h2>
 <ul>

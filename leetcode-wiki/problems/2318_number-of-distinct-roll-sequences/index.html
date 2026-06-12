@@ -5485,6 +5485,8 @@
       
         
       
+        
+      
     
     
     
@@ -6024,6 +6026,34 @@
     
   
     #93. Restore IP Addresses
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../0102_binary-tree-level-order-traversal/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    #102. Binary Tree Level Order Traversal
   
 
     
@@ -22675,15 +22705,38 @@
 <h2 id="problem">Problem<a class="headerlink" href="#problem" title="Permanent link">#</a></h2>
 <p>掷 6 面骰子 <span class="arithmatex">\(n\)</span> 次。约束：(1) 相邻两次的 gcd 为 1；(2) 任意两个相等的位置间隔 <span class="arithmatex">\(&gt; 2\)</span>（即不能与前 2 次相同）。求合法序列数，模 <span class="arithmatex">\(10^9 + 7\)</span>。<span class="arithmatex">\(1 \le n \le 10^4\)</span>。</p>
 <h2 id="background">背景 (Background)<a class="headerlink" href="#background" title="Permanent link">#</a></h2>
-<p>经典 <strong>小状态空间 DP</strong>：状态只需记住最近两次的值，转移是固定大小的稠密表。本题与 Markov 链上 path counting、有色 Cayley graph 上长度 <span class="arithmatex">\(n\)</span> 的 walk 计数同源。</p>
+<p>最朴素的做法是枚举全部 <span class="arithmatex">\(6^n\)</span> 个序列，逐一检查两条约束。<span class="arithmatex">\(n\)</span> 可达 <span class="arithmatex">\(10^4\)</span>，<span class="arithmatex">\(6^{10^4}\)</span> 远超任何可计算规模，所以纯枚举立即出局。问题不在于约束难判断——两条约束都只看局部——而在于序列数本身爆炸。</p>
+<p>要把指数枚举压成线性，关键是问：<strong>在逐位往后掷的过程中，要判断下一次掷出的值是否合法，需要记住已掷出历史的多少信息？</strong> 答案决定了我们能否把"前缀"压缩成一个有限大小的状态。</p>
+<p>逐条审视约束的"回看距离"：</p>
+<ul>
+<li>约束 (1) 要求新值 <span class="arithmatex">\(c\)</span> 与<strong>最后一次</strong>值 <span class="arithmatex">\(b\)</span> 满足 <span class="arithmatex">\(\gcd(b, c) = 1\)</span>。判断它只需知道 <span class="arithmatex">\(b\)</span>。</li>
+<li>约束 (2) 要求 <span class="arithmatex">\(c\)</span> 不等于前两次的任何一个，即不等于最后一次 <span class="arithmatex">\(b\)</span>，也不等于<strong>倒数第二次</strong> <span class="arithmatex">\(a\)</span>。判断它只需知道 <span class="arithmatex">\(a\)</span> 和 <span class="arithmatex">\(b\)</span>。</li>
+</ul>
+<p>没有任何约束回看到距离 3 或更远。于是结论是确定的：<strong>最近两次掷出的值 <span class="arithmatex">\((a, b)\)</span> 是判断下一次是否合法的充分且必要的历史</strong>。充分，因为两条约束都不越过距离 2；必要，因为约束 (2) 确实需要 <span class="arithmatex">\(a\)</span>——只记最后一次 <span class="arithmatex">\(b\)</span> 就无法禁止"与倒数第二次相同"。</p>
+<p>这一观察把无界长的前缀压成了一个二元状态。下面把它形式化。</p>
 <h2 id="formulation">形式化 (Formulation)<a class="headerlink" href="#formulation" title="Permanent link">#</a></h2>
-<p>设 <span class="arithmatex">\(f_n(a, b)\)</span> = 长度 <span class="arithmatex">\(n\)</span>、最后两次分别为 <span class="arithmatex">\(a\)</span>（倒数第二）和 <span class="arithmatex">\(b\)</span>（最后一次）的合法序列数。转移</p>
-<div class="arithmatex">\[f_{n+1}(b, c) = \sum_{a \in [1,6],\ a \neq c,\ \gcd(a, b) = 1,\ \exists f_n(a, b)} f_n(a, b),\]</div>
-<p>且要求 <span class="arithmatex">\(\gcd(b, c) = 1\)</span>. 答案 <span class="arithmatex">\(= \sum_{a, b} f_n(a, b)\)</span>.</p>
+<p>直觉已经定下了状态：判断合法性只需最近两次的值。据此定义</p>
+<div class="arithmatex">\[f_n(a, b) = \text{长度为 } n\text{、倒数第二次为 } a\text{、最后一次为 } b \text{ 的合法序列数}.\]</div>
+<p>接下来把两条约束<strong>逐条翻译</strong>成转移的过滤条件。设当前状态为 <span class="arithmatex">\((a, b)\)</span>，候选的下一次值为 <span class="arithmatex">\(c\)</span>，新状态将是 <span class="arithmatex">\((b, c)\)</span>：</p>
+<ul>
+<li>约束 (1) 作用在新相邻对 <span class="arithmatex">\((b, c)\)</span> 上：要求 <span class="arithmatex">\(\gcd(b, c) = 1\)</span>。</li>
+<li>约束 (2) 要求 <span class="arithmatex">\(c\)</span> 与前两位不同：<span class="arithmatex">\(c \neq b\)</span>（距离 1）且 <span class="arithmatex">\(c \neq a\)</span>（距离 2）。</li>
+</ul>
+<p>（注意：约束 (1) <strong>不</strong>要求 <span class="arithmatex">\(\gcd(a, c) = 1\)</span>——<span class="arithmatex">\(a\)</span> 与 <span class="arithmatex">\(c\)</span> 相距 2，不相邻，约束 (1) 只管相邻对。这是本题最易错的一点。）</p>
+<p>把这些过滤条件装进求和，就得到转移：把所有能合法延伸出 <span class="arithmatex">\((b, c)\)</span> 的旧状态 <span class="arithmatex">\((a, b)\)</span> 累加，</p>
+<div class="arithmatex">\[f_{n+1}(b, c) = \sum_{\substack{a \in [1, 6] \\ a \neq c}} f_n(a, b), \qquad \text{其中 } (b, c) \text{ 满足 } \gcd(b, c) = 1,\ c \neq b. \tag{$\star$}\]</div>
+<p>求和指标 <span class="arithmatex">\(a\)</span> 跑遍倒数第二次的可能值，约束 <span class="arithmatex">\(a \neq c\)</span> 即约束 (2) 中"距离 2 不同"的体现；而 <span class="arithmatex">\(\gcd(b, c) = 1\)</span> 与 <span class="arithmatex">\(c \neq b\)</span> 是新加入的一位 <span class="arithmatex">\(c\)</span> 必须对最后一位 <span class="arithmatex">\(b\)</span> 满足的条件，对所有项公共，故提到求和外。</p>
+<p><strong>基例</strong>。长度 2 的序列只有一对相邻位（距离 1），既要满足约束 (1) 也要满足约束 (2) 在距离 1 上的部分：</p>
+<div class="arithmatex">\[f_2(a, b) = 1 \quad \text{当且仅当} \quad a \neq b \ \text{且}\ \gcd(a, b) = 1.\]</div>
+<p><strong>答案</strong>。长度 <span class="arithmatex">\(n\)</span> 的全部合法序列数是对末两位求和：</p>
+<div class="arithmatex">\[\text{answer} = \sum_{a, b} f_n(a, b). \tag{$\star\star$}\]</div>
+<p><span class="arithmatex">\(n = 1\)</span> 时没有任何相邻对，两条约束都不触发，6 个值都合法，答案直接为 6——这是基例之下的特例，单独处理。</p>
 <h2 id="approach">数据结构 / 想法 (Approach)<a class="headerlink" href="#approach" title="Permanent link">#</a></h2>
-<p><strong>预处理合法 (prev, curr) 对</strong>：6×6 = 36 对，过滤 <span class="arithmatex">\(\gcd = 1\)</span> 留下 ~22 对。
-<strong>初始化</strong>：<span class="arithmatex">\(f_2(a, b) = 1\)</span> 若 <span class="arithmatex">\(\gcd(a, b) = 1\)</span> 且 <span class="arithmatex">\(a \neq b\)</span>（间隔 2 即 abs diff = 1，不要求 a != b... 等等：约束是 <span class="arithmatex">\(|i - j| &gt; 2\)</span>，所以相邻位置 <span class="arithmatex">\(|i - j| = 1\)</span> 必须不同。<span class="arithmatex">\(a \neq b\)</span>）。
-<strong>转移</strong>：枚举上一个状态 <span class="arithmatex">\((a, b)\)</span> → 新状态 <span class="arithmatex">\((b, c)\)</span>，<span class="arithmatex">\(c\)</span> 满足 <span class="arithmatex">\(\gcd(b, c) = 1\)</span>, <span class="arithmatex">\(c \neq b\)</span>, <span class="arithmatex">\(c \neq a\)</span>.</p>
+<p>递推式 <span class="arithmatex">\((\star)\)</span> 直接给出迭代算法：从 <span class="arithmatex">\(f_2\)</span> 出发，反复套用转移 <span class="arithmatex">\(n - 2\)</span> 次得到 <span class="arithmatex">\(f_n\)</span>，再按 <span class="arithmatex">\((\star\star)\)</span> 求和。下面把代码逐块对应到公式。</p>
+<p><strong>状态空间有多小。</strong> 合法状态 <span class="arithmatex">\((a, b)\)</span> 必须满足 <span class="arithmatex">\(a \neq b\)</span> 且 <span class="arithmatex">\(\gcd(a, b) = 1\)</span>。在 <span class="arithmatex">\(6 \times 6 = 36\)</span> 对里，这样的对恰有 22 个（其余 14 对要么 <span class="arithmatex">\(a = b\)</span>，要么 gcd <span class="arithmatex">\(&gt; 1\)</span>，如 <span class="arithmatex">\((2,4)\)</span>、<span class="arithmatex">\((2,6)\)</span>、<span class="arithmatex">\((3,6)\)</span> 等）。这就是为什么状态空间是小的常数——不是事先断言，而是由约束筛出来的。</p>
+<p><strong>预处理与初始化</strong> 对应基例：枚举 22 个合法对，每个初值置 1，即 <span class="arithmatex">\(f_2\)</span>。</p>
+<p><strong>转移</strong> 对应 <span class="arithmatex">\((\star)\)</span>：遍历每个旧状态 <span class="arithmatex">\((a, b)\)</span> 及其计数，枚举下一位 <span class="arithmatex">\(c\)</span>，凡满足 <span class="arithmatex">\(c \neq a\)</span>（约束 (2) 距离 2）、<span class="arithmatex">\(c \neq b\)</span>（约束 (2) 距离 1）、<span class="arithmatex">\(\gcd(b, c) = 1\)</span>（约束 (1)），就把计数累加到新状态 <span class="arithmatex">\((b, c)\)</span>。循环变量 <span class="arithmatex">\(a, b, c\)</span> 与公式中的求和指标一一对齐。</p>
+<p><strong>求和</strong> 对应 <span class="arithmatex">\((\star\star)\)</span>：<code>sum(f.values())</code> 即对末两位 <span class="arithmatex">\((a, b)\)</span> 求和。</p>
 <div class="language-python highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">math</span><span class="w"> </span><span class="kn">import</span> <span class="n">gcd</span>
 <span class="n">MOD</span> <span class="o">=</span> <span class="mi">10</span><span class="o">**</span><span class="mi">9</span> <span class="o">+</span> <span class="mi">7</span>
 <span class="k">class</span><span class="w"> </span><span class="nc">Solution</span><span class="p">:</span>
@@ -22693,30 +22746,30 @@
         <span class="c1"># f[(a,b)]: count for length L with second-last=a, last=b</span>
         <span class="n">valid_pairs</span> <span class="o">=</span> <span class="p">[(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span> <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">7</span><span class="p">)</span> <span class="k">for</span> <span class="n">b</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">7</span><span class="p">)</span>
                        <span class="k">if</span> <span class="n">a</span> <span class="o">!=</span> <span class="n">b</span> <span class="ow">and</span> <span class="n">gcd</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">]</span>
-        <span class="n">f</span> <span class="o">=</span> <span class="p">{</span><span class="n">p</span><span class="p">:</span> <span class="mi">1</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">valid_pairs</span><span class="p">}</span>  <span class="c1"># length 2</span>
-        <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span> <span class="o">-</span> <span class="mi">2</span><span class="p">):</span>
+        <span class="n">f</span> <span class="o">=</span> <span class="p">{</span><span class="n">p</span><span class="p">:</span> <span class="mi">1</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">valid_pairs</span><span class="p">}</span>  <span class="c1"># length 2 = base case f_2</span>
+        <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span> <span class="o">-</span> <span class="mi">2</span><span class="p">):</span>           <span class="c1"># apply transition (star) n-2 times</span>
             <span class="n">g</span> <span class="o">=</span> <span class="p">{}</span>
             <span class="k">for</span> <span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">),</span> <span class="n">cnt</span> <span class="ow">in</span> <span class="n">f</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
                 <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">7</span><span class="p">):</span>
                     <span class="k">if</span> <span class="n">c</span> <span class="o">!=</span> <span class="n">a</span> <span class="ow">and</span> <span class="n">c</span> <span class="o">!=</span> <span class="n">b</span> <span class="ow">and</span> <span class="n">gcd</span><span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
                         <span class="n">g</span><span class="p">[(</span><span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">)]</span> <span class="o">=</span> <span class="p">(</span><span class="n">g</span><span class="o">.</span><span class="n">get</span><span class="p">((</span><span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">),</span> <span class="mi">0</span><span class="p">)</span> <span class="o">+</span> <span class="n">cnt</span><span class="p">)</span> <span class="o">%</span> <span class="n">MOD</span>
             <span class="n">f</span> <span class="o">=</span> <span class="n">g</span>
-        <span class="k">return</span> <span class="nb">sum</span><span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">values</span><span class="p">())</span> <span class="o">%</span> <span class="n">MOD</span>
+        <span class="k">return</span> <span class="nb">sum</span><span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">values</span><span class="p">())</span> <span class="o">%</span> <span class="n">MOD</span>     <span class="c1"># formula (star-star)</span>
 </code></pre></div>
-<p>样例 2：n=2. valid_pairs 列举 a!=b 且 gcd=1：
-- (1,2)(1,3)(1,4)(1,5)(1,6)(2,1)(2,3)(2,5)(3,1)(3,2)(3,4)(3,5)(4,1)(4,3)(4,5)(5,1)(5,2)(5,3)(5,4)(5,6)(6,1)(6,5) = 22 对. ✅ (题目答案 22)</p>
-<p>样例 1：n=4. 跑两次循环，期望得 184（已知答案）。算法正确性由状态足够（最近两次）保证：约束 (1)(2) 都只跨越距离 ≤ 2。</p>
-<p><strong>不变量</strong>：state = (倒数第二, 最后)；新状态忽略更早历史，因为约束最多看回到距离 2 的位置——已被 <span class="arithmatex">\(a\)</span> 编码。</p>
+<p><strong>用样例验证。</strong> <span class="arithmatex">\(n = 2\)</span> 时不进入转移循环，直接对基例求和。枚举 <span class="arithmatex">\(a \neq b\)</span> 且 <span class="arithmatex">\(\gcd(a, b) = 1\)</span> 的对：</p>
+<p>(1,2)(1,3)(1,4)(1,5)(1,6)(2,1)(2,3)(2,5)(3,1)(3,2)(3,4)(3,5)(4,1)(4,3)(4,5)(5,1)(5,2)(5,3)(5,4)(5,6)(6,1)(6,5)</p>
+<p>共 22 对，与题目答案 22 吻合。<span class="arithmatex">\(n = 4\)</span> 时套用两次转移，得 184，亦与已知答案一致；<span class="arithmatex">\(n = 1\)</span> 走特例分支返回 6。</p>
 <h2 id="complexity">复杂度 (Complexity)<a class="headerlink" href="#complexity" title="Permanent link">#</a></h2>
 <ul>
-<li>Time: <span class="arithmatex">\(O(n \cdot |\text{valid_pairs}| \cdot 6) = O(n \cdot 22 \cdot 6) = O(132 n)\)</span>, 实际更少。</li>
-<li>Space: <span class="arithmatex">\(O(36)\)</span>.</li>
+<li>Time: 每次转移遍历至多 22 个状态、每个状态枚举 6 个 <span class="arithmatex">\(c\)</span>，故单次转移 <span class="arithmatex">\(\le 132\)</span> 次操作；共 <span class="arithmatex">\(n - 2\)</span> 次转移，得 <span class="arithmatex">\(O(n \cdot 22 \cdot 6) = O(132\,n)\)</span>。</li>
+<li>Space: 任一时刻字典 <span class="arithmatex">\(f, g\)</span> 至多 22 项（可达状态恰为 22 个合法对），即 <span class="arithmatex">\(O(1)\)</span>。</li>
 </ul>
 <h2 id="pitfalls">陷阱 (Pitfalls)<a class="headerlink" href="#pitfalls" title="Permanent link">#</a></h2>
 <ul>
-<li>当 <span class="arithmatex">\(n = 1\)</span> 时无相邻约束，答案直接 6。<span class="arithmatex">\(n = 2\)</span> 时只需 gcd 与 a != b。</li>
-<li>状态必须 <span class="arithmatex">\((a, b)\)</span> 而不仅是 <span class="arithmatex">\(b\)</span>——否则无法判断"距离 2"的相等约束。</li>
-<li>必须取模；不取的话长 <span class="arithmatex">\(n = 10^4\)</span> 数字会超大。</li>
+<li>转移<strong>不要</strong>误加 <span class="arithmatex">\(\gcd(a, c) = 1\)</span>。<span class="arithmatex">\(a\)</span>（倒数第二）与 <span class="arithmatex">\(c\)</span>（新值）相距 2，并不相邻，约束 (1) 只管相邻对——错加这一条会漏算合法序列。</li>
+<li>状态必须是 <span class="arithmatex">\((a, b)\)</span>，不能只记最后一次 <span class="arithmatex">\(b\)</span>。约束 (2) 要禁止"与倒数第二次相同"，丢掉 <span class="arithmatex">\(a\)</span> 就无从判断（背景一节已论证 <span class="arithmatex">\(a\)</span> 是必要历史）。</li>
+<li><span class="arithmatex">\(n = 1\)</span> 没有相邻对，两条约束都不触发，须特判返回 6；<span class="arithmatex">\(n = 2\)</span> 只有距离 1 的约束，由基例直接覆盖。</li>
+<li>必须每步取模。<span class="arithmatex">\(n\)</span> 达 <span class="arithmatex">\(10^4\)</span> 时计数呈指数增长，不取模会溢出成天文数字。</li>
 </ul>
 <h2 id="related">相关题目 (Related)<a class="headerlink" href="#related" title="Permanent link">#</a></h2>
 <ul>

@@ -5485,6 +5485,8 @@
       
         
       
+        
+      
     
     
     
@@ -6024,6 +6026,34 @@
     
   
     #93. Restore IP Addresses
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../0102_binary-tree-level-order-traversal/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    #102. Binary Tree Level Order Traversal
   
 
     
@@ -22675,13 +22705,74 @@
 <h2 id="problem">Problem<a class="headerlink" href="#problem" title="Permanent link">#</a></h2>
 <p>给数组 <code>nums</code>。一次操作可以选任意非负整数 <span class="arithmatex">\(x\)</span> 和下标 <span class="arithmatex">\(i\)</span>，令 <code>nums[i] = nums[i] AND (nums[i] XOR x)</code>。求经过任意多次操作后，<code>nums</code> 中所有元素 XOR 的最大可能值。<span class="arithmatex">\(0 \le \text{nums}[i] \le 10^8\)</span>。</p>
 <h2 id="background">背景 (Background)<a class="headerlink" href="#background" title="Permanent link">#</a></h2>
-<p>本题考察 <strong>bitwise operation 的不动点/不变量分析</strong>。关键洞察：操作 <code>n &amp; (n ^ x)</code> 可以把 <span class="arithmatex">\(n\)</span> 中的任意 1 位清成 0，但<strong>不能</strong>把任何 0 位变成 1——证明见下方。所以可达集是「<span class="arithmatex">\(n\)</span> 的所有 submask」。这类"哪些操作生成什么群"的分析是 <em>Hacker's Delight</em> 的核心套路。</p>
+<p>最终结果是所有元素的 XOR，而 XOR 是逐位独立的：第 <span class="arithmatex">\(b\)</span> 位是否为 1，只取决于有多少个元素在第 <span class="arithmatex">\(b\)</span> 位为 1（奇数个则为 1）。所以「最大化 XOR」可以拆成 28 个独立的子问题——每一位单独问：能不能让最终 XOR 的这一位是 1？</p>
+<p>要回答这个子问题，先得知道操作能把每个元素变成什么。一个自然的第一反应是把这道题当成经典的「XOR 最大化」：建线性基、上 trie、或对位做 DP。但那些工具假定每个元素的值是固定的，我们只能选异或哪些。这里不一样——<strong>操作允许我们改写每个元素本身</strong>，所以真正要先搞清楚的，是单个元素经过操作能取到哪些值。下面的形式化先回答这个问题，再回到逐位的可行性判断。</p>
 <h2 id="formulation">形式化 (Formulation)<a class="headerlink" href="#formulation" title="Permanent link">#</a></h2>
-<p>引理：对任意 <span class="arithmatex">\(n, x \ge 0\)</span>，<span class="arithmatex">\(n \mathbin{\&amp;} (n \oplus x) = n \mathbin{\&amp;} \neg x\)</span>（位运算恒等式：<span class="arithmatex">\(y \oplus x\)</span> 翻转 <span class="arithmatex">\(y\)</span> 中 <span class="arithmatex">\(x\)</span> 为 1 的位；再与 <span class="arithmatex">\(n\)</span> 取 AND，结果是 <span class="arithmatex">\(n\)</span> 中那些"<span class="arithmatex">\(x\)</span> 为 0"位的原值）。所以操作把 <span class="arithmatex">\(n\)</span> 替换为 <span class="arithmatex">\(n \mathbin{\&amp;} \neg x\)</span>——可以清除 <span class="arithmatex">\(n\)</span> 的任意子位集，但不能引入新 1 位。可达值集 = <span class="arithmatex">\(\{m : m \mathbin{\&amp;} n = m\}\)</span>（<span class="arithmatex">\(n\)</span> 的 submasks）。</p>
-<p>目标 <span class="arithmatex">\(\max \bigoplus_i n_i'\)</span>，其中 <span class="arithmatex">\(n_i' \in \text{submasks}(n_i)\)</span>.</p>
-<p><strong>关键事实</strong>：第 <span class="arithmatex">\(b\)</span> 位 1 出现在最终 XOR 中，当且仅当我们能让奇数个 <span class="arithmatex">\(n_i'\)</span> 在第 <span class="arithmatex">\(b\)</span> 位为 1。条件：至少有一个 <span class="arithmatex">\(n_i\)</span> 在第 <span class="arithmatex">\(b\)</span> 位为 1（即 <span class="arithmatex">\(b \in \bigvee_i n_i\)</span>）。若有 <span class="arithmatex">\(\ge 1\)</span> 个就可以构造："让那一个保留，其它清零"。</p>
-<p>所以 <strong>答案 = <span class="arithmatex">\(\bigvee_i n_i\)</span></strong>（按位或）。</p>
+<p><strong>第一步：单个元素能变成什么。</strong> 先看操作对一个具体的数做了什么。取 <span class="arithmatex">\(n = 6 = 110_2\)</span>，<span class="arithmatex">\(x = 5 = 101_2\)</span>：</p>
+<div class="arithmatex">\[n \oplus x = 110_2 \oplus 101_2 = 011_2, \qquad n \mathbin{\&amp;} (n \oplus x) = 110_2 \mathbin{\&amp;} 011_2 = 010_2.\]</div>
+<p>第 2 位原本是 1，现在变成了 0；没有任何原本为 0 的位变成 1。这不是巧合：AND 只能让位「保持或清零」，永远不可能凭空造出一个 1。换句话说，无论怎么选 <span class="arithmatex">\(x\)</span>，操作只能清除 <span class="arithmatex">\(n\)</span> 已有的 1，不能引入新的 1。把这个直觉写成等式：</p>
+<div class="arithmatex">\[
+n \mathbin{\&amp;} (n \oplus x) \;=\; n \mathbin{\&amp;} \neg x. \tag{1}
+\]</div>
+<p><strong>验证 (1)。</strong> 逐位看第 <span class="arithmatex">\(b\)</span> 位，记 <span class="arithmatex">\(n_b, x_b\)</span> 为对应位。<span class="arithmatex">\(n \oplus x\)</span> 在第 <span class="arithmatex">\(b\)</span> 位是 <span class="arithmatex">\(n_b \oplus x_b\)</span>，再与 <span class="arithmatex">\(n_b\)</span> 取 AND，得 <span class="arithmatex">\(n_b \mathbin{\&amp;} (n_b \oplus x_b)\)</span>。四种情况列举：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: center;"><span class="arithmatex">\(n_b\)</span></th>
+<th style="text-align: center;"><span class="arithmatex">\(x_b\)</span></th>
+<th style="text-align: center;"><span class="arithmatex">\(n_b \mathbin{\&amp;} (n_b \oplus x_b)\)</span></th>
+<th style="text-align: center;"><span class="arithmatex">\(n_b \mathbin{\&amp;} \neg x_b\)</span></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;"><span class="arithmatex">\(0 \mathbin{\&amp;} 0 = 0\)</span></td>
+<td style="text-align: center;"><span class="arithmatex">\(0 \mathbin{\&amp;} 1 = 0\)</span></td>
+</tr>
+<tr>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">1</td>
+<td style="text-align: center;"><span class="arithmatex">\(0 \mathbin{\&amp;} 1 = 0\)</span></td>
+<td style="text-align: center;"><span class="arithmatex">\(0 \mathbin{\&amp;} 0 = 0\)</span></td>
+</tr>
+<tr>
+<td style="text-align: center;">1</td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;"><span class="arithmatex">\(1 \mathbin{\&amp;} 1 = 1\)</span></td>
+<td style="text-align: center;"><span class="arithmatex">\(1 \mathbin{\&amp;} 1 = 1\)</span></td>
+</tr>
+<tr>
+<td style="text-align: center;">1</td>
+<td style="text-align: center;">1</td>
+<td style="text-align: center;"><span class="arithmatex">\(1 \mathbin{\&amp;} 0 = 0\)</span></td>
+<td style="text-align: center;"><span class="arithmatex">\(1 \mathbin{\&amp;} 0 = 0\)</span></td>
+</tr>
+</tbody>
+</table>
+<p>每一位两侧都相等，故 (1) 成立。</p>
+<p>(1) 的右边 <span class="arithmatex">\(n \mathbin{\&amp;} \neg x\)</span> 把 <span class="arithmatex">\(x\)</span> 中为 1 的位在 <span class="arithmatex">\(n\)</span> 上清零，其余位保留 <span class="arithmatex">\(n\)</span> 的原值。<span class="arithmatex">\(x\)</span> 任选，所以「被清零的位集」可以是 <span class="arithmatex">\(n\)</span> 的 1 位中的任意子集。一次操作能到达的值，恰好是 <span class="arithmatex">\(n\)</span> 的 submask（子掩码）：</p>
+<div class="arithmatex">\[
+\text{reach}(n) \;=\; \{\, m : m \mathbin{\&amp;} n = m \,\}. \tag{2}
+\]</div>
+<p>多次操作不会扩大这个集合——清零只会让 1 越来越少，submask 的 submask 仍是 submask。所以 (2) 就是单个元素可达值的全部。</p>
+<p><strong>第二步：把逐位可行性串起来。</strong> 现在每个元素 <span class="arithmatex">\(n_i\)</span> 可独立取任意 <span class="arithmatex">\(n_i' \in \text{reach}(n_i)\)</span>，目标是</p>
+<div class="arithmatex">\[
+\max \; \bigoplus_i n_i', \qquad n_i' \in \text{reach}(n_i). \tag{3}
+\]</div>
+<p>回到背景里的逐位视角。固定第 <span class="arithmatex">\(b\)</span> 位，最终 XOR 在该位为 1 当且仅当奇数个 <span class="arithmatex">\(n_i'\)</span> 在第 <span class="arithmatex">\(b\)</span> 位为 1。关键在于各元素的选择互不干扰：由 (2)，每个 <span class="arithmatex">\(n_i'\)</span> 是否在第 <span class="arithmatex">\(b\)</span> 位取 1，可以独立设定（只要 <span class="arithmatex">\(n_i\)</span> 在第 <span class="arithmatex">\(b\)</span> 位本身是 1，就能保留；否则只能是 0），且不影响其它位、也不影响其它元素。于是：</p>
+<ul>
+<li>若<strong>没有</strong>任何 <span class="arithmatex">\(n_i\)</span> 在第 <span class="arithmatex">\(b\)</span> 位为 1，则所有 <span class="arithmatex">\(n_i'\)</span> 该位都只能是 0，XOR 该位必为 0，无法争取。</li>
+<li>若<strong>至少有一个</strong> <span class="arithmatex">\(n_i\)</span> 在第 <span class="arithmatex">\(b\)</span> 位为 1，挑出这一个让它保留该位的 1，其余所有元素把该位清零（submask 允许），则恰好 1 个（奇数个）元素在该位为 1，XOR 该位为 1。</li>
+</ul>
+<p>两种情况合起来：最终 XOR 的第 <span class="arithmatex">\(b\)</span> 位能取到 1，当且仅当至少一个 <span class="arithmatex">\(n_i\)</span> 在第 <span class="arithmatex">\(b\)</span> 位为 1，即第 <span class="arithmatex">\(b\)</span> 位属于 <span class="arithmatex">\(\bigvee_i n_i\)</span>。由于各位相互独立，可以同时让每一个「可争取」的位都取到 1，得到 (3) 的最优值：</p>
+<div class="arithmatex">\[
+\boxed{\;\max \bigoplus_i n_i' \;=\; \bigvee_i n_i\;}\tag{4}
+\]</div>
+<p>等价地，可达的 XOR 集合恰好是 <span class="arithmatex">\(\text{submasks}\!\big(\bigvee_i n_i\big)\)</span>，其最大元就是 <span class="arithmatex">\(\bigvee_i n_i\)</span> 本身。</p>
 <h2 id="approach">数据结构 / 想法 (Approach)<a class="headerlink" href="#approach" title="Permanent link">#</a></h2>
+<p>(4) 把整道题化为一行：对所有元素按位求 OR。无需任何辅助结构。</p>
 <div class="language-python highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">Solution</span><span class="p">:</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">maximumXOR</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">nums</span><span class="p">):</span>
         <span class="n">ans</span> <span class="o">=</span> <span class="mi">0</span>
@@ -22691,16 +22782,15 @@
 </code></pre></div>
 <p>样例 1：<code>[3,2,4,6]</code> → 3|2|4|6 = 011|010|100|110 = 111 = 7. ✅
 样例 2：<code>[1,2,3,9,2]</code> → 1|2|3|9|2 = 0001|0010|0011|1001|0010 = 1011 = 11. ✅</p>
-<p><strong>不变量</strong>：可达 XOR 集合 = <span class="arithmatex">\(\{\bigoplus c_i \cdot s_i : s_i \subseteq n_i\} = \text{submasks}(\bigvee_i n_i)\)</span>。其最大值就是 <span class="arithmatex">\(\bigvee_i n_i\)</span>。</p>
 <h2 id="complexity">复杂度 (Complexity)<a class="headerlink" href="#complexity" title="Permanent link">#</a></h2>
 <ul>
-<li>Time: <span class="arithmatex">\(O(n)\)</span>。</li>
-<li>Space: <span class="arithmatex">\(O(1)\)</span>。</li>
+<li>Time: <span class="arithmatex">\(O(n)\)</span>。单趟扫描累积 OR。</li>
+<li>Space: <span class="arithmatex">\(O(1)\)</span>。<span class="arithmatex">\(\text{nums}[i] \le 10^8 &lt; 2^{27}\)</span>，结果落在一个机器字内。</li>
 </ul>
 <h2 id="pitfalls">陷阱 (Pitfalls)<a class="headerlink" href="#pitfalls" title="Permanent link">#</a></h2>
 <ul>
-<li>不要被题面"操作 XOR + AND"迷惑去用线性基或 DP——核心是恒等式 <span class="arithmatex">\(n \mathbin{\&amp;} (n \oplus x) = n \mathbin{\&amp;} \neg x\)</span>。</li>
-<li>容易猜成"<span class="arithmatex">\(\max \text{XOR}\)</span>"（异或）；其实是 <strong>OR</strong>。</li>
+<li>不要被题面「操作里有 XOR + AND」诱导去上线性基或 DP——这些工具假定元素值固定，而这里操作能改写元素本身。真正的化简来自恒等式 (1)：操作只能清位，可达值是 submask。</li>
+<li>容易把答案猜成 <span class="arithmatex">\(\max \text{XOR}\)</span>（异或）；由 (4)，答案是按位 <strong>OR</strong>。</li>
 </ul>
 <h2 id="related">相关题目 (Related)<a class="headerlink" href="#related" title="Permanent link">#</a></h2>
 <ul>
@@ -22709,7 +22799,7 @@
 </ul>
 <h2 id="further-reading">Further Reading<a class="headerlink" href="#further-reading" title="Permanent link">#</a></h2>
 <ul>
-<li><em>Hacker's Delight</em>, 2e, Ch. 2 — bitwise 恒等式大全。</li>
+<li><em>Hacker's Delight</em>, 2e, Ch. 2 — bitwise 恒等式大全，(1) 这类位运算等式的系统出处。</li>
 </ul>
 
 

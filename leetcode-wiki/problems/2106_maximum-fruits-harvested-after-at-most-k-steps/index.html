@@ -5485,6 +5485,8 @@
       
         
       
+        
+      
     
     
     
@@ -6024,6 +6026,34 @@
     
   
     #93. Restore IP Addresses
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../0102_binary-tree-level-order-traversal/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    #102. Binary Tree Level Order Traversal
   
 
     
@@ -22675,21 +22705,35 @@
 <h2 id="problem">Problem<a class="headerlink" href="#problem" title="Permanent link">#</a></h2>
 <p>在无限 x 轴上有若干带数量的果实点 <code>fruits[i] = [pos, amt]</code>（按 pos 升序，pos 互异）。从 <code>startPos</code> 出发，每步走一格，最多 <code>k</code> 步。所经位置的果实全部收走。求最大可收果实总和。</p>
 <h2 id="background">背景 (Background)<a class="headerlink" href="#background" title="Permanent link">#</a></h2>
-<p>经典的"最多走 k 步，至多转向一次"路径优化：最优路径必为下列之一：(a) 全向左；(b) 全向右；(c) 先左再右；(d) 先右再左。把所有可达区间 <span class="arithmatex">\([l, r]\)</span>（满足 <span class="arithmatex">\(l \le \text{startPos} \le r\)</span> 且最小步数 ≤ k）的果实和取最大。这是 Two Pointer / Sliding Window over 排序事件序列的范式应用。</p>
-<p><strong>最小步数引理</strong>：从 <span class="arithmatex">\(s\)</span> 走 <span class="arithmatex">\([l, r]\)</span> 区间（<span class="arithmatex">\(l \le s \le r\)</span>）的最短步数 = <span class="arithmatex">\(\min(2(s-l) + (r-s),\; 2(r-s) + (s-l)) = (r - l) + \min(s - l, r - s)\)</span>。即必有一侧走两次（先去再返），另一侧走一次。</p>
+<p>先问最朴素的问题：在 <span class="arithmatex">\(k\)</span> 步预算下，从 <span class="arithmatex">\(s = \text{startPos}\)</span> 出发，到底能收到哪些果实？</p>
+<p>果实只在所经位置被收走，所以"能收到的果实集合"完全由"能走到的位置集合"决定。于是问题分成两层：先刻画可达位置集合，再在其中挑果实和最大的部分。</p>
+<p><strong>可达集合是一个含 <span class="arithmatex">\(s\)</span> 的连续区间。</strong> 每步只移动一格，从 <span class="arithmatex">\(s\)</span> 出发的任何路径所触及的位置都是数轴上一段连续区间——你不可能跳过中间的格子去到更远处。反过来，对任意包含 <span class="arithmatex">\(s\)</span> 的区间 <span class="arithmatex">\([l, r]\)</span>，只要步数够，就能把它整段走完。所以可达集合恰好是某个 <span class="arithmatex">\([l, r]\)</span>（<span class="arithmatex">\(l \le s \le r\)</span>），不存在别的形状。这一步不是假设，而是移动模型的直接推论：要到达 <span class="arithmatex">\([l, r]\)</span> 外的任何点，必须先经过 <span class="arithmatex">\(s\)</span> 与该点之间的所有格子，故任何"漏掉中间、跳到两侧"的设想都不可达。</p>
+<p>剩下唯一要量化的是：<strong>覆盖区间 <span class="arithmatex">\([l, r]\)</span> 至少要走几步？</strong> 这就把"步数预算 <span class="arithmatex">\(\le k\)</span>"翻译成对 <span class="arithmatex">\([l, r]\)</span> 的约束。</p>
+<p><strong>覆盖区间的最小步数。</strong> 起点 <span class="arithmatex">\(s\)</span> 把区间分成左段 <span class="arithmatex">\([l, s]\)</span> 与右段 <span class="arithmatex">\([s, r]\)</span>，长度分别为 <span class="arithmatex">\(s - l\)</span> 和 <span class="arithmatex">\(r - s\)</span>。要把两段都走遍，路径从 <span class="arithmatex">\(s\)</span> 出发、只能沿数轴左右移动；若想覆盖左端 <span class="arithmatex">\(l\)</span> 又覆盖右端 <span class="arithmatex">\(r\)</span>，必有一侧要"去了再回来"——因为走到一端的尽头后，要去另一端就得原路折返经过 <span class="arithmatex">\(s\)</span>。被折返的那一侧走了两次，另一侧走一次。设左段折返，则步数 <span class="arithmatex">\(= 2(s - l) + (r - s)\)</span>；设右段折返，则 <span class="arithmatex">\(= (s - l) + 2(r - s)\)</span>。我们取更省的那个：</p>
+<div class="arithmatex">\[
+\text{steps}(l, r) \;=\; \min\bigl(2(s - l) + (r - s),\; (s - l) + 2(r - s)\bigr) \;=\; (r - l) + \min(s - l,\; r - s). \tag{1}
+\]</div>
+<p>化简的一步是把两式都写成 <span class="arithmatex">\((r - l)\)</span> 加上"被折返一侧的长度"，取较短一侧折返即得最小值。结论：<strong>总要把较近的一侧多走一遍。</strong> 注意折返发生在一侧意味着整条路径最多转向一次，于是最优走法只有四种退化形态：全向左（<span class="arithmatex">\(r = s\)</span>）、全向右（<span class="arithmatex">\(l = s\)</span>）、先左后右、先右后左——它们都是公式 (1) 的特例，无需单独讨论。</p>
+<p>这样，原问题被完全约化为：在所有满足 <span class="arithmatex">\(\text{steps}(l, r) \le k\)</span> 的含 <span class="arithmatex">\(s\)</span> 区间里，找果实和最大的一个。</p>
 <h2 id="formulation">形式化 (Formulation)<a class="headerlink" href="#formulation" title="Permanent link">#</a></h2>
-<p>给点集 <span class="arithmatex">\(\{(p_i, a_i)\}\)</span>，起点 <span class="arithmatex">\(s\)</span>，步数预算 <span class="arithmatex">\(k\)</span>。求</p>
-<div class="arithmatex">\[\max_{l \le s \le r,\; (r - l) + \min(s - l, r - s) \le k} \sum_{i : l \le p_i \le r} a_i\]</div>
+<p>给点集 <span class="arithmatex">\(\{(p_i, a_i)\}\)</span>（<span class="arithmatex">\(p_i\)</span> 升序、互异），起点 <span class="arithmatex">\(s\)</span>，步数预算 <span class="arithmatex">\(k\)</span>。由背景的约化，目标是</p>
+<div class="arithmatex">\[
+\max_{\substack{l \le s \le r \\ (r - l) + \min(s - l,\, r - s) \,\le\, k}} \;\; \sum_{i : \, l \le p_i \le r} a_i. \tag{2}
+\]</div>
+<p><span class="arithmatex">\(l, r\)</span> 取连续实数即可，但只有 <span class="arithmatex">\(l, r\)</span> 落在果实点（或 <span class="arithmatex">\(s\)</span>）上时果实和才可能改变，故枚举区间端点只需扫果实数组。</p>
 <h2 id="approach">数据结构 / 想法 (Approach)<a class="headerlink" href="#approach" title="Permanent link">#</a></h2>
-<p><strong>方法 1：滑动窗口 over 排序好的果实数组</strong></p>
-<p>定义两指针 <span class="arithmatex">\(L, R\)</span> 扫过 fruits，使 fruits[L..R] 都在 <span class="arithmatex">\([l, r]\)</span> 内（<span class="arithmatex">\(l = \min(s, p_L)\)</span>，<span class="arithmatex">\(r = \max(s, p_R)\)</span>，注意 s 不一定是果实点）。维护窗口和。对每个 <span class="arithmatex">\(R\)</span>，右移 <span class="arithmatex">\(L\)</span> 直到从 <span class="arithmatex">\(p_L\)</span> 到 <span class="arithmatex">\(p_R\)</span> 经过 <span class="arithmatex">\(s\)</span> 的最小步数 ≤ k。</p>
-<p>但 <span class="arithmatex">\(l, r\)</span> 还要考虑 <span class="arithmatex">\(s\)</span> 是否在 <span class="arithmatex">\([p_L, p_R]\)</span> 之间。分情况：
-- 若 <span class="arithmatex">\(p_R \le s\)</span>：路径"全在左"，步数 = <span class="arithmatex">\(s - p_L\)</span>。
-- 若 <span class="arithmatex">\(p_L \ge s\)</span>：路径"全在右"，步数 = <span class="arithmatex">\(p_R - s\)</span>。
-- 否则 <span class="arithmatex">\(p_L &lt; s &lt; p_R\)</span>（或边界相等）：步数 = <span class="arithmatex">\((p_R - p_L) + \min(s - p_L, p_R - s)\)</span>。</p>
-<p><strong>方法 2：前缀和 + 双向枚举</strong></p>
-<p>对每种转向情形枚举"先走多远再转向"，用前缀和 + 二分得到区间和。<span class="arithmatex">\(O(k \log n)\)</span> 或 <span class="arithmatex">\(O(k)\)</span>。</p>
-<p><strong>方法 3：滑窗（简洁版）</strong>：把虚拟点 <span class="arithmatex">\((s, 0)\)</span> 也插入数组（如果不存在），再用滑窗枚举所有包含 <span class="arithmatex">\(s\)</span> 的区间。</p>
+<p><strong>朴素解先行。</strong> 直接照式 (2) 枚举：取一对果实下标 <span class="arithmatex">\((L, R)\)</span> 作为区间 <span class="arithmatex">\([\,p_L,\, p_R\,]\)</span> 的两端（再按需把端点向外撑到含 <span class="arithmatex">\(s\)</span>），检查 <span class="arithmatex">\(\text{steps} \le k\)</span>，可行就用前缀和取窗口果实和更新答案。这是 <span class="arithmatex">\(O(n^2)\)</span> 对 <span class="arithmatex">\((L, R)\)</span>，正确但慢。</p>
+<p><strong>为什么能降到线性。</strong> 关键是 <span class="arithmatex">\(\text{steps}\)</span> 关于端点的单调性。固定右端 <span class="arithmatex">\(R\)</span>，把左指针 <span class="arithmatex">\(L\)</span> 右移（窗口变窄）：<span class="arithmatex">\(p_L\)</span> 只增不减，故 <span class="arithmatex">\(l = \min(s, p_L)\)</span> 只增不减，于是 <span class="arithmatex">\(s - l\)</span> 与 <span class="arithmatex">\(r - l\)</span> 都不增，由式 (1)，<span class="arithmatex">\(\text{steps}\)</span> 不增。也就是说——</p>
+<blockquote>
+<p>固定 <span class="arithmatex">\(R\)</span> 时，可行性 <span class="arithmatex">\(\text{steps} \le k\)</span> 关于 <span class="arithmatex">\(L\)</span> 单调：一旦某个 <span class="arithmatex">\(L\)</span> 可行，所有更大的 <span class="arithmatex">\(L\)</span> 也可行。</p>
+</blockquote>
+<p>这正是滑动窗口成立的条件。对每个 <span class="arithmatex">\(R\)</span>，只需把 <span class="arithmatex">\(L\)</span> 推到"恰好可行"的最左位置，窗口和即该 <span class="arithmatex">\(R\)</span> 下的最大可行果实和；<span class="arithmatex">\(R\)</span> 递增时 <span class="arithmatex">\(L\)</span> 从不回退，总移动 <span class="arithmatex">\(O(n)\)</span> 次。窗口名字不是预设的范式，而是从这条单调性推出来的选择。</p>
+<p><strong>端点撑到含 <span class="arithmatex">\(s\)</span>。</strong> 式 (2) 要求 <span class="arithmatex">\(l \le s \le r\)</span>，但果实窗口 <span class="arithmatex">\([p_L, p_R]\)</span> 未必含 <span class="arithmatex">\(s\)</span>。统一令</p>
+<div class="arithmatex">\[
+l = \min(s,\, p_L), \qquad r = \max(s,\, p_R), \tag{3}
+\]</div>
+<p>即把端点向外撑到刚好包住 <span class="arithmatex">\(s\)</span>。当窗口整段落在 <span class="arithmatex">\(s\)</span> 一侧时，这个钳制会自动塌缩成纯单侧步数（例如 <span class="arithmatex">\(p_R \le s\)</span> 时 <span class="arithmatex">\(r = s\)</span>，式 (1) 退化为 <span class="arithmatex">\(s - l = s - p_L\)</span>，即"全向左"的步数）；当窗口跨过 <span class="arithmatex">\(s\)</span> 时，钳制不起作用，式 (1) 原样生效。式 (3) 同时处理了 <span class="arithmatex">\(s\)</span> 不是果实点这一边界——撑出来的 <span class="arithmatex">\(l\)</span> 或 <span class="arithmatex">\(r\)</span> 可以落在没有果实的 <span class="arithmatex">\(s\)</span> 上。</p>
+<p><strong>先看可拆情形版（便于对照式 (1) 的四种形态）。</strong> 下面这版把"全在左 / 跨越 / 全在右"显式分开，配前缀和；逻辑直白但分支较多：</p>
 <div class="language-python highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">bisect</span><span class="w"> </span><span class="kn">import</span> <span class="n">bisect_left</span><span class="p">,</span> <span class="n">bisect_right</span>
 
 <span class="k">class</span><span class="w"> </span><span class="nc">Solution</span><span class="p">:</span>
@@ -22736,14 +22780,14 @@
         <span class="k">return</span> <span class="n">ans</span>
 </code></pre></div>
 <p>样例 2 trace：<code>fruits=[[0,9],[4,1],[5,7],[6,2],[7,4],[10,9]], startPos=5, k=4</code>。
-最优窗口 [4, 7]（含 startPos=5）：步数 = (7-4) + min(5-4, 7-5) = 3 + 1 = 4 ≤ 4。和 = 1+7+2+4 = 14 ✓。</p>
-<p><strong>更稳定的滑窗模板</strong>（不区分情形，统一处理 <span class="arithmatex">\(l, r\)</span> 含 <span class="arithmatex">\(s\)</span> 的情形）：</p>
+最优窗口 <span class="arithmatex">\([4, 7]\)</span>（含 startPos=5）：步数 <span class="arithmatex">\(= (7-4) + \min(5-4, 7-5) = 3 + 1 = 4 \le 4\)</span>。和 <span class="arithmatex">\(= 1+7+2+4 = 14\)</span> ✓。</p>
+<p><strong>统一版（推荐）。</strong> 把式 (3) 的钳制直接写进循环，就不必拆分支：每个 <span class="arithmatex">\(L, R\)</span> 用同一条式 (1) 判可行。这版更短也更易证——它逐字对应上面推出的滑窗，且对所有情形（跨越 / 单侧 / <span class="arithmatex">\(s\)</span> 非果实点）一致处理：</p>
 <div class="language-python highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">maxTotalFruits</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fruits</span><span class="p">,</span> <span class="n">startPos</span><span class="p">,</span> <span class="n">k</span><span class="p">):</span>
     <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">fruits</span><span class="p">)</span>
     <span class="n">L</span> <span class="o">=</span> <span class="n">ans</span> <span class="o">=</span> <span class="n">window</span> <span class="o">=</span> <span class="mi">0</span>
     <span class="k">for</span> <span class="n">R</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
         <span class="n">window</span> <span class="o">+=</span> <span class="n">fruits</span><span class="p">[</span><span class="n">R</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span>
-        <span class="c1"># 当 fruits[L][0] 与 fruits[R][0] 跨 startPos 时，按 l = min(s, p_L), r = max(s, p_R) 算</span>
+        <span class="c1"># 端点撑到含 startPos：l = min(s, p_L), r = max(s, p_R)</span>
         <span class="k">while</span> <span class="n">L</span> <span class="o">&lt;=</span> <span class="n">R</span><span class="p">:</span>
             <span class="n">l</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">startPos</span><span class="p">,</span> <span class="n">fruits</span><span class="p">[</span><span class="n">L</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span>
             <span class="n">r</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">startPos</span><span class="p">,</span> <span class="n">fruits</span><span class="p">[</span><span class="n">R</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span>
@@ -22756,18 +22800,19 @@
     <span class="k">return</span> <span class="n">ans</span>
 </code></pre></div>
 <p>样例 3 trace：<code>fruits=[[0,3],[6,4],[8,5]], startPos=3, k=2</code>。
-所有点：pos=0 需步 3 &gt; 2；pos=6 需步 3 &gt; 2；pos=8 需 5 &gt; 2。窗口循环不断右移 L 直到 L &gt; R，没贡献 → 0 ✓。</p>
+所有点：pos=0 需步 3 &gt; 2；pos=6 需步 3 &gt; 2；pos=8 需 5 &gt; 2。每个 <span class="arithmatex">\(R\)</span> 下窗口循环都把 <span class="arithmatex">\(L\)</span> 推到 <span class="arithmatex">\(L &gt; R\)</span>，无贡献 → 0 ✓。</p>
+<p><strong>备选：前缀和 + 双向枚举。</strong> 也可绕开滑窗，对每种转向情形枚举"先走多远再转向"，用前缀和 + 二分得到区间和，<span class="arithmatex">\(O(k \log n)\)</span> 或 <span class="arithmatex">\(O(k)\)</span>。当 <span class="arithmatex">\(k\)</span> 远小于 <span class="arithmatex">\(n\)</span> 时它更快；但滑窗的 <span class="arithmatex">\(O(n)\)</span> 在本题约束下已足够，且无需分支讨论，故作主解。</p>
 <h2 id="complexity">复杂度 (Complexity)<a class="headerlink" href="#complexity" title="Permanent link">#</a></h2>
 <ul>
-<li>Time: <span class="arithmatex">\(O(n)\)</span> 滑窗摊销</li>
-<li>Space: <span class="arithmatex">\(O(n)\)</span>（前缀和）或 <span class="arithmatex">\(O(1)\)</span>（纯滑窗）</li>
+<li>Time: <span class="arithmatex">\(O(n)\)</span> —— 滑窗摊销，<span class="arithmatex">\(L, R\)</span> 都单调不减、从不回退。</li>
+<li>Space: <span class="arithmatex">\(O(n)\)</span>（前缀和版）或 <span class="arithmatex">\(O(1)\)</span>（纯滑窗版）。</li>
 </ul>
 <h2 id="pitfalls">陷阱 (Pitfalls)<a class="headerlink" href="#pitfalls" title="Permanent link">#</a></h2>
 <ul>
-<li><strong><code>startPos</code> 可能不在 fruits 中</strong>：仍要允许"留在原地"或"以 startPos 为窗口内的虚拟点"。</li>
-<li><strong>最优窗口必须含 <code>startPos</code></strong>：因为不走也算 0 步起点；不含 startPos 的窗口无法到达。</li>
-<li><strong>步数公式取较小一侧的两倍</strong>：<span class="arithmatex">\((r-l) + \min(s-l, r-s)\)</span>；写反会把"远侧走两次"变成"近侧走两次"。</li>
-<li><strong>空窗口处理</strong>：L &gt; R 时不要更新答案。</li>
+<li><strong><code>startPos</code> 可能不在 fruits 中</strong>：由式 (3) 把端点撑到含 <span class="arithmatex">\(s\)</span> 即可，撑出的 <span class="arithmatex">\(l\)</span> 或 <span class="arithmatex">\(r\)</span> 允许落在无果实的 <span class="arithmatex">\(s\)</span> 上；这同时覆盖"留在原地"（窗口空、步数 0）。</li>
+<li><strong>最优窗口必含 <code>startPos</code></strong>：这不是约定而是移动模型的推论——可达集合永远是含 <span class="arithmatex">\(s\)</span> 的连续区间，不含 <span class="arithmatex">\(s\)</span> 的区间根本到不了（要到那里必先经过 <span class="arithmatex">\(s\)</span>）。</li>
+<li><strong>步数公式折返较近一侧</strong>：式 (1) 取 <span class="arithmatex">\(\min(s-l, r-s)\)</span>，即把较近一侧多走一遍；写反会把远侧折返，步数偏大、误判不可行。</li>
+<li><strong>空窗口处理</strong>：<span class="arithmatex">\(L &gt; R\)</span> 时窗口为空，不要更新答案。</li>
 </ul>
 <h2 id="related">相关题目 (Related)<a class="headerlink" href="#related" title="Permanent link">#</a></h2>
 <ul>

@@ -5485,6 +5485,8 @@
       
         
       
+        
+      
     
     
     
@@ -6024,6 +6026,34 @@
     
   
     #93. Restore IP Addresses
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../0102_binary-tree-level-order-traversal/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    #102. Binary Tree Level Order Traversal
   
 
     
@@ -15610,7 +15640,7 @@
   <a href="#_1" class="md-nav__link">
     <span class="md-ellipsis">
       
-        背景
+        形式化
       
     </span>
   </a>
@@ -15621,15 +15651,54 @@
   <a href="#_2" class="md-nav__link">
     <span class="md-ellipsis">
       
-        形式化
+        背景
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="背景">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        朴素算法及其瓶颈
       
     </span>
   </a>
   
 </li>
+        
+          <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        用一个位掩码概括整个窗口
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#or" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        一个有用的副产物：OR 等于算术和
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
       
         <li class="md-nav__item">
-  <a href="#_3" class="md-nav__link">
+  <a href="#_5" class="md-nav__link">
     <span class="md-ellipsis">
       
         数据结构 / 想法
@@ -15640,7 +15709,7 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#_4" class="md-nav__link">
+  <a href="#_6" class="md-nav__link">
     <span class="md-ellipsis">
       
         复杂度
@@ -15651,7 +15720,7 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#_5" class="md-nav__link">
+  <a href="#_7" class="md-nav__link">
     <span class="md-ellipsis">
       
         陷阱
@@ -15662,7 +15731,7 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#_6" class="md-nav__link">
+  <a href="#_8" class="md-nav__link">
     <span class="md-ellipsis">
       
         相关题目
@@ -22580,7 +22649,7 @@
   <a href="#_1" class="md-nav__link">
     <span class="md-ellipsis">
       
-        背景
+        形式化
       
     </span>
   </a>
@@ -22591,15 +22660,54 @@
   <a href="#_2" class="md-nav__link">
     <span class="md-ellipsis">
       
-        形式化
+        背景
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="背景">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        朴素算法及其瓶颈
       
     </span>
   </a>
   
 </li>
+        
+          <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        用一个位掩码概括整个窗口
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#or" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        一个有用的副产物：OR 等于算术和
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
       
         <li class="md-nav__item">
-  <a href="#_3" class="md-nav__link">
+  <a href="#_5" class="md-nav__link">
     <span class="md-ellipsis">
       
         数据结构 / 想法
@@ -22610,7 +22718,7 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#_4" class="md-nav__link">
+  <a href="#_6" class="md-nav__link">
     <span class="md-ellipsis">
       
         复杂度
@@ -22621,7 +22729,7 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#_5" class="md-nav__link">
+  <a href="#_7" class="md-nav__link">
     <span class="md-ellipsis">
       
         陷阱
@@ -22632,7 +22740,7 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#_6" class="md-nav__link">
+  <a href="#_8" class="md-nav__link">
     <span class="md-ellipsis">
       
         相关题目
@@ -22673,39 +22781,57 @@
 <h1 id="2401-longest-nice-subarray-medium">2401. Longest Nice Subarray  🟠 Medium<a class="headerlink" href="#2401-longest-nice-subarray-medium" title="Permanent link">#</a></h1>
 <p><strong>Tags</strong>: Array, Bit Manipulation, Sliding Window</p>
 <h2 id="problem">Problem<a class="headerlink" href="#problem" title="Permanent link">#</a></h2>
-<p>"Nice 子数组"：任意两个不同位置 AND = 0（等价：所有元素的 set bits 两两不相交）。求最长 nice 子数组长度。<span class="arithmatex">\(n \le 10^5\)</span>, <span class="arithmatex">\(\text{nums}[i] \le 10^9\)</span>。</p>
-<h2 id="_1">背景<a class="headerlink" href="#_1" title="Permanent link">#</a></h2>
-<p><strong>关键洞察</strong>：所有元素 set bits 两两不相交 ↔ <strong>子数组所有元素的 OR 等于子数组元素的算术和的"位运算视角"</strong> (即每个位至多由一个元素贡献)。等价定义：子数组按位 OR = 每个元素 OR 进去都不冲突。</p>
-<p>由于 <span class="arithmatex">\(\text{nums}[i] &lt; 2^{30}\)</span>，<strong>最长不超过 30</strong> —— 30 个非空互斥位集合的并就是全 30 位。这一上界让朴素 <span class="arithmatex">\(O(30n)\)</span> 也能过。</p>
-<p>经典 <strong>滑动窗口</strong>：维护窗口内"已使用位"的 OR；右扩时若新元素与已用位有交集，左缩直到无交集。</p>
-<h2 id="_2">形式化<a class="headerlink" href="#_2" title="Permanent link">#</a></h2>
-<p>求最长子数组 <span class="arithmatex">\([l, r]\)</span> 使 <span class="arithmatex">\(\text{nums}[l] \oplus_{\text{OR}} \text{nums}[l+1] \dots = \sum_{i=l}^{r} \text{nums}[i]\)</span>（按整数和也等于按 OR 累计，因无位冲突）。等价：<span class="arithmatex">\(\text{nums}[l] \,\text{AND}\, \text{nums}[l+1] \,\text{AND}\, \dots = 0\)</span> 两两间。</p>
-<h2 id="_3">数据结构 / 想法<a class="headerlink" href="#_3" title="Permanent link">#</a></h2>
-<p><strong>滑动窗口 + OR mask</strong>：
+<p>"Nice 子数组"：任意两个不同位置的元素按位 AND = 0（等价：所有元素的 set bits 两两不相交）。求最长 nice 子数组的长度。<span class="arithmatex">\(n \le 10^5\)</span>，<span class="arithmatex">\(0 \le \text{nums}[i] \le 10^9\)</span>。</p>
+<h2 id="_1">形式化<a class="headerlink" href="#_1" title="Permanent link">#</a></h2>
+<p>先把判定条件写精确。子数组 <span class="arithmatex">\([l, r]\)</span> 是 nice 的，当且仅当</p>
+<div class="arithmatex">\[\forall\, i \ne j,\ i, j \in [l, r]:\quad \text{nums}[i] \mathbin{\&amp;} \text{nums}[j] = 0.\]</div>
+<p>注意这是<strong>两两</strong>的条件，不能压缩成一条链式 AND。链式 <span class="arithmatex">\(\text{nums}[l] \mathbin{\&amp;} \dots \mathbin{\&amp;} \text{nums}[r] = 0\)</span> 严格更弱：例如 <span class="arithmatex">\([3, 6, 4]\)</span> 满足 <span class="arithmatex">\(3 \mathbin{\&amp;} 6 \mathbin{\&amp;} 4 = 0\)</span>，但 <span class="arithmatex">\(3 \mathbin{\&amp;} 6 = 2 \ne 0\)</span>，并不 nice。</p>
+<p>目标是求</p>
+<div class="arithmatex">\[\max\,\{\, r - l + 1 \;:\; [l, r] \text{ 是 nice 子数组} \,\}.\]</div>
+<p>后续所有发展（朴素算法、上界、滑动窗口）都从这条两两不相交的条件推出。</p>
+<h2 id="_2">背景<a class="headerlink" href="#_2" title="Permanent link">#</a></h2>
+<h3 id="_3">朴素算法及其瓶颈<a class="headerlink" href="#_3" title="Permanent link">#</a></h3>
+<p>直接按定义做：枚举所有 <span class="arithmatex">\([l, r]\)</span>，对每个窗口检查全部元素对。固定 <span class="arithmatex">\(l\)</span> 向右扩 <span class="arithmatex">\(r\)</span> 时，可以增量维护"已见元素对 <span class="arithmatex">\(r\)</span> 是否有冲突"，于是单个 <span class="arithmatex">\(l\)</span> 的扩展是 <span class="arithmatex">\(O(n)\)</span> 次、每次一个 AND，整体 <span class="arithmatex">\(O(n^2)\)</span>。对 <span class="arithmatex">\(n = 10^5\)</span> 即 <span class="arithmatex">\(10^{10}\)</span> 量级，太慢。</p>
+<p>瓶颈在于：每加入一个新元素 <span class="arithmatex">\(x\)</span>，我们似乎要拿它和窗口内<strong>所有</strong>已有元素逐一做 AND 才能判断冲突。是否存在一个关于整个窗口的<strong>单一量</strong>，使得这个判断变成 <span class="arithmatex">\(O(1)\)</span>？</p>
+<h3 id="_4">用一个位掩码概括整个窗口<a class="headerlink" href="#_4" title="Permanent link">#</a></h3>
+<p>关键观察：要判断"<span class="arithmatex">\(x\)</span> 与窗口内某元素共享某一位"，我们并不关心是哪个元素占用了那一位，只关心<strong>该位是否已被占用</strong>。把窗口内所有元素的占用位并起来：</p>
+<div class="arithmatex">\[\text{used} \;=\; \bigvee_{i=l}^{r} \text{nums}[i] \quad(\text{按位 OR}).\]</div>
+<p>于是冲突判定塌缩为一次运算：</p>
+<div class="arithmatex">\[x \text{ 与窗口有冲突} \iff \text{used} \mathbin{\&amp;} x \ne 0.\]</div>
+<p>这正是把 <span class="arithmatex">\(O(\text{窗口大小})\)</span> 次 AND 换成 <span class="arithmatex">\(O(1)\)</span> 次 AND 所需要的单一量。下一步是让窗口随指针滑动时，<span class="arithmatex">\(\text{used}\)</span> 能 <span class="arithmatex">\(O(1)\)</span> 维护。</p>
+<h3 id="or">一个有用的副产物：OR 等于算术和<a class="headerlink" href="#or" title="Permanent link">#</a></h3>
+<p>当窗口 nice 时，各元素的 set bits 两两不相交，因此按位 OR 累加与算术加法在每一位上都不进位，二者相等：</p>
+<div class="arithmatex">\[\bigvee_{i=l}^{r} \text{nums}[i] \;=\; \sum_{i=l}^{r} \text{nums}[i].\]</div>
+<p>举例：<span class="arithmatex">\(8 = 1000_2\)</span> 与 <span class="arithmatex">\(3 = 0011_2\)</span> 位不相交，<span class="arithmatex">\(8 \mathbin{|} 3 = 1011_2 = 11 = 8 + 3\)</span>。反例：<span class="arithmatex">\(5 = 101_2\)</span> 与 <span class="arithmatex">\(3 = 011_2\)</span> 在第 0 位冲突（<span class="arithmatex">\(5 \mathbin{\&amp;} 3 = 001 \ne 0\)</span>），此时 <span class="arithmatex">\(5 \mathbin{|} 3 = 111_2 = 7 \ne 5 + 3 = 8\)</span>。这个等式是 nice 性质的<strong>推论</strong>，不是定义；它解释了为什么后面可以用 XOR 撤销一个元素（见正确性）。</p>
+<h2 id="_5">数据结构 / 想法<a class="headerlink" href="#_5" title="Permanent link">#</a></h2>
+<p>我们要在窗口滑动时维护"当前窗口占用的位集"<span class="arithmatex">\(\text{used}\)</span>，使得对新元素的相容性测试是 <span class="arithmatex">\(O(1)\)</span>。下面先给出维护这一不变量的代码，再证明它正确。</p>
+<p><strong>不变量（I）</strong>：在每轮循环进入时，<span class="arithmatex">\(\text{used}\)</span> 恰为当前窗口 <span class="arithmatex">\([l, r-1]\)</span> 所有元素的按位 OR，且窗口内元素两两 AND = 0（即 <span class="arithmatex">\(\text{used}\)</span> 的每一位至多由一个元素贡献）。</p>
 <div class="language-python highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">longestNiceSubarray</span><span class="p">(</span><span class="n">nums</span><span class="p">):</span>
     <span class="n">used</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">l</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">best</span> <span class="o">=</span> <span class="mi">0</span>
     <span class="k">for</span> <span class="n">r</span><span class="p">,</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">nums</span><span class="p">):</span>
-        <span class="k">while</span> <span class="n">used</span> <span class="o">&amp;</span> <span class="n">x</span><span class="p">:</span>
-            <span class="n">used</span> <span class="o">^=</span> <span class="n">nums</span><span class="p">[</span><span class="n">l</span><span class="p">]</span>
+        <span class="k">while</span> <span class="n">used</span> <span class="o">&amp;</span> <span class="n">x</span><span class="p">:</span>          <span class="c1"># x 与窗口某元素共享位 -&gt; 收缩左边界</span>
+            <span class="n">used</span> <span class="o">^=</span> <span class="n">nums</span><span class="p">[</span><span class="n">l</span><span class="p">]</span>      <span class="c1"># 撤销最左元素的位（见下：XOR 在此等于集合减法）</span>
             <span class="n">l</span> <span class="o">+=</span> <span class="mi">1</span>
-        <span class="n">used</span> <span class="o">|=</span> <span class="n">x</span>
+        <span class="n">used</span> <span class="o">|=</span> <span class="n">x</span>                <span class="c1"># x 现在与窗口无冲突，纳入</span>
         <span class="n">best</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">best</span><span class="p">,</span> <span class="n">r</span> <span class="o">-</span> <span class="n">l</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">best</span>
-</code></pre></div></p>
-<p><strong>不变量</strong>：循环开始时 <code>used</code> 是当前窗口 <span class="arithmatex">\([l, r-1]\)</span> 所有元素的 OR，且无位冲突（即两两 AND = 0）。<strong>正确性</strong>：右扩入 <span class="arithmatex">\(x\)</span>，若 <code>used &amp; x</code> 非零，说明 <span class="arithmatex">\(x\)</span> 与窗口内某元素共享位；逐步移除最左元素直到无冲突。</p>
-<p><strong>为什么左移最左一定能消除冲突</strong>：因任意子集都"满足无冲突"是 hereditary 性质（子集的无冲突由超集保证），左移会逐位清掉。</p>
-<h2 id="_4">复杂度<a class="headerlink" href="#_4" title="Permanent link">#</a></h2>
+</code></pre></div>
+<p><strong>正确性</strong>：右扩纳入 <span class="arithmatex">\(x\)</span> 前，若 <span class="arithmatex">\(\text{used} \mathbin{\&amp;} x \ne 0\)</span>，说明 <span class="arithmatex">\(x\)</span> 与窗口内某元素共享至少一位。逐个移除最左元素 <span class="arithmatex">\(\text{nums}[l]\)</span> 来缩小窗口；由不变量 (I)，<span class="arithmatex">\(\text{nums}[l]\)</span> 的每一位在 <span class="arithmatex">\(\text{used}\)</span> 中只出现一次，故 <span class="arithmatex">\(\text{used} \mathbin{\oplus} \text{nums}[l]\)</span> 恰好清掉 <span class="arithmatex">\(\text{nums}[l]\)</span> 贡献的那些位——此处 XOR 等价于从位集中减去 <span class="arithmatex">\(\text{nums}[l]\)</span>。</p>
+<p><strong>为什么左缩一定终止</strong>：set bits 两两不相交是<strong>向下封闭（hereditary）</strong>的性质——若一个整数集合两两不相交，它的任意子集也两两不相交。因此移除元素永远不会引入新冲突，且每次移除都从 <span class="arithmatex">\(\text{used}\)</span> 中真正清掉若干位（不会清成 0 又回来）。最坏情况左指针追到 <span class="arithmatex">\(r\)</span>，窗口空、<span class="arithmatex">\(\text{used} = 0\)</span>，此时 <span class="arithmatex">\(\text{used} \mathbin{\&amp;} x = 0\)</span> 必然成立，循环停止。纳入 <span class="arithmatex">\(x\)</span> 后不变量 (I) 重新成立，归纳完成。</p>
+<h2 id="_6">复杂度<a class="headerlink" href="#_6" title="Permanent link">#</a></h2>
 <ul>
-<li>Time: 摊销 <span class="arithmatex">\(O(n)\)</span> — 每元素入窗出窗各一次（指针单调）。</li>
-<li>Space: <span class="arithmatex">\(O(1)\)</span></li>
+<li>Time: 摊销 <span class="arithmatex">\(O(n)\)</span> —— 左右指针都单调不减，每个元素至多入窗一次、出窗一次。</li>
+<li>Space: <span class="arithmatex">\(O(1)\)</span> —— 仅一个整数掩码与三个标量。</li>
 </ul>
-<h2 id="_5">陷阱<a class="headerlink" href="#_5" title="Permanent link">#</a></h2>
+<p>朴素 <span class="arithmatex">\(O(n^2)\)</span> 也有一个更紧的旁注上界：<strong>任意 nice 子数组中互不相同的非零元素至多 30 个</strong>。理由是每个非零元素至少占用一个 bit，而占用位两两不相交，<span class="arithmatex">\(\text{nums}[i] &lt; 2^{30}\)</span> 只提供 30 个 bit 位（第 0..29 位），由鸽笼原理非零元素数 <span class="arithmatex">\(\le 30\)</span>。但这<strong>不是窗口长度的上界</strong>（见陷阱）。</p>
+<h2 id="_7">陷阱<a class="headerlink" href="#_7" title="Permanent link">#</a></h2>
 <ul>
-<li>窗口长度上界 <span class="arithmatex">\(\log_2(\max \text{nums}) = 30\)</span>（约束保证）。</li>
-<li>"至少两个不同位置" → 单元素子数组始终 nice（题目明确）。</li>
-<li>不要混淆 AND / OR / XOR 在判定中的角色：判定用 AND（看是否有冲突位），mask 维护用 OR（累计所有位）。</li>
+<li><strong>零会破坏"长度 <span class="arithmatex">\(\le 30\)</span>"</strong>：约束是 <span class="arithmatex">\(0 \le \text{nums}[i]\)</span>，零是允许的，而 <span class="arithmatex">\(0 \mathbin{\&amp;} 0 = 0\)</span>，故全零子数组始终 nice，长度可达 <span class="arithmatex">\(n\)</span>。例如 <code>longestNiceSubarray([0]*100) = 100</code>。上界 30 只约束<strong>非零</strong>元素的个数，不约束窗口长度；本题没有"长度很短所以怎么写都行"的捷径。</li>
+<li><strong>判定是两两 AND，不是链式 AND</strong>：<span class="arithmatex">\(\text{nums}[l] \mathbin{\&amp;} \dots \mathbin{\&amp;} \text{nums}[r] = 0\)</span> 严格弱于 nice（反例 <span class="arithmatex">\([3,6,4]\)</span>）。掩码法之所以对，是因为它逐位记录占用、等价于两两不相交，而非依赖链式 AND。</li>
+<li><strong>单元素子数组始终 nice</strong>：题面要求"至少两个不同位置"才有约束，单个元素无对可比，故答案至少为 1。</li>
+<li><strong>三种位运算各司其职</strong>：判定冲突用 AND（看占用位是否相交），掩码累计用 OR（并入新位），撤销元素用 XOR（在不相交前提下等于集合减法）。混用会出错。</li>
 </ul>
-<h2 id="_6">相关题目<a class="headerlink" href="#_6" title="Permanent link">#</a></h2>
+<h2 id="_8">相关题目<a class="headerlink" href="#_8" title="Permanent link">#</a></h2>
 <ul>
 <li><code>#3. Longest Substring Without Repeating Characters (off-wiki)</code> — 同款滑动窗口 + 唯一性。</li>
 <li><code>#1004. Max Consecutive Ones III (off-wiki)</code> — 滑动窗口 + 约束计数。</li>

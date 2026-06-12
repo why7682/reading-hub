@@ -5485,6 +5485,8 @@
       
         
       
+        
+      
     
     
     
@@ -6024,6 +6026,34 @@
     
   
     #93. Restore IP Addresses
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../0102_binary-tree-level-order-traversal/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    #102. Binary Tree Level Order Traversal
   
 
     
@@ -17477,13 +17507,52 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#approach" class="md-nav__link">
+  <a href="#algorithm-and-correctness" class="md-nav__link">
     <span class="md-ellipsis">
       
-        数据结构 / 想法 (Approach)
+        数据结构 / 想法 (Algorithm and Correctness)
       
     </span>
   </a>
+  
+    <nav class="md-nav" aria-label="数据结构 / 想法 (Algorithm and Correctness)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#f-1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        可解性：\(f = 1\) 是唯一例外
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#gf-lceil-f3-rceil" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        闭式：\(g(f) = \lceil f/3 \rceil\)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        实现
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -22599,13 +22668,52 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#approach" class="md-nav__link">
+  <a href="#algorithm-and-correctness" class="md-nav__link">
     <span class="md-ellipsis">
       
-        数据结构 / 想法 (Approach)
+        数据结构 / 想法 (Algorithm and Correctness)
       
     </span>
   </a>
+  
+    <nav class="md-nav" aria-label="数据结构 / 想法 (Algorithm and Correctness)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#f-1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        可解性：\(f = 1\) 是唯一例外
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#gf-lceil-f3-rceil" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        闭式：\(g(f) = \lceil f/3 \rceil\)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        实现
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -22675,13 +22783,49 @@
 <h2 id="problem">Problem<a class="headerlink" href="#problem" title="Permanent link">#</a></h2>
 <p>数组 <code>nums</code>，正整数。每次操作可移除 2 或 3 个相等元素。求清空数组的最小操作数，无解返 -1。约束 <span class="arithmatex">\(2 \le n \le 10^5\)</span>，<span class="arithmatex">\(1 \le \text{nums}[i] \le 10^6\)</span>。</p>
 <h2 id="background">背景 (Background)<a class="headerlink" href="#background" title="Permanent link">#</a></h2>
-<p>本题是经典 <strong>Frobenius / coin-problem-like</strong> 子问题：把每种值的频次 <span class="arithmatex">\(f\)</span> 写成 <span class="arithmatex">\(2a + 3b\)</span> 形式（<span class="arithmatex">\(a, b \ge 0\)</span>）并最小化 <span class="arithmatex">\(a + b\)</span>。由于 <span class="arithmatex">\(\gcd(2, 3) = 1\)</span>，<span class="arithmatex">\(f \ge 2\)</span> 都可表示——唯一不可表的是 <span class="arithmatex">\(f = 1\)</span>（直接返回 -1）。</p>
-<p>这等价于：对每个 <span class="arithmatex">\(f\)</span>，最优是"尽量用 3"。<span class="arithmatex">\(f \bmod 3 = 0\)</span> → <span class="arithmatex">\(f/3\)</span> 次三连；<span class="arithmatex">\(f \bmod 3 = 1\)</span> → 改成两次双 + (<span class="arithmatex">\((f-4)/3\)</span>) 次三连 → <span class="arithmatex">\((f-4)/3 + 2\)</span>；<span class="arithmatex">\(f \bmod 3 = 2\)</span> → 一次双 + <span class="arithmatex">\((f-2)/3\)</span> 次三连 → <span class="arithmatex">\((f-2)/3 + 1\)</span>。<br />
-统一公式：<span class="arithmatex">\(\lceil f / 3 \rceil\)</span>。</p>
+<p>每次操作只作用于<strong>相等</strong>的元素，所以不同的值互不干扰：可以分别处理每种值，再把各自的操作数相加。于是问题退化为一个一维子问题——给定某个值出现的次数 <span class="arithmatex">\(f\)</span>，最少需要多少次操作把这 <span class="arithmatex">\(f\)</span> 个相同元素全部移除？</p>
+<p>先从最朴素的尝试开始。每次操作只能移除 2 个或 3 个，那么最保守的做法是<strong>全部用双删</strong>：把 <span class="arithmatex">\(f\)</span> 个元素两两清掉，需要 <span class="arithmatex">\(\lceil f/2 \rceil\)</span> 次。当 <span class="arithmatex">\(f\)</span> 是奇数时最后会剩一个无法配对，这条朴素路线对奇数立刻失败，提示我们不能只用双删。</p>
+<p>朴素尝试失败在哪里，恰好指出了改进方向。注意一个关键事实：<strong>无论移除 2 个还是 3 个，都只算一次操作</strong>。也就是说，一次三删比一次双删多清掉一个元素，却花同样的代价。因此每用一次三删替代一次双删，就用更少的操作清掉同样多的元素。结论自然浮现：应当<strong>尽量多用三删</strong>，双删只在凑不齐三个时补位。这个"三删更划算"的观察来自操作本身的代价结构，下一节把它写成精确的优化问题，再据此推导出闭式答案。</p>
+<p>唯一的例外是 <span class="arithmatex">\(f = 1\)</span>。单个元素既配不出 2 也配不出 3，任何操作都无法触及它，因此这种值使整个数组无法清空，直接返回 -1。后面会看到 <span class="arithmatex">\(f = 1\)</span> 是唯一不可解的频次。</p>
 <h2 id="formulation">形式化 (Formulation)<a class="headerlink" href="#formulation" title="Permanent link">#</a></h2>
-<p>对 multiset <span class="arithmatex">\(M\)</span>，设 $f_v = $ <span class="arithmatex">\(v\)</span> 在 <span class="arithmatex">\(M\)</span> 中频次。</p>
-<div class="arithmatex">\[\text{ans} = \begin{cases} \sum_v \lceil f_v / 3 \rceil &amp; \text{若 } \forall v,\, f_v \ne 1 \\ -1 &amp; \text{否则} \end{cases}\]</div>
-<h2 id="approach">数据结构 / 想法 (Approach)<a class="headerlink" href="#approach" title="Permanent link">#</a></h2>
+<p>对 multiset <span class="arithmatex">\(M\)</span>，设 <span class="arithmatex">\(f_v\)</span> 为值 <span class="arithmatex">\(v\)</span> 在 <span class="arithmatex">\(M\)</span> 中的频次。由于不同值独立，总操作数等于各值子问题之和。</p>
+<p>单值子问题：把 <span class="arithmatex">\(f\)</span> 个相同元素拆成若干组，每组大小为 2 或 3，最小化组数。设三删用了 <span class="arithmatex">\(a\)</span> 次、双删用了 <span class="arithmatex">\(b\)</span> 次，则约束为</p>
+<div class="arithmatex">\[
+g(f) \;=\; \min_{a,b \ge 0} \; (a + b) \quad \text{s.t.} \quad 3a + 2b = f. \tag{1}
+\]</div>
+<p>其中 <span class="arithmatex">\(a\)</span> 是三删次数，<span class="arithmatex">\(b\)</span> 是双删次数。式 (1) 是本题技术部分的主轴：后续的可解性判定、贪心策略与闭式公式都由它导出。</p>
+<p>总答案则是</p>
+<div class="arithmatex">\[
+\text{ans} = \begin{cases} \sum_v g(f_v) &amp; \text{若 } \forall v,\, f_v \ne 1, \\ -1 &amp; \text{否则。} \end{cases} \tag{2}
+\]</div>
+<p>剩下要做两件事：（i）判定式 (1) 何时有可行解；（ii）当有解时把 <span class="arithmatex">\(g(f)\)</span> 算成闭式。</p>
+<h2 id="algorithm-and-correctness">数据结构 / 想法 (Algorithm and Correctness)<a class="headerlink" href="#algorithm-and-correctness" title="Permanent link">#</a></h2>
+<h3 id="f-1">可解性：<span class="arithmatex">\(f = 1\)</span> 是唯一例外<a class="headerlink" href="#f-1" title="Permanent link">#</a></h3>
+<p>先确定哪些 <span class="arithmatex">\(f\)</span> 能写成 <span class="arithmatex">\(3a + 2b\)</span>。直接从小到大构造，不借助外部定理：</p>
+<ul>
+<li><span class="arithmatex">\(f = 2 = 2\)</span>（一次双删），<span class="arithmatex">\(f = 3 = 3\)</span>（一次三删）——两个基例都可表示。</li>
+<li><span class="arithmatex">\(f = 4 = 2 + 2\)</span>，<span class="arithmatex">\(f = 5 = 2 + 3\)</span>——也可表示。</li>
+<li>对任意 <span class="arithmatex">\(f \ge 4\)</span>，<span class="arithmatex">\(f - 2 \ge 2\)</span> 仍可表示，故在其表示上再加一次双删即得 <span class="arithmatex">\(f\)</span> 的表示。</li>
+</ul>
+<p>由此归纳：所有 <span class="arithmatex">\(f \ge 2\)</span> 都可表示。而 <span class="arithmatex">\(f = 1\)</span> 显然不可——最小的可用块是 2，已超过 1。所以 <span class="arithmatex">\(f = 1\)</span> 是唯一不可解的频次，对应式 (2) 的 -1 分支。</p>
+<h3 id="gf-lceil-f3-rceil">闭式：<span class="arithmatex">\(g(f) = \lceil f/3 \rceil\)</span><a class="headerlink" href="#gf-lceil-f3-rceil" title="Permanent link">#</a></h3>
+<p>现在解式 (1)。固定 <span class="arithmatex">\(f\)</span>，把约束 <span class="arithmatex">\(3a + 2b = f\)</span> 中的 <span class="arithmatex">\(b\)</span> 解出来：<span class="arithmatex">\(2b = f - 3a\)</span>，要求 <span class="arithmatex">\(f - 3a \ge 0\)</span> 且 <span class="arithmatex">\(f - 3a\)</span> 为偶数。代入目标函数</p>
+<div class="arithmatex">\[
+a + b \;=\; a + \frac{f - 3a}{2} \;=\; \frac{f - a}{2}.
+\]</div>
+<p>这是 <span class="arithmatex">\(a\)</span> 的递减函数，所以<strong>最小化组数等价于最大化三删次数 <span class="arithmatex">\(a\)</span></strong>——这正是上一节"三删更划算"的直觉的精确版本。在约束下 <span class="arithmatex">\(a\)</span> 最大取 <span class="arithmatex">\(a_{\max} = \lfloor f/3 \rfloor\)</span>；若此时 <span class="arithmatex">\(f - 3a_{\max}\)</span> 为偶数则直接采用，否则退一步取 <span class="arithmatex">\(a_{\max} - 1\)</span>（这会让余数从奇变偶，仍非负，因为 <span class="arithmatex">\(f \ge 2\)</span>）。</p>
+<p>按 <span class="arithmatex">\(f \bmod 3\)</span> 的三种余数逐一验证结果都等于 <span class="arithmatex">\(\lceil f/3 \rceil\)</span>：</p>
+<ul>
+<li><span class="arithmatex">\(f \equiv 0\)</span>：<span class="arithmatex">\(a = f/3\)</span>，余数 0，<span class="arithmatex">\(g(f) = f/3 = \lceil f/3 \rceil\)</span>。</li>
+<li><span class="arithmatex">\(f \equiv 1\)</span>（需 <span class="arithmatex">\(f \ge 4\)</span>）：<span class="arithmatex">\(a_{\max} = (f-1)/3\)</span> 余 1（奇），退一步取 <span class="arithmatex">\(a = (f-4)/3\)</span> 余 4 = 两次双删，<span class="arithmatex">\(g(f) = (f-4)/3 + 2 = \lceil f/3 \rceil\)</span>。<span class="arithmatex">\(f \equiv 1\)</span> 且 <span class="arithmatex">\(f &lt; 4\)</span> 只有 <span class="arithmatex">\(f = 1\)</span>，已被 -1 分支拦下，故此分支总安全。</li>
+<li><span class="arithmatex">\(f \equiv 2\)</span>：<span class="arithmatex">\(a_{\max} = (f-2)/3\)</span> 余 2 = 一次双删，<span class="arithmatex">\(g(f) = (f-2)/3 + 1 = \lceil f/3 \rceil\)</span>。</li>
+</ul>
+<p>三种情形统一为</p>
+<div class="arithmatex">\[
+g(f) = \lceil f/3 \rceil. \tag{3}
+\]</div>
+<h3 id="_1">实现<a class="headerlink" href="#_1" title="Permanent link">#</a></h3>
+<p>按式 (2)(3)：用哈希表统计频次，逐项累加 <span class="arithmatex">\(\lceil f/3 \rceil\)</span>，遇到 <span class="arithmatex">\(f = 1\)</span> 立即返回 -1。整数向上取整用 <code>(f + 2) // 3</code>，避免浮点。</p>
 <div class="language-python highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">collections</span><span class="w"> </span><span class="kn">import</span> <span class="n">Counter</span>
 
 <span class="k">def</span><span class="w"> </span><span class="nf">minOperations</span><span class="p">(</span><span class="n">nums</span><span class="p">):</span>
@@ -22692,22 +22836,21 @@
         <span class="n">ans</span> <span class="o">+=</span> <span class="p">(</span><span class="n">f</span> <span class="o">+</span> <span class="mi">2</span><span class="p">)</span> <span class="o">//</span> <span class="mi">3</span>  <span class="c1"># ceil(f/3)</span>
     <span class="k">return</span> <span class="n">ans</span>
 </code></pre></div>
-<p><strong>正确性证明</strong>：对单一频次 <span class="arithmatex">\(f \ge 2\)</span>，写 <span class="arithmatex">\(f = 3a + 2b, a,b\ge 0\)</span>，最小化 <span class="arithmatex">\(a + b\)</span>。固定 <span class="arithmatex">\(f\)</span>，<span class="arithmatex">\(a + b = a + (f - 3a)/2 = (f - a)/2\)</span>（要 <span class="arithmatex">\(f - 3a\)</span> 非负偶数）。最小化 <span class="arithmatex">\(a + b\)</span> 等价最大化 <span class="arithmatex">\(a\)</span>。<span class="arithmatex">\(a_{\max} = \lfloor f/3 \rfloor\)</span> 若 <span class="arithmatex">\(f - 3 a_{\max}\)</span> 为偶非负即用；否则 <span class="arithmatex">\(a_{\max} - 1\)</span> 即可。计算后等价 <span class="arithmatex">\(\lceil f/3 \rceil\)</span>。</p>
-<p>样例 1：<code>nums=[2,3,3,2,2,4,2,3,4]</code>. cnt={2:4, 3:3, 4:2}.
-- f=4: ⌈4/3⌉=2.
-- f=3: 1.
-- f=2: 1.
-- ans=4。✓</p>
-<p>样例 2：<code>nums=[2,1,2,2,3,3]</code>. cnt={2:3, 1:1, 3:2}. f=1 → -1。✓</p>
+<p>样例 1：<code>nums=[2,3,3,2,2,4,2,3,4]</code>，cnt={2:4, 3:3, 4:2}。
+- <span class="arithmatex">\(f=4\)</span>：<span class="arithmatex">\(\lceil 4/3 \rceil = 2\)</span>。
+- <span class="arithmatex">\(f=3\)</span>：1。
+- <span class="arithmatex">\(f=2\)</span>：1。
+- ans = 4。✓</p>
+<p>样例 2：<code>nums=[2,1,2,2,3,3]</code>，cnt={2:3, 1:1, 3:2}。出现 <span class="arithmatex">\(f=1\)</span> → -1。✓</p>
 <h2 id="complexity">复杂度 (Complexity)<a class="headerlink" href="#complexity" title="Permanent link">#</a></h2>
 <ul>
-<li>Time <span class="arithmatex">\(O(n)\)</span>, Space <span class="arithmatex">\(O(n)\)</span> (counter).</li>
+<li>Time <span class="arithmatex">\(O(n)\)</span>, Space <span class="arithmatex">\(O(n)\)</span>（counter 主导：构建计数表 <span class="arithmatex">\(\Theta(n)\)</span>，不同键数 <span class="arithmatex">\(\le n\)</span>）。</li>
 </ul>
 <h2 id="pitfalls">陷阱 (Pitfalls)<a class="headerlink" href="#pitfalls" title="Permanent link">#</a></h2>
 <ul>
-<li><strong><span class="arithmatex">\(f = 1\)</span> 立即 -1</strong>：题目说"两类操作"——只能 2 或 3，1 个无法处理。</li>
-<li><strong><code>(f + 2) // 3</code></strong>：标准 ceil 写法，比 <code>math.ceil(f/3)</code> 快且无浮点。</li>
-<li><strong>同题号</strong>：题目末尾说同 #2244。</li>
+<li><strong><span class="arithmatex">\(f = 1\)</span> 立即 -1</strong>：单个元素配不出 2 也配不出 3，任何操作都触及不到它。</li>
+<li><strong><code>(f + 2) // 3</code></strong>：整数 ceil 的标准写法，比 <code>math.ceil(f/3)</code> 快且无浮点误差。</li>
+<li><strong>同题号</strong>：题目末尾声明与 #2244 同题。</li>
 </ul>
 <h2 id="related">相关题目 (Related)<a class="headerlink" href="#related" title="Permanent link">#</a></h2>
 <ul>

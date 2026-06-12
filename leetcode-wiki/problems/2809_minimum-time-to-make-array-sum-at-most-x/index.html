@@ -5485,6 +5485,8 @@
       
         
       
+        
+      
     
     
     
@@ -6024,6 +6026,34 @@
     
   
     #93. Restore IP Addresses
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../0102_binary-tree-level-order-traversal/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    #102. Binary Tree Level Order Traversal
   
 
     
@@ -22675,63 +22705,98 @@
 <h2 id="problem">Problem<a class="headerlink" href="#problem" title="Permanent link">#</a></h2>
 <p>两数组 <code>nums1</code>、<code>nums2</code>。每秒所有 <code>nums1[i]</code> 加上 <code>nums2[i]</code>，<strong>然后</strong>可选一个下标置 <code>nums1[i] = 0</code>。给整数 <span class="arithmatex">\(x\)</span>，求最少秒数使 <span class="arithmatex">\(\sum \text{nums1} \le x\)</span>，无解返 <span class="arithmatex">\(-1\)</span>。约束 <span class="arithmatex">\(1 \le n \le 1000\)</span>，值 <span class="arithmatex">\(\in [0, 10^3]\)</span>，<span class="arithmatex">\(x \le 10^6\)</span>。</p>
 <h2 id="background">背景 (Background)<a class="headerlink" href="#background" title="Permanent link">#</a></h2>
-<p>本题融合多个高级技巧：
-1. <strong>可行性 monotone</strong>：若 <span class="arithmatex">\(t\)</span> 秒可行，<span class="arithmatex">\(t' &gt; t\)</span> 不一定（因为时间越长累积越多），但<strong>只能选 <span class="arithmatex">\(t\)</span> 次置零</strong>这一约束让问题变非平凡。
-2. <strong>Exchange argument</strong> + <strong>DP</strong>：可证在 <span class="arithmatex">\(t\)</span> 秒内做的 <span class="arithmatex">\(t\)</span> 次置零操作，应按 <span class="arithmatex">\(\text{nums2}\)</span> 升序进行（小斜率元素先归零，省下后续累加）。
-3. <strong>0/1 背包风格 DP</strong>：dp[i][j] = 处理前 i 个（已按 nums2 排序）元素并做 j 次操作的最大总减少量。</p>
-<p>这种"先证排序顺序最优，再做背包 DP"模式经常出现在 scheduling、电池调度、Strassen-like 加速等。</p>
+<p>先把题目里互相纠缠的两件事拆开：时间在走，置零在选。每过一秒，<strong>每个</strong> <code>nums1[i]</code> 都涨 <span class="arithmatex">\(b_i := \text{nums2}[i]\)</span>；而每一秒我们<strong>只能</strong>额外把某一个下标按下去归零。这两件事的拉锯决定了一切。</p>
+<p>先问一个能直接定上界的问题：到底需要操作多少次？一个下标置零两次没有意义——第二次置零之前积累的增量，本可以留到最后一次置零一并抹掉，所以重复置零纯属浪费。于是有效的置零下标互不相同，至多 <span class="arithmatex">\(n\)</span> 个。换言之，<strong>操作总数不会超过 <span class="arithmatex">\(n\)</span></strong>，秒数 <span class="arithmatex">\(t\)</span> 只需在 <span class="arithmatex">\(\{0, 1, \dots, n\}\)</span> 里搜。<span class="arithmatex">\(t &gt; n\)</span> 永远不会更优，因为多出来的秒只让所有元素继续上涨，却没有新的下标可压。</p>
+<p>那能不能二分 <span class="arithmatex">\(t\)</span>？直觉上"时间越久越能压低"似乎成立，其实不然。<span class="arithmatex">\(t\)</span> 增大有两面：多一秒就多一次置零机会（利好），但所有未被置零的元素又多涨一轮 <span class="arithmatex">\(b_i\)</span>（利空）。两股力量谁占上风取决于具体数据，<strong>可行性对 <span class="arithmatex">\(t\)</span> 不单调</strong>。例如 <code>nums1=[1,1,2], nums2=[1,2,4], x=4</code>，逐个算 <span class="arithmatex">\(t=0,1,2,3\)</span> 的可行性是 <code>True, False, False, True</code>——中间塌陷再回升。既然不单调，就不能二分；好在 <span class="arithmatex">\(t\)</span> 的范围已被钉死在 <span class="arithmatex">\(0 \dots n\)</span>，直接全扫一遍取最小可行的 <span class="arithmatex">\(t\)</span> 即可。</p>
+<p>剩下的真问题是：<strong>固定 <span class="arithmatex">\(t\)</span>，怎么把这 <span class="arithmatex">\(t\)</span> 次置零分配得最好。</strong> 这正是下面要从头推的。</p>
 <h2 id="formulation">形式化 (Formulation)<a class="headerlink" href="#formulation" title="Permanent link">#</a></h2>
-<p>设按 <span class="arithmatex">\(\text{nums2}\)</span> 升序重排后的 (a, b) 对。在 <span class="arithmatex">\(t\)</span> 秒内选下标集 <span class="arithmatex">\(S \subseteq [n], |S| = t\)</span> 置零，按 <span class="arithmatex">\(S\)</span> 中 nums2 升序在第 <span class="arithmatex">\(1, 2, \dots, t\)</span> 秒操作。</p>
-<p>最终位置 <span class="arithmatex">\(i\)</span> 的值：
-- 若 <span class="arithmatex">\(i \notin S\)</span>：<span class="arithmatex">\(a_i + t \cdot b_i\)</span>
-- 若 <span class="arithmatex">\(i \in S\)</span> 且在第 <span class="arithmatex">\(k\)</span> 秒操作：在第 <span class="arithmatex">\(k\)</span> 秒前累加了 <span class="arithmatex">\(k\)</span> 次 <span class="arithmatex">\(b_i\)</span> 然后置零，之后又累加 <span class="arithmatex">\((t - k)\)</span> 次 <span class="arithmatex">\(b_i\)</span> → 最终 <span class="arithmatex">\((t - k) b_i\)</span></p>
-<p>总和 = <span class="arithmatex">\(\sum_i (a_i + t b_i) - \sum_{i \in S, \text{第 } k \text{ 秒}} (k b_i + a_i)\)</span></p>
-<p>要使其 <span class="arithmatex">\(\le x\)</span>，等价最大化 <span class="arithmatex">\(\sum_{i \in S} (a_i + k_i b_i)\)</span>，其中 <span class="arithmatex">\(k_i\)</span> 是 <span class="arithmatex">\(i\)</span> 的操作序。</p>
-<p>按 <span class="arithmatex">\(b_i\)</span> 升序时，操作序 <span class="arithmatex">\(k_i\)</span> = 排序后 <span class="arithmatex">\(S\)</span> 中的次序。</p>
+<p>固定秒数 <span class="arithmatex">\(t\)</span>。先看<strong>单个元素</strong>置零后到底剩多少，这是整条推导的地基。</p>
+<p>考虑下标 <span class="arithmatex">\(i\)</span>，设它在第 <span class="arithmatex">\(k\)</span> 秒（<span class="arithmatex">\(1 \le k \le t\)</span>）被置零。第 <span class="arithmatex">\(k\)</span> 秒结束前它先涨了 <span class="arithmatex">\(k\)</span> 次（每秒先加再置零），随即归零；此后从第 <span class="arithmatex">\(k+1\)</span> 秒到第 <span class="arithmatex">\(t\)</span> 秒又涨了 <span class="arithmatex">\(t-k\)</span> 次。所以它的最终值是</p>
+<div class="arithmatex">\[
+(t - k)\, b_i. \tag{1}
+\]</div>
+<p>而一个<strong>从不</strong>被置零的元素，最终值是 <span class="arithmatex">\(a_i + t\, b_i\)</span>，其中 <span class="arithmatex">\(a_i := \text{nums1}[i]\)</span>。</p>
+<p>设被置零的下标集合为 <span class="arithmatex">\(S\)</span>（<span class="arithmatex">\(|S| = t\)</span>），下标 <span class="arithmatex">\(i \in S\)</span> 在第 <span class="arithmatex">\(k_i\)</span> 秒被操作。把全部 <span class="arithmatex">\(n\)</span> 个最终值相加，并以"全员都不置零"为基线，被置零者用 (1) 替换 <span class="arithmatex">\(a_i + t b_i\)</span>：</p>
+<div class="arithmatex">\[
+\text{sum} \;=\; \underbrace{\sum_{i=1}^{n} (a_i + t\, b_i)}_{\text{固定基线}} \;-\; \sum_{i \in S} \big(a_i + k_i\, b_i\big). \tag{2}
+\]</div>
+<p>第一项与我们的选择无关，是常数 <span class="arithmatex">\(\mathrm{sa} + t\cdot \mathrm{sb}\)</span>（<span class="arithmatex">\(\mathrm{sa}=\sum a_i,\ \mathrm{sb}=\sum b_i\)</span>）。要让 <span class="arithmatex">\(\text{sum} \le x\)</span>，<strong>等价于把减项最大化</strong>：</p>
+<div class="arithmatex">\[
+\max_{S,\,(k_i)} \;\sum_{i \in S} \big(a_i + k_i\, b_i\big),\qquad |S|=t,\ \{k_i\}=\{1,\dots,t\}. \tag{3}
+\]</div>
+<p>这条最大化目标 (3) 就是后面 DP 的脊梁——最小化原和被翻译成了最大化一个干净的可加目标。</p>
+<p><strong>先选谁、再排谁。</strong> 目标 (3) 有两层自由度：选哪 <span class="arithmatex">\(t\)</span> 个下标进 <span class="arithmatex">\(S\)</span>，以及把秒次 <span class="arithmatex">\(1,\dots,t\)</span> 怎样配给它们。先解决配对：<strong>给定 <span class="arithmatex">\(S\)</span>，秒次该如何分配？</strong></p>
+<p>直觉来自 (3) 本身——元素 <span class="arithmatex">\(i\)</span> 拿到秒次 <span class="arithmatex">\(k_i\)</span>，其增益里有一项 <span class="arithmatex">\(k_i b_i\)</span>，秒次大的位置更"值钱"，而 <span class="arithmatex">\(b_i\)</span> 大的元素对秒次更敏感。所以应把大的秒次留给大的 <span class="arithmatex">\(b_i\)</span>。形式化地用<strong>交换论证</strong>确认：设 <span class="arithmatex">\(S\)</span> 中相邻两个元素 <span class="arithmatex">\(p, q\)</span> 满足 <span class="arithmatex">\(b_p &lt; b_q\)</span>，却把较大的秒次给了 <span class="arithmatex">\(p\)</span>——即 <span class="arithmatex">\(p\)</span> 在第 <span class="arithmatex">\(k+1\)</span> 秒、<span class="arithmatex">\(q\)</span> 在第 <span class="arithmatex">\(k\)</span> 秒。这两项对 (3) 的贡献是</p>
+<div class="arithmatex">\[
+\big(a_p + (k{+}1)b_p\big) + \big(a_q + k\, b_q\big).
+\]</div>
+<p>把秒次对调（<span class="arithmatex">\(q\)</span> 在第 <span class="arithmatex">\(k+1\)</span> 秒、<span class="arithmatex">\(p\)</span> 在第 <span class="arithmatex">\(k\)</span> 秒），贡献变为</p>
+<div class="arithmatex">\[
+\big(a_p + k\, b_p\big) + \big(a_q + (k{+}1)b_q\big).
+\]</div>
+<p>两式相减，<strong>对调后比对调前多</strong> $ (k{+}1)b_q + k b_p - (k b_q + (k{+}1)b_p) = b_q - b_p &gt; 0$。所以只要存在"大 <span class="arithmatex">\(b\)</span> 配小秒次"的相邻逆序，对调严格更优。反复对调直到无逆序，得到唯一最优排法：<strong><span class="arithmatex">\(S\)</span> 内按 <span class="arithmatex">\(b\)</span> 升序，秒次也升序一一对应</strong>——<span class="arithmatex">\(b\)</span> 最小者第 1 秒置零，<span class="arithmatex">\(b\)</span> 最大者第 <span class="arithmatex">\(t\)</span> 秒置零。</p>
+<p>这条结论同时简化了"选谁"：既然最优分配只看 <span class="arithmatex">\(b\)</span> 的相对大小，不妨<strong>先把所有 <span class="arithmatex">\(n\)</span> 个元素按 <span class="arithmatex">\(b\)</span> 升序排好</strong>。排好后，若选中的 <span class="arithmatex">\(S\)</span> 是某个子集，则 <span class="arithmatex">\(S\)</span> 中第 <span class="arithmatex">\(j\)</span> 小的 <span class="arithmatex">\(b\)</span>（也就是在全序里排第 <span class="arithmatex">\(j\)</span> 个被选中的）恰好分到秒次 <span class="arithmatex">\(k = j\)</span>。于是被选元素 <span class="arithmatex">\(i\)</span> 作为"第 <span class="arithmatex">\(j\)</span> 个被选中者"的增益就是</p>
+<div class="arithmatex">\[
+a_i + j\cdot b_i. \tag{4}
+\]</div>
+<p>秒次不再是独立变量，而由"在已排序前缀里它是第几个被选中的"唯一确定。这正是把 (3) 喂给背包式 DP 的接口。</p>
 <h2 id="approach">数据结构 / 想法 (Approach)<a class="headerlink" href="#approach" title="Permanent link">#</a></h2>
-<p><strong>DP</strong>：
-按 <span class="arithmatex">\(b\)</span> 升序排好 pairs。<span class="arithmatex">\(\text{dp}[i][j]\)</span> = 考虑前 <span class="arithmatex">\(i\)</span> 对、做 <span class="arithmatex">\(j\)</span> 次操作的最大"减少量" <span class="arithmatex">\(\sum_{k \in S_j} (a_k + \text{order}(k) \cdot b_k)\)</span>。</p>
-<p>转移：
-- 不选 <span class="arithmatex">\(i\)</span>：<span class="arithmatex">\(\text{dp}[i][j] = \text{dp}[i-1][j]\)</span>
-- 选 <span class="arithmatex">\(i\)</span>（顺序为 <span class="arithmatex">\(j\)</span>）：<span class="arithmatex">\(\text{dp}[i][j] = \text{dp}[i-1][j-1] + a_i + j \cdot b_i\)</span></p>
-<p>最后对每 <span class="arithmatex">\(t = 0, 1, \dots, n\)</span> 检查 <span class="arithmatex">\(\sum a + t \sum b - \text{dp}[n][t] \le x\)</span>，取最小 <span class="arithmatex">\(t\)</span>。</p>
+<p>把元素按 <span class="arithmatex">\(b\)</span> 升序排列后，目标 (3) 变成：在前缀上做"选 / 不选"的二元决策，每选中一个就按 (4) 加一份增益，且增益里的秒次 <span class="arithmatex">\(j\)</span> 等于"到此为止选了几个"。这是带计数的 0/1 选择，自然落到二维 DP。</p>
+<p><strong>状态.</strong> <span class="arithmatex">\(\text{dp}[i][j]\)</span> = 在已按 <span class="arithmatex">\(b\)</span> 升序排好的前 <span class="arithmatex">\(i\)</span> 个元素里，恰好选 <span class="arithmatex">\(j\)</span> 个置零时，减项 <span class="arithmatex">\(\sum_{i\in S}(a_i + k_i b_i)\)</span> 的最大值。</p>
+<p><strong>转移.</strong> 对第 <span class="arithmatex">\(i\)</span> 个元素（<span class="arithmatex">\(1\)</span> 索引，其 <span class="arithmatex">\((a,b)\)</span> 取自排序后的第 <span class="arithmatex">\(i\)</span> 对）：</p>
+<ul>
+<li><strong>不选 <span class="arithmatex">\(i\)</span></strong>：<span class="arithmatex">\(\text{dp}[i][j] = \text{dp}[i-1][j]\)</span>。</li>
+<li><strong>选 <span class="arithmatex">\(i\)</span></strong>：它成为前 <span class="arithmatex">\(i\)</span> 个里第 <span class="arithmatex">\(j\)</span> 个被选中者，按 (4) 分到秒次 <span class="arithmatex">\(j\)</span>，贡献 <span class="arithmatex">\(a + j\cdot b\)</span>：
+  $$
+  \text{dp}[i][j] = \text{dp}[i-1][j-1] + a + j\cdot b.
+  $$</li>
+</ul>
+<p>这里 <span class="arithmatex">\(j\)</span> 同时承担两个身份——"已选个数"和"分到的秒次"——二者相等，正是 §形式化 (4) 的结论：在升序前缀里第 <span class="arithmatex">\(j\)</span> 个被选中的元素，秒次恰为 <span class="arithmatex">\(j\)</span>。升序排序把这两个量焊在一起，转移才成立。取两者较大值即得 <span class="arithmatex">\(\text{dp}[i][j]\)</span>。</p>
+<p><strong>收尾.</strong> 对每个 <span class="arithmatex">\(t = 0, 1, \dots, n\)</span>，由 (2) 检查
+$$
+\mathrm{sa} + t\cdot \mathrm{sb} - \text{dp}[n][t] \le x,
+$$
+返回第一个满足的 <span class="arithmatex">\(t\)</span>；都不满足返回 <span class="arithmatex">\(-1\)</span>。因为可行性不单调（见 §背景），必须线性扫描取最小，不能二分。</p>
 <div class="language-python highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">minimumTime</span><span class="p">(</span><span class="n">nums1</span><span class="p">,</span> <span class="n">nums2</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
     <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">nums1</span><span class="p">)</span>
-    <span class="n">pairs</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">nums1</span><span class="p">,</span> <span class="n">nums2</span><span class="p">),</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">p</span><span class="p">:</span> <span class="n">p</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+    <span class="n">pairs</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">nums1</span><span class="p">,</span> <span class="n">nums2</span><span class="p">),</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">p</span><span class="p">:</span> <span class="n">p</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>  <span class="c1"># 按 b 升序</span>
     <span class="n">dp</span> <span class="o">=</span> <span class="p">[[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="n">n</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)]</span>
     <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">n</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
         <span class="n">a</span><span class="p">,</span> <span class="n">b</span> <span class="o">=</span> <span class="n">pairs</span><span class="p">[</span><span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
         <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
-            <span class="n">dp</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">dp</span><span class="p">[</span><span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="n">j</span><span class="p">]</span>
+            <span class="n">dp</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">dp</span><span class="p">[</span><span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="n">j</span><span class="p">]</span>                          <span class="c1"># 不选 i</span>
             <span class="k">if</span> <span class="n">j</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
-                <span class="n">dp</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">dp</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">],</span> <span class="n">dp</span><span class="p">[</span><span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="n">j</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">a</span> <span class="o">+</span> <span class="n">j</span> <span class="o">*</span> <span class="n">b</span><span class="p">)</span>
+                <span class="n">dp</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">dp</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">],</span>
+                               <span class="n">dp</span><span class="p">[</span><span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="n">j</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">a</span> <span class="o">+</span> <span class="n">j</span> <span class="o">*</span> <span class="n">b</span><span class="p">)</span>    <span class="c1"># 选 i，秒次 = j</span>
     <span class="n">sa</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">nums1</span><span class="p">)</span>
     <span class="n">sb</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">nums2</span><span class="p">)</span>
     <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
-        <span class="k">if</span> <span class="n">sa</span> <span class="o">+</span> <span class="n">t</span> <span class="o">*</span> <span class="n">sb</span> <span class="o">-</span> <span class="n">dp</span><span class="p">[</span><span class="n">n</span><span class="p">][</span><span class="n">t</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="n">x</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">sa</span> <span class="o">+</span> <span class="n">t</span> <span class="o">*</span> <span class="n">sb</span> <span class="o">-</span> <span class="n">dp</span><span class="p">[</span><span class="n">n</span><span class="p">][</span><span class="n">t</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="n">x</span><span class="p">:</span>                    <span class="c1"># 由 (2) 检查</span>
             <span class="k">return</span> <span class="n">t</span>
     <span class="k">return</span> <span class="o">-</span><span class="mi">1</span>
 </code></pre></div>
-<p>样例 1 trace：<code>nums1=[1,2,3], nums2=[1,2,3], x=4</code>。按 b 升序：[(1,1),(2,2),(3,3)]。sa=6, sb=6.
-- dp[0][0]=0; dp[1]: dp[1][0]=0, dp[1][1]=0+1+1<em>1=2.
-- dp[2]: dp[2][0]=0, dp[2][1]=max(2, 0+2+1</em>2)=max(2,4)=4. dp[2][2]=dp[1][1]+2+2<em>2=2+6=8.
-- dp[3]: dp[3][0]=0, dp[3][1]=max(4, 0+3+1</em>3)=6. dp[3][2]=max(8, 4+3+2<em>3)=max(8,13)=13. dp[3][3]=8+3+3</em>3=20.
-- check: t=0: 6+0-0=6 &gt;4. t=1: 6+6-6=6&gt;4. t=2: 6+12-13=5&gt;4. t=3: 6+18-20=4≤4 ✓. ans=3。✓</p>
-<p>样例 2：<code>nums2=[3,3,3]</code>. sa=6, sb=9. 因为 b 都等，DP 与排序无关。dp[3][3] = sum(a+kb) with optimal order = a1+1·3 + a2+2·3 + a3+3·3 = (1+3)+(2+6)+(3+9)=4+8+12=24. Check t=3: 6+27-24=9&gt;4. t&lt;3 类似都大于 4。结果 -1。✓</p>
+<p><strong>样例 1 trace</strong>：<code>nums1=[1,2,3], nums2=[1,2,3], x=4</code>。按 <span class="arithmatex">\(b\)</span> 升序：<code>[(1,1),(2,2),(3,3)]</code>，<span class="arithmatex">\(\mathrm{sa}=6,\ \mathrm{sb}=6\)</span>。</p>
+<ul>
+<li><code>dp[0][0]=0</code>；<code>dp[1]</code>: <code>dp[1][0]=0</code>, <code>dp[1][1]=0+1+1*1=2</code>。</li>
+<li><code>dp[2]</code>: <code>dp[2][0]=0</code>, <code>dp[2][1]=max(2, 0+2+1*2)=4</code>, <code>dp[2][2]=dp[1][1]+2+2*2=2+6=8</code>。</li>
+<li><code>dp[3]</code>: <code>dp[3][0]=0</code>, <code>dp[3][1]=max(4, 0+3+1*3)=6</code>, <code>dp[3][2]=max(8, 4+3+2*3)=13</code>, <code>dp[3][3]=8+3+3*3=20</code>。</li>
+<li>按 (2) 逐 <span class="arithmatex">\(t\)</span> 检查（减项即 <code>dp[3][t]</code>）：<span class="arithmatex">\(t=0\)</span>：<span class="arithmatex">\(6+0-0=6&gt;4\)</span>；<span class="arithmatex">\(t=1\)</span>：<span class="arithmatex">\(6+6-6=6&gt;4\)</span>；<span class="arithmatex">\(t=2\)</span>：<span class="arithmatex">\(6+12-13=5&gt;4\)</span>；<span class="arithmatex">\(t=3\)</span>：<span class="arithmatex">\(6+18-20=4\le 4\)</span> ✓。答案 <span class="arithmatex">\(t=3\)</span>。注意中间 <span class="arithmatex">\(t=1\)</span> 比 <span class="arithmatex">\(t=2\)</span> 还差一点也不影响——我们要的是最小可行 <span class="arithmatex">\(t\)</span>。</li>
+</ul>
+<p><strong>样例 2</strong>：<code>nums1=[1,2,3], nums2=[3,3,3], x=4</code>。<span class="arithmatex">\(\mathrm{sa}=6,\ \mathrm{sb}=9\)</span>。<span class="arithmatex">\(b\)</span> 全相等，秒次分配与排序无关，最优减项 <code>dp[3][3] = (1+1·3)+(2+2·3)+(3+3·3)=4+8+12=24</code>。<span class="arithmatex">\(t=3\)</span>：<span class="arithmatex">\(6+27-24=9&gt;4\)</span>；更小的 <span class="arithmatex">\(t\)</span> 同样超标。返回 <span class="arithmatex">\(-1\)</span>。</p>
 <h2 id="complexity">复杂度 (Complexity)<a class="headerlink" href="#complexity" title="Permanent link">#</a></h2>
 <ul>
-<li>Sort: <span class="arithmatex">\(O(n \log n)\)</span></li>
-<li>DP: <span class="arithmatex">\(O(n^2)\)</span> states × <span class="arithmatex">\(O(1)\)</span> transition = <span class="arithmatex">\(O(n^2)\)</span></li>
-<li>Total: <span class="arithmatex">\(O(n^2)\)</span>. <span class="arithmatex">\(n=1000\)</span> → <span class="arithmatex">\(10^6\)</span> 操作可过。</li>
-<li>Space: <span class="arithmatex">\(O(n^2)\)</span>（可压缩到 <span class="arithmatex">\(O(n)\)</span> 用滚动数组）。</li>
+<li>Sort: <span class="arithmatex">\(O(n \log n)\)</span>。</li>
+<li>DP: <span class="arithmatex">\(O(n^2)\)</span> 个状态 <span class="arithmatex">\(\times\ O(1)\)</span> 转移 <span class="arithmatex">\(= O(n^2)\)</span>。无早停，最好/平均/最坏均为 <span class="arithmatex">\(O(n^2)\)</span>。</li>
+<li>Total: <span class="arithmatex">\(O(n^2)\)</span>。<span class="arithmatex">\(n=1000 \Rightarrow 10^6\)</span> 操作，实测约 0.3s 可过。</li>
+<li>Space: <span class="arithmatex">\(O(n^2)\)</span>；转移只依赖上一行 <span class="arithmatex">\(\text{dp}[i-1]\)</span>，可滚动压到 <span class="arithmatex">\(O(n)\)</span>（注意 <span class="arithmatex">\(j\)</span> 需逆序遍历以复用 <span class="arithmatex">\(\text{dp}[j-1]\)</span> 的旧值）。</li>
 </ul>
 <h2 id="pitfalls">陷阱 (Pitfalls)<a class="headerlink" href="#pitfalls" title="Permanent link">#</a></h2>
 <ul>
-<li><strong>必须按 nums2 升序操作</strong>：若反过来，小 b 元素晚归零会浪费"低斜率早压住"的机会。证明用交换论证。</li>
-<li><strong>同一下标只置零一次</strong>：DP 已隐含（每对只参与一次决策）。</li>
-<li><strong>t &gt; n 没意义</strong>：操作数 ≤ n（每下标最多置一次有效）。</li>
-<li><strong><code>-1</code> 情况</strong>：sb=0 且 sa &gt; x 时也可能无解？sb=0 时累加不增，但置零只能减；若 sa ≤ x 则 t=0；否则需 <span class="arithmatex">\(t\)</span> 次置零，但每次置零的元素的贡献也不再增，所以最终 = sa - sum(已置零的 a) = sa - dp[n][t]/(无 k·b 项=0)。本算法仍正确。</li>
-<li><strong>int 范围</strong>：<span class="arithmatex">\(n=1000, b \le 10^3\)</span>，<span class="arithmatex">\(n \cdot b = 10^6\)</span>，乘 <span class="arithmatex">\(n=10^9\)</span>，注意 64-bit；Python OK。</li>
+<li><strong>必须按 nums2 升序操作</strong>：直觉是 (4) 里大 <span class="arithmatex">\(b\)</span> 元素对秒次更敏感，应把大秒次留给大 <span class="arithmatex">\(b\)</span>；交换论证给出严格证明——相邻"大 <span class="arithmatex">\(b\)</span> 配小秒次"的逆序一对调就多赚 <span class="arithmatex">\(b_q - b_p &gt; 0\)</span>（见 §形式化）。把顺序反过来会损失这份差值。</li>
+<li><strong>可行性对 <span class="arithmatex">\(t\)</span> 不单调</strong>：增大 <span class="arithmatex">\(t\)</span> 既多一次置零（利好）又让其余元素多涨一轮（利空），可行性可能"可→不可→可"。所以只能在 <span class="arithmatex">\(0 \dots n\)</span> 线性扫描取最小可行 <span class="arithmatex">\(t\)</span>，<strong>不能二分</strong>。</li>
+<li><strong>同一下标只置零一次</strong>：重复置零浪费，有效操作互不相同，故操作数 <span class="arithmatex">\(\le n\)</span>，<span class="arithmatex">\(t &gt; n\)</span> 永不更优。DP 中每对只参与一次"选/不选"决策，已隐含此约束。</li>
+<li><strong><code>-1</code> 情况</strong>：当 <span class="arithmatex">\(\mathrm{sb}=0\)</span>（所有 <span class="arithmatex">\(b_i=0\)</span>）时累加不增，置零只减。若 <span class="arithmatex">\(\mathrm{sa} \le x\)</span> 则 <span class="arithmatex">\(t=0\)</span>；否则要靠置零抹掉部分 <span class="arithmatex">\(a_i\)</span>，最终和 <span class="arithmatex">\(=\mathrm{sa}-\text{dp}[n][t]\)</span>（减项里 <span class="arithmatex">\(k_i b_i=0\)</span>）。若抹光所有 <span class="arithmatex">\(a\)</span> 仍 <span class="arithmatex">\(&gt;x\)</span> 则无解。本算法照常处理，无需特判。</li>
+<li><strong>int 范围</strong>：<span class="arithmatex">\(n=1000,\ b\le 10^3\)</span>，<span class="arithmatex">\(\mathrm{sb}\)</span> 量级 <span class="arithmatex">\(10^6\)</span>，<span class="arithmatex">\(t\cdot\mathrm{sb}\)</span> 可达 <span class="arithmatex">\(10^9\)</span>，C++/Java 需 64-bit；Python 整数无限精度，无溢出之虞。</li>
 </ul>
 <h2 id="related">相关题目 (Related)<a class="headerlink" href="#related" title="Permanent link">#</a></h2>
 <ul>

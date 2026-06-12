@@ -5485,6 +5485,8 @@
       
         
       
+        
+      
     
     
     
@@ -6024,6 +6026,34 @@
     
   
     #93. Restore IP Addresses
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../0102_binary-tree-level-order-traversal/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    #102. Binary Tree Level Order Traversal
   
 
     
@@ -22675,13 +22705,7 @@
 <h2 id="problem">Problem<a class="headerlink" href="#problem" title="Permanent link">#</a></h2>
 <p><span class="arithmatex">\(\sum_{\text{subarray}} (\max - \min)\)</span>。Follow-up: <span class="arithmatex">\(O(n)\)</span>。<span class="arithmatex">\(n \le 1000\)</span> 朴素 <span class="arithmatex">\(O(n^2)\)</span> 即可。</p>
 <h2 id="_1">背景<a class="headerlink" href="#_1" title="Permanent link">#</a></h2>
-<p>本题朴素 <span class="arithmatex">\(O(n^2)\)</span> 双重循环。<strong>Follow-up 的精彩处</strong>在于把"所有子数组的 max 之和"与"min 之和"分别用<strong>单调栈</strong>算 <span class="arithmatex">\(O(n)\)</span>；这是 <em>#907 Sum of Subarray Minimums</em> 的标准技巧的两次复用。</p>
-<p><strong>关键技巧（贡献法）</strong>：对每个元素 <span class="arithmatex">\(v = \text{nums}[i]\)</span>，统计<strong>它作为 max（或 min）的子数组数量</strong>，乘以 <span class="arithmatex">\(v\)</span> 累加即得总贡献。统计方法：用单调栈找出 <span class="arithmatex">\(v\)</span> 左边第一个<strong>严格更大</strong>的元素位置 <span class="arithmatex">\(L\)</span>，右边第一个<strong>大于等于</strong>的位置 <span class="arithmatex">\(R\)</span>（避免重复计数），则 <span class="arithmatex">\(v\)</span> 作为 max 的子数组数 = <span class="arithmatex">\((i - L)(R - i)\)</span>。</p>
-<h2 id="_2">形式化<a class="headerlink" href="#_2" title="Permanent link">#</a></h2>
-<div class="arithmatex">\[\text{ans} = \sum_i v_i \cdot (\text{count\_max}(i) - \text{count\_min}(i))\]</div>
-<p>其中 count_max / count_min 是该位置作为子数组 max / min 的子数组数。</p>
-<h2 id="_3">数据结构 / 想法<a class="headerlink" href="#_3" title="Permanent link">#</a></h2>
-<p><strong>朴素 <span class="arithmatex">\(O(n^2)\)</span></strong>：
+<p>range <span class="arithmatex">\(= \max - \min\)</span> 是逐个子数组定义的量。最直接的算法就照定义做：枚举每个子数组，维护其 max 与 min，累加差值。</p>
 <div class="language-python highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">subArrayRanges</span><span class="p">(</span><span class="n">nums</span><span class="p">):</span>
     <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">nums</span><span class="p">);</span> <span class="n">ans</span> <span class="o">=</span> <span class="mi">0</span>
     <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
@@ -22690,8 +22714,24 @@
             <span class="n">mn</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">mn</span><span class="p">,</span> <span class="n">nums</span><span class="p">[</span><span class="n">j</span><span class="p">]);</span> <span class="n">mx</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">mx</span><span class="p">,</span> <span class="n">nums</span><span class="p">[</span><span class="n">j</span><span class="p">])</span>
             <span class="n">ans</span> <span class="o">+=</span> <span class="n">mx</span> <span class="o">-</span> <span class="n">mn</span>
     <span class="k">return</span> <span class="n">ans</span>
-</code></pre></div></p>
-<p><strong>单调栈 <span class="arithmatex">\(O(n)\)</span></strong>：
+</code></pre></div>
+<p>外层固定左端点、内层向右扩展，每扩一步用 <span class="arithmatex">\(O(1)\)</span> 更新 max/min，总共 <span class="arithmatex">\(O(n^2)\)</span>。在 <span class="arithmatex">\(n \le 1000\)</span> 下这已足够，难点全在 follow-up 要求的 <span class="arithmatex">\(O(n)\)</span>。</p>
+<p>第一步化简来自一个恒等式。子数组个数为 <span class="arithmatex">\(\binom{n+1}{2}\)</span>，对每个子数组 <span class="arithmatex">\(S\)</span> 有 <span class="arithmatex">\(\text{range}(S) = \max(S) - \min(S)\)</span>，于是求和号可拆开：</p>
+<div class="arithmatex">\[\text{ans} = \sum_S \big(\max(S) - \min(S)\big) = \underbrace{\sum_S \max(S)}_{\text{sum-of-max}} - \underbrace{\sum_S \min(S)}_{\text{sum-of-min}}.\]</div>
+<p>问题因此变成两个对称的子问题：所有子数组的 max 之和、min 之和。但拆分本身不省时间——逐子数组枚举这两个和仍是 <span class="arithmatex">\(O(n^2)\)</span>。要破 <span class="arithmatex">\(O(n^2)\)</span>，必须换一个求和顺序：不再"对每个子数组问它的 max 是谁"，而是"对每个元素问它当了多少个子数组的 max"。下面的形式化把这个换序写成精确的恒等式。</p>
+<h2 id="_2">形式化<a class="headerlink" href="#_2" title="Permanent link">#</a></h2>
+<p><strong>直觉</strong>：固定一个元素 <span class="arithmatex">\(v_i = \text{nums}[i]\)</span>。它在哪些子数组里是最大值？只要子数组不越过两侧比它大的元素，它就稳坐 max。设其左边最近的"不小于它"的元素在位置 <span class="arithmatex">\(L\)</span>、右边最近的"严格大于它"的元素在位置 <span class="arithmatex">\(R\)</span>（用边界 <span class="arithmatex">\(-1\)</span> 与 <span class="arithmatex">\(n\)</span> 兜底），则 <span class="arithmatex">\(v_i\)</span> 当 max 的子数组，左端点可落在 <span class="arithmatex">\((L, i]\)</span> 共 <span class="arithmatex">\(i - L\)</span> 个选择、右端点可落在 <span class="arithmatex">\([i, R)\)</span> 共 <span class="arithmatex">\(R - i\)</span> 个选择。两者独立组合：</p>
+<div class="arithmatex">\[\text{count\_max}(i) = (i - L)(R - i).\]</div>
+<p>左右用"不小于"与"严格大于"这对不对称判定，是为了让 max 值相等的子数组只归给唯一一个代表元素（细节见下文陷阱）。<span class="arithmatex">\(\text{count\_min}(i)\)</span> 完全对称，把比较反向即可。</p>
+<p><strong>换序恒等式</strong>：每个子数组恰有一个 max、一个 min，所以按元素分组重数任意子数组，sum-of-max 等于"每个元素的值 <span class="arithmatex">\(\times\)</span> 它当 max 的次数"之和。代入上一节的拆分：</p>
+<div class="arithmatex">\[\boxed{\;\text{ans} = \sum_i v_i \cdot \big(\text{count\_max}(i) - \text{count\_min}(i)\big).\;}\]</div>
+<p>这是整页的主干。它把"枚举 <span class="arithmatex">\(O(n^2)\)</span> 个子数组"换成了"枚举 <span class="arithmatex">\(n\)</span> 个元素、各算一个 <span class="arithmatex">\(O(1)\)</span> 的计数"。剩下唯一的问题：如何对所有 <span class="arithmatex">\(i\)</span> 快速求出那对边界 <span class="arithmatex">\(L, R\)</span>。</p>
+<p><strong>小例验证</strong>：<span class="arithmatex">\(\text{nums} = [1,3,2]\)</span>，看 <span class="arithmatex">\(v_1 = 3\)</span>。左边无更大元素故 <span class="arithmatex">\(L = -1\)</span>，右边无更大元素故 <span class="arithmatex">\(R = 3\)</span>，得 <span class="arithmatex">\(\text{count\_max}(1) = (1-(-1))(3-1) = 4\)</span>。确实，包含下标 1 且以 3 为 max 的子数组是 <span class="arithmatex">\([3],[1,3],[3,2],[1,3,2]\)</span>，共 4 个。</p>
+<h2 id="_3">数据结构 / 想法<a class="headerlink" href="#_3" title="Permanent link">#</a></h2>
+<p>边界 <span class="arithmatex">\(L, R\)</span> 的定义就是"最近的更大元素"，这正是单调栈处理的标准量。</p>
+<p><strong>直觉先行</strong>：从左到右扫描，用一个栈只保留"尚未确定右边界的候选 max"。维持栈内（自底向上）对应的 <code>nums</code> 值严格递减。当新元素 <span class="arithmatex">\(\text{cur}\)</span> 到来、它比栈顶大时，栈顶 <span class="arithmatex">\(j\)</span> 的右边界被找到了——因为 <span class="arithmatex">\(j\)</span> 与 <span class="arithmatex">\(\text{cur}\)</span> 之间的元素都已被先前的更大者弹出，没有谁挡在中间，所以 <span class="arithmatex">\(\text{cur}\)</span> 就是 <span class="arithmatex">\(j\)</span> 右边第一个更大的元素，即 <span class="arithmatex">\(R = i\)</span>。弹出 <span class="arithmatex">\(j\)</span> 后，新的栈顶就是 <span class="arithmatex">\(j\)</span> 左边第一个不小于它的元素，即 <span class="arithmatex">\(L\)</span>。两个边界在弹出的一刻同时到手，于是 <span class="arithmatex">\(v_j\)</span> 的整段贡献 <span class="arithmatex">\(v_j \cdot (j - L)(R - j)\)</span> 可当场结算。</p>
+<p>正因为每个元素一生只入栈一次、出栈一次，总弹栈次数为 <span class="arithmatex">\(O(n)\)</span>，摊销每元素 <span class="arithmatex">\(O(1)\)</span>。在数组末尾压入一个 <span class="arithmatex">\(+\infty\)</span> 哨兵，能强制清空残留在栈中（尚无右边界）的所有元素，省去收尾特判。</p>
+<p><strong>单调栈 <span class="arithmatex">\(O(n)\)</span></strong>：</p>
 <div class="language-python highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">subArrayRanges</span><span class="p">(</span><span class="n">nums</span><span class="p">):</span>
     <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">nums</span><span class="p">);</span> <span class="n">ans</span> <span class="o">=</span> <span class="mi">0</span>
     <span class="c1"># max contribution: 找出每个 i 作为子数组 max 的数量</span>
@@ -22715,19 +22755,18 @@
             <span class="n">ans</span> <span class="o">-=</span> <span class="n">nums</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="n">j</span> <span class="o">-</span> <span class="n">L</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">R</span> <span class="o">-</span> <span class="n">j</span><span class="p">)</span>
         <span class="n">stk</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">ans</span>
-</code></pre></div></p>
-<p><strong>不变量</strong> (单调栈)：栈中元素的下标对应的 <code>nums</code> 值严格递增（求 max 时）；新元素入栈前 pop 所有 &lt; cur 的元素。pop 时计算"该元素作为 max 的影响范围"。每元素入栈出栈各一次 → 摊销 <span class="arithmatex">\(O(1)\)</span>。</p>
-<p><strong>为何 max 用 <code>&lt;</code> 而 min 用 <code>&gt;</code></strong>：避免重复 — 相等元素只算一次。具体选择 strict / non-strict 的左右组合是经典坑，参考 <em>#907</em> editorial。</p>
+</code></pre></div>
+<p>max 段累加贡献、min 段相减，正好实现换序恒等式 <span class="arithmatex">\(\sum_i v_i(\text{count\_max} - \text{count\_min})\)</span>。两段除了比较方向（<code>&lt;</code> 与 <code>&gt;</code>）和哨兵符号（<span class="arithmatex">\(\pm\infty\)</span>）外完全镜像。</p>
 <h2 id="_4">复杂度<a class="headerlink" href="#_4" title="Permanent link">#</a></h2>
 <ul>
-<li>朴素：<span class="arithmatex">\(O(n^2)\)</span></li>
-<li>单调栈：<span class="arithmatex">\(O(n)\)</span> 时空。</li>
+<li>朴素：<span class="arithmatex">\(O(n^2)\)</span> 时间、<span class="arithmatex">\(O(1)\)</span> 空间。</li>
+<li>单调栈：<span class="arithmatex">\(O(n)\)</span> 时间、<span class="arithmatex">\(O(n)\)</span> 空间（栈）。</li>
 </ul>
 <h2 id="_5">陷阱<a class="headerlink" href="#_5" title="Permanent link">#</a></h2>
 <ul>
-<li>单调栈处理严格 / 非严格对相等元素的归属：常用 "左严格、右非严格" 或反之，保证每个元素被恰好计数一次。错误会双计。</li>
-<li>哨兵：在末尾推入 ±∞ 让栈清空，避免末尾遗漏。</li>
-<li>大数组 / 大数 long long 溢出（Python 不溢，C++ 需 int64）。</li>
+<li><strong>相等元素的归属（strict / non-strict）</strong>：max 段用 <code>nums[stk[-1]] &lt; cur</code>（严格小于才弹），意味着等值元素不互相弹出。看 <span class="arithmatex">\(\text{nums} = [2,2]\)</span>：下标 0 的 2 不会被下标 1 的 2 弹出，于是下标 0 拿到右边界 <span class="arithmatex">\(R=2\)</span>、计数 <span class="arithmatex">\((0-(-1))(2-0)=2\)</span>（拥有 <span class="arithmatex">\([2]_0\)</span> 与 <span class="arithmatex">\([2,2]\)</span>），下标 1 拿到 <span class="arithmatex">\((1-0)(2-1)=1\)</span>（拥有 <span class="arithmatex">\([2]_1\)</span>），合计 3，恰为子数组总数，无重复。若两端都用严格比较，<span class="arithmatex">\([2,2]\)</span> 会被两个 2 各算一次而双计。所以采用"一端严格、另一端非严格"的不对称规则，让等值连续段恰好归给一个代表。</li>
+<li><strong>哨兵</strong>：末尾压入 <span class="arithmatex">\(\pm\infty\)</span> 让栈清空，避免遗漏栈底残留元素的贡献。</li>
+<li><strong>溢出</strong>：贡献 <span class="arithmatex">\(v \cdot (j-L)(R-j)\)</span> 在大数组大值下可能很大，Python 整数不溢，C++ 需用 <code>int64</code>。</li>
 </ul>
 <h2 id="_6">相关题目<a class="headerlink" href="#_6" title="Permanent link">#</a></h2>
 <ul>

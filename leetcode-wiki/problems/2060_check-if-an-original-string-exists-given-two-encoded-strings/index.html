@@ -5485,6 +5485,8 @@
       
         
       
+        
+      
     
     
     
@@ -6024,6 +6026,34 @@
     
   
     #93. Restore IP Addresses
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../0102_binary-tree-level-order-traversal/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    #102. Binary Tree Level Order Traversal
   
 
     
@@ -22675,18 +22705,36 @@
 <h2 id="problem">Problem<a class="headerlink" href="#problem" title="Permanent link">#</a></h2>
 <p>字符串编码规则：把原串切成若干段，可选地把任意段替换为该段长度的十进制数字串，再拼接。给两个编码串 <span class="arithmatex">\(s_1, s_2\)</span>（长 ≤ 40，连续数字 ≤ 3 位），判断是否存在某个原串可同时编码为 <span class="arithmatex">\(s_1\)</span> 和 <span class="arithmatex">\(s_2\)</span>。</p>
 <h2 id="background">背景 (Background)<a class="headerlink" href="#background" title="Permanent link">#</a></h2>
-<p>本题是"两个带通配符（数字 = 任意 d 个字符）的字符串匹配"的一个变体，与 wildcard matching (#44) / regex matching (#10) 同源，但通配符跨度由 1..3 位数字决定，可表示 1..999 个字符。求解范式是 <strong>2D + 偏移量 DP</strong>：状态 <span class="arithmatex">\((i, j, d)\)</span> 表示 <span class="arithmatex">\(s_1\)</span> 处理到 <span class="arithmatex">\(i\)</span>、<span class="arithmatex">\(s_2\)</span> 处理到 <span class="arithmatex">\(j\)</span> 时，原串中"<span class="arithmatex">\(s_1\)</span> 已覆盖长度 − <span class="arithmatex">\(s_2\)</span> 已覆盖长度"的差为 <span class="arithmatex">\(d\)</span>。</p>
+<p>两个编码串若来自同一个原串 <span class="arithmatex">\(T\)</span>，那么逐字符比较 <span class="arithmatex">\(s_1\)</span> 和 <span class="arithmatex">\(s_2\)</span> 是无效的：它们长度不同、字符也不对齐。我们真正要回答的，是能否找到 <span class="arithmatex">\(T\)</span>，使 <span class="arithmatex">\(s_1\)</span> 和 <span class="arithmatex">\(s_2\)</span> 分别是它的两种合法编码。</p>
+<p>先看最朴素的对齐想法。同时扫描两个串，用指针 <span class="arithmatex">\(i\)</span> 指向 <span class="arithmatex">\(s_1\)</span>、<span class="arithmatex">\(j\)</span> 指向 <span class="arithmatex">\(s_2\)</span>，每一步让两个指针在 <span class="arithmatex">\(T\)</span> 上"同步前进"。当 <span class="arithmatex">\(s_1[i]\)</span> 和 <span class="arithmatex">\(s_2[j]\)</span> 都是字母时这能工作：它们各自代表 <span class="arithmatex">\(T\)</span> 中的一个字符，要求相等即可，然后 <span class="arithmatex">\(i, j\)</span> 同时加一。于是状态似乎只需 <span class="arithmatex">\((i, j)\)</span>。</p>
+<p>朴素方案在遇到数字时立刻失效。设 <span class="arithmatex">\(s_1[i]\)</span> 是数字 token <code>12</code>，它在 <span class="arithmatex">\(T\)</span> 中代表的不是一个字符，而是 <strong>12 个</strong>字符——而这 12 个字符具体是什么、<span class="arithmatex">\(s_2\)</span> 那一侧到底走到了哪里，<span class="arithmatex">\((i, j)\)</span> 完全没有记录。更糟的是，编码规则允许把 <code>12</code> 进一步理解成两段长度 <code>1</code> 和 <code>2</code>（共 3 个字符），所以同一个 token 能展开成不同长度。两个指针在 <span class="arithmatex">\(T\)</span> 上的推进速度因此<strong>解耦</strong>了：处理完 <span class="arithmatex">\(s_1[i]\)</span> 这个 token，<span class="arithmatex">\(s_1\)</span> 一侧可能已覆盖 <span class="arithmatex">\(T\)</span> 的前 12 个字符，而 <span class="arithmatex">\(s_2\)</span> 一侧只覆盖了前 3 个。<span class="arithmatex">\((i, j)\)</span> 相同、但两侧在 <span class="arithmatex">\(T\)</span> 上的进度不同的两个局面，会导向完全不同的后续匹配，却被 <span class="arithmatex">\((i, j)\)</span> 当成同一个状态——这就是朴素方案崩溃的地方。</p>
+<p>缺的那一维信息，是两侧在 <span class="arithmatex">\(T\)</span> 上的<strong>覆盖长度之差</strong>。记 <span class="arithmatex">\(s_1\)</span> 已覆盖 <span class="arithmatex">\(T\)</span> 的前 <span class="arithmatex">\(k_1\)</span> 个字符、<span class="arithmatex">\(s_2\)</span> 已覆盖前 <span class="arithmatex">\(k_2\)</span> 个，下一步该如何走，只取决于 <span class="arithmatex">\(k_1\)</span> 与 <span class="arithmatex">\(k_2\)</span> 谁更靠前、领先多少，而与 <span class="arithmatex">\(k_1, k_2\)</span> 的绝对值无关：领先的一侧已经"承诺"了 <span class="arithmatex">\(T\)</span> 的若干字符，落后的一侧接下来必须去对齐这些字符。因此只需追踪差值 <span class="arithmatex">\(d = k_1 - k_2\)</span>，把二维状态扩成 <span class="arithmatex">\((i, j, d)\)</span>。这是从问题自身结构推出的，下一节将它形式化。</p>
 <h2 id="formulation">形式化 (Formulation)<a class="headerlink" href="#formulation" title="Permanent link">#</a></h2>
-<p>定义谓词 <span class="arithmatex">\(\text{match}(i, j, d) = \text{true}\)</span> iff 存在原串 <span class="arithmatex">\(T\)</span> 使得 <span class="arithmatex">\(s_1[0..i)\)</span> 解码后是 <span class="arithmatex">\(T[0..k_1)\)</span>，<span class="arithmatex">\(s_2[0..j)\)</span> 解码后是 <span class="arithmatex">\(T[0..k_2)\)</span>，且 <span class="arithmatex">\(k_1 - k_2 = d\)</span>。</p>
-<p>转移按 <span class="arithmatex">\(d\)</span> 的符号分支：</p>
-<ul>
-<li><span class="arithmatex">\(d = 0\)</span>：若两端都是字母，必须相等并 <span class="arithmatex">\((i, j, d) \to (i+1, j+1, 0)\)</span>；任一端是数字则按数字展开。</li>
-<li><span class="arithmatex">\(d &gt; 0\)</span>：<span class="arithmatex">\(s_1\)</span> 已多出 <span class="arithmatex">\(d\)</span> 字符待 <span class="arithmatex">\(s_2\)</span> "追平"。优先消费 <span class="arithmatex">\(s_2\)</span>：若 <span class="arithmatex">\(s_2[j]\)</span> 字母则 <span class="arithmatex">\(d\)</span> 减 1；若数字则按 <span class="arithmatex">\(1..d_{\max}\)</span> 加上数字值。</li>
-<li><span class="arithmatex">\(d &lt; 0\)</span>：对称。</li>
-</ul>
-<p>终止：<span class="arithmatex">\(i = |s_1|, j = |s_2|, d = 0\)</span>。</p>
+<p>直觉先行：我们要判定的，是能否让两个解码过程在同一个 <span class="arithmatex">\(T\)</span> 上对齐——任何时刻它们引用的都是 <span class="arithmatex">\(T\)</span> 的同一段字符。两个解码进度之间唯一需要记住的，是领先一侧比落后一侧多承诺了多少字符，即长度差 <span class="arithmatex">\(d\)</span>。下面把它写成谓词。</p>
+<p>定义谓词</p>
+<div class="arithmatex">\[\text{match}(i, j, d) = \text{true} \iff \exists\, T:\ s_1[0..i) \text{ 解码为 } T[0..k_1),\ s_2[0..j) \text{ 解码为 } T[0..k_2),\ k_1 - k_2 = d.\]</div>
+<p>也就是说：存在某个原串 <span class="arithmatex">\(T\)</span>，使 <span class="arithmatex">\(s_1\)</span> 的前 <span class="arithmatex">\(i\)</span> 个字符解码后恰好是 <span class="arithmatex">\(T\)</span> 的前 <span class="arithmatex">\(k_1\)</span> 个字符，<span class="arithmatex">\(s_2\)</span> 的前 <span class="arithmatex">\(j\)</span> 个字符解码后恰好是前 <span class="arithmatex">\(k_2\)</span> 个，且两者长度差为 <span class="arithmatex">\(d\)</span>。约定 <span class="arithmatex">\(d = k_1 - k_2 &gt; 0\)</span> 表示 <span class="arithmatex">\(s_1\)</span> 一侧领先。</p>
+<p><strong>终止条件</strong>：两个串都读完且长度对齐，即</p>
+<div class="arithmatex">\[\text{match}(|s_1|,\, |s_2|,\, 0) = \text{true}.\]</div>
+<p>题目答案就是 <span class="arithmatex">\(\text{match}(0, 0, 0)\)</span> 能否到达上述终止状态。</p>
+<p><strong>转移</strong>按 <span class="arithmatex">\(s_1[i]\)</span>、<span class="arithmatex">\(s_2[j]\)</span> 是否数字、以及 <span class="arithmatex">\(d\)</span> 的符号分情形。先处理数字，理由见下节；这里只要 <span class="arithmatex">\(i\)</span> 或 <span class="arithmatex">\(j\)</span> 指向数字 token，就把它整段展开。</p>
+<p>设 <span class="arithmatex">\(s_1\)</span> 从位置 <span class="arithmatex">\(i\)</span> 起的某个数字前缀其值为 <span class="arithmatex">\(v\)</span>、读到位置 <span class="arithmatex">\(i'\)</span>，则该 token 在 <span class="arithmatex">\(T\)</span> 上多覆盖 <span class="arithmatex">\(v\)</span> 个字符，<span class="arithmatex">\(d\)</span> 增加 <span class="arithmatex">\(v\)</span>：</p>
+<div class="arithmatex">\[\text{match}(i, j, d) \;\Leftarrow\; \bigvee_{(v, i')} \text{match}(i', j, d + v) \qquad (s_1[i] \text{ 为数字}).\]</div>
+<p>对称地，<span class="arithmatex">\(s_2\)</span> 一侧的数字前缀使 <span class="arithmatex">\(d\)</span> 减少：</p>
+<div class="arithmatex">\[\text{match}(i, j, d) \;\Leftarrow\; \bigvee_{(v, j')} \text{match}(i, j', d - v) \qquad (s_2[j] \text{ 为数字}).\]</div>
+<p>这里 <span class="arithmatex">\((v, i')\)</span> 取遍该数字 token 的<strong>所有前缀值</strong>而非只取最长——原因在下节展开。注意 <span class="arithmatex">\(v\)</span> 可一次性加满（最大 999），<span class="arithmatex">\(d\)</span> 允许先冲高再被另一侧拉回，无需在此步限制其范围。</p>
+<p>当两侧都不是数字（都是字母或已到末尾）时，按 <span class="arithmatex">\(d\)</span> 的符号分支。<span class="arithmatex">\(d = 0\)</span> 表示两侧进度齐平，下一对字符必须直接相等：</p>
+<div class="arithmatex">\[\text{match}(i, j, 0) \;=\; [\,s_1[i] = s_2[j]\,]\ \wedge\ \text{match}(i+1,\, j+1,\, 0).\]</div>
+<p><span class="arithmatex">\(d &gt; 0\)</span> 表示 <span class="arithmatex">\(s_1\)</span> 已比 <span class="arithmatex">\(s_2\)</span> 多承诺了 <span class="arithmatex">\(d\)</span> 个字符。<span class="arithmatex">\(s_2[j]\)</span> 这个字母将与这 <span class="arithmatex">\(d\)</span> 个待对齐字符中的一个对应，使差额减一（这个被对应的字符是某个数字 token 展开出来的，可为任意值，所以无需相等约束）：</p>
+<div class="arithmatex">\[\text{match}(i, j, d) \;=\; \text{match}(i,\, j+1,\, d-1) \qquad (d &gt; 0,\ j &lt; |s_2|).\]</div>
+<p><span class="arithmatex">\(d &lt; 0\)</span> 对称，由 <span class="arithmatex">\(s_1[i]\)</span> 去对齐 <span class="arithmatex">\(s_2\)</span> 领先的字符：</p>
+<div class="arithmatex">\[\text{match}(i, j, d) \;=\; \text{match}(i+1,\, j,\, d+1) \qquad (d &lt; 0,\ i &lt; |s_1|).\]</div>
+<p>若该走的一侧已无字符可用，则该分支为 <span class="arithmatex">\(\text{false}\)</span>。整个递归即由这组方程驱动。</p>
 <h2 id="approach">数据结构 / 想法 (Approach)<a class="headerlink" href="#approach" title="Permanent link">#</a></h2>
-<p><strong>记忆化 DFS</strong>。状态空间 <span class="arithmatex">\(|s_1| \cdot |s_2| \cdot D\)</span>，其中 <span class="arithmatex">\(|d| &lt; 1000\)</span>（连续数字最多 3 位 → 单段最多 999 个字符），实际可达到的 <span class="arithmatex">\(|d|\)</span> 远小于 1000。题面承诺连续数字 ≤ 3 位，所以单步偏移变化也有界。</p>
+<p>上节的方程是天然的递归形式，且子问题大量重叠（不同路径会反复落到相同的 <span class="arithmatex">\((i, j, d)\)</span>），因此用<strong>记忆化 DFS</strong>（自顶向下 DP）直接照搬方程，比手写自底向上的填表更省心。</p>
+<p>实现前先厘清两个被方程隐含、却容易写错的细节。</p>
+<p><strong>为什么数字必须先于字母处理。</strong> 转移按 <span class="arithmatex">\(d\)</span> 的符号分支，而 <span class="arithmatex">\(d\)</span> 的取值要靠把待处理的数字 token 展开后才能确定。若 <span class="arithmatex">\(s_1[i]\)</span> 是数字却先去处理 <span class="arithmatex">\(s_2[j]\)</span> 的字母，那么"先消费一个字母使 <span class="arithmatex">\(d\)</span> 减一"中的 <span class="arithmatex">\(d\)</span> 还是个未定值——它依赖你给 <span class="arithmatex">\(s_1[i]\)</span> 这个 token 选哪个前缀长度。换言之，跳过待展开的数字就无法索引到一个定义良好的记忆化状态。所以每一步都先把当前指向的数字 token 展开干净，再进入符号分支。</p>
+<p><strong>为什么数字 token 要枚举所有前缀切分。</strong> 回到编码规则：原串被切成若干段，每段可独立地替换为它的长度。于是写出 <code>123</code> 的人，可能编码的是一段长 123 的子串，也可能是两段长 1 和 23、或长 12 和 3，还可能是三段长 1、2、3。这些都是合法编码，必须全部考虑。<code>get_nums</code> 因此返回该数字 token 的所有<strong>前缀值</strong> <code>(1, 12, 123)</code>；而 <code>1+23</code>、<code>12+3</code>、<code>1+2+3</code> 这些"再切分"的和，是由递归在下一个位置重新进入数字分支自然产生的，无需在单步内显式枚举。</p>
 <div class="language-python highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">functools</span><span class="w"> </span><span class="kn">import</span> <span class="n">lru_cache</span>
 
 <span class="k">class</span><span class="w"> </span><span class="nc">Solution</span><span class="p">:</span>
@@ -22694,22 +22742,22 @@
         <span class="n">n1</span><span class="p">,</span> <span class="n">n2</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">s1</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">s2</span><span class="p">)</span>
 
         <span class="k">def</span><span class="w"> </span><span class="nf">get_nums</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">i</span><span class="p">):</span>
-<span class="w">            </span><span class="sd">&quot;&quot;&quot;从 s[i] 开始读取最多 3 位数字，返回所有可能的数字和（按 1..3 切分）。&quot;&quot;&quot;</span>
+<span class="w">            </span><span class="sd">&quot;&quot;&quot;从 s[i] 开始读取最多 3 位数字，返回每个数字前缀的值与下一位置。&quot;&quot;&quot;</span>
             <span class="n">res</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
             <span class="n">cur</span> <span class="o">=</span> <span class="mi">0</span>
             <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="nb">min</span><span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="mi">3</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">s</span><span class="p">))):</span>
                 <span class="k">if</span> <span class="ow">not</span> <span class="n">s</span><span class="p">[</span><span class="n">k</span><span class="p">]</span><span class="o">.</span><span class="n">isdigit</span><span class="p">():</span>
                     <span class="k">break</span>
                 <span class="n">cur</span> <span class="o">=</span> <span class="n">cur</span> <span class="o">*</span> <span class="mi">10</span> <span class="o">+</span> <span class="nb">int</span><span class="p">(</span><span class="n">s</span><span class="p">[</span><span class="n">k</span><span class="p">])</span>
-                <span class="n">res</span><span class="o">.</span><span class="n">add</span><span class="p">((</span><span class="n">cur</span><span class="p">,</span> <span class="n">k</span> <span class="o">+</span> <span class="mi">1</span><span class="p">))</span>  <span class="c1"># (数值, 下一个位置)</span>
+                <span class="n">res</span><span class="o">.</span><span class="n">add</span><span class="p">((</span><span class="n">cur</span><span class="p">,</span> <span class="n">k</span> <span class="o">+</span> <span class="mi">1</span><span class="p">))</span>  <span class="c1"># (前缀值, 下一个位置)</span>
             <span class="k">return</span> <span class="n">res</span>
 
         <span class="nd">@lru_cache</span><span class="p">(</span><span class="n">maxsize</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
         <span class="k">def</span><span class="w"> </span><span class="nf">dfs</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">,</span> <span class="n">d</span><span class="p">):</span>
-            <span class="c1"># d = (s1 已展开长度) - (s2 已展开长度)</span>
+            <span class="c1"># d = (s1 已覆盖 T 的长度) - (s2 已覆盖 T 的长度)</span>
             <span class="k">if</span> <span class="n">i</span> <span class="o">==</span> <span class="n">n1</span> <span class="ow">and</span> <span class="n">j</span> <span class="o">==</span> <span class="n">n2</span><span class="p">:</span>
                 <span class="k">return</span> <span class="n">d</span> <span class="o">==</span> <span class="mi">0</span>
-            <span class="c1"># 优先消化数字（因为它们能调整 d）</span>
+            <span class="c1"># 先展开待处理的数字 token，再做符号分支</span>
             <span class="k">if</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">n1</span> <span class="ow">and</span> <span class="n">s1</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">isdigit</span><span class="p">():</span>
                 <span class="k">for</span> <span class="n">v</span><span class="p">,</span> <span class="n">ni</span> <span class="ow">in</span> <span class="n">get_nums</span><span class="p">(</span><span class="n">s1</span><span class="p">,</span> <span class="n">i</span><span class="p">):</span>
                     <span class="k">if</span> <span class="n">dfs</span><span class="p">(</span><span class="n">ni</span><span class="p">,</span> <span class="n">j</span><span class="p">,</span> <span class="n">d</span> <span class="o">+</span> <span class="n">v</span><span class="p">):</span>
@@ -22720,36 +22768,38 @@
                     <span class="k">if</span> <span class="n">dfs</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">nj</span><span class="p">,</span> <span class="n">d</span> <span class="o">-</span> <span class="n">v</span><span class="p">):</span>
                         <span class="k">return</span> <span class="kc">True</span>
                 <span class="k">return</span> <span class="kc">False</span>
-            <span class="c1"># 此处两端要么到末尾要么是字母</span>
+            <span class="c1"># 此处两侧要么到末尾要么是字母</span>
             <span class="k">if</span> <span class="n">d</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
                 <span class="k">if</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">n1</span> <span class="ow">and</span> <span class="n">j</span> <span class="o">&lt;</span> <span class="n">n2</span> <span class="ow">and</span> <span class="n">s1</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="n">s2</span><span class="p">[</span><span class="n">j</span><span class="p">]:</span>
                     <span class="k">return</span> <span class="n">dfs</span><span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">j</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
                 <span class="k">return</span> <span class="kc">False</span>
             <span class="k">if</span> <span class="n">d</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
-                <span class="c1"># s1 多出，由 s2 字母吃掉一个字符</span>
+                <span class="c1"># s1 领先 d 个字符，由 s2 的一个字母去对齐其一</span>
                 <span class="k">if</span> <span class="n">j</span> <span class="o">&lt;</span> <span class="n">n2</span><span class="p">:</span>
                     <span class="k">return</span> <span class="n">dfs</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">d</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
                 <span class="k">return</span> <span class="kc">False</span>
-            <span class="c1"># d &lt; 0</span>
+            <span class="c1"># d &lt; 0：对称，由 s1 的字母去对齐 s2 领先的字符</span>
             <span class="k">if</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">n1</span><span class="p">:</span>
                 <span class="k">return</span> <span class="n">dfs</span><span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">j</span><span class="p">,</span> <span class="n">d</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
             <span class="k">return</span> <span class="kc">False</span>
 
         <span class="k">return</span> <span class="n">dfs</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
 </code></pre></div>
-<p>样例 1 trace：<code>s1="internationalization", s2="i18n"</code>。dfs(0,0,0)：两端字母 'i'=='i'→dfs(1,1,0)。s2[1]='1' 数字 → 取 v=1, 18 (注意"18"两位连读)。先试 v=18, nj=3，dfs(1,3,-18)，让 s1 吃 18 个字母（"nternationalizatio"）→ dfs(19,3,0)。最后 s2[3]='n'==s1[19]='n' → dfs(20,4,0) ✓。</p>
-<p>样例 3：<code>s1="a5b", s2="c5b"</code>。dfs(0,0,0)：字母 'a' ≠ 'c' → False ✓。</p>
+<p>样例 1 trace：<code>s1="internationalization", s2="i18n"</code>。<code>dfs(0,0,0)</code>：两侧字母 <code>'i'=='i'</code> → <code>dfs(1,1,0)</code>。<code>s2[1]='1'</code> 是数字 → <code>get_nums('i18n',1)={(1,2),(18,3)}</code>（"18" 两位连读）。试 <span class="arithmatex">\(v=18\)</span>、<span class="arithmatex">\(nj=3\)</span>，<code>dfs(1,3,-18)</code>：<span class="arithmatex">\(d&lt;0\)</span>，由 <span class="arithmatex">\(s_1\)</span> 的 18 个字母去对齐（<code>"nternationalizatio"</code>）→ <code>dfs(19,3,0)</code>。最后 <span class="arithmatex">\(d=0\)</span>，<code>s1[19]='n'==s2[3]='n'</code> → <code>dfs(20,4,0)</code> ✓。</p>
+<p>样例 3：<code>s1="a5b", s2="c5b"</code>。<code>dfs(0,0,0)</code>：<span class="arithmatex">\(d=0\)</span> 且字母 <code>'a' ≠ 'c'</code> → <code>False</code> ✓。</p>
 <h2 id="complexity">复杂度 (Complexity)<a class="headerlink" href="#complexity" title="Permanent link">#</a></h2>
 <ul>
-<li>Time: <span class="arithmatex">\(O(|s_1| \cdot |s_2| \cdot D \cdot C)\)</span>，其中 <span class="arithmatex">\(D\)</span> 为偏移量范围（<span class="arithmatex">\(\le 1000\)</span>，实际更小），<span class="arithmatex">\(C \le 3\)</span> 为单步数字读取分支。受输入长度 40 + 数字 ≤ 3 位的强约束，实际常数极小。</li>
+<li>Time: <span class="arithmatex">\(O(|s_1| \cdot |s_2| \cdot D \cdot C)\)</span>。状态由 <span class="arithmatex">\((i, j, d)\)</span> 索引，每个状态最多分裂出 <span class="arithmatex">\(C \le 3\)</span> 个数字前缀分支。无记忆化时递归会访问指数级的重叠子问题；记忆化后调用图坍缩为至多 <span class="arithmatex">\(|s_1| \cdot |s_2| \cdot D\)</span> 个不同状态。</li>
 <li>Space: <span class="arithmatex">\(O(|s_1| \cdot |s_2| \cdot D)\)</span> 记忆化表。</li>
+<li>偏移量范围 <span class="arithmatex">\(D\)</span>：单个数字 token 至多 3 位，故一步使 <span class="arithmatex">\(d\)</span> 变化至多 <span class="arithmatex">\(10^3 - 1 = 999\)</span>，于是 <span class="arithmatex">\(|d| &lt; 1000\)</span>。粗上界为 <span class="arithmatex">\(\min(|s_1|, |s_2|) \times 999\)</span>，但受 <span class="arithmatex">\(\text{len} \le 40\)</span> 约束，真正可达的 <span class="arithmatex">\(|d|\)</span> 远小于此（要让某侧覆盖近 999 个字符，另一侧需有同样多的真实字符去对齐，而总长仅 40）。因此实际状态数与常数都很小，无 Python 递归深度问题。</li>
 </ul>
 <h2 id="pitfalls">陷阱 (Pitfalls)<a class="headerlink" href="#pitfalls" title="Permanent link">#</a></h2>
 <ul>
-<li><strong>数字段的子拆分</strong>：<code>"123"</code> 不仅可读成 123，也可读成 1+23、12+3、1+2+3——因为编码时可以分段并对每段单独取长度。<code>get_nums</code> 必须返回<strong>所有可达前缀和</strong>，而不是只取最长数字。</li>
-<li><strong><code>d == 0</code> 且双方都是字母时必须相等</strong>：否则不能匹配（"a5b" vs "c5b"）。</li>
-<li><strong>状态命中要靠 lru_cache</strong>：朴素递归会指数爆炸。</li>
-<li><strong><code>d</code> 的正负方向</strong>：要清楚 d&gt;0 表示 s1 多展开，需要 s2 来"消费"以追平。</li>
+<li><strong>数字 token 的子切分</strong>：<code>"123"</code> 不仅可读成 123，也可读成 1+23、12+3、1+2+3——因为编码时可对每段单独取长度。<code>get_nums</code> 只需返回<strong>所有前缀值</strong>（1, 12, 123）；再切分的组合由递归在下一位置重入数字分支自然生成。漏掉前缀（只取最长数字）会错判。</li>
+<li><strong><span class="arithmatex">\(d = 0\)</span> 且双方都是字母时必须相等</strong>：此时两侧进度齐平，下一对字符直接对应，否则不能匹配（<code>"a5b"</code> vs <code>"c5b"</code>）。</li>
+<li><strong>数字必须先于字母处理</strong>：跳过待展开的数字 token 会让 <span class="arithmatex">\(d\)</span> 处于未定值，无法索引到定义良好的记忆化状态。每步先把数字展开干净。</li>
+<li><strong><span class="arithmatex">\(d\)</span> 的正负方向</strong>：<span class="arithmatex">\(d &gt; 0\)</span> 表示 <span class="arithmatex">\(s_1\)</span> 领先、需由 <span class="arithmatex">\(s_2\)</span> 的字母去对齐；<span class="arithmatex">\(d &lt; 0\)</span> 对称。方向记反会导致转移作用在错误的一侧。</li>
+<li><strong>必须记忆化</strong>：无 <code>lru_cache</code> 时递归访问指数级重叠子问题，必然超时。</li>
 </ul>
 <h2 id="related">相关题目 (Related)<a class="headerlink" href="#related" title="Permanent link">#</a></h2>
 <ul>

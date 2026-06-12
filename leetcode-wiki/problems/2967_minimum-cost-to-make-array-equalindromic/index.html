@@ -5485,6 +5485,8 @@
       
         
       
+        
+      
     
     
     
@@ -6024,6 +6026,34 @@
     
   
     #93. Restore IP Addresses
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../0102_binary-tree-level-order-traversal/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    #102. Binary Tree Level Order Traversal
   
 
     
@@ -22675,20 +22705,46 @@
 <h2 id="problem">Problem<a class="headerlink" href="#problem" title="Permanent link">#</a></h2>
 <p>给数组 <code>nums</code>，每次操作选下标 <span class="arithmatex">\(i\)</span> 和正整数 <span class="arithmatex">\(x\)</span>，付出 <span class="arithmatex">\(|a_i - x|\)</span> 的代价并令 <span class="arithmatex">\(a_i \leftarrow x\)</span>。最终所有元素必须等于同一个<strong>回文数</strong> <span class="arithmatex">\(y &lt; 10^9\)</span>。求最小总代价。<span class="arithmatex">\(n \le 10^5\)</span>, <span class="arithmatex">\(a_i \le 10^9\)</span>。</p>
 <h2 id="background">背景 (Background)<a class="headerlink" href="#background" title="Permanent link">#</a></h2>
-<p><strong>两层结构</strong>：</p>
-<ol>
-<li><strong>目标 <span class="arithmatex">\(y\)</span> 固定后</strong>：最小化 <span class="arithmatex">\(\sum_i |a_i - y|\)</span> 的 <span class="arithmatex">\(y\)</span> 是 <code>nums</code> 的<strong>中位数</strong> <span class="arithmatex">\(m\)</span>。这是 <span class="arithmatex">\(L_1\)</span> 中心 (median) 的最优性定理（Hoare 1961 之前已知）：函数 <span class="arithmatex">\(f(y) = \sum |a_i - y|\)</span> 是凸折线，斜率从 <span class="arithmatex">\(-n\)</span> 单调到 <span class="arithmatex">\(+n\)</span>，最小在中位数处取得。</li>
-<li><strong><span class="arithmatex">\(y\)</span> 受限为回文数</strong>：在中位数 <span class="arithmatex">\(m\)</span> 周围找最近的两个回文数 <span class="arithmatex">\(p_{\le}, p_{\ge}\)</span>，分别计算 <span class="arithmatex">\(\sum |a_i - p|\)</span>，取小者。</li>
-</ol>
-<p><strong>为何只看 <span class="arithmatex">\(m\)</span> 附近的两个回文</strong>：<span class="arithmatex">\(f(y)\)</span> 凸 ⇒ 最优解必在 <span class="arithmatex">\(m\)</span> 邻域。回文数集合稀疏但有序，离 <span class="arithmatex">\(m\)</span> 越远 <span class="arithmatex">\(f\)</span> 越大。</p>
+<p>先看一个<strong>没有回文约束</strong>的版本：把所有元素改成同一个整数 <span class="arithmatex">\(y\)</span>，代价是 <span class="arithmatex">\(\sum_i |a_i - y|\)</span>，<span class="arithmatex">\(y\)</span> 可取任意整数。这个无约束问题有干净的闭式解，回文约束只是在它之上加了一道筛子。我们先彻底解决无约束版本，再处理约束。</p>
+<p><strong>无约束版本：代价对 <span class="arithmatex">\(y\)</span> 的变化。</strong> 固定一个目标 <span class="arithmatex">\(y\)</span>，把它移动一格到 <span class="arithmatex">\(y+1\)</span>，总代价怎么变？对每个 <span class="arithmatex">\(a_i\)</span>：若 <span class="arithmatex">\(a_i \le y\)</span>，距离增加 <span class="arithmatex">\(1\)</span>；若 <span class="arithmatex">\(a_i &gt; y\)</span>，距离减少 <span class="arithmatex">\(1\)</span>。设 <span class="arithmatex">\(y\)</span> 处有 <span class="arithmatex">\(k\)</span> 个元素 <span class="arithmatex">\(\le y\)</span>、<span class="arithmatex">\(n-k\)</span> 个 <span class="arithmatex">\(&gt; y\)</span>，则代价的变化量是</p>
+<div class="arithmatex">\[f(y+1) - f(y) = k - (n-k) = 2k - n.\]</div>
+<p>直观地讲：<strong>向右移一格，代价的净变化等于"已经在左边的点数"减去"还在右边的点数"。</strong> 当左边比右边多（<span class="arithmatex">\(k &gt; n/2\)</span>）时再右移只会变贵；当右边更多时右移更便宜。最优点就是让两侧数量平衡之处。</p>
+<p>把这个直观写成形式陈述。<span class="arithmatex">\(f(y) = \sum_i |a_i - y|\)</span> 是分段线性的凸函数：每越过一个数据点 <span class="arithmatex">\(a_i\)</span>，那一项 <span class="arithmatex">\(|a_i - y|\)</span> 的斜率从 <span class="arithmatex">\(-1\)</span> 翻成 <span class="arithmatex">\(+1\)</span>，于是 <span class="arithmatex">\(f\)</span> 的右斜率每经过一个数据点就 <span class="arithmatex">\(+2\)</span>，整体从 <span class="arithmatex">\(-n\)</span> 单调升到 <span class="arithmatex">\(+n\)</span>。斜率由负转正、即 <span class="arithmatex">\(2k - n\)</span> 由负转正的那一点，就是<strong>中位数</strong> <span class="arithmatex">\(m\)</span>。所以无约束最优解是 <span class="arithmatex">\(m\)</span>，这是 <span class="arithmatex">\(L_1\)</span> 中心的最优性。</p>
+<p><strong>回文约束怎么改变结论。</strong> 现在 <span class="arithmatex">\(y\)</span> 必须是回文数。一般来说 <span class="arithmatex">\(m\)</span> 不是回文数，所以不能直接取 <span class="arithmatex">\(m\)</span>。但 <span class="arithmatex">\(f\)</span> 仍是那条凸折线——它不会因为约束而改变形状。凸性给出一个直接推论：在 <span class="arithmatex">\(m\)</span> 同一侧，离 <span class="arithmatex">\(m\)</span> 越远 <span class="arithmatex">\(f\)</span> 越大。于是在 <span class="arithmatex">\(m\)</span> 左侧的所有回文数里，<strong>最靠近 <span class="arithmatex">\(m\)</span> 的那个</strong> <span class="arithmatex">\(p_{\le}\)</span> 代价最小；右侧同理，最靠近的 <span class="arithmatex">\(p_{\ge}\)</span> 最小。无穷多个回文候选因此塌缩成两个：<span class="arithmatex">\(p_{\le}\)</span> 和 <span class="arithmatex">\(p_{\ge}\)</span>，答案取二者代价的较小值。这把一个看似要在稀疏无穷集合上搜索的问题，变成只需求出 <span class="arithmatex">\(m\)</span> 两侧各一个最近回文数。</p>
 <h2 id="formulation">形式化 (Formulation)<a class="headerlink" href="#formulation" title="Permanent link">#</a></h2>
-<p><span class="arithmatex">\(\min_{y \in P} \sum_i |a_i - y|\)</span>，<span class="arithmatex">\(P = \{\)</span> 回文数 <span class="arithmatex">\(&lt; 10^9 \}\)</span>。</p>
+<p>设 <span class="arithmatex">\(P = \{\,p : p \text{ 是回文数},\ 0 &lt; p &lt; 10^9\,\}\)</span>，目标是</p>
+<div class="arithmatex">\[\min_{y \in P}\ \sum_i |a_i - y|.\]</div>
+<p>记 <span class="arithmatex">\(f(y) = \sum_i |a_i - y|\)</span>，<span class="arithmatex">\(m\)</span> 为 <code>nums</code> 的中位数。由上节两条事实——<span class="arithmatex">\(f\)</span> 凸且在 <span class="arithmatex">\(m\)</span> 处取无约束最小、同侧离 <span class="arithmatex">\(m\)</span> 越远 <span class="arithmatex">\(f\)</span> 越大——最优回文数必是 <span class="arithmatex">\(m\)</span> 左右两侧最近的回文数之一：</p>
+<div class="arithmatex">\[\arg\min_{y \in P} f(y) \in \{\,p_{\le},\ p_{\ge}\,\},\qquad p_{\le} = \max\{p \in P: p \le m\},\quad p_{\ge} = \min\{p \in P: p \ge m\}.\]</div>
+<p>剩下的全部工作就是：求中位数 <span class="arithmatex">\(m\)</span>（一次排序），求出 <span class="arithmatex">\(m\)</span> 两侧的最近回文数，再对这少数几个候选直接算 <span class="arithmatex">\(f\)</span>。</p>
 <h2 id="approach">数据结构 / 想法 (Approach)<a class="headerlink" href="#approach" title="Permanent link">#</a></h2>
-<ol>
-<li>排序 <code>nums</code>（<span class="arithmatex">\(O(n \log n)\)</span>），取中位数 <span class="arithmatex">\(m = \text{nums}[n/2]\)</span>（任一即可，偶数长度取下中位也 OK）。</li>
-<li>在 <span class="arithmatex">\(m\)</span> 的两侧找最近回文数。<strong>生成法</strong>：回文由其前半部分决定。<span class="arithmatex">\(m\)</span> 的前半 <span class="arithmatex">\(h = \lfloor m / 10^{\lceil L/2 \rceil} \rfloor\)</span>（<span class="arithmatex">\(L\)</span> 是 <span class="arithmatex">\(m\)</span> 位数），构造候选 <code>mirror(h)</code>、<code>mirror(h+1)</code>、<code>mirror(h-1)</code>，再加上"换位数边界"的 <span class="arithmatex">\(10^L - 1\)</span> 全 9 和 <span class="arithmatex">\(10^{L-1} + 1\)</span>（如 1001）等极端形态。集合中找最接近 <span class="arithmatex">\(m\)</span> 的两个回文。</li>
-<li>对 <span class="arithmatex">\(\le 5\)</span> 个候选回文，分别算 <span class="arithmatex">\(\sum |a_i - y|\)</span>，取最小。</li>
-</ol>
+<p><strong>第 1 步：求中位数。</strong> 排序 <code>nums</code>（<span class="arithmatex">\(O(n\log n)\)</span>），取 <span class="arithmatex">\(m = \text{nums}[\lfloor n/2 \rfloor]\)</span>。这里要澄清偶数长度的歧义：当 <span class="arithmatex">\(n\)</span> 为偶数时，<span class="arithmatex">\(f\)</span> 在整个区间 <span class="arithmatex">\([a_{n/2-1},\,a_{n/2}]\)</span> 上取相同的最小值，故区间内任一点都是合法中位数，取 <span class="arithmatex">\(\text{nums}[n/2]\)</span> 即可。这一选择不影响后续"求两侧最近回文"的逻辑，因为我们本就要同时检查 <span class="arithmatex">\(m\)</span> 左右两侧。</p>
+<p><strong>第 2 步：求 <span class="arithmatex">\(m\)</span> 两侧的最近回文数。</strong> 朴素做法是枚举所有回文数找最近的——但 <span class="arithmatex">\(10^9\)</span> 以内的回文数虽稀疏（约 <span class="arithmatex">\(10^5\)</span> 量级），逐一枚举仍然浪费，而且我们只关心 <span class="arithmatex">\(m\)</span> 附近的几个。需要一种<strong>直接构造</strong>最近回文数的方法。</p>
+<p>关键事实：一个长度为 <span class="arithmatex">\(L\)</span> 的回文数完全由它的前一半决定。设 <span class="arithmatex">\(H = \lceil L/2 \rceil\)</span> 为前半的位数，回文数的后半是前半的镜像，所以只有这 <span class="arithmatex">\(H\)</span> 个前导位是自由的。两种奇偶情形不同，原因在镜像方式：</p>
+<ul>
+<li><strong><span class="arithmatex">\(L\)</span> 为奇数</strong>：中间那位是它自身的镜像，写出前半 <code>s</code> 后，整数为 <code>s + reverse(s[:-1])</code>（中间位不重复）。例如前半 <code>123</code> → <code>12321</code>。</li>
+<li><strong><span class="arithmatex">\(L\)</span> 为偶数</strong>：每一位都有一个不同的镜像位，整数为 <code>s + reverse(s)</code>。例如前半 <code>12</code> → <code>1221</code>，前半 <code>123</code>（视为偶长 <span class="arithmatex">\(L=6\)</span> 的前半）→ <code>123321</code>。</li>
+</ul>
+<p>取 <span class="arithmatex">\(m\)</span> 的前半 <span class="arithmatex">\(h = \lfloor m / 10^{\lfloor L/2 \rfloor} \rfloor\)</span>（即十进制串的前 <span class="arithmatex">\(H\)</span> 位，代码中写作 <code>int(s[:(L+1)//2])</code>），把 <span class="arithmatex">\(h-1, h, h+1\)</span> 各自镜像，就得到 <span class="arithmatex">\(m\)</span> 附近<strong>同长度</strong>的回文候选。<span class="arithmatex">\(h\)</span> 本身的镜像跨在 <span class="arithmatex">\(m\)</span> 的某一侧；<span class="arithmatex">\(h\pm 1\)</span> 覆盖紧邻的同长度回文，足以夹住 <span class="arithmatex">\(m\)</span>。</p>
+<p><strong>但前半 <span class="arithmatex">\(\pm 1\)</span> 可能越过位数边界</strong>，这时最近回文会换一个长度，必须额外补两个候选：</p>
+<ul>
+<li>当 <span class="arithmatex">\(h\)</span> 上溢（如两位数前半 <span class="arithmatex">\(99\to 100\)</span>），最近的更长回文是 <span class="arithmatex">\(10^L + 1\)</span>（如 <span class="arithmatex">\(L=2\)</span> 时为 <span class="arithmatex">\(101\)</span>）。</li>
+<li>当 <span class="arithmatex">\(h\)</span> 下溢或 <span class="arithmatex">\(m\)</span> 紧贴一个长度下界（如 <span class="arithmatex">\(m=100\)</span>），最近的更短回文是 <span class="arithmatex">\(10^{L-1} - 1\)</span>（全 <span class="arithmatex">\(9\)</span>，如 <span class="arithmatex">\(L=3\)</span> 时为 <span class="arithmatex">\(99\)</span>）。</li>
+</ul>
+<p>把同长度的三个镜像候选与这两个跨边界候选放进集合，过滤掉越界值，集合中自然包含 <span class="arithmatex">\(m\)</span> 两侧最近的回文。例如 <span class="arithmatex">\(m = 100\)</span> 生成 <span class="arithmatex">\(\{9, 99, 101, 111, 1001\}\)</span>，其中 <span class="arithmatex">\(99\)</span>（短一位）和 <span class="arithmatex">\(101\)</span>（长一位）正是跨边界的那两个最近回文。</p>
+<p><strong>第 3 步：对候选求代价。</strong> 候选不超过 <span class="arithmatex">\(5\)</span> 个，对每个回文 <span class="arithmatex">\(y\)</span> 算 <span class="arithmatex">\(f(y)=\sum_i |a_i - y|\)</span>（<span class="arithmatex">\(O(n)\)</span>），取最小。</p>
+<p>下面的两个 trace 验证候选生成与取最小的全过程。</p>
+<p><strong>Trace example 2</strong> <code>nums=[10,12,13,14,15]</code>，验证跨边界候选确实被生成并参与比较。排序后 <span class="arithmatex">\(m=13\)</span>，<span class="arithmatex">\(L=2\)</span>，前半 <span class="arithmatex">\(h=1\)</span>。</p>
+<ul>
+<li><span class="arithmatex">\(d=-1\)</span>：<span class="arithmatex">\(h=0\)</span>，触发下溢分支，补候选 <span class="arithmatex">\(9\)</span>。</li>
+<li><span class="arithmatex">\(d=0\)</span>：<span class="arithmatex">\(h=1\)</span>，偶长镜像 <code>to_pal(1, False)</code> = <code>"11"</code> = <span class="arithmatex">\(11\)</span>。</li>
+<li><span class="arithmatex">\(d=1\)</span>：<span class="arithmatex">\(h=2\)</span> → <code>"22"</code> = <span class="arithmatex">\(22\)</span>。</li>
+<li>跨边界补 <span class="arithmatex">\(10^2+1 = 101\)</span>、<span class="arithmatex">\(10^1-1 = 9\)</span>。</li>
+<li>去重后候选为 <span class="arithmatex">\(\{9, 11, 22, 101\}\)</span>。</li>
+<li><span class="arithmatex">\(f(9)=1+3+4+5+6=19\)</span>；<span class="arithmatex">\(f(11)=1+1+2+3+4=11\)</span>；<span class="arithmatex">\(f(22)=12+10+9+8+7=46\)</span>；<span class="arithmatex">\(f(101)\)</span> 显然更大。</li>
+<li>最小为 <span class="arithmatex">\(11\)</span> ✓。</li>
+</ul>
+<p><strong>Trace example 3</strong> <code>nums=[22,33,22,33,22]</code>，验证当 <span class="arithmatex">\(m\)</span> 已是回文时直接命中。排序后 <code>[22,22,22,33,33]</code>，<span class="arithmatex">\(m=22\)</span>（本身回文）。<span class="arithmatex">\(L=2\)</span>，<span class="arithmatex">\(h=2\)</span>。<span class="arithmatex">\(d=-1\)</span> 给 <code>"11"</code>=<span class="arithmatex">\(11\)</span>，<span class="arithmatex">\(d=0\)</span> 给 <code>"22"</code>=<span class="arithmatex">\(22\)</span>，<span class="arithmatex">\(d=1\)</span> 给 <code>"33"</code>=<span class="arithmatex">\(33\)</span>。<span class="arithmatex">\(f(22)=0+0+0+11+11=22\)</span> ✓。</p>
 <div class="language-python highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">Solution</span><span class="p">:</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">minimumCost</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">nums</span><span class="p">):</span>
         <span class="n">nums</span><span class="o">.</span><span class="n">sort</span><span class="p">()</span>
@@ -22725,30 +22781,20 @@
 
         <span class="k">return</span> <span class="nb">min</span><span class="p">(</span><span class="n">cost</span><span class="p">(</span><span class="n">y</span><span class="p">)</span> <span class="k">for</span> <span class="n">y</span> <span class="ow">in</span> <span class="n">nearest_palindromes</span><span class="p">(</span><span class="n">m</span><span class="p">))</span>
 </code></pre></div>
-<p><strong>Trace example 2</strong> <code>nums=[10,12,13,14,15]</code>：sorted, m=13。L=2, half=1。
-- d=-1: h=0 → 边界，候选 9。
-- d=0: h=1, even-L → to_pal(1, False) = "11" = 11。
-- d=1: h=2 → "22" = 22。
-- 加 10^2+1=101, 10^1-1=9。
-- 候选 {9, 11, 22, 101}（去掉重复）。
-- cost(9)=|10-9|+|12-9|+|13-9|+|14-9|+|15-9|=1+3+4+5+6=19。
-- cost(11)=1+1+2+3+4=11。
-- cost(22)=12+10+9+8+7=46。
-- 最小 11 ✓。</p>
-<p><strong>Trace example 3</strong> <code>nums=[22,33,22,33,22]</code>：sorted [22,22,22,33,33], m=22（已回文）。
-- L=2, half=2。d=-1: h=1 → "11"=11。d=0: h=2 → "22"=22。d=1: h=3 → "33"=33。
-- cost(22)=0+0+0+11+11=22 ✓。</p>
 <h2 id="complexity">复杂度 (Complexity)<a class="headerlink" href="#complexity" title="Permanent link">#</a></h2>
 <ul>
 <li>Time: <span class="arithmatex">\(O(n \log n)\)</span>（排序）+ <span class="arithmatex">\(O(n)\)</span>（每个候选求和，候选 <span class="arithmatex">\(\le 5\)</span> 个）= <span class="arithmatex">\(O(n \log n)\)</span>。</li>
-<li>Space: <span class="arithmatex">\(O(1)\)</span> 额外。</li>
+<li>Space: 排序之外只用 <span class="arithmatex">\(O(L)\)</span> 额外空间（<span class="arithmatex">\(L\)</span> 为位数，<span class="arithmatex">\(\le 10\)</span>，用于候选回文的字符串构造）；若把排序的辅助空间计入，则为 <span class="arithmatex">\(O(n)\)</span>。</li>
 </ul>
 <h2 id="pitfalls">陷阱 (Pitfalls)<a class="headerlink" href="#pitfalls" title="Permanent link">#</a></h2>
+<p>实现层面：</p>
 <ul>
-<li><strong>L 为偶 vs 奇</strong> 的回文构造不同：偶数（"abcd"→"abccba" 不对，应是"abccba"长度 6 由 "abc" 翻），奇数（"abcde"→"abcba" 由 "abc"）。代码需根据 <span class="arithmatex">\(L\)</span> 奇偶选择。</li>
-<li>跨位数边界要单独加候选：<span class="arithmatex">\(m = 100\)</span> 附近的最近回文可能是 <span class="arithmatex">\(99\)</span>（位数 -1）和 <span class="arithmatex">\(101\)</span>（位数 +1）。</li>
-<li><strong>median 选哪个</strong>：偶数长度 <span class="arithmatex">\(n\)</span>，<span class="arithmatex">\(L_1\)</span> 最小在区间 <span class="arithmatex">\([a_{n/2-1}, a_{n/2}]\)</span> 任意点都最小。取任一即可。</li>
-<li><code>to_pal(half, odd)</code>：奇 <span class="arithmatex">\(L\)</span> 中心字符只出现一次，故 <code>s[-2::-1]</code> 跳过最后一个再反转。</li>
+<li><strong><span class="arithmatex">\(L\)</span> 奇偶的回文构造不同</strong>：偶长由整个前半镜像，前半 <code>ab</code>→<code>abba</code>、<code>abc</code>→<code>abccba</code>；奇长跳过中间位，前半 <code>abc</code>→<code>abcba</code>。代码须按 <span class="arithmatex">\(L\)</span> 奇偶选择 <code>to_pal</code> 的分支。<code>to_pal</code> 中 <code>s[-2::-1]</code> 正是"跳过最后一位再反转"，对应奇长中心位只出现一次。</li>
+<li><strong>跨位数边界要单独补候选</strong>：<span class="arithmatex">\(m = 100\)</span> 附近的最近回文是 <span class="arithmatex">\(99\)</span>（位数 <span class="arithmatex">\(-1\)</span>）和 <span class="arithmatex">\(101\)</span>（位数 <span class="arithmatex">\(+1\)</span>），同长度镜像无法生成它们，故须显式加 <span class="arithmatex">\(10^{L-1}-1\)</span> 与 <span class="arithmatex">\(10^L+1\)</span>。</li>
+</ul>
+<p>算法层面（关于问题本身而非代码）：</p>
+<ul>
+<li><strong>偶数长度的中位数取哪个</strong>：<span class="arithmatex">\(n\)</span> 为偶数时 <span class="arithmatex">\(f\)</span> 在 <span class="arithmatex">\([a_{n/2-1}, a_{n/2}]\)</span> 上同时取最小，取 <span class="arithmatex">\(\text{nums}[n/2]\)</span> 即可；由于我们随后同时检查 <span class="arithmatex">\(m\)</span> 两侧的最近回文，这个选择不会漏解。</li>
 </ul>
 <h2 id="related">相关题目 (Related)<a class="headerlink" href="#related" title="Permanent link">#</a></h2>
 <ul>

@@ -5485,6 +5485,8 @@
       
         
       
+        
+      
     
     
     
@@ -6024,6 +6026,34 @@
     
   
     #93. Restore IP Addresses
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../0102_binary-tree-level-order-traversal/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    #102. Binary Tree Level Order Traversal
   
 
     
@@ -22675,18 +22705,33 @@
 <h2 id="problem">Problem<a class="headerlink" href="#problem" title="Permanent link">#</a></h2>
 <p>给 <span class="arithmatex">\(n\)</span> 与 <span class="arithmatex">\(\text{maxValue}\)</span>，问长度为 <span class="arithmatex">\(n\)</span> 的整数数组 <span class="arithmatex">\(a\)</span> 满足：<span class="arithmatex">\(a_i \in [1, \text{maxValue}]\)</span> 且 <span class="arithmatex">\(a_{i-1} \mid a_i\)</span>（前一项整除后一项）的数量，模 <span class="arithmatex">\(10^9 + 7\)</span>。<span class="arithmatex">\(n, \text{maxValue} \le 10^4\)</span>。</p>
 <h2 id="background">背景 (Background)<a class="headerlink" href="#background" title="Permanent link">#</a></h2>
-<p>本题融合 <strong>数论（因子链）</strong> 与 <strong>组合学（多重集合放球）</strong>。核心 idea：每个 ideal 数组对应一个"严格递增因子链 + 把链中的相邻相等段用 stars-and-bars 分配"。这与 Young tableau 计数、链分解、$\Omega(n) = $ 大 omega 函数 有直接联系。</p>
+<p>最直接的想法是枚举所有合法数组。第一项有 <span class="arithmatex">\(\text{maxValue}\)</span> 种选择，之后每一项都必须是前一项的倍数。但合法数组的总数随 <span class="arithmatex">\(n\)</span> 指数增长——即使只看 <span class="arithmatex">\(a_1 = 1\)</span> 这一支，后面每项仍可自由翻倍，搜索树呈指数膨胀。<span class="arithmatex">\(n\)</span> 可达 <span class="arithmatex">\(10^4\)</span>，逐个枚举没有希望。</p>
+<p>枚举行不通，就要问：整除约束 <span class="arithmatex">\(a_{i-1} \mid a_i\)</span> 在数组上压出了什么结构，能否绕过枚举直接计数？</p>
+<p>观察一个合法数组的形状。整除关系蕴含 <span class="arithmatex">\(a_{i-1} \le a_i\)</span>，所以数组<strong>单调不减</strong>。沿数组走，值要么保持不变，要么严格变大；一旦变大，新值是旧值的倍数（且 <span class="arithmatex">\(\ge 2\)</span> 倍）。于是数组天然分成若干<strong>极大相等段</strong>：每段内值恒定，相邻两段之间值严格增大且后者是前者的倍数。</p>
+<p>把每个相等段坍缩成它的公共值，得到一个序列</p>
+<div class="arithmatex">\[b_0 &lt; b_1 &lt; \cdots &lt; b_{k-1}, \qquad b_j \mid b_{j+1}, \qquad b_{k-1} \le \text{maxValue}.\]</div>
+<p>这是一条<strong>严格递增因子链</strong>。反过来，给定这样一条长度为 <span class="arithmatex">\(k\)</span> 的链，再决定 <span class="arithmatex">\(n\)</span> 个位置如何切成 <span class="arithmatex">\(k\)</span> 个相等段，就唯一还原出一个合法数组。计数因此拆成两件独立的事：<strong>链有多少条</strong>、<strong>每条链铺成数组有多少种方式</strong>。下面把这个对应关系写成精确的双射并逐项计数。</p>
 <h2 id="formulation">形式化 (Formulation)<a class="headerlink" href="#formulation" title="Permanent link">#</a></h2>
-<p>任一 ideal 数组等价于：先选一条<strong>严格递增因子链</strong> <span class="arithmatex">\(1 \cdot d_1 \mid d_1 d_2 \mid \cdots\)</span>（实际为 <span class="arithmatex">\(b_0 &lt; b_1 &lt; \cdots &lt; b_{k-1}\)</span>，<span class="arithmatex">\(b_j \mid b_{j+1}\)</span>，<span class="arithmatex">\(b_{k-1} \le \text{maxValue}\)</span>），再选<strong>位置</strong> 把 <span class="arithmatex">\(n\)</span> 个位置分成 <span class="arithmatex">\(k\)</span> 个非空连续段（每段填同一个 <span class="arithmatex">\(b_j\)</span>）。</p>
-<p>链有 <span class="arithmatex">\(k\)</span> 个不同值时，分段数为 <span class="arithmatex">\(\binom{n-1}{k-1}\)</span>（隔板法）。</p>
-<p>设 <span class="arithmatex">\(g(v, k)\)</span> = 以 <span class="arithmatex">\(v\)</span> 结尾、长度恰好 <span class="arithmatex">\(k\)</span> 的严格递增因子链数。答案</p>
-<div class="arithmatex">\[\sum_{v=1}^{\text{maxValue}} \sum_{k=1}^{\log_2(\text{maxValue}) + 1} g(v, k) \cdot \binom{n-1}{k-1} \pmod{10^9+7}.\]</div>
-<p>链长上界 <span class="arithmatex">\(K^* = \lfloor \log_2 \text{maxValue} \rfloor + 1 \approx 14\)</span>（因子链严格递增最快每步翻倍）。</p>
+<p><strong>双射。</strong> 任一合法数组 <span class="arithmatex">\(a\)</span> 唯一对应一个二元组 <span class="arithmatex">\((\text{链}, \text{切法})\)</span>：</p>
+<ul>
+<li>链 <span class="arithmatex">\(b_0 &lt; b_1 &lt; \cdots &lt; b_{k-1}\)</span> 是 <span class="arithmatex">\(a\)</span> 中去重后的不同值，满足 <span class="arithmatex">\(b_j \mid b_{j+1}\)</span> 且 <span class="arithmatex">\(b_{k-1} \le \text{maxValue}\)</span>；</li>
+<li>切法把 <span class="arithmatex">\(n\)</span> 个位置切成 <span class="arithmatex">\(k\)</span> 个非空连续段，第 <span class="arithmatex">\(j\)</span> 段全填 <span class="arithmatex">\(b_j\)</span>。</li>
+</ul>
+<p>正向已在上节给出。逆向：任给链与切法，按段填值得到的数组每相邻两项要么同段（值相等，整除成立）要么跨段（<span class="arithmatex">\(b_j \mid b_{j+1}\)</span>，整除成立），故合法；不同的 <span class="arithmatex">\((\text{链},\text{切法})\)</span> 还原出不同数组。双射成立。</p>
+<p><strong>数切法。</strong> 固定一条 <span class="arithmatex">\(k\)</span> 个值的链，问 <span class="arithmatex">\(n\)</span> 个位置切成 <span class="arithmatex">\(k\)</span> 个非空连续段有几种。位置间共有 <span class="arithmatex">\(n-1\)</span> 个相邻缝隙，每种切法等价于在这些缝隙里挑 <span class="arithmatex">\(k-1\)</span> 个放分隔符（每个分隔符开启一个新段），剩下的缝隙保持同段。故切法数为</p>
+<div class="arithmatex">\[\binom{n-1}{k-1}.\]</div>
+<p><strong>汇总。</strong> 设 <span class="arithmatex">\(g(v, k)\)</span> 为以 <span class="arithmatex">\(v\)</span> 结尾、含恰好 <span class="arithmatex">\(k\)</span> 个不同值的严格递增因子链数。按双射，对每条链贡献 <span class="arithmatex">\(\binom{n-1}{k-1}\)</span>，再对所有结尾 <span class="arithmatex">\(v\)</span> 与所有链长 <span class="arithmatex">\(k\)</span> 求和：</p>
+<div class="arithmatex">\[\text{答案} = \sum_{v=1}^{\text{maxValue}} \ \sum_{k=1}^{K^*} g(v, k) \cdot \binom{n-1}{k-1} \pmod{10^9+7}. \tag{1}\]</div>
+<p><strong>链长上界。</strong> 链严格递增且 <span class="arithmatex">\(b_j \mid b_{j+1}\)</span>，故 <span class="arithmatex">\(b_{j+1} \ge 2 b_j\)</span>（最小的严格倍数是 <span class="arithmatex">\(2\)</span> 倍）。从 <span class="arithmatex">\(b_0 \ge 1\)</span> 出发，<span class="arithmatex">\(k-1\)</span> 步后 <span class="arithmatex">\(b_{k-1} \ge 2^{k-1}\)</span>。又 <span class="arithmatex">\(b_{k-1} \le \text{maxValue}\)</span>，所以 <span class="arithmatex">\(2^{k-1} \le \text{maxValue}\)</span>，即</p>
+<div class="arithmatex">\[k \le \lfloor \log_2 \text{maxValue} \rfloor + 1 =: K^*.\]</div>
+<p>当 <span class="arithmatex">\(\text{maxValue} \le 10^4\)</span> 时 <span class="arithmatex">\(2^{13} = 8192 \le 10^4 &lt; 16384 = 2^{14}\)</span>，故 <span class="arithmatex">\(K^* = 14\)</span>。求和的内层只需扫到 <span class="arithmatex">\(k = K^*\)</span>。</p>
 <h2 id="approach">数据结构 / 想法 (Approach)<a class="headerlink" href="#approach" title="Permanent link">#</a></h2>
-<p><strong>计算 <span class="arithmatex">\(g(v, k)\)</span></strong>：
-$<span class="arithmatex">\(g(v, 1) = 1; \quad g(v, k) = \sum_{u : u \mid v,\ u &lt; v} g(u, k - 1).\)</span>$</p>
-<p>实现：对每个 <span class="arithmatex">\(u \in [1, \text{maxValue}]\)</span>，对其每个 <em>严格倍数</em> <span class="arithmatex">\(v = 2u, 3u, \dots \le \text{maxValue}\)</span>，把 <span class="arithmatex">\(g(u, k)\)</span> 加到 <span class="arithmatex">\(g(v, k+1)\)</span>。复杂度 <span class="arithmatex">\(O(\text{maxValue} \cdot \log \text{maxValue} \cdot K^*)\)</span>，因调和级数 <span class="arithmatex">\(\sum 1/i\)</span> 给出 <span class="arithmatex">\(\log\)</span> 倍.</p>
-<p><strong>预处理组合数</strong> <span class="arithmatex">\(\binom{n-1}{k-1}\)</span> for <span class="arithmatex">\(k = 1, \dots, K^*\)</span>：因 <span class="arithmatex">\(K^* \le 14\)</span>，可线性递推 <span class="arithmatex">\(\binom{n-1}{k}\)</span>.</p>
+<p>式 (1) 中 <span class="arithmatex">\(\binom{n-1}{k-1}\)</span> 是组合数，剩下的任务是高效算出所有 <span class="arithmatex">\(g(v, k)\)</span>。</p>
+<p><strong><span class="arithmatex">\(g\)</span> 的递推。</strong> 一条以 <span class="arithmatex">\(v\)</span> 结尾、长度 <span class="arithmatex">\(k\)</span> 的链，其倒数第二个值 <span class="arithmatex">\(u\)</span> 必是 <span class="arithmatex">\(v\)</span> 的真因子（<span class="arithmatex">\(u \mid v\)</span> 且 <span class="arithmatex">\(u &lt; v\)</span>），而去掉 <span class="arithmatex">\(v\)</span> 后剩下的是一条以 <span class="arithmatex">\(u\)</span> 结尾、长度 <span class="arithmatex">\(k-1\)</span> 的链。枚举所有可能的 <span class="arithmatex">\(u\)</span> 即得最后一步的分解：</p>
+<div class="arithmatex">\[g(v, 1) = 1; \qquad g(v, k) = \sum_{u\,:\,u \mid v,\ u &lt; v} g(u, k - 1).\]</div>
+<p>基例 <span class="arithmatex">\(g(v,1)=1\)</span>：只含单个值 <span class="arithmatex">\(v\)</span> 的链恰有一条。</p>
+<p><strong>筛法实现。</strong> 直接对每个 <span class="arithmatex">\(v\)</span> 枚举因子较慢；改为正向推送更顺手。对每个 <span class="arithmatex">\(u\)</span> 从 <span class="arithmatex">\(1\)</span> 扫到 <span class="arithmatex">\(\text{maxValue}\)</span>，枚举它的严格倍数 <span class="arithmatex">\(v = 2u, 3u, \dots \le \text{maxValue}\)</span>，把 <span class="arithmatex">\(g(u, k)\)</span> 累加进 <span class="arithmatex">\(g(v, k+1)\)</span>。每个 <span class="arithmatex">\((u, v)\)</span> 真倍数对恰处理一次，与上面的递推等价。</p>
+<p><strong>组合数预处理。</strong> 只需 <span class="arithmatex">\(\binom{n-1}{k-1}\)</span>，<span class="arithmatex">\(k = 1, \dots, K^*\)</span>，且 <span class="arithmatex">\(K^* \le 14\)</span>。用递推 <span class="arithmatex">\(\binom{n-1}{k} = \binom{n-1}{k-1}\cdot \dfrac{n-1-(k-1)}{k}\)</span> 线性算出，除以 <span class="arithmatex">\(k\)</span> 时用费马小定理求模逆元（<span class="arithmatex">\(10^9+7\)</span> 为素数，<span class="arithmatex">\(k \le 14\)</span> 与之互素）。</p>
 <div class="language-python highlight"><pre><span></span><code><span class="n">MOD</span> <span class="o">=</span> <span class="mi">10</span><span class="o">**</span><span class="mi">9</span> <span class="o">+</span> <span class="mi">7</span>
 <span class="k">class</span><span class="w"> </span><span class="nc">Solution</span><span class="p">:</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">idealArrays</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">maxValue</span><span class="p">):</span>
@@ -22718,20 +22763,22 @@ $<span class="arithmatex">\(g(v, 1) = 1; \quad g(v, k) = \sum_{u : u \mid v,\ u 
                     <span class="n">ans</span> <span class="o">=</span> <span class="p">(</span><span class="n">ans</span> <span class="o">+</span> <span class="n">g</span><span class="p">[</span><span class="n">v</span><span class="p">][</span><span class="n">k</span><span class="p">]</span> <span class="o">*</span> <span class="n">comb</span><span class="p">[</span><span class="n">k</span> <span class="o">-</span> <span class="mi">1</span><span class="p">])</span> <span class="o">%</span> <span class="n">MOD</span>
         <span class="k">return</span> <span class="n">ans</span>
 </code></pre></div>
-<p>样例 1：n=2, maxValue=5. 链长 <span class="arithmatex">\(k\)</span> 可为 1, 2.
-- <span class="arithmatex">\(k = 1\)</span>：每个 <span class="arithmatex">\(v \in [1, 5]\)</span> 贡献 <span class="arithmatex">\(\binom{1}{0} = 1\)</span>，共 5。
-- <span class="arithmatex">\(k = 2\)</span>：链 <span class="arithmatex">\((u, v)\)</span>, <span class="arithmatex">\(u \mid v\)</span>, <span class="arithmatex">\(u &lt; v\)</span>, <span class="arithmatex">\(v \le 5\)</span>. 枚举：(1,2)(1,3)(1,4)(1,5)(2,4). 共 5 条，每条贡献 <span class="arithmatex">\(\binom{1}{1} = 1\)</span>，共 5。</p>
-<p>总 10。✅</p>
+<p>代码逐字对应式 (1)：先填 <span class="arithmatex">\(g\)</span>，再算 <span class="arithmatex">\(\binom{n-1}{k-1}\)</span>（存于 <code>comb[k-1]</code>），最后双重求和。注意 <code>comb</code> 在 <span class="arithmatex">\(k = n\)</span> 处因子 <span class="arithmatex">\((n-1-(k-1))=0\)</span> 自动清零，使所有 <span class="arithmatex">\(k &gt; n\)</span> 的项为 <span class="arithmatex">\(0\)</span>，答案循环里的 <code>(k-1) &lt;= n-1</code> 守卫因此冗余但无害。</p>
+<p><strong>手算验证（n=2, maxValue=5）。</strong> 链长 <span class="arithmatex">\(k\)</span> 可为 <span class="arithmatex">\(1, 2\)</span>。
+- <span class="arithmatex">\(k = 1\)</span>：每个 <span class="arithmatex">\(v \in [1, 5]\)</span> 是一条单值链，贡献 <span class="arithmatex">\(\binom{1}{0} = 1\)</span>，共 <span class="arithmatex">\(5\)</span>。
+- <span class="arithmatex">\(k = 2\)</span>：链 <span class="arithmatex">\((u, v)\)</span> 满足 <span class="arithmatex">\(u \mid v\)</span>、<span class="arithmatex">\(u &lt; v\)</span>、<span class="arithmatex">\(v \le 5\)</span>。枚举得 <span class="arithmatex">\((1,2),(1,3),(1,4),(1,5),(2,4)\)</span>，共 <span class="arithmatex">\(5\)</span> 条，每条贡献 <span class="arithmatex">\(\binom{1}{1} = 1\)</span>，共 <span class="arithmatex">\(5\)</span>。</p>
+<p>合计 <span class="arithmatex">\(10\)</span>，与样例一致。</p>
 <h2 id="complexity">复杂度 (Complexity)<a class="headerlink" href="#complexity" title="Permanent link">#</a></h2>
+<p>筛法主循环对每个 <span class="arithmatex">\(u\)</span> 枚举 <span class="arithmatex">\(\lfloor \text{maxValue}/u \rfloor\)</span> 个倍数，总倍数对数为 <span class="arithmatex">\(\sum_{u=1}^{M} \lfloor M/u \rfloor \approx M \ln M = O(M \log M)\)</span>（调和级数）；每对再扫一遍 <span class="arithmatex">\(k\)</span>，乘上 <span class="arithmatex">\(K^*\)</span>。</p>
 <ul>
-<li>Time: <span class="arithmatex">\(O(M \log M \cdot K^*)\)</span>, <span class="arithmatex">\(M = \text{maxValue}\)</span>, <span class="arithmatex">\(K^* \approx 14\)</span>. 约 <span class="arithmatex">\(10^4 \cdot 14 \cdot 14 \approx 2 \cdot 10^6\)</span>。</li>
+<li>Time: <span class="arithmatex">\(O(M \log M \cdot K^*)\)</span>，<span class="arithmatex">\(M = \text{maxValue}\)</span>，<span class="arithmatex">\(K^* \approx 14\)</span>。约 <span class="arithmatex">\(10^4 \cdot 14 \cdot 14 \approx 2 \cdot 10^6\)</span>。</li>
 <li>Space: <span class="arithmatex">\(O(M \cdot K^*)\)</span>。</li>
 </ul>
 <h2 id="pitfalls">陷阱 (Pitfalls)<a class="headerlink" href="#pitfalls" title="Permanent link">#</a></h2>
 <ul>
-<li>链严格递增（不是 <span class="arithmatex">\(\le\)</span>），因为相等位置已通过 stars-and-bars 分到链外。</li>
-<li><span class="arithmatex">\(K^*\)</span> 不要太小：<span class="arithmatex">\(\log_2 10^4 &lt; 14\)</span>，取 14 安全；取 13 可能漏 <span class="arithmatex">\(2^{13} = 8192\)</span> 链。</li>
-<li>计算 <span class="arithmatex">\(\binom{n-1}{k-1}\)</span> 用模逆元：<span class="arithmatex">\(k\)</span> 的逆 mod <span class="arithmatex">\(10^9 + 7\)</span> 用费马小定理。</li>
+<li>链必须<strong>严格递增</strong>（不是 <span class="arithmatex">\(\le\)</span>）：相等的位置已被切法那一维吸收，若链里再允许相等会与切法重复计数。这正是双射成立的前提。</li>
+<li><span class="arithmatex">\(K^*\)</span> 不能取太小：<span class="arithmatex">\(\log_2 10^4 &lt; 14\)</span>，取 <span class="arithmatex">\(14\)</span> 安全；取 <span class="arithmatex">\(13\)</span> 会漏掉 <span class="arithmatex">\(2^{13}=8192\)</span> 这条长链。</li>
+<li>算 <span class="arithmatex">\(\binom{n-1}{k-1}\)</span> 的除法须用模逆元：<span class="arithmatex">\(k\)</span> 在 <span class="arithmatex">\(10^9+7\)</span> 下的逆元由费马小定理 <span class="arithmatex">\(k^{-1} = k^{p-2} \bmod p\)</span> 给出。</li>
 </ul>
 <h2 id="related">相关题目 (Related)<a class="headerlink" href="#related" title="Permanent link">#</a></h2>
 <ul>

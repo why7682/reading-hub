@@ -5485,6 +5485,8 @@
       
         
       
+        
+      
     
     
     
@@ -6024,6 +6026,34 @@
     
   
     #93. Restore IP Addresses
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../0102_binary-tree-level-order-traversal/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    #102. Binary Tree Level Order Traversal
   
 
     
@@ -17877,6 +17907,34 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="数据结构 / 想法 (Approach)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#easyon2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Easy：\(O(n^2)\) 滑窗枚举
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ii-2949-on-o1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        II 版（#2949, \(O(n)\)）：把两条件各压成 \(O(1)\) 查询
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -22607,6 +22665,34 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="数据结构 / 想法 (Approach)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#easyon2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Easy：\(O(n^2)\) 滑窗枚举
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ii-2949-on-o1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        II 版（#2949, \(O(n)\)）：把两条件各压成 \(O(1)\) 查询
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -22675,12 +22761,18 @@
 <h2 id="problem">Problem<a class="headerlink" href="#problem" title="Permanent link">#</a></h2>
 <p>给小写串 <span class="arithmatex">\(s\)</span> 与正整数 <span class="arithmatex">\(k\)</span>，称子串"beautiful"当且仅当其元音数 <span class="arithmatex">\(v\)</span> 等于辅音数 <span class="arithmatex">\(c\)</span>，且 <span class="arithmatex">\(v \cdot c \equiv 0 \pmod k\)</span>。求 beautiful 非空子串数。<span class="arithmatex">\(|s| \le 10^3\)</span>, <span class="arithmatex">\(k \le 10^3\)</span>。</p>
 <h2 id="background">背景 (Background)<a class="headerlink" href="#background" title="Permanent link">#</a></h2>
-<p><span class="arithmatex">\(v = c\)</span> 等价于"元音 - 辅音前缀和"两端相等——把元音视 <span class="arithmatex">\(+1\)</span> 辅音视 <span class="arithmatex">\(-1\)</span>，前缀和差为 0 即 <span class="arithmatex">\(v=c\)</span>。这是 <strong>"和恒为 0 子段计数 = prefix hash"</strong> 的经典模板（如 #525 Contiguous Array、#560 Subarray Sum Equals K）。</p>
-<p>第二个条件 <span class="arithmatex">\(v \cdot c = v^2 \equiv 0 \pmod k\)</span>（因 <span class="arithmatex">\(v=c\)</span>），等价于 <span class="arithmatex">\(v^2 \equiv 0 \pmod k\)</span>。设 <span class="arithmatex">\(k\)</span> 的"square-free 部分"为 <span class="arithmatex">\(k'\)</span>（让 <span class="arithmatex">\(k = m^2 \cdot \text{rad}(k') \cdots\)</span>），则 <span class="arithmatex">\(v\)</span> 必须是某个倍数；具体地 <span class="arithmatex">\(v\)</span> 必须含 <span class="arithmatex">\(k\)</span> 中所有质因数的足够幂次。#II (#2949) 用这个数论事实把 <span class="arithmatex">\(v\)</span> 离散为"等差节奏"加速；Easy 数据小，直接 <span class="arithmatex">\(O(n^2)\)</span> 枚举即可。</p>
+<p>最朴素的做法是枚举每个子串，数一遍元音和辅音，再验两个条件。子串由左右端点 <span class="arithmatex">\((l, r)\)</span> 决定，共 <span class="arithmatex">\(O(n^2)\)</span> 个；如果每个都从头数字符，单个要 <span class="arithmatex">\(O(n)\)</span>，总计 <span class="arithmatex">\(O(n^3)\)</span>。</p>
+<p>第一处可改进的地方来自一个观察：固定左端点 <span class="arithmatex">\(l\)</span>、让右端点 <span class="arithmatex">\(r\)</span> 从 <span class="arithmatex">\(l\)</span> 向右滑时，子串每次只多一个字符。于是元音数 <span class="arithmatex">\(v\)</span> 和辅音数 <span class="arithmatex">\(c\)</span> 不必重数——新字符是元音就 <span class="arithmatex">\(v{+}{=}1\)</span>，否则 <span class="arithmatex">\(c{+}{=}1\)</span>，每步 <span class="arithmatex">\(O(1)\)</span>。这样总复杂度降到 <span class="arithmatex">\(O(n^2)\)</span>，对 <span class="arithmatex">\(n \le 10^3\)</span>（约 <span class="arithmatex">\(10^6\)</span> 次操作）足够。本题（Easy 版）到此即可，下面先把这条思路写成形式化与代码；末尾再说明当 <span class="arithmatex">\(n\)</span> 增大到 <span class="arithmatex">\(5 \cdot 10^4\)</span> 时（#2949）这两个条件如何各自被进一步压成 <span class="arithmatex">\(O(1)\)</span> 查询，从而得到 <span class="arithmatex">\(O(n)\)</span>。</p>
 <h2 id="formulation">形式化 (Formulation)<a class="headerlink" href="#formulation" title="Permanent link">#</a></h2>
-<p><span class="arithmatex">\(\#\{ (l, r) : 0 \le l \le r &lt; n,\ v_{l..r} = c_{l..r},\ v^2 \equiv 0 \pmod k \}\)</span>，<span class="arithmatex">\(v + c = r - l + 1\)</span>（长度），故 <span class="arithmatex">\(v = (r-l+1)/2\)</span>；长度必偶。</p>
+<p>把答案写成端点对的计数，是后续一切推导的脊柱：</p>
+<div class="arithmatex">\[
+\#\bigl\{\, (l, r) : 0 \le l \le r &lt; n,\ v_{l..r} = c_{l..r},\ v_{l..r}^2 \equiv 0 \pmod k \,\bigr\}.
+\]</div>
+<p>这里用到一个化简：由 <span class="arithmatex">\(v = c\)</span>，第二个条件 <span class="arithmatex">\(v \cdot c \equiv 0 \pmod k\)</span> 就是 <span class="arithmatex">\(v^2 \equiv 0 \pmod k\)</span>。</p>
+<p>记子串长度 <span class="arithmatex">\(L = r - l + 1\)</span>。因 <span class="arithmatex">\(v + c = L\)</span> 且 <span class="arithmatex">\(v = c\)</span>，得 <span class="arithmatex">\(v = c = L/2\)</span>。这有一个直接推论：<strong><span class="arithmatex">\(L\)</span> 必为偶数</strong>，否则 <span class="arithmatex">\(v = c\)</span> 不可能成立。所以无需另写奇偶判断——条件 <span class="arithmatex">\(v = c\)</span> 已自动滤掉奇长子串。</p>
 <h2 id="approach">数据结构 / 想法 (Approach)<a class="headerlink" href="#approach" title="Permanent link">#</a></h2>
-<p><strong>Easy 暴力 <span class="arithmatex">\(O(n^2)\)</span></strong>：</p>
+<h3 id="easyon2">Easy：<span class="arithmatex">\(O(n^2)\)</span> 滑窗枚举<a class="headerlink" href="#easyon2" title="Permanent link">#</a></h3>
+<p>把背景里的增量思路落地：外层固定 <span class="arithmatex">\(l\)</span>，内层让 <span class="arithmatex">\(r\)</span> 右移并维护 <span class="arithmatex">\((v, c)\)</span>，每步用 <span class="arithmatex">\(O(1)\)</span> 验两个条件。</p>
 <div class="language-python highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">Solution</span><span class="p">:</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">beautifulSubstrings</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span> <span class="n">k</span><span class="p">):</span>
         <span class="n">VOW</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="s1">&#39;aeiou&#39;</span><span class="p">)</span>
@@ -22695,29 +22787,54 @@
                     <span class="n">ans</span> <span class="o">+=</span> <span class="mi">1</span>
         <span class="k">return</span> <span class="n">ans</span>
 </code></pre></div>
-<p><strong>Trace example 1</strong> <code>s="baeyh", k=2</code>：
+<p><strong>Trace</strong> <code>s="baeyh", k=2</code>（v 元音、c 辅音，命中即 beautiful）：
 - l=0: r=0 b:c=1; r=1 a:v=1,c=1, v<em>c=1, 1%2=1, no; r=2 e:v=2,c=1; r=3 y:v=2,c=2, v</em>c=4, 4%2=0 ✓ ("baey")；r=4 h:v=2,c=3。
 - l=1: r=1 a:v=1; r=2 e:v=2; r=3 y:v=2,c=1; r=4 h:v=2,c=2 ✓ ("aeyh")。
 - l=2: r=2 e:v=1; r=3 y:v=1,c=1, 1%2≠0; r=4 h:v=1,c=2。
 - l=3,4: 无。
 - 总 2 ✓。</p>
-<p><strong>II 版思路 <span class="arithmatex">\(O(n)\)</span></strong>：定义 <span class="arithmatex">\(d_i = v_i - c_i\)</span>（前缀差），<span class="arithmatex">\(v = c\)</span> ⟺ <span class="arithmatex">\(d_l = d_{r+1}\)</span>。<span class="arithmatex">\(v \cdot c \equiv 0 \pmod k\)</span> ⟺ <span class="arithmatex">\(v^2 \equiv 0 \pmod k\)</span> ⟺ <span class="arithmatex">\(v \equiv 0 \pmod {k / \gcd(k, v) \cdots}\)</span>。设 <span class="arithmatex">\(k = p_1^{a_1} \cdots p_m^{a_m}\)</span>，令 <span class="arithmatex">\(K = \prod p_i^{\lceil a_i/2 \rceil}\)</span>（最小满足 <span class="arithmatex">\(K^2\)</span> 是 <span class="arithmatex">\(k\)</span> 倍数的整数）；则条件 ⟺ <span class="arithmatex">\(v \equiv 0 \pmod K\)</span> ⟺ <span class="arithmatex">\((r - l + 1) / 2 \equiv 0 \pmod K\)</span> ⟺ <span class="arithmatex">\((r + 1 - l) \equiv 0 \pmod {2K}\)</span> ⟺ <span class="arithmatex">\(r + 1 \equiv l \pmod {2K}\)</span>。把哈希键变为 <span class="arithmatex">\((d_i, i \bmod 2K)\)</span>，同键计数即可。</p>
+<h3 id="ii-2949-on-o1">II 版（#2949, <span class="arithmatex">\(O(n)\)</span>）：把两条件各压成 <span class="arithmatex">\(O(1)\)</span> 查询<a class="headerlink" href="#ii-2949-on-o1" title="Permanent link">#</a></h3>
+<p>当 <span class="arithmatex">\(n\)</span> 升到 <span class="arithmatex">\(5 \cdot 10^4\)</span> 时 <span class="arithmatex">\(O(n^2)\)</span> 不再够，需要把上面"逐对验条件"换成"一次扫描 + 哈希计数"。思路是把两个条件都化成只依赖端点本身的量，于是同一类端点一起计数。</p>
+<p><strong>条件一（<span class="arithmatex">\(v = c\)</span>）单独可解。</strong> 给每个前缀定义 <span class="arithmatex">\(d_i = (\text{前 } i \text{ 个字符的元音数}) - (\text{辅音数})\)</span>，则子串 <span class="arithmatex">\(s_{l..r}\)</span> 的 <span class="arithmatex">\(v - c = d_{r+1} - d_l\)</span>。于是</p>
+<div class="arithmatex">\[
+v_{l..r} = c_{l..r} \iff d_l = d_{r+1}.
+\]</div>
+<p>只有这一个条件时，答案就是：按 <span class="arithmatex">\(d\)</span> 值分桶，每桶内任取两个相等的前缀下标配成一个合法子串。一次扫描即可。</p>
+<p><strong>单靠 <span class="arithmatex">\(d\)</span> 不够。</strong> 问题在于第二个条件 <span class="arithmatex">\(v^2 \equiv 0 \pmod k\)</span>。对于 <span class="arithmatex">\(d\)</span> 值相同的两个下标 <span class="arithmatex">\(l, r+1\)</span>，它们之间的子串满足 <span class="arithmatex">\(v = c\)</span>，但 <span class="arithmatex">\(v\)</span> 究竟等于多少、是否被 <span class="arithmatex">\(k\)</span> 的相应幂次整除，<span class="arithmatex">\(d\)</span> 值本身完全看不出来——<span class="arithmatex">\(d\)</span> 只编码"元音减辅音"，不编码"元音有多少"。所以需要给哈希键补上第二个分量，恰好编码第二个条件。</p>
+<p><strong>把第二个条件翻成对下标的约束。</strong> 先确定 <span class="arithmatex">\(v^2 \equiv 0 \pmod k\)</span> 对 <span class="arithmatex">\(v\)</span> 意味着什么。设 <span class="arithmatex">\(k = p_1^{a_1} \cdots p_t^{a_t}\)</span>。则 <span class="arithmatex">\(k \mid v^2\)</span> 当且仅当对每个质因子幂 <span class="arithmatex">\(p_i^{a_i}\)</span> 都有 <span class="arithmatex">\(p_i^{a_i} \mid v^2\)</span>，即 <span class="arithmatex">\(p_i^{\lceil a_i/2 \rceil} \mid v\)</span>。令</p>
+<div class="arithmatex">\[
+K = \prod_{i=1}^{t} p_i^{\lceil a_i / 2 \rceil},
+\]</div>
+<p>则</p>
+<div class="arithmatex">\[
+v^2 \equiv 0 \pmod k \iff v \equiv 0 \pmod K.
+\]</div>
+<p>（<span class="arithmatex">\(K\)</span> 是使 <span class="arithmatex">\(K^2\)</span> 为 <span class="arithmatex">\(k\)</span> 倍数的最小正整数。）再代入 <span class="arithmatex">\(v = L/2 = (r + 1 - l)/2\)</span>：</p>
+<div class="arithmatex">\[
+v \equiv 0 \pmod K \iff (r + 1 - l) \equiv 0 \pmod{2K} \iff (r + 1) \equiv l \pmod{2K}.
+\]</div>
+<p><strong>合成哈希键。</strong> 至此两个条件都化成了"两端点的某个量相等"：条件一要 <span class="arithmatex">\(d_l = d_{r+1}\)</span>，条件二要 <span class="arithmatex">\(l \equiv (r+1) \pmod{2K}\)</span>。把前缀下标 <span class="arithmatex">\(i\)</span> 映成键</p>
+<div class="arithmatex">\[
+\bigl(\, d_i,\ i \bmod 2K \,\bigr),
+\]</div>
+<p>则一个合法子串恰对应一对键相同的下标 <span class="arithmatex">\(l\)</span> 与 <span class="arithmatex">\(r+1\)</span>。一次扫描、用哈希表累计每个键出现次数、把同键的配对数加起来，即得 <span class="arithmatex">\(O(n)\)</span> 算法。</p>
 <h2 id="complexity">复杂度 (Complexity)<a class="headerlink" href="#complexity" title="Permanent link">#</a></h2>
 <ul>
-<li>暴力：Time <span class="arithmatex">\(O(n^2)\)</span>, Space <span class="arithmatex">\(O(1)\)</span>；<span class="arithmatex">\(10^6\)</span> 操作可过。</li>
-<li>II 版：Time <span class="arithmatex">\(O(n \log k)\)</span>（求 <span class="arithmatex">\(K\)</span> 的因子分解）。</li>
+<li>暴力（本页主解）：Time <span class="arithmatex">\(O(n^2)\)</span>, Space <span class="arithmatex">\(O(1)\)</span>；<span class="arithmatex">\(n \le 10^3\)</span> 时约 <span class="arithmatex">\(10^6\)</span> 次操作，可过。</li>
+<li>II 版：Time <span class="arithmatex">\(O(n + \sqrt{k})\)</span>——试除法分解 <span class="arithmatex">\(k\)</span> 求 <span class="arithmatex">\(K\)</span> 为 <span class="arithmatex">\(O(\sqrt k)\)</span>，扫描计数为 <span class="arithmatex">\(O(n)\)</span>；Space <span class="arithmatex">\(O(n)\)</span>（哈希表）。</li>
 </ul>
 <h2 id="pitfalls">陷阱 (Pitfalls)<a class="headerlink" href="#pitfalls" title="Permanent link">#</a></h2>
 <ul>
 <li>长度必为偶——若 <span class="arithmatex">\(r - l + 1\)</span> 奇，<span class="arithmatex">\(v = c\)</span> 不可能。代码无须显式判（<span class="arithmatex">\(v = c\)</span> 自然过滤）。</li>
-<li><span class="arithmatex">\(v \cdot c \bmod k\)</span> 不能在 <span class="arithmatex">\(v, c\)</span> 单独取模后乘——本题数据小可直接乘，但 <span class="arithmatex">\(v, c \le n \le 10^3\)</span>，<span class="arithmatex">\(v \cdot c \le 10^6\)</span>，安全。</li>
+<li><span class="arithmatex">\(v \cdot c \bmod k\)</span> 不能在 <span class="arithmatex">\(v, c\)</span> 单独取模后乘——本题数据小可直接乘：<span class="arithmatex">\(v, c \le n \le 10^3\)</span>，故 <span class="arithmatex">\(v \cdot c \le 10^6\)</span>，无溢出之虞。</li>
 <li>"元音"集合是 a, e, i, o, u（不含 y）——别误把 y 计入。</li>
 </ul>
 <h2 id="related">相关题目 (Related)<a class="headerlink" href="#related" title="Permanent link">#</a></h2>
 <ul>
-<li><code>#2949. Count Beautiful Substrings II (off-wiki)</code> — <span class="arithmatex">\(n \le 5 \cdot 10^4\)</span>，需哈希优化。</li>
+<li><code>#2949. Count Beautiful Substrings II (off-wiki)</code> — <span class="arithmatex">\(n \le 5 \cdot 10^4\)</span>，即上文 <span class="arithmatex">\(O(n)\)</span> 哈希解。</li>
 <li><a href="../1010_pairs-of-songs-with-total-durations-divisible-by-60/">#1010. Pairs of Songs With Total Durations Divisible by 60</a> — 同类"模 k 配对"。</li>
-<li><code>#560. Subarray Sum Equals K (off-wiki)</code> — 前缀差 + 哈希的祖型。</li>
+<li><code>#525. Contiguous Array (off-wiki)</code> — 仅 <span class="arithmatex">\(v=c\)</span> 一个条件的母题：<span class="arithmatex">\(+1/-1\)</span> 前缀差为 0 的最长子段。</li>
+<li><code>#560. Subarray Sum Equals K (off-wiki)</code> — 前缀差 + 哈希计数的祖型。</li>
 </ul>
 <h2 id="further-reading">Further Reading<a class="headerlink" href="#further-reading" title="Permanent link">#</a></h2>
 <ul>

@@ -5485,6 +5485,8 @@
       
         
       
+        
+      
     
     
     
@@ -6024,6 +6026,34 @@
     
   
     #93. Restore IP Addresses
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../0102_binary-tree-level-order-traversal/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    #102. Binary Tree Level Order Traversal
   
 
     
@@ -22675,15 +22705,25 @@
 <h2 id="problem">Problem<a class="headerlink" href="#problem" title="Permanent link">#</a></h2>
 <p>给差分数组 <code>differences</code>（长 n）和值域 <code>[lower, upper]</code>。求有多少长度 <span class="arithmatex">\(n+1\)</span> 的整数序列 <code>hidden</code>，使得 <code>differences[i] = hidden[i+1] − hidden[i]</code> 且每个元素 ∈ [lower, upper]。</p>
 <h2 id="background">背景 (Background)<a class="headerlink" href="#background" title="Permanent link">#</a></h2>
-<p>经典的"差分还原 + 平移自由度计数"问题。一旦差分给定，序列被首元素唯一确定；首元素的合法范围由"序列极差"压缩。同形态出现在物理学的"势函数还原"（差分 = 力，序列 = 势能，常数项即标定零点）。</p>
+<p>直接的想法是枚举：序列由它的首元素 <span class="arithmatex">\(h_0\)</span> 起步，确定 <span class="arithmatex">\(h_0\)</span> 后，<span class="arithmatex">\(d_0 = h_1 - h_0\)</span> 逼出 <span class="arithmatex">\(h_1\)</span>，<span class="arithmatex">\(d_1 = h_2 - h_1\)</span> 逼出 <span class="arithmatex">\(h_2\)</span>，依此类推。换言之，<strong>固定差分后，整条序列由首元素 <span class="arithmatex">\(h_0\)</span> 唯一确定</strong>。于是枚举的对象不是序列，而是 <span class="arithmatex">\(h_0\)</span>：对每个候选 <span class="arithmatex">\(h_0\)</span>，沿差分推出全部元素，检查是否都落在 <span class="arithmatex">\([lower, upper]\)</span> 内。</p>
+<p>这个枚举立刻卡住：<span class="arithmatex">\(h_0\)</span> 的取值范围本身没有上界，朴素枚举无从下手。即便用约束 <span class="arithmatex">\(lower \le h_0 \le upper\)</span> 把范围框住，逐个验证仍是 <span class="arithmatex">\(O(n \cdot (upper - lower))\)</span>，在 <span class="arithmatex">\(upper - lower\)</span> 大时不可接受。</p>
+<p>但枚举失败的方式恰好指明了出路。把 <span class="arithmatex">\(h_0\)</span> 换成 <span class="arithmatex">\(h_0 + 1\)</span>，由于差分不变，整条序列<strong>每个元素都随之 <span class="arithmatex">\(+1\)</span></strong>——序列作为整体刚性平移，形状不动。因此"哪些 <span class="arithmatex">\(h_0\)</span> 合法"这个问题，本质只关乎序列的形状能否被平移进 <span class="arithmatex">\([lower, upper]\)</span> 这个窗口。这把对 <span class="arithmatex">\(h_0\)</span> 的搜索，转化为对一个一维平移量的范围求解，不必逐个试。</p>
 <h2 id="formulation">形式化 (Formulation)<a class="headerlink" href="#formulation" title="Permanent link">#</a></h2>
-<p>固定 <span class="arithmatex">\(h_0 = 0\)</span> 并计算前缀和 <span class="arithmatex">\(p_i = \sum_{k=0}^{i-1} d_k\)</span>（<span class="arithmatex">\(p_0 = 0\)</span>，<span class="arithmatex">\(i \ge 1\)</span>）。则任意合法序列形为 <span class="arithmatex">\(h_i = c + p_i\)</span>。约束：</p>
-<div class="arithmatex">\[\text{lower} \le c + p_i \le \text{upper}, \quad \forall i \in [0, n]\]</div>
-<p>等价于</p>
-<div class="arithmatex">\[\text{lower} - \min_i p_i \le c \le \text{upper} - \max_i p_i\]</div>
-<p>答案为该区间整数个数 <span class="arithmatex">\(\max(0,\; \text{upper} - \max_i p_i - (\text{lower} - \min_i p_i) + 1)\)</span>。化简：设 <span class="arithmatex">\(R = \max_i p_i - \min_i p_i\)</span>（序列的极差，与平移无关）。答案为 <span class="arithmatex">\(\max(0,\; (\text{upper} - \text{lower}) - R + 1)\)</span>。</p>
+<p>把上面的观察精确化。先剥离平移自由度：令 <span class="arithmatex">\(h_0\)</span> 暂取 <span class="arithmatex">\(0\)</span>，定义前缀和</p>
+<div class="arithmatex">\[p_i = \sum_{k=0}^{i-1} d_k, \qquad p_0 = 0,\ i \ge 1. \tag{1}\]</div>
+<p><span class="arithmatex">\(p_i\)</span> 记录了"以 <span class="arithmatex">\(h_0 = 0\)</span> 为基准时第 <span class="arithmatex">\(i\)</span> 个元素的位置"，它只依赖差分、与首元素无关，刻画了序列的<strong>形状</strong>。引入自由参数 <span class="arithmatex">\(c = h_0\)</span> 作为整体偏移量，则任意合法序列形为</p>
+<div class="arithmatex">\[h_i = c + p_i, \qquad i \in [0, n]. \tag{2}\]</div>
+<p>计数对象由此从序列变为 <span class="arithmatex">\(c\)</span> 的整数取值。约束"每个元素 ∈ <span class="arithmatex">\([lower, upper]\)</span>"写成</p>
+<div class="arithmatex">\[lower \le c + p_i \le upper, \qquad \forall i \in [0, n]. \tag{3}\]</div>
+<p>这是 <span class="arithmatex">\(n+1\)</span> 个对 <span class="arithmatex">\(c\)</span> 的不等式。要它们同时成立，只需各取最紧的一个。下界 <span class="arithmatex">\(c \ge lower - p_i\)</span> 对所有 <span class="arithmatex">\(i\)</span> 成立，等价于对其中最大的右端成立，即 <span class="arithmatex">\(p_i\)</span> 最小处给出约束最紧的下界；同理上界 <span class="arithmatex">\(c \le upper - p_i\)</span> 由 <span class="arithmatex">\(p_i\)</span> 最大处收得最紧。两者合并：</p>
+<div class="arithmatex">\[lower - \min_i p_i \le c \le upper - \max_i p_i. \tag{4}\]</div>
+<p>答案是区间 <span class="arithmatex">\((4)\)</span> 内的整数个数：</p>
+<div class="arithmatex">\[\max\!\bigl(0,\ (upper - \max_i p_i) - (lower - \min_i p_i) + 1\bigr).\]</div>
+<p>记 <span class="arithmatex">\(R = \max_i p_i - \min_i p_i\)</span>（形状的极差，与平移量 <span class="arithmatex">\(c\)</span> 无关），整理为</p>
+<div class="arithmatex">\[\max\!\bigl(0,\ (upper - lower) - R + 1\bigr). \tag{5}\]</div>
+<p>直观上 <span class="arithmatex">\((5)\)</span> 即：窗口宽度 <span class="arithmatex">\(upper - lower\)</span> 必须容下形状的极差 <span class="arithmatex">\(R\)</span>，余下的活动空间 <span class="arithmatex">\(+1\)</span> 就是合法 <span class="arithmatex">\(c\)</span> 的个数；容不下则为 <span class="arithmatex">\(0\)</span>。</p>
 <h2 id="approach">数据结构 / 想法 (Approach)<a class="headerlink" href="#approach" title="Permanent link">#</a></h2>
-<p>一次扫描求前缀和的最大、最小（含初始 0）。</p>
+<p>式 <span class="arithmatex">\((5)\)</span> 只需要 <span class="arithmatex">\(\max_i p_i\)</span> 与 <span class="arithmatex">\(\min_i p_i\)</span>。一次扫描累加前缀和，途中维护最大、最小即可——注意把初始的 <span class="arithmatex">\(p_0 = 0\)</span> 一并计入。</p>
 <div class="language-python highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">Solution</span><span class="p">:</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">numberOfArrays</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">differences</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">],</span> <span class="n">lower</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">upper</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
         <span class="n">cur</span> <span class="o">=</span> <span class="mi">0</span>
@@ -22705,16 +22745,16 @@
 </ul>
 <h2 id="pitfalls">陷阱 (Pitfalls)<a class="headerlink" href="#pitfalls" title="Permanent link">#</a></h2>
 <ul>
-<li><strong>必须把 <span class="arithmatex">\(p_0 = 0\)</span> 计入 max/min</strong>：若 differences 全正，则 hidden[0] 是最小值，前缀和的初始 0 必须参与。</li>
+<li><strong>必须把 <span class="arithmatex">\(p_0 = 0\)</span> 计入 max/min</strong>：式 <span class="arithmatex">\((1)\)</span> 把 <span class="arithmatex">\(p_0 = 0\)</span> 定为形状的一部分。若 differences 全正，则 <span class="arithmatex">\(h_0\)</span> 是最小值，这个初始 0 正是 <span class="arithmatex">\(\min_i p_i\)</span>，漏掉它会算错极差。代码用 <code>lo = hi = 0</code> 在循环前初始化来保证这点。</li>
 <li><strong>溢出</strong>：差分累积值可能达到 <span class="arithmatex">\(n \cdot 10^5 = 10^{10}\)</span>，超过 32 位整数。Python 自动大整数无忧；C++/Java 需用 <code>long long</code>。</li>
-<li><strong>返回 0 的情形</strong>：当 R &gt; upper − lower 时，没有任何 c 合法。</li>
+<li><strong>返回 0 的情形</strong>：当 <span class="arithmatex">\(R &gt; upper - lower\)</span> 时，区间 <span class="arithmatex">\((4)\)</span> 为空，没有任何 <span class="arithmatex">\(c\)</span> 合法，式 <span class="arithmatex">\((5)\)</span> 的 <span class="arithmatex">\(\max(0, \cdot)\)</span> 给出 0。</li>
 </ul>
 <h2 id="related">相关题目 (Related)<a class="headerlink" href="#related" title="Permanent link">#</a></h2>
 <ul>
 <li><code>#3468 Find the Number of Copy Arrays</code> (本 wiki，<a href="../3468_find-the-number-of-copy-arrays/">link</a>) — 同样靠"平移自由度"计数。</li>
 </ul>
 <h2 id="further-reading">Further Reading<a class="headerlink" href="#further-reading" title="Permanent link">#</a></h2>
-<p>无推荐外部资源（题目难度不足以需要专题文献）。</p>
+<p>差分数组与前缀和的对偶关系，可参见 CP-Algorithms 的 <a href="https://cp-algorithms.com/">Prefix sum / difference array</a> 章节作为基础回顾。</p>
 
 
 

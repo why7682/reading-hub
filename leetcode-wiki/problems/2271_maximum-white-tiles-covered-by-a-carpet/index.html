@@ -5485,6 +5485,8 @@
       
         
       
+        
+      
     
     
     
@@ -6024,6 +6026,34 @@
     
   
     #93. Restore IP Addresses
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../0102_binary-tree-level-order-traversal/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    #102. Binary Tree Level Order Traversal
   
 
     
@@ -15189,6 +15219,67 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="数据结构 / 想法 (Approach)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        直觉：覆盖数只在边界处跳变
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        形式化引理
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        从公式推导算法
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        算法（滑窗 + 前缀和）
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        样例验证
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -22607,6 +22698,67 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="数据结构 / 想法 (Approach)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        直觉：覆盖数只在边界处跳变
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        形式化引理
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        从公式推导算法
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        算法（滑窗 + 前缀和）
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        样例验证
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -22675,19 +22827,55 @@
 <h2 id="problem">Problem<a class="headerlink" href="#problem" title="Permanent link">#</a></h2>
 <p>给若干不相交的白色区间 <code>tiles[i] = [l_i, r_i]</code>。一条长度为 <code>carpetLen</code> 的地毯可以放在数轴任意位置 <span class="arithmatex">\([p, p + \text{carpetLen} - 1]\)</span>。求地毯覆盖白色 tile 数的最大值。<span class="arithmatex">\(\text{tiles}.length \le 5 \cdot 10^4\)</span>，坐标 <span class="arithmatex">\(\le 10^9\)</span>。</p>
 <h2 id="background">背景 (Background)<a class="headerlink" href="#background" title="Permanent link">#</a></h2>
-<p>经典 <strong>interval covering + greedy alignment</strong>：连续覆盖问题在「无界连续域 + 离散对象」上的最优放置点必落在某个对象边界（这里是某个 tile 的左端点）——属于线性规划极点 / extreme point 论证的通俗版本。</p>
+<p>地毯的左端 <span class="arithmatex">\(p\)</span> 可以是任意整数。最直接的想法是枚举每一个可能的 <span class="arithmatex">\(p\)</span>：固定地毯占据 <span class="arithmatex">\([p, p+L-1]\)</span>，数它覆盖了多少白格，取最大值。</p>
+<p>这立刻撞上墙。坐标范围到 <span class="arithmatex">\(10^9\)</span>，所以 <span class="arithmatex">\(p\)</span> 的候选值有约 <span class="arithmatex">\(10^9\)</span> 个；即便每个 <span class="arithmatex">\(p\)</span> 都能 <span class="arithmatex">\(O(1)\)</span> 算出覆盖数，总量也是 <span class="arithmatex">\(10^9\)</span> 级，不可行。</p>
+<p>要让问题可解，必须把「连续无界」的候选集合 <span class="arithmatex">\(p \in \mathbb{Z}\)</span> 压成一个<strong>有限且小</strong>的集合。下面整篇围绕一个问题展开：哪些 <span class="arithmatex">\(p\)</span> 值真正值得考虑？答案会把候选数从 <span class="arithmatex">\(10^9\)</span> 降到 <span class="arithmatex">\(m \le 5\cdot 10^4\)</span> 个。</p>
 <h2 id="formulation">形式化 (Formulation)<a class="headerlink" href="#formulation" title="Permanent link">#</a></h2>
-<p>设排好序的区间为 <span class="arithmatex">\([l_1, r_1], \dots, [l_m, r_m]\)</span>. 求</p>
-<div class="arithmatex">\[\max_{p \in \mathbb{Z}} \sum_{i} \max(0, \min(r_i, p + L - 1) - \max(l_i, p) + 1)\]</div>
-<p>其中 <span class="arithmatex">\(L = \text{carpetLen}\)</span>.</p>
+<p>先把「覆盖数」写成 <span class="arithmatex">\(p\)</span> 的函数，这样才能讨论它在哪里取最大。</p>
+<p>设排好序的区间为 <span class="arithmatex">\([l_1, r_1], \dots, [l_m, r_m]\)</span>，记 <span class="arithmatex">\(L = \text{carpetLen}\)</span>。地毯占据 <span class="arithmatex">\([p, p+L-1]\)</span>，它与第 <span class="arithmatex">\(i\)</span> 个区间的重叠长度为</p>
+<div class="arithmatex">\[g_i(p) = \max\bigl(0,\; \min(r_i,\, p+L-1) - \max(l_i,\, p) + 1\bigr).\]</div>
+<p>总覆盖即各区间重叠之和，目标是</p>
+<div class="arithmatex">\[f(p) = \sum_{i=1}^{m} g_i(p), \qquad \text{求 } \max_{p \in \mathbb{Z}} f(p). \tag{1}\]</div>
+<p>这个 <span class="arithmatex">\(f\)</span> 的形状决定了我们要枚举哪些 <span class="arithmatex">\(p\)</span>。</p>
 <h2 id="approach">数据结构 / 想法 (Approach)<a class="headerlink" href="#approach" title="Permanent link">#</a></h2>
-<p><strong>关键引理</strong>：最优放置点 <span class="arithmatex">\(p^*\)</span> 可取某个 <span class="arithmatex">\(p^* = l_i\)</span>（地毯左端对齐某区间左端）。
-<em>证明草图</em>：若 <span class="arithmatex">\(p^*\)</span> 落在某 tile 内部或 gap 中，把 <span class="arithmatex">\(p\)</span> 右移直到 <span class="arithmatex">\(p = l_j\)</span> 不会减少覆盖：(a) 在 gap 内右移只可能增加右端覆盖；(b) 在 tile 内右移每减 1 个左端覆盖就增 1 个右端覆盖，直到地毯左端撞到下一个 tile 起点。</p>
-<p><strong>算法</strong>（<strong>滑窗 + 前缀和</strong>）：
-1. 把 tiles 按 <span class="arithmatex">\(l_i\)</span> 排序，预处理累计 tile 长度的前缀和 <span class="arithmatex">\(S\)</span>。
-2. 用左右指针 <span class="arithmatex">\(i, j\)</span>：枚举地毯左端对齐 <span class="arithmatex">\(l_i\)</span>，右端 <span class="arithmatex">\(e = l_i + L - 1\)</span>；让 <span class="arithmatex">\(j\)</span> 移动到「最后一个 <span class="arithmatex">\(l_j \le e\)</span>」的区间。
-3. 区间 <span class="arithmatex">\([i, j-1]\)</span> 完全被覆盖；第 <span class="arithmatex">\(j\)</span> 个区间可能部分覆盖：贡献 <span class="arithmatex">\(\min(r_j, e) - l_j + 1\)</span>。
-4. 总覆盖 = <code>prefix[j] - prefix[i] + max(0, min(r_j, e) - l_j + 1)</code>。</p>
+<h3 id="_1">直觉：覆盖数只在边界处跳变<a class="headerlink" href="#_1" title="Permanent link">#</a></h3>
+<p>考虑把地毯从某个位置开始<strong>连续右移</strong> <span class="arithmatex">\(p \to p+1\)</span>。地毯右端 <span class="arithmatex">\(p+L-1\)</span> 扫过的那一格，要么是白格（多覆盖 1），要么是空隙（不变）；左端 <span class="arithmatex">\(p-1\)</span> 离开的那一格，要么原来是白格（少覆盖 1），要么是空隙（不变）。</p>
+<p>于是只要地毯的两端都没有跨过任何 tile 的边界，右移一步时左右两端进出的状态都不变，<span class="arithmatex">\(f(p)\)</span> 的增量也不变——在这样一段区间内 <span class="arithmatex">\(f\)</span> 是线性（实为分段常斜率）的。<span class="arithmatex">\(f\)</span> 的斜率只在 <span class="arithmatex">\(p\)</span> 或 <span class="arithmatex">\(p+L-1\)</span> 越过某个 <span class="arithmatex">\(l_i\)</span> 或 <span class="arithmatex">\(r_i\)</span> 时才改变。一个分段线性函数的最大值必在某个<strong>断点</strong>取得，断点就是这些边界。</p>
+<p>更强的一句话直觉：从任何不是「左端对齐某 tile 左端」的位置出发，把地毯一直右移到左端撞上下一个 tile 的左端，覆盖数不会变小。理由——右移让右端可能扫进新的白格（覆盖不减），而只要左端还停在某个 tile 内部或空隙里，移出去的左侧那一格至多抵消右侧的增量。把这个右移一路推到底，最优位置总能落在某个 <span class="arithmatex">\(p = l_i\)</span> 上。</p>
+<h3 id="_2">形式化引理<a class="headerlink" href="#_2" title="Permanent link">#</a></h3>
+<p><strong>引理</strong>：式 (1) 的最大值可在某个 <span class="arithmatex">\(p^\* = l_i\)</span>（地毯左端对齐某区间左端）取得。</p>
+<p><em>证明</em>。设最优 <span class="arithmatex">\(p^\*\)</span> 不等于任何 <span class="arithmatex">\(l_i\)</span>。分两种情况向右平移到下一个 <span class="arithmatex">\(l_j\)</span>：</p>
+<ul>
+<li>
+<p><strong>(a) <span class="arithmatex">\(p^\*\)</span> 落在某个空隙中</strong>（不在任何 tile 内）。右移 <span class="arithmatex">\(p\)</span> 时左端扫过的是空隙，左侧覆盖不减少；右端可能扫进新白格，右侧覆盖不减少。故 <span class="arithmatex">\(f\)</span> 不减。</p>
+</li>
+<li>
+<p><strong>(b) <span class="arithmatex">\(p^\*\)</span> 落在某个 tile 内部</strong>。右移一步：左端移出当前 tile 的一格，左侧失去 1 个白格；右端进的一格若是白格则右侧补回 1，若是空隙则不补。两端净变化 <span class="arithmatex">\(\ge 0\)</span>。</p>
+</li>
+</ul>
+<p>两种情况下右移都不减少覆盖。一路右移直到地毯左端 <span class="arithmatex">\(p = l_j\)</span> 撞上下一个 tile 起点，期间 <span class="arithmatex">\(f\)</span> 单调不减，故对齐 <span class="arithmatex">\(l_j\)</span> 处的覆盖 <span class="arithmatex">\(\ge f(p^\*)\)</span>。<span class="arithmatex">\(\square\)</span></p>
+<p>引理把候选集合从 <span class="arithmatex">\(\{p \in \mathbb{Z}\}\)</span>（约 <span class="arithmatex">\(10^9\)</span> 个）缩到 <span class="arithmatex">\(\{l_1, \dots, l_m\}\)</span>（<span class="arithmatex">\(m \le 5\cdot10^4\)</span> 个）。现在回到式 (1)，代入 <span class="arithmatex">\(p = l_i\)</span> 把目标拆开。</p>
+<h3 id="_3">从公式推导算法<a class="headerlink" href="#_3" title="Permanent link">#</a></h3>
+<p>固定 <span class="arithmatex">\(p = l_i\)</span>，地毯占据 <span class="arithmatex">\([l_i,\, e]\)</span>，其中 <span class="arithmatex">\(e = l_i + L - 1\)</span>。要算 <span class="arithmatex">\(f(l_i) = \sum_k g_k(l_i)\)</span>。</p>
+<p>因为 tiles 不相交且按左端排序，有 <span class="arithmatex">\(r_k &lt; l_{k+1}\)</span>。设 <span class="arithmatex">\(j\)</span> 是第一个满足 <span class="arithmatex">\(l_j &gt; e\)</span> 的下标，则左端 <span class="arithmatex">\(\le e\)</span> 的区间恰是 <span class="arithmatex">\(i, i+1, \dots, j-1\)</span>，其余区间与地毯无重叠（<span class="arithmatex">\(g_k(l_i)=0\)</span>）。在这些有重叠的区间中：</p>
+<ul>
+<li>对 <span class="arithmatex">\(k \in [i,\, j-2]\)</span>：由非相交性 <span class="arithmatex">\(r_k &lt; l_{k+1} \le l_{j-1} \le e\)</span>，故整段 <span class="arithmatex">\([l_k, r_k]\)</span> 落在地毯内，<strong>完全覆盖</strong>，贡献 <span class="arithmatex">\(r_k - l_k + 1\)</span>（整段长度）。</li>
+<li>对 <span class="arithmatex">\(k = j-1\)</span>：左端 <span class="arithmatex">\(l_{j-1} \le e\)</span>，但右端 <span class="arithmatex">\(r_{j-1}\)</span> 可能超出 <span class="arithmatex">\(e\)</span>，只能<strong>部分覆盖</strong>，贡献 <span class="arithmatex">\(\min(r_{j-1},\, e) - l_{j-1} + 1\)</span>。</li>
+</ul>
+<p>于是式 (1) 在 <span class="arithmatex">\(p = l_i\)</span> 处分解为「完全覆盖前缀」加「部分覆盖的末项」：</p>
+<div class="arithmatex">\[f(l_i) = \underbrace{\sum_{k=i}^{j-2} (r_k - l_k + 1)}_{\text{完全覆盖}} \;+\; \underbrace{\bigl(\min(r_{j-1},\, e) - l_{j-1} + 1\bigr)}_{\text{部分覆盖}}. \tag{2}\]</div>
+<p>第一项是「区间长度」的一段连续求和，正适合用前缀和 <span class="arithmatex">\(O(1)\)</span> 查询。定义</p>
+<div class="arithmatex">\[S[k] = \sum_{t=0}^{k-1} (r_t - l_t + 1),\]</div>
+<p>则式 (2) 的完全覆盖部分 <span class="arithmatex">\(= S[j-1] - S[i]\)</span>。这正是代码里每一步要算的量。</p>
+<h3 id="_4">算法（滑窗 + 前缀和）<a class="headerlink" href="#_4" title="Permanent link">#</a></h3>
+<p>式 (2) 直接给出算法：枚举左端对齐 <span class="arithmatex">\(l_i\)</span>，找到右边界对应的 <span class="arithmatex">\(j\)</span>，按公式求和取最大。</p>
+<ol>
+<li>把 tiles 按 <span class="arithmatex">\(l_i\)</span> 排序，预处理长度前缀和 <span class="arithmatex">\(S\)</span>。</li>
+<li>用左右指针 <span class="arithmatex">\(i, j\)</span>：枚举地毯左端对齐 <span class="arithmatex">\(l_i\)</span>，右端 <span class="arithmatex">\(e = l_i + L - 1\)</span>；让 <span class="arithmatex">\(j\)</span> 移动到第一个 <span class="arithmatex">\(l_j &gt; e\)</span> 的位置。</li>
+<li>完全覆盖部分 <span class="arithmatex">\(= S[j-1] - S[i]\)</span>（即 <span class="arithmatex">\(\text{tiles}[i..j-2]\)</span>）；末项 <span class="arithmatex">\(\text{tiles}[j-1]\)</span> 部分覆盖，贡献 <span class="arithmatex">\(\min(r_{j-1}, e) - l_{j-1} + 1\)</span>。</li>
+<li><span class="arithmatex">\(f(l_i) = (S[j-1] - S[i]) + \bigl(\min(r_{j-1}, e) - l_{j-1} + 1\bigr)\)</span>，对所有 <span class="arithmatex">\(i\)</span> 取最大。</li>
+</ol>
+<p>关键的效率来源：<span class="arithmatex">\(e = l_i + L - 1\)</span> 随 <span class="arithmatex">\(i\)</span> 单调递增，所以 <span class="arithmatex">\(j\)</span> 只增不减，整个双指针扫描是均摊 <span class="arithmatex">\(O(m)\)</span>（详见 Pitfalls）。</p>
 <div class="language-python highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">Solution</span><span class="p">:</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">maximumWhiteTiles</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tiles</span><span class="p">,</span> <span class="n">L</span><span class="p">):</span>
         <span class="n">tiles</span><span class="o">.</span><span class="n">sort</span><span class="p">()</span>
@@ -22700,23 +22888,21 @@
         <span class="n">j</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">m</span><span class="p">):</span>
             <span class="n">e</span> <span class="o">=</span> <span class="n">tiles</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">L</span> <span class="o">-</span> <span class="mi">1</span>
-            <span class="c1"># advance j while tiles[j].l &lt;= e</span>
+            <span class="c1"># advance j to the first index with l_j &gt; e</span>
             <span class="k">while</span> <span class="n">j</span> <span class="o">&lt;</span> <span class="n">m</span> <span class="ow">and</span> <span class="n">tiles</span><span class="p">[</span><span class="n">j</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="n">e</span><span class="p">:</span>
                 <span class="n">j</span> <span class="o">+=</span> <span class="mi">1</span>
-            <span class="c1"># tiles[i..j-1] are candidates; tiles[j-1] may overflow</span>
+            <span class="c1"># tiles[i..j-1] all have l &lt;= e; tiles[j-1] may overflow past e</span>
             <span class="k">if</span> <span class="n">j</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
                 <span class="k">continue</span>
-            <span class="n">full</span> <span class="o">=</span> <span class="n">prefix</span><span class="p">[</span><span class="n">j</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">prefix</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>  <span class="c1"># tiles i..j-2 fully</span>
+            <span class="n">full</span> <span class="o">=</span> <span class="n">prefix</span><span class="p">[</span><span class="n">j</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">prefix</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>  <span class="c1"># tiles i..j-2 fully covered</span>
             <span class="n">last_l</span><span class="p">,</span> <span class="n">last_r</span> <span class="o">=</span> <span class="n">tiles</span><span class="p">[</span><span class="n">j</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span>
             <span class="n">partial</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">last_r</span><span class="p">,</span> <span class="n">e</span><span class="p">)</span> <span class="o">-</span> <span class="n">last_l</span> <span class="o">+</span> <span class="mi">1</span>
             <span class="n">ans</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">ans</span><span class="p">,</span> <span class="n">full</span> <span class="o">+</span> <span class="n">partial</span><span class="p">)</span>
-            <span class="c1"># 不要回退 j</span>
-        <span class="c1"># 还要考虑「地毯右端对齐某 r_i」的对称情形? </span>
-        <span class="c1"># 不需要：上面的 i 已枚举每个 l_i 作为左端。</span>
         <span class="k">return</span> <span class="n">ans</span>
 </code></pre></div>
-<p><strong>对称性检查</strong>：是否还要枚举"地毯右端对齐 <span class="arithmatex">\(r_i\)</span>"？不必——通过对称论证或反例可知；但实践中常多做一次「右端对齐」枚举以稳妥。本批此处只枚举左端已可通过 LeetCode 全部用例。</p>
-<p>样例 1：<code>tiles=[[1,5],[10,11],[12,18],[20,25],[30,32]], L=10</code>. 排序后 i=1 (l=10, e=19): j 推进到第 4 个（l=20&gt;19 停在 j=3）, full=prefix[2]-prefix[1]=2 (tiles[1]=2 长), tiles[2]=[12,18]：partial=min(18,19)-12+1=7。合计 2+7=9。✅</p>
+<p>只枚举左端对齐 <span class="arithmatex">\(l_i\)</span> 已经完备：引理保证最优解必在某个 <span class="arithmatex">\(l_i\)</span> 取得，因此无需另行枚举「右端对齐 <span class="arithmatex">\(r_i\)</span>」。这一点已由穷举所有整数位置的对拍验证（见 must-keep 的压力测试结论）。</p>
+<h3 id="_5">样例验证<a class="headerlink" href="#_5" title="Permanent link">#</a></h3>
+<p><code>tiles=[[1,5],[10,11],[12,18],[20,25],[30,32]], L=10</code>，排序后取 <span class="arithmatex">\(i=1\)</span>（<span class="arithmatex">\(l_1=10\)</span>，<span class="arithmatex">\(e = 10 + 10 - 1 = 19\)</span>）：<span class="arithmatex">\(j\)</span> 推进到第一个 <span class="arithmatex">\(l_j &gt; 19\)</span> 的位置，即 <span class="arithmatex">\(l_3 = 20 &gt; 19\)</span>，停在 <span class="arithmatex">\(j=3\)</span>。完全覆盖部分 $= S[2] - S[1] = $ 区间 <span class="arithmatex">\(\text{tiles}[1]=[10,11]\)</span> 的长度 <span class="arithmatex">\(2\)</span>；末项 <span class="arithmatex">\(\text{tiles}[2]=[12,18]\)</span> 部分覆盖：<span class="arithmatex">\(\min(18, 19) - 12 + 1 = 7\)</span>。合计 <span class="arithmatex">\(2 + 7 = 9\)</span>。这是全局最优。✅</p>
 <h2 id="complexity">复杂度 (Complexity)<a class="headerlink" href="#complexity" title="Permanent link">#</a></h2>
 <ul>
 <li>Time: <span class="arithmatex">\(O(m \log m)\)</span> 排序 + <span class="arithmatex">\(O(m)\)</span> 双指针。</li>
@@ -22724,8 +22910,8 @@
 </ul>
 <h2 id="pitfalls">陷阱 (Pitfalls)<a class="headerlink" href="#pitfalls" title="Permanent link">#</a></h2>
 <ul>
-<li>区间相交问题最忌「回退 j」——一旦 j 退回，复杂度退化为 <span class="arithmatex">\(O(m^2)\)</span>。这里 <span class="arithmatex">\(e\)</span> 随 <span class="arithmatex">\(i\)</span> 单调递增，j 单调不减，安全。</li>
-<li>当地毯长度极长（覆盖所有区间）时不要让 partial 计算越界；<code>min(last_r, e)</code> 处理之。</li>
+<li>双指针最忌「回退 <span class="arithmatex">\(j\)</span>」——一旦 <span class="arithmatex">\(j\)</span> 退回，复杂度退化为 <span class="arithmatex">\(O(m^2)\)</span>。这里 <span class="arithmatex">\(e = l_i + L - 1\)</span> 随 <span class="arithmatex">\(i\)</span> 单调递增，故 <span class="arithmatex">\(j\)</span> 单调不减，均摊 <span class="arithmatex">\(O(m)\)</span>。这正是算法步骤里依赖的那条性质。</li>
+<li>当地毯长度极长（覆盖所有区间）时，末项不要让 partial 计算越界；用 <span class="arithmatex">\(\min(r_{j-1}, e)\)</span> 钳住即可。</li>
 <li><code>int</code> 范围：<span class="arithmatex">\(l, r, L \le 10^9\)</span>，<span class="arithmatex">\(e \le 2 \cdot 10^9\)</span>，C++ 需 <code>long long</code>。</li>
 </ul>
 <h2 id="related">相关题目 (Related)<a class="headerlink" href="#related" title="Permanent link">#</a></h2>

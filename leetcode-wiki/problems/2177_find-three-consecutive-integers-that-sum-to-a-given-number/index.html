@@ -5485,6 +5485,8 @@
       
         
       
+        
+      
     
     
     
@@ -6024,6 +6026,34 @@
     
   
     #93. Restore IP Addresses
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../0102_binary-tree-level-order-traversal/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    #102. Binary Tree Level Order Traversal
   
 
     
@@ -22675,11 +22705,19 @@
 <h2 id="problem">Problem<a class="headerlink" href="#problem" title="Permanent link">#</a></h2>
 <p>给整数 <code>num</code> (<span class="arithmatex">\(0 \le \text{num} \le 10^{15}\)</span>)，求三连续整数 <span class="arithmatex">\(x-1, x, x+1\)</span> 使得它们和为 num；若不存在返回 <code>[]</code>。</p>
 <h2 id="background">背景 (Background)<a class="headerlink" href="#background" title="Permanent link">#</a></h2>
-<p>简单的代数：<span class="arithmatex">\((x-1) + x + (x+1) = 3x\)</span>，所以 num 必须是 3 的倍数。这是"<span class="arithmatex">\(k\)</span> 个连续整数之和"判定的最朴素特例（一般结论：<span class="arithmatex">\(n\)</span> 可表为 <span class="arithmatex">\(k\)</span> 个连续正整数之和当且仅当 <span class="arithmatex">\(n/k - (k-1)/2\)</span> 为正整数）。</p>
-<p>题目难度被定为 Medium 主要因为 num 高达 <span class="arithmatex">\(10^{15}\)</span>，需要注意整数类型（Python 无忧，C++/Java 需 long long）。</p>
+<p>先按最直接的方式建模：把三个连续整数记作 <span class="arithmatex">\(n, n+1, n+2\)</span>，要求它们的和等于 num。展开求和：</p>
+<div class="arithmatex">\[n + (n+1) + (n+2) = 3n + 3 = \text{num}.\]</div>
+<p>解出 <span class="arithmatex">\(n\)</span> 需要 <span class="arithmatex">\(3n = \text{num} - 3\)</span>，即 num<span class="arithmatex">\(-3\)</span> 必须能被 3 整除。这个条件能用，但带着一个 <span class="arithmatex">\(-3\)</span> 的修正项：判定时不能直接看 num，而要先减 3 再判整除，求出的 <span class="arithmatex">\(n\)</span> 也不是 num 三等分点而是它左移一格的端点。修正项本身不难，但它提示这个参数化没有对齐问题的对称结构。</p>
+<p>注意到三个连续整数关于中间那个对称。若把它们以中点 <span class="arithmatex">\(x\)</span> 为中心写成 <span class="arithmatex">\(x-1, x, x+1\)</span>，求和时两侧偏移 <span class="arithmatex">\(-1\)</span> 与 <span class="arithmatex">\(+1\)</span> 恰好抵消：</p>
+<div class="arithmatex">\[(x-1) + x + (x+1) = 3x.\]</div>
+<p>抵消是这组数自身对称性的结果，不依赖外部事实。它把求和直接坍缩为中点的三倍，于是判定条件不再带修正项：num 能写成三连续整数之和，当且仅当它本身是 3 的倍数。这正是下一节形式化的出发点。</p>
 <h2 id="formulation">形式化 (Formulation)<a class="headerlink" href="#formulation" title="Permanent link">#</a></h2>
-<p>存在 <span class="arithmatex">\(x \in \mathbb{Z}\)</span> 使 <span class="arithmatex">\(3x = \text{num}\)</span>，当且仅当 <span class="arithmatex">\(\text{num} \equiv 0 \pmod 3\)</span>。返回 <span class="arithmatex">\([x-1, x, x+1] = [\text{num}/3 - 1, \text{num}/3, \text{num}/3 + 1]\)</span>。</p>
+<p>由上节的抵消，以 <span class="arithmatex">\(x\)</span> 为中心的三连续整数之和恰为 <span class="arithmatex">\(3x\)</span>，因此可行性问题归约为「<span class="arithmatex">\(x\)</span> 能否取整数」。形式化地：</p>
+<div class="arithmatex">\[\exists\, x \in \mathbb{Z} : 3x = \text{num} \quad\Longleftrightarrow\quad \text{num} \equiv 0 \pmod 3. \tag{1}\]</div>
+<p>解唯一：把整组三元数平移 1，其和恰好变化 3，故对任一固定的 num 至多有一个合法中点 <span class="arithmatex">\(x\)</span>。当 <span class="arithmatex">\(\text{num} \equiv 0 \pmod 3\)</span> 时它等于 <span class="arithmatex">\(x = \text{num}/3\)</span>（此处 <span class="arithmatex">\(3 \mid \text{num}\)</span>，整除无余）；否则无解，返回 <code>[]</code>。结果为</p>
+<div class="arithmatex">\[[\,x-1,\ x,\ x+1\,], \qquad x = \text{num}/3.\]</div>
 <h2 id="approach">数据结构 / 想法 (Approach)<a class="headerlink" href="#approach" title="Permanent link">#</a></h2>
+<p>以下实现直接转录形式化结果 (1)：先按模 3 判定可行性，再由中点 <span class="arithmatex">\(x = \lfloor \text{num}/3 \rfloor\)</span> 还原三元组。</p>
 <div class="language-python highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">Solution</span><span class="p">:</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">sumOfThree</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">num</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]:</span>
         <span class="k">if</span> <span class="n">num</span> <span class="o">%</span> <span class="mi">3</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
@@ -22697,11 +22735,11 @@
 <h2 id="pitfalls">陷阱 (Pitfalls)<a class="headerlink" href="#pitfalls" title="Permanent link">#</a></h2>
 <ul>
 <li><strong>题目允许负数解</strong>：题面没强调正整数；num=0 → [-1, 0, 1]，应当返回这三个（不是空数组）。约束 <code>0 &lt;= num</code>，所以 x ≥ 0，x-1 可为 -1。</li>
-<li><strong>C++/Java 用 <code>long long</code></strong>：num 高达 <span class="arithmatex">\(10^{15}\)</span>。</li>
+<li><strong>C++/Java 用 <code>long long</code></strong>：num 高达 <span class="arithmatex">\(10^{15}\)</span>，超出 int32 范围；<span class="arithmatex">\(x = \text{num}/3 \approx 3.3 \times 10^{14}\)</span> 同样需要 64 位。Python 整数无界，无需处理。</li>
 </ul>
 <h2 id="related">相关题目 (Related)<a class="headerlink" href="#related" title="Permanent link">#</a></h2>
 <ul>
-<li><a href="../0829_consecutive-numbers-sum/">#829. Consecutive Numbers Sum</a> — 推广到 k 个连续整数和的计数。</li>
+<li><a href="../0829_consecutive-numbers-sum/">#829. Consecutive Numbers Sum</a> — 推广到 k 个连续整数和的计数，并给出 <span class="arithmatex">\(n\)</span> 可表为 <span class="arithmatex">\(k\)</span> 个连续正整数之和的一般判定条件。</li>
 </ul>
 <h2 id="further-reading">Further Reading<a class="headerlink" href="#further-reading" title="Permanent link">#</a></h2>
 <p>无推荐外部资源（题目难度不足以需要专题文献）。</p>

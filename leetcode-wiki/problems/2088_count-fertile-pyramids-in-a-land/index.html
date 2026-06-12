@@ -5485,6 +5485,8 @@
       
         
       
+        
+      
     
     
     
@@ -6024,6 +6026,34 @@
     
   
     #93. Restore IP Addresses
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../0102_binary-tree-level-order-traversal/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    #102. Binary Tree Level Order Traversal
   
 
     
@@ -22675,62 +22705,86 @@
 <h2 id="problem">Problem<a class="headerlink" href="#problem" title="Permanent link">#</a></h2>
 <p><span class="arithmatex">\(m \times n\)</span> 0/1 矩阵 <code>grid</code>，统计所有"金字塔"和"倒金字塔"的个数（高度 ≥ 2，所有格全为 1）。金字塔以顶格 <span class="arithmatex">\((r, c)\)</span> 为尖顶，第 <span class="arithmatex">\(i\)</span> 行（<span class="arithmatex">\(0 \le i \le h-1\)</span>）覆盖列区间 <span class="arithmatex">\([c - i, c + i]\)</span>；倒金字塔对称。<span class="arithmatex">\(m \cdot n \le 10^5\)</span>。</p>
 <h2 id="background">背景 (Background)<a class="headerlink" href="#background" title="Permanent link">#</a></h2>
-<p>经典"格子 DP 数子形状"问题：与 #221 Maximal Square、#1277 Count Square Submatrices 同族。核心思想是<strong>用一个二维 DP 记录"以该格为某形状顶点时的最大尺寸"</strong>，由邻居极小值递推得到。本题的递推从相邻三格取 min 而非两格（金字塔比正方形多了底边对称的约束）。</p>
+<p>先把"一个金字塔存在"这件事说清楚。固定尖顶 <span class="arithmatex">\((r, c)\)</span> 和高度 <span class="arithmatex">\(h\)</span>，按定义这个金字塔占据从第 <span class="arithmatex">\(r\)</span> 行起向下的 <span class="arithmatex">\(h\)</span> 行，第 <span class="arithmatex">\(i\)</span> 层（<span class="arithmatex">\(0 \le i \le h-1\)</span>，位于第 <span class="arithmatex">\(r+i\)</span> 行）覆盖列 <span class="arithmatex">\([c-i,\, c+i]\)</span>，共 <span class="arithmatex">\(2i+1\)</span> 格。它是合法金字塔，当且仅当这 <span class="arithmatex">\(\sum_{i=0}^{h-1}(2i+1) = h^2\)</span> 个格子全为 1，且没有任何一格越界。</p>
+<p>最直接的做法就是照这个定义枚举：对每个 <span class="arithmatex">\((r,c)\)</span> 作尖顶，从 <span class="arithmatex">\(h=2\)</span> 开始逐步增高，每增高一层检查新增的一行是否全 1，直到失败为止。一个尖顶最多能长到 <span class="arithmatex">\(O(\min(m,n))\)</span> 高，每次增高检查一整行要 <span class="arithmatex">\(O(h)\)</span>，所以单个尖顶花 <span class="arithmatex">\(O(\min(m,n)^2)\)</span>，全部尖顶合计 <span class="arithmatex">\(O(mn \cdot \min(m,n)^2)\)</span>。在 <span class="arithmatex">\(m\cdot n \le 10^5\)</span> 下这会重复扫描同一片区域无数次——第 <span class="arithmatex">\(h\)</span> 层的检查完全无视了"前 <span class="arithmatex">\(h-1\)</span> 层已经验证过"这一事实。</p>
+<p>瓶颈正在这里：枚举把"高度 <span class="arithmatex">\(h\)</span> 的金字塔"当成孤立对象从头验证，没有利用相邻高度之间的包含关系。下面把这个关系形式化，它会直接给出一个每格 <span class="arithmatex">\(O(1)\)</span> 的递推。</p>
 <h2 id="formulation">形式化 (Formulation)<a class="headerlink" href="#formulation" title="Permanent link">#</a></h2>
-<p>记 <span class="arithmatex">\(\text{up}[r][c]\)</span> = 以 <span class="arithmatex">\((r, c)\)</span> 为顶的最大金字塔高度。"高度为 <span class="arithmatex">\(h\)</span>" 表示包含 <span class="arithmatex">\(h\)</span> 行（含尖顶）。则</p>
-<div class="arithmatex">\[\text{up}[r][c] = \begin{cases} 0 &amp; \text{若 } \text{grid}[r][c] = 0 \text{ 或在边界} \\ 1 + \min(\text{up}[r+1][c-1],\; \text{up}[r+1][c],\; \text{up}[r+1][c+1]) &amp; \text{否则} \end{cases}\]</div>
-<p>注意 <span class="arithmatex">\(\text{up}[r][c]\)</span> 此处定义为"最大高度 − 1"（即"额外的层数"），避免把单格也算成金字塔。等价表述：<span class="arithmatex">\(\text{up}[r][c]\)</span> = 以 <span class="arithmatex">\((r,c)\)</span> 为顶的最大金字塔的"额外行数"（<span class="arithmatex">\(h - 1\)</span>）。对应贡献到答案的金字塔数 = <span class="arithmatex">\(\text{up}[r][c]\)</span>（高度从 2 到 <span class="arithmatex">\(1 + \text{up}[r][c]\)</span> 各一个）。</p>
-<p>倒金字塔 <span class="arithmatex">\(\text{down}[r][c]\)</span> 对称地从 <span class="arithmatex">\(r+1 \to r-1\)</span> 转移，DP 顺序自上而下。</p>
+<p><strong>直觉.</strong> 一个高度 <span class="arithmatex">\(h\)</span>（<span class="arithmatex">\(h\ge 2\)</span>）、尖顶在 <span class="arithmatex">\((r,c)\)</span> 的金字塔，去掉最顶上一格 <span class="arithmatex">\((r,c)\)</span> 后剩下的是什么？剩下的是从第 <span class="arithmatex">\(r+1\)</span> 行起、占据列 <span class="arithmatex">\([c-i,c+i]\)</span>（<span class="arithmatex">\(i=1,\dots,h-1\)</span>）的部分。把它整体看，它恰好是<strong>三个</strong>高度 <span class="arithmatex">\(h-1\)</span> 的金字塔的并：尖顶分别在 <span class="arithmatex">\((r+1,c-1)\)</span>、<span class="arithmatex">\((r+1,c)\)</span>、<span class="arithmatex">\((r+1,c+1)\)</span>。原因是几何的：原金字塔第 <span class="arithmatex">\(i\)</span> 层覆盖 <span class="arithmatex">\([c-i,c+i]\)</span>，在下移一行、左右各收一列后，正好对应这三个子金字塔在同一行上覆盖的列。于是"<span class="arithmatex">\((r,c)\)</span> 能撑起高度 <span class="arithmatex">\(h\)</span>"这件事，被它正下方三个邻居"各自能撑起高度 <span class="arithmatex">\(h-1\)</span>"完全决定。</p>
+<p><strong>精确陈述.</strong> 设 <span class="arithmatex">\(H[r][c]\)</span> 为以 <span class="arithmatex">\((r,c)\)</span> 为尖顶能形成的最大金字塔高度（<span class="arithmatex">\(\text{grid}[r][c]=0\)</span> 时记 <span class="arithmatex">\(H[r][c]=1\)</span> 表示"只有自己这一格"，无法构成高度 ≥ 2 的金字塔；越界视同 0）。则由上述包含关系：</p>
+<div class="arithmatex">\[
+H[r][c] =
+\begin{cases}
+0 &amp; \text{若 } \text{grid}[r][c]=0,\\[2pt]
+1 &amp; \text{若 } \text{grid}[r][c]=1 \text{ 且 } c=0 \text{ 或 } c=n-1 \text{ 或 } r=m-1,\\[2pt]
+1 + \min\bigl(H[r{+}1][c{-}1],\, H[r{+}1][c],\, H[r{+}1][c{+}1]\bigr) &amp; \text{否则.}
+\end{cases}
+\tag{1}
+\]</div>
+<p>第二行是边界：尖顶在最左列、最右列或最底行时，再高一层就会越界，所以最大高度只能是 1（仅自身）。</p>
+<p><strong>为何是 <span class="arithmatex">\(\min\)</span>，且为何下方三格必须都为 1.</strong> 高度 <span class="arithmatex">\(h\)</span> 要成立，需要三个子金字塔<strong>同时</strong>达到高度 <span class="arithmatex">\(h-1\)</span>，因此能达到的最大高度受限于三者中<strong>最小</strong>的容量，这就是取 <span class="arithmatex">\(\min\)</span> 的来源。还有一个容易漏掉的前提：递推 (1) 第三行只有在 <span class="arithmatex">\(\text{grid}[r+1][c-1]=\text{grid}[r+1][c]=\text{grid}[r+1][c+1]=1\)</span> 时才成立。若三格中有任一为 0，按定义该邻居 <span class="arithmatex">\(H=0\)</span>（其 grid 为 0），于是 <span class="arithmatex">\(\min=0\)</span>，<span class="arithmatex">\(1+\min=1\)</span>，结果自动退化为"只有自身"——这正是我们想要的。<strong>所以 (1) 的 <span class="arithmatex">\(\min\)</span> 形式已经隐含了"下方三格全 1"的检查，无需额外加判定；但若实现时只判 <span class="arithmatex">\(\text{grid}[r][c]=1\)</span> 而把三个邻居的基值取错，递推就会错。</strong> 这是本题最易踩的坑（见陷阱）。</p>
+<p><strong>从最大高度到金字塔计数.</strong> 我们要的不是最大高度，而是金字塔个数。关键观察：若 <span class="arithmatex">\(H[r][c]=h\)</span>，则以 <span class="arithmatex">\((r,c)\)</span> 为尖顶、高度为 <span class="arithmatex">\(2,3,\dots,h\)</span> 的金字塔<strong>各恰好存在一个</strong>，且互相嵌套（高的包含矮的）。这是归纳的直接推论——<span class="arithmatex">\(H[r][c]=h\)</span> 意味着三个邻居的 <span class="arithmatex">\(\min\)</span> 容量为 <span class="arithmatex">\(h-1\)</span>，于是每个邻居都能撑起高度 <span class="arithmatex">\(2..h-1\)</span>，逐层向上即得 <span class="arithmatex">\((r,c)\)</span> 处高度 <span class="arithmatex">\(2..h\)</span> 各一个。所以 <span class="arithmatex">\((r,c)\)</span> 这个尖顶贡献的金字塔数恰为 <span class="arithmatex">\(\max(H[r][c]-1,\,0)\)</span>。</p>
+<p>为了让"贡献 = 表值"读起来更干净，把变量平移一格：定义</p>
+<div class="arithmatex">\[
+\text{dp}[r][c] = \max\bigl(H[r][c]-1,\ 0\bigr),
+\tag{2}
+\]</div>
+<p>即"尖顶 <span class="arithmatex">\((r,c)\)</span> 上方还能再叠几层"（额外行数 <span class="arithmatex">\(h-1\)</span>）。此时单格贡献直接就是 <span class="arithmatex">\(\text{dp}[r][c]\)</span>，答案是</p>
+<div class="arithmatex">\[
+\text{Answer}_{\uparrow} = \sum_{r,c} \text{dp}[r][c].
+\tag{3}
+\]</div>
+<p>代入 (1) 化简，<span class="arithmatex">\(\text{dp}\)</span> 满足同样的"<span class="arithmatex">\(1+\min\)</span> 三邻居"递推（基值 0），下面实现里直接对 <span class="arithmatex">\(\text{dp}\)</span> 递推。</p>
+<p><strong>倒金字塔.</strong> 倒金字塔的尖顶在底、向上张开，其形式化是 (1) 的镜像——把所有 <span class="arithmatex">\(r+1\)</span> 换成 <span class="arithmatex">\(r-1\)</span>。与其重写一份递推，不如把 <code>grid</code> 上下翻转：翻转后每个倒金字塔变成一个正立金字塔，于是同一个函数即可复用。</p>
 <h2 id="approach">数据结构 / 想法 (Approach)<a class="headerlink" href="#approach" title="Permanent link">#</a></h2>
-<p><strong>两次 DP</strong>（自下而上一次算 <code>up</code>，自上而下一次算 <code>down</code>），每次累加贡献。</p>
+<p>由 (2)(3)，算法就是对 <span class="arithmatex">\(\text{dp}\)</span> 做一次自底向上的递推并累加；倒金字塔再对翻转后的网格跑同一遍。每格 <span class="arithmatex">\(O(1)\)</span>。</p>
 <div class="language-python highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">Solution</span><span class="p">:</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">countPyramids</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">grid</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]])</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
         <span class="n">m</span><span class="p">,</span> <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">grid</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">grid</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
 
         <span class="k">def</span><span class="w"> </span><span class="nf">count</span><span class="p">(</span><span class="n">g</span><span class="p">):</span>
-            <span class="c1"># 计算正金字塔（顶在上）数</span>
+            <span class="c1"># 累加正立金字塔（尖顶在上）个数：dp[r][c] = 尖顶 (r,c) 上方可叠的额外行数</span>
             <span class="n">dp</span> <span class="o">=</span> <span class="p">[[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">n</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">m</span><span class="p">)]</span>
-            <span class="c1"># 最底行 dp = 0（不能再向下扩展，所以&quot;额外行数&quot; = 0）</span>
+            <span class="c1"># 最底行 dp = 0：无法再向下扩展</span>
             <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">m</span> <span class="o">-</span> <span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">):</span>
-                <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">n</span> <span class="o">-</span> <span class="mi">1</span><span class="p">):</span>
-                    <span class="k">if</span> <span class="n">g</span><span class="p">[</span><span class="n">r</span><span class="p">][</span><span class="n">c</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span> <span class="ow">and</span> <span class="n">g</span><span class="p">[</span><span class="n">r</span> <span class="o">+</span> <span class="mi">1</span><span class="p">][</span><span class="n">c</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">n</span> <span class="o">-</span> <span class="mi">1</span><span class="p">):</span>  <span class="c1"># 边界列 c=0 / c=n-1 必为 0</span>
+                    <span class="k">if</span> <span class="n">g</span><span class="p">[</span><span class="n">r</span><span class="p">][</span><span class="n">c</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+                        <span class="c1"># min 已隐含“下方三格全 1”：任一为 0 则其 dp 基值 0，min=0，结果退化为 0</span>
                         <span class="n">dp</span><span class="p">[</span><span class="n">r</span><span class="p">][</span><span class="n">c</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">+</span> <span class="nb">min</span><span class="p">(</span>
                             <span class="n">dp</span><span class="p">[</span><span class="n">r</span> <span class="o">+</span> <span class="mi">1</span><span class="p">][</span><span class="n">c</span> <span class="o">-</span> <span class="mi">1</span><span class="p">],</span>
                             <span class="n">dp</span><span class="p">[</span><span class="n">r</span> <span class="o">+</span> <span class="mi">1</span><span class="p">][</span><span class="n">c</span><span class="p">],</span>
                             <span class="n">dp</span><span class="p">[</span><span class="n">r</span> <span class="o">+</span> <span class="mi">1</span><span class="p">][</span><span class="n">c</span> <span class="o">+</span> <span class="mi">1</span><span class="p">],</span>
                         <span class="p">)</span>
-                        <span class="c1"># 但还需要左下、右下也是 1</span>
-                        <span class="k">if</span> <span class="n">g</span><span class="p">[</span><span class="n">r</span> <span class="o">+</span> <span class="mi">1</span><span class="p">][</span><span class="n">c</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">g</span><span class="p">[</span><span class="n">r</span> <span class="o">+</span> <span class="mi">1</span><span class="p">][</span><span class="n">c</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                        <span class="c1"># 仍需显式核对下方三格本身为 1（dp 退化只保证“再往下没东西”，</span>
+                        <span class="c1"># 但本层 (r,c) 想成为高度 2 的尖顶，下方三格必须实打实是 1）</span>
+                        <span class="k">if</span> <span class="n">g</span><span class="p">[</span><span class="n">r</span> <span class="o">+</span> <span class="mi">1</span><span class="p">][</span><span class="n">c</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">g</span><span class="p">[</span><span class="n">r</span> <span class="o">+</span> <span class="mi">1</span><span class="p">][</span><span class="n">c</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">g</span><span class="p">[</span><span class="n">r</span> <span class="o">+</span> <span class="mi">1</span><span class="p">][</span><span class="n">c</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
                             <span class="n">dp</span><span class="p">[</span><span class="n">r</span><span class="p">][</span><span class="n">c</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
             <span class="k">return</span> <span class="nb">sum</span><span class="p">(</span><span class="n">dp</span><span class="p">[</span><span class="n">r</span><span class="p">][</span><span class="n">c</span><span class="p">]</span> <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">m</span><span class="p">)</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">))</span>
 
-        <span class="c1"># 正金字塔</span>
+        <span class="c1"># 正立金字塔</span>
         <span class="n">ans</span> <span class="o">=</span> <span class="n">count</span><span class="p">(</span><span class="n">grid</span><span class="p">)</span>
-        <span class="c1"># 倒金字塔：把 grid 上下翻转再用同样函数</span>
+        <span class="c1"># 倒金字塔：上下翻转网格，倒金字塔即变为正立金字塔，复用同一函数</span>
         <span class="n">ans</span> <span class="o">+=</span> <span class="n">count</span><span class="p">(</span><span class="n">grid</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
         <span class="k">return</span> <span class="n">ans</span>
 </code></pre></div>
-<p><strong>关键不变量</strong>：<code>dp[r][c] = k</code> 意味着以 <span class="arithmatex">\((r, c)\)</span> 为顶可形成高度 2..k+1 共 k 个金字塔，所以累加 dp 值即累加金字塔个数。</p>
-<p><strong>等价更简洁的递推</strong>（去掉重复判定）：</p>
-<div class="language-python highlight"><pre><span></span><code><span class="k">if</span> <span class="n">g</span><span class="p">[</span><span class="n">r</span><span class="p">][</span><span class="n">c</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-    <span class="n">dp</span><span class="p">[</span><span class="n">r</span><span class="p">][</span><span class="n">c</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
-<span class="k">elif</span> <span class="n">r</span> <span class="o">==</span> <span class="n">m</span> <span class="o">-</span> <span class="mi">1</span> <span class="ow">or</span> <span class="n">c</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">c</span> <span class="o">==</span> <span class="n">n</span> <span class="o">-</span> <span class="mi">1</span><span class="p">:</span>
-    <span class="n">dp</span><span class="p">[</span><span class="n">r</span><span class="p">][</span><span class="n">c</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
-<span class="k">else</span><span class="p">:</span>
-    <span class="n">dp</span><span class="p">[</span><span class="n">r</span><span class="p">][</span><span class="n">c</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">+</span> <span class="nb">min</span><span class="p">(</span><span class="n">dp</span><span class="p">[</span><span class="n">r</span><span class="o">+</span><span class="mi">1</span><span class="p">][</span><span class="n">c</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">dp</span><span class="p">[</span><span class="n">r</span><span class="o">+</span><span class="mi">1</span><span class="p">][</span><span class="n">c</span><span class="p">],</span> <span class="n">dp</span><span class="p">[</span><span class="n">r</span><span class="o">+</span><span class="mi">1</span><span class="p">][</span><span class="n">c</span><span class="o">+</span><span class="mi">1</span><span class="p">])</span> <span class="k">if</span> <span class="nb">all</span> <span class="mi">1</span>
-</code></pre></div>
-<p>样例 1 trace：<code>grid=[[0,1,1,0],[1,1,1,1]]</code>。底行 dp 全 0。第 0 行：(0,1) g=1，下方 g[1][0..2]=[1,1,1]，dp[1][0..2]=0，所以 dp[0][1] = 1 + min(0,0,0) = 1（贡献 1 个高度 2 金字塔，apex (0,1) 覆盖 (1,0..2)）。(0,2) 类似 dp[0][2]=1。正金字塔共 2 个。倒金字塔：翻转后顶行全 0，no contribution → 0。总 2 ✓。</p>
+<p>代码与 (1)(2) 的对应：<code>1 + min(...)</code> 是递推主体；末尾的显式判定核对了"下方三格本身为 1"这一前提（见形式化中的强调段）——当三格的 grid 值有 0 时，仅靠 <code>min</code> 退化只能保证"再往下没有更高的塔"，但高度 2 的金字塔要求尖顶正下方那一行（三格）确实存在，所以这一步不能省。</p>
+<p><strong>样例 1 trace.</strong> <code>grid=[[0,1,1,0],[1,1,1,1]]</code>。底行（第 1 行）<code>dp</code> 全 0。第 0 行只看内部列 <span class="arithmatex">\(c\in\{1,2\}\)</span>：</p>
+<ul>
+<li><span class="arithmatex">\((0,1)\)</span>：<code>g=1</code>，下方 <code>g[1][0..2]=[1,1,1]</code> 全 1，<code>dp[1][0..2]=0</code>，故 <code>dp[0][1]=1+min(0,0,0)=1</code>——贡献 1 个高度 2 的金字塔，尖顶 <span class="arithmatex">\((0,1)\)</span> 覆盖 <span class="arithmatex">\((1,0..2)\)</span>。</li>
+<li><span class="arithmatex">\((0,2)\)</span>：同理 <code>dp[0][2]=1</code>。</li>
+</ul>
+<p>正立金字塔共 2 个。翻转后顶行全 0，无贡献，倒金字塔 0。总计 <strong>2</strong> ✓。</p>
 <h2 id="complexity">复杂度 (Complexity)<a class="headerlink" href="#complexity" title="Permanent link">#</a></h2>
 <ul>
-<li>Time: <span class="arithmatex">\(O(mn)\)</span>，每格 <span class="arithmatex">\(O(1)\)</span> 转移</li>
-<li>Space: <span class="arithmatex">\(O(mn)\)</span> 的 dp 表（可优化到滚动两行 <span class="arithmatex">\(O(n)\)</span>）</li>
+<li>Time: <span class="arithmatex">\(O(mn)\)</span>，每格一次 <span class="arithmatex">\(O(1)\)</span> 的三邻居 <span class="arithmatex">\(\min\)</span> 转移，两遍仍是 <span class="arithmatex">\(O(mn)\)</span>。</li>
+<li>Space: <span class="arithmatex">\(O(mn)\)</span> 的 <code>dp</code> 表。可优化到滚动两行 <span class="arithmatex">\(O(n)\)</span>，因为算第 <span class="arithmatex">\(r\)</span> 行只读第 <span class="arithmatex">\(r+1\)</span> 行。（<code>grid[::-1]</code> 另开一份 <span class="arithmatex">\(O(mn)\)</span> 拷贝，不改变渐近量级。）</li>
 </ul>
 <h2 id="pitfalls">陷阱 (Pitfalls)<a class="headerlink" href="#pitfalls" title="Permanent link">#</a></h2>
 <ul>
-<li><strong>边界列必须 dp = 0</strong>：<span class="arithmatex">\(c = 0\)</span> 或 <span class="arithmatex">\(c = n-1\)</span> 时金字塔的下一层会越界。</li>
-<li><strong>正/倒金字塔必须分两遍</strong>：不能合并；二者方向相反。</li>
-<li><strong>高度 ≥ 2</strong>：单格不算金字塔，dp 含义即"额外行数" = 总高度 − 1。</li>
-<li><strong>金字塔底边宽度 <span class="arithmatex">\(2h - 1\)</span></strong>：高度 <span class="arithmatex">\(h\)</span> 时第 <span class="arithmatex">\(h-1\)</span> 行需要覆盖 <span class="arithmatex">\(2(h-1)+1\)</span> 列，所以下方三邻居均要为 1。</li>
+<li><strong>递推 (1) 的隐含前提：下方三格必须全 1。</strong> 只在 <span class="arithmatex">\(\text{grid}[r][c]=1\)</span> 时套用 <span class="arithmatex">\(1+\min\)</span> 是不够的——还需要 <span class="arithmatex">\(\text{grid}[r+1][c-1]=\text{grid}[r+1][c]=\text{grid}[r+1][c+1]=1\)</span>。若把这层略去（例如直接对原始 grid 写 <span class="arithmatex">\(1+\min\)</span> 而不核对下方三格），就会把不存在的高度 2 金字塔算进去。代码末尾那段显式判定正是堵这个漏。</li>
+<li><strong>边界列必须 dp = 0</strong>：<span class="arithmatex">\(c=0\)</span> 或 <span class="arithmatex">\(c=n-1\)</span> 时再加一层会越界，对应 (1) 的第二行。循环用 <code>range(1, n-1)</code> 自然跳过。</li>
+<li><strong>正/倒金字塔分两遍</strong>：二者方向相反，无法合并；用 <code>grid[::-1]</code> 把倒金字塔转成正立的来复用同一函数。</li>
+<li><strong>高度 ≥ 2，单格不算</strong>：<code>dp</code> 含义即"额外行数" <span class="arithmatex">\(h-1\)</span>（见 (2)），单格 <span class="arithmatex">\(h=1\)</span> 贡献 0。</li>
+<li><strong>底边宽度 <span class="arithmatex">\(2h-1\)</span></strong>：高度 <span class="arithmatex">\(h\)</span> 时第 <span class="arithmatex">\(h-1\)</span> 层覆盖 <span class="arithmatex">\(2(h-1)+1 = 2h-1\)</span> 列，这正是"下方需三邻居"在最底层的体现。</li>
 </ul>
 <h2 id="related">相关题目 (Related)<a class="headerlink" href="#related" title="Permanent link">#</a></h2>
 <ul>

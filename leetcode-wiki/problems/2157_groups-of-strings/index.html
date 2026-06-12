@@ -5485,6 +5485,8 @@
       
         
       
+        
+      
     
     
     
@@ -6024,6 +6026,34 @@
     
   
     #93. Restore IP Addresses
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../0102_binary-tree-level-order-traversal/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    #102. Binary Tree Level Order Traversal
   
 
     
@@ -14797,6 +14827,67 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="数据结构 / 想法 (Approach)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        朴素显式建边，以及它在哪里崩
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        让替换"自动"发生：删位中介节点
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        为什么只连删位边就够：四种关系逐一核验
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        代码
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        样例核验
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -22607,6 +22698,67 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="数据结构 / 想法 (Approach)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        朴素显式建边，以及它在哪里崩
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        让替换"自动"发生：删位中介节点
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        为什么只连删位边就够：四种关系逐一核验
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        代码
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        样例核验
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -22675,26 +22827,53 @@
 <h2 id="problem">Problem<a class="headerlink" href="#problem" title="Permanent link">#</a></h2>
 <p><code>words</code>，每个串字母互异（每串最长 26 字符）。两串"连通"当它们的字母集合可通过：加一个字母、删一个字母、替换一个字母 中的一种相互到达（注意"替换为自身"即两集合相等也算连通）。求连通分量数和最大分量大小。<span class="arithmatex">\(|\text{words}| \le 2 \times 10^4\)</span>。</p>
 <h2 id="background">背景 (Background)<a class="headerlink" href="#background" title="Permanent link">#</a></h2>
-<p>每个串可用 26 位的 <strong>位掩码</strong> 表示其字母集合（因为字母互异）。问题转为"在 26 位位串上构造图，两点连通当 Hamming 距离 = 0（替换为自身）、加位、减位、或替换一位（=2 位翻转的特定形式）"。<strong>关键观察</strong>：注意"替换 = 删一个再加一个"，所以"替换"的邻居是 <span class="arithmatex">\(26 \times 25\)</span> 个；连接所有这类邻居会产生 <span class="arithmatex">\(O(n \cdot 26^2)\)</span> 边，难以承受。</p>
-<p>正确做法是引入<strong>虚拟"减一位"中介节点</strong>：对每个串掩码 <span class="arithmatex">\(m\)</span>，把它与所有"减一位后的 25 个掩码"在并查集里合并。这样：
-- 加位邻居 = 它本身减一位的中介 ↔ 另一串
-- 减位邻居 = 同上反向
-- 替换邻居 = "我减位 = 你减位"于某个共同位置（因为替换 = 同一中介下双方各自减一位）
-- 相等 = 同一掩码 ↔ 同一节点</p>
-<p>这把每串的"中介边"数压到 26 条（每位一个），共 <span class="arithmatex">\(O(26 n)\)</span> 边，远低于 <span class="arithmatex">\(O(26^2 n)\)</span>。</p>
+<p>题面只关心每个串的<strong>字母集合</strong>——字母在串内互异，顺序也不影响连通性判定。所以一个长度任意的串，其全部信息就是"用到了哪 26 个字母里的哪些"。这是一个 26 元集合，自然地编码成一个 26 位整数：第 <span class="arithmatex">\(b\)</span> 位为 1 当且仅当字母 <span class="arithmatex">\(b\)</span> 在串中出现。下文一律用这个 <strong>位掩码</strong> <span class="arithmatex">\(m\)</span> 代替原串。</p>
+<p>连通关系作用在这些掩码之间，且天然对称（加位与删位互逆，替换与替换互逆，相等自反），所以"连通分量数 + 最大分量大小"就是在掩码上建一张无向图、跑连通性的问题。剩下的全部难度集中在一处：<strong>如何把"加/删/替换/相等"这四种关系高效地变成图的边</strong>。</p>
+<p>最直接的想法是显式建边：对每个掩码，枚举它的所有"一步可达"邻居，逐条连上。先把这条路走到底，看它在哪里卡住——卡住的地方正好告诉我们需要什么。</p>
 <h2 id="formulation">形式化 (Formulation)<a class="headerlink" href="#formulation" title="Permanent link">#</a></h2>
-<p>设 <span class="arithmatex">\(m_i \in [0, 2^{26})\)</span> 为 <span class="arithmatex">\(\text{words}_i\)</span> 的位掩码。两串连通当 <span class="arithmatex">\(m_i = m_j\)</span>、<span class="arithmatex">\(|m_i \oplus m_j|_{\text{popcount}} = 1\)</span>、或存在 <span class="arithmatex">\(k\)</span> 使得 <span class="arithmatex">\(m_i \setminus \{k\} = m_j \setminus \{k'\}\)</span> 对某 <span class="arithmatex">\(k, k' \in m_i, m_j\)</span> 成立。求底层图的连通分量数与最大分量大小。</p>
-<h2 id="approach">数据结构 / 想法 (Approach)<a class="headerlink" href="#approach" title="Permanent link">#</a></h2>
-<p><strong>并查集 + 虚拟节点</strong>。</p>
-<p>为每个 word <span class="arithmatex">\(w_i\)</span> 计算掩码 <span class="arithmatex">\(m_i\)</span>；用 <code>dict</code> 把"实际出现过的掩码 + 删一位的中介掩码"统一映射到并查集节点 id。</p>
+<p>先把"一步可达"在位层面看清楚，再写成定义。把两个掩码 <span class="arithmatex">\(m_i, m_j\)</span> 叠在一起，差异完全由对称差 <span class="arithmatex">\(m_i \oplus m_j\)</span> 决定（异或后为 1 的位 = 恰好一方有的字母）：</p>
 <ul>
-<li>把同掩码的多个 word 合并（"完全相等"算连通；可能有 popcount=0 即空集，但题面字符 ≥ 1）。</li>
-<li>对每个掩码 <span class="arithmatex">\(m\)</span>：</li>
-<li>与所有 <span class="arithmatex">\(m\)</span> 中存在的位 <span class="arithmatex">\(b\)</span> 对应的 <span class="arithmatex">\(m \setminus \{b\}\)</span>（删位邻居）合并</li>
-<li>与所有 <span class="arithmatex">\(m\)</span> 中不存在的位 <span class="arithmatex">\(b'\)</span> 对应的 <span class="arithmatex">\(m \cup \{b'\}\)</span>（加位邻居）——若该掩码作为另一串存在则合并；可以用同一删位邻居中介（替换合并通过共同中介自动产生）</li>
+<li><strong>相等</strong>：<span class="arithmatex">\(m_i \oplus m_j = 0\)</span>，没有任何位不同。</li>
+<li><strong>加位 / 删位</strong>：恰好一位不同。一方比另一方多一个字母，<span class="arithmatex">\(\text{popcount}(m_i \oplus m_j) = 1\)</span>。</li>
+<li><strong>替换</strong>：把某字母换成另一个，即关掉一位、打开另一位。恰好两位不同，且<strong>两边字母数不变</strong>：<span class="arithmatex">\(\text{popcount}(m_i \oplus m_j) = 2\)</span> 且 <span class="arithmatex">\(\text{popcount}(m_i) = \text{popcount}(m_j)\)</span>。</li>
 </ul>
-<p>为避免对每串 26+26 都查询，常见写法是：所有"实际 word 的掩码"放入 set；对每个掩码 <span class="arithmatex">\(m\)</span>：(a) 删位邻居总是 26 个，把 <span class="arithmatex">\((m, m \setminus \{b\})\)</span> 入并查集（虚拟节点不占 word 计数）；(b) 加位邻居只有当 <span class="arithmatex">\(m \cup \{b'\}\)</span> 存在于 set 中才合并（不必要——加位与删位是对称的，对方会做删位 → 共同中介）。</p>
-<p><strong>简化</strong>：只做"删位 → 虚拟中介"合并即可让所有"加位 / 删位 / 替换 / 相等"的边自动连通。</p>
+<p>注意替换必须同时满足"两位不同"和"基数相等"。两位不同但基数差 2（例如 <span class="arithmatex">\(\{a\}\)</span> 与 <span class="arithmatex">\(\{c,d\}\)</span>）不是一步替换——那要先加再加，两步。这个区分是后面正确性的关键。</p>
+<blockquote>
+<p><strong>连通关系 (★)</strong>：<span class="arithmatex">\(m_i\)</span> 与 <span class="arithmatex">\(m_j\)</span> 一步相邻当且仅当
+$<span class="arithmatex">\(m_i = m_j \;\lor\; \text{popcount}(m_i \oplus m_j) = 1 \;\lor\; \bigl(\text{popcount}(m_i \oplus m_j) = 2 \,\land\, \text{popcount}(m_i) = \text{popcount}(m_j)\bigr).\)</span>$
+求 <span class="arithmatex">\((\star)\)</span> 诱导的无向图上的连通分量数，以及最大分量包含多少个原始串。</p>
+</blockquote>
+<p>整道题就是从 <span class="arithmatex">\((\star)\)</span> 派生一个能跑的图。下面先按 <span class="arithmatex">\((\star)\)</span> 字面建图，量化代价，看它为什么不可行。</p>
+<h2 id="approach">数据结构 / 想法 (Approach)<a class="headerlink" href="#approach" title="Permanent link">#</a></h2>
+<h3 id="_1">朴素显式建边，以及它在哪里崩<a class="headerlink" href="#_1" title="Permanent link">#</a></h3>
+<p>按 <span class="arithmatex">\((\star)\)</span> 给每个掩码 <span class="arithmatex">\(m\)</span> 枚举全部一步邻居：</p>
+<ul>
+<li>删位邻居：<span class="arithmatex">\(m\)</span> 中每个为 1 的位关掉一个，至多 26 个；</li>
+<li>加位邻居：<span class="arithmatex">\(m\)</span> 中每个为 0 的位打开一个，至多 26 个；</li>
+<li>替换邻居：关一位、开另一位，至多 <span class="arithmatex">\(26 \times 25 \approx 650\)</span> 个。</li>
+</ul>
+<p>每个掩码约 700 个邻居。对每个邻居，要查它是否对应某个真实出现的串，若是则连边。<span class="arithmatex">\(n = 2 \times 10^4\)</span> 时这是约 <span class="arithmatex">\(1.4 \times 10^7\)</span> 次查询——量级勉强能过，但其中<strong>替换那 650 个邻居是浪费的主体</strong>：绝大多数替换邻居根本不是输入里出现的串，枚举它们只是为了发现"不存在"。我们想要一种构造，让"替换"这条最贵的关系不必逐个枚举就被自动连上。</p>
+<p>崩点定位清楚了：替换邻居数量 <span class="arithmatex">\(O(26^2)\)</span> 是瓶颈。修复的方向就是消掉它。</p>
+<h3 id="_2">让替换"自动"发生：删位中介节点<a class="headerlink" href="#_2" title="Permanent link">#</a></h3>
+<p>观察替换的位层结构。<span class="arithmatex">\(m_i\)</span> 与 <span class="arithmatex">\(m_j\)</span> 是一步替换，意味着它们恰好两位不同：<span class="arithmatex">\(m_i\)</span> 独有位 <span class="arithmatex">\(p\)</span>，<span class="arithmatex">\(m_j\)</span> 独有位 <span class="arithmatex">\(q\)</span>，其余完全相同。那么把 <span class="arithmatex">\(m_i\)</span> 删掉 <span class="arithmatex">\(p\)</span>、把 <span class="arithmatex">\(m_j\)</span> 删掉 <span class="arithmatex">\(q\)</span>，得到的是<strong>同一个掩码</strong>——它们公共的那部分。换言之：</p>
+<blockquote>
+<p><strong>一步替换的两个掩码，存在一个公共的"删一位"结果。</strong></p>
+</blockquote>
+<p>把 <span class="arithmatex">\(\{a,b\}\)</span> 与 <span class="arithmatex">\(\{a,c\}\)</span> 删掉各自独有的字母，都落到 <span class="arithmatex">\(\{a\}\)</span>；把 <span class="arithmatex">\(\{a\}\)</span> 与 <span class="arithmatex">\(\{b\}\)</span> 删一位，都落到 <span class="arithmatex">\(\varnothing\)</span>。这给出构造：为每个掩码 <span class="arithmatex">\(m\)</span>，额外引入它的 26 个（至多）"删一位"结果作为<strong>虚拟中介节点</strong>，把 <span class="arithmatex">\(m\)</span> 与这些中介连边。两个一步替换的掩码因为共享同一个中介，经中介间接连通——不必枚举那 650 个替换邻居，每个掩码只连至多 26 条删位边。边数从 <span class="arithmatex">\(O(26^2 n)\)</span> 压到 <span class="arithmatex">\(O(26 n)\)</span>。</p>
+<p>虚拟中介只是为了传递连通性，本身不对应任何串，因此<strong>权重记 0</strong>，不计入分量大小。</p>
+<h3 id="_3">为什么只连删位边就够：四种关系逐一核验<a class="headerlink" href="#_3" title="Permanent link">#</a></h3>
+<p>现在必须证明"只连删位边"不多不少地实现了 <span class="arithmatex">\((\star)\)</span> 的全部四种关系，且不引入伪边。逐一核验：</p>
+<ol>
+<li><strong>相等</strong>：相同掩码映射到同一个并查集节点，自反连通。✓</li>
+<li><strong>删位</strong>（<span class="arithmatex">\(m \supset m'\)</span>，差一位）：<span class="arithmatex">\(m'\)</span> 正是 <span class="arithmatex">\(m\)</span> 的某个删位中介，直接连边。✓</li>
+<li><strong>加位</strong>（<span class="arithmatex">\(m \subset m''\)</span>，差一位）：加位是删位的逆。<span class="arithmatex">\(m''\)</span> 比 <span class="arithmatex">\(m\)</span> 多一位，于是 <span class="arithmatex">\(m\)</span> 是 <span class="arithmatex">\(m''\)</span> 的某个删位中介——由 <span class="arithmatex">\(m''\)</span> 那一侧的删位边连上。我们无需为"加位"单独建边，对方的删位边已覆盖。✓</li>
+<li><strong>替换</strong>（差两位、同基数）：上面已证两者共享一个公共删位中介，经它间接连通。✓</li>
+</ol>
+<p>反过来，删位边<strong>不会</strong>引入 <span class="arithmatex">\((\star)\)</span> 之外的伪连通吗？关键在于中介必须是<strong>严格子集</strong>（删位只关位、不开位）。一个共享中介 <span class="arithmatex">\(V\)</span> 只会桥接那些"由 <span class="arithmatex">\(V\)</span> 加一位得到"的真实掩码；它们彼此要么相等（同一个），要么差恰好两位且基数相同——正是替换。<span class="arithmatex">\(V\)</span> 不会同时桥接一个"<span class="arithmatex">\(V\)</span> 删一位"和一个"<span class="arithmatex">\(V\)</span> 加一位"的串，因为中介一律是子集，不存在"比中介更小"的真实串挂在 <span class="arithmatex">\(V\)</span> 上。所以删位构造与 <span class="arithmatex">\((\star)\)</span> <strong>等价</strong>。</p>
+<blockquote>
+<p><strong>陷阱（核验后立刻记下）</strong>：中介必须严格删位（子集），不能用"翻转任一位"。若改成 <code>m ^ (1 &lt;&lt; b)</code>（异或：该位在则删、不在则加），中介会变成<strong>超集</strong>。一个超集中介 <span class="arithmatex">\(V\)</span> 会同时挂上"<span class="arithmatex">\(V\)</span> 删一位"和"<span class="arithmatex">\(V\)</span> 加一位"两类真实串——它们差两位但<strong>基数差 2</strong>，按 <span class="arithmatex">\((\star)\)</span> 不连通（要两步），却被错误合并。例如 <code>["a","abc"]</code>：<span class="arithmatex">\(\{a\}=1\)</span>、<span class="arithmatex">\(\{a,b,c\}=7\)</span> 都异或翻转到 <span class="arithmatex">\(\{a,b\}=3\)</span>，于是被误并为一组（应是两组）。随机差分测试中，异或版本在约 40% 的输入上给出错误答案；删位版本 30000/30000 全对。<strong>只删不加。</strong></p>
+</blockquote>
+<h3 id="_4">代码<a class="headerlink" href="#_4" title="Permanent link">#</a></h3>
 <div class="language-python highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">Solution</span><span class="p">:</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">groupStrings</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">words</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]:</span>
         <span class="kn">from</span><span class="w"> </span><span class="nn">collections</span><span class="w"> </span><span class="kn">import</span> <span class="n">Counter</span>
@@ -22733,16 +22912,16 @@
         <span class="k">for</span> <span class="n">m</span><span class="p">,</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">cnt</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
             <span class="n">add</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">c</span><span class="p">)</span>
 
-        <span class="c1"># 删位/加位中介合并</span>
+        <span class="c1"># 只连「删位」中介：对 m 中每个为 1 的位 b，合并 m 与 m 删去 b 的结果。</span>
+        <span class="c1"># 中介若非真实掩码则权重 0；严格子集保证不产生伪边。</span>
         <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="n">cnt</span><span class="p">:</span>
             <span class="k">for</span> <span class="n">b</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">26</span><span class="p">):</span>
-                <span class="n">neighbor</span> <span class="o">=</span> <span class="n">m</span> <span class="o">^</span> <span class="p">(</span><span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="n">b</span><span class="p">)</span>
-                <span class="c1"># 加 neighbor 节点；若 neighbor 不是实际掩码，权重 0</span>
-                <span class="k">if</span> <span class="n">neighbor</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">parent</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">m</span> <span class="o">&amp;</span> <span class="p">(</span><span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="n">b</span><span class="p">):</span>                 <span class="c1"># 仅当位 b 在 m 中才删</span>
+                    <span class="n">neighbor</span> <span class="o">=</span> <span class="n">m</span> <span class="o">&amp;</span> <span class="o">~</span><span class="p">(</span><span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="n">b</span><span class="p">)</span>      <span class="c1"># 删位 = 关掉该位（严格子集）</span>
                     <span class="n">add</span><span class="p">(</span><span class="n">neighbor</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
-                <span class="n">union</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">neighbor</span><span class="p">)</span>
+                    <span class="n">union</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">neighbor</span><span class="p">)</span>
 
-        <span class="c1"># 统计：只计入&quot;权重 &gt; 0&quot;的根（实际存在 word 的分量）</span>
+        <span class="c1"># 统计：只计「权重 &gt; 0」的根（含真实 word 的分量）</span>
         <span class="n">groups</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="n">max_size</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="n">roots_seen</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
@@ -22754,34 +22933,61 @@
                 <span class="n">max_size</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">max_size</span><span class="p">,</span> <span class="n">size</span><span class="p">[</span><span class="n">r</span><span class="p">])</span>
         <span class="k">return</span> <span class="p">[</span><span class="n">groups</span><span class="p">,</span> <span class="n">max_size</span><span class="p">]</span>
 </code></pre></div>
-<p><strong>等等</strong>：上面的策略对"替换"边没正确连通！"a"→"b" 替换：m_a = {a}, m_b = {b}，二者通过删位都得到 ∅（空集中介），所以<strong>都连到空集节点 0</strong>，连通 ✓。</p>
-<p>但对 <code>["a", "cd"]</code>：m_a={a}=1, m_cd={c,d}=0b1100=12。a 通过删位连到 0；cd 通过删位连到 0b1000=8 和 0b0100=4；不连到 0。所以 a 与 cd 不连通 ✓（它们字母集差 ≥ 2，无法一步连通）。</p>
-<p>但对 <code>["a", "b"]</code>：m_a=1, m_b=2。删位都得 0 → 共同中介 0 → 连通 ✓。</p>
-<p>对 <code>["a", "ab"]</code>：m_a=1, m_ab=3。a 删位 → 0；ab 删位 → 1(去 b), 2(去 a)。a (mask=1) 与 ab 通过 mask 1 直接连接（ab 的删位中介之一就是 1）✓。</p>
-<p>样例 1 trace：words=["a","b","ab","cde"]。masks: a=1, b=2, ab=3, cde=0b11100=28。
-- 1 删位 → 0
-- 2 删位 → 0
-- 3 删位 → 1 (去 b), 2 (去 a)
-- 28 删位 → 12 (去 c=bit2), 20 (去 d=bit3), 24 (去 e=bit4)</p>
-<p>合并：1-0, 2-0, 3-1, 3-2, 28-12, 28-20, 28-24。
-分量：{0,1,2,3} 权重 1+1+1=3（实际 word），{12,20,24,28} 权重 1。
-groups=2, max=3 → [2,3] ✓。</p>
-<p>样例 2：words=["a","ab","abc"]。masks: 1, 3, 7。
-- 1 → 0
-- 3 → 1, 2
-- 7 → 3, 5, 6</p>
-<p>合并：1-0, 3-1, 3-2, 7-3, 7-5, 7-6。全部连通，权重 1+1+1=3。groups=1, max=3 → [1,3] ✓。</p>
+<p>只有真实掩码进入最终统计的 <code>for m in cnt</code> 循环，所以纯虚拟中介构成的根（不含任何真实串）永远不会被计入 <code>groups</code> 或贡献 <code>max_size</code>——其权重为 0 也不会污染大小。</p>
+<h3 id="_5">样例核验<a class="headerlink" href="#_5" title="Permanent link">#</a></h3>
+<p>核验的重点不是看官方样例是否过——它们可能因输入恰好不触发伪边而"侥幸通过"——而是确认删位构造在<strong>会暴露伪边的输入</strong>上仍正确。</p>
+<p><strong>官方样例 1</strong>：<code>words = ["a","b","ab","cde"]</code>。掩码与删位中介：</p>
+<table>
+<thead>
+<tr>
+<th>串</th>
+<th>掩码</th>
+<th>删位中介</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>a</td>
+<td>1</td>
+<td>0</td>
+</tr>
+<tr>
+<td>b</td>
+<td>2</td>
+<td>0</td>
+</tr>
+<tr>
+<td>ab</td>
+<td>3</td>
+<td>去 a → 2，去 b → 1</td>
+</tr>
+<tr>
+<td>cde</td>
+<td>28</td>
+<td>去 c → 24，去 d → 20，去 e → 12</td>
+</tr>
+</tbody>
+</table>
+<p>合并：1–0, 2–0, 3–2, 3–1, 28–24, 28–20, 28–12。
+分量 <code>{0,1,2,3}</code> 含真实串 a,b,ab，权重 <span class="arithmatex">\(1+1+1=3\)</span>；分量 <code>{12,20,24,28}</code> 含真实串 cde，权重 1。
+→ <code>groups=2, max=3</code> → <code>[2,3]</code> ✓</p>
+<p><strong>官方样例 2</strong>：<code>words = ["a","ab","abc"]</code>。掩码 1, 3, 7。
+删位：1 → 0；3 → 2,1；7 → 6,5,3。
+合并：1–0, 3–2, 3–1, 7–6, 7–5, 7–3。经 3 把 7 接到 1，全部连通，权重 <span class="arithmatex">\(1+1+1=3\)</span>。
+→ <code>groups=1, max=3</code> → <code>[1,3]</code> ✓</p>
+<p><strong>暴露伪边的对照</strong>（异或版本在此出错，删位版本正确）：<code>["a","abc"]</code>，掩码 1 与 7，对称差 <span class="arithmatex">\(\text{popcount}(1\oplus 7)=2\)</span> 但基数 1≠3，按 <span class="arithmatex">\((\star)\)</span> <strong>不连通</strong>。删位下：1 → 0；7 → 6,5,3，两组中介毫无交集，故分成两组、最大为 1 → <code>[2,1]</code>，与暴力一致。异或版本会让 1 和 7 都翻转到 3 而误并为 <code>[1,2]</code>。这正是区分两版本的输入。</p>
+<p><strong>替换边的正例</strong>：<code>["ab","ac"]</code>，掩码 3 与 5，差两位、同基数 2，是一步替换。删位下两者都生成中介 <span class="arithmatex">\(\{a\}=1\)</span>，经共享中介连通 → <code>[1,2]</code> ✓。</p>
 <h2 id="complexity">复杂度 (Complexity)<a class="headerlink" href="#complexity" title="Permanent link">#</a></h2>
 <ul>
-<li>Time: <span class="arithmatex">\(O(n \cdot 26 \cdot \alpha(n))\)</span>，并查集近线性</li>
-<li>Space: <span class="arithmatex">\(O(n \cdot 26)\)</span> 最坏（每个 word 增加 26 个中介节点）</li>
+<li>Time: <span class="arithmatex">\(O(n \cdot 26 \cdot \alpha(n))\)</span>。每个唯一掩码做至多 26 次删位 <code>union</code>，并查集近线性。</li>
+<li>Space: <span class="arithmatex">\(O(n \cdot 26)\)</span> 最坏。每个掩码引入至多 26 个删位中介节点；用 <code>dict</code> 只为唯一掩码与实际用到的中介开节点。</li>
 </ul>
 <h2 id="pitfalls">陷阱 (Pitfalls)<a class="headerlink" href="#pitfalls" title="Permanent link">#</a></h2>
 <ul>
-<li><strong>虚拟节点权重 = 0</strong>：只有"实际 word 掩码"才贡献到分量大小；中介只是为了连通性。</li>
-<li><strong>删位 = 加位</strong>：<code>m ^ (1 &lt;&lt; b)</code> 同时实现"若 b 在 m 中则删去；若 b 不在则加上"，所以一次循环 26 位覆盖两类邻居（实际我们想做的就是"去/加任一位的所有 26 个邻居"）。</li>
-<li><strong>同掩码多次出现</strong>：用 Counter 计数，并入分量权重；并查集节点不要建 n 个（O(n·26) 会 OOM），只对<strong>唯一掩码</strong>建。</li>
-<li><strong>"替换"通过共同中介自动连通</strong>：不需要显式遍历 <span class="arithmatex">\(26 \times 25\)</span> 对。</li>
+<li><strong>中介只删不加</strong>：必须用 <code>m &amp; ~(1 &lt;&lt; b)</code>（严格子集），而非 <code>m ^ (1 &lt;&lt; b)</code>（翻转）。异或会引入超集中介，把基数差 2 的串错误合并；这是本题最易踩、且官方样例查不出的 bug（见上文核验）。</li>
+<li><strong>虚拟节点权重 = 0</strong>：只有真实串掩码贡献分量大小，中介只传连通性。统计循环遍历 <code>cnt</code>（真实掩码），纯中介根自然被排除。</li>
+<li><strong>同掩码多次出现</strong>：用 <code>Counter</code> 把重复掩码计入分量权重，但并查集<strong>只对唯一掩码建节点</strong>。若给 <span class="arithmatex">\(n\)</span> 个串各建一个节点，<span class="arithmatex">\(O(n \cdot 26)\)</span> 节点在掩码大量重复时仍可能爆内存——按唯一掩码去重是关键。</li>
+<li><strong>空集中介合法</strong>：单字母串删位得到空集掩码 0，它是合法中介（题面保证每串至少 1 字符，故空集只作中介、不作真实串）。</li>
 </ul>
 <h2 id="related">相关题目 (Related)<a class="headerlink" href="#related" title="Permanent link">#</a></h2>
 <ul>

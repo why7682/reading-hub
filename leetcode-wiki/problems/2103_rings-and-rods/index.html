@@ -5485,6 +5485,8 @@
       
         
       
+        
+      
     
     
     
@@ -6024,6 +6026,34 @@
     
   
     #93. Restore IP Addresses
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../0102_binary-tree-level-order-traversal/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    #102. Binary Tree Level Order Traversal
   
 
     
@@ -22675,11 +22705,22 @@
 <h2 id="problem">Problem<a class="headerlink" href="#problem" title="Permanent link">#</a></h2>
 <p>字符串 <code>rings</code> 长 <span class="arithmatex">\(2n\)</span>（<span class="arithmatex">\(n \le 100\)</span>），每两字符描述一个环：第一字符颜色（R/G/B），第二字符所在杆（0..9）。求"同时拥有三种颜色"的杆数量。</p>
 <h2 id="background">背景 (Background)<a class="headerlink" href="#background" title="Permanent link">#</a></h2>
-<p>本题为位集 (bitset) 的微型应用：对每根杆维护一个 3 位掩码（R=1, G=2, B=4），最后数有多少根杆掩码 = 7。这种"用位向量表示集合成员关系"是状压 DP / bitmask DP 的最基础形态。</p>
+<p>先问一个朴素的问题：要判断一根杆是否集齐三色，我们究竟需要记住关于这根杆的什么信息？</p>
+<p>答案是：<strong>对 R、G、B 三种颜色，每一种是否至少出现过一次</strong>。颜色出现的<strong>次数</strong>无关紧要——同一根杆被红环套两次，和被套一次，对"是否集齐"这个判断没有区别；颜色出现的<strong>顺序</strong>也无关紧要。所以每根杆真正的状态，是集合 <span class="arithmatex">\(\{R, G, B\}\)</span> 的一个子集：杆上已经出现过哪些颜色。</p>
+<p>最直接的实现就是给每根杆配三个布尔量 <code>has_R, has_G, has_B</code>，扫描时把对应的置真，最后数有多少根杆三个都为真。这是正确的，也足够快。值得做的一步，是注意到这三个布尔量恰好是三个独立的 0/1 位——把它们打包进一个整数，就得到下面的位编码。这步打包不改变算法，只是让"子集"这个状态有了一个紧凑的、可以一次比较的表示。</p>
 <h2 id="formulation">形式化 (Formulation)<a class="headerlink" href="#formulation" title="Permanent link">#</a></h2>
-<p>设 <span class="arithmatex">\(\text{mask}[r] \in \{0, 1, \dots, 7\}\)</span> 表示杆 <span class="arithmatex">\(r\)</span> 上的颜色集合（按 R/G/B 三位编码）。读完字符串后，答案为 <span class="arithmatex">\(|\{r : \text{mask}[r] = 7\}|\)</span>。</p>
+<p>把三个布尔量按固定位序打包：R 占第 0 位、G 占第 1 位、B 占第 2 位，即编码 <span class="arithmatex">\(R = 1\)</span>、<span class="arithmatex">\(G = 2\)</span>、<span class="arithmatex">\(B = 4\)</span>。由于三个位互不重叠，任取 <span class="arithmatex">\(\{1, 2, 4\}\)</span> 的一个子集做按位或，结果都是一个唯一的整数；于是杆 <span class="arithmatex">\(r\)</span> 的颜色集合可以无歧义地表示为单个整数</p>
+<div class="arithmatex">\[
+\text{mask}[r] \in \{0, 1, \dots, 7\}, \qquad \text{每一位 } 1 \text{ 当且仅当对应颜色已出现}.
+\]</div>
+<p>读完字符串后，"集齐三色"等价于三个位全为 1，即 <span class="arithmatex">\(\text{mask}[r] = 1 \mathbin{|} 2 \mathbin{|} 4 = 7\)</span>。所求答案为</p>
+<div class="arithmatex">\[
+\bigl|\{\, r : \text{mask}[r] = 7 \,\}\bigr|.
+\]</div>
 <h2 id="approach">数据结构 / 想法 (Approach)<a class="headerlink" href="#approach" title="Permanent link">#</a></h2>
-<p>10 根杆 × 3 位 = 长 10 的 byte 数组。</p>
+<p>形式化直接给出算法。我们要对每根杆增量地计算它的颜色集合，扫描每个环时把它的颜色"并入"对应杆的集合——并集在位表示下就是按位或 <code>|=</code>。</p>
+<p>这里<strong>必须</strong>用 <code>|=</code> 而不是 <code>+=</code>，原因来自问题结构本身：我们关心的是颜色"是否出现过"（0/1），不是出现几次。按位或是<strong>幂等</strong>的（<span class="arithmatex">\(x \mathbin{|} x = x\)</span>），同色重复套入不会改变那一位，这正好对应"集合并入已有元素不改变集合"。而 <code>+=</code> 会累加次数，红色出现两次就会把那一位之外的高位也污染，破坏 <span class="arithmatex">\(\text{mask} = 7\)</span> 的判定。</p>
+<p>10 根杆各存一个 0..7 的整数，即长 10 的整型数组：</p>
 <div class="language-python highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">Solution</span><span class="p">:</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">countPoints</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rings</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
         <span class="n">bit</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;R&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;G&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="s1">&#39;B&#39;</span><span class="p">:</span> <span class="mi">4</span><span class="p">}</span>
@@ -22689,24 +22730,26 @@
             <span class="n">mask</span><span class="p">[</span><span class="n">r</span><span class="p">]</span> <span class="o">|=</span> <span class="n">bit</span><span class="p">[</span><span class="n">c</span><span class="p">]</span>
         <span class="k">return</span> <span class="nb">sum</span><span class="p">(</span><span class="mi">1</span> <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="n">mask</span> <span class="k">if</span> <span class="n">m</span> <span class="o">==</span> <span class="mi">7</span><span class="p">)</span>
 </code></pre></div>
-<p>样例 1 trace：<code>"B0B6G0R6R0R6G9"</code>。
-- B0 → mask[0] |= 4 → 4
-- B6 → mask[6] |= 4 → 4
-- G0 → mask[0] |= 2 → 6
-- R6 → mask[6] |= 1 → 5
-- R0 → mask[0] |= 1 → 7
-- R6 → mask[6] |= 1 → 5
-- G9 → mask[9] |= 2 → 2</p>
-<p>mask = [7,0,0,0,0,0,5,0,0,2] → 一根 = 7 → 答案 1 ✓。</p>
+<p>样例 1 trace：<code>"B0B6G0R6R0R6G9"</code>。每一步看 <code>|=</code> 如何累积子集：</p>
+<ul>
+<li>B0 → mask[0] |= 4 → 4（{B}）</li>
+<li>B6 → mask[6] |= 4 → 4（{B}）</li>
+<li>G0 → mask[0] |= 2 → 6（{G, B}）</li>
+<li>R6 → mask[6] |= 1 → 5（{R, B}）</li>
+<li>R0 → mask[0] |= 1 → 7（{R, G, B}，集齐）</li>
+<li>R6 → mask[6] |= 1 → 5（已有 R，幂等不变）</li>
+<li>G9 → mask[9] |= 2 → 2（{G}）</li>
+</ul>
+<p>mask = [7,0,0,0,0,0,5,0,0,2] → 仅杆 0 等于 7 → 答案 1 ✓。注意第二次 R6 落在已置位的位上，结果不变，这正是 <code>|=</code> 幂等性在起作用。</p>
 <h2 id="complexity">复杂度 (Complexity)<a class="headerlink" href="#complexity" title="Permanent link">#</a></h2>
 <ul>
-<li>Time: <span class="arithmatex">\(O(n)\)</span></li>
-<li>Space: <span class="arithmatex">\(O(1)\)</span>（10 根杆固定）</li>
+<li>Time: <span class="arithmatex">\(O(n)\)</span>（单次线性扫描，无早停也无数据相关分支，最好/最坏一致）</li>
+<li>Space: <span class="arithmatex">\(O(1)\)</span>（杆数固定为 10，与输入规模无关）</li>
 </ul>
 <h2 id="pitfalls">陷阱 (Pitfalls)<a class="headerlink" href="#pitfalls" title="Permanent link">#</a></h2>
 <ul>
 <li><strong>杆号一定是单字符 0..9</strong>（不是两位），按对索引 i, i+1。</li>
-<li><strong>重复加同色用 <code>|=</code> 不要 <code>+=</code></strong>：同色多次出现仍只算一种。</li>
+<li><strong>重复加同色用 <code>|=</code> 不要 <code>+=</code></strong>：见上文，幂等的按位或才符合"集合成员"语义；累加会产生 <span class="arithmatex">\(\text{mask}=7\)</span> 的假阳性（例如同一杆三次 R 用 <code>+=</code> 得 3，再加一个 G 得 7）。</li>
 </ul>
 <h2 id="related">相关题目 (Related)<a class="headerlink" href="#related" title="Permanent link">#</a></h2>
 <ul>

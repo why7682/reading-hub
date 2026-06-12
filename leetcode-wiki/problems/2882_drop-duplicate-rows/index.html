@@ -5485,6 +5485,8 @@
       
         
       
+        
+      
     
     
     
@@ -6024,6 +6026,34 @@
     
   
     #93. Restore IP Addresses
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../0102_binary-tree-level-order-traversal/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    #102. Binary Tree Level Order Traversal
   
 
     
@@ -17522,6 +17552,29 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#approach" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        数据结构 / 想法 (Approach)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="数据结构 / 想法 (Approach)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        朴素做法与它的问题
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#formulation" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -17531,15 +17584,20 @@
   </a>
   
 </li>
-      
-        <li class="md-nav__item">
-  <a href="#approach" class="md-nav__link">
+        
+          <li class="md-nav__item">
+  <a href="#api" class="md-nav__link">
     <span class="md-ellipsis">
       
-        数据结构 / 想法 (Approach)
+        从公式读出 API
       
     </span>
   </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -22588,6 +22646,29 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#approach" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        数据结构 / 想法 (Approach)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="数据结构 / 想法 (Approach)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        朴素做法与它的问题
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#formulation" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -22597,15 +22678,20 @@
   </a>
   
 </li>
-      
-        <li class="md-nav__item">
-  <a href="#approach" class="md-nav__link">
+        
+          <li class="md-nav__item">
+  <a href="#api" class="md-nav__link">
     <span class="md-ellipsis">
       
-        数据结构 / 想法 (Approach)
+        从公式读出 API
       
     </span>
   </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -22675,30 +22761,49 @@
 <h2 id="problem">Problem<a class="headerlink" href="#problem" title="Permanent link">#</a></h2>
 <p>给定 DataFrame <code>customers</code>，按 <code>email</code> 列去重，保留每个 email 的<strong>首次</strong>出现。</p>
 <h2 id="background">背景 (Background)<a class="headerlink" href="#background" title="Permanent link">#</a></h2>
-<p>30 Days of Pandas 系列基础题。底层语义即关系代数的 <code>DISTINCT ON (email)</code> 投影。</p>
-<h2 id="formulation">形式化 (Formulation)<a class="headerlink" href="#formulation" title="Permanent link">#</a></h2>
-<p>设关系 <span class="arithmatex">\(R \subseteq \mathbb{Z} \times \Sigma^* \times \Sigma^*\)</span>（customer_id, name, email），定义等价关系 <span class="arithmatex">\(r_1 \sim r_2 \iff r_1.\text{email} = r_2.\text{email}\)</span>。返回每个等价类中首次出现的代表元。</p>
+<p>30 Days of Pandas 系列基础题。问题的全部结构都在数据本身：<code>customers</code> 是一串按位置排好的行，多行可能携带同一个 <code>email</code>；我们要为每个出现过的 email 恰好保留一行，且保留它<strong>最早出现</strong>的那一条。"最早"在这里有确切含义——行在 DataFrame 中有固定的位置顺序（第 0 行、第 1 行……），出现位置最靠前的那条就是要保留的。下面先从一个朴素做法出发，看看它在哪里变得笨重，再把它收敛成一行惯用 API。</p>
 <h2 id="approach">数据结构 / 想法 (Approach)<a class="headerlink" href="#approach" title="Permanent link">#</a></h2>
-<p><code>DataFrame.drop_duplicates(subset=..., keep='first')</code>：</p>
+<h3 id="_1">朴素做法与它的问题<a class="headerlink" href="#_1" title="Permanent link">#</a></h3>
+<p>最直接的想法：从上往下扫一遍，记住"已经见过哪些 email"，没见过就保留、见过就丢弃。</p>
+<div class="language-python highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">dropDuplicateEmails_naive</span><span class="p">(</span><span class="n">customers</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
+    <span class="n">seen</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+    <span class="n">keep_idx</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">email</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">customers</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="n">customers</span><span class="p">[</span><span class="s1">&#39;email&#39;</span><span class="p">]):</span>
+        <span class="k">if</span> <span class="n">email</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">seen</span><span class="p">:</span>
+            <span class="n">seen</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">email</span><span class="p">)</span>
+            <span class="n">keep_idx</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">idx</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">customers</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">keep_idx</span><span class="p">]</span>
+</code></pre></div>
+<p>这段逻辑是对的：用哈希集合 <code>seen</code> 判重是 <span class="arithmatex">\(O(1)\)</span> 期望，整体单遍 <span class="arithmatex">\(O(n)\)</span>。但它把三件本该声明式表达的事拆成了命令式样板代码——(1) 按哪一列判重，(2) 一组重复里保留哪一个，(3) 维护 <code>seen</code> 与 <code>keep_idx</code> 的簿记。问题不在效率，而在于这些选择被埋进了循环体，既容易写错（漏更新 <code>seen</code>、<code>loc</code> 与 <code>index</code> 不一致），也难以一眼看出"按 email、保留首次"这个意图。把意图抽出来，需要先把它精确地写下来。</p>
+<h3 id="formulation">形式化 (Formulation)<a class="headerlink" href="#formulation" title="Permanent link">#</a></h3>
+<p>把表写成一个<strong>有序</strong>的行序列 <span class="arithmatex">\(S = (r_1, r_2, \dots, r_n)\)</span>，其中下标 <span class="arithmatex">\(i\)</span> 就是行的位置；每行 <span class="arithmatex">\(r_i = (\text{id}_i, \text{name}_i, \text{email}_i)\)</span>。用 email 相等定义等价关系
+$<span class="arithmatex">\(r_i \sim r_j \iff \text{email}_i = \text{email}_j,\)</span>$
+它把这 <span class="arithmatex">\(n\)</span> 行划分成若干等价类（同一个 email 的行归为一类）。注意这里用序列而非集合：集合是无序、自动去重的，"首次出现"无从谈起；只有保留位置下标 <span class="arithmatex">\(i\)</span>，"每类中下标最小的那行"才有定义。于是要求的输出就是
+$<span class="arithmatex">\(\bigl\{\, r_{\min C} : C \text{ 是 } S \text{ 在 } \sim \text{下的一个等价类} \,\bigr\},\)</span>$
+即每个等价类里<strong>位置下标最小</strong>的代表，按原顺序排列。</p>
+<p>朴素循环正是在逐行实现这个定义：判重列是 email（决定等价关系），"没见过才留"挑的恰好是每类里第一个遇到的元素（即 <span class="arithmatex">\(\min C\)</span>）。两个选择——<em>按哪一列分类</em> 与 <em>类内保留哪个</em>——就是这个公式的两个旋钮。</p>
+<h3 id="api">从公式读出 API<a class="headerlink" href="#api" title="Permanent link">#</a></h3>
+<p>Pandas 把这两个旋钮直接做成了 <code>drop_duplicates</code> 的两个参数：</p>
 <ul>
-<li><code>subset=['email']</code>：仅按 email 列判定重复。</li>
-<li><code>keep='first'</code>（默认）：每组重复保留第一条；<code>'last'</code> 保留最后；<code>False</code> 全部丢弃。</li>
-<li>实现上 pandas 用哈希表追踪已见 key，单遍 <span class="arithmatex">\(O(n)\)</span>。</li>
+<li><code>subset=['email']</code>：判重只看 email 列，对应等价关系 <span class="arithmatex">\(r_i \sim r_j \iff \text{email}_i = \text{email}_j\)</span>。省略 <code>subset</code> 则按<strong>所有列</strong>判重，等价关系变成整行相等，与本题不符（见陷阱）。</li>
+<li><code>keep='first'</code>（默认）：每个等价类保留位置最靠前的那行，即代表 <span class="arithmatex">\(r_{\min C}\)</span>。另两种取值改变的只是"类内保留哪个"：<code>'last'</code> 保留下标最大的；<code>False</code> 把所有出现过重复的行全部丢弃（只留下本就唯一的行）。</li>
 </ul>
+<p>于是整段命令式循环坍缩成一行，参数即公式：</p>
 <div class="language-python highlight"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
 
 <span class="k">def</span><span class="w"> </span><span class="nf">dropDuplicateEmails</span><span class="p">(</span><span class="n">customers</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
     <span class="k">return</span> <span class="n">customers</span><span class="o">.</span><span class="n">drop_duplicates</span><span class="p">(</span><span class="n">subset</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;email&#39;</span><span class="p">],</span> <span class="n">keep</span><span class="o">=</span><span class="s1">&#39;first&#39;</span><span class="p">)</span>
 </code></pre></div>
+<p>底层实现与朴素做法同构：pandas 对 <code>subset</code> 列做一次哈希因子化，单遍标记每行是否首次出现，再用一个长度为 <span class="arithmatex">\(n\)</span> 的布尔掩码筛选——只是把 <code>seen</code> 集合与簿记收进了 C 实现里。</p>
 <h2 id="complexity">复杂度 (Complexity)<a class="headerlink" href="#complexity" title="Permanent link">#</a></h2>
 <ul>
-<li>Time: <span class="arithmatex">\(O(n)\)</span> 期望，<span class="arithmatex">\(n\)</span> 为行数（依赖字符串哈希）。</li>
-<li>Space: <span class="arithmatex">\(O(d)\)</span>，<span class="arithmatex">\(d\)</span> 为不同 email 数。</li>
+<li>Time: <span class="arithmatex">\(O(n)\)</span> 期望，<span class="arithmatex">\(n\)</span> 为行数。哈希因子化每行均摊 <span class="arithmatex">\(O(1)\)</span>，这是平均情形界；在对抗性哈希碰撞下退化，"期望"正是对此的限定。</li>
+<li>Space: <span class="arithmatex">\(O(n)\)</span> 辅助空间——<code>drop_duplicates</code> 经由 <code>duplicated()</code> 物化一个长度为 <span class="arithmatex">\(n\)</span> 的布尔掩码，外加一个规模 <span class="arithmatex">\(O(d)\)</span> 的哈希表（<span class="arithmatex">\(d\)</span> 为不同 email 数，<span class="arithmatex">\(d \le n\)</span>），合计 <span class="arithmatex">\(O(n)\)</span>。</li>
 </ul>
 <h2 id="pitfalls">陷阱 (Pitfalls)<a class="headerlink" href="#pitfalls" title="Permanent link">#</a></h2>
 <ul>
-<li>忘了 <code>subset</code> 会按所有列判重，本题样例中无完全相同行，会一行都不丢。</li>
-<li>大小写敏感：<code>Alice@x.com</code> 与 <code>alice@x.com</code> 视为不同。如需规范化要先 <code>.str.lower()</code>。</li>
+<li>忘了 <code>subset</code> 会按所有列判重（等价关系退化为整行相等）。本题样例中没有两行完全相同（id、name 各异），于是一行都不会被丢，输出与输入相同——这正是必须显式指定 <code>subset=['email']</code> 的原因。</li>
+<li>大小写敏感：<code>Alice@x.com</code> 与 <code>alice@x.com</code> 的 email 字符串不相等，被判为不同等价类、各留一行。如需把它们视为同一邮箱，应先 <code>customers['email'] = customers['email'].str.lower()</code> 再去重。</li>
 </ul>
 <h2 id="related">相关题目 (Related)<a class="headerlink" href="#related" title="Permanent link">#</a></h2>
 <ul>

@@ -5485,6 +5485,8 @@
       
         
       
+        
+      
     
     
     
@@ -6024,6 +6026,34 @@
     
   
     #93. Restore IP Addresses
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../0102_binary-tree-level-order-traversal/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    #102. Binary Tree Level Order Traversal
   
 
     
@@ -22675,14 +22705,24 @@
 <h2 id="problem">Problem<a class="headerlink" href="#problem" title="Permanent link">#</a></h2>
 <p><code>pattern</code> 由 <code>I</code>/<code>D</code> 组成（长度 <span class="arithmatex">\(n\)</span>, <span class="arithmatex">\(n \le 8\)</span>）。要构造长度 <span class="arithmatex">\(n+1\)</span> 的串 <code>num</code>，用 <code>1..9</code> 中<strong>互不相同</strong>的数字，满足：<code>pattern[i] == 'I'</code> ⇒ <code>num[i] &lt; num[i+1]</code>，<code>pattern[i] == 'D'</code> ⇒ <code>num[i] &gt; num[i+1]</code>。求字典序最小的 <code>num</code>。</p>
 <h2 id="background">背景 (Background)<a class="headerlink" href="#background" title="Permanent link">#</a></h2>
-<p>本题与「<strong>栈反转 (stack-based reversal)</strong>」的经典 idiom 同源——D 段连续区间用栈累积、I 处一次性弹出，对应 <em>Knuth</em> 关于 <em>permutations sortable by a stack</em> 的经典结论。该 idiom 还出现在 Catalan number 的栈实现里、表达式 RPN 转换等场景。</p>
+<p>字典序最小，意味着我们想让靠前的位置尽量取小数字。最自然的尝试是逐位贪心：在每个位置放当前还没用过的最小数字。这个直觉在 <code>I</code> 处成立——下一位要更大，留着更大的数字即可；但在 <code>D</code> 处立刻失效。<code>D</code> 要求 <code>num[i] &gt; num[i+1]</code>，可此刻 <code>num[i+1]</code> 还没定，如果我们在位置 <span class="arithmatex">\(i\)</span> 已经把最小的可用数字用掉了，后一位就再也找不到比它更小的数字。</p>
+<p>举最短的反例：<code>pattern="D"</code>。逐位贪心会在位置 0 放 <code>1</code>（最小可用），于是位置 1 必须放一个比 <code>1</code> 还小的可用数字——不存在。所以正确答案是 <code>21</code>，而逐位贪心给不出来。失败点很具体：一个 <code>D</code> 把"位置 <span class="arithmatex">\(i\)</span> 该放什么"和"位置 <span class="arithmatex">\(i+1\)</span> 该放什么"绑在了一起，位置 <span class="arithmatex">\(i\)</span> 不能在看清整段 <code>D</code> 有多长之前就提前承诺一个数字。</p>
+<p>这个<strong>推迟承诺</strong>的结构正是本题的关键。它告诉我们：不能逐位决定，而要以"极大 D 段"为单位决定。下面把它精确化。</p>
 <h2 id="formulation">形式化 (Formulation)<a class="headerlink" href="#formulation" title="Permanent link">#</a></h2>
-<p>给 <span class="arithmatex">\(p \in \{I, D\}^n\)</span>，求 <span class="arithmatex">\(\pi : [n+1] \hookrightarrow \{1, \dots, 9\}\)</span> 使 <span class="arithmatex">\(\pi\)</span> 满足 <span class="arithmatex">\(p\)</span> 的方向约束、且 <span class="arithmatex">\(\pi\)</span> 字典序最小。</p>
+<p>给 <span class="arithmatex">\(p \in \{I, D\}^n\)</span>，求 <span class="arithmatex">\(\pi : [n+1] \hookrightarrow \{1, \dots, 9\}\)</span> 使 <span class="arithmatex">\(\pi\)</span> 满足 <span class="arithmatex">\(p\)</span> 的方向约束、且 <span class="arithmatex">\(\pi\)</span> 字典序最小。这里 <span class="arithmatex">\(\hookrightarrow\)</span> 表示单射（数字互不相同），<span class="arithmatex">\(\pi\)</span> 字典序最小指序列 <span class="arithmatex">\((\pi(0), \pi(1), \dots, \pi(n))\)</span> 字典序最小。</p>
+<p>字典序最小有一个逐位的等价刻画：在保证整串仍可行（后续位置都还能合法填完）的前提下，依次令 <span class="arithmatex">\(\pi(0)\)</span> 最小、再令 <span class="arithmatex">\(\pi(1)\)</span> 最小、……。困难全在"保证可行"这一条上——<code>D</code> 段使早一位的取值受制于晚一位，所以"可行的最小值"不能只看当前位。</p>
 <h2 id="approach">数据结构 / 想法 (Approach)<a class="headerlink" href="#approach" title="Permanent link">#</a></h2>
-<p><strong>经典栈贪心</strong>：按顺序往结果里推入 <span class="arithmatex">\(1, 2, 3, \dots, n+1\)</span>（最小可用数字）。维护一个栈：
-- 每一步把当前数字 push。
-- 若位置 <span class="arithmatex">\(i\)</span> 处 <code>pattern[i] == 'I'</code>（或到末尾），弹出栈中所有元素到结果。</p>
-<p>这恰好让 D 段反转、I 段保持升序。</p>
+<p><strong>先把一段 D 解出来。</strong> 设位置 <span class="arithmatex">\(j\)</span> 起有一段极大的 D 段，长度 <span class="arithmatex">\(k\)</span>（即 <span class="arithmatex">\(p[j] = \dots = p[j+k-1] = \text{D}\)</span>，覆盖输出位置 <span class="arithmatex">\(j, j+1, \dots, j+k\)</span>），且在它之前所有位置已填好。约束要求</p>
+<div class="arithmatex">\[\pi(j) &gt; \pi(j+1) &gt; \dots &gt; \pi(j+k),\]</div>
+<p>即这 <span class="arithmatex">\(k+1\)</span> 个位置上的数字严格递减。要让字典序最小，先看打头的 <span class="arithmatex">\(\pi(j)\)</span>：它是这段里最大的数，但它后面还有 <span class="arithmatex">\(k\)</span> 个比它更小、且互不相同的数字要填。所以 <span class="arithmatex">\(\pi(j)\)</span> 至少要预留出 <span class="arithmatex">\(k\)</span> 个更小的可用数字。在"当前最小可用数字"为 <span class="arithmatex">\(d\)</span> 时，能满足这一点的最小取值是 <span class="arithmatex">\(d+k\)</span>——再小就凑不出 <span class="arithmatex">\(k\)</span> 个比它小的可用数字。确定 <span class="arithmatex">\(\pi(j) = d+k\)</span> 后，余下位置只能依次取 <span class="arithmatex">\(d+k-1, d+k-2, \dots, d\)</span>。于是这段 D 的最小合法填法唯一确定：</p>
+<div class="arithmatex">\[\pi(j), \dots, \pi(j+k) \;=\; d+k, \,d+k-1,\, \dots,\, d,\]</div>
+<p>也就是把当前 <span class="arithmatex">\(k+1\)</span> 个最小可用数字 <span class="arithmatex">\(d, d+1, \dots, d+k\)</span> <strong>倒序</strong>放进去。<code>I</code> 是 D 段长度为 0 的退化情形：单个位置直接取当前最小可用数字 <span class="arithmatex">\(d\)</span>。</p>
+<p><strong>用栈实现这一推导。</strong> 上述填法逐段消耗"接下来若干个最小可用数字并倒序输出"。我们按 <span class="arithmatex">\(1, 2, 3, \dots, n+1\)</span> 的顺序逐个取数（它们就是依次的最小可用数字），用一个栈缓存：</p>
+<ul>
+<li>每一步把当前数字 push（推迟输出，对应 D 段尚未结束）。</li>
+<li>当遇到 <code>I</code> 或到达末尾时，段落结束，把栈中元素全部 pop 到结果——栈的"后进先出"恰好把这段缓存的递增数字倒序输出，得到该段的递减序列。</li>
+</ul>
+<p>栈不是技巧，而是上面"倒序填一段 D"推导的直接实现：push 对应推迟承诺，pop 顺序对应该段唯一的递减填法。</p>
 <div class="language-python highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">Solution</span><span class="p">:</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">smallestNumber</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pattern</span><span class="p">):</span>
         <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">pattern</span><span class="p">)</span>
@@ -22695,24 +22735,24 @@
                     <span class="n">out</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">stack</span><span class="o">.</span><span class="n">pop</span><span class="p">())</span>
         <span class="k">return</span> <span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">out</span><span class="p">)</span>
 </code></pre></div>
-<p>样例 1：pattern="IIIDIDDD" (n=8). 推入序列 1..9：
-- i=0: push 1, pattern[0]=I → 弹出 1. out=[1]. 
-- i=1: push 2, I → out=[1,2]. 
-- i=2: push 3, I → out=[1,2,3]. 
-- i=3: push 4, pattern[3]=D → 不弹.
-- i=4: push 5, pattern[4]=I → 弹出 5,4. out=[1,2,3,5,4]. 
+<p>把推导用样例验证一遍。</p>
+<p>样例 1：pattern="IIIDIDDD" (n=8)，逐个取数 1..9：
+- i=0: push 1, pattern[0]=I → 弹出 1. out=[1].
+- i=1: push 2, I → out=[1,2].
+- i=2: push 3, I → out=[1,2,3].
+- i=3: push 4, pattern[3]=D → 不弹（D 段开始，推迟）。
+- i=4: push 5, pattern[4]=I → 弹出 5,4. out=[1,2,3,5,4]（长度 1 的 D 段，倒序得 5,4）。
 - i=5: push 6, D → 不弹.
 - i=6: push 7, D → 不弹.
 - i=7: push 8, D → 不弹.
-- i=8: push 9, 末尾 → 弹出 9,8,7,6. out=[1,2,3,5,4,9,8,7,6].</p>
+- i=8: push 9, 末尾 → 弹出 9,8,7,6. out=[1,2,3,5,4,9,8,7,6]（长度 3 的 D 段，倒序得 9,8,7,6）。</p>
 <p>字符串 "123549876"。✅</p>
-<p>样例 2：pattern="DDD" (n=3). 
+<p>样例 2：pattern="DDD" (n=3)，整串是一段长度 3 的 D：
 - i=0: push 1, D 不弹.
 - i=1: push 2, D 不弹.
 - i=2: push 3, D 不弹.
 - i=3: push 4, 末尾 → 弹 4,3,2,1.</p>
-<p>out="4321". ✅</p>
-<p><strong>不变量</strong>：每段 D（长 <span class="arithmatex">\(k\)</span>）对应一段需要"递减"的连续输出。我们用 <span class="arithmatex">\(k+1\)</span> 个最小可用数字按入栈→反向弹出，得到的就是该段最小递减序列。I 处单独弹一次，保证全局升序到下一段。</p>
+<p>out="4321"，正是 <span class="arithmatex">\(\{1,2,3,4\}\)</span> 的最小递减排列。✅</p>
 <h2 id="complexity">复杂度 (Complexity)<a class="headerlink" href="#complexity" title="Permanent link">#</a></h2>
 <ul>
 <li>Time: <span class="arithmatex">\(O(n)\)</span> (每个数字进栈出栈各一次)。</li>
@@ -22720,18 +22760,19 @@
 </ul>
 <h2 id="pitfalls">陷阱 (Pitfalls)<a class="headerlink" href="#pitfalls" title="Permanent link">#</a></h2>
 <ul>
-<li>末尾必须强制弹出（否则栈中元素丢失）：<code>i == n or pattern[i] == 'I'</code>。</li>
-<li>数字必须从 1 开始（不是 0），且 <span class="arithmatex">\(\le 9\)</span>；约束 <span class="arithmatex">\(n \le 8\)</span> 保证 <span class="arithmatex">\(n + 1 \le 9\)</span>.</li>
-<li>不能直接对 9 个数字做全排列暴搜（<span class="arithmatex">\(9! = 362880\)</span> 可过，但慢且不优雅）。</li>
+<li>末尾必须强制弹出（否则末尾那段 D 缓存在栈里丢失）：<code>i == n or pattern[i] == 'I'</code>。</li>
+<li>数字必须从 1 开始（不是 0），且 <span class="arithmatex">\(\le 9\)</span>；约束 <span class="arithmatex">\(n \le 8\)</span> 保证 <span class="arithmatex">\(n + 1 \le 9\)</span>，9 个数字够用。</li>
+<li>逐位贪心（每位放当前最小可用数字）在 <code>D</code> 处会失败，这正是上面推导的出发点；它不是"另一个可行但慢的解"，而是根本不对。</li>
+<li>对 9 个数字做全排列暴搜（<span class="arithmatex">\(9! = 362880\)</span>）能过，但白做 <span class="arithmatex">\(O(n!)\)</span> 的工作量去得到一个已被推导唯一确定的结果，计算上冗余。</li>
 </ul>
 <h2 id="related">相关题目 (Related)<a class="headerlink" href="#related" title="Permanent link">#</a></h2>
 <ul>
 <li><a href="../0942_di-string-match/">#942. DI String Match</a> — 同主题但用 0..n，要求"任意一个"而非"最小"。</li>
-<li><a href="../0234_palindrome-linked-list/">#0234. Palindrome Linked List</a> — 同样使用栈做"反转"。</li>
+<li><a href="../0234_palindrome-linked-list/">#0234. Palindrome Linked List</a> — 同样用栈缓存后倒序输出。</li>
 </ul>
 <h2 id="further-reading">Further Reading<a class="headerlink" href="#further-reading" title="Permanent link">#</a></h2>
 <ul>
-<li>Knuth, <em>TAOCP</em> Vol. 1, §2.2.1 — Stack-realizable permutations 的经典分析。</li>
+<li>Knuth, <em>TAOCP</em> Vol. 1, §2.2.1 — Stack-realizable permutations 的经典分析。本题"push 缓存、遇 I 全 pop"的输出恰是栈可实现排列的一例：若把本节的推导推广，可见哪些排列能由单栈产生。</li>
 </ul>
 
 

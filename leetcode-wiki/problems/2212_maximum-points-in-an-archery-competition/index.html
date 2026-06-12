@@ -5485,6 +5485,8 @@
       
         
       
+        
+      
     
     
     
@@ -6024,6 +6026,34 @@
     
   
     #93. Restore IP Addresses
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../0102_binary-tree-level-order-traversal/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    #102. Binary Tree Level Order Traversal
   
 
     
@@ -22675,13 +22705,21 @@
 <h2 id="problem">Problem<a class="headerlink" href="#problem" title="Permanent link">#</a></h2>
 <p>12 个评分区（<span class="arithmatex">\(0\text{-}11\)</span>），Alice 已固定射出 <code>aliceArrows[k]</code> 支箭到第 <span class="arithmatex">\(k\)</span> 区。Bob 总共有 <code>numArrows</code> 支箭。若 Bob 在第 <span class="arithmatex">\(k\)</span> 区射出 <span class="arithmatex">\(b_k &gt; a_k\)</span>，则 Bob 得 <span class="arithmatex">\(k\)</span> 分。求一种 Bob 的分配方案使总分最大，返回该分配。<span class="arithmatex">\(1 \le \text{numArrows} \le 10^5\)</span>。</p>
 <h2 id="background">背景 (Background)<a class="headerlink" href="#background" title="Permanent link">#</a></h2>
-<p>本题是经典 <strong>子集枚举 + 0/1 背包变形</strong>：12 个区 → <span class="arithmatex">\(2^{12} = 4096\)</span> 个子集，每个子集是"Bob 想赢的区集合"，再 <span class="arithmatex">\(O(12)\)</span> 算成本。该套路与「最大权独立集 (small ground set)」、状压 DP 的入门题精神一致。</p>
+<p>Bob 面对的是一个分配问题：把 <code>numArrows</code> 支箭撒到 12 个区，目标是最大化总分。先看分数的来源。Bob 在第 <span class="arithmatex">\(k\)</span> 区的箭数 <span class="arithmatex">\(b_k\)</span> 只通过一个判定影响结果——是否满足 <span class="arithmatex">\(b_k &gt; a_k\)</span>。一旦满足，得 <span class="arithmatex">\(k\)</span> 分；不满足，得 <span class="arithmatex">\(0\)</span> 分。这里没有中间状态：多射没有奖励，少射没有部分分。</p>
+<p>这把每个区的决策压成了一个二元选择：<strong>赢下第 <span class="arithmatex">\(k\)</span> 区，或放弃它</strong>。赢下它的最小代价是 <span class="arithmatex">\(a_k + 1\)</span> 支箭（严格超过 <span class="arithmatex">\(a_k\)</span> 的最小整数）；放弃它则不必投入。在这个区上多投的箭对分数毫无贡献，因此任何超过 <span class="arithmatex">\(a_k+1\)</span> 的投入都是浪费。于是 Bob 的整个策略由"他选择赢下哪些区"完全决定——一个区的子集。</p>
+<p>一个自然的首次尝试是贪心：按性价比（分数除以所需箭数 <span class="arithmatex">\(k / (a_k+1)\)</span>）排序，从高到低逐个把区收入囊中，直到箭不够。但这会失败。考虑两个区，区 <span class="arithmatex">\(A\)</span> 性价比最高但要价很高，区 <span class="arithmatex">\(B\)</span>、<span class="arithmatex">\(C\)</span> 性价比稍低却便宜；先吃下 <span class="arithmatex">\(A\)</span> 后预算可能既装不下 <span class="arithmatex">\(B\)</span> 也装不下 <span class="arithmatex">\(C\)</span>，而放弃 <span class="arithmatex">\(A\)</span> 改取 <span class="arithmatex">\(B+C\)</span> 反而总分更高。贪心的问题在于每个区的代价是一个不可分割的整数门槛，局部最优的逐步选择无法预见这种挤占。</p>
+<p>贪心失败，是因为各区之间通过共享的箭预算相互竞争，而代价是离散的。但有一个关键事实救场：<strong>给定要赢的区集合 <span class="arithmatex">\(S\)</span>，各区互不干涉</strong>——赢下每个区的最小代价 <span class="arithmatex">\(a_k+1\)</span> 只取决于该区自身，集合的总代价就是各区代价之和。所以只要确定了 <span class="arithmatex">\(S\)</span>，最优投入方式立刻确定（每个 <span class="arithmatex">\(S\)</span> 中的区投 <span class="arithmatex">\(a_k+1\)</span> 支，余箭随意安置）。困难全部坍缩为一个问题：在所有可行的子集 <span class="arithmatex">\(S\)</span> 中，哪个的得分最高。而区只有 12 个，子集只有 <span class="arithmatex">\(2^{12} = 4096\)</span> 个——可以全部枚举。</p>
 <h2 id="formulation">形式化 (Formulation)<a class="headerlink" href="#formulation" title="Permanent link">#</a></h2>
-<p>记 <span class="arithmatex">\(a_k = \text{aliceArrows}[k]\)</span>。对每个子集 <span class="arithmatex">\(S \subseteq \{0, 1, \dots, 11\}\)</span>，赢下 <span class="arithmatex">\(S\)</span> 中所有区的成本是 <span class="arithmatex">\(C(S) = \sum_{k \in S} (a_k + 1)\)</span>，得分 <span class="arithmatex">\(V(S) = \sum_{k \in S} k\)</span>。求</p>
-<div class="arithmatex">\[\max\{V(S) : C(S) \le \text{numArrows}\}\]</div>
-<p>并把余下的箭随便放（通常塞到第 0 区或某个未赢的区）。</p>
+<p>上一节的结论是：Bob 的最优策略由"赢下哪个子集 <span class="arithmatex">\(S \subseteq \{0,1,\dots,11\}\)</span>"唯一刻画，且给定 <span class="arithmatex">\(S\)</span> 后最小代价与得分都只是 <span class="arithmatex">\(S\)</span> 的函数。把这一点写成数学。记 <span class="arithmatex">\(a_k = \text{aliceArrows}[k]\)</span>。</p>
+<p>赢下 <span class="arithmatex">\(S\)</span> 中所有区的最小代价是</p>
+<div class="arithmatex">\[C(S) = \sum_{k \in S} (a_k + 1),\]</div>
+<p>得分是</p>
+<div class="arithmatex">\[V(S) = \sum_{k \in S} k.\]</div>
+<p>可行性约束是箭预算：<span class="arithmatex">\(C(S) \le \text{numArrows}\)</span>。于是问题精确等价于</p>
+<div class="arithmatex">\[\max\{\, V(S) : C(S) \le \text{numArrows},\ S \subseteq \{0,1,\dots,11\} \,\}. \tag{$\star$}\]</div>
+<p>这个等价为什么是完整且无损的，值得明确说清。给定任意一个合法的 <code>bob[]</code> 数组，定义 <span class="arithmatex">\(S = \{k : b_k &gt; a_k\}\)</span>，即 Bob 实际赢下的区集合。那么对每个 <span class="arithmatex">\(k \in S\)</span> 必有 <span class="arithmatex">\(b_k \ge a_k + 1\)</span>，对 <span class="arithmatex">\(S\)</span> 外的区 <span class="arithmatex">\(b_k\)</span> 可以是任意非负值。Bob 的得分只等于 <span class="arithmatex">\(V(S)\)</span>，与各区超过最小值的部分无关。因此：任何分配方案的得分都对应某个子集 <span class="arithmatex">\(S\)</span> 的 <span class="arithmatex">\(V(S)\)</span>；反过来，任何满足 <span class="arithmatex">\(C(S) \le \text{numArrows}\)</span> 的 <span class="arithmatex">\(S\)</span> 都能用 <span class="arithmatex">\(a_k+1\)</span> 支箭在每个区实现，余下的 <span class="arithmatex">\(\text{numArrows} - C(S) \ge 0\)</span> 支箭安置到任意区即可。两个方向都成立，所以 <span class="arithmatex">\((\star)\)</span> 的最优值就是 Bob 能拿到的最高分。这同时解释了"为什么每个 <span class="arithmatex">\(S\)</span> 内部按最小代价投入是最优的"——超过 <span class="arithmatex">\(a_k+1\)</span> 的投入既不改变 <span class="arithmatex">\(S\)</span> 也不改变得分。</p>
 <h2 id="approach">数据结构 / 想法 (Approach)<a class="headerlink" href="#approach" title="Permanent link">#</a></h2>
-<p>枚举 mask <span class="arithmatex">\(\in [0, 2^{12})\)</span>：</p>
+<p>枚举即把 <span class="arithmatex">\((\star)\)</span> 直接实例化。子集 <span class="arithmatex">\(S \subseteq \{0,\dots,11\}\)</span> 与 12 位的 bitmask 一一对应：<code>mask</code> 的第 <span class="arithmatex">\(k\)</span> 位为 1 当且仅当 <span class="arithmatex">\(k \in S\)</span>。遍历 <code>mask</code> 取遍 <span class="arithmatex">\([0, 2^{12})\)</span>，恰好是遍历所有 <span class="arithmatex">\(4096\)</span> 个子集。对每个 mask，按定义 <span class="arithmatex">\(O(12)\)</span> 算出 <span class="arithmatex">\(C(S)\)</span>（代码中的 <code>cost</code>）和 <span class="arithmatex">\(V(S)\)</span>（<code>score</code>），跳过超预算的，记录得分最高者。枚举覆盖全部子集，所以返回的必是全局最优。</p>
 <div class="language-python highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">Solution</span><span class="p">:</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">maximumBobPoints</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">numArrows</span><span class="p">,</span> <span class="n">aliceArrows</span><span class="p">):</span>
         <span class="n">best_score</span><span class="p">,</span> <span class="n">best_mask</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span>
@@ -22698,11 +22736,11 @@
             <span class="k">if</span> <span class="n">best_mask</span> <span class="o">&gt;&gt;</span> <span class="n">k</span> <span class="o">&amp;</span> <span class="mi">1</span><span class="p">:</span>
                 <span class="n">bob</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">aliceArrows</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span>
                 <span class="n">cost</span> <span class="o">+=</span> <span class="n">bob</span><span class="p">[</span><span class="n">k</span><span class="p">]</span>
-        <span class="n">bob</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+=</span> <span class="n">numArrows</span> <span class="o">-</span> <span class="n">cost</span>  <span class="c1"># 把多余箭塞到第 0 区</span>
+        <span class="n">bob</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+=</span> <span class="n">numArrows</span> <span class="o">-</span> <span class="n">cost</span>  <span class="c1"># 将剩余箭分配至第 0 区</span>
         <span class="k">return</span> <span class="n">bob</span>
 </code></pre></div>
-<p>样例 1：<code>numArrows=9, aliceArrows=[1,1,0,1,0,0,2,1,0,1,2,0]</code>. 取 mask 包含 <span class="arithmatex">\(\{4,5,8,9,10,11\}\)</span> 的子集，成本 <span class="arithmatex">\(1+1+1+2+3+1=9\)</span>，得分 <span class="arithmatex">\(47\)</span>。剩余箭 0，bob=<code>[0,0,0,0,1,1,0,0,1,2,3,1]</code>. ✅</p>
-<p><strong>不变量</strong>：枚举完所有 mask 保证全局最优；剩余箭塞到 <code>bob[0]</code>（第 0 区）不会影响得分（赢第 0 区也只有 0 分），但要注意若 <code>bob[0] &gt; 0</code> 而 <code>aliceArrows[0] = 0</code>，按规则 Bob 反而能赢 0 分——不影响总分。</p>
+<p>确定 <code>best_mask</code> 后，重建 <code>bob[]</code>：对 <span class="arithmatex">\(S\)</span> 中每个区投入 <span class="arithmatex">\(a_k+1\)</span> 支，再把余下的 <span class="arithmatex">\(\text{numArrows} - C(S)\)</span> 支安置到第 0 区。由形式化里的论证，余箭如何安置都不改变得分，所以这一步只是为了满足"箭必须全部射出"的约束。选第 0 区是因为它的分值为 0，赢不赢它都无影响。</p>
+<p>样例 1：<code>numArrows=9, aliceArrows=[1,1,0,1,0,0,2,1,0,1,2,0]</code>。最优 <span class="arithmatex">\(S = \{4,5,8,9,10,11\}\)</span>，代价 <span class="arithmatex">\(C(S) = 1+1+1+2+3+1 = 9\)</span>，得分 <span class="arithmatex">\(V(S) = 4+5+8+9+10+11 = 47\)</span>。余箭 <span class="arithmatex">\(9-9=0\)</span>，故 <code>bob=[0,0,0,0,1,1,0,0,1,2,3,1]</code>，总和 <span class="arithmatex">\(9\)</span>，得分 <span class="arithmatex">\(47\)</span>。✅</p>
 <h2 id="complexity">复杂度 (Complexity)<a class="headerlink" href="#complexity" title="Permanent link">#</a></h2>
 <ul>
 <li>Time: <span class="arithmatex">\(O(2^{12} \cdot 12) = O(49152)\)</span>，常数级。</li>
@@ -22710,9 +22748,9 @@
 </ul>
 <h2 id="pitfalls">陷阱 (Pitfalls)<a class="headerlink" href="#pitfalls" title="Permanent link">#</a></h2>
 <ul>
-<li>想"赢第 <span class="arithmatex">\(k\)</span> 区"必须用 <span class="arithmatex">\(a_k + 1\)</span> 支箭（严格大于）。若用 <span class="arithmatex">\(a_k\)</span> 支箭则平局，Bob 不得分（题目规则 <span class="arithmatex">\(a_k \ge b_k\)</span> Alice 拿分）。</li>
-<li>剩余箭必须分配掉（题目要求 <code>sum(bob) == numArrows</code>）。</li>
-<li>若 <code>aliceArrows[0] = 0</code> 且把剩余箭塞第 0 区，Bob 会"赢"第 0 区——分值 0，无影响，但要确认题目允许 <code>bob[0] &gt; 0</code> 时仍能塞箭。</li>
+<li>想"赢第 <span class="arithmatex">\(k\)</span> 区"必须用 <span class="arithmatex">\(a_k + 1\)</span> 支箭（严格大于）。若用 <span class="arithmatex">\(a_k\)</span> 支箭则平局，Bob 不得分（题目规则平局时 Alice 拿分）。这正是代价里 <span class="arithmatex">\(+1\)</span> 的来源。</li>
+<li>剩余箭必须分配掉（题目要求 <code>sum(bob) == numArrows</code>）。由于 mask 超预算时被跳过，<span class="arithmatex">\(\text{numArrows} - C(S) \ge 0\)</span> 恒成立，<code>bob[0] += numArrows - cost</code> 不会产生负值。</li>
+<li>若 <code>aliceArrows[0] = 0</code> 且把剩余箭塞第 0 区，Bob 会"赢"第 0 区——分值 0，对总分无影响。</li>
 </ul>
 <h2 id="related">相关题目 (Related)<a class="headerlink" href="#related" title="Permanent link">#</a></h2>
 <ul>

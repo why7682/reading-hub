@@ -5485,6 +5485,8 @@
       
         
       
+        
+      
     
     
     
@@ -6024,6 +6026,34 @@
     
   
     #93. Restore IP Addresses
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../0102_binary-tree-level-order-traversal/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    #102. Binary Tree Level Order Traversal
   
 
     
@@ -22675,16 +22705,27 @@
 <h2 id="problem">Problem<a class="headerlink" href="#problem" title="Permanent link">#</a></h2>
 <p>给数组 <code>mountain</code>，返回所有<strong>峰</strong>的索引：<span class="arithmatex">\(i \in (0, n-1)\)</span> 且 <span class="arithmatex">\(\text{mountain}[i]\)</span> <strong>严格大于</strong>两侧邻居。首尾元素不是峰。<span class="arithmatex">\(3 \le n \le 100\)</span>。</p>
 <h2 id="background">背景 (Background)<a class="headerlink" href="#background" title="Permanent link">#</a></h2>
-<p>"严格峰" 定义和 #162 <em>Find Peak Element</em> 的"局部最大"定义相同，但本题求<strong>所有峰</strong>（线性扫描即可），#162 求<strong>任一峰</strong>（可用二分到 <span class="arithmatex">\(O(\log n)\)</span>）。两题的对比是"全部 vs 一个"在算法选择上的常见分水岭。</p>
+<p>先把"峰"这个词落到数组本身上。记 <span class="arithmatex">\(a_i = \text{mountain}[i]\)</span>。在索引 <span class="arithmatex">\(i\)</span> 处称作一个峰，意味着站在 <span class="arithmatex">\(a_i\)</span> 上往两侧看都是下坡：左邻 <span class="arithmatex">\(a_{i-1}\)</span> 比它低，右邻 <span class="arithmatex">\(a_{i+1}\)</span> 也比它低。这立刻给出两个约束。</p>
+<p>第一，两侧邻居都必须存在，否则"往两侧看"无从谈起。所以 <span class="arithmatex">\(i=0\)</span> 和 <span class="arithmatex">\(i=n-1\)</span> 永远不是峰，候选索引被限制在内部 <span class="arithmatex">\(i \in [1, n-2]\)</span>。</p>
+<p>第二，"低"必须是<strong>严格</strong>的。考虑长度为 3 的三个例子：<span class="arithmatex">\([1,3,1]\)</span> 中 <span class="arithmatex">\(i=1\)</span> 是峰；<span class="arithmatex">\([1,3,3]\)</span> 中 <span class="arithmatex">\(i=1\)</span> 不是峰，因为右邻与它相等，不是下坡而是平台；同理 <span class="arithmatex">\([3,3,1]\)</span> 中 <span class="arithmatex">\(i=1\)</span> 也不是峰。若把条件放宽成 <span class="arithmatex">\(\le\)</span>，平台就会被误判成峰——这正是后文"陷阱"一节里反复出问题的根源，所以从一开始就用严格不等号 <span class="arithmatex">\(&lt;\)</span> 钉死它。</p>
+<p>两个观察合起来，峰的判定就是"内部索引 + 两侧严格更小"，下一节把它写成一个集合。</p>
 <h2 id="formulation">形式化 (Formulation)<a class="headerlink" href="#formulation" title="Permanent link">#</a></h2>
-<p>返回 <span class="arithmatex">\(\{ i \in [1, n-2] : a_{i-1} &lt; a_i \land a_i &gt; a_{i+1} \}\)</span>。</p>
+<p>上一节的两个观察直接翻译成：返回满足条件的索引集合</p>
+<div class="arithmatex">\[P = \{\, i \in [1, n-2] \;:\; a_{i-1} &lt; a_i \;\land\; a_i &gt; a_{i+1} \,\}. \tag{1}\]</div>
+<p>定义域 <span class="arithmatex">\([1, n-2]\)</span> 编码了"两侧邻居都存在"，链式不等式 <span class="arithmatex">\(a_{i-1} &lt; a_i &gt; a_{i+1}\)</span> 编码了"两侧严格下坡"。这个集合就是整道题的脊柱：算法只需枚举它，复杂度只需分析枚举的代价。</p>
 <h2 id="approach">数据结构 / 想法 (Approach)<a class="headerlink" href="#approach" title="Permanent link">#</a></h2>
-<p><strong>线性扫描</strong>：对 <span class="arithmatex">\(i \in [1, n-2]\)</span> 逐个判断。无论数据结构，本题求"全部"必须线性时间——<span class="arithmatex">\(\Omega(n)\)</span> 下界因为最坏所有 <span class="arithmatex">\(i\)</span> 都是答案。</p>
+<p>集合 <span class="arithmatex">\((1)\)</span> 的定义域是 <span class="arithmatex">\([1, n-2]\)</span>，对其中每个 <span class="arithmatex">\(i\)</span>，成员条件 <span class="arithmatex">\(a_{i-1} &lt; a_i &gt; a_{i+1}\)</span> 只看 <span class="arithmatex">\(i\)</span> 的两个紧邻邻居，<span class="arithmatex">\(O(1)\)</span> 即可判定。把定义域线性走一遍、逐个检查成员条件，就得到 <span class="arithmatex">\((1)\)</span> 中全部元素——这就是线性扫描，也是下面代码 line 20–21 对公式 <span class="arithmatex">\((1)\)</span> 的直接实现。</p>
+<p>为什么不需要更聪明的结构（前缀和、单调栈、线段树）？因为位置 <span class="arithmatex">\(i\)</span> 的判定只依赖 <span class="arithmatex">\(a_{i-1}, a_i, a_{i+1}\)</span> 三个值，相邻位置之间没有可累积、可复用的状态——检查完 <span class="arithmatex">\(i\)</span> 对检查 <span class="arithmatex">\(i+1\)</span> 没有任何信息增益。局部独立性使得任何额外结构都省不下工作。</p>
+<p>那线性是不是已经到底了？是。这里有一个 <span class="arithmatex">\(\Omega(n)\)</span> 下界：对手（adversary）可以针对任何"少看了某个元素"的算法构造反例。假设某算法不检查位置 <span class="arithmatex">\(j\)</span>，对手就把 <span class="arithmatex">\(a_j\)</span> 改成一个足够大或足够小的值——这一改动可能凭空造出一个以 <span class="arithmatex">\(j\)</span> 为中心的新峰，也可能破坏掉 <span class="arithmatex">\(j\)</span> 旁边本已成立的峰。算法没看 <span class="arithmatex">\(a_j\)</span>，无法分辨这两种局面，于是必然在某个输入上给出错误的峰集合。因此正确算法必须读遍每个元素，<span class="arithmatex">\(\Omega(n)\)</span> 成立，线性扫描已是最优。</p>
+<blockquote>
+<p>顺带澄清一个常见误算：<span class="arithmatex">\(\Omega(n)\)</span> <strong>不是</strong>因为"最坏情况所有 <span class="arithmatex">\(i\)</span> 都是峰"。相邻两个内部索引不可能同时是峰——<span class="arithmatex">\(i\)</span> 是峰要求 <span class="arithmatex">\(a_i &gt; a_{i+1}\)</span>，而 <span class="arithmatex">\(i+1\)</span> 是峰要求 <span class="arithmatex">\(a_i &lt; a_{i+1}\)</span>，二者矛盾。所以峰至多有 <span class="arithmatex">\(\lceil (n-2)/2 \rceil \approx n/2\)</span> 个（如 <span class="arithmatex">\([1,3,1,3,1,\dots]\)</span>），输出规模约为 <span class="arithmatex">\(n/2\)</span> 而非 <span class="arithmatex">\(n\)</span>。下界的真正来源是上面的对手论证（必须读遍每个元素），而非输出规模。</p>
+</blockquote>
 <div class="language-python highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">Solution</span><span class="p">:</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">findPeaks</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mountain</span><span class="p">):</span>
         <span class="k">return</span> <span class="p">[</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">mountain</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
                 <span class="k">if</span> <span class="n">mountain</span><span class="p">[</span><span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">mountain</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">mountain</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]]</span>
 </code></pre></div>
+<p><code>range(1, len(mountain) - 1)</code> 就是定义域 <span class="arithmatex">\([1, n-2]\)</span>，链式比较 <code>mountain[i-1] &lt; mountain[i] &gt; mountain[i+1]</code> 就是 <span class="arithmatex">\((1)\)</span> 的成员条件，Python 的链式比较天然保证两侧都用严格 <code>&lt;</code>、<code>&gt;</code>。</p>
 <p><strong>Trace example 2</strong> <code>mountain=[1,4,3,8,5]</code>：
 - i=1: 1&lt;4&gt;3 ✓
 - i=2: 4&lt;3? No
@@ -22692,17 +22733,18 @@
 - 输出 [1,3] ✓</p>
 <h2 id="complexity">复杂度 (Complexity)<a class="headerlink" href="#complexity" title="Permanent link">#</a></h2>
 <ul>
-<li>Time: <span class="arithmatex">\(O(n)\)</span>。</li>
-<li>Space: <span class="arithmatex">\(O(k)\)</span>，<span class="arithmatex">\(k\)</span> 为峰数。</li>
+<li>Time: <span class="arithmatex">\(O(n)\)</span>，且由上面的对手论证，这是下界，无法更快。</li>
+<li>Space: <span class="arithmatex">\(O(k)\)</span>，<span class="arithmatex">\(k\)</span> 为峰数（输出敏感）；除输出外的辅助空间为 <span class="arithmatex">\(O(1)\)</span>。</li>
 </ul>
 <h2 id="pitfalls">陷阱 (Pitfalls)<a class="headerlink" href="#pitfalls" title="Permanent link">#</a></h2>
+<p>这两个坑在形式化时已用严格不等号和定义域 <span class="arithmatex">\([1, n-2]\)</span> 钉死，这里只是提醒实现别走样：</p>
 <ul>
-<li>"严格"——<code>[2,4,4]</code> 中位置 1 不是峰（与右邻相等）。</li>
-<li>范围是开区间 <span class="arithmatex">\((0, n-1)\)</span>，不要让 <span class="arithmatex">\(i=0\)</span> 或 <span class="arithmatex">\(i=n-1\)</span> 入选。</li>
+<li><strong>"严格"</strong>——<code>[2,4,4]</code> 中位置 1 不是峰（右邻相等，<span class="arithmatex">\(4 &gt; 4\)</span> 为假）。把 <code>&gt;</code> 误写成 <code>&gt;=</code> 会把平台错判成峰。</li>
+<li><strong>范围是开区间</strong> <span class="arithmatex">\((0, n-1)\)</span>——不要让 <span class="arithmatex">\(i=0\)</span> 或 <span class="arithmatex">\(i=n-1\)</span> 入选，首尾缺一侧邻居，恒非峰。</li>
 </ul>
 <h2 id="related">相关题目 (Related)<a class="headerlink" href="#related" title="Permanent link">#</a></h2>
 <ul>
-<li><a href="../0162_find-peak-element/">#162. Find Peak Element</a> — 求任一峰，可二分 <span class="arithmatex">\(O(\log n)\)</span>。</li>
+<li><a href="../0162_find-peak-element/">#162. Find Peak Element</a> — 求<strong>任一</strong>峰，可二分 <span class="arithmatex">\(O(\log n)\)</span>。对照 <span class="arithmatex">\((1)\)</span> 看差别：本题枚举整个集合 <span class="arithmatex">\(P\)</span>，没有任何比较结果能让你跳过某个候选（跳过的位置本身可能是峰）；而 #162 只要集合 <span class="arithmatex">\(P\)</span> 中<strong>一个</strong>元素，于是可以利用单侧上坡必通向某个峰这一单调结构，每次比较砍掉一半搜索空间。"求全部"与"求其一"的复杂度差异，正源于此。</li>
 <li><a href="../2909_minimum-sum-of-mountain-triplets-ii/">#2909. Minimum Sum of Mountain Triplets II</a> — 用峰（中间元素）+ 两侧最小定义 "mountain triplet"。</li>
 </ul>
 <h2 id="further-reading">Further Reading<a class="headerlink" href="#further-reading" title="Permanent link">#</a></h2>

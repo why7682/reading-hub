@@ -5485,6 +5485,8 @@
       
         
       
+        
+      
     
     
     
@@ -6024,6 +6026,34 @@
     
   
     #93. Restore IP Addresses
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../0102_binary-tree-level-order-traversal/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    #102. Binary Tree Level Order Traversal
   
 
     
@@ -22675,42 +22705,60 @@
 <h2 id="problem">Problem<a class="headerlink" href="#problem" title="Permanent link">#</a></h2>
 <p>给整数 <span class="arithmatex">\(n\)</span>，求长度为 <span class="arithmatex">\(n\)</span> 的小写英文字符串数量，使该串可重排后含 <code>"leet"</code> 作为子串。答案对 <span class="arithmatex">\(10^9 + 7\)</span> 取模。<span class="arithmatex">\(n \le 10^5\)</span>。</p>
 <h2 id="background">背景 (Background)<a class="headerlink" href="#background" title="Permanent link">#</a></h2>
-<p>"可重排后含 'leet'" 等价于"含至少 1 个 <code>l</code>、1 个 <code>t</code>、2 个 <code>e</code>"——因为只要字符配额够，重排时把它们连续摆出即可。</p>
-<p>这把字符串计数问题约化为<strong>多重集容斥</strong>。直接做"好串"难（约束是"存在"），更易求<strong>反</strong>："<strong>坏</strong>串 = 不满足配额"，再 <code>26^n - 坏</code>。坏的几何由 <span class="arithmatex">\(\{l\text{ 个数} = 0\} \cup \{t = 0\} \cup \{e \le 1\}\)</span> 三事件并组成，用 inclusion-exclusion 展开。</p>
+<p>先把"可重排后含 <code>leet</code>"翻译成对字符的要求。重排只调整顺序，不增删字符；只要某串的字符里<strong>够</strong>凑出 <code>l, e, e, t</code>，重排时把这四个字符连续摆在一起即可得到含 <code>leet</code> 的排列。反过来，若某串重排后含 <code>leet</code>，它显然含这四个字符。于是：</p>
+<div class="arithmatex">\[\text{可重排含 leet} \iff \text{至少 1 个 } l,\ \text{至少 1 个 } t,\ \text{至少 2 个 } e.\]</div>
+<p>注意这是<strong>字符配额</strong>条件，不是字符串匹配——后面所有计数都建立在这一等价上。</p>
+<p>现在的目标是：在 <span class="arithmatex">\(26^n\)</span> 个长度为 <span class="arithmatex">\(n\)</span> 的串里，数出满足这三个下界的串。先试最直接的做法。</p>
+<p><strong>直接数会卡在哪。</strong> "好串"的条件是三个下界的<strong>合取</strong>：<span class="arithmatex">\((\#l \ge 1) \wedge (\#t \ge 1) \wedge (\#e \ge 2)\)</span>。要直接数同时满足三者的串，得固定 <span class="arithmatex">\(l, t, e\)</span> 各出现多少次、再把剩下位置分给另外 23 个字母，并对所有合法的次数组合求和。三个"至少"耦合在一起，求和项随约束叠加而膨胀，写出来是一个多重和式，并不比原问题简单。</p>
+<p><strong>换个角度数补集。</strong> 合取难数，它的<strong>否定</strong>却好数。对三个下界取反（De Morgan）：</p>
+<div class="arithmatex">\[\neg\big[(\#l \ge 1) \wedge (\#t \ge 1) \wedge (\#e \ge 2)\big] = (\#l = 0) \;\vee\; (\#t = 0) \;\vee\; (\#e \le 1).\]</div>
+<p>也就是说，"坏串"就是"缺 <span class="arithmatex">\(l\)</span>"、"缺 <span class="arithmatex">\(t\)</span>"、"<span class="arithmatex">\(e\)</span> 不够"三种亏空里<strong>至少占一种</strong>。每一种亏空单独数都很简单：它只是"某个字母被禁用 / 限量"，等于在更小的字母表上计数。三个下界的合取被换成了三个简单事件的<strong>并</strong>，而并集的基数正是容斥原理（inclusion-exclusion）处理的对象。</p>
+<p>于是策略定了：</p>
+<div class="arithmatex">\[\text{好串数} = 26^n - |A \cup B \cup C|,\qquad A = \{\#l = 0\},\ B = \{\#t = 0\},\ C = \{\#e \le 1\},\]</div>
+<p>其中 <span class="arithmatex">\(|A \cup B \cup C|\)</span> 用容斥展开。下一节把每一项的计数补全。</p>
 <h2 id="formulation">形式化 (Formulation)<a class="headerlink" href="#formulation" title="Permanent link">#</a></h2>
-<p>设全集 <span class="arithmatex">\(U = \{0..25\}^n\)</span>，<span class="arithmatex">\(|U| = 26^n\)</span>。事件：
-- <span class="arithmatex">\(A\)</span>: <span class="arithmatex">\(l\)</span> 字符不出现，<span class="arithmatex">\(|A| = 25^n\)</span>。
-- <span class="arithmatex">\(B\)</span>: <span class="arithmatex">\(t\)</span> 不出现，<span class="arithmatex">\(|B| = 25^n\)</span>。
-- <span class="arithmatex">\(C\)</span>: <span class="arithmatex">\(e\)</span> 出现 <span class="arithmatex">\(\le 1\)</span> 次，<span class="arithmatex">\(|C| = 25^n + n \cdot 25^{n-1}\)</span>。</p>
-<p>要求 <span class="arithmatex">\(26^n - |A \cup B \cup C|\)</span>。容斥：</p>
-<div class="arithmatex">\[|A \cup B \cup C| = |A|+|B|+|C| - |A\cap B|-|A\cap C|-|B\cap C|+|A\cap B\cap C|.\]</div>
+<p>全集 <span class="arithmatex">\(U = \{0..25\}^n\)</span>，<span class="arithmatex">\(|U| = 26^n\)</span>。三个坏事件：</p>
 <ul>
-<li><span class="arithmatex">\(|A \cap B| = 24^n\)</span>（不含 l 和 t）。</li>
-<li><span class="arithmatex">\(|A \cap C| = 24^n + n \cdot 24^{n-1}\)</span>（不含 l，且 e 出现 <span class="arithmatex">\(\le 1\)</span>）。</li>
-<li><span class="arithmatex">\(|B \cap C| = 24^n + n \cdot 24^{n-1}\)</span>。</li>
-<li><span class="arithmatex">\(|A \cap B \cap C| = 23^n + n \cdot 23^{n-1}\)</span>。</li>
+<li><strong><span class="arithmatex">\(A\)</span>（缺 <span class="arithmatex">\(l\)</span>）</strong>：每个位置只能取除 <span class="arithmatex">\(l\)</span> 外的 25 个字母，故 <span class="arithmatex">\(|A| = 25^n\)</span>。式 (1)</li>
+<li><strong><span class="arithmatex">\(B\)</span>（缺 <span class="arithmatex">\(t\)</span>）</strong>：同理 <span class="arithmatex">\(|B| = 25^n\)</span>。式 (2)</li>
+<li><strong><span class="arithmatex">\(C\)</span>（<span class="arithmatex">\(e\)</span> 至多 1 个）</strong>：按 <span class="arithmatex">\(e\)</span> 的个数分两类。<span class="arithmatex">\(e\)</span> 出现 0 次：每个位置 25 选 1，得 <span class="arithmatex">\(25^n\)</span>；<span class="arithmatex">\(e\)</span> 恰好出现 1 次：先选哪个位置放 <span class="arithmatex">\(e\)</span>（<span class="arithmatex">\(n\)</span> 种），其余 <span class="arithmatex">\(n-1\)</span> 个位置各 25 选 1，得 <span class="arithmatex">\(n \cdot 25^{n-1}\)</span>。相加：
+  $<span class="arithmatex">\(|C| = 25^n + n \cdot 25^{n-1}. \tag{3}\)</span>$</li>
 </ul>
+<p>把这个"至多 1 个某字符"的计数抽象成一个函数会很有用。对大小为 <span class="arithmatex">\(k\)</span> 的字母表，长度 <span class="arithmatex">\(n\)</span> 的串中某指定字符出现少于 2 次的串数为</p>
+<div class="arithmatex">\[f(k, n) = k^n + n \cdot k^{n-1}. \tag{4}\]</div>
+<p>于是 <span class="arithmatex">\(|C| = f(25, n)\)</span>。下面的交集会反复用到它——只是把字母表 <span class="arithmatex">\(k\)</span> 换小。</p>
+<p>容斥展开：</p>
+<div class="arithmatex">\[|A \cup B \cup C| = |A|+|B|+|C| - |A\cap B|-|A\cap C|-|B\cap C|+|A\cap B\cap C|. \tag{5}\]</div>
+<p>逐个交集的计数（每个交集就是"同时禁用 / 限量若干字符"，把字母表缩小后套用上面的公式）：</p>
+<ul>
+<li><strong><span class="arithmatex">\(|A \cap B|\)</span></strong>：同时缺 <span class="arithmatex">\(l\)</span> 和 <span class="arithmatex">\(t\)</span>，字母表剩 24，无 <span class="arithmatex">\(e\)</span> 限制，故 <span class="arithmatex">\(24^n\)</span>。式 (6)</li>
+<li><strong><span class="arithmatex">\(|A \cap C|\)</span></strong>：缺 <span class="arithmatex">\(l\)</span>（字母表剩 25 个非 <span class="arithmatex">\(l\)</span> 字符），且 <span class="arithmatex">\(e\)</span> 至多 1 个。这正是式 (4) 在 24 个"非 <span class="arithmatex">\(l\)</span> 非 <span class="arithmatex">\(e\)</span>"陪衬字符上的形态——把 <span class="arithmatex">\(f\)</span> 的基数取 24：<span class="arithmatex">\(f(24, n) = 24^n + n \cdot 24^{n-1}\)</span>。式 (7)</li>
+<li><strong><span class="arithmatex">\(|B \cap C|\)</span></strong>：缺 <span class="arithmatex">\(t\)</span> 且 <span class="arithmatex">\(e\)</span> 至多 1 个，与 <span class="arithmatex">\(|A \cap C|\)</span> 同构，故 <span class="arithmatex">\(f(24, n) = 24^n + n \cdot 24^{n-1}\)</span>。式 (8)</li>
+<li><strong><span class="arithmatex">\(|A \cap B \cap C|\)</span></strong>：缺 <span class="arithmatex">\(l\)</span>、缺 <span class="arithmatex">\(t\)</span>，且 <span class="arithmatex">\(e\)</span> 至多 1 个，陪衬字符剩 23 个，故 <span class="arithmatex">\(f(23, n) = 23^n + n \cdot 23^{n-1}\)</span>。式 (9)</li>
+</ul>
+<p>至此式 (5) 的每一项都有了闭式。代入 <span class="arithmatex">\(26^n - |A \cup B \cup C|\)</span> 即得答案，剩下的只是把这些公式翻译成代码。</p>
 <h2 id="approach">数据结构 / 想法 (Approach)<a class="headerlink" href="#approach" title="Permanent link">#</a></h2>
-<p><strong>封闭解 <span class="arithmatex">\(O(\log n)\)</span></strong>（核心：快速幂）：直接按上式套。</p>
+<p><strong>封闭解 <span class="arithmatex">\(O(\log n)\)</span>。</strong> 把式 (1)–(9) 直接转写：代码里的 <code>A, B, C</code> 对应三个单事件，<code>AB, AC, BC, ABC</code> 对应四个交集，<code>f(k, n)</code> 就是式 (4)。开销全在模幂 <code>pow(k, n, MOD)</code>（快速幂 <span class="arithmatex">\(O(\log n)\)</span>）。</p>
 <div class="language-python highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">Solution</span><span class="p">:</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">stringCount</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
         <span class="k">if</span> <span class="n">n</span> <span class="o">&lt;</span> <span class="mi">4</span><span class="p">:</span>
             <span class="k">return</span> <span class="mi">0</span>
         <span class="n">MOD</span> <span class="o">=</span> <span class="mi">10</span><span class="o">**</span><span class="mi">9</span> <span class="o">+</span> <span class="mi">7</span>
-        <span class="k">def</span><span class="w"> </span><span class="nf">f</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>  <span class="c1"># 缺 &#39;e&#39; 那个事件用 k**n + n * k**(n-1)</span>
+        <span class="k">def</span><span class="w"> </span><span class="nf">f</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>  <span class="c1"># 式(4): 字母表大小 k, 某指定字符出现 &lt;2 次的串数</span>
             <span class="k">return</span> <span class="p">(</span><span class="nb">pow</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">MOD</span><span class="p">)</span> <span class="o">+</span> <span class="n">n</span> <span class="o">*</span> <span class="nb">pow</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">n</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">MOD</span><span class="p">))</span> <span class="o">%</span> <span class="n">MOD</span>
-        <span class="n">A</span> <span class="o">=</span> <span class="nb">pow</span><span class="p">(</span><span class="mi">25</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">MOD</span><span class="p">)</span>        <span class="c1"># 不含 l</span>
-        <span class="n">B</span> <span class="o">=</span> <span class="n">A</span>                      <span class="c1"># 不含 t</span>
-        <span class="n">C</span> <span class="o">=</span> <span class="n">f</span><span class="p">(</span><span class="mi">25</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span>               <span class="c1"># e &lt;= 1</span>
-        <span class="n">AB</span> <span class="o">=</span> <span class="nb">pow</span><span class="p">(</span><span class="mi">24</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">MOD</span><span class="p">)</span>
-        <span class="n">AC</span> <span class="o">=</span> <span class="n">f</span><span class="p">(</span><span class="mi">24</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span>
-        <span class="n">BC</span> <span class="o">=</span> <span class="n">AC</span>
-        <span class="n">ABC</span> <span class="o">=</span> <span class="n">f</span><span class="p">(</span><span class="mi">23</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span>
-        <span class="n">bad</span> <span class="o">=</span> <span class="p">(</span><span class="n">A</span> <span class="o">+</span> <span class="n">B</span> <span class="o">+</span> <span class="n">C</span> <span class="o">-</span> <span class="n">AB</span> <span class="o">-</span> <span class="n">AC</span> <span class="o">-</span> <span class="n">BC</span> <span class="o">+</span> <span class="n">ABC</span><span class="p">)</span> <span class="o">%</span> <span class="n">MOD</span>
+        <span class="n">A</span> <span class="o">=</span> <span class="nb">pow</span><span class="p">(</span><span class="mi">25</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">MOD</span><span class="p">)</span>        <span class="c1"># 式(1): 缺 l</span>
+        <span class="n">B</span> <span class="o">=</span> <span class="n">A</span>                      <span class="c1"># 式(2): 缺 t</span>
+        <span class="n">C</span> <span class="o">=</span> <span class="n">f</span><span class="p">(</span><span class="mi">25</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span>               <span class="c1"># 式(3): e &lt;= 1</span>
+        <span class="n">AB</span> <span class="o">=</span> <span class="nb">pow</span><span class="p">(</span><span class="mi">24</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">MOD</span><span class="p">)</span>       <span class="c1"># 式(6)</span>
+        <span class="n">AC</span> <span class="o">=</span> <span class="n">f</span><span class="p">(</span><span class="mi">24</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span>              <span class="c1"># 式(7)</span>
+        <span class="n">BC</span> <span class="o">=</span> <span class="n">AC</span>                    <span class="c1"># 式(8)</span>
+        <span class="n">ABC</span> <span class="o">=</span> <span class="n">f</span><span class="p">(</span><span class="mi">23</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span>             <span class="c1"># 式(9)</span>
+        <span class="n">bad</span> <span class="o">=</span> <span class="p">(</span><span class="n">A</span> <span class="o">+</span> <span class="n">B</span> <span class="o">+</span> <span class="n">C</span> <span class="o">-</span> <span class="n">AB</span> <span class="o">-</span> <span class="n">AC</span> <span class="o">-</span> <span class="n">BC</span> <span class="o">+</span> <span class="n">ABC</span><span class="p">)</span> <span class="o">%</span> <span class="n">MOD</span>   <span class="c1"># 式(5)</span>
         <span class="n">good</span> <span class="o">=</span> <span class="p">(</span><span class="nb">pow</span><span class="p">(</span><span class="mi">26</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">MOD</span><span class="p">)</span> <span class="o">-</span> <span class="n">bad</span><span class="p">)</span> <span class="o">%</span> <span class="n">MOD</span>
         <span class="k">return</span> <span class="n">good</span> <span class="o">%</span> <span class="n">MOD</span>
 </code></pre></div>
-<p><strong>Trace <span class="arithmatex">\(n = 4\)</span></strong>：
+<p><code>if n &lt; 4</code> 既给出正确答案（长度不够装下 <code>l, e, e, t</code>），又顺带保证 <span class="arithmatex">\(n - 1 \ge 3\)</span>，使 <code>pow(k, n-1)</code> 的指数非负。</p>
+<p><strong>Trace <span class="arithmatex">\(n = 4\)</span></strong>（每一步对照式号，验证算术与公式一致）：
 - <span class="arithmatex">\(26^4 = 456976\)</span>。
 - <span class="arithmatex">\(A = B = 25^4 = 390625\)</span>。
 - <span class="arithmatex">\(C = 25^4 + 4 \cdot 25^3 = 390625 + 62500 = 453125\)</span>。
@@ -22719,7 +22767,7 @@
 - <span class="arithmatex">\(ABC = 23^4 + 4 \cdot 23^3 = 279841 + 48668 = 328509\)</span>。
 - bad = <span class="arithmatex">\(390625 + 390625 + 453125 - 331776 - 387072 - 387072 + 328509 = 456964\)</span>。
 - good = <span class="arithmatex">\(456976 - 456964 = 12\)</span> ✓</p>
-<p><strong>DP 替代方案</strong>：状态 <span class="arithmatex">\(\text{dp}[i][a][b][c]\)</span>，<span class="arithmatex">\(i\)</span> 当前长度，<span class="arithmatex">\(a\)</span> 是否已有 l (<span class="arithmatex">\(\in \{0,1\}\)</span>)，<span class="arithmatex">\(b\)</span> 是否已有 t，<span class="arithmatex">\(c\)</span> <span class="arithmatex">\(e\)</span> 数目 <span class="arithmatex">\(\in \{0,1,\ge 2\}\)</span>。状态数 <span class="arithmatex">\(O(n \cdot 12)\)</span>，转移 <span class="arithmatex">\(O(26)\)</span>，<span class="arithmatex">\(O(n)\)</span>。容斥更短，但 DP 更直观。</p>
+<p><strong>DP 替代方案（按结构更易上手）。</strong> 容斥是把答案直接算出来；如果先想不到补集与容斥，逐字符扫描的 DP 是更自然的起点。状态 <span class="arithmatex">\(\text{dp}[i][a][b][c]\)</span>：<span class="arithmatex">\(i\)</span> 为当前长度，<span class="arithmatex">\(a\)</span> 是否已有 <span class="arithmatex">\(l\)</span>（<span class="arithmatex">\(\in \{0,1\}\)</span>），<span class="arithmatex">\(b\)</span> 是否已有 <span class="arithmatex">\(t\)</span>，<span class="arithmatex">\(c\)</span> 为 <span class="arithmatex">\(e\)</span> 的数目并截断到 <span class="arithmatex">\(\{0, 1, \ge 2\}\)</span>。每加一个字符在 26 个选择间转移，更新这三维进度。状态数 <span class="arithmatex">\(O(n \cdot 12)\)</span>，转移 <span class="arithmatex">\(O(26)\)</span>，总 <span class="arithmatex">\(O(n)\)</span>。它比容斥慢，但状态机把"凑齐配额"的过程显式走了一遍，便于建立对计数的直觉；容斥则用 <span class="arithmatex">\(O(\log n)\)</span> 一步到位。</p>
 <h2 id="complexity">复杂度 (Complexity)<a class="headerlink" href="#complexity" title="Permanent link">#</a></h2>
 <ul>
 <li>容斥：Time <span class="arithmatex">\(O(\log n)\)</span>（快速幂主导），Space <span class="arithmatex">\(O(1)\)</span>。</li>
@@ -22728,8 +22776,8 @@
 <h2 id="pitfalls">陷阱 (Pitfalls)<a class="headerlink" href="#pitfalls" title="Permanent link">#</a></h2>
 <ul>
 <li><span class="arithmatex">\(n &lt; 4\)</span> 必为 0：长度不够装下 <code>l, e, e, t</code>。</li>
-<li>"可重排" 不是"按序出现"——"lteer" 可重排为 "leetr"，含 "leet"。本题不是字符串匹配。</li>
-<li>容斥中"e ≤ 1" = "e = 0" + "e = 1"。计数"e 恰好出现 1 次的串数"为 <span class="arithmatex">\(n \cdot 25^{n-1}\)</span>（位置 <span class="arithmatex">\(n\)</span> 种，其它 <span class="arithmatex">\(25\)</span> 种）。</li>
+<li>"可重排" 不是"按序出现"——"lteer" 可重排为 "leetr"，含 "leet"。本题不是字符串匹配，等价条件只看字符配额。</li>
+<li>容斥中 <span class="arithmatex">\(C\)</span> 的"<span class="arithmatex">\(e \le 1\)</span>" = "<span class="arithmatex">\(e = 0\)</span>" + "<span class="arithmatex">\(e = 1\)</span>"（即式 (3) 的两项）。"<span class="arithmatex">\(e\)</span> 恰好 1 次"的计数为 <span class="arithmatex">\(n \cdot 25^{n-1}\)</span>：位置 <span class="arithmatex">\(n\)</span> 种，其余 <span class="arithmatex">\(25\)</span> 种。漏掉 <span class="arithmatex">\(e=1\)</span> 这一项是最常见错误。</li>
 <li>减法前后都 mod，最后 <code>% MOD</code> 避免负数（Python 自动正归一，C++ 需手动 <code>(x % MOD + MOD) % MOD</code>）。</li>
 </ul>
 <h2 id="related">相关题目 (Related)<a class="headerlink" href="#related" title="Permanent link">#</a></h2>

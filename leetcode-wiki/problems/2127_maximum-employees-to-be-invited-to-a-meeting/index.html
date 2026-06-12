@@ -5485,6 +5485,8 @@
       
         
       
+        
+      
     
     
     
@@ -6024,6 +6026,34 @@
     
   
     #93. Restore IP Addresses
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../0102_binary-tree-level-order-traversal/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    #102. Binary Tree Level Order Traversal
   
 
     
@@ -22675,39 +22705,46 @@
 <h2 id="problem">Problem<a class="headerlink" href="#problem" title="Permanent link">#</a></h2>
 <p><span class="arithmatex">\(n\)</span> 员工，每人有一最爱 <code>favorite[i]</code>（<span class="arithmatex">\(\neq i\)</span>）。圆桌只接受"每人旁边坐着自己最爱"的安排。求最多能邀几人。<span class="arithmatex">\(n \le 10^5\)</span>。</p>
 <h2 id="_1">背景<a class="headerlink" href="#_1" title="Permanent link">#</a></h2>
-<p>这是 <strong>functional graph (出度恰 1 的有向图)</strong> 上的经典问题。每个 <span class="arithmatex">\(i \to \text{favorite}[i]\)</span>，全图是若干<strong>环 + 入环的反向树 (rho-shape)</strong>。</p>
-<p><strong>核心几何观察</strong>：圆桌只允许两种容纳方式：
-1. <strong>大环 (<span class="arithmatex">\(k \ge 3\)</span>)</strong>：只能让这个环上的人坐成圆桌，其他人无法插入。最多取一个环。
-2. <strong>2-环 (互为最爱)</strong>：可以多个 2-环同时坐，且每个 2-环可延伸出两条"链尾朝向环"的链。最多链 1 + 链 2 + 2 个环节点。</p>
-<p><strong>答案</strong> = <span class="arithmatex">\(\max(\)</span>最大环长度，<span class="arithmatex">\(\sum_{\text{每对 2-环}} (\text{左链长} + \text{右链长} + 2))\)</span>。</p>
-<p>涉及到的算法：<strong>Tarjan 找环</strong>、<strong>拓扑排序剥叶找最长链</strong>、<strong>功能图压缩 / 内向森林分析</strong>。属于"复杂图论建模 + 多步算法"的代表，是 LeetCode Hard 中常被引用的"建模题"。</p>
+<p>先把座位约束写清楚。把被邀请的人围圆桌坐成一圈，圈是一个循环序列。约束是：<strong>每个到场的人，左邻或右邻里至少有一个是自己的最爱</strong>。我们要让到场人数最多。</p>
+<p>直接的想法是枚举到场子集再判断能否排成合法圆桌——但 <span class="arithmatex">\(n\)</span> 可达 <span class="arithmatex">\(10^5\)</span>，子集枚举不可行。要找到结构，必须看清"合法圆桌"对最爱关系施加了什么。</p>
+<p>把最爱关系画成有向图 <span class="arithmatex">\(G\)</span>：节点是 <span class="arithmatex">\(n\)</span> 个人，从 <span class="arithmatex">\(i\)</span> 向 <span class="arithmatex">\(\text{favorite}[i]\)</span> 连一条边。每人恰有一个最爱，所以<strong>每个节点出度恰为 1</strong>。</p>
+<p>这一条出度约束几乎决定了全图形状。从任意节点出发沿边走，每步都有唯一的下一步，而节点有限，所以路径必然在某处重新踏上一个走过的节点——也就是说，<strong>从任何节点出发，沿边走最终都会进入一个有向环</strong>。不在任何环上的节点，沿边走最终汇入某个环；它们连同指向它们的边，构成一棵棵"边朝向环"的有向树，根挂在环上。于是每个连通块的形状固定：<strong>恰一个有向环，外加若干指向环的树枝</strong>。</p>
+<p>现在回到座位。圆桌坐定后，看每个人指向其最爱的边。"邻座里有最爱"意味着：沿圆桌走一圈，最爱边要么顺着圈的方向，要么逆着——总之每条最爱边连接的是圆桌上的相邻两人。这把问题逼到一个很强的结论：<strong>一桌到场的人，他们的最爱边必须首尾相接绕成一个有向环</strong>。换句话说，一张合法圆桌恰好对应 <span class="arithmatex">\(G\)</span> 中的一个有向环（人数 <span class="arithmatex">\(=\)</span> 环长）。</p>
+<p>但这还没说完，因为 2-环（两人互为最爱）是特例，下面的形式化会把"单个大环"与"2-环可拼接并外接链"这两种情形分开导出。</p>
 <h2 id="_2">形式化<a class="headerlink" href="#_2" title="Permanent link">#</a></h2>
-<p>图 <span class="arithmatex">\(G\)</span> 节点 <span class="arithmatex">\(V = [n]\)</span>，边 <span class="arithmatex">\(E = \{(i, \text{favorite}[i])\}\)</span>，出度恒 1。设 <span class="arithmatex">\(\mathcal{C}_k\)</span> = 所有长 <span class="arithmatex">\(k\)</span> 的简单环。则答案</p>
-<div class="arithmatex">\[\text{ans} = \max\Big(\max_{C \in \mathcal{C}_{\ge 3}} |C|,\; \sum_{C \in \mathcal{C}_2} (2 + d_C^{(1)} + d_C^{(2)})\Big),\]</div>
-<p>其中 <span class="arithmatex">\(d_C^{(1,2)}\)</span> 是环上两点向外伸出的最长链 (从叶子到环节点的最大距离，含起点不含环节点)。</p>
+<p>我们要把答案写成 <span class="arithmatex">\(G\)</span> 的结构量。先确立两条由座位约束推出的事实，再据此分情形。</p>
+<p><strong>事实 1（一桌 = 一环）.</strong> 设到场集合 <span class="arithmatex">\(S\)</span> 排成合法圆桌。每人的最爱边连接圆桌相邻两人，且每人出度为 1，所以这些边在 <span class="arithmatex">\(S\)</span> 上构成一个出度 1、且首尾相接的闭合序列——一个有向环。因此 <span class="arithmatex">\(S\)</span> 本身就是 <span class="arithmatex">\(G\)</span> 的一个有向环。</p>
+<p><strong>事实 2（环长 <span class="arithmatex">\(\ge 3\)</span> 的环不能扩张）.</strong> 设环 <span class="arithmatex">\(C\)</span> 长度 <span class="arithmatex">\(k \ge 3\)</span>。圆桌上 <span class="arithmatex">\(C\)</span> 的每个节点，其两侧邻座都被 <span class="arithmatex">\(C\)</span> 中的前驱与后继占满——一侧是它指向的最爱，另一侧是指向它的那个人。两个座位全满，无人能插入。于是长 <span class="arithmatex">\(k \ge 3\)</span> 的环只能独占一张桌，到场人数恰 <span class="arithmatex">\(k\)</span>。</p>
+<p><strong>事实 3（2-环可拼接并外接链）.</strong> 设 <span class="arithmatex">\(u, v\)</span> 互为最爱，<span class="arithmatex">\(\{u,v\}\)</span> 是一个 2-环。<span class="arithmatex">\(u\)</span> 的两侧：一侧必须坐 <span class="arithmatex">\(v\)</span>（满足 <span class="arithmatex">\(u\)</span> 的最爱），<strong>另一侧空出</strong>。这个空位可以坐一个"以 <span class="arithmatex">\(u\)</span> 为最爱"的人 <span class="arithmatex">\(w\)</span>，再由 <span class="arithmatex">\(w\)</span> 向外接一条链——链上每个人的最爱是其在链上的后继，从而每人都与自己最爱相邻。<span class="arithmatex">\(v\)</span> 那侧对称，也可外接一条链。关键在于，多个 2-环各自带着两条链，可以首尾拼成同一张大圆桌：每个 2-环贡献"链—<span class="arithmatex">\(u\)</span>—<span class="arithmatex">\(v\)</span>—链"这样一段，段与段相接成圈。所以<strong>所有 2-环可同时到场</strong>。</p>
+<p>事实 2 与事实 3 揭示了两种互斥的最优形态：要么取<strong>单个最长的大环</strong>（<span class="arithmatex">\(k\ge 3\)</span>），要么取<strong>全体 2-环连同它们的最长外接链</strong>。二者不能混用——大环填满整圈，2-环靠拼接成圈，机理不同。答案取二者较大者。</p>
+<p>需要量化"外接链能延伸多长"。对 2-环上的节点 <span class="arithmatex">\(x\)</span>，定义</p>
+<div class="arithmatex">\[d(x) \;=\; \max\{\,\ell \mid \text{存在长 } \ell \text{ 的有向路径，终点为 } x\text{，且路径不含任何环节点}\,\},\]</div>
+<p>即终止于 <span class="arithmatex">\(x\)</span>、停留在环外的最长链长度（边数；不含 <span class="arithmatex">\(x\)</span> 自身那一步以外的环节点）。链上每个人占一个座位，对到场人数的边际贡献正是 <span class="arithmatex">\(d(x)\)</span>。</p>
+<p>记 <span class="arithmatex">\(\mathcal{C}_{\ge 3}\)</span> 为所有长 <span class="arithmatex">\(\ge 3\)</span> 的环，<span class="arithmatex">\(\mathcal{C}_2\)</span> 为所有 2-环。综合三条事实：</p>
+<div class="arithmatex">\[\text{ans} \;=\; \max\Big(\max_{C \in \mathcal{C}_{\ge 3}} |C|,\;\; \sum_{C=\{u,v\} \in \mathcal{C}_2} \big(2 + d(u) + d(v)\big)\Big). \tag{1}\]</div>
+<p>第一项是事实 2 的最长大环；第二项里，每个 2-环贡献两个环节点（<span class="arithmatex">\(+2\)</span>）加上两侧最长链（<span class="arithmatex">\(d(u)+d(v)\)</span>），求和是事实 3 的全体 2-环拼接。下面把式 (1) 的每一项落成线性算法。</p>
 <h2 id="_3">数据结构 / 想法<a class="headerlink" href="#_3" title="Permanent link">#</a></h2>
-<p><strong>步骤 1：找环长</strong>
-- 经典：每节点 dfs，标记 <code>state[i] = WHITE/GRAY/BLACK</code>；遇见 GRAY 时记录环长 = 当前路径上从 GRAY 节点开始的步数。
-- 或：迭代法，用 <code>time[i]</code> 记录到达时间，遇到已访问且时间戳在当前段内即找到环。</p>
-<p><strong>步骤 2：算每环节点的"最长入链"</strong>
-- 拓扑：算每节点入度（来源于 favorite 反向）；BFS 从入度 0 的"叶子"开始，把"以该节点结尾的最长链"传递给 favorite。
-- 这相当于 reverse-direction 拓扑：剥叶子时把链长传给"父" (favorite)；环上节点最终累计的就是 <span class="arithmatex">\(d_C^{(\cdot)}\)</span>。</p>
-<p><strong>步骤 3：组合</strong>
-- 对每环 <span class="arithmatex">\(C\)</span>：若 <span class="arithmatex">\(|C| = 2\)</span> 累加 <span class="arithmatex">\(2 + d_{u} + d_{v}\)</span>（<span class="arithmatex">\(u, v\)</span> 是环上两点）。
-- 取大环最长。
-- 答案 = <span class="arithmatex">\(\max(\)</span>上面两值<span class="arithmatex">\()\)</span>。</p>
-<p><strong>不变量</strong>：拓扑剥叶过程中，每个被剥的非环节点贡献其"到环"的最长链长度给它的 favorite。环节点接收完所有反向链后，链长记录于 <code>depth[i]</code>。</p>
+<p>式 (1) 把任务拆成两个可独立计算的量：<strong>所有环的长度</strong>（取大环的最大值、识别 2-环），以及<strong>每个 2-环节点的最长外接链 <span class="arithmatex">\(d(\cdot)\)</span></strong>。两者都能 <span class="arithmatex">\(O(n)\)</span> 完成。</p>
+<p><strong>计算 <span class="arithmatex">\(d(\cdot)\)</span>：反向拓扑。</strong>
+先看 <span class="arithmatex">\(d(\cdot)\)</span> 该如何算，因为它决定了式 (1) 的第二项。<span class="arithmatex">\(d(x)\)</span> 是终止于 <span class="arithmatex">\(x\)</span>、停在环外的最长链长。一个节点若<strong>没有任何最爱指向它</strong>（在 <span class="arithmatex">\(G\)</span> 中入度为 0），它只能当链的起点，其 <span class="arithmatex">\(d\)</span> 值就是 0。这给出自然的计算顺序：</p>
+<p>按入度从 0 开始逐层确定 <span class="arithmatex">\(d\)</span>。具体地，统计每个节点的入度（有多少人把它当最爱）。入度 0 的节点先入队，<span class="arithmatex">\(d\)</span> 记为 0。处理节点 <span class="arithmatex">\(x\)</span> 时，把"经过 <span class="arithmatex">\(x\)</span> 的最长链"传给它的最爱 <span class="arithmatex">\(f=\text{favorite}[x]\)</span>：更新 <span class="arithmatex">\(f\)</span> 的链长候选为 <span class="arithmatex">\(d(x)+1\)</span>，并把 <span class="arithmatex">\(f\)</span> 的入度减 1；当 <span class="arithmatex">\(f\)</span> 入度减到 0，说明指向 <span class="arithmatex">\(f\)</span> 的所有链都已结算，此时 <span class="arithmatex">\(f\)</span> 的链长已是最终值，入队。</p>
+<p>这样做之所以正确，靠一条不变量：<strong>当一个节点入度降到 0 而入队时，所有终止于它的环外路径都已被计入。</strong> 因为只有把指向它的每个前驱都处理完（每处理一个，入度减 1），它的入度才会归零；而每个前驱处理时已把自己的最长链 <span class="arithmatex">\(+1\)</span> 传了上来，取最大即得该节点的 <span class="arithmatex">\(d\)</span>。环上的节点入度始终 <span class="arithmatex">\(\ge 1\)</span>（环内的前驱永不被处理，环没有入度 0 的节点），所以队列自然停在环边界——环节点最终持有的链长，正是它收到的全部环外链中最长者，即 <span class="arithmatex">\(d(\cdot)\)</span>。</p>
+<p><strong>计算环长。</strong>
+拓扑过程剥掉所有树枝后，剩下的就是各个环。识别环有两种等价做法。其一，DFS 给节点染 WHITE/GRAY/BLACK 三色：GRAY 表示该节点正在当前递归栈上。若从某节点沿边走，撞上一个 GRAY 节点，说明这条路径回到了仍在栈中的祖先——从那个 GRAY 节点到当前节点的这一段恰好闭合成环，段长即环长。其二（更适配上面的拓扑），拓扑剥完后，凡入度仍 <span class="arithmatex">\(\ge 1\)</span> 的节点必在环上；从任一未访问的环节点出发沿边走一圈回到起点，步数即环长。</p>
+<p><strong>组合。</strong>
+对每个识别出的环 <span class="arithmatex">\(C\)</span>：若 <span class="arithmatex">\(|C|=2\)</span>，设环上两点为 <span class="arithmatex">\(u,v\)</span>，累加 <span class="arithmatex">\(2+d(u)+d(v)\)</span> 进 2-环总和；若 <span class="arithmatex">\(|C|\ge 3\)</span>，更新大环最大值。最后由式 (1) 取两者较大者。</p>
 <h2 id="_4">复杂度<a class="headerlink" href="#_4" title="Permanent link">#</a></h2>
 <ul>
-<li>Time: <span class="arithmatex">\(O(n)\)</span> — 拓扑 + 找环都是线性。</li>
-<li>Space: <span class="arithmatex">\(O(n)\)</span>。</li>
+<li>Time: <span class="arithmatex">\(O(n)\)</span> — 入度统计、反向拓扑（每节点每边各处理一次）、环长一次遍历，均线性。</li>
+<li>Space: <span class="arithmatex">\(O(n)\)</span> — 入度数组、链长数组 <span class="arithmatex">\(d(\cdot)\)</span>、队列、染色状态。</li>
 </ul>
 <h2 id="_5">陷阱<a class="headerlink" href="#_5" title="Permanent link">#</a></h2>
 <ul>
-<li>大环不能和 2-环混合；这是题目几何约束。</li>
-<li>链长<strong>不含</strong>环节点自身（要在最后 + 2）。</li>
-<li>多个 2-环可共存于答案；单大环唯一。</li>
-<li><span class="arithmatex">\(|C| = 2\)</span> 时环上两节点必都是 favorite 互指。</li>
+<li><strong>大环不能与 2-环混用</strong>：这不是额外规则，而是事实 2 与事实 3 的直接推论——大环两侧座位被环内邻居占满无法插入，2-环靠拼接成圈，两种机理不能合在一圈里。所以答案是两项取 <span class="arithmatex">\(\max\)</span>，不是求和。</li>
+<li><strong>链长 <span class="arithmatex">\(d(\cdot)\)</span> 不含环节点</strong>：式 (1) 里 2-环的两个环节点由显式的 <span class="arithmatex">\(+2\)</span> 计入，<span class="arithmatex">\(d(u)+d(v)\)</span> 只数环外链，避免重复计数环节点。</li>
+<li><strong>多个 2-环共存于第二项，大环只取一个</strong>：第二项对全体 2-环求和（它们能拼成同一圈），第一项只取单个最长大环（它独占一圈）。</li>
+<li><strong><span class="arithmatex">\(|C|=2\)</span> 等价于互为最爱</strong>：<span class="arithmatex">\(u\to v\)</span> 且 <span class="arithmatex">\(v\to u\)</span> 才闭合成 2-环，这正是事实 3 拼接的前提。</li>
+<li><strong>拓扑后环节点入度恒 <span class="arithmatex">\(\ge 1\)</span></strong>：环没有入度 0 的入口，故队列停在环边界；不要误把环节点当树叶处理。</li>
 </ul>
 <h2 id="_6">相关题目<a class="headerlink" href="#_6" title="Permanent link">#</a></h2>
 <ul>
@@ -22717,11 +22754,10 @@
 </ul>
 <h2 id="further-reading">Further Reading<a class="headerlink" href="#further-reading" title="Permanent link">#</a></h2>
 <ul>
-<li>cp-algorithms.com/graph/topological-sort.html — 拓扑排序模板。</li>
-<li>cp-algorithms.com/graph/finding-cycle.html — 找环算法（DFS + grey/black）。</li>
-<li>Tarjan, R. (1972). <em>Depth-First Search and Linear Graph Algorithms</em>. SIAM J. Computing. ⭐⭐ — DFS 在图论中的奠基论文。</li>
-<li>CLRS, 3e §22 — DFS / 拓扑排序 / 强连通分量教科书。</li>
-<li>KACTL — <code>graph/SCC.h</code> (Tarjan SCC 模板)。</li>
+<li>cp-algorithms.com/graph/topological-sort.html — 拓扑排序模板（本题反向拓扑剥树枝的基础）。</li>
+<li>cp-algorithms.com/graph/finding-cycle.html — 找环算法（DFS grey/black 三色法）。</li>
+<li>Tarjan, R. (1972). <em>Depth-First Search and Linear Graph Algorithms</em>. SIAM J. Computing. ⭐⭐ — DFS 三色与时间戳在图论中的奠基论文。</li>
+<li>CLRS, 3e §22 — DFS / 拓扑排序教科书章节。</li>
 </ul>
 
 

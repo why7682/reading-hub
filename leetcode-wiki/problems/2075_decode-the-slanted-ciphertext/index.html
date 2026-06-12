@@ -5485,6 +5485,8 @@
       
         
       
+        
+      
     
     
     
@@ -6024,6 +6026,34 @@
     
   
     #93. Restore IP Addresses
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../0102_binary-tree-level-order-traversal/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    #102. Binary Tree Level Order Traversal
   
 
     
@@ -14292,6 +14322,56 @@
       
     </span>
   </a>
+  
+    <nav class="md-nav" aria-label="数据结构 / 想法 (Approach)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        朴素做法：先重建矩阵，再读对角线
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        关键步：对角线在扁平下标上是固定步长
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        枚举起点
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        验证 (样例 1)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -22607,6 +22687,56 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="数据结构 / 想法 (Approach)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        朴素做法：先重建矩阵，再读对角线
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        关键步：对角线在扁平下标上是固定步长
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        枚举起点
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        验证 (样例 1)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -22675,18 +22805,45 @@
 <h2 id="problem">Problem<a class="headerlink" href="#problem" title="Permanent link">#</a></h2>
 <p>把 <code>originalText</code> 沿矩阵对角线（top-left→bottom-right）按列写入一个 <code>rows × cols</code> 矩阵（剩余空位补 <code>' '</code>），然后<strong>按行</strong>读出得到 <code>encodedText</code>。给 <code>encodedText</code> 与 <code>rows</code>，恢复 <code>originalText</code>（其末尾不含空格）。</p>
 <h2 id="background">背景 (Background)<a class="headerlink" href="#background" title="Permanent link">#</a></h2>
-<p>属于"换位密码"(transposition cipher) 家族。古代密码学中的 <strong>Rail Fence cipher</strong> 与之同源——明文按 zig-zag 写入若干"轨道"，再按行读出。本题的"斜对角"写入比 Rail Fence 更直接，等价于用步长 <code>cols + 1</code> 在线性数组上跳跃读取。</p>
+<p>编码与解码是一对互逆的过程，先把编码方向说清楚，解码就只是把它倒过来走。编码做两件事：</p>
+<ol>
+<li>按<strong>对角线</strong>把 <code>originalText</code> 逐字写入一个 <code>rows × cols</code> 矩阵，空位补空格；</li>
+<li>按<strong>行</strong>把矩阵摊平，得到 <code>encodedText</code>。</li>
+</ol>
+<p>我们拿到的是步骤 2 的结果（一个行主序的扁平字符串）和 <code>rows</code>。要还原 <code>originalText</code>，就得在这个扁平字符串里，按对角线写入的<strong>那个顺序</strong>重新把字符读回来。整道题的核心，是把"对角线写入"这条规则翻译成扁平下标上的一个遍历顺序。后面的形式化会把这条规则写成精确的坐标映射，再从映射读出遍历步长。</p>
 <h2 id="formulation">形式化 (Formulation)<a class="headerlink" href="#formulation" title="Permanent link">#</a></h2>
-<p>设 <span class="arithmatex">\(L = |\text{encodedText}|\)</span>，<span class="arithmatex">\(\text{cols} = L / \text{rows}\)</span>。矩阵按行存储即为输入数组 <span class="arithmatex">\(E[0..L-1]\)</span>，第 <span class="arithmatex">\(i\)</span> 行第 <span class="arithmatex">\(j\)</span> 列对应 <span class="arithmatex">\(E[i \cdot \text{cols} + j]\)</span>。</p>
-<p>原文按对角线写入：第 <span class="arithmatex">\(k\)</span> 个字符位于 <span class="arithmatex">\((i, j)\)</span> 满足 <span class="arithmatex">\(i = k \bmod \text{rows}\)</span>，<span class="arithmatex">\(j = \lfloor k / \text{rows} \rfloor + i = \lfloor k / \text{rows} \rfloor + (k \bmod \text{rows})\)</span>（每"段"对角线起点在第 0 行的下一个列）。等价地，遍历起点 <span class="arithmatex">\(r = 0, 1, \dots, \text{rows}-1\)</span>，沿步长 <span class="arithmatex">\(\text{cols} + 1\)</span> 在线性数组上跳。</p>
+<p>设 <span class="arithmatex">\(L = |\text{encodedText}|\)</span>。约束保证矩阵被填满，故 <span class="arithmatex">\(\text{cols} = L / \text{rows}\)</span> 是整除，列数</p>
+<div class="arithmatex">\[\text{cols} = \frac{L}{\text{rows}}. \tag{1}\]</div>
+<p>矩阵按行存储即为输入数组 <span class="arithmatex">\(E[0..L-1]\)</span>。矩阵第 <span class="arithmatex">\(i\)</span> 行第 <span class="arithmatex">\(j\)</span> 列（<span class="arithmatex">\(0 \le i &lt; \text{rows}\)</span>，<span class="arithmatex">\(0 \le j &lt; \text{cols}\)</span>）落在扁平下标</p>
+<div class="arithmatex">\[\text{flat}(i, j) = i \cdot \text{cols} + j. \tag{2}\]</div>
+<p><strong>对角线写入规则。</strong> 先看一个小例子把规则看清楚。把 <code>cipher</code>（6 个字符）写入 <span class="arithmatex">\(3 \times 4\)</span> 矩阵：第一条对角线从 <span class="arithmatex">\((0,0)\)</span> 出发，每写一个字符就<strong>同时下移一行、右移一列</strong>，写满 <code>c,i,p</code> 后碰到底边；下一条对角线从顶行的下一列 <span class="arithmatex">\((0,1)\)</span> 重新出发，写 <code>h,e,r</code>；以此类推。结果是</p>
+<div class="language-text highlight"><pre><span></span><code>row 0: c h _ _
+row 1: _ i e _
+row 2: _ _ p r
+</code></pre></div>
+<p>按行摊平（空位补空格）得到 <code>"ch   ie   pr"</code>（长 12）。</p>
+<p>把这个规则写成坐标映射。<code>originalText</code> 的第 <span class="arithmatex">\(k\)</span> 个字符（<span class="arithmatex">\(k\)</span> 从 0 计）落在</p>
+<div class="arithmatex">\[i = k \bmod \text{rows}, \qquad j = \left\lfloor \frac{k}{\text{rows}} \right\rfloor + (k \bmod \text{rows}). \tag{3}\]</div>
+<p>直觉是：<span class="arithmatex">\(i\)</span> 就是该字符在它所在对角线段里的位置（每条段从顶行往下走，走到第几步就在第几行）；<span class="arithmatex">\(j\)</span> 则被推进两次——换到第 <span class="arithmatex">\(\lfloor k/\text{rows}\rfloor\)</span> 条对角线把列加了一截，沿对角线每下移一行又把列加 1，两者相加正是 (3) 里那个 <span class="arithmatex">\(+\,i\)</span> 的偏移。式 (3) 是一个从位置 <span class="arithmatex">\(k\)</span> 到矩阵格子的双射；解码就是反着把这个双射走一遍。</p>
 <h2 id="approach">数据结构 / 想法 (Approach)<a class="headerlink" href="#approach" title="Permanent link">#</a></h2>
-<p><strong>关键观察</strong>：把 encodedText 视为 <code>rows × cols</code> 行主序矩阵。从 <code>(0, 0)</code> 开始，每次走 <code>(+1, +1)</code>；走出矩阵下边界则回到下一条对角线起点 <code>(0, k+1)</code>。等价线性下标：从 0 开始，每步 +=(cols+1)；超出 L 则下一条从下标 = 上条起始下标 + 1 开始。</p>
-<p>更简洁的写法：对每个起点列 <code>start ∈ [0, cols)</code>，沿步长 <code>cols+1</code> 收集字符直到下标 <span class="arithmatex">\(\ge L\)</span>。</p>
+<h3 id="_1">朴素做法：先重建矩阵，再读对角线<a class="headerlink" href="#_1" title="Permanent link">#</a></h3>
+<p>最直接的想法是照搬定义：开一个 <code>rows × cols</code> 的二维数组，把 <span class="arithmatex">\(E\)</span> 按行填回去，然后用式 (3) 沿对角线逐字读出。这能做对，但它先分配了 <span class="arithmatex">\(O(\text{rows}\cdot\text{cols}) = O(L)\)</span> 的矩阵，再走一遍把字符抄出来——两趟遍历加一块额外的二维存储。问题是矩阵只是 <span class="arithmatex">\(E\)</span> 的一个重新排版，<span class="arithmatex">\(E[\,i\cdot\text{cols}+j\,]\)</span> 已经存着我们要的字符，把它再拷进二维数组纯属多余。能不能跳过矩阵，直接在扁平数组 <span class="arithmatex">\(E\)</span> 上按对角线顺序取字符？</p>
+<h3 id="_2">关键步：对角线在扁平下标上是固定步长<a class="headerlink" href="#_2" title="Permanent link">#</a></h3>
+<p>要直接在 <span class="arithmatex">\(E\)</span> 上沿对角线走，只需知道"在矩阵里走一步对角线"对应"扁平下标变化多少"。由式 (2)：</p>
+<ul>
+<li>下移一行（<span class="arithmatex">\(i \to i+1\)</span>）使扁平下标增加 <span class="arithmatex">\(\text{cols}\)</span>；</li>
+<li>右移一列（<span class="arithmatex">\(j \to j+1\)</span>）使扁平下标增加 <span class="arithmatex">\(1\)</span>。</li>
+</ul>
+<p>对角线的一步是两者同时发生，于是扁平下标的增量是常数</p>
+<div class="arithmatex">\[\Delta = \text{cols} + 1. \tag{4}\]</div>
+<p>这正是朴素做法里被矩阵藏起来的结构：一整条对角线，在 <span class="arithmatex">\(E\)</span> 上就是从某个起点出发、每次 <span class="arithmatex">\(+\,(\text{cols}+1)\)</span> 的等差下标序列。于是不必重建矩阵——枚举每条对角线的起点，按步长 (4) 在 <span class="arithmatex">\(E\)</span> 上跳着收集字符即可。</p>
+<h3 id="_3">枚举起点<a class="headerlink" href="#_3" title="Permanent link">#</a></h3>
+<p>每条对角线从顶行（<span class="arithmatex">\(i=0\)</span>）的某一列出发，起点列取遍 <span class="arithmatex">\(\text{start} \in [0, \text{cols})\)</span>，其扁平下标恰为 <span class="arithmatex">\(\text{start}\)</span>（由式 (2)，<span class="arithmatex">\(i=0\)</span> 时 <span class="arithmatex">\(\text{flat}(0,\text{start})=\text{start}\)</span>）。从 <span class="arithmatex">\(\text{start}\)</span> 开始，反复 <span class="arithmatex">\(+\,(\text{cols}+1)\)</span> 收集字符，直到下标 <span class="arithmatex">\(\ge L\)</span> 越过矩阵。按 <span class="arithmatex">\(\text{start}\)</span> 从小到大、每条对角线从上到下拼接，得到的正是 <code>originalText</code>（含尾部填充空格），最后 <code>rstrip(' ')</code> 去掉编码时补的尾空格。</p>
 <div class="language-python highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">Solution</span><span class="p">:</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">decodeCiphertext</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">encodedText</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">rows</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
         <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">encodedText</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">rows</span> <span class="o">==</span> <span class="mi">1</span> <span class="ow">or</span> <span class="n">n</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-            <span class="k">return</span> <span class="n">encodedText</span><span class="o">.</span><span class="n">rstrip</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">n</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">return</span> <span class="s2">&quot;&quot;</span>
         <span class="n">cols</span> <span class="o">=</span> <span class="n">n</span> <span class="o">//</span> <span class="n">rows</span>
         <span class="n">step</span> <span class="o">=</span> <span class="n">cols</span> <span class="o">+</span> <span class="mi">1</span>
         <span class="n">out</span> <span class="o">=</span> <span class="p">[]</span>
@@ -22697,44 +22854,60 @@
                 <span class="n">i</span> <span class="o">+=</span> <span class="n">step</span>
         <span class="k">return</span> <span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">out</span><span class="p">)</span><span class="o">.</span><span class="n">rstrip</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="p">)</span>
 </code></pre></div>
-<p>样例 1 trace：<code>encodedText="ch ie pr"</code> (L=8, rows=3, cols=3, step=4)。
-矩阵按行：行0="ch ", 行1="ie ", 行2="pr"（最后一行其实长度也是 3，"pr"+空？等等，L=8 不能整除 3——再看：实际样例字串是 "ch ie pr"，长 8，但题面说 cols 选成"末列非空"，所以 cols = L/rows 必整除。让我重数 "ch ie pr"：c h ' ' i e ' ' p r —— 共 9 字符！我数漏了，cols=3 整除。</p>
-<p>start=0: 0,4,8 → c,e,? (8 越界) → c,i,? 等等，按步长 4：i=0 'c', i=4 'e', i=8 越界 → "ce"... 但是应该得到 "cip"。重新看：cols=3, step=cols+1=4。i=0 'c'; i=4 → "ch ie pr" 下标 4 = 'e'；hmm but should be 'i'.</p>
-<p>我数错了空格。字串"ch ie pr"：c(0) h(1) ' '(2) i(3) e(4) ' '(5) p(6) r(7)，共 8。Hmm 但 rows=3 不整除 8。所以原题应该是 "ch   ie  pr" 或类似带尾空格的 9 字符。题面提到"末列不为空"，意思 cols 选最小整数使得 <code>originalText</code> 末字符落在最后一列。</p>
-<p>修正：实际 encodedText 长度应当能被 rows 整除（因为是 rows × cols 矩阵的行主序展开，含 trailing 空格填充）。这里 cols = ⌈|originalText|/rows⌉，编码长度 = rows × cols。</p>
-<p>回到 trace：假设 encodedText 是 9 字符（含 trailing 空格），行 0 = "ch ", 行 1 = "ie ", 行 2 = "pr "（或带空）。
-start=0, step=4: i=0 'c', i=4 'i' (行 1 col 1), i=8 'p' (行 2 col 2) → "cip"
-start=1: i=1 'h', i=5 'e' → "he"
-start=2: i=2 ' ', i=6 'r' → " r"
-合并："cip"+"he"+" r" = "ciphe r"... 末尾 rstrip → "ciphe r"？</p>
-<p>实际答案 "cipher"。所以我读字串顺序错了——应当按对角线从下到上还是其它？</p>
-<p>重新理解：encoded 是按行读 → "ch ie pr" 意味着矩阵：
-<div class="language-text highlight"><pre><span></span><code>行0: c h _
-行1: _ i e
-行2: _ _ p   (按&quot;对角线&quot;写入&quot;cipher&quot;)
+<h3 id="1">验证 (样例 1)<a class="headerlink" href="#1" title="Permanent link">#</a></h3>
+<p>输入 <code>encodedText = "ch   ie   pr"</code>（<span class="arithmatex">\(L=12\)</span>，<span class="arithmatex">\(\text{rows}=3\)</span>），由 (1) 得 <span class="arithmatex">\(\text{cols}=4\)</span>，步长 <span class="arithmatex">\(\Delta=5\)</span>。行主序矩阵为</p>
+<div class="language-text highlight"><pre><span></span><code>row 0: &#39;ch  &#39;
+row 1: &#39; ie &#39;
+row 2: &#39;  pr&#39;
 </code></pre></div>
-但这样行0='ch ', 行1=' ie', 行2='  p' → 拼起来 "ch  ie  p" 长 9。题面给的是 "ch ie pr" 长 8。让我再读题面。</p>
-<p>实际正确的写入方式（按 LeetCode 题面图）：
-<div class="language-text highlight"><pre><span></span><code>行0: c _ _ r
-行1: i _ _ _   (cipher 写法看图)
-...
-</code></pre></div>
-我需要避免猜，直接信任算法：起点遍历列 0..cols-1，沿步长 cols+1 取字符——这是 LeetCode 该题被广泛验证的解法，留意 rstrip 处理 trailing 空格即可。</p>
+<p>按起点枚举（下标从 0 计）：</p>
+<table>
+<thead>
+<tr>
+<th>start</th>
+<th>收集的 (下标, 字符)</th>
+<th>串</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>(0,<code>c</code>) (5,<code>i</code>) (10,<code>p</code>)</td>
+<td><code>cip</code></td>
+</tr>
+<tr>
+<td>1</td>
+<td>(1,<code>h</code>) (6,<code>e</code>) (11,<code>r</code>)</td>
+<td><code>her</code></td>
+</tr>
+<tr>
+<td>2</td>
+<td>(2,<code>' '</code>) (7,<code>' '</code>)</td>
+<td><code>␣␣</code></td>
+</tr>
+<tr>
+<td>3</td>
+<td>(3,<code>' '</code>) (8,<code>' '</code>)</td>
+<td><code>␣␣</code></td>
+</tr>
+</tbody>
+</table>
+<p>拼接得 <code>"cipher    "</code>，<code>rstrip(' ')</code> 后为 <code>"cipher"</code>，与期望一致。</p>
 <h2 id="complexity">复杂度 (Complexity)<a class="headerlink" href="#complexity" title="Permanent link">#</a></h2>
 <ul>
-<li>Time: <span class="arithmatex">\(O(L)\)</span>，每个下标至多访问一次</li>
-<li>Space: <span class="arithmatex">\(O(L)\)</span> 输出</li>
+<li>Time: <span class="arithmatex">\(O(L)\)</span>，每个下标至多被访问一次（各对角线的下标序列两两不相交且并起来覆盖 <span class="arithmatex">\([0, L)\)</span>）。</li>
+<li>Space: <span class="arithmatex">\(O(L)\)</span>，仅用于拼接输出，未额外重建矩阵。</li>
 </ul>
 <h2 id="pitfalls">陷阱 (Pitfalls)<a class="headerlink" href="#pitfalls" title="Permanent link">#</a></h2>
 <ul>
-<li><strong><code>rstrip(' ')</code> 仅去尾空格</strong>：原文内部允许空格（虽然题面承诺末尾无空格，但实际样例 "i love leetcode" 内部就有空格）；不能用 <code>replace(' ', '')</code>。</li>
-<li><strong><code>rows == 1</code> 单独处理</strong>：此时 step = cols + 1 没意义，直接返回。</li>
-<li><strong><code>cols = len // rows</code> 必整除</strong>：题面保证；否则需要 ceil。</li>
+<li><strong><code>rstrip(' ')</code> 仅去尾空格</strong>：<code>originalText</code> 内部可以含空格（如样例 <code>"i love leetcode"</code>），只有编码时补在末尾的填充空格该去掉；不能用 <code>replace(' ', '')</code>。</li>
+<li><strong><code>cols = L // rows</code> 是整除</strong>：约束保证 <code>encodedText.length == rows * cols</code>，矩阵恰好填满，无需 <code>ceil</code>。</li>
+<li><strong><code>rows == 1</code> 无需特判</strong>：此时 <span class="arithmatex">\(\text{cols}=L\)</span>、<span class="arithmatex">\(\Delta=L+1\)</span>，每个起点只收集一个字符，通用循环原样返回 <code>encodedText</code>（再 <code>rstrip</code>）。早返回只是微优化，不是正确性必需——通用公式在 <code>rows==1</code> 时依然成立。</li>
 </ul>
 <h2 id="related">相关题目 (Related)<a class="headerlink" href="#related" title="Permanent link">#</a></h2>
 <ul>
 <li><a href="../0498_diagonal-traverse/">#498. Diagonal Traverse</a> — 同样的矩阵对角线遍历模式。</li>
-<li><code>#6 Zigzag Conversion (off-wiki)</code> — Rail Fence cipher 的直接版本。</li>
+<li><code>#6 Zigzag Conversion (off-wiki)</code> — 另一种按几何排版重排字符的换位问题。</li>
 </ul>
 <h2 id="further-reading">Further Reading<a class="headerlink" href="#further-reading" title="Permanent link">#</a></h2>
 <ul>

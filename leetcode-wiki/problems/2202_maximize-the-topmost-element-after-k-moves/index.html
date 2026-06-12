@@ -5485,6 +5485,8 @@
       
         
       
+        
+      
     
     
     
@@ -6024,6 +6026,34 @@
     
   
     #93. Restore IP Addresses
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../0102_binary-tree-level-order-traversal/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    #102. Binary Tree Level Order Traversal
   
 
     
@@ -22675,21 +22705,29 @@
 <h2 id="problem">Problem<a class="headerlink" href="#problem" title="Permanent link">#</a></h2>
 <p>给数组 <code>nums</code>（栈，<code>nums[0]</code> 是栈顶）与正整数 <code>k</code>。每次操作可以 (a) 弹出栈顶，或 (b) 把任意一个已弹出的元素压回栈顶。<strong>恰好执行 <span class="arithmatex">\(k\)</span> 次</strong>后，求栈顶最大值；若结束后栈为空，返回 <span class="arithmatex">\(-1\)</span>。<span class="arithmatex">\(1 \le n \le 10^5\)</span>，<span class="arithmatex">\(0 \le k \le 10^9\)</span>。</p>
 <h2 id="background">背景 (Background)<a class="headerlink" href="#background" title="Permanent link">#</a></h2>
-<p>本题考察「奇偶性 + 贪心」之间的小型分类讨论，是对栈 / 队列操作的可达性分析。它的结构与「博弈中的等价状态」、「Cayley graph 上 word problem 的小幅简化」有相似精神：操作具有"可撤销 / 可重压回"的对偶性，使得可达集只依赖于 parity 与若干阈值。</p>
+<p>这道题的难点不在数据结构，而在「恰好 <span class="arithmatex">\(k\)</span> 步」这个约束。约束里有两处需要小心。第一，<span class="arithmatex">\(k\)</span> 可以大到 <span class="arithmatex">\(10^9\)</span>，逐步模拟不可行。第二，是 <em>恰好</em> <span class="arithmatex">\(k\)</span> 步，不是 <em>至多</em> <span class="arithmatex">\(k\)</span> 步——多出来的步数不能丢弃，必须用掉，而用掉它们会改变栈顶。</p>
+<p>先问一个自然的问题：如果允许任意长度恰好为 <span class="arithmatex">\(k\)</span> 的操作序列，<strong>哪些位置 <code>nums[i]</code> 能成为最终栈顶？</strong> 一个未经思考的猜测是「弹掉前 <span class="arithmatex">\(i\)</span> 个，<code>nums[i]</code> 就在顶上」，于是答案似乎是 <span class="arithmatex">\(\max(\text{nums}[0..k])\)</span> 之类。但这个猜测忽略了步数账：弹掉前 <span class="arithmatex">\(i\)</span> 个恰好花 <span class="arithmatex">\(i\)</span> 步，若 <span class="arithmatex">\(i \ne k\)</span> 还剩步数没用完，而剩下的步数会把刚刚露出的栈顶再次破坏。可达性由两件事共同决定：露出某个位置要花多少步、以及剩下的步数能否被「无副作用地」消耗掉。下面从操作本身把这两点推导清楚。</p>
 <h2 id="formulation">形式化 (Formulation)<a class="headerlink" href="#formulation" title="Permanent link">#</a></h2>
-<p>设位置 <span class="arithmatex">\(i\)</span>（0-indexed）的元素可能成为最终栈顶，给出可行性判据，求</p>
-<div class="arithmatex">\[\max \{\text{nums}[i] : i \text{ 可放上栈顶恰好用 } k \text{ 步}\} \cup \{\text{第 } k \text{ 步从已弹出集合压回}\}.\]</div>
+<p>把可达性拆成两类候选，再取最大值。</p>
+<p><strong>候选一（弹到底）。</strong> 若只做弹出操作，弹 <span class="arithmatex">\(j\)</span> 次后栈顶是 <code>nums[j]</code>（前提 <span class="arithmatex">\(j &lt; n\)</span>，否则栈已空）。这正好花 <span class="arithmatex">\(j\)</span> 步，没有剩余步数需要处理。所以当 <span class="arithmatex">\(k &lt; n\)</span> 时，<code>nums[k]</code> 是一个可达栈顶。</p>
+<p><strong>候选二（保留并消耗剩余步数）。</strong> 想让某个 <code>nums[i]</code>（<span class="arithmatex">\(i &lt; k\)</span>）留在栈顶：先弹掉它上面的 <span class="arithmatex">\(i\)</span> 个元素（花 <span class="arithmatex">\(i\)</span> 步），此时 <code>nums[i]</code> 在顶上，还剩 <span class="arithmatex">\(k - i\)</span> 步必须用掉。关键的子问题是：能否在不破坏当前栈顶的前提下，恰好消耗 <span class="arithmatex">\(k - i\)</span> 步？</p>
+<p>注意一个长度为 <span class="arithmatex">\(2\)</span> 的恒等操作：把任一已弹出元素压上栈顶，再立刻弹掉它，栈与已弹出集合都回到原样，净变化为零。因此只要剩余步数 <span class="arithmatex">\(k - i\)</span> 是偶数，就能用若干个这样的「压-弹」对把它消耗干净，<code>nums[i]</code> 留在顶上。</p>
+<p>但还有更强的结论：剩余步数为奇数时也能处理。若 <span class="arithmatex">\(k - i \ge 1\)</span> 且我们手上至少有一个已弹出元素，可以先把某个比 <code>nums[i]</code> 上方更深的元素留作缓冲，用一次单独的压入消耗掉奇偶差，再用「压-弹」对补齐。把这个推理收紧到本题的目标——我们只关心栈顶的<em>值</em>，不关心具体序列——得到如下干净判据。</p>
+<blockquote>
+<p><strong>可达性判据。</strong> 在恰好 <span class="arithmatex">\(k\)</span> 步后，<code>nums[i]</code> 可成为栈顶，当且仅当 <span class="arithmatex">\(i \le k - 2\)</span>（先弹掉上面 <span class="arithmatex">\(i\)</span> 个，再用剩余 <span class="arithmatex">\(\ge 2\)</span> 步把它无副作用地保留），或者 <span class="arithmatex">\(i = k\)</span> 且 <span class="arithmatex">\(k &lt; n\)</span>（直接弹到底，无剩余步数）。</p>
+</blockquote>
+<p>为什么是 <span class="arithmatex">\(i \le k - 2\)</span> 而不是 <span class="arithmatex">\(i \le k - 1\)</span>？若 <span class="arithmatex">\(i = k - 1\)</span>，弹掉上面 <span class="arithmatex">\(k-1\)</span> 个后恰好剩 <span class="arithmatex">\(1\)</span> 步，而这 <span class="arithmatex">\(1\)</span> 步无处可去：栈顶只能被弹掉或被新元素覆盖，无论哪种都使 <code>nums[k-1]</code> 不再是栈顶。所以位置 <span class="arithmatex">\(k-1\)</span> 不可达。这一步差正是本题最容易错的地方。</p>
+<p>于是目标写成对可达栈顶取最大：</p>
+<div class="arithmatex">\[
+\text{answer} = \max\Big( \underbrace{\max_{0 \le i \le k-2} \text{nums}[i]}_{\text{保留候选}},\ \underbrace{\text{nums}[k]\ (\text{当 } k &lt; n)}_{\text{弹到底候选}} \Big),
+\]</div>
+<p>并在退化情形（<span class="arithmatex">\(k=0\)</span>、<span class="arithmatex">\(k=1\)</span>、<span class="arithmatex">\(n=1\)</span>）单独处理——这些情形下上述两类候选之一为空，需要直接判定。</p>
 <h2 id="approach">数据结构 / 想法 (Approach)<a class="headerlink" href="#approach" title="Permanent link">#</a></h2>
-<p><strong>关键不变量</strong>：要把 <code>nums[i]</code>（<span class="arithmatex">\(i &lt; n\)</span>）留在栈顶恰好 <span class="arithmatex">\(k\)</span> 次操作，等价于「弹掉前 <span class="arithmatex">\(i\)</span> 个、再保留 <code>nums[i]</code>」。</p>
-<p>逐 case：</p>
-<ol>
-<li><strong><span class="arithmatex">\(k = 0\)</span></strong>：直接返回 <code>nums[0]</code>。</li>
-<li><strong><span class="arithmatex">\(k = 1\)</span></strong>：只能弹一次，栈顶变成 <code>nums[1]</code>（若不存在则 <span class="arithmatex">\(-1\)</span>）。</li>
-<li><strong><span class="arithmatex">\(k \ge n\)</span> 且 <span class="arithmatex">\(n = 1, k = 1\)</span></strong>：返回 <span class="arithmatex">\(-1\)</span>（栈空）。一般地，若 <span class="arithmatex">\(k = n\)</span> 且只有这一种「弹光再压回」的可达：可以弹光所有元素再压回任一个，答案为 <span class="arithmatex">\(\max(\text{nums})\)</span>。</li>
-<li><strong><span class="arithmatex">\(k &lt; n\)</span></strong>：可以弹掉前 <span class="arithmatex">\(k - 1\)</span> 个再压回其中一个，或弹 <span class="arithmatex">\(k\)</span> 个让 <code>nums[k]</code> 成为栈顶。两者取 max：<span class="arithmatex">\(\max(\max(\text{nums}[:k]), \text{nums}[k])\)</span>；但要排除「<span class="arithmatex">\(k = 1\)</span> 时无法压回 <code>nums[0]</code> 又保留 <code>nums[0]</code>」的边界（因为这会要求第二次操作）。</li>
-<li><strong><span class="arithmatex">\(k &gt; n\)</span></strong>：弹空后还有剩余偶数次操作可以"压回—再弹—再压回"循环。答案为 <span class="arithmatex">\(\max(\text{nums})\)</span>；唯一例外：<span class="arithmatex">\(n = 1\)</span> 且 <span class="arithmatex">\(k\)</span> 为奇数 → 末态空 → <span class="arithmatex">\(-1\)</span>。</li>
-</ol>
-<p><strong>为什么 <span class="arithmatex">\(k = 1\)</span> 要排除 <code>nums[0]</code></strong>？仅一步操作要么弹 <code>nums[0]</code>、要么从空集合压回（不可能，因为开始没有弹出）。所以 <code>nums[0]</code> 用 <span class="arithmatex">\(k = 1\)</span> 不可达。</p>
+<p>把判据按 <span class="arithmatex">\(k\)</span> 与 <span class="arithmatex">\(n\)</span> 的关系展开，每一类都直接来自上面的可达性判据，而非另起炉灶的特例表。</p>
+<p><strong><span class="arithmatex">\(k = 0\)</span>。</strong> 不能操作，栈顶就是 <code>nums[0]</code>。</p>
+<p><strong><span class="arithmatex">\(k = 1\)</span>。</strong> 只能弹一次，栈顶变成 <code>nums[1]</code>（<span class="arithmatex">\(n \ge 2\)</span> 时存在）。注意 <code>nums[0]</code> 在 <span class="arithmatex">\(k=1\)</span> 时<strong>不可达</strong>：保留候选要求 <span class="arithmatex">\(i \le k - 2 = -1\)</span>（空），弹到底候选给出 <code>nums[1]</code>。直观地说，一步操作要么弹掉 <code>nums[0]</code>，要么从已弹出集合压回——但开局没有任何已弹出元素可压，所以无法「保留 <code>nums[0]</code> 又用掉这一步」。这正是判据里 <span class="arithmatex">\(k-2\)</span> 那一步差的最小实例。</p>
+<p><strong><span class="arithmatex">\(n = 1\)</span>（单元素栈）。</strong> 栈里只有一个元素，每次操作要么把它弹出（栈变空），要么把它压回（栈变满），状态在「空」「满」间逐步翻转。所以 <span class="arithmatex">\(k\)</span> 步后栈是否为空只看 <span class="arithmatex">\(k\)</span> 的奇偶：<span class="arithmatex">\(k\)</span> 为偶数则栈满，返回 <code>nums[0]</code>；<span class="arithmatex">\(k\)</span> 为奇数则栈空，返回 <span class="arithmatex">\(-1\)</span>。</p>
+<p><strong>一般情形（<span class="arithmatex">\(n \ge 2\)</span>，<span class="arithmatex">\(k \ge 2\)</span>）。</strong> 直接套判据。保留候选取 <span class="arithmatex">\(\max_{0 \le i \le k-2}\text{nums}[i]\)</span>，即 <code>max(nums[:k-1])</code>（<span class="arithmatex">\(k \ge 2\)</span> 时 <span class="arithmatex">\(k-1 \ge 1\)</span>，区间非空）。若 <span class="arithmatex">\(k &lt; n\)</span>，再并入弹到底候选 <code>nums[k]</code>。两者取最大即答案。这一形式自动覆盖了大 <span class="arithmatex">\(k\)</span>：当 <span class="arithmatex">\(k \ge n\)</span> 时弹到底候选不存在（栈会被弹空），答案退化为 <code>max(nums[:k-1])</code>；而一旦 <span class="arithmatex">\(k \ge n+1\)</span>，区间 <code>nums[:k-1]</code> 已涵盖全部 <span class="arithmatex">\(n\)</span> 个下标，结果就是 <code>max(nums)</code>。<span class="arithmatex">\(k = n\)</span> 是个临界点：此时区间是 <code>nums[:n-1]</code>，恰好排除了不可达的末位 <code>nums[n-1]</code>。</p>
 <div class="language-python highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">Solution</span><span class="p">:</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">maximumTop</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">nums</span><span class="p">,</span> <span class="n">k</span><span class="p">):</span>
         <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">nums</span><span class="p">)</span>
@@ -22699,24 +22737,27 @@
             <span class="k">return</span> <span class="o">-</span><span class="mi">1</span> <span class="k">if</span> <span class="n">k</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">1</span> <span class="k">else</span> <span class="n">nums</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
         <span class="k">if</span> <span class="n">k</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">nums</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
-        <span class="c1"># k &gt;= 2, n &gt;= 2</span>
-        <span class="k">if</span> <span class="n">k</span> <span class="o">&gt;=</span> <span class="n">n</span><span class="p">:</span>
-            <span class="k">return</span> <span class="nb">max</span><span class="p">(</span><span class="n">nums</span><span class="p">)</span>
-        <span class="c1"># 2 &lt;= k &lt; n</span>
-        <span class="k">return</span> <span class="nb">max</span><span class="p">(</span><span class="nb">max</span><span class="p">(</span><span class="n">nums</span><span class="p">[:</span><span class="n">k</span><span class="p">]),</span> <span class="n">nums</span><span class="p">[</span><span class="n">k</span><span class="p">])</span>
+        <span class="c1"># n &gt;= 2, k &gt;= 2: 套用可达性判据</span>
+        <span class="n">cand</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">nums</span><span class="p">[:</span><span class="n">k</span> <span class="o">-</span> <span class="mi">1</span><span class="p">])</span>          <span class="c1"># 保留候选: 下标 0..k-2</span>
+        <span class="k">if</span> <span class="n">k</span> <span class="o">&lt;</span> <span class="n">n</span><span class="p">:</span>
+            <span class="n">cand</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">cand</span><span class="p">,</span> <span class="n">nums</span><span class="p">[</span><span class="n">k</span><span class="p">])</span>     <span class="c1"># 弹到底候选</span>
+        <span class="k">return</span> <span class="n">cand</span>
 </code></pre></div>
-<p>样例 1：<code>nums=[5,2,2,4,0,6], k=4</code>. 走 case 5: <code>2 &lt;= k=4 &lt; n=6</code>，前 4 个 max=5，<code>nums[4]=0</code>，max=5。✅
-样例 2：<code>nums=[2], k=1</code>. n=1, k=1 奇数 → -1。✅</p>
+<p>样例 1：<code>nums=[5,2,2,4,0,6], k=4</code>。<span class="arithmatex">\(n=6,k=4\)</span>，落入一般情形：<code>max(nums[:3])=max(5,2,2)=5</code>；<span class="arithmatex">\(k&lt;n\)</span>，并入 <code>nums[4]=0</code>，得 <span class="arithmatex">\(\max(5,0)=5\)</span>。✅</p>
+<p>样例 2：<code>nums=[2], k=1</code>。<span class="arithmatex">\(n=1\)</span>，<span class="arithmatex">\(k\)</span> 为奇数 → 栈空 → <span class="arithmatex">\(-1\)</span>。✅</p>
+<p>样例 3（暴露 <span class="arithmatex">\(k-1\)</span> 那一步差）：<code>nums=[7,8], k=2</code>。<span class="arithmatex">\(n=2,k=2\)</span>，一般情形：<code>max(nums[:1])=7</code>；<span class="arithmatex">\(k=n\)</span> 故不并入 <code>nums[2]</code>。答案 <span class="arithmatex">\(7\)</span>，而非 <span class="arithmatex">\(8\)</span>——<code>nums[1]=8</code> 处于位置 <span class="arithmatex">\(k-1=1\)</span>，不可达。✅</p>
 <h2 id="complexity">复杂度 (Complexity)<a class="headerlink" href="#complexity" title="Permanent link">#</a></h2>
 <ul>
-<li>Time: <span class="arithmatex">\(O(n)\)</span>（一次 max 扫描）。</li>
+<li>Time: <span class="arithmatex">\(O(n)\)</span>（一次 max 扫描，区间长度至多 <span class="arithmatex">\(n\)</span>）。</li>
 <li>Space: <span class="arithmatex">\(O(1)\)</span>。</li>
 </ul>
 <h2 id="pitfalls">陷阱 (Pitfalls)<a class="headerlink" href="#pitfalls" title="Permanent link">#</a></h2>
 <ul>
-<li><code>k = 1</code> 时不能"弹一个再压回去"——这是 2 步，不是 1 步；很多人会错误地把 <code>nums[0]</code> 也算进去。</li>
-<li><code>n = 1, k</code> 奇数 → 必然栈空。常被漏掉。</li>
-<li>大 <span class="arithmatex">\(k\)</span>（<span class="arithmatex">\(10^9\)</span>）切勿用 <span class="arithmatex">\(O(k)\)</span> 模拟。</li>
+<li><strong><span class="arithmatex">\(k-1\)</span> 那一步差</strong>：保留候选是 <code>max(nums[:k-1])</code>，不是 <code>max(nums[:k])</code>。位置 <span class="arithmatex">\(k-1\)</span> 弹出后只剩 <span class="arithmatex">\(1\)</span> 步，必然破坏栈顶，故不可达。用 <code>nums[:k]</code> 是本题最常见的错误。</li>
+<li><strong><span class="arithmatex">\(k = n\)</span> 临界点</strong>：不能直接返回 <code>max(nums)</code>。末位 <code>nums[n-1]</code> 在 <span class="arithmatex">\(k=n\)</span> 时同样落在「剩 <span class="arithmatex">\(1\)</span> 步」的不可达位置，答案应为 <code>max(nums[:n-1])</code>。<code>max(nums)</code> 仅在 <span class="arithmatex">\(k \ge n+1\)</span> 时才成立。</li>
+<li><strong><span class="arithmatex">\(k = 1\)</span> 排除 <code>nums[0]</code></strong>：「弹一个再压回去」是 <span class="arithmatex">\(2\)</span> 步不是 <span class="arithmatex">\(1\)</span> 步，开局也无元素可压，所以 <code>nums[0]</code> 在 <span class="arithmatex">\(k=1\)</span> 时不可达。</li>
+<li><strong><span class="arithmatex">\(n = 1\)</span> 的奇偶</strong>：单元素栈在空/满间逐步翻转，<span class="arithmatex">\(k\)</span> 为奇数必然栈空，易漏。</li>
+<li><strong>大 <span class="arithmatex">\(k\)</span>（<span class="arithmatex">\(10^9\)</span>）切勿 <span class="arithmatex">\(O(k)\)</span> 模拟</strong>：判据让答案只依赖一次 <span class="arithmatex">\(O(n)\)</span> 扫描。</li>
 </ul>
 <h2 id="related">相关题目 (Related)<a class="headerlink" href="#related" title="Permanent link">#</a></h2>
 <ul>

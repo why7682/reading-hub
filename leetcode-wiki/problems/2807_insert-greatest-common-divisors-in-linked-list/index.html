@@ -5485,6 +5485,8 @@
       
         
       
+        
+      
     
     
     
@@ -6024,6 +6026,34 @@
     
   
     #93. Restore IP Addresses
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../0102_binary-tree-level-order-traversal/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    #102. Binary Tree Level Order Traversal
   
 
     
@@ -17149,6 +17179,45 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="数据结构 / 想法 (Approach)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        一个朴素的想法，以及它在哪里断掉
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        修复：跨过新节点
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        验证：样例 1 的逐步状态
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -22607,6 +22676,45 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="数据结构 / 想法 (Approach)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        一个朴素的想法，以及它在哪里断掉
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        修复：跨过新节点
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        验证：样例 1 的逐步状态
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -22675,13 +22783,26 @@
 <h2 id="problem">Problem<a class="headerlink" href="#problem" title="Permanent link">#</a></h2>
 <p>给链表，每对相邻节点之间插入一个新节点，值为两节点值的 GCD。返回新链表头。约束节点数 <span class="arithmatex">\(\in [1, 5000]\)</span>，节点值 <span class="arithmatex">\(\in [1, 1000]\)</span>。</p>
 <h2 id="background">背景 (Background)<a class="headerlink" href="#background" title="Permanent link">#</a></h2>
-<p>本题结合<strong>链表节点插入</strong>与<strong>欧几里得算法 (Euclidean algorithm)</strong>。GCD 的递归形式 <span class="arithmatex">\(\gcd(a, b) = \gcd(b, a \bmod b)\)</span> 是数论中最古老的算法之一（公元前 300 年欧几里得《几何原本》卷 VII），其分析也是算法复杂度史上里程碑——Lamé 1844 证明步数 <span class="arithmatex">\(O(\log \min(a,b))\)</span> 且最坏例由 Fibonacci 数对达成。</p>
-<p>链表插入是基础操作；难点在于在迭代中正确维持 <code>cur.next</code> 指针。</p>
+<p>本题的真正难点不在数学，而在指针：我们要在<strong>遍历的同时修改正在遍历的链表</strong>。每插入一个节点，都会改变我们下一步要读取的指针。所以先把核心矛盾摆出来——遍历到某个原节点 <code>cur</code> 时，我们在 <code>cur</code> 和 <code>cur.next</code> 之间塞进一个新节点；那么下一次循环，<code>cur</code> 该往哪走，才能仍然落在一个<strong>原节点</strong>上，而不是刚插入的那个？这是全题的重心。</p>
+<p>至于 GCD 本身，可以当黑盒：递归恒等式 <span class="arithmatex">\(\gcd(a, b) = \gcd(b, a \bmod b)\)</span> 保证每一步把较大数换成余数，规模严格下降，于是几步内终止。本题节点值 <span class="arithmatex">\(\le 1000\)</span>，单次 GCD 至多约 <span class="arithmatex">\(\log_2 1000 \approx 10\)</span> 步，开销可忽略。<code>math.gcd</code> 正是这个递归的实现，直接调用即可。复杂度一节会把这个 <span class="arithmatex">\(O(\log V)\)</span> 量化。</p>
 <h2 id="formulation">形式化 (Formulation)<a class="headerlink" href="#formulation" title="Permanent link">#</a></h2>
 <p>设原链表为 <span class="arithmatex">\(v_1 \to v_2 \to \dots \to v_n\)</span>，构造新链表</p>
 <div class="arithmatex">\[v_1 \to \gcd(v_1, v_2) \to v_2 \to \gcd(v_2, v_3) \to v_3 \to \dots \to v_n\]</div>
+<p>读这个目标式，结构一目了然：对每一对<strong>相邻的原节点</strong> <span class="arithmatex">\((v_i, v_{i+1})\)</span>，恰好在它们之间插入一个值为 <span class="arithmatex">\(\gcd(v_i, v_{i+1})\)</span> 的节点。原节点的相对顺序不变，只是被 <span class="arithmatex">\(n-1\)</span> 个新节点隔开。于是任务退化为：遍历全部 <span class="arithmatex">\(n-1\)</span> 个相邻原节点对，逐对插入一个节点。下面的算法就是这句话的直接实现——指针机制存在的唯一目的，就是保证每一步处理的确实是「下一对原节点」。</p>
 <h2 id="approach">数据结构 / 想法 (Approach)<a class="headerlink" href="#approach" title="Permanent link">#</a></h2>
-<p>一遍扫描：维持指针 <code>cur</code>，对每对 <code>(cur, cur.next)</code> 计算 GCD，新建节点插入。然后 <code>cur = cur.next.next</code>（跳过插入节点继续）。</p>
+<h3 id="_1">一个朴素的想法，以及它在哪里断掉<a class="headerlink" href="#_1" title="Permanent link">#</a></h3>
+<p>最省事的写法似乎是：用指针 <code>cur</code> 扫过链表，在 <code>cur</code> 与 <code>cur.next</code> 之间插入 GCD 节点，然后像普通遍历一样 <code>cur = cur.next</code> 前进一步。我们把这一步推演出来，看它在哪里出问题。</p>
+<p>以 <code>[18, 6]</code> 为例。<code>cur</code> 指向 18，<code>cur.next</code> 指向 6，计算 <span class="arithmatex">\(\gcd(18,6)=6\)</span> 并插入，链表变成 <code>18 → 6(new) → 6</code>。此时若执行 <code>cur = cur.next</code>，<code>cur</code> 就落到了<strong>刚插入的 GCD 节点</strong>上。下一次循环它会计算 <span class="arithmatex">\(\gcd(6_\text{new}, 6)\)</span>——把一个插入节点当成原节点，与后面的原节点再配一次对。结果不仅多算，还会无止境地在新节点之间继续插入，永远扫不完。</p>
+<p>断点很清楚：插入之后，<code>cur.next</code> 已经被改成了新节点，所以「前进一步」会一脚踩进我们自己造出来的节点里。</p>
+<h3 id="_2">修复：跨过新节点<a class="headerlink" href="#_2" title="Permanent link">#</a></h3>
+<p>插入完成后，局部链表的形状是固定的：</p>
+<div class="arithmatex">\[\texttt{cur} \;\to\; \texttt{new\_node} \;\to\; \text{下一个原节点}\]</div>
+<p>既然 <code>cur → new_node → 下一个原节点</code>，那么从 <code>new_node</code> 再走一步，就正好落在下一个原节点上。这给出唯一正确的前进方式：<code>cur = new_node.next</code>。它不是技巧，而是被上面那张形状图逼出来的——要跳过自己插入的节点，就必须多走这一步。</p>
+<p><strong>循环不变量</strong>（进入每次循环体时成立）：<code>cur</code> 指向一个<strong>尚未处理的原节点</strong>，<code>cur.next</code> 指向下一个原节点（若存在）。
+- 初始：<code>cur = head</code>，是第一个原节点，不变量成立。
+- 维持：本轮在 <code>cur</code> 与 <code>cur.next</code> 之间插入 <code>new_node</code>，再令 <code>cur = new_node.next</code>。由形状图，<code>new_node.next</code> 正是原来的 <code>cur.next</code>，即下一个原节点，且它尚未处理。不变量对下一轮成立。
+- 终止：当 <code>cur.next</code> 为 <code>None</code>（<code>cur</code> 是末节点）或 <code>cur</code> 为 <code>None</code> 时停止，此时再无相邻对可处理。</p>
+<p>把不变量翻译成代码即得：</p>
 <div class="language-python highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">math</span><span class="w"> </span><span class="kn">import</span> <span class="n">gcd</span>
 
 <span class="k">class</span><span class="w"> </span><span class="nc">ListNode</span><span class="p">:</span>
@@ -22693,29 +22814,67 @@
     <span class="n">cur</span> <span class="o">=</span> <span class="n">head</span>
     <span class="k">while</span> <span class="n">cur</span> <span class="ow">and</span> <span class="n">cur</span><span class="o">.</span><span class="n">next</span><span class="p">:</span>
         <span class="n">g</span> <span class="o">=</span> <span class="n">gcd</span><span class="p">(</span><span class="n">cur</span><span class="o">.</span><span class="n">val</span><span class="p">,</span> <span class="n">cur</span><span class="o">.</span><span class="n">next</span><span class="o">.</span><span class="n">val</span><span class="p">)</span>
-        <span class="n">new_node</span> <span class="o">=</span> <span class="n">ListNode</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">cur</span><span class="o">.</span><span class="n">next</span><span class="p">)</span>
-        <span class="n">cur</span><span class="o">.</span><span class="n">next</span> <span class="o">=</span> <span class="n">new_node</span>
-        <span class="n">cur</span> <span class="o">=</span> <span class="n">new_node</span><span class="o">.</span><span class="n">next</span>
+        <span class="n">new_node</span> <span class="o">=</span> <span class="n">ListNode</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">cur</span><span class="o">.</span><span class="n">next</span><span class="p">)</span>   <span class="c1"># 先让 new_node 持有原 cur.next</span>
+        <span class="n">cur</span><span class="o">.</span><span class="n">next</span> <span class="o">=</span> <span class="n">new_node</span>                <span class="c1"># 再改写 cur.next</span>
+        <span class="n">cur</span> <span class="o">=</span> <span class="n">new_node</span><span class="o">.</span><span class="n">next</span>                <span class="c1"># 跨过 new_node，落到下一个原节点</span>
     <span class="k">return</span> <span class="n">head</span>
 </code></pre></div>
-<p>样例 1 trace：<code>head = [18,6,10,3]</code>。
-- cur=18, next=6, g=gcd(18,6)=6. 插入 6. 链表: 18→6→6→10→3. cur=6 (original).
-- cur=6, next=10, g=gcd(6,10)=2. 插入 2. 链表: 18→6→6→2→10→3. cur=10.
-- cur=10, next=3, g=gcd(10,3)=1. 插入 1. 链表: 18→6→6→2→10→1→3. cur=3.
-- cur.next=None, 退出。</p>
-<p>结果 <code>[18,6,6,2,10,1,3]</code>。✓</p>
-<p>样例 2：<code>head=[7]</code>，cur.next=None，直接返回。✓</p>
-<p><strong>不变量</strong>：每次循环开始，<code>cur</code> 指向已处理完插入的"原节点"，<code>cur.next</code> 是下一个原节点。</p>
+<h3 id="1">验证：样例 1 的逐步状态<a class="headerlink" href="#1" title="Permanent link">#</a></h3>
+<p><code>head = [18, 6, 10, 3]</code>，列出每轮循环体执行后的链表与 <code>cur</code> 位置。</p>
+<table>
+<thead>
+<tr>
+<th>轮次</th>
+<th><code>cur</code> / <code>cur.next</code></th>
+<th>插入 GCD</th>
+<th>执行后链表</th>
+<th>更新后 <code>cur</code></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>18 / 6</td>
+<td><span class="arithmatex">\(\gcd(18,6)=6\)</span></td>
+<td>18 → 6 → 6 → 10 → 3</td>
+<td>6（原节点）</td>
+</tr>
+<tr>
+<td>2</td>
+<td>6 / 10</td>
+<td><span class="arithmatex">\(\gcd(6,10)=2\)</span></td>
+<td>18 → 6 → 6 → 2 → 10 → 3</td>
+<td>10</td>
+</tr>
+<tr>
+<td>3</td>
+<td>10 / 3</td>
+<td><span class="arithmatex">\(\gcd(10,3)=1\)</span></td>
+<td>18 → 6 → 6 → 2 → 10 → 1 → 3</td>
+<td>3</td>
+</tr>
+<tr>
+<td>4</td>
+<td>3 / None</td>
+<td>—</td>
+<td>（不变）</td>
+<td>退出</td>
+</tr>
+</tbody>
+</table>
+<p>结果 <code>[18, 6, 6, 2, 10, 1, 3]</code>，与目标式一致。每轮更新后的 <code>cur</code> 都落在原节点 6、10、3 上，正是不变量所断言的——没有一次踩到插入节点。</p>
+<p>样例 2：<code>head = [7]</code>，<code>cur.next</code> 为 <code>None</code>，循环体一次都不执行，直接返回 <code>[7]</code>。单节点由 <code>while</code> 条件自然兜住，无需特判。</p>
 <h2 id="complexity">复杂度 (Complexity)<a class="headerlink" href="#complexity" title="Permanent link">#</a></h2>
 <ul>
-<li>Time <span class="arithmatex">\(O(n \log V)\)</span>，<span class="arithmatex">\(V\)</span> 是最大节点值。GCD 单次 <span class="arithmatex">\(O(\log V)\)</span>，共 <span class="arithmatex">\(n-1\)</span> 次。</li>
-<li>Space <span class="arithmatex">\(O(1)\)</span>（除新建节点外）。</li>
+<li>Time <span class="arithmatex">\(O(n \log V)\)</span>，<span class="arithmatex">\(V\)</span> 是最大节点值。循环对 <span class="arithmatex">\(n-1\)</span> 个相邻对各执行一次（无条件，不提前退出），每次一个 GCD；由背景一节，单次 GCD 为 <span class="arithmatex">\(O(\log V)\)</span>。最好/平均/最坏均为 <span class="arithmatex">\(\Theta(n \log V)\)</span>，单一界即可。</li>
+<li>Space <span class="arithmatex">\(O(1)\)</span>（除新建的 <span class="arithmatex">\(n-1\)</span> 个节点外，只用常数个指针）。</li>
 </ul>
 <h2 id="pitfalls">陷阱 (Pitfalls)<a class="headerlink" href="#pitfalls" title="Permanent link">#</a></h2>
 <ul>
-<li><strong>指针更新顺序</strong>：先创建 <code>new_node</code> 持有 <code>cur.next</code>，再让 <code>cur.next = new_node</code>，否则丢失链尾。</li>
-<li><strong>单节点</strong>：循环不执行直接返回。</li>
-<li><strong>GCD 取 0</strong>：题目保证节点值 ≥ 1，无需特判 <code>gcd(0, x)</code>。</li>
+<li><strong>前进步长（最深的坑）</strong>：见 Approach 的推演。插入后必须 <code>cur = new_node.next</code> 跨过新节点；若按惯性写 <code>cur = cur.next</code>，会把刚插入的 GCD 节点当成原节点再配对，结果错误且不终止。</li>
+<li><strong>指针改写顺序</strong>：必须先 <code>new_node = ListNode(g, cur.next)</code> 让新节点持有原来的 <code>cur.next</code>，再 <code>cur.next = new_node</code>。若反过来——先 <code>cur.next = new_node</code>——此刻 <code>cur.next</code> 已是新节点，再去读原来的后继就读不到了，链尾整段丢失。失败是可观察的：读到的「后继」变成了刚建的节点本身。</li>
+<li><strong>单节点</strong>：<code>while cur and cur.next</code> 在 <code>cur.next</code> 为 <code>None</code> 时直接不进循环，无需单独分支。</li>
+<li><strong>GCD 取 0</strong>：题目保证节点值 <span class="arithmatex">\(\ge 1\)</span>，不会出现 <span class="arithmatex">\(\gcd(0, x)\)</span>，无需特判。</li>
 </ul>
 <h2 id="related">相关题目 (Related)<a class="headerlink" href="#related" title="Permanent link">#</a></h2>
 <ul>

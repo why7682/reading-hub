@@ -5485,6 +5485,8 @@
       
         
       
+        
+      
     
     
     
@@ -6024,6 +6026,34 @@
     
   
     #93. Restore IP Addresses
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../0102_binary-tree-level-order-traversal/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    #102. Binary Tree Level Order Traversal
   
 
     
@@ -22673,12 +22703,19 @@
 <h1 id="2395-find-subarrays-with-equal-sum-easy">2395. Find Subarrays With Equal Sum 🟢 Easy<a class="headerlink" href="#2395-find-subarrays-with-equal-sum-easy" title="Permanent link">#</a></h1>
 <p><strong>Tags</strong>: Array, Hash Table</p>
 <h2 id="problem">Problem<a class="headerlink" href="#problem" title="Permanent link">#</a></h2>
-<p>数组 <code>nums</code>，判断是否存在两个<strong>不同起点</strong>的长度为 2 的连续子数组，它们的和相等。<span class="arithmatex">\(2 \le n \le 1000\)</span>。</p>
+<p>数组 <code>nums</code>，判断是否存在两个<strong>不同起点</strong>的长度为 2 的连续子数组，它们的和相等。<span class="arithmatex">\(2 \le n \le 1000\)</span>，且 <span class="arithmatex">\(-10^9 \le \text{nums}[i] \le 10^9\)</span>。</p>
 <h2 id="background">背景 (Background)<a class="headerlink" href="#background" title="Permanent link">#</a></h2>
-<p>本题为「<strong>滑动和 + 哈希探测重复</strong>」入门，与「在线流中找重复 (online duplicate detection)」、Rabin-Karp 滚动哈希同源。</p>
+<p>先把题目问的事情写成最直接的判定：是否存在两个起点 <span class="arithmatex">\(i &lt; j\)</span>，使得长度为 2 的窗口和相等，即</p>
+<div class="arithmatex">\[a_i + a_{i+1} = a_j + a_{j+1}.\]</div>
+<p>最朴素的做法就是照此枚举所有起点对 <span class="arithmatex">\((i, j)\)</span>，逐对比较两窗口的和。这能给出正确答案，但要检查 <span class="arithmatex">\(\binom{n-1}{2} = O(n^2)\)</span> 对。</p>
+<p>观察这个双重循环在做什么：对每个新起点 <span class="arithmatex">\(j\)</span>，内层循环把它的窗口和 <span class="arithmatex">\(a_j + a_{j+1}\)</span> 拿去和<strong>之前每一个</strong>起点的窗口和逐一对比。但比较的结论只有一个比特——「这个和之前出现过没有」。我们并不关心它和<strong>哪个</strong>更早的起点相等，只关心<strong>是否</strong>相等。一旦把内层循环的目的收窄成「之前的窗口和里有没有这一个」，它就不必再逐个扫过去，而可以交给一个支持快速成员查询的结构来回答。这正是哈希集合的用武之地，也是下面把 <span class="arithmatex">\(O(n^2)\)</span> 压到 <span class="arithmatex">\(O(n)\)</span> 的全部理由。</p>
 <h2 id="formulation">形式化 (Formulation)<a class="headerlink" href="#formulation" title="Permanent link">#</a></h2>
-<p>设 <span class="arithmatex">\(s_i = a_i + a_{i+1}\)</span> for <span class="arithmatex">\(i \in [0, n-2]\)</span>. 判断序列 <span class="arithmatex">\(s_0, \dots, s_{n-2}\)</span> 是否有重复值。</p>
+<p>把每个起点的窗口和抽出来，记</p>
+<div class="arithmatex">\[s_i = a_i + a_{i+1}, \quad i \in [0,\, n-2]. \tag{1}\]</div>
+<p>于是原问题等价于：序列 <span class="arithmatex">\(s_0, s_1, \dots, s_{n-2}\)</span> 中是否存在<strong>重复值</strong>。两个相等的 <span class="arithmatex">\(s_i = s_j\)</span>（<span class="arithmatex">\(i \ne j\)</span>）就对应两个和相等的窗口；反之亦然。注意 <span class="arithmatex">\(i \ne j\)</span> 自动保证起点不同——这一点在「陷阱」里会再用到。</p>
+<p>由 (1)，每个 <span class="arithmatex">\(s_i\)</span> 至多为 <span class="arithmatex">\(|a_i| + |a_{i+1}| \le 2 \times 10^9\)</span>，这个上界后面定数据类型时要用。</p>
 <h2 id="approach">数据结构 / 想法 (Approach)<a class="headerlink" href="#approach" title="Permanent link">#</a></h2>
+<p>由上一节，问题已化为「序列 <span class="arithmatex">\(\{s_i\}\)</span> 有无重复」。从左到右逐个算出 <span class="arithmatex">\(s_i\)</span>，对每个新值只需问一件事：<strong>它在之前出现过吗</strong>？这个问题哈希集合能在均摊 <span class="arithmatex">\(O(1)\)</span> 内回答。于是先查再插：查到说明撞上了一个更早的起点，直接返回 <code>True</code>；查不到就把它记下，继续往前。</p>
 <div class="language-python highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">Solution</span><span class="p">:</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">findSubarrays</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">nums</span><span class="p">):</span>
         <span class="n">seen</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
@@ -22689,17 +22726,20 @@
             <span class="n">seen</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
         <span class="k">return</span> <span class="kc">False</span>
 </code></pre></div>
-<p>样例 1：<code>[4,2,4]</code>. s=[6,6] → 重复，return True. ✅
-样例 3：<code>[0,0,0]</code>. s=[0,0] → True. ✅</p>
+<p>循环不变量解释了为什么单趟扫描就够、为什么「先查后插」的顺序是对的：进入第 <span class="arithmatex">\(i\)</span> 步时，<code>seen</code> 恰好等于 <span class="arithmatex">\(\{s_0, \dots, s_{i-1}\}\)</span>。因此 <code>s in seen</code> 命中，意味着当前起点 <span class="arithmatex">\(i\)</span> 与某个<strong>更早</strong>的起点 <span class="arithmatex">\(j &lt; i\)</span> 撞了和——它们由构造就是不同起点，正好满足题目要求。先查后插也保证我们不会把 <span class="arithmatex">\(s_i\)</span> 和它自己比，从而避免把单个窗口误判成「两个」。</p>
+<p>样例 1：<code>[4,2,4]</code>，由 (1) 得 <span class="arithmatex">\(s = [6, 6]\)</span>，第二步查 <code>6 in {6}</code> 命中，返回 <code>True</code>。✅
+样例 2：<code>[1,2,3,4,5]</code>，<span class="arithmatex">\(s = [3, 5, 7, 9]\)</span> 全不相同，扫完返回 <code>False</code>。✅
+补充用例 <code>[0,0,0]</code>（非官方样例，用于说明「内容相同但起点不同」）：<span class="arithmatex">\(s = [0, 0]\)</span>，第二步命中，返回 <code>True</code>。✅</p>
 <h2 id="complexity">复杂度 (Complexity)<a class="headerlink" href="#complexity" title="Permanent link">#</a></h2>
 <ul>
-<li>Time: <span class="arithmatex">\(O(n)\)</span>。</li>
-<li>Space: <span class="arithmatex">\(O(n)\)</span>。</li>
+<li>Time: <span class="arithmatex">\(O(n)\)</span>。单趟扫描 <span class="arithmatex">\(n-1\)</span> 个起点，每步是均摊 <span class="arithmatex">\(O(1)\)</span> 的集合查与插。</li>
+<li>Space: <span class="arithmatex">\(O(n)\)</span>。最坏情况下所有 <span class="arithmatex">\(s_i\)</span> 互不相同，集合会增长到 <span class="arithmatex">\(n-1\)</span> 个元素。</li>
 </ul>
 <h2 id="pitfalls">陷阱 (Pitfalls)<a class="headerlink" href="#pitfalls" title="Permanent link">#</a></h2>
 <ul>
-<li>即使两个子数组内容相同但起点不同也算（如 <code>[0,0,0]</code>）。集合判重对此自然成立——只要起点不同就会被加入两次。</li>
-<li>元素可负（<span class="arithmatex">\(-10^9 \le \text{nums}[i] \le 10^9\)</span>），用 set 不受影响；C++ 用 <code>int64</code> 避免溢出。</li>
+<li>即使两个子数组内容相同但起点不同也算（如 <code>[0,0,0]</code>）。集合判重对此无需额外处理：同一个和值在两个不同起点 <span class="arithmatex">\(i &lt; j\)</span> 处各出现一次，第二次查询时它已在集合里。由 (1) 的下标范围，<span class="arithmatex">\(i \ne j\)</span> 本就意味着起点不同，所以「相等的和」与「不同起点」是同一件事，不必单独检查。</li>
+<li>元素可负不影响正确性：集合对任意整数键（含负窗口和）一视同仁，例如 <code>[-1,2,-1,2]</code> 的 <span class="arithmatex">\(s = [1,1,1]\)</span> 仍能正确判重。</li>
+<li>数据类型：由形式化一节，<span class="arithmatex">\(|s_i| \le 2 \times 10^9\)</span>。Python 整数无界，无需考虑。C++ 中比较 <span class="arithmatex">\(2 \times 10^9\)</span> 与 <code>int</code> 上界 <span class="arithmatex">\(2^{31}-1 \approx 2.147 \times 10^9\)</span>，有 <span class="arithmatex">\(2 \times 10^9 &lt; 2.147 \times 10^9\)</span>，故单个两元素窗口和<strong>不会</strong>溢出 32 位 <code>int</code>，<code>int</code> 已足够；写 <code>long long</code> 只是无害的防御性习惯，本题并不必需。（仅当窗口更长、和的上界超过 <span class="arithmatex">\(2^{31}-1\)</span> 时才真正需要 64 位。）</li>
 </ul>
 <h2 id="related">相关题目 (Related)<a class="headerlink" href="#related" title="Permanent link">#</a></h2>
 <ul>

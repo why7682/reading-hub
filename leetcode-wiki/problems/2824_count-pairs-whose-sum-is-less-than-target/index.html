@@ -5485,6 +5485,8 @@
       
         
       
+        
+      
     
     
     
@@ -6024,6 +6026,34 @@
     
   
     #93. Restore IP Addresses
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../0102_binary-tree-level-order-traversal/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    #102. Binary Tree Level Order Traversal
   
 
     
@@ -22675,19 +22705,27 @@
 <h2 id="problem">Problem<a class="headerlink" href="#problem" title="Permanent link">#</a></h2>
 <p>给数组 <code>nums</code> 与目标 <code>target</code>，求满足 <span class="arithmatex">\(0 \le i &lt; j &lt; n\)</span> 且 <code>nums[i] + nums[j] &lt; target</code> 的下标对 <span class="arithmatex">\((i, j)\)</span> 数。约束 <span class="arithmatex">\(1 \le n \le 50\)</span>。</p>
 <h2 id="background">背景 (Background)<a class="headerlink" href="#background" title="Permanent link">#</a></h2>
-<p>本题是 <strong>Two Sum</strong> 家族的不等式版本——把"等于"换"小于"。同思路扩展到 #611 valid triangle、#1099 Two Sum less than K 等。核心技巧是<strong>排序 + 双指针</strong>：把"对计数"摊为 <span class="arithmatex">\(O(n)\)</span> 指针移动。</p>
-<p>数学上：<span class="arithmatex">\(|\{(i,j): i&lt;j, a_i+a_j&lt;T\}|\)</span> 在排序后等于 <span class="arithmatex">\(|\{(p,q): p&lt;q, b_p+b_q&lt;T\}|\)</span>（因为只对值 &lt; 关系敏感，不在乎下标——但题目要求下标对数，与值排序后对数等价；这是因为约束只关心存在 <span class="arithmatex">\(i&lt;j\)</span> 而不挑特定下标）。</p>
+<p>最直接的做法是双重循环：枚举每个下标对 <span class="arithmatex">\((i,j)\)</span>，逐对检查 <code>nums[i] + nums[j] &lt; target</code>。在 <span class="arithmatex">\(n \le 50\)</span> 下这完全可行，至多 <span class="arithmatex">\(\binom{50}{2}=1225\)</span> 次比较。值得追问的是：这个枚举浪费在哪里？</p>
+<p>考虑把数组排好序。固定较小的那一端，去看它能配多少个较大端。一旦某个 <code>nums[i] + nums[j]</code> 已经 <span class="arithmatex">\(\ge\)</span> 目标，由于数组有序，<strong>比 <code>nums[j]</code> 更大的所有元素配上 <code>nums[i]</code> 只会让和更大</strong>——它们一律不合格，无需逐个检验。这种"由有序性推出整段元素的合格/不合格"的能力，正是暴力枚举忽略的结构；它把"逐对判断"压成"按段计数"，从而得到 <span class="arithmatex">\(O(n)\)</span> 的指针扫描。下面把这个观察形式化，再从中推出算法。</p>
 <h2 id="formulation">形式化 (Formulation)<a class="headerlink" href="#formulation" title="Permanent link">#</a></h2>
-<p>求</p>
-<div class="arithmatex">\[|\{(i,j) \in [n]^2 : i &lt; j,\ a_i + a_j &lt; T\}|\]</div>
+<p>设数组为 <span class="arithmatex">\(a_0,\dots,a_{n-1}\)</span>，目标为 <span class="arithmatex">\(T\)</span>。求</p>
+<div class="arithmatex">\[\bigl|\{(i,j)\in\{0,\dots,n-1\}^2 : i &lt; j,\ a_i + a_j &lt; T\}\bigr|. \tag{1}\]</div>
+<p><strong>排序保序引理。</strong> 设 <span class="arithmatex">\(b\)</span> 是 <span class="arithmatex">\(a\)</span> 升序排序后的数组。则 (1) 等于</p>
+<div class="arithmatex">\[\bigl|\{(p,q) : p &lt; q,\ b_p + b_q &lt; T\}\bigr|. \tag{2}\]</div>
+<p>理由：排序是元素集合上的双射。每个原下标对 <span class="arithmatex">\((i,j)\)</span>（<span class="arithmatex">\(i&lt;j\)</span>）映到唯一一个排序位置对 <span class="arithmatex">\(\{p,q\}\)</span>，反之亦然；和条件 <code>a_i + a_j &lt; T</code> 只依赖<strong>值</strong>，与原下标无关。因此满足条件的下标对数与满足条件的排序位置对数相等。这条引理使我们可以放心地先排序、再在有序数组上计数——下标含义虽变，对数不变。</p>
 <h2 id="approach">数据结构 / 想法 (Approach)<a class="headerlink" href="#approach" title="Permanent link">#</a></h2>
 <p><strong>解法 A：暴力 <span class="arithmatex">\(O(n^2)\)</span></strong>
-<span class="arithmatex">\(n \le 50\)</span> 时可过。</p>
-<p><strong>解法 B：排序 + 双指针 <span class="arithmatex">\(O(n \log n)\)</span></strong>
-排序后 left=0, right=n-1：
-- 若 <code>a[left] + a[right] &lt; T</code>：所有 <span class="arithmatex">\((left, left+1), \dots, (left, right)\)</span> 共 <code>right - left</code> 对均成立，累加并 <code>left++</code>。
-- 否则 <code>right--</code>。</p>
-<p><strong>不变量</strong>：每步缩小一对 <code>(left, right)</code> 状态空间，循环 <span class="arithmatex">\(O(n)\)</span>。</p>
+直接枚举 (1) 中所有 <span class="arithmatex">\(i&lt;j\)</span> 并逐对判断。<span class="arithmatex">\(n \le 50\)</span> 时足够，作为正确性基线。它的冗余在于：对固定的 <span class="arithmatex">\(i\)</span>，合格的 <span class="arithmatex">\(j\)</span> 在排序后是一整段连续的位置，但暴力把这一段拆成了逐个判断。</p>
+<p><strong>解法 B：排序 + 双指针 <span class="arithmatex">\(O(n \log n)\)</span></strong></p>
+<p>先把直觉落到 (2) 上。排序后固定左端位置 <span class="arithmatex">\(p\)</span>，考察右端位置 <span class="arithmatex">\(q\)</span> 从 <span class="arithmatex">\(n-1\)</span> 向左移动：和 <span class="arithmatex">\(b_p + b_q\)</span> 随 <span class="arithmatex">\(q\)</span> 减小而<strong>单调减小</strong>（数组有序）。于是存在一个阈值位置 <span class="arithmatex">\(q^\*\)</span>，使得</p>
+<div class="arithmatex">\[b_p + b_{q^\*} &lt; T \quad\text{但}\quad b_p + b_{q^\*+1} \ge T.\]</div>
+<p>凡是 <span class="arithmatex">\(p &lt; q \le q^\*\)</span> 的右端都与 <span class="arithmatex">\(p\)</span> 构成合格对，共 <span class="arithmatex">\(q^\* - p\)</span> 对——这是一段连续前缀，可以一次性计数，不必逐个枚举。</p>
+<p>这个前缀结构直接给出双指针的两条更新规则。设 <code>left=0, right=n-1</code>：</p>
+<ul>
+<li>若 <code>b[left] + b[right] &lt; T</code>：因为数组有序，所有满足 <span class="arithmatex">\(\text{left} &lt; k \le \text{right}\)</span> 的 <span class="arithmatex">\(k\)</span> 都有 <code>b[k] &lt;= b[right]</code>，故 <code>b[left] + b[k] &lt; T</code> 也成立。这一段共 <code>right - left</code> 个合格对 <span class="arithmatex">\((\text{left}, k)\)</span>，全部累加；随后 <code>left++</code>——涉及 <code>b[left]</code> 的合格对已数尽，左端可以前进。</li>
+<li>否则（<code>b[left] + b[right] &gt;= T</code>）：此时 <code>left</code> 是窗口内最小的左端，连它配上 <code>b[right]</code> 都超标。窗口内任何其他左端 <span class="arithmatex">\(k\)</span> 都有 <code>b[k] &gt;= b[left]</code>，于是 <code>b[k] + b[right] &gt;= b[left] + b[right] &gt;= T</code>。可见 <code>b[right]</code> 与窗口内任何左端配对都不合格，它不会出现在尚未计数的合格对里，故安全地 <code>right--</code>。</li>
+</ul>
+<p><strong>正确性（不重不漏）。</strong> 每次进入循环，所有"左端 <span class="arithmatex">\(&lt;\)</span> left 或右端 <span class="arithmatex">\(&gt;\)</span> right"的对要么已被计数、要么已被排除；剩余待定的对恰落在当前 <code>[left, right]</code> 窗口内。两条规则各自处理掉一个边界元素（left 或 right），既不跳过合格对、也不计入非法对，且每步窗口宽度减一，故循环在 <span class="arithmatex">\(O(n)\)</span> 步内终止。</p>
 <div class="language-python highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">countPairs</span><span class="p">(</span><span class="n">nums</span><span class="p">,</span> <span class="n">target</span><span class="p">):</span>
     <span class="n">nums</span><span class="o">.</span><span class="n">sort</span><span class="p">()</span>
     <span class="n">left</span><span class="p">,</span> <span class="n">right</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">nums</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span>
@@ -22700,6 +22738,7 @@
             <span class="n">right</span> <span class="o">-=</span> <span class="mi">1</span>
     <span class="k">return</span> <span class="n">ans</span>
 </code></pre></div>
+<p>下面两个 trace 验证上述推理——它们不替代论证，只是把不变量在具体输入上走一遍。</p>
 <p>样例 1 trace：<code>nums=[-1,1,2,3,1], target=2</code>. sorted <code>[-1,1,1,2,3]</code>.
 - l=0(-1), r=4(3): -1+3=2 not&lt;2, r=3.
 - l=0(-1), r=3(2): -1+2=1&lt;2, ans+=3-0=3, l=1.
@@ -22717,12 +22756,12 @@
 <h2 id="complexity">复杂度 (Complexity)<a class="headerlink" href="#complexity" title="Permanent link">#</a></h2>
 <ul>
 <li>A: Time <span class="arithmatex">\(O(n^2)\)</span>, Space <span class="arithmatex">\(O(1)\)</span>.</li>
-<li>B: Time <span class="arithmatex">\(O(n \log n)\)</span>, Space <span class="arithmatex">\(O(1)\)</span> (in-place sort).</li>
+<li>B: Time <span class="arithmatex">\(O(n \log n)\)</span>（由排序主导，双指针扫描本身 <span class="arithmatex">\(O(n)\)</span>），Space <span class="arithmatex">\(O(1)\)</span>（原地排序）。</li>
 </ul>
 <h2 id="pitfalls">陷阱 (Pitfalls)<a class="headerlink" href="#pitfalls" title="Permanent link">#</a></h2>
 <ul>
-<li><strong>下标 vs 值</strong>：题目按值要求 <span class="arithmatex">\(i &lt; j\)</span>（下标对），但排序后双指针计数与下标对数一致——因为我们只数 <span class="arithmatex">\((\text{值}_p, \text{值}_q)\)</span> 的无序对，且对每对 <span class="arithmatex">\(\{p,q\}\)</span> 原数组里唯一对应一个 <span class="arithmatex">\((i,j)\)</span> 下标对（<span class="arithmatex">\(i&lt;j\)</span> 排好序）。</li>
-<li><strong>严格小于</strong>：<code>&lt;</code> 不是 <code>&lt;=</code>，不要错。</li>
+<li><strong>下标 vs 值</strong>：题目要求的是下标对 <span class="arithmatex">\((i,j)\)</span> 且 <span class="arithmatex">\(i&lt;j\)</span>，而我们在排序后的数组上计数，下标含义已变。两者对数相等的依据正是上文的<strong>排序保序引理</strong>：排序是元素上的双射，和条件只依赖值，故满足条件的原下标对与排序位置对一一对应、数目相同。先排序再数，不会多算也不会漏算。</li>
+<li><strong>严格小于</strong>：是 <code>&lt;</code> 不是 <code>&lt;=</code>。例如 <code>nums=[1,1], target=2</code>，和恰为 2 不 <span class="arithmatex">\(&lt;\)</span> 2，应返回 0；写成 <code>&lt;=</code> 会错算成 1。</li>
 </ul>
 <h2 id="related">相关题目 (Related)<a class="headerlink" href="#related" title="Permanent link">#</a></h2>
 <ul>

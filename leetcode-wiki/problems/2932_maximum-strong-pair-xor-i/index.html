@@ -5485,6 +5485,8 @@
       
         
       
+        
+      
     
     
     
@@ -6024,6 +6026,34 @@
     
   
     #93. Restore IP Addresses
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../0102_binary-tree-level-order-traversal/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    #102. Binary Tree Level Order Traversal
   
 
     
@@ -17796,6 +17826,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#ii-n-le-5-cdot-104" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        进阶 (II 版 \(n \le 5 \cdot 10^4\))
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#complexity" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -22610,6 +22651,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#ii-n-le-5-cdot-104" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        进阶 (II 版 \(n \le 5 \cdot 10^4\))
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#complexity" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -22675,16 +22727,17 @@
 <h2 id="problem">Problem<a class="headerlink" href="#problem" title="Permanent link">#</a></h2>
 <p>给数组 <code>nums</code>，称 <span class="arithmatex">\((x, y)\)</span> 为 <strong>strong pair</strong> 当且仅当 <span class="arithmatex">\(|x - y| \le \min(x, y)\)</span>。求所有 strong pair 中 <span class="arithmatex">\(x \oplus y\)</span> 的最大值。允许同元素配对自身。<span class="arithmatex">\(n \le 50\)</span>, <span class="arithmatex">\(\text{nums}[i] \le 100\)</span>。</p>
 <h2 id="background">背景 (Background)<a class="headerlink" href="#background" title="Permanent link">#</a></h2>
-<p>"<span class="arithmatex">\(|x - y| \le \min(x, y)\)</span>" 等价于 <span class="arithmatex">\(\max(x,y) \le 2 \min(x,y)\)</span>，即两数之比在 <span class="arithmatex">\([1, 2]\)</span> 内。这类约束在<strong>滑动窗口最值</strong> / <strong>trie 上贪心</strong>两个方向都有经典处理：</p>
-<ul>
-<li><strong>Trie + 贪心</strong>（#421 Maximum XOR of Two Numbers）：把数当成二进制串插 0/1 trie，从高位贪心选异路。</li>
-<li><strong>排序 + 双指针</strong>：升序后窗口 <span class="arithmatex">\([l, r]\)</span> 保持 <span class="arithmatex">\(\text{nums}[r] \le 2 \cdot \text{nums}[l]\)</span>。</li>
-</ul>
-<p>Easy 版本因 <span class="arithmatex">\(n \le 50\)</span>，暴力 <span class="arithmatex">\(O(n^2)\)</span> 即可。</p>
+<p>这道题把两个互相拉扯的目标放到一起。异或 <span class="arithmatex">\(x \oplus y\)</span> 在某一位上为 1，当且仅当 <span class="arithmatex">\(x, y\)</span> 在该位<strong>不同</strong>；因此最大化异或，就是要让两数的二进制位尽可能多地<strong>互相对立</strong>。但 strong pair 的约束 <span class="arithmatex">\(|x - y| \le \min(x, y)\)</span> 把两数锁在彼此相近的范围内。问题的张力就在这里：两个数值接近的数，到底还能在多少位上对立？</p>
+<p>先把约束化简成更好用的形式。设 <span class="arithmatex">\(x \le y\)</span>，则 <span class="arithmatex">\(|x - y| = y - x\)</span> 且 <span class="arithmatex">\(\min(x, y) = x\)</span>，约束变成 <span class="arithmatex">\(y - x \le x\)</span>，即
+$<span class="arithmatex">\(|x - y| \le \min(x, y) \iff \max(x, y) \le 2 \min(x, y).\)</span>$
+两边对 <span class="arithmatex">\(x, y\)</span> 对称，无需假设大小关系也成立。它的含义很直接：两数之比落在 <span class="arithmatex">\([1, 2]\)</span> 内。注意 <span class="arithmatex">\(x = y\)</span> 时约束自动满足（<span class="arithmatex">\(0 \le x\)</span>），所以每个元素都能与自身配对，此时异或为 0。</p>
+<p>这个等价形式本身不会缩小 Easy 版本的搜索空间——<span class="arithmatex">\(n \le 50\)</span> 时枚举所有对已经足够快——但它是更大规模变体（见下文 II 版）的核心，因为 <span class="arithmatex">\(\max \le 2 \min\)</span> 在升序数组上对应一个<strong>单调窗口</strong>。</p>
 <h2 id="formulation">形式化 (Formulation)<a class="headerlink" href="#formulation" title="Permanent link">#</a></h2>
-<p><span class="arithmatex">\(\max\{\, x \oplus y : x, y \in \text{nums}, |x-y| \le \min(x,y) \,\}\)</span>，允许 <span class="arithmatex">\(x = y\)</span>（此时异或为 0）。</p>
+<p>记号 <span class="arithmatex">\(\oplus\)</span> 表示按位异或。所求即可行集上的最大异或：
+$<span class="arithmatex">\(\max\{\, x \oplus y : x, y \in \text{nums},\ |x - y| \le \min(x, y) \,\}.\)</span>$
+可行集允许 <span class="arithmatex">\(x = y\)</span>（自配对，异或为 0），所以可行集非空，最大值至少为 0。</p>
 <h2 id="approach">数据结构 / 想法 (Approach)<a class="headerlink" href="#approach" title="Permanent link">#</a></h2>
-<p><strong>暴力</strong>：双循环枚举有序对（含 <span class="arithmatex">\(i = j\)</span>），过滤后取异或最大。</p>
+<p><strong>先问最朴素的做法：能不能直接枚举所有对？</strong> 可行集就是满足约束的有序对 <span class="arithmatex">\((x, y)\)</span>，最大值是这个集合上 <span class="arithmatex">\(x \oplus y\)</span> 的最大值。最直接的实现就是按定义把双重循环写出来：枚举每个有序对（含 <span class="arithmatex">\(i = j\)</span> 以覆盖自配对），用约束过滤，对通过的取异或最大。这一步没有任何技巧，就是把上面的 <span class="arithmatex">\(\max\)</span> 表达式逐字翻译成代码。</p>
 <div class="language-python highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">Solution</span><span class="p">:</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">maximumStrongPairXor</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">nums</span><span class="p">):</span>
         <span class="n">best</span> <span class="o">=</span> <span class="mi">0</span>
@@ -22694,17 +22747,22 @@
                     <span class="n">best</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">best</span><span class="p">,</span> <span class="n">x</span> <span class="o">^</span> <span class="n">y</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">best</span>
 </code></pre></div>
-<p><strong>Trace example 1</strong> <code>nums=[1,2,3,4,5]</code>：枚举所有对，strong pair 包含 (3,4): 3⊕4=7；(4,5): 1；(2,3): 1。最大 7 ✓。</p>
-<p><strong>进阶（II 版 <span class="arithmatex">\(n \le 5 \cdot 10^4\)</span>）</strong>：排序后双指针维护窗口 <span class="arithmatex">\([l,r]\)</span> 满足 <span class="arithmatex">\(a_r \le 2 a_l\)</span>；窗口内用 <strong>01-Trie</strong>（按 bit 从高到低）查询每个 <span class="arithmatex">\(a_r\)</span> 与已在 trie 中元素的最大异或，trie 支持插入/删除。复杂度 <span class="arithmatex">\(O(n \log V)\)</span>。</p>
+<p><strong>这个朴素做法在哪里会崩？</strong> 它的代价是 <span class="arithmatex">\(O(n^2)\)</span> 次过滤与异或。本题 <span class="arithmatex">\(n \le 50\)</span>，最坏 <span class="arithmatex">\(n^2 = 2500\)</span> 次迭代；以约 <span class="arithmatex">\(10^8\)</span> 次/秒的常规估算，这是瞬间完成的量级，远在时限之内。所以对 Easy 版本，朴素枚举不会崩——它就是正确且足够的答案，无需更聪明的搜索。</p>
+<p><strong>Trace example 1</strong> <code>nums = [1,2,3,4,5]</code>：逐对检查约束。<span class="arithmatex">\((3, 4)\)</span> 满足 <span class="arithmatex">\(|3-4| = 1 \le 3\)</span>，<span class="arithmatex">\(3 \oplus 4 = 7\)</span>；<span class="arithmatex">\((4, 5)\)</span> 满足 <span class="arithmatex">\(1 \le 4\)</span>，异或为 1；<span class="arithmatex">\((2, 3)\)</span> 满足 <span class="arithmatex">\(1 \le 2\)</span>，异或为 1。而 <span class="arithmatex">\((1, 3)\)</span> 不满足（<span class="arithmatex">\(|1-3| = 2 &gt; \min = 1\)</span>）被过滤掉。所有通过的对里最大异或为 7 ✓。</p>
+<h2 id="ii-n-le-5-cdot-104">进阶 (II 版 <span class="arithmatex">\(n \le 5 \cdot 10^4\)</span>)<a class="headerlink" href="#ii-n-le-5-cdot-104" title="Permanent link">#</a></h2>
+<p>当 <span class="arithmatex">\(n\)</span> 增大到 <span class="arithmatex">\(5 \cdot 10^4\)</span>，<span class="arithmatex">\(O(n^2)\)</span> 的 <span class="arithmatex">\(2.5 \times 10^9\)</span> 次迭代不再可行，必须利用约束的结构。这里用到上面化简出的 <span class="arithmatex">\(\max \le 2 \min\)</span>。</p>
+<p><strong>为什么按高位贪心。</strong> 先看异或最大化本身的结构。设数值的位宽为 <span class="arithmatex">\(B\)</span>。若两数在最高的某一位 <span class="arithmatex">\(b\)</span> 上能取到不同（异或该位为 1），那么无论更低位如何，这一位贡献的 <span class="arithmatex">\(2^b\)</span> 已经超过其下所有低位之和 <span class="arithmatex">\(2^b - 1\)</span>。因此最大化异或的正确顺序是<strong>从最高位到最低位</strong>逐位决策：在每一位上，优先尝试让结果该位为 1（即在已有候选中寻找该位与当前数相反的数），只要存在这样的候选就锁定该位。高位的决定支配低位，这是按高位贪心成立的根本原因，而不是因为某道题这样做过。</p>
+<p><strong>为什么用 trie。</strong> 上述贪心需要的操作是：给定一个数，在一组候选里找出与它异或最大的数，且查询时要能逐位选择“走相反分支”。把每个候选按二进制位从高到低存成一条 0/1 路径，就得到一棵 <strong>01-Trie</strong>；查询时在每一位贪心地走与当前位相反的分支，走不通才退回同分支。哈希表做不到这种逐位的“尽量相反”查询，trie 的分层结构恰好支持它，这是选 trie 的理由。</p>
+<p><strong>为什么需要删除。</strong> 约束限定候选必须与当前数构成 strong pair。把数组升序排序后，对每个右端 <span class="arithmatex">\(a_r\)</span>，可行的左端是满足 <span class="arithmatex">\(a_r \le 2 a_l\)</span> 的那段后缀——随 <span class="arithmatex">\(r\)</span> 右移，下界 <span class="arithmatex">\(a_l\)</span> 单调右移，这正是一个滑动窗口 <span class="arithmatex">\([l, r]\)</span>。当 <span class="arithmatex">\(l\)</span> 前进时，离开窗口的元素 <span class="arithmatex">\(a_l\)</span> 不再能与后续的 <span class="arithmatex">\(a_r\)</span> 配对，必须从候选集合中移除；于是 trie 需要支持<strong>删除</strong>它的路径，而新进入窗口的元素则插入。窗口不变量 <span class="arithmatex">\(a_r \le 2 a_l\)</span> 直接翻译成 trie 的插入/删除时机。整体复杂度 <span class="arithmatex">\(O(n \log V)\)</span>，其中 <span class="arithmatex">\(V\)</span> 为值域。</p>
 <h2 id="complexity">复杂度 (Complexity)<a class="headerlink" href="#complexity" title="Permanent link">#</a></h2>
 <ul>
-<li>Time: <span class="arithmatex">\(O(n^2)\)</span>，本题 <span class="arithmatex">\(n^2 = 2500\)</span> 极快。</li>
-<li>Space: <span class="arithmatex">\(O(1)\)</span>。</li>
+<li>Time: <span class="arithmatex">\(O(n^2)\)</span>，本题 <span class="arithmatex">\(n^2 = 2500\)</span>，时限内瞬时完成。</li>
+<li>Space: <span class="arithmatex">\(O(1)\)</span>，只用了标量 <code>best</code>、<code>x</code>、<code>y</code>，无辅助结构。</li>
 </ul>
 <h2 id="pitfalls">陷阱 (Pitfalls)<a class="headerlink" href="#pitfalls" title="Permanent link">#</a></h2>
 <ul>
-<li>条件 <span class="arithmatex">\(|x-y| \le \min(x,y)\)</span> 等价于 <span class="arithmatex">\(\max(x,y) \le 2 \min(x,y)\)</span>——这条变形是 II 版双指针的关键。</li>
-<li>允许 <span class="arithmatex">\(x = y\)</span>，最大异或可能为 0（题面 example 2: <code>[10,100]</code>，所有 strong pair 都同元素，输出 0）。</li>
+<li><strong>约束的等价变形</strong>：<span class="arithmatex">\(|x - y| \le \min(x, y) \iff \max(x, y) \le 2 \min(x, y)\)</span>（推导见背景）。这条变形本身不影响 Easy 暴力，但它是 II 版滑动窗口的关键。</li>
+<li><strong>允许 <span class="arithmatex">\(x = y\)</span>，且最大异或可能为 0</strong>。逐个验证 example 2 <code>[10, 100]</code>：<span class="arithmatex">\((10, 100)\)</span> 不是 strong pair，因为 <span class="arithmatex">\(|10 - 100| = 90 &gt; \min(10, 100) = 10\)</span>；唯一满足约束的是自配对 <span class="arithmatex">\((10, 10)\)</span> 与 <span class="arithmatex">\((100, 100)\)</span>，二者异或均为 0，故输出 0。容易误以为两个不同元素总能配对，这里它们恰好不能。</li>
 </ul>
 <h2 id="related">相关题目 (Related)<a class="headerlink" href="#related" title="Permanent link">#</a></h2>
 <ul>

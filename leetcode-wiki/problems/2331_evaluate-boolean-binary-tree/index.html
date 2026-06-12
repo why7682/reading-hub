@@ -5485,6 +5485,8 @@
       
         
       
+        
+      
     
     
     
@@ -6024,6 +6026,34 @@
     
   
     #93. Restore IP Addresses
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../0102_binary-tree-level-order-traversal/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    #102. Binary Tree Level Order Traversal
   
 
     
@@ -22675,33 +22705,56 @@
 <h2 id="problem">Problem<a class="headerlink" href="#problem" title="Permanent link">#</a></h2>
 <p>满二叉树（每个节点 0 或 2 个孩子）。叶节点 0/1 表示 False/True；内部节点 2/3 分别表示 OR / AND，对两个子节点求值后应用对应运算。求根节点的求值结果。</p>
 <h2 id="background">背景 (Background)<a class="headerlink" href="#background" title="Permanent link">#</a></h2>
-<p>本题即「表达式树求值 (expression tree evaluation)」的最简形式。表达式树在编译器 IR、抽象语法树解释器、SymPy 等符号系统中是基础数据结构。</p>
+<p>每个节点要么自己就携带一个真值（叶子，值为 0 或 1），要么携带一个运算符（内部节点，值为 2 或 3），需要把两个子节点的结果合并起来。问题的全部结构都在这句话里：一个节点的真值是否能立刻读出，取决于它是叶子还是内部节点。</p>
+<p>先看叶子。叶子的值已经是 0 或 1，不依赖任何其他节点，可以直接读出。这是计算中唯一“自给自足”的部分。</p>
+<p>再看内部节点。一个值为 2 的节点表示 OR，它的结果是两个孩子真值的或；值为 3 的节点表示 AND，结果是两个孩子真值的与。无论是 OR 还是 AND，结果都<strong>完全由两个孩子的真值决定</strong>——内部节点自己不携带真值，只携带一个“如何合并”的指令。</p>
+<p>于是信息只能沿一个方向流动：从叶子向上，到根。孩子决定父亲，父亲从不反过来决定孩子。这个单向依赖不是我们选择的，而是节点值编码（叶子存真值、内部存运算符）逼出来的。下面整道题的解法，都是这条依赖方向的直接后果。</p>
 <h2 id="formulation">形式化 (Formulation)<a class="headerlink" href="#formulation" title="Permanent link">#</a></h2>
-<p>递归 <span class="arithmatex">\(\text{eval}(v)\)</span>：若 <span class="arithmatex">\(v\)</span> 是叶 → <span class="arithmatex">\(v.\text{val} \in \{0, 1\}\)</span>；否则 <span class="arithmatex">\(\text{eval}(v) = \text{eval}(v.\text{left})\ \mathrm{op}_{v.\text{val}}\ \text{eval}(v.\text{right})\)</span>，其中 <span class="arithmatex">\(\mathrm{op}_2 = \lor, \mathrm{op}_3 = \land\)</span>.</p>
+<p>把上面这句话写成定义。对节点 <span class="arithmatex">\(v\)</span>，记 <span class="arithmatex">\(\text{eval}(v)\)</span> 为以 <span class="arithmatex">\(v\)</span> 为根的子树求值后的真值。叶子的真值是自身的值；内部节点的真值由两个孩子的真值经运算符合并得到。只有这两种情形：</p>
+<div class="arithmatex">\[
+\text{eval}(v) =
+\begin{cases}
+v.\text{val} &amp; v \text{ 是叶子（} v.\text{val} \in \{0,1\}\text{）} \\[4pt]
+\text{eval}(v.\text{left}) \ \mathrm{op}_{v.\text{val}} \ \text{eval}(v.\text{right}) &amp; v \text{ 是内部节点}
+\end{cases}
+\tag{1}
+\]</div>
+<p>其中运算符由节点值选出：<span class="arithmatex">\(\mathrm{op}_2 = \lor\)</span>（OR），<span class="arithmatex">\(\mathrm{op}_3 = \land\)</span>（AND）。</p>
+<p>式 (1) 是自指的：<span class="arithmatex">\(\text{eval}(v)\)</span> 用更小子树上的 <span class="arithmatex">\(\text{eval}\)</span> 来定义。这正合题意——内部节点和叶子的处理方式在每一层都相同（同样的两种情形，只是节点不同），所以递归是这个定义的天然形态。式 (1) 也是后续代码的脊柱：每一个分支都将逐字对应到一行代码。</p>
 <h2 id="approach">数据结构 / 想法 (Approach)<a class="headerlink" href="#approach" title="Permanent link">#</a></h2>
-<p>直接 post-order 递归：</p>
+<p>先问一个最直接的问题：能不能从根开始、看一眼根就定出答案？不能。根的值是 2 或 3，是一个运算符；要应用这个运算符，必须先有两个孩子的真值，而此刻它们还没算出来。式 (1) 的内部节点分支明确写着 <span class="arithmatex">\(\text{eval}(v)\)</span> 依赖 <span class="arithmatex">\(\text{eval}(v.\text{left})\)</span> 和 <span class="arithmatex">\(\text{eval}(v.\text{right})\)</span>。所以先访问根的遍历（pre-order）行不通：到达根时它需要的两个值尚不存在。</p>
+<p>依赖方向已经给出了访问顺序：要算一个节点，必须<strong>先</strong>算完它的两个孩子。于是对每个内部节点，先递归求左子、再递归求右子，最后才合并自己——这恰好是 post-order（后序）遍历。后序不是从若干遍历方式里挑出来的，而是被式 (1) 的依赖结构唯一逼出来的。</p>
+<p>按式 (1) 逐分支翻译成代码：</p>
 <div class="language-python highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">Solution</span><span class="p">:</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">evaluateTree</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">root</span><span class="p">):</span>
-        <span class="k">if</span> <span class="n">root</span><span class="o">.</span><span class="n">left</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">root</span><span class="o">.</span><span class="n">left</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>          <span class="c1"># 叶子分支: eval(v) = v.val</span>
             <span class="k">return</span> <span class="nb">bool</span><span class="p">(</span><span class="n">root</span><span class="o">.</span><span class="n">val</span><span class="p">)</span>
-        <span class="n">l</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">evaluateTree</span><span class="p">(</span><span class="n">root</span><span class="o">.</span><span class="n">left</span><span class="p">)</span>
-        <span class="n">r</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">evaluateTree</span><span class="p">(</span><span class="n">root</span><span class="o">.</span><span class="n">right</span><span class="p">)</span>
+        <span class="n">l</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">evaluateTree</span><span class="p">(</span><span class="n">root</span><span class="o">.</span><span class="n">left</span><span class="p">)</span>   <span class="c1"># 先算左子 eval(v.left)</span>
+        <span class="n">r</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">evaluateTree</span><span class="p">(</span><span class="n">root</span><span class="o">.</span><span class="n">right</span><span class="p">)</span>  <span class="c1"># 再算右子 eval(v.right)</span>
         <span class="k">return</span> <span class="p">(</span><span class="n">l</span> <span class="ow">or</span> <span class="n">r</span><span class="p">)</span> <span class="k">if</span> <span class="n">root</span><span class="o">.</span><span class="n">val</span> <span class="o">==</span> <span class="mi">2</span> <span class="k">else</span> <span class="p">(</span><span class="n">l</span> <span class="ow">and</span> <span class="n">r</span><span class="p">)</span>
+        <span class="c1"># 内部分支: op_2 = OR, op_3 = AND</span>
 </code></pre></div>
-<p>样例 1：root=[2,1,3,null,null,0,1]. 左子是叶 1 → True. 右子是 AND(0,1) → False AND True = False. 根 OR(True, False) = True. ✅</p>
+<p>每一行都能对照式 (1) 验证：<code>bool(root.val)</code> 是叶子分支；两次递归先于合并，体现“先算孩子”的依赖顺序；<code>(l or r)</code> 对应 <span class="arithmatex">\(\mathrm{op}_2 = \lor\)</span>，<code>(l and r)</code> 对应 <span class="arithmatex">\(\mathrm{op}_3 = \land\)</span>。正确性因此可以逐行核对，而不必依赖测试。</p>
+<p>用样例验证这个对照。root=[2,1,3,null,null,0,1]：</p>
+<ul>
+<li>左子是叶子，值 1 → True（叶子分支）。</li>
+<li>右子是内部节点 AND，两个孩子是叶 0、叶 1 → False AND True = False（内部分支，<span class="arithmatex">\(\mathrm{op}_3\)</span>）。</li>
+<li>根是内部节点 OR → True OR False = True（内部分支，<span class="arithmatex">\(\mathrm{op}_2\)</span>）。</li>
+</ul>
+<p>根的结果为 True，与逐分支翻译一致。</p>
 <h2 id="complexity">复杂度 (Complexity)<a class="headerlink" href="#complexity" title="Permanent link">#</a></h2>
 <ul>
-<li>Time: <span class="arithmatex">\(O(n)\)</span>。</li>
-<li>Space: <span class="arithmatex">\(O(h)\)</span> 递归栈，<span class="arithmatex">\(h\)</span> = 树高，最坏 <span class="arithmatex">\(O(n)\)</span>。</li>
+<li>Time: <span class="arithmatex">\(O(n)\)</span>。后序遍历对每个节点恰好求值一次。</li>
+<li>Space: <span class="arithmatex">\(O(h)\)</span> 递归栈，<span class="arithmatex">\(h\)</span> = 树高；退化为链状树时最坏 <span class="arithmatex">\(O(n)\)</span>。</li>
 </ul>
 <h2 id="pitfalls">陷阱 (Pitfalls)<a class="headerlink" href="#pitfalls" title="Permanent link">#</a></h2>
 <ul>
-<li>满二叉树的特性：检查叶子用 <code>root.left is None</code>（满二叉树叶子 left, right 同时 None）。</li>
-<li>节点值 2/3 不要 hardcode；查表更清晰，但区别不大。</li>
+<li>判叶子用 <code>root.left is None</code> 即可，无需同时检查右孩子。这一步之所以安全，正是因为树是满二叉树：每个节点的孩子数是 0 或 2，左右要么同时为空、要么同时存在。换成一般二叉树，这个判断就会漏掉只有一个孩子的节点。</li>
+<li>节点值 2/3 不要 hardcode 散落各处；用查表把 2↦OR、3↦AND 集中起来更清晰，但与直接判断等价。</li>
 </ul>
 <h2 id="related">相关题目 (Related)<a class="headerlink" href="#related" title="Permanent link">#</a></h2>
 <ul>
-<li><a href="../0226_invert-binary-tree/">#0226. Invert Binary Tree</a> — 同款 DFS 递归模板。</li>
+<li><a href="../0226_invert-binary-tree/">#0226. Invert Binary Tree</a> — 同样以后序递归处理子树后合并到父节点。</li>
 <li><a href="../0559_maximum-depth-of-n-ary-tree/">#0559. Maximum Depth of N-ary Tree</a> — 树的递归遍历。</li>
 </ul>
 <h2 id="further-reading">Further Reading<a class="headerlink" href="#further-reading" title="Permanent link">#</a></h2>

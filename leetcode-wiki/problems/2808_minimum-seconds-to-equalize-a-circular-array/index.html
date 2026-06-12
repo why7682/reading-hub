@@ -5485,6 +5485,8 @@
       
         
       
+        
+      
     
     
     
@@ -6024,6 +6026,34 @@
     
   
     #93. Restore IP Addresses
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../0102_binary-tree-level-order-traversal/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    #102. Binary Tree Level Order Traversal
   
 
     
@@ -22675,18 +22705,33 @@
 <h2 id="problem">Problem<a class="headerlink" href="#problem" title="Permanent link">#</a></h2>
 <p>环形数组 <code>nums</code>，每秒每个位置可同时变为自身、左邻或右邻的值。求让所有元素相等的最小秒数。约束 <span class="arithmatex">\(1 \le n \le 10^5\)</span>，<span class="arithmatex">\(1 \le \text{nums}[i] \le 10^9\)</span>。</p>
 <h2 id="background">背景 (Background)<a class="headerlink" href="#background" title="Permanent link">#</a></h2>
-<p>本题是<strong>信息传播 (information propagation) 在循环图上的最短覆盖</strong>问题。每秒值 <span class="arithmatex">\(v\)</span> 的"势力范围"向两侧各扩张 1。要让全数组都变 <span class="arithmatex">\(v\)</span>，必须让 <span class="arithmatex">\(v\)</span> 的所有出现位置的"势力"覆盖整环。</p>
-<p>关键观察：对每个候选值 <span class="arithmatex">\(v\)</span>，最优传播时间 = <span class="arithmatex">\(\max_i \lfloor \text{gap}_i / 2 \rfloor\)</span>，<span class="arithmatex">\(\text{gap}_i\)</span> 是 <span class="arithmatex">\(v\)</span> 相邻两次出现的环形距离。这是 broadcast / gossiping 类问题的标准结论。</p>
+<p>先把更新规则在一个最小例子上跑一遍，再谈任何结论。取 <code>nums = [1, 2, 1]</code>（暂按非环形看左右邻）。每秒，每个位置 <span class="arithmatex">\(j\)</span> 取「自身、左邻、右邻」三者之一的当前值。</p>
+<p>最终所有元素必须相等，那个公共值一定是数组里<strong>已经出现过</strong>的某个值——因为一个位置只能复制邻居的值，无法凭空造出新值。所以问题分解为：固定一个目标值 <span class="arithmatex">\(v\)</span>，问「让全数组都变成 <span class="arithmatex">\(v\)</span> 最少要几秒」，再对所有候选 <span class="arithmatex">\(v\)</span> 取最小。</p>
+<p>固定 <span class="arithmatex">\(v\)</span> 后，盯住「当前持有值 <span class="arithmatex">\(v\)</span> 的位置集合」。在第 1 秒，位置 <span class="arithmatex">\(j\)</span> 会持有 <span class="arithmatex">\(v\)</span>，当且仅当 <span class="arithmatex">\(j\)</span> 自己已持有 <span class="arithmatex">\(v\)</span>，或它的左邻持有 <span class="arithmatex">\(v\)</span>，或它的右邻持有 <span class="arithmatex">\(v\)</span>。于是这个集合<strong>只增不减</strong>，且每一段连续的 <span class="arithmatex">\(v\)</span> 区块向左右各扩展至多一格。在 <code>[1,2,1]</code> 上：第 0 秒 <span class="arithmatex">\(v=1\)</span> 在位置 <span class="arithmatex">\(\{0,2\}\)</span>，第 1 秒位置 1 的左邻（位置 0）持 <span class="arithmatex">\(v\)</span>、右邻（位置 2）也持 <span class="arithmatex">\(v\)</span>，于是位置 1 被覆盖，集合变成 <span class="arithmatex">\(\{0,1,2\}\)</span>，全数组变 1。所以目标值 1 只需 1 秒。</p>
+<p>这给了我们唯一需要的事实：<strong>对任一目标 <span class="arithmatex">\(v\)</span>，第 <span class="arithmatex">\(t\)</span> 秒时持有 <span class="arithmatex">\(v\)</span> 的位置，恰好是那些「到某个 <span class="arithmatex">\(v\)</span> 的初始出现位置距离 <span class="arithmatex">\(\le t\)</span>」的位置</strong>。其余结构都从这一条推出，不需要任何外部结论。</p>
 <h2 id="formulation">形式化 (Formulation)<a class="headerlink" href="#formulation" title="Permanent link">#</a></h2>
-<p>对每个 <span class="arithmatex">\(v\)</span> 在 nums 出现的位置 <span class="arithmatex">\(p_1 &lt; p_2 &lt; \dots &lt; p_k\)</span>，环形 gap 为 <span class="arithmatex">\(g_i = p_{i+1} - p_i\)</span>（<span class="arithmatex">\(i &lt; k\)</span>），加 <span class="arithmatex">\(g_k = n - p_k + p_1\)</span>（环回）。</p>
-<div class="arithmatex">\[T(v) = \max_i \lfloor g_i / 2 \rfloor\]</div>
-<p>答案 = <span class="arithmatex">\(\min_v T(v)\)</span>。</p>
+<p>设目标值 <span class="arithmatex">\(v\)</span> 在 <code>nums</code> 中出现于位置 <span class="arithmatex">\(p_1 &lt; p_2 &lt; \dots &lt; p_k\)</span>。由背景中的事实，第 <span class="arithmatex">\(t\)</span> 秒全数组都变 <span class="arithmatex">\(v\)</span>，当且仅当每个位置到最近的某个 <span class="arithmatex">\(p_i\)</span> 的环形距离 <span class="arithmatex">\(\le t\)</span>。</p>
+<p><strong>朴素估计先试一下。</strong> 若 <span class="arithmatex">\(v\)</span> 只出现一次（<span class="arithmatex">\(k=1\)</span>），它要覆盖整个环，最远的位置在环的对侧，距离约 <span class="arithmatex">\(n/2\)</span>，所以约需 <span class="arithmatex">\(n/2\)</span> 秒。一个直接的猜想是：只要数一数有多少个位置还不是 <span class="arithmatex">\(v\)</span>，除以扩展速度（两侧每秒共补 2 格）即可。但这个「只看数量」的估计会错——同样有 <span class="arithmatex">\(m\)</span> 个非 <span class="arithmatex">\(v\)</span> 位置，若它们挤成一整块，覆盖慢；若被多个 <span class="arithmatex">\(v\)</span> 出现位置打散，覆盖快。<strong>决定时间的不是非 <span class="arithmatex">\(v\)</span> 位置的总数，而是它们的分布，具体说是 <span class="arithmatex">\(v\)</span> 相邻两次出现之间的最大间隔。</strong> 这正是要引入 gap 的原因。</p>
+<p>把相邻两次出现之间的位置差记为 gap：</p>
+<div class="arithmatex">\[g_i = p_{i+1} - p_i \quad (1 \le i &lt; k), \qquad g_k = n - p_k + p_1 \ (\text{环回}).\]</div>
+<p>环回 gap <span class="arithmatex">\(g_k = n - p_k + p_1\)</span> 数的是从 <span class="arithmatex">\(p_k\)</span> 绕过数组末尾回到 <span class="arithmatex">\(p_1\)</span> 这段弧上的位置步数。</p>
+<p><strong>先讲清楚一个 gap 要多久被填满，公式就自明了。</strong> 取相邻两次出现 <span class="arithmatex">\(p_i, p_{i+1}\)</span>，其间有 <span class="arithmatex">\(g_i - 1\)</span> 个非 <span class="arithmatex">\(v\)</span> 位置。这些位置只能由左端 <span class="arithmatex">\(p_i\)</span> 和右端 <span class="arithmatex">\(p_{i+1}\)</span> 两侧同时覆盖：每秒左侧的覆盖前沿右移一格、右侧的前沿左移一格，两条前沿相向推进。它们在中点相遇时，这段 gap 内最后一个位置才被覆盖。</p>
+<p>把两种奇偶都用具体数字看一遍，公式就不像是「给定」的而是必然的：</p>
+<ul>
+<li><span class="arithmatex">\(g_i = 4\)</span>（中间 3 个非 <span class="arithmatex">\(v\)</span> 位置）：第 1 秒两侧各覆盖最靠近自己的 1 个，剩中间 1 个；第 2 秒由任一侧补上。<span class="arithmatex">\(2 = \lfloor 4/2 \rfloor\)</span>。</li>
+<li><span class="arithmatex">\(g_i = 5\)</span>（中间 4 个非 <span class="arithmatex">\(v\)</span> 位置）：第 1 秒两侧各覆盖 1 个，剩 2 个；第 2 秒两侧再各覆盖 1 个，恰好补完。<span class="arithmatex">\(2 = \lfloor 5/2 \rfloor\)</span>。</li>
+</ul>
+<p>一般地，中间 <span class="arithmatex">\(g_i - 1\)</span> 个位置由两侧均分，最远位置在第 <span class="arithmatex">\(\lceil (g_i - 1)/2 \rceil\)</span> 秒被覆盖，而对所有整数 <span class="arithmatex">\(g_i \ge 1\)</span> 有 <span class="arithmatex">\(\lceil (g_i-1)/2 \rceil = \lfloor g_i/2 \rfloor\)</span>。所以这段 gap 被填满的时间是 <span class="arithmatex">\(\lfloor g_i/2 \rfloor\)</span>。</p>
+<p>各个 gap 之间互不影响：每段都由它自己的两个端点独立、同时地从两侧填充。全数组变 <span class="arithmatex">\(v\)</span> 必须等所有 gap 都填满，瓶颈是最大的那个。于是</p>
+<div class="arithmatex">\[T(v) = \max_i \lfloor g_i / 2 \rfloor, \qquad \text{答案} = \min_v T(v).\]</div>
+<p>直观先于形式：上式不是借来的结论，而是「两侧每秒各推进一格、相遇于中点」这一条在最大 gap 上的直接计数。</p>
 <h2 id="approach">数据结构 / 想法 (Approach)<a class="headerlink" href="#approach" title="Permanent link">#</a></h2>
-<p><strong>关键洞察</strong>：两个相邻同值位置 <span class="arithmatex">\(p_i, p_{i+1}\)</span> 之间有 <span class="arithmatex">\(g_i - 1\)</span> 个非 <span class="arithmatex">\(v\)</span> 位置；它们必须同时被两侧覆盖。两侧每秒各扩张 1，所以中间最远位置需 <span class="arithmatex">\(\lceil (g_i - 1) / 2 \rceil = \lfloor g_i / 2 \rfloor\)</span> 秒（注意 <span class="arithmatex">\(g_i\)</span> 是位置差，含右端不含左端）。</p>
-<p><strong>算法</strong>：
-1. 用 hash 把每个值的位置列表收集。
-2. 对每个值计算所有 gap，取最大 <span class="arithmatex">\(\lfloor g / 2 \rfloor\)</span>。
-3. 全局取最小。</p>
+<p>形式化已经把算法读出来了，照抄即可：</p>
+<ol>
+<li>用 hash 把每个值的出现位置列表收集起来。</li>
+<li>对每个值，计算所有相邻 gap（含环回 gap），取 <span class="arithmatex">\(\max_i \lfloor g_i/2 \rfloor\)</span>。</li>
+<li>全局对所有值取最小。</li>
+</ol>
 <div class="language-python highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">collections</span><span class="w"> </span><span class="kn">import</span> <span class="n">defaultdict</span>
 
 <span class="k">def</span><span class="w"> </span><span class="nf">minimumSeconds</span><span class="p">(</span><span class="n">nums</span><span class="p">):</span>
@@ -22706,6 +22751,7 @@
         <span class="n">ans</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">ans</span><span class="p">,</span> <span class="n">max_gap</span> <span class="o">//</span> <span class="mi">2</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">ans</span>
 </code></pre></div>
+<p>代码里 <code>i == 0</code> 的分支算的就是环回 gap <span class="arithmatex">\(g_k = p_1 + (n - p_k)\)</span>，与形式化中的 <span class="arithmatex">\(n - p_k + p_1\)</span> 同。其余分支是普通的相邻位置差。</p>
 <p>样例 1 trace：<code>nums=[1,2,1,2]</code>. n=4.
 - v=1: ps=[0,2]. gaps: i=0 wrap: 0+(4-2)=2. i=1: 2. max=2. T=2//2=1.
 - v=2: ps=[1,3]. gaps: wrap: 1+(4-3)=2. i=1: 2. max=2. T=1.
@@ -22716,18 +22762,17 @@
 - v=3: ps=[2,3]. gaps: wrap: 2+(5-3)=4. i=1: 1. max=4. T=2.
 - ans=2。✓</p>
 <p>样例 3：<code>nums=[5,5,5,5]</code>. v=5: ps=[0,1,2,3]. gaps: wrap=0+(4-3)=1, 1,1,1. max=1. T=0。✓</p>
-<p><strong>不变量</strong>：<span class="arithmatex">\(T(v) = \max_i \lfloor g_i/2 \rfloor\)</span> 是全数组变 <span class="arithmatex">\(v\)</span> 的精确最短时间——所有 gap 间隙独立同时被两侧扩展，瓶颈在最大 gap。</p>
 <h2 id="complexity">复杂度 (Complexity)<a class="headerlink" href="#complexity" title="Permanent link">#</a></h2>
 <ul>
-<li>Time <span class="arithmatex">\(O(n)\)</span> — 哈希统计 + 遍历每个值的 gap 总和 <span class="arithmatex">\(n\)</span>。</li>
+<li>Time <span class="arithmatex">\(O(n)\)</span> — 哈希统计 + 遍历每个值的 gap，所有值的位置列表长度之和恰为 <span class="arithmatex">\(n\)</span>。</li>
 <li>Space <span class="arithmatex">\(O(n)\)</span> — pos dict。</li>
 </ul>
 <h2 id="pitfalls">陷阱 (Pitfalls)<a class="headerlink" href="#pitfalls" title="Permanent link">#</a></h2>
 <ul>
 <li><strong>环形 wrap gap</strong>：必须把 <span class="arithmatex">\(p_k\)</span> 到 <span class="arithmatex">\(p_1\)</span>（绕一圈）算上，否则单元素也错。</li>
-<li><strong>单次出现</strong>：<span class="arithmatex">\(k=1\)</span> 时只有 wrap gap = <span class="arithmatex">\(n\)</span>，T = <span class="arithmatex">\(n/2\)</span>。</li>
+<li><strong>单次出现</strong>：<span class="arithmatex">\(k=1\)</span> 时只有 wrap gap <span class="arithmatex">\(= p_1 + (n - p_1) = n\)</span>，T = <span class="arithmatex">\(\lfloor n/2 \rfloor\)</span>。</li>
 <li><strong>全相等</strong>：max_gap=1, T=0。</li>
-<li><strong>gap 定义</strong>：用 <span class="arithmatex">\(p_{i+1} - p_i\)</span>（位置差），<span class="arithmatex">\(\lfloor g/2 \rfloor\)</span> 正确；如果改用 "中间隔多少个位置" 需小心 ±1。</li>
+<li><strong>gap 定义</strong>：用 <span class="arithmatex">\(p_{i+1} - p_i\)</span>（位置差），<span class="arithmatex">\(\lfloor g/2 \rfloor\)</span> 正确；如果改用「中间隔多少个位置」需小心 ±1。</li>
 </ul>
 <h2 id="related">相关题目 (Related)<a class="headerlink" href="#related" title="Permanent link">#</a></h2>
 <ul>
@@ -22736,8 +22781,7 @@
 </ul>
 <h2 id="further-reading">Further Reading<a class="headerlink" href="#further-reading" title="Permanent link">#</a></h2>
 <ul>
-<li>Wikipedia: en.wikipedia.org/wiki/Gossip_protocol — 类似的 broadcast 时间分析。</li>
-<li>无更多专题外部资源。</li>
+<li>本题的覆盖时间公式可由问题自身的更新规则完整推出，无需外部资料。若对「环上多源同时扩散的覆盖时间」这一更一般问题感兴趣，可参考 Wikipedia: en.wikipedia.org/wiki/Gossip_protocol（仅作泛化背景，非本题推导依据）。</li>
 </ul>
 
 

@@ -5485,6 +5485,8 @@
       
         
       
+        
+      
     
     
     
@@ -6024,6 +6026,34 @@
     
   
     #93. Restore IP Addresses
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../0102_binary-tree-level-order-traversal/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    #102. Binary Tree Level Order Traversal
   
 
     
@@ -13956,6 +13986,34 @@
       
     </span>
   </a>
+  
+    <nav class="md-nav" aria-label="数据结构 / 想法 (Approach)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#a-f-bfs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        解法 A — 二分 \(f\) + BFS 评估
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#b-g_t-dsu" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        解法 B — 沿时间反向构造 \(G_t\) + DSU
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -22607,6 +22665,34 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="数据结构 / 想法 (Approach)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#a-f-bfs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        解法 A — 二分 \(f\) + BFS 评估
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#b-g_t-dsu" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        解法 B — 沿时间反向构造 \(G_t\) + DSU
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -22675,34 +22761,37 @@
 <h2 id="problem">Problem<a class="headerlink" href="#problem" title="Permanent link">#</a></h2>
 <p><span class="arithmatex">\(row \times col\)</span> 网格初始全为陆地。<code>cells[i] = (r, c)</code> 表第 <span class="arithmatex">\(i+1\)</span> 天（1-based）该位置变为水。求最后一天，使得仍可从顶行任一陆地走到底行任一陆地（4 邻接，仅经过陆地）。约束 <span class="arithmatex">\(2 \le row, col\)</span>，<span class="arithmatex">\(row \cdot col \le 2 \times 10^4\)</span>。</p>
 <h2 id="background">背景 (Background)<a class="headerlink" href="#background" title="Permanent link">#</a></h2>
-<p>本题有两种经典解法，都是常见<strong>单调性</strong>结构的应用：</p>
-<ol>
-<li><strong>二分答案 + 连通性</strong>：日期 <span class="arithmatex">\(t\)</span> 大 → 水多 → 越难连通。"可连通"对 <span class="arithmatex">\(t\)</span> 单调非增 → 二分。</li>
-<li><strong>离线 Union-Find（时光倒流）</strong>：反向时间从最终全水 → 逐日删水（即加陆地），第一次形成顶底连通时的反向天数即答案。这是<strong>离线 DSU "edges-arriving-in-reverse"</strong> 的经典技巧（Kruskal Minimum Bottleneck、动态连通性等都用类似思想）。</li>
-</ol>
+<p>最直接的做法是逐天模拟。固定某一天 <span class="arithmatex">\(t\)</span>，把前 <span class="arithmatex">\(t\)</span> 个 cell 标为水，剩下的标为陆地，然后从顶行所有陆地出发做一次 BFS，看能否到达底行。一次检查是 <span class="arithmatex">\(O(rc)\)</span>：网格有 <span class="arithmatex">\(rc\)</span> 个格子，BFS 至多访问每个一次。</p>
+<p>问题是天数也有 <span class="arithmatex">\(rc\)</span> 个。若对每个 <span class="arithmatex">\(t = 1, 2, \dots, rc\)</span> 都重跑一次 BFS，总代价 <span class="arithmatex">\(O((rc)^2)\)</span>。在约束上界 <span class="arithmatex">\(rc = 2 \times 10^4\)</span> 处这是 <span class="arithmatex">\(4 \times 10^8\)</span>，每次还要重新分配两张 <span class="arithmatex">\(rc\)</span> 大小的网格——朴素扫描太慢。</p>
+<p>要加速，得先问：这 <span class="arithmatex">\(rc\)</span> 次检查之间有没有可利用的结构？逐天检查的结果不是任意排列的——它有方向性，下一节把这个方向性提炼成一个谓词。</p>
 <h2 id="formulation">形式化 (Formulation)<a class="headerlink" href="#formulation" title="Permanent link">#</a></h2>
-<p>设 <span class="arithmatex">\(G_t = (V, E_t)\)</span>，<span class="arithmatex">\(V\)</span> = 当前陆地，<span class="arithmatex">\(E_t\)</span> = 陆地相邻边（前 <span class="arithmatex">\(t\)</span> 天的水已变）。问最大 <span class="arithmatex">\(t\)</span> 使 <span class="arithmatex">\(G_t\)</span> 中 "顶行所有陆地 <span class="arithmatex">\(S\)</span>" 与 "底行所有陆地 <span class="arithmatex">\(T\)</span>" 存在路径。</p>
-<p>形式化谓词 <span class="arithmatex">\(f(t) = [S \leftrightarrow T \text{ in } G_t]\)</span>。<span class="arithmatex">\(f\)</span> 关于 <span class="arithmatex">\(t\)</span> 单调非增。求 <span class="arithmatex">\(\max\{t : f(t) = 1\}\)</span>。</p>
+<p>把每一天的网格抽象成图。设 <span class="arithmatex">\(G_t = (V_t, E_t)\)</span>：<span class="arithmatex">\(V_t\)</span> 是第 <span class="arithmatex">\(t\)</span> 天结束时仍为陆地的格子，<span class="arithmatex">\(E_t\)</span> 是其中 4 邻接陆地之间的边。注意「第 <span class="arithmatex">\(t\)</span> 天结束」时，水集恰是前 <span class="arithmatex">\(t\)</span> 个 cell，即 <code>cells[0..t-1]</code>（0-indexed list）。</p>
+<p>把顶行所有陆地记为集合 <span class="arithmatex">\(S\)</span>，底行所有陆地记为 <span class="arithmatex">\(T\)</span>。定义谓词</p>
+<div class="arithmatex">\[f(t) = [\,S \leftrightarrow T \text{ in } G_t\,],\]</div>
+<p>即「<span class="arithmatex">\(G_t\)</span> 中 <span class="arithmatex">\(S\)</span> 与 <span class="arithmatex">\(T\)</span> 之间存在路径」为真则 <span class="arithmatex">\(f(t) = 1\)</span>。题目就是求</p>
+<div class="arithmatex">\[\max\{\,t : f(t) = 1\,\}.\]</div>
+<p><strong><span class="arithmatex">\(f\)</span> 的单调性来自问题自身的结构。</strong> 从第 <span class="arithmatex">\(t\)</span> 天到第 <span class="arithmatex">\(t+1\)</span> 天，恰好多淹一个格子：<span class="arithmatex">\(E_{t+1} \subseteq E_t\)</span>，且 <span class="arithmatex">\(V_{t+1} \subseteq V_t\)</span>。加水只会删去陆地和它带的边，绝不会新增。所以若 <span class="arithmatex">\(G_t\)</span> 中 <span class="arithmatex">\(S\)</span> 与 <span class="arithmatex">\(T\)</span> 已断开，删更多边只会让它们继续断开——一旦 <span class="arithmatex">\(f(t) = 0\)</span>，则对所有 <span class="arithmatex">\(t' &gt; t\)</span> 都有 <span class="arithmatex">\(f(t') = 0\)</span>。</p>
+<p>因此 <span class="arithmatex">\(f\)</span> 关于 <span class="arithmatex">\(t\)</span> <strong>单调非增</strong>：存在一个临界天 <span class="arithmatex">\(t^\*\)</span>，使 <span class="arithmatex">\(f\)</span> 在 <span class="arithmatex">\(\{1, \dots, t^\*\}\)</span> 上为 <span class="arithmatex">\(1\)</span>、在其后为 <span class="arithmatex">\(0\)</span>。求 <span class="arithmatex">\(\max\{t : f(t) = 1\}\)</span> 就是找这个临界点。这正是二分搜索适用的形态：在单调谓词上二分，只需 <span class="arithmatex">\(O(\log rc)\)</span> 次评估，而非 <span class="arithmatex">\(rc\)</span> 次。下面两种解法分别从这个单调性和它的对偶结构出发。</p>
 <h2 id="approach">数据结构 / 想法 (Approach)<a class="headerlink" href="#approach" title="Permanent link">#</a></h2>
-<p><strong>解法 A — 二分 + BFS/DFS</strong>：</p>
+<h3 id="a-f-bfs">解法 A — 二分 <span class="arithmatex">\(f\)</span> + BFS 评估<a class="headerlink" href="#a-f-bfs" title="Permanent link">#</a></h3>
+<p>单调性把 <span class="arithmatex">\(rc\)</span> 次扫描压成 <span class="arithmatex">\(O(\log rc)\)</span> 次。每次二分要评估某个 <span class="arithmatex">\(f(t)\)</span>：这正是背景里那次 <span class="arithmatex">\(O(rc)\)</span> 的 BFS——<code>can_cross(t)</code> 就是 <span class="arithmatex">\(f(t)\)</span> 的实现。剩下的只是二分模板：找「使谓词为真的最大 <span class="arithmatex">\(t\)</span>」。</p>
 <div class="language-python highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">collections</span><span class="w"> </span><span class="kn">import</span> <span class="n">deque</span>
 <span class="k">class</span><span class="w"> </span><span class="nc">Solution</span><span class="p">:</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">latestDayToCross</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">row</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">col</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">cells</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]])</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
-        <span class="k">def</span><span class="w"> </span><span class="nf">can_cross</span><span class="p">(</span><span class="n">t</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+        <span class="k">def</span><span class="w"> </span><span class="nf">can_cross</span><span class="p">(</span><span class="n">t</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>  <span class="c1"># 实现 f(t)：G_t 中 S 是否连到 T</span>
             <span class="n">water</span> <span class="o">=</span> <span class="p">[[</span><span class="kc">False</span><span class="p">]</span><span class="o">*</span><span class="n">col</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">row</span><span class="p">)]</span>
-            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">t</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">t</span><span class="p">):</span>  <span class="c1"># 前 t 个 cell 是水：cells[0..t-1]</span>
                 <span class="n">r</span><span class="p">,</span> <span class="n">c</span> <span class="o">=</span> <span class="n">cells</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
                 <span class="n">water</span><span class="p">[</span><span class="n">r</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="n">c</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
-            <span class="c1"># BFS 从顶行所有陆地</span>
             <span class="n">q</span> <span class="o">=</span> <span class="n">deque</span><span class="p">()</span>
             <span class="n">visited</span> <span class="o">=</span> <span class="p">[[</span><span class="kc">False</span><span class="p">]</span><span class="o">*</span><span class="n">col</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">row</span><span class="p">)]</span>
-            <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">col</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">col</span><span class="p">):</span>              <span class="c1"># 顶行所有陆地 = 集合 S</span>
                 <span class="k">if</span> <span class="ow">not</span> <span class="n">water</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="n">c</span><span class="p">]:</span>
                     <span class="n">q</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="mi">0</span><span class="p">,</span> <span class="n">c</span><span class="p">))</span>
                     <span class="n">visited</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="n">c</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
             <span class="k">while</span> <span class="n">q</span><span class="p">:</span>
                 <span class="n">r</span><span class="p">,</span> <span class="n">cc</span> <span class="o">=</span> <span class="n">q</span><span class="o">.</span><span class="n">popleft</span><span class="p">()</span>
-                <span class="k">if</span> <span class="n">r</span> <span class="o">==</span> <span class="n">row</span> <span class="o">-</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">r</span> <span class="o">==</span> <span class="n">row</span> <span class="o">-</span> <span class="mi">1</span><span class="p">:</span>              <span class="c1"># 到达底行 = 触及集合 T</span>
                     <span class="k">return</span> <span class="kc">True</span>
                 <span class="k">for</span> <span class="n">dr</span><span class="p">,</span> <span class="n">dcc</span> <span class="ow">in</span> <span class="p">((</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">),(</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">),(</span><span class="mi">0</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">),(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">)):</span>
                     <span class="n">nr</span><span class="p">,</span> <span class="n">nc</span> <span class="o">=</span> <span class="n">r</span> <span class="o">+</span> <span class="n">dr</span><span class="p">,</span> <span class="n">cc</span> <span class="o">+</span> <span class="n">dcc</span>
@@ -22713,98 +22802,114 @@
 
         <span class="n">lo</span><span class="p">,</span> <span class="n">hi</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">row</span> <span class="o">*</span> <span class="n">col</span>
         <span class="k">while</span> <span class="n">lo</span> <span class="o">&lt;</span> <span class="n">hi</span><span class="p">:</span>
-            <span class="n">mid</span> <span class="o">=</span> <span class="p">(</span><span class="n">lo</span> <span class="o">+</span> <span class="n">hi</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">//</span> <span class="mi">2</span>
+            <span class="n">mid</span> <span class="o">=</span> <span class="p">(</span><span class="n">lo</span> <span class="o">+</span> <span class="n">hi</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">//</span> <span class="mi">2</span>          <span class="c1"># 偏上取整，配合 lo=mid 找最大真值</span>
             <span class="k">if</span> <span class="n">can_cross</span><span class="p">(</span><span class="n">mid</span><span class="p">):</span>
                 <span class="n">lo</span> <span class="o">=</span> <span class="n">mid</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">hi</span> <span class="o">=</span> <span class="n">mid</span> <span class="o">-</span> <span class="mi">1</span>
         <span class="k">return</span> <span class="n">lo</span>
 </code></pre></div>
-<p>复杂度：<span class="arithmatex">\(O((rc) \log (rc))\)</span>，二分 <span class="arithmatex">\(\log(rc)\)</span> 次每次 BFS <span class="arithmatex">\(O(rc)\)</span>。</p>
-<p><strong>解法 B — 离线 DSU（时光倒流）</strong>（更快、更优雅）：</p>
-<ol>
-<li>设网格大小 <span class="arithmatex">\(N = rc\)</span>，加两个虚拟节点：<strong>TOP</strong> 与 <strong>BOT</strong>，分别表示顶/底虚拟点。</li>
-<li>初始所有 cell 都是水。<strong>反向</strong>遍历 <code>cells</code>（从最后一天到第一天），把对应 cell 改为陆地，与其 4 邻接已是陆地的 cell <code>union</code>；若该 cell 在顶行，与 TOP <code>union</code>；底行与 BOT <code>union</code>。</li>
-<li>在每次 union 后检查 <code>find(TOP) == find(BOT)</code>。一旦相等，记录该步的"day 索引"——答案 = 该 cell 是 cells 中第 <span class="arithmatex">\(k\)</span> 个（从最后一天数），实际能跨日子为 <span class="arithmatex">\(k - 1\)</span>（因为该 cell 在第 <span class="arithmatex">\(k\)</span> 天才变水，第 <span class="arithmatex">\(k - 1\)</span> 天还是陆地）。</li>
-</ol>
+<p>二分边界用「找最大真值」的标准写法：<code>mid = (lo + hi + 1) // 2</code> 偏上取整，成功则 <code>lo = mid</code> 保留 <code>mid</code> 为候选，避免 <code>lo</code>、<code>hi</code> 相邻时死循环。上界 <code>hi = row * col</code> 是合法的，因为天数至多 <span class="arithmatex">\(rc\)</span>。</p>
+<p>总代价 <span class="arithmatex">\(O(\log(rc))\)</span> 次二分，每次 BFS <span class="arithmatex">\(O(rc)\)</span>，合计 <span class="arithmatex">\(O(rc \log(rc))\)</span>。</p>
+<h3 id="b-g_t-dsu">解法 B — 沿时间反向构造 <span class="arithmatex">\(G_t\)</span> + DSU<a class="headerlink" href="#b-g_t-dsu" title="Permanent link">#</a></h3>
+<p>解法 A 每评估一个 <span class="arithmatex">\(f(t)\)</span> 都从空白重建整张图。能不能让相邻天的图增量演化、复用已有连通信息？这要求一个支持「合并连通块并快速查询两点是否同块」的结构——并查集（DSU）正是。</p>
+<p>但有个方向性障碍。<strong>按时间正向走</strong>，每天淹一个格子是一次<strong>删边</strong>：把 <span class="arithmatex">\(G_t\)</span> 退化成 <span class="arithmatex">\(G_{t+1}\)</span>。而 DSU 只支持 <code>union</code>（合并），没有高效的 <code>split</code>（拆分）——删边正是它做不到的操作。</p>
+<p>障碍恰好指向出路：把时间反过来。<strong>按时间反向走</strong>，每「撤销」一天的水就是把一个格子变回陆地，这是一次<strong>加边</strong>——正是 DSU 擅长的 <code>union</code>。形式化地，反向枚举 <code>cells</code>，从 <span class="arithmatex">\(k = \text{len}-1\)</span> 递减到 <span class="arithmatex">\(0\)</span>，第 <span class="arithmatex">\(k\)</span> 步把 <code>cells[k]</code> 恢复为陆地并与已是陆地的 4 邻接格 <code>union</code>。</p>
+<p><strong>关键对应（不变量）：</strong> 处理完反向下标 <span class="arithmatex">\(k\)</span> 后，已恢复为陆地的集合恰是 <code>cells[k..end]</code>，于是水集 = <code>cells[0..k-1]</code>——这正是「第 <span class="arithmatex">\(k\)</span> 天结束」的网格状态。也就是说，处理完第 <span class="arithmatex">\(k\)</span> 步时的 DSU 恰好编码了 <span class="arithmatex">\(G_k\)</span>。因此</p>
+<div class="arithmatex">\[\texttt{find(TOP)} == \texttt{find(BOT)} \iff f(k) = 1.\]</div>
+<p>反向遍历从最小的陆地集（<span class="arithmatex">\(k\)</span> 最大）开始逐步长大；第一次出现 <span class="arithmatex">\(S\)</span> 连到 <span class="arithmatex">\(T\)</span>，对应的就是「能跨越所需的最小陆地集」，也就是「最大的可跨越天数」。一旦相等立即 <code>return k</code>，得到的就是 <span class="arithmatex">\(\max\{t : f(t)=1\}\)</span>。</p>
+<p><strong>两个虚拟节点 TOP / BOT。</strong> 题目问的是「顶行<strong>任一</strong>陆地能否连到底行<strong>任一</strong>陆地」——一个多源多汇可达性查询。逐对检查太慢。把所有顶行陆地都 <code>union</code> 到一个虚拟点 TOP、所有底行陆地都 <code>union</code> 到虚拟点 BOT，多源多汇就化简为单对查询：<span class="arithmatex">\(S \leftrightarrow T\)</span> 当且仅当 <code>find(TOP) == find(BOT)</code>，一次 <span class="arithmatex">\(O(\alpha)\)</span> 操作即可判定。</p>
 <div class="language-python highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">DSU</span><span class="p">:</span>
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">p</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">size</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">n</span>            <span class="c1"># 按大小合并：保证近线性</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">find</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
         <span class="k">while</span> <span class="bp">self</span><span class="o">.</span><span class="n">p</span><span class="p">[</span><span class="n">x</span><span class="p">]</span> <span class="o">!=</span> <span class="n">x</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">p</span><span class="p">[</span><span class="n">x</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">p</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">p</span><span class="p">[</span><span class="n">x</span><span class="p">]]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">p</span><span class="p">[</span><span class="n">x</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">p</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">p</span><span class="p">[</span><span class="n">x</span><span class="p">]]</span>   <span class="c1"># 路径减半</span>
             <span class="n">x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">p</span><span class="p">[</span><span class="n">x</span><span class="p">]</span>
         <span class="k">return</span> <span class="n">x</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">union</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
         <span class="n">ra</span><span class="p">,</span> <span class="n">rb</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">a</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">b</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">ra</span> <span class="o">!=</span> <span class="n">rb</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">p</span><span class="p">[</span><span class="n">ra</span><span class="p">]</span> <span class="o">=</span> <span class="n">rb</span>
+        <span class="k">if</span> <span class="n">ra</span> <span class="o">==</span> <span class="n">rb</span><span class="p">:</span>
+            <span class="k">return</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">size</span><span class="p">[</span><span class="n">ra</span><span class="p">]</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">size</span><span class="p">[</span><span class="n">rb</span><span class="p">]:</span>   <span class="c1"># 小树挂到大树下</span>
+            <span class="n">ra</span><span class="p">,</span> <span class="n">rb</span> <span class="o">=</span> <span class="n">rb</span><span class="p">,</span> <span class="n">ra</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">p</span><span class="p">[</span><span class="n">rb</span><span class="p">]</span> <span class="o">=</span> <span class="n">ra</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">size</span><span class="p">[</span><span class="n">ra</span><span class="p">]</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">size</span><span class="p">[</span><span class="n">rb</span><span class="p">]</span>
 
 <span class="k">class</span><span class="w"> </span><span class="nc">Solution</span><span class="p">:</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">latestDayToCross</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">row</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">col</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">cells</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]])</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
         <span class="n">N</span> <span class="o">=</span> <span class="n">row</span> <span class="o">*</span> <span class="n">col</span>
-        <span class="n">TOP</span><span class="p">,</span> <span class="n">BOT</span> <span class="o">=</span> <span class="n">N</span><span class="p">,</span> <span class="n">N</span> <span class="o">+</span> <span class="mi">1</span>
+        <span class="n">TOP</span><span class="p">,</span> <span class="n">BOT</span> <span class="o">=</span> <span class="n">N</span><span class="p">,</span> <span class="n">N</span> <span class="o">+</span> <span class="mi">1</span>                  <span class="c1"># 两个虚拟节点</span>
         <span class="n">dsu</span> <span class="o">=</span> <span class="n">DSU</span><span class="p">(</span><span class="n">N</span> <span class="o">+</span> <span class="mi">2</span><span class="p">)</span>
         <span class="n">is_land</span> <span class="o">=</span> <span class="p">[[</span><span class="kc">False</span><span class="p">]</span><span class="o">*</span><span class="n">col</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">row</span><span class="p">)]</span>
-        <span class="c1"># 反向遍历</span>
-        <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">cells</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">cells</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">):</span>   <span class="c1"># 沿时间反向：撤销水 = 加陆地</span>
             <span class="n">r</span><span class="p">,</span> <span class="n">c</span> <span class="o">=</span> <span class="n">cells</span><span class="p">[</span><span class="n">k</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="n">cells</span><span class="p">[</span><span class="n">k</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="mi">1</span>
             <span class="n">is_land</span><span class="p">[</span><span class="n">r</span><span class="p">][</span><span class="n">c</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
             <span class="n">idx</span> <span class="o">=</span> <span class="n">r</span> <span class="o">*</span> <span class="n">col</span> <span class="o">+</span> <span class="n">c</span>
-            <span class="k">if</span> <span class="n">r</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">r</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>                        <span class="c1"># 顶行陆地并入 TOP（集合 S）</span>
                 <span class="n">dsu</span><span class="o">.</span><span class="n">union</span><span class="p">(</span><span class="n">idx</span><span class="p">,</span> <span class="n">TOP</span><span class="p">)</span>
-            <span class="k">if</span> <span class="n">r</span> <span class="o">==</span> <span class="n">row</span> <span class="o">-</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">r</span> <span class="o">==</span> <span class="n">row</span> <span class="o">-</span> <span class="mi">1</span><span class="p">:</span>                  <span class="c1"># 底行陆地并入 BOT（集合 T）</span>
                 <span class="n">dsu</span><span class="o">.</span><span class="n">union</span><span class="p">(</span><span class="n">idx</span><span class="p">,</span> <span class="n">BOT</span><span class="p">)</span>
             <span class="k">for</span> <span class="n">dr</span><span class="p">,</span> <span class="n">dc</span> <span class="ow">in</span> <span class="p">((</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">),(</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">),(</span><span class="mi">0</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">),(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">)):</span>
                 <span class="n">nr</span><span class="p">,</span> <span class="n">nc</span> <span class="o">=</span> <span class="n">r</span> <span class="o">+</span> <span class="n">dr</span><span class="p">,</span> <span class="n">c</span> <span class="o">+</span> <span class="n">dc</span>
                 <span class="k">if</span> <span class="mi">0</span> <span class="o">&lt;=</span> <span class="n">nr</span> <span class="o">&lt;</span> <span class="n">row</span> <span class="ow">and</span> <span class="mi">0</span> <span class="o">&lt;=</span> <span class="n">nc</span> <span class="o">&lt;</span> <span class="n">col</span> <span class="ow">and</span> <span class="n">is_land</span><span class="p">[</span><span class="n">nr</span><span class="p">][</span><span class="n">nc</span><span class="p">]:</span>
                     <span class="n">dsu</span><span class="o">.</span><span class="n">union</span><span class="p">(</span><span class="n">idx</span><span class="p">,</span> <span class="n">nr</span> <span class="o">*</span> <span class="n">col</span> <span class="o">+</span> <span class="n">nc</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">dsu</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">TOP</span><span class="p">)</span> <span class="o">==</span> <span class="n">dsu</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">BOT</span><span class="p">):</span>
-                <span class="c1"># 第 k+1 天该 cell 才变水；第 k 天（1-based）仍是陆地</span>
+                <span class="c1"># 处理完 k 后陆地 = cells[k..end]，对应第 k 天（1-based）结束的状态</span>
                 <span class="k">return</span> <span class="n">k</span>
         <span class="k">return</span> <span class="mi">0</span>
 </code></pre></div>
-<p><strong>不变量</strong>：循环过程中，"已处理"的 cells（即从 <span class="arithmatex">\(k\)</span> 到 len-1）都已是陆地；该陆地集恰好是"第 <span class="arithmatex">\(k\)</span> 天的网格状态"（cells[0..k-1] 是水，cells[k..end] 仍是水但本次循环把它们都加进来了... 等等需小心）。</p>
-<p>修正语义：反向 from $k = $ len-1 down to 0，第 <span class="arithmatex">\(k\)</span> 次迭代加入 <code>cells[k]</code> 为陆地。处理完 <span class="arithmatex">\(k\)</span> 后，陆地集 = <code>cells[k..len-1]</code> 对应位置。这对应"第 <span class="arithmatex">\(k\)</span> 天结束时的状态"——其实是"第 <span class="arithmatex">\(k\)</span> 天的水变好后但 cells[k] 也是水"……再细化：</p>
-<ul>
-<li>题目"第 <span class="arithmatex">\(t\)</span> 天结束时"水集 = <code>cells[0..t-1]</code>（1-based, 即前 <span class="arithmatex">\(t\)</span> 个）。</li>
-<li>在 DSU 倒序处理中，处理 <span class="arithmatex">\(k\)</span> 完成意味陆地 = <code>cells[k..end]</code>，即水 = <code>cells[0..k-1]</code>，对应<strong>第 <span class="arithmatex">\(k\)</span> 天结束的状态</strong>。</li>
-<li>第 <span class="arithmatex">\(k\)</span> 天结束<strong>仍能 cross</strong> = <code>find(TOP) == find(BOT)</code>（处理完 <span class="arithmatex">\(k\)</span> 时）。</li>
-<li>我们要的是"<strong>最大</strong> <span class="arithmatex">\(t\)</span> 使第 <span class="arithmatex">\(t\)</span> 天结束仍能 cross"——倒序时一旦能 cross 立即返回 <span class="arithmatex">\(k\)</span>（最大 <span class="arithmatex">\(t\)</span>）。</li>
-</ul>
-<p>复杂度：<span class="arithmatex">\(O(N \alpha(N))\)</span>。</p>
-<p>Trace 例 1 <code>row=2, col=2, cells=[[1,1],[2,1],[1,2],[2,2]]</code>，N=4，cells 0-based 转 [(0,0),(1,0),(0,1),(1,1)]：
-- k=3, cell (1,1): is_land[1][1]=T. idx=3. row=1 (底行) → union(3, BOT=5). 邻居：(0,1) not land, (1,0) not land → 无 union。find(TOP=4) vs find(BOT=5)? 4 != 5。
-- k=2, cell (0,1): is_land[0][1]=T. idx=1. row=0 (顶) → union(1, TOP=4). 邻居：(0,0) no, (1,1) land → union(1,3). 现在 1&lt;-3, 1&lt;-4. find(4) = 1 (or 3), find(5) = 5。Still 不连通。
-- k=1, cell (1,0): is_land[1][0]=T. idx=2. row=1 → union(2, BOT=5). 邻居：(0,0) no, (1,1) land → union(2, 3). 现在 2&lt;-3&lt;-5 (BOT) and 1&lt;-4 (TOP). 还要看 union(2,3): find(2)=5, find(3)=1 (3-&gt;1-&gt;4 假设). 把 5 的根设为 4 → 现在 BOT 和 TOP 共根。find(4)==find(5)？是。返回 k=1。</p>
-<p>但期望答案是 2。我的 trace 错了 — 让我重审 cells 索引。</p>
-<p><code>cells=[[1,1],[2,1],[1,2],[2,2]]</code>，1-based 转 0-based：
-- cells[0] = (0, 0)
-- cells[1] = (1, 0)
-- cells[2] = (0, 1)
-- cells[3] = (1, 1)</p>
-<p>倒序从 k=3 到 k=0:
-- k=3, (1,1): idx=3, row=1 → union(3, BOT)。邻居：(0,1)=cells[2] not land yet; (1,0)=cells[1] not land yet. 没有连接到 TOP。 find(TOP) != find(BOT).
-- k=2, (0,1): idx=1, row=0 → union(1, TOP)。邻居：(0,0)=cells[0] not land yet; (1,1) land → union(1, 3). 现在 TOP-1-3-BOT 连通！find(TOP) == find(BOT) → 返回 k=2 ✓</p>
-<p>好，是正确的。我之前在 k=2 步骤判断不连通是错的。修正：在 k=2 处理后，cell(0,1) 同时连了 TOP 和 cell(1,1)（已连 BOT），所以已 cross。</p>
+<p><strong>验证（例 1）</strong> <code>row=2, col=2, cells=[[1,1],[2,1],[1,2],[2,2]]</code>。1-based 转 0-based 后 <code>cells = [(0,0), (1,0), (0,1), (1,1)]</code>，<span class="arithmatex">\(N = 4\)</span>，TOP<span class="arithmatex">\(=4\)</span>，BOT<span class="arithmatex">\(=5\)</span>。反向遍历：</p>
+<table>
+<thead>
+<tr>
+<th><span class="arithmatex">\(k\)</span></th>
+<th>cell</th>
+<th>idx</th>
+<th>邻接陆地</th>
+<th>union 操作</th>
+<th>TOP↔BOT?</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>3</td>
+<td>(1,1)</td>
+<td>3</td>
+<td>无（(0,1)、(1,0) 尚为水）</td>
+<td>union(3, BOT)</td>
+<td>否</td>
+</tr>
+<tr>
+<td>2</td>
+<td>(0,1)</td>
+<td>1</td>
+<td>(1,1)</td>
+<td>union(1, TOP), union(1, 3)</td>
+<td><strong>是</strong> → return 2</td>
+</tr>
+</tbody>
+</table>
+<p>处理 <span class="arithmatex">\(k=2\)</span> 时，cell (0,1) 同时连上 TOP 和已连 BOT 的 cell (1,1)，于是 TOP–1–3–BOT 贯通，返回 <span class="arithmatex">\(k = 2\)</span>，与期望答案一致。</p>
 <h2 id="complexity">复杂度 (Complexity)<a class="headerlink" href="#complexity" title="Permanent link">#</a></h2>
 <ul>
-<li>A: <span class="arithmatex">\(O((rc) \log(rc))\)</span></li>
-<li>B: <span class="arithmatex">\(O(rc \cdot \alpha(rc)) \approx O(rc)\)</span>（DSU 路径压缩 + 按秩合并）</li>
+<li><strong>A</strong>：二分 <span class="arithmatex">\(O(\log(rc))\)</span> 次，每次 BFS <span class="arithmatex">\(O(rc)\)</span> ⟹ <span class="arithmatex">\(O(rc \log(rc))\)</span>。</li>
+<li><strong>B</strong>：每个 cell 处理一次，每次做常数个 <code>union</code>/<code>find</code>。DSU 同时用<strong>路径减半</strong>与<strong>按大小合并</strong>，单次操作摊还 <span class="arithmatex">\(O(\alpha(rc))\)</span>（Tarjan &amp; van Leeuwen 1984）⟹ 总计 <span class="arithmatex">\(O(rc \cdot \alpha(rc)) \approx O(rc)\)</span>，优于解法 A。</li>
 </ul>
 <h2 id="pitfalls">陷阱 (Pitfalls)<a class="headerlink" href="#pitfalls" title="Permanent link">#</a></h2>
 <ul>
-<li><strong>DSU 答案返回值</strong>：是 <code>k</code> 还是 <code>k-1</code>？依语义而定。这里 cells 是 0-indexed list，"cells[k] 在第 <span class="arithmatex">\(k+1\)</span> 天（1-based）变水"。倒序处理 <span class="arithmatex">\(k\)</span> 完成时陆地 = cells[k..end]，水 = cells[0..k-1]，对应"第 <span class="arithmatex">\(k\)</span> 天（1-based）结束"——可 cross 时返回 <span class="arithmatex">\(k\)</span>（即第 <span class="arithmatex">\(k\)</span> 天）。</li>
-<li><strong>二分边界</strong>：<code>lo=1, hi=row*col</code>，<code>mid=(lo+hi+1)//2</code> 找最大；二分单调谓词必须仔细想清楚。</li>
-<li><strong>DSU 路径压缩</strong>必须有，否则最差 <span class="arithmatex">\(O(\log N)\)</span> 单次操作 → <span class="arithmatex">\(O(rc \log rc)\)</span> 不如二分。</li>
-<li><strong>TOP/BOT 虚拟节点</strong>比每次 BFS 检查所有顶/底连通快得多。</li>
+<li><strong>DSU 返回 <code>k</code> 而非 <code>k-1</code></strong>：由不变量定。<code>cells[k]</code>（0-indexed）在第 <span class="arithmatex">\(k+1\)</span> 天（1-based）才变水；反向处理完 <span class="arithmatex">\(k\)</span> 后陆地 = <code>cells[k..end]</code>、水 = <code>cells[0..k-1]</code>，恰是「第 <span class="arithmatex">\(k\)</span> 天结束」的状态。该状态能 cross 即返回 <span class="arithmatex">\(k\)</span>，对应 1-based 的第 <span class="arithmatex">\(k\)</span> 天。</li>
+<li><strong>按大小（或按秩）合并不可省</strong>：<span class="arithmatex">\(O(\alpha)\)</span> 摊还界<strong>同时</strong>需要路径压缩/减半<strong>和</strong>按大小/秩合并；只有路径减半而任意挂接，单次操作退化到 <span class="arithmatex">\(O(\log rc)\)</span>，总复杂度滑回 <span class="arithmatex">\(O(rc \log rc)\)</span>，相对解法 A 不再有优势。代码中的 <code>size</code> 数组正是为此。</li>
+<li><strong>二分边界</strong>：<code>lo=1, hi=row*col</code>，<code>mid=(lo+hi+1)//2</code> 偏上取整 + 成功置 <code>lo=mid</code>，是「找最大真值」的标准组合；取整方向写错会死循环。</li>
+<li><strong>TOP/BOT 虚拟节点</strong>：把多源多汇可达性化为单对查询，避免每步遍历所有顶/底格判断连通。</li>
 </ul>
 <h2 id="related">相关题目 (Related)<a class="headerlink" href="#related" title="Permanent link">#</a></h2>
 <ul>
 <li><a href="../1898_maximum-number-of-removable-characters/">#1898. Maximum Number of Removable Characters</a> — 同 batch，二分答案 + check。</li>
 <li><a href="../0684_redundant-connection/">#684. Redundant Connection</a> — 经典 DSU。</li>
 <li><a href="../0839_similar-string-groups/">#839. Similar String Groups</a> — DSU 连通性。</li>
-<li><code>#803. Bricks Falling When Hit (off-wiki)</code> — 时光倒流 DSU 的经典题。</li>
+<li><code>#803. Bricks Falling When Hit (off-wiki)</code> — 同样把删边问题反向成加边、用 DSU 求解。</li>
 </ul>
 <h2 id="further-reading">Further Reading<a class="headerlink" href="#further-reading" title="Permanent link">#</a></h2>
 <ul>

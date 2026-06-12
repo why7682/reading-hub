@@ -5485,6 +5485,8 @@
       
         
       
+        
+      
     
     
     
@@ -6024,6 +6026,34 @@
     
   
     #93. Restore IP Addresses
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../0102_binary-tree-level-order-traversal/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    #102. Binary Tree Level Order Traversal
   
 
     
@@ -22675,28 +22705,44 @@
 <h2 id="problem">Problem<a class="headerlink" href="#problem" title="Permanent link">#</a></h2>
 <p>给 DataFrame <code>students</code>，将 <code>grade</code> 列的浮点类型转换为整数类型。</p>
 <h2 id="background">背景 (Background)<a class="headerlink" href="#background" title="Permanent link">#</a></h2>
-<p>30 Days of Pandas 系列。本质是 NumPy dtype 转换：<code>float64</code> → <code>int64</code>。</p>
+<p>这道题来自 30 Days of Pandas 系列。表面上只是「把一列变成整数」，但要理解为什么这不能靠简单赋值完成，得先看清一个 pandas 列在内存里到底是什么。</p>
+<p>一个 <code>Series</code>（DataFrame 的一列）不是一串孤立的 Python 对象，而是一块<strong>连续的、定宽的 NumPy 缓冲区</strong>，外加一个 <code>dtype</code> 描述每个元素的宽度与解释方式。当 <code>grade</code> 是 <code>float64</code> 时，每个值占 8 字节，按 IEEE 754 双精度浮点解释——分成符号、指数、尾数三部分。<code>grade</code> 之所以是浮点，通常是因为它由 SQL 数值列读入（pandas <code>read_sql</code> 对 numeric 列默认给 <code>float64</code>），LeetCode 的脚手架复刻了这一点。</p>
+<p>关键在于：<code>dtype</code> 不是一个可以随便覆盖的标签。它决定了缓冲区每个槽位的字节宽度和位布局。<code>int64</code> 同样是 8 字节，但位布局完全不同——它是二进制补码整数，没有指数和尾数。所以「把 <code>float64</code> 变成 <code>int64</code>」不是改一个属性，而是要按整数的位布局重新解释每个数——这需要一次真正的、逐元素的重新编码。</p>
 <h2 id="formulation">形式化 (Formulation)<a class="headerlink" href="#formulation" title="Permanent link">#</a></h2>
-<p>设列 <span class="arithmatex">\(\text{grade} \in \mathbb{R}^n\)</span>，输出 <span class="arithmatex">\(\lfloor \text{grade} \rfloor \in \mathbb{Z}^n\)</span>（pandas 默认截断而非四舍五入）。</p>
+<p>先建立直觉，再写形式。我们要的是一个把每个浮点数映射到整数的函数。但「映射到整数」并不唯一：<code>73.9</code> 该变成 <code>73</code> 还是 <code>74</code>？这取决于<strong>取整约定</strong>。在写下公式前必须先定下这个约定，否则公式是空的。</p>
+<p>pandas 的 <code>astype(int)</code> 采用 C 语言风格的<strong>向零截断</strong>（truncation toward zero）：直接丢弃小数部分，不看它有多大。对正数这等于向下取整，但对负数不是——这一点下面会用到。</p>
+<p>设列 <span class="arithmatex">\(\text{grade} \in \mathbb{R}^n\)</span>，目标是</p>
+<div class="arithmatex">\[
+\text{out}_i = \operatorname{trunc}(\text{grade}_i) = \operatorname{sgn}(\text{grade}_i)\,\big\lfloor |\text{grade}_i| \big\rfloor \in \mathbb{Z}^n.
+\]</div>
+<p>注意这里用 <span class="arithmatex">\(\operatorname{trunc}\)</span> 而非 <span class="arithmatex">\(\lfloor\cdot\rfloor\)</span>。两者对正数一致，对负数分叉：<span class="arithmatex">\(\operatorname{trunc}(-73.9) = -73\)</span>，而 <span class="arithmatex">\(\lfloor -73.9 \rfloor = -74\)</span>。本题的成绩非负，两者恰好重合，但公式必须写准——因为下面的解法正是实现 <span class="arithmatex">\(\operatorname{trunc}\)</span>，不是 <span class="arithmatex">\(\lfloor\cdot\rfloor\)</span>。</p>
+<p>这个截断语义有其结构根源：<code>float64</code> 把数存成尾数 × <span class="arithmatex">\(2^{\text{指数}}\)</span>，转 <code>int64</code> 时尾数里代表小数的低位被直接舍去，符号位保留——舍去（而非进位）正是「向零」的来历。</p>
 <h2 id="approach">数据结构 / 想法 (Approach)<a class="headerlink" href="#approach" title="Permanent link">#</a></h2>
-<p><code>DataFrame.astype</code> 接受字典指定每列目标 dtype：</p>
+<p><strong>先看朴素做法，再看它在哪里断。</strong></p>
+<p>如果不知道 pandas 的类型系统，最自然的尝试是「直接赋整数值覆盖这一列」：</p>
+<div class="language-python highlight"><pre><span></span><code><span class="n">students</span><span class="p">[</span><span class="s1">&#39;grade&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">students</span><span class="p">[</span><span class="s1">&#39;grade&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>   <span class="c1"># 朴素尝试</span>
+</code></pre></div>
+<p>这在小数据上「看起来对」，但有两处断点。其一，它对每个元素调一次 Python 的 <code>int()</code>，绕开了 NumPy 的向量化，n 大时慢一个数量级。其二、也是更根本的：即便逐元素转成了 Python <code>int</code>，存回 <code>Series</code> 时 pandas 仍要为整列推断一个统一 <code>dtype</code>，并分配一块新缓冲区——你并没有「原地」改掉列的类型，只是用一条慢路径触发了同样的重新分配。换句话说，朴素做法做的事和正确做法一样，只是更慢、更绕。</p>
+<p>这恰恰把问题逼到正题：既然无论如何都要按目标位布局重新编码整列、分配新缓冲区，那就该直接用 NumPy/pandas 提供的、向量化的 dtype 强制转换接口。这个接口就是 <code>astype</code>——它不是一个要记住的「技巧」，而是上面形式化里那个 <span class="arithmatex">\(\operatorname{trunc}\)</span> 映射在 pandas 表面上的直接实现：对底层 <code>float64</code> 缓冲区做一次 C 级别的逐元素截断，写入一块新的 <code>int64</code> 缓冲区。</p>
 <div class="language-python highlight"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
 
 <span class="k">def</span><span class="w"> </span><span class="nf">changeDatatype</span><span class="p">(</span><span class="n">students</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
     <span class="n">students</span><span class="p">[</span><span class="s1">&#39;grade&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">students</span><span class="p">[</span><span class="s1">&#39;grade&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">students</span>
 </code></pre></div>
-<p>或一次转多列：<code>students = students.astype({'grade': 'int64'})</code>。</p>
-<p><code>astype(int)</code> 走的是 NumPy <code>safe</code> cast 路径之外的"截断"语义：<code>73.0 → 73</code>，<code>73.9 → 73</code>（向 0 截断）。</p>
+<p><code>astype</code> 也接受字典，一次指定多列的目标 dtype，等价但更显式：</p>
+<div class="language-python highlight"><pre><span></span><code><span class="n">students</span> <span class="o">=</span> <span class="n">students</span><span class="o">.</span><span class="n">astype</span><span class="p">({</span><span class="s1">&#39;grade&#39;</span><span class="p">:</span> <span class="s1">&#39;int64&#39;</span><span class="p">})</span>
+</code></pre></div>
+<p>回到形式化验证语义：<code>73.0 → 73</code>，<code>73.9 → 73</code>（小数位被丢弃，不进位）——正是 <span class="arithmatex">\(\operatorname{trunc}\)</span>，而不是四舍五入。默认 <code>astype(int)</code> 在本平台解析为 <code>int64</code>。</p>
 <h2 id="complexity">复杂度 (Complexity)<a class="headerlink" href="#complexity" title="Permanent link">#</a></h2>
 <ul>
-<li>Time: <span class="arithmatex">\(O(n)\)</span>。</li>
-<li>Space: <span class="arithmatex">\(O(n)\)</span>（新列分配；不能原地改变 dtype）。</li>
+<li>Time: <span class="arithmatex">\(O(n)\)</span>——逐元素截断，一遍扫过整列。</li>
+<li>Space: <span class="arithmatex">\(O(n)\)</span>。这不是实现的偷懒，而是上面缓冲区结构的直接推论：<code>float64</code> 与 <code>int64</code> 位布局不同，无法在原缓冲区里原地改写，必须分配一块新的 <code>int64</code> 缓冲区。dtype 不可原地变更，是这道题最有结构内涵的事实。</li>
 </ul>
 <h2 id="pitfalls">陷阱 (Pitfalls)<a class="headerlink" href="#pitfalls" title="Permanent link">#</a></h2>
 <ul>
-<li>若列含 <code>NaN</code>，<code>astype(int)</code> 会抛 <code>IntCastingNaNError</code>。本题题面保证无 NaN，但生产代码需先 <code>fillna</code> 或用可空整型 <code>'Int64'</code>。</li>
-<li>截断 vs 四舍五入：<code>int(73.9) == 73</code>，不是 74。需四舍五入则 <code>(s + 0.5).astype(int)</code> 或 <code>.round().astype(int)</code>。</li>
+<li><strong>NaN 会直接报错</strong>。若列含 <code>NaN</code>，<code>astype(int)</code> 抛 <code>IntCastingNaNError</code>（"Cannot convert non-finite values…"）。原因在结构里：<code>NaN</code> 是浮点专有的位模式，<code>int64</code> 没有对应表示。本题题面保证无 NaN，但生产代码需先 <code>fillna</code>，或改用可空整型 <code>'Int64'</code>（保留缺失语义）。</li>
+<li><strong>截断不是四舍五入</strong>：<code>int(73.9) == 73</code>，不是 74。若确实要四舍五入，注意两种常见写法<strong>并不等价</strong>：<code>(s + 0.5).astype(int)</code> 是「向 <span class="arithmatex">\(+\infty\)</span> 方向半数进位」，<code>.round().astype(int)</code> 是 NumPy 的「banker's rounding」（半数向偶数）。它们在负数和恰好 .5 的值上分叉：对 <span class="arithmatex">\(-73.5\)</span>，前者给 <span class="arithmatex">\(-73\)</span>，后者给 <span class="arithmatex">\(-74\)</span>。本题成绩非负、无半数歧义，两者都给 <code>73.9 → 74</code>，但换到含负数或半数的数据上必须分清。</li>
 </ul>
 <h2 id="related">相关题目 (Related)<a class="headerlink" href="#related" title="Permanent link">#</a></h2>
 <ul>

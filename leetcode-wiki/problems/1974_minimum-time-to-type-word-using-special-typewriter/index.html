@@ -5485,6 +5485,8 @@
       
         
       
+        
+      
     
     
     
@@ -6024,6 +6026,34 @@
     
   
     #93. Restore IP Addresses
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../0102_binary-tree-level-order-traversal/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    #102. Binary Tree Level Order Traversal
   
 
     
@@ -22675,13 +22705,21 @@
 <h2 id="problem">Problem<a class="headerlink" href="#problem" title="Permanent link">#</a></h2>
 <p>字母 <code>'a'..'z'</code> 排成<strong>圆环</strong>，指针初指 <code>'a'</code>。每秒可顺/逆时针走 1 格或打字。给 <code>word</code>，求打完最少秒数。约束 <span class="arithmatex">\(1 \le |word| \le 100\)</span>。</p>
 <h2 id="background">背景 (Background)<a class="headerlink" href="#background" title="Permanent link">#</a></h2>
-<p>本题涉及<strong>循环群 <span class="arithmatex">\(\mathbb{Z}_{26}\)</span> 上的最短距离</strong>：从 <span class="arithmatex">\(a\)</span> 到 <span class="arithmatex">\(b\)</span> 的最短转动数 = <span class="arithmatex">\(\min(|a - b|, 26 - |a - b|)\)</span>。这是计算几何 / 数论中"循环距离"的最小实例。</p>
+<p>先看最朴素的想法。把字母编号 <code>'a'=0, 'b'=1, …, 'z'=25</code>，指针从位置 <span class="arithmatex">\(x\)</span> 走到位置 <span class="arithmatex">\(y\)</span>，似乎要走 <span class="arithmatex">\(|x - y|\)</span> 格。</p>
+<p>这个公式在大多数情况下对，但有一处会出错。考虑从 <code>'a'</code>（0）打到 <code>'z'</code>（25）：朴素公式给出 <span class="arithmatex">\(|0 - 25| = 25\)</span> 格。可是指针在<strong>圆环</strong>上——它不必绕过整个字母表，逆时针退一格就直接从 <code>'a'</code> 到了 <code>'z'</code>。正确答案是 1，不是 25。</p>
+<p>朴素公式失败的原因正是题目的核心结构：圆环上任意两点之间有<strong>两条</strong>弧，而 <span class="arithmatex">\(|x - y|\)</span> 只数了其中一条。设这条弧（顺时针）长 <span class="arithmatex">\(|x - y|\)</span>，那么另一条弧（逆时针）覆盖剩下的格子，长 <span class="arithmatex">\(26 - |x - y|\)</span>。两条弧首尾相接刚好绕环一周，所以它们的长度之和恒为 26。指针走哪条都行，最优策略当然取短的那条：</p>
+<div class="arithmatex">\[d(x, y) = \min\bigl(|x - y|,\ 26 - |x - y|\bigr).\]</div>
+<p>回头验证：<span class="arithmatex">\(d(0, 25) = \min(25, 1) = 1\)</span>，与逆时针退一格一致。这个公式不是外部引入的事实，而是从"圆环有两条弧、取短弧"这一题目自身结构直接推出来的。</p>
 <h2 id="formulation">形式化 (Formulation)<a class="headerlink" href="#formulation" title="Permanent link">#</a></h2>
-<p>设位置 <span class="arithmatex">\(p_i = \text{ord}(word[i]) - \text{ord}('a')\)</span>，<span class="arithmatex">\(p_{-1} = 0\)</span>。总时间</p>
-<div class="arithmatex">\[T = |word| + \sum_{i=0}^{|word|-1} d(p_{i-1}, p_i)\]</div>
-<p>其中 <span class="arithmatex">\(d(x, y) = \min(|x - y|, 26 - |x - y|)\)</span>，第一项 <span class="arithmatex">\(|word|\)</span> 是打字耗时。</p>
+<p>有了单步距离 <span class="arithmatex">\(d\)</span>，再看整段 <code>word</code> 的总时间如何拆分。</p>
+<p><strong>直观</strong>：打每个字符都要做两件互不重叠的事——先把指针<strong>转</strong>到目标字母，再<strong>按键</strong>打字。转动耗时是 <span class="arithmatex">\(d(\text{prev}, \text{cur})\)</span>；按键固定耗时 1 秒，与转了多远、往哪转都无关。更关键的是，第 <span class="arithmatex">\(i\)</span> 个字符打完后指针就停在 <span class="arithmatex">\(\text{cur}\)</span> 上，这个落点只由当前字符决定，与后面要打什么字符无关。因此各步之间不会相互影响，总时间就是每一步代价的简单求和。</p>
+<p><strong>形式化</strong>。设第 <span class="arithmatex">\(i\)</span> 个字符的位置
+$<span class="arithmatex">\(p_i = \mathrm{ord}(word[i]) - \mathrm{ord}('a'),\)</span>$
+并约定 <span class="arithmatex">\(p_{-1} = 0\)</span>（指针初始指向 <code>'a'</code>，编号 0）。第 <span class="arithmatex">\(i\)</span> 步的代价是转动 <span class="arithmatex">\(d(p_{i-1}, p_i)\)</span> 加按键 1，于是总时间</p>
+<div class="arithmatex">\[T = \sum_{i=0}^{|word|-1} \bigl(d(p_{i-1}, p_i) + 1\bigr) = |word| + \sum_{i=0}^{|word|-1} d(p_{i-1}, p_i).\]</div>
+<p>每个字符贡献恰好一次按键，故 <span class="arithmatex">\(|word|\)</span> 个 1 合并成 <span class="arithmatex">\(+|word|\)</span> 提到求和外面。<span class="arithmatex">\(i = 0\)</span> 一项用的是 <span class="arithmatex">\(d(p_{-1}, p_0) = d(0, p_0)\)</span>，对应从 <code>'a'</code> 出发的第一次转动。</p>
 <h2 id="approach">数据结构 / 想法 (Approach)<a class="headerlink" href="#approach" title="Permanent link">#</a></h2>
-<p>直接累加每步循环距离 + 打字 1 秒。</p>
+<p>上面的"落点只由当前字符决定"正是<strong>贪心</strong>能成立的理由：当前这一步选短弧不会让任何后续步骤变差，因为后续步骤的起点（当前落点）根本不随这个选择改变。于是无需任何全局规划，单趟扫描逐字符累加 <span class="arithmatex">\(d(p_{i-1}, p_i) + 1\)</span> 即可。</p>
 <div class="language-python highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">Solution</span><span class="p">:</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">minTimeToType</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">word</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
         <span class="n">total</span> <span class="o">=</span> <span class="mi">0</span>
@@ -22689,24 +22727,25 @@
         <span class="k">for</span> <span class="n">ch</span> <span class="ow">in</span> <span class="n">word</span><span class="p">:</span>
             <span class="n">cur</span> <span class="o">=</span> <span class="nb">ord</span><span class="p">(</span><span class="n">ch</span><span class="p">)</span> <span class="o">-</span> <span class="nb">ord</span><span class="p">(</span><span class="s1">&#39;a&#39;</span><span class="p">)</span>
             <span class="n">diff</span> <span class="o">=</span> <span class="nb">abs</span><span class="p">(</span><span class="n">cur</span> <span class="o">-</span> <span class="n">prev</span><span class="p">)</span>
-            <span class="n">total</span> <span class="o">+=</span> <span class="nb">min</span><span class="p">(</span><span class="n">diff</span><span class="p">,</span> <span class="mi">26</span> <span class="o">-</span> <span class="n">diff</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span>  <span class="c1"># 移动 + 打字</span>
+            <span class="n">total</span> <span class="o">+=</span> <span class="nb">min</span><span class="p">(</span><span class="n">diff</span><span class="p">,</span> <span class="mi">26</span> <span class="o">-</span> <span class="n">diff</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span>  <span class="c1"># 转动 + 按键</span>
             <span class="n">prev</span> <span class="o">=</span> <span class="n">cur</span>
         <span class="k">return</span> <span class="n">total</span>
 </code></pre></div>
-<p>Trace 例 3 <code>"zjpc"</code>:
-- 'z' (25), from 0: min(25, 1) = 1. +1 type = 2. prev=25.
-- 'j' (9), from 25: |9-25|=16, min(16, 10)=10. +1 = 11. total=13. prev=9.
-- 'p' (15), from 9: |15-9|=6, min(6, 20)=6. +1=7. total=20. prev=15.
-- 'c' (2), from 15: |2-15|=13, min(13, 13)=13. +1=14. total=34. ✓</p>
+<p>Trace 例 <code>"zjpc"</code>，验证公式与代码一致：
+- <code>'z'</code> (25)，从 0：<span class="arithmatex">\(\min(25, 1) = 1\)</span>，加按键 1，本步 2。prev=25。
+- <code>'j'</code> (9)，从 25：<span class="arithmatex">\(|9-25|=16\)</span>，<span class="arithmatex">\(\min(16, 10)=10\)</span>，加 1，本步 11。total=13。prev=9。
+- <code>'p'</code> (15)，从 9：<span class="arithmatex">\(|15-9|=6\)</span>，<span class="arithmatex">\(\min(6, 20)=6\)</span>，加 1，本步 7。total=20。prev=15。
+- <code>'c'</code> (2)，从 15：<span class="arithmatex">\(|2-15|=13\)</span>，<span class="arithmatex">\(\min(13, 13)=13\)</span>，加 1，本步 14。total=34。✓</p>
+<p>最终 34 = 30 步转动 + 4 次按键，与公式 <span class="arithmatex">\(T = |word| + \sum d\)</span> 完全吻合。</p>
 <h2 id="complexity">复杂度 (Complexity)<a class="headerlink" href="#complexity" title="Permanent link">#</a></h2>
 <ul>
-<li>Time: <span class="arithmatex">\(O(|word|)\)</span></li>
-<li>Space: <span class="arithmatex">\(O(1)\)</span></li>
+<li>Time: <span class="arithmatex">\(O(|word|)\)</span> —— 单趟扫描，每字符常数运算。</li>
+<li>Space: <span class="arithmatex">\(O(1)\)</span> —— 只维护 <code>prev</code> 与 <code>total</code>。</li>
 </ul>
 <h2 id="pitfalls">陷阱 (Pitfalls)<a class="headerlink" href="#pitfalls" title="Permanent link">#</a></h2>
 <ul>
-<li>初始 prev = 0（'a' 的索引），不要忘记起始。</li>
-<li>循环距离不是简单 <code>abs</code>——例 <code>'a'→'z'</code> 是 1 而非 25。</li>
+<li>初始 <code>prev = 0</code>（<code>'a'</code> 的编号）不能忘：第一步是从 <code>'a'</code> 出发，对应 <span class="arithmatex">\(p_{-1} = 0\)</span>。</li>
+<li>单步距离取的是 <span class="arithmatex">\(\min(|x-y|,\ 26-|x-y|)\)</span>，不是裸 <code>abs</code>——这正是朴素公式在 <code>'a'→'z'</code> 上算出 25（应为 1）的来由，是本题的核心难点。</li>
 </ul>
 <h2 id="related">相关题目 (Related)<a class="headerlink" href="#related" title="Permanent link">#</a></h2>
 <ul>

@@ -5485,6 +5485,8 @@
       
         
       
+        
+      
     
     
     
@@ -6024,6 +6026,34 @@
     
   
     #93. Restore IP Addresses
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../0102_binary-tree-level-order-traversal/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    #102. Binary Tree Level Order Traversal
   
 
     
@@ -22675,15 +22705,33 @@
 <h2 id="problem">Problem<a class="headerlink" href="#problem" title="Permanent link">#</a></h2>
 <p><span class="arithmatex">\(n \times n\)</span> 网格，机器人初始在 <code>startPos</code>。指令串 <code>s</code> 由 L/R/U/D 组成（长 m ≤ 500）。对每个起始下标 <span class="arithmatex">\(i \in [0, m)\)</span>，从 <code>s[i..]</code> 开始执行直到走出网格或指令耗尽，记可执行步数。返回长 m 的答案数组。<span class="arithmatex">\(n, m \le 500\)</span>。</p>
 <h2 id="background">背景 (Background)<a class="headerlink" href="#background" title="Permanent link">#</a></h2>
-<p>约束 <span class="arithmatex">\(m \le 500\)</span> 让 <span class="arithmatex">\(O(m^2)\)</span> 模拟可行。更进一步的 <span class="arithmatex">\(O(m)\)</span> 解法基于"累计位移 + 二分"或"前缀和 + 二分"：把每个时刻的累积位移记下来，对起点 <span class="arithmatex">\(i\)</span> 二分找到第一个使位移越界的时刻。本题难度限定不要求线性，但提及思路。</p>
+<p>最直接的策略是把每个起始下标当成独立问题：固定 <span class="arithmatex">\(i\)</span>，从 <code>startPos</code> 出发逐条执行 <code>s[i], s[i+1], \dots</code>，一旦某步走出网格就停下，记下已执行的步数。这是题面的字面翻译，没有任何技巧。</p>
+<p>它的代价来自重复劳动。对起点 <span class="arithmatex">\(i\)</span> 我们要走最多 <span class="arithmatex">\(m - i\)</span> 步；把所有起点加起来，最坏情况是 <span class="arithmatex">\(\sum_{i=0}^{m-1}(m-i) = m(m+1)/2\)</span> 次单步操作，即 <span class="arithmatex">\(O(m^2)\)</span>。在 <span class="arithmatex">\(m \le 500\)</span> 下这是约 <span class="arithmatex">\(1.25 \times 10^5\)</span> 次操作，远在时间限制之内。所以朴素模拟不是过渡方案，而是本题约束下的目标解——背景部分要回答的不是"如何更快"，而是"为什么不必更快"。</p>
+<p>值得追问的是：这些起点真的彼此独立吗？从 <span class="arithmatex">\(i\)</span> 和从 <span class="arithmatex">\(i+1\)</span> 出发，走过的指令高度重叠，朴素法把重叠部分反复重算。下一节的形式化会把"位置"表达成可复用的累积量，使这种重算在原理上可消除；那条路通向 <span class="arithmatex">\(O(m \log m)\)</span> 乃至 <span class="arithmatex">\(O(m)\)</span>。但要先有精确的位置表达式，才谈得上复用——所以我们先建立形式化，再回头判断是否值得优化。</p>
 <h2 id="formulation">形式化 (Formulation)<a class="headerlink" href="#formulation" title="Permanent link">#</a></h2>
-<p>设 <span class="arithmatex">\(\Delta(t) = (\sum_{k=0}^{t-1} \delta_x(s_k), \sum_{k=0}^{t-1} \delta_y(s_k))\)</span> 为前 <span class="arithmatex">\(t\)</span> 步的累积位移。对起点 <span class="arithmatex">\(i\)</span>，第 <span class="arithmatex">\(t\)</span> 步实际位置 = <code>startPos + (Δ(i+t) − Δ(i))</code>。答案 <span class="arithmatex">\(\text{ans}[i] = \max \{t : \forall t' \in [1, t], \text{startPos} + \Delta(i+t') - \Delta(i) \in [0, n) \times [0, n)\}\)</span>。</p>
+<p>先建立直觉。从起点 <span class="arithmatex">\(i\)</span> 执行 <span class="arithmatex">\(t\)</span> 步后，机器人的位置只取决于这 <span class="arithmatex">\(t\)</span> 步的<strong>净位移</strong>，与路径中途如何摆动无关。而这 <span class="arithmatex">\(t\)</span> 步恰是 <code>s[i..i+t-1]</code>，它的净位移等于"前 <span class="arithmatex">\(i+t\)</span> 步的累积位移"减去"前 <span class="arithmatex">\(i\)</span> 步的累积位移"。于是每一步的位置都能写成两个前缀量之差——这就是值得显式记录累积位移的理由。</p>
+<p>形式化这个直觉。先定义单字符到位移分量的映射 <span class="arithmatex">\(\delta\)</span>：</p>
+<div class="arithmatex">\[
+\delta(\mathtt{L}) = (0,-1),\quad \delta(\mathtt{R}) = (0,+1),\quad \delta(\mathtt{U}) = (-1,0),\quad \delta(\mathtt{D}) = (+1,0). \tag{1}
+\]</div>
+<p>约定坐标为 <span class="arithmatex">\((\text{row}, \text{col})\)</span>：U/D 改 row，L/R 改 col。记起点 <span class="arithmatex">\(p_0 = \text{startPos}\)</span>。定义前 <span class="arithmatex">\(t\)</span> 步的累积位移</p>
+<div class="arithmatex">\[
+\Delta(t) = \sum_{k=0}^{t-1} \delta(s_k), \qquad \Delta(0) = (0,0). \tag{2}
+\]</div>
+<p>由 (2)，从下标 <span class="arithmatex">\(i\)</span> 出发执行 <span class="arithmatex">\(t\)</span> 步后的位置为</p>
+<div class="arithmatex">\[
+\mathrm{pos}(i,t) = p_0 + \big(\Delta(i+t) - \Delta(i)\big). \tag{3}
+\]</div>
+<p>式 (3) 正是上面直觉的精确版本：起点 <span class="arithmatex">\(i\)</span> 第 <span class="arithmatex">\(t\)</span> 步的位置是两个前缀位移之差，两个前缀量在所有起点之间共享。机器人在第 <span class="arithmatex">\(t\)</span> 步合法，当且仅当 <span class="arithmatex">\(\mathrm{pos}(i,t)\)</span> 仍在网格内。答案是从 <span class="arithmatex">\(i\)</span> 出发能连续合法执行的最长前缀长度：</p>
+<div class="arithmatex">\[
+\mathrm{ans}[i] = \max\Big\{\, t \ge 0 : \forall\, t' \in [1, t],\ \mathrm{pos}(i,t') \in [0, n)\times[0,n) \,\Big\}. \tag{4}
+\]</div>
+<p>注意 (4) 中的全称量词 <span class="arithmatex">\(\forall t'\)</span>：一旦某一步越界，后续即便"碰巧"回到网格内也不算数，因为执行在第一次越界处就终止了。这一点下面会直接转化为代码里的一个细节。</p>
 <h2 id="approach">数据结构 / 想法 (Approach)<a class="headerlink" href="#approach" title="Permanent link">#</a></h2>
-<p><strong>方法 1：暴力 <span class="arithmatex">\(O(m^2)\)</span></strong>——对每个 <span class="arithmatex">\(i\)</span> 直接走，到越界即止。<span class="arithmatex">\(m \le 500\)</span> 时 <span class="arithmatex">\(2.5 \times 10^5\)</span> 次操作，绰绰有余。</p>
-<p><strong>方法 2：前缀位移 + 二分 <span class="arithmatex">\(O(m \log m)\)</span></strong>——对每个起点 <span class="arithmatex">\(i\)</span>，需要满足
-$<span class="arithmatex">\(0 \le \text{startRow} + (\text{prefX}[i+t] - \text{prefX}[i]) &lt; n\)</span>$
-对 t 单调性不一定（位移可正可负），但可以分别预处理"使 prefX[i+t] 达到 ±边界"的最小 t（用各位移在前缀数组上的二分）。实现稍复杂；m ≤ 500 一般不写。</p>
-<p><strong>方法 3：递推法</strong>——从右往左用 ans[i+1] + 1 作为候选（如果第 i 步成功），否则单独模拟尾段；最坏仍是 <span class="arithmatex">\(O(m^2)\)</span>。</p>
+<p>形式化给了两条路，区别在于如何使用式 (3)。</p>
+<p><strong>直接展开式 (3)：朴素模拟 <span class="arithmatex">\(O(m^2)\)</span>。</strong> 式 (4) 要求对每个 <span class="arithmatex">\(t'\)</span> 逐一检验 <span class="arithmatex">\(\mathrm{pos}(i,t')\)</span> 是否在界内。最朴素地兑现它，就是固定 <span class="arithmatex">\(i\)</span> 后令 <span class="arithmatex">\(t'\)</span> 从 1 递增、逐步累加 <span class="arithmatex">\(\delta(s_{i+t'-1})\)</span> 维护当前位置，遇到第一个越界的 <span class="arithmatex">\(t'\)</span> 即停。这与背景部分估算的 <span class="arithmatex">\(O(m^2)\)</span> 完全一致，也正是下面代码的内层循环。式 (3) 中显式的前缀量在这里被隐式地"边走边算"，因此不必预存 <span class="arithmatex">\(\Delta\)</span>。</p>
+<p><strong>复用式 (3) 的前缀量：前缀位移 + 二分 <span class="arithmatex">\(O(m \log m)\)</span>。</strong> 既然 (3) 把位置写成前缀差，自然想固定 <span class="arithmatex">\(i\)</span>、对 <span class="arithmatex">\(t\)</span> 二分求最大合法步数。但这里有一个结构性障碍：<span class="arithmatex">\(\Delta(i+t)\)</span> 关于 <span class="arithmatex">\(t\)</span> 不单调（位移可正可负，机器人会来回走），所以"是否越界"对 <span class="arithmatex">\(t\)</span> 不是单调谓词，不能直接二分。补救办法是按四个边界分别处理——例如对 row 上界，预处理使 <span class="arithmatex">\(\Delta_{\text{row}}(i+t)\)</span> 首次达到 <span class="arithmatex">\(n - p_{0,\text{row}}\)</span> 的最小 <span class="arithmatex">\(t\)</span>，这要在前缀数组上做带条件的二分。四个边界各求一次再取最小。实现明显更繁，且在 <span class="arithmatex">\(m \le 500\)</span> 下没有收益，故本题不展开。这里保留它，是为了说明形式化如何指出优化的方向，以及那个方向为何卡在非单调性上。</p>
+<p>下面是兑现式 (4) 的朴素模拟。内层循环逐步检验式 (3) 的界内条件，第一次越界即 <code>break</code>，与式 (4) 的 <span class="arithmatex">\(\forall t'\)</span> 语义严格对应：</p>
 <div class="language-python highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">Solution</span><span class="p">:</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">executeInstructions</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">startPos</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">],</span> <span class="n">s</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]:</span>
         <span class="n">m</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
@@ -22703,24 +22751,25 @@ $<span class="arithmatex">\(0 \le \text{startRow} + (\text{prefX}[i+t] - \text{p
             <span class="n">ans</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">cnt</span>
         <span class="k">return</span> <span class="n">ans</span>
 </code></pre></div>
-<p>样例 1 trace：<code>n=3, startPos=[0,1], s="RRDDLU"</code>。
+<p>样例 1 trace：<code>n=3, startPos=[0,1], s="RRDDLU"</code>。每行从起点 <span class="arithmatex">\(i\)</span> 出发逐步执行式 (3)，第一次越界处停：
 - i=0: 走 R→(0,2) cnt=1; 下一 R 越界 break → 1 ✓
 - i=1: 起 R→(0,2) cnt=1; D→(1,2) 2; D→(2,2) 3; L→(2,1) 4; U→(1,1) 5; 无更多 → 5 ✓
 - i=2: D→(1,1) 1; D→(2,1) 2; L→(2,0) 3; U→(1,0) 4; 无更多 → 4 ✓
 - i=3: D→(1,1) 1; L→(1,0) 2; U→(0,0) 3 → 3 ✓
 - i=4: L 从 (0,1) 到 (0,0) 1; U→ 越界 break → 1 ✓
 - i=5: U 从 (0,1) 越界 → 0 ✓</p>
-<p>输出 <code>[1,5,4,3,1,0]</code> ✓。</p>
+<p>输出 <code>[1,5,4,3,1,0]</code> ✓。i=1 与 i=2 走过的中段（D,D,L,U）完全重叠却被各算一遍，正是前缀位移法想复用的部分。</p>
 <h2 id="complexity">复杂度 (Complexity)<a class="headerlink" href="#complexity" title="Permanent link">#</a></h2>
 <ul>
-<li>Time: <span class="arithmatex">\(O(m^2)\)</span> 暴力；<span class="arithmatex">\(O(m \log m)\)</span> 二分（不必要）</li>
+<li>Time: <span class="arithmatex">\(O(m^2)\)</span> 暴力（最坏 <span class="arithmatex">\(m(m+1)/2\)</span> 次单步检验）；<span class="arithmatex">\(O(m \log m)\)</span> 前缀位移 + 二分（不必要）</li>
 <li>Space: <span class="arithmatex">\(O(m)\)</span> 答案数组</li>
 </ul>
 <h2 id="pitfalls">陷阱 (Pitfalls)<a class="headerlink" href="#pitfalls" title="Permanent link">#</a></h2>
+<p>这三个陷阱都能从形式化直接读出：</p>
 <ul>
-<li><strong><code>break</code> 而非 <code>continue</code></strong>：越界后立即停止该起点的执行，不能跳过越界指令继续。</li>
-<li><strong><code>startPos</code> 不修改</strong>：每个 i 都从原起点出发，不要复用上次结束位置。</li>
-<li><strong>维度顺序 <code>[row, col]</code></strong>：L/R 改列、U/D 改行；写反方向是高频错误。</li>
+<li><strong><code>break</code> 而非 <code>continue</code></strong>：式 (4) 的 <span class="arithmatex">\(\forall t'\)</span> 要求合法步是一段不间断的前缀，第一次越界即终止；写成 <code>continue</code> 会跳过越界指令继续，等于错误地把"最长合法前缀"放宽成"合法步总数"。</li>
+<li><strong><code>startPos</code> 不修改</strong>：式 (3) 中 <span class="arithmatex">\(p_0\)</span> 对所有 <span class="arithmatex">\(i\)</span> 是同一常量；每个 <span class="arithmatex">\(i\)</span> 必须从原起点出发，复用上次结束位置会破坏 <span class="arithmatex">\(p_0\)</span> 的固定性。</li>
+<li><strong>维度顺序 <code>(row, col)</code></strong>：映射 (1) 规定 L/R 改 col、U/D 改 row；写反方向是高频错误。</li>
 </ul>
 <h2 id="related">相关题目 (Related)<a class="headerlink" href="#related" title="Permanent link">#</a></h2>
 <ul>

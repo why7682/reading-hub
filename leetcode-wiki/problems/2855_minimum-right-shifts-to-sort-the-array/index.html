@@ -5485,6 +5485,8 @@
       
         
       
+        
+      
     
     
     
@@ -6024,6 +6026,34 @@
     
   
     #93. Restore IP Addresses
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../0102_binary-tree-level-order-traversal/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    #102. Binary Tree Level Order Traversal
   
 
     
@@ -22675,26 +22705,31 @@
 <h2 id="problem">Problem<a class="headerlink" href="#problem" title="Permanent link">#</a></h2>
 <p>含<strong>不同</strong>正整数的数组 <code>nums</code>。求让其升序的最小右移次数（右移 = 把每个 <code>i</code> 处元素移到 <code>(i+1) % n</code>），不可能则 -1。约束 <span class="arithmatex">\(1 \le n \le 100\)</span>，元素 distinct。</p>
 <h2 id="background">背景 (Background)<a class="headerlink" href="#background" title="Permanent link">#</a></h2>
-<p>本题是<strong>"经过 <span class="arithmatex">\(k\)</span> 次旋转的有序数组"</strong> 的反向问题——给旋转结果反推旋转步数。这种结构在 #33 "Search in Rotated Sorted Array"、#153 "Find Minimum in Rotated Sorted Array" 中也出现。关键观察：升序数组循环移位后<strong>至多有一处 <code>nums[i] &gt; nums[i+1]</code></strong>（"断点"），断点位置 = 原始下标 0 在新数组中的位置 = 右移次数 = <span class="arithmatex">\(n - \text{断点位置}\)</span>。</p>
+<p>最直接的做法是把定义照搬：对每个候选 <span class="arithmatex">\(k = 0, 1, \dots, n-1\)</span>，把 <code>nums</code> 右移 <span class="arithmatex">\(k\)</span> 次，检查结果是否升序，返回第一个成功的 <span class="arithmatex">\(k\)</span>，全失败则 -1。每次右移加检查是 <span class="arithmatex">\(O(n)\)</span>，共 <span class="arithmatex">\(n\)</span> 个候选，总计 <span class="arithmatex">\(O(n^2)\)</span>。在 <span class="arithmatex">\(n \le 100\)</span> 下这完全够用。</p>
+<p>但这种枚举忽略了一个结构事实：能通过右移排好的数组，本身就带有一个可以一眼读出 <span class="arithmatex">\(k\)</span> 的"指纹"。下面从右移与升序两个定义出发，把这个指纹刻画出来，从而把 <span class="arithmatex">\(O(n^2)\)</span> 的枚举降成一次 <span class="arithmatex">\(O(n)\)</span> 扫描。</p>
 <h2 id="formulation">形式化 (Formulation)<a class="headerlink" href="#formulation" title="Permanent link">#</a></h2>
-<p>设原数组排序后为 <span class="arithmatex">\(a^*\)</span>，右移 <span class="arithmatex">\(k\)</span> 次得 <span class="arithmatex">\(\text{nums}[i] = a^*[(i - k) \bmod n]\)</span>。即 <span class="arithmatex">\(\text{nums}\)</span> 是 <span class="arithmatex">\(a^*\)</span> 的循环移位。</p>
-<p>求 <span class="arithmatex">\(k\)</span> 或 <span class="arithmatex">\(-1\)</span>。</p>
+<p><strong>直觉</strong>：把一个升序数组循环右移若干位，原本处处递增的相邻关系只在一个地方被破坏——绕回点。其余每一对相邻元素仍保持原来的递增。因此"右移后的升序数组"恰好有 0 或 1 个下降处，而下降处的位置正好编码了移了多少位。下面把这句话写成等式。</p>
+<p>设 <code>nums</code> 排序后的升序数组为 <span class="arithmatex">\(a^*\)</span>（即 <span class="arithmatex">\(a^*\)</span> 是 <code>nums</code> 中元素从小到大的排列）。题目把 <code>nums</code> 右移 <span class="arithmatex">\(k\)</span> 次后要得到 <span class="arithmatex">\(a^*\)</span>。右移一次把下标 <span class="arithmatex">\(i\)</span> 的元素送到 <span class="arithmatex">\((i+1) \bmod n\)</span>，右移 <span class="arithmatex">\(k\)</span> 次把下标 <span class="arithmatex">\(i\)</span> 的元素送到 <span class="arithmatex">\((i+k) \bmod n\)</span>。于是"右移 <span class="arithmatex">\(k\)</span> 次得到升序"这一条件可写为</p>
+<div class="arithmatex">\[a^*[(i + k) \bmod n] = \text{nums}[i], \qquad i = 0, 1, \dots, n-1.\]</div>
+<p>等价地，</p>
+<div class="arithmatex">\[\text{nums}[i] = a^*[(i - k) \bmod n]. \tag{1}\]</div>
+<p>即 <code>nums</code> 本身就是升序数组 <span class="arithmatex">\(a^*\)</span> 的一个循环移位。我们要从 <code>nums</code> 反推出 <span class="arithmatex">\(k\)</span>，或判定无解。</p>
 <h2 id="approach">数据结构 / 想法 (Approach)<a class="headerlink" href="#approach" title="Permanent link">#</a></h2>
-<p>扫数组找所有 "下降点" 个数 <span class="arithmatex">\(c\)</span>（<span class="arithmatex">\(i: \text{nums}[i] &gt; \text{nums}[(i+1) \bmod n]\)</span>）：
-- <span class="arithmatex">\(c = 0\)</span>：已排序，0 次右移。
-- <span class="arithmatex">\(c = 1\)</span>：恰一个断点位置 <span class="arithmatex">\(b\)</span>（即 <span class="arithmatex">\(\text{nums}[b] &gt; \text{nums}[b+1]\)</span>），右移次数 = <span class="arithmatex">\(n - 1 - b\)</span>（断点后是原最小元素，要让它到位置 0 需右移 <span class="arithmatex">\(n - 1 - b\)</span> 次）。</p>
-<p>实际上更简洁：断点是 <span class="arithmatex">\(\text{nums}[b]\)</span> 与 <span class="arithmatex">\(\text{nums}[b+1]\)</span> 之间，且 <span class="arithmatex">\(\text{nums}[b+1]\)</span> 应位于原始位置 0。右移 <span class="arithmatex">\(k\)</span> 后 <span class="arithmatex">\(\text{nums}[k] = a^*[0]\)</span>，所以 <span class="arithmatex">\(k = b + 1\)</span>。</p>
-<p>不过等一下，让我再 trace 例子：<code>nums=[3,4,5,1,2]</code>，downward at b=2 (5→1)；k 应 = ?。原数组 sorted [1,2,3,4,5]。右移 2 次：<code>[4,5,1,2,3]→[3,4,5,1,2]</code>. So k=2. b+1=3? 那不对。</p>
-<p>重新算：<span class="arithmatex">\(\text{nums}[i] = a^*[(i - k) \bmod n]\)</span>。<span class="arithmatex">\(\text{nums}[k] = a^*[0] = 1\)</span>。在 nums 中 1 在下标 3 = <span class="arithmatex">\(k\)</span>，所以 <span class="arithmatex">\(k = 3\)</span>？但题目答案是 2，所以方向反了。</p>
-<p>LeetCode 的"右移"定义是 <code>i → (i+1) % n</code>，即每个元素往右挪一位，最右的绕到最左。所以右移 <span class="arithmatex">\(k\)</span> 次后 <span class="arithmatex">\(\text{nums}_{\text{new}}[(i + k) \bmod n] = \text{nums}_{\text{old}}[i]\)</span>，等价于 <span class="arithmatex">\(\text{nums}_{\text{new}}[j] = \text{nums}_{\text{old}}[(j - k) \bmod n]\)</span>。</p>
-<p>设题目给 <code>nums</code> 是 sorted 数组 <span class="arithmatex">\(a^*\)</span> 右移 <span class="arithmatex">\(k\)</span> 次的结果，则 <span class="arithmatex">\(\text{nums}[j] = a^*[(j - k) \bmod n]\)</span>。<span class="arithmatex">\(\text{nums}[k] = a^*[0]\)</span> = 最小元素。</p>
-<p>样例 1: <code>[3,4,5,1,2]</code>. 最小元 1 在下标 3。所以 <span class="arithmatex">\(k = 3\)</span>？但题目说 <span class="arithmatex">\(k = 2\)</span>。让我检查"右移"定义。</p>
-<p>"After the first right shift, nums = [2,3,4,5,1]" — 原 [3,4,5,1,2]，右移 1 次得 [2,3,4,5,1]。即最后的 2 移到前面。再右移 1 次：[1,2,3,4,5]。所以 2 次右移。</p>
-<p>按"每个 <code>i</code> 移到 <code>(i+1) % n</code>"：原 nums = [3,4,5,1,2]。新 nums[(0+1)%5=1] = 3, 新 nums[(1+1)%5=2] = 4, ..., 新 nums[(4+1)%5=0] = 2。新 = [2,3,4,5,1]. ✓</p>
-<p>所以这里 <code>nums</code> 是初始 unsorted 数组，我们要把它<strong>变成</strong> sorted 数组。<span class="arithmatex">\(k\)</span> 次右移后变 sorted：<span class="arithmatex">\(a^*[j] = \text{nums}[(j - k) \bmod n]\)</span>，即 <span class="arithmatex">\(\text{nums}[(j - k) \bmod n] = a^*[j]\)</span>，故 <span class="arithmatex">\(\text{nums}[i] = a^*[(i + k) \bmod n]\)</span>。</p>
-<p><span class="arithmatex">\(\text{nums}[0] = a^*[k \bmod n]\)</span>. 在样例 1，nums[0]=3 而 sorted[2]=3，所以 <span class="arithmatex">\(k=2\)</span>。✓</p>
-<p><strong>简便方法</strong>：找 nums 中最小元素的下标 <span class="arithmatex">\(m\)</span>（这里 nums[3]=1，m=3）。右移 <span class="arithmatex">\(k\)</span> 次让 <span class="arithmatex">\(a^*[0]=\)</span> 最小元素到 nums 的位置 0：<span class="arithmatex">\(\text{nums}_{\text{new}}[0] = \text{nums}_{\text{old}}[(-k) \bmod n]\)</span>，要 = 最小元，即 nums[(-k) mod n] = 1，下标 (-k) mod n = m，所以 k = (n - m) mod n。<br />
-样例 1：m=3, k=(5-3)%5=2。✓</p>
+<p><strong>下降处计数。</strong> 定义 <code>nums</code> 在环上的下降处个数</p>
+<div class="arithmatex">\[c = \bigl|\{\, i : \text{nums}[i] &gt; \text{nums}[(i+1) \bmod n] \,\}\bigr|,\]</div>
+<p>其中 <span class="arithmatex">\((i+1) \bmod n\)</span> 让 <span class="arithmatex">\(i = n-1\)</span> 与 <span class="arithmatex">\(i = 0\)</span> 这一对也参与比较。由式 (1)，<code>nums</code> 是 <span class="arithmatex">\(a^*\)</span> 的循环移位，而 <span class="arithmatex">\(a^*\)</span> 在环上只在 <span class="arithmatex">\(a^*[n-1]\)</span> 到 <span class="arithmatex">\(a^*[0]\)</span> 这一处下降（升序数组内部处处递增，仅绕回点是降的）。循环移位保留全部 <span class="arithmatex">\(n\)</span> 对相邻关系，只是整体旋转，所以下降处的个数不变：</p>
+<ul>
+<li><span class="arithmatex">\(c = 0\)</span>：<code>nums</code> 已经升序（绕回点这一处都不构成下降，只可能发生在 <span class="arithmatex">\(a^*\)</span> 自身没被移动时），答案 0。</li>
+<li><span class="arithmatex">\(c = 1\)</span>：恰好一个下降处，是被旋转的升序数组，存在唯一的 <span class="arithmatex">\(k\)</span>。</li>
+<li><span class="arithmatex">\(c \ge 2\)</span>：<code>nums</code> 不是任何升序数组的循环移位，无法靠右移排好，返回 -1。</li>
+</ul>
+<p><strong>从下降处读出 <span class="arithmatex">\(k\)</span>。</strong> 设唯一的下降处在下标 <span class="arithmatex">\(b\)</span>，即 <span class="arithmatex">\(\text{nums}[b] &gt; \text{nums}[(b+1) \bmod n]\)</span>。下降处的右邻 <span class="arithmatex">\(\text{nums}[(b+1) \bmod n]\)</span> 必是全局最小元 <span class="arithmatex">\(a^*[0]\)</span>：它左边（环上 <span class="arithmatex">\(b+1\)</span> 之前的那段）整段都大于它右边的那段，唯有最小元能扛起这个分界。</p>
+<p>由式 (1)，<span class="arithmatex">\(\text{nums}[i] = a^*[(i-k) \bmod n]\)</span>，令右端取到 <span class="arithmatex">\(a^*[0]\)</span>，得最小元落在下标 <span class="arithmatex">\(i\)</span> 满足 <span class="arithmatex">\((i - k) \bmod n = 0\)</span>，即 <span class="arithmatex">\(i = k \bmod n\)</span>。又最小元就在下标 <span class="arithmatex">\((b+1) \bmod n\)</span>，故</p>
+<div class="arithmatex">\[k = (b + 1) \bmod n. \tag{2}\]</div>
+<p>这是把 <code>nums</code> 右移到升序所需的次数吗？再核对方向：要使最小元从其当前下标 <span class="arithmatex">\(m = (b+1) \bmod n\)</span> 移到升序数组的 0 号位，右移把下标加上 <span class="arithmatex">\(k\)</span>，需 <span class="arithmatex">\((m + k) \bmod n = 0\)</span>，即 <span class="arithmatex">\(k = (n - m) \bmod n = (n - (b+1)) \bmod n\)</span>。</p>
+<p>两式 (2) 与这一行看似不同，根源在 LeetCode 右移的方向：右移让元素整体向高下标走，最小元要到 0 号位需要走的步数是 <span class="arithmatex">\(n - m\)</span> 而非 <span class="arithmatex">\(m\)</span>。以 <span class="arithmatex">\(\text{nums} = [3,4,5,1,2]\)</span> 验证：唯一下降处 <span class="arithmatex">\(b = 2\)</span>（<span class="arithmatex">\(5 &gt; 1\)</span>），最小元 <span class="arithmatex">\(1\)</span> 在下标 <span class="arithmatex">\(m = 3\)</span>。右移 1 次得 <span class="arithmatex">\([2,3,4,5,1]\)</span>，再 1 次得 <span class="arithmatex">\([1,2,3,4,5]\)</span>，故 <span class="arithmatex">\(k = 2\)</span>。代入 <span class="arithmatex">\(k = (n - (b+1)) \bmod n = (5 - 3) \bmod 5 = 2\)</span>，吻合；而 <span class="arithmatex">\((b+1) \bmod n = 3\)</span> 不对。<strong>结论：正确公式为</strong></p>
+<div class="arithmatex">\[\boxed{\,k = \bigl(n - (b+1)\bigr) \bmod n = (n - 1 - b) \bmod n.\,} \tag{3}\]</div>
+<p>对真正的单下降情形，<span class="arithmatex">\(n-1-b\)</span> 已落在 <span class="arithmatex">\([0, n)\)</span> 内，<span class="arithmatex">\(\bmod\, n\)</span> 不改变结果，仅为形式完整保留。整条链是：式 (1) 给出 <code>nums</code> 是循环移位 → 下降处计数判出 0/1/无解 → 式 (3) 由下降处下标直接算出 <span class="arithmatex">\(k\)</span>，对应下面的代码。</p>
 <div class="language-python highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">minimumRightShifts</span><span class="p">(</span><span class="n">nums</span><span class="p">):</span>
     <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">nums</span><span class="p">)</span>
     <span class="c1"># find single descent point</span>
@@ -22712,9 +22747,10 @@
     <span class="c1"># k = (n - (bp+1)) % n</span>
     <span class="k">return</span> <span class="p">(</span><span class="n">n</span> <span class="o">-</span> <span class="p">(</span><span class="n">bp</span> <span class="o">+</span> <span class="mi">1</span><span class="p">))</span> <span class="o">%</span> <span class="n">n</span>
 </code></pre></div>
-<p>样例 1：<code>[3,4,5,1,2]</code>. breaks at i=2 (5&gt;1). bp=2. k=(5-3)%5=2。✓<br />
-样例 2：<code>[1,3,5]</code>. breaks=0, return 0. ✓<br />
-样例 3：<code>[2,1,4]</code>. break at i=0 (2&gt;1), i=2 (4&gt;2). breaks=2 → -1. ✓</p>
+<p><strong>验证 (Verification)</strong>：
+样例 1：<code>[3,4,5,1,2]</code>. 下降处 <span class="arithmatex">\(i=2\)</span>（<span class="arithmatex">\(5&gt;1\)</span>），<span class="arithmatex">\(b=2\)</span>，<span class="arithmatex">\(k=(5-3)\%5=2\)</span>。✓
+样例 2：<code>[1,3,5]</code>. <span class="arithmatex">\(c=0\)</span>，return 0。✓
+样例 3：<code>[2,1,4]</code>. 下降处 <span class="arithmatex">\(i=0\)</span>（<span class="arithmatex">\(2&gt;1\)</span>）与 <span class="arithmatex">\(i=2\)</span>（<span class="arithmatex">\(4&gt;2\)</span>），<span class="arithmatex">\(c=2 \to -1\)</span>。✓</p>
 <h2 id="complexity">复杂度 (Complexity)<a class="headerlink" href="#complexity" title="Permanent link">#</a></h2>
 <ul>
 <li>Time <span class="arithmatex">\(O(n)\)</span>, Space <span class="arithmatex">\(O(1)\)</span>.</li>

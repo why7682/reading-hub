@@ -5485,6 +5485,8 @@
       
         
       
+        
+      
     
     
     
@@ -6024,6 +6026,34 @@
     
   
     #93. Restore IP Addresses
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../0102_binary-tree-level-order-traversal/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    #102. Binary Tree Level Order Traversal
   
 
     
@@ -22675,11 +22705,15 @@
 <h2 id="problem">Problem<a class="headerlink" href="#problem" title="Permanent link">#</a></h2>
 <p>给排序的税阶 <code>brackets[i] = [upper_i, percent_i]</code>：前 <span class="arithmatex">\(\text{upper}_0\)</span> 美元税率 <span class="arithmatex">\(\text{percent}_0\)</span>%，下一段 <span class="arithmatex">\(\text{upper}_1 - \text{upper}_0\)</span> 美元税率 <span class="arithmatex">\(\text{percent}_1\)</span>%，依此类推。给 income，求应缴税额（误差 <span class="arithmatex">\(\le 10^{-5}\)</span>）。</p>
 <h2 id="background">背景 (Background)<a class="headerlink" href="#background" title="Permanent link">#</a></h2>
-<p>本题为分段线性函数的求值——所得税系统的标准模型，与 piecewise-linear regression、活动选择中的「斜率累加」结构同源。无更深算法。</p>
+<p>先试最直接的算法：取一个税率，乘以全部 income。但题目里没有「一个税率」——<code>brackets</code> 给出的是 <span class="arithmatex">\(k\)</span> 个不同税率 <span class="arithmatex">\(p_0, \dots, p_{k-1}\)</span>，分别作用在收入的不同区段上。第一段 <span class="arithmatex">\([0, u_0]\)</span> 用 <span class="arithmatex">\(p_0\)</span>，第二段 <span class="arithmatex">\([u_0, u_1]\)</span> 用 <span class="arithmatex">\(p_1\)</span>，依此类推。任何单一税率都会算错：高收入区段的高税率不该套到低收入部分，反之亦然。</p>
+<p>这正是问题的结构所在。把应缴税 <span class="arithmatex">\(T\)</span> 看成 income 的函数：在每个区段内，多挣一美元就多缴固定的 <span class="arithmatex">\(p_i/100\)</span> 美元税，所以 <span class="arithmatex">\(T(\text{income})\)</span> 在每段上是斜率为 <span class="arithmatex">\(p_i/100\)</span> 的线段，斜率在边界 <span class="arithmatex">\(u_i\)</span> 处跳变——<span class="arithmatex">\(T\)</span> 是 income 的分段线性函数。求值它，就要确定 income 落在哪些段、各段贡献多少。单一税率失败的根源，就是它把这条折线压成了一条直线。</p>
 <h2 id="formulation">形式化 (Formulation)<a class="headerlink" href="#formulation" title="Permanent link">#</a></h2>
-<p>设 <span class="arithmatex">\(u_0 &lt; u_1 &lt; \dots &lt; u_{k-1}\)</span>, <span class="arithmatex">\(p_i\)</span> 为税率。令 <span class="arithmatex">\(u_{-1} = 0\)</span>. 应缴税 = <span class="arithmatex">\(\sum_{i=0}^{k-1} \frac{p_i}{100} \cdot \bigl(\min(\text{income}, u_i) - \min(\text{income}, u_{i-1})\bigr)\)</span>（当 <span class="arithmatex">\(\min(\text{income}, u_{i-1}) \ge \text{income}\)</span> 时该项为 0）。</p>
+<p>设 <span class="arithmatex">\(u_0 &lt; u_1 &lt; \dots &lt; u_{k-1}\)</span> 为各档上界，<span class="arithmatex">\(p_i\)</span> 为对应税率，并约定 <span class="arithmatex">\(u_{-1} = 0\)</span>（第一档的下界，即零收入）。</p>
+<p>先想清楚单个区段缴多少税。第 <span class="arithmatex">\(i\)</span> 档只对落在 <span class="arithmatex">\([u_{i-1}, u_i]\)</span> 内的那部分收入征税。这部分收入的宽度由两端各取 <span class="arithmatex">\(\min\)</span> 得到：上界处是 <span class="arithmatex">\(\min(\text{income}, u_i)\)</span>，下界处是 <span class="arithmatex">\(\min(\text{income}, u_{i-1})\)</span>，二者之差就是收入在本档内的可征部分。income 一旦在更早的档里耗尽，两个 <span class="arithmatex">\(\min\)</span> 相等，差为 0，本档不再贡献。把各档贡献按税率加权求和：</p>
+<div class="arithmatex">\[T = \sum_{i=0}^{k-1} \frac{p_i}{100} \cdot \bigl(\min(\text{income}, u_i) - \min(\text{income}, u_{i-1})\bigr).\]</div>
+<p>这个 <span class="arithmatex">\(\min\)</span> 差结构同时回答了上面提的两个隐患。当 income 落在第 <span class="arithmatex">\(i\)</span> 档之内（<span class="arithmatex">\(u_{i-1} &lt; \text{income} \le u_i\)</span>）时，差为 <span class="arithmatex">\(\text{income} - u_{i-1}\)</span>，只对超出下界的部分征税；当 income 已被前面的档耗尽（<span class="arithmatex">\(\min(\text{income}, u_{i-1}) = \text{income}\)</span>）时，差自动为 0。后者无需额外判断，是 <span class="arithmatex">\(\min\)</span> 形式直接蕴含的。</p>
 <h2 id="approach">数据结构 / 想法 (Approach)<a class="headerlink" href="#approach" title="Permanent link">#</a></h2>
-<p>线性扫描，维护 <code>prev = 上一档上界</code>（初始 0）：</p>
+<p>公式即算法。逐项求和，唯一需要的状态是 <span class="arithmatex">\(u_{i-1}\)</span>——即「上一档的上界」。用一个变量 <code>prev</code> 携带它，按 <span class="arithmatex">\(u_{-1} = 0\)</span> 初始化为 0，每处理完一档就把 <code>prev</code> 更新为本档上界。循环体里，<code>amt</code> 恰好计算 <span class="arithmatex">\(\min(\text{income}, u_i) - \text{prev}\)</span>，即公式中第 <span class="arithmatex">\(i\)</span> 项的 <span class="arithmatex">\(\min\)</span> 差，再乘 <code>pct / 100</code> 累加进 <code>tax</code>。代码变量与数学符号一一对应：<code>prev</code> <span class="arithmatex">\(= u_{i-1}\)</span>，<code>upper</code> <span class="arithmatex">\(= u_i\)</span>，<code>amt</code> <span class="arithmatex">\(=\)</span> 第 <span class="arithmatex">\(i\)</span> 项的可征宽度。</p>
 <div class="language-python highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">Solution</span><span class="p">:</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">calculateTax</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">brackets</span><span class="p">,</span> <span class="n">income</span><span class="p">):</span>
         <span class="n">prev</span><span class="p">,</span> <span class="n">tax</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="mf">0.0</span>
@@ -22691,19 +22725,20 @@
                 <span class="k">break</span>
         <span class="k">return</span> <span class="n">tax</span>
 </code></pre></div>
+<p><code>break</code> 也直接来自公式。一旦 <code>income &lt;= upper</code>，即 income 落在或低于当前档上界，则对之后所有档 <span class="arithmatex">\(j\)</span> 都有 <span class="arithmatex">\(\min(\text{income}, u_j) = \text{income} = \min(\text{income}, u_{j-1})\)</span>，<span class="arithmatex">\(\min\)</span> 差恒为 0，后续项全部不贡献。提前退出只是跳过这些已知为零的项，不改变结果。</p>
 <p>样例 1：brackets=[[3,50],[7,10],[12,25]], income=10.
 - (3,50): amt=min(10,3)-0=3, tax=1.5, prev=3.
 - (7,10): amt=min(10,7)-3=4, tax=1.5+0.4=1.9, prev=7.
 - (12,25): amt=min(10,12)-7=3, tax=1.9+0.75=2.65. break. ✅</p>
 <h2 id="complexity">复杂度 (Complexity)<a class="headerlink" href="#complexity" title="Permanent link">#</a></h2>
 <ul>
-<li>Time: <span class="arithmatex">\(O(k)\)</span>。</li>
-<li>Space: <span class="arithmatex">\(O(1)\)</span>。</li>
+<li>Time: <span class="arithmatex">\(O(k)\)</span>。最坏情况 income 超过所有档上界，需扫完全部 <span class="arithmatex">\(k\)</span> 档；<code>break</code> 只改善常数。</li>
+<li>Space: <span class="arithmatex">\(O(1)\)</span>，仅 <code>prev</code> 与 <code>tax</code> 两个标量。</li>
 </ul>
 <h2 id="pitfalls">陷阱 (Pitfalls)<a class="headerlink" href="#pitfalls" title="Permanent link">#</a></h2>
 <ul>
-<li><code>min(income, upper) - prev</code> 可能为负（income &lt; prev），用 <code>max(0, ...)</code> 兜底。</li>
-<li>浮点累加 1e-5 容忍度足够，不需用整数。</li>
+<li><code>max(0, ...)</code> 在本实现里是冗余的防御，不是承重的。因为有 <code>if income &lt;= upper: break</code>，只有 <code>income &gt; upper</code> 时才进入下一档，故每次迭代都有 <code>income &gt; prev</code>，配合严格递增的上界，<code>min(income, upper) - prev</code> 始终严格为正（20 万随机用例验证：原始项为负 0 次）。它真正承重的场景是<strong>去掉 break 的变体</strong>：那时 income 耗尽后仍会遍历后续档，<code>min(income, upper) - prev</code> 会变负，必须 <code>max(0, ...)</code> 兜底，否则会从税里减掉不存在的负贡献（例如 brackets=[[3,50],[7,10],[12,25]], income=5 会算成 1.2 而非正确的 1.7）。</li>
+<li>浮点累加 1e-5 容忍度足够：income 与上界 <span class="arithmatex">\(\le 1000\)</span>、税率为 0–100 整数，float64 累加误差远小于阈值，不需用整数。</li>
 </ul>
 <h2 id="related">相关题目 (Related)<a class="headerlink" href="#related" title="Permanent link">#</a></h2>
 <ul>

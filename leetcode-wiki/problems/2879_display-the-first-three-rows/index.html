@@ -5485,6 +5485,8 @@
       
         
       
+        
+      
     
     
     
@@ -6024,6 +6026,34 @@
     
   
     #93. Restore IP Addresses
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../0102_binary-tree-level-order-traversal/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    #102. Binary Tree Level Order Traversal
   
 
     
@@ -22673,30 +22703,42 @@
 <h1 id="2879-display-the-first-three-rows-easy">2879. Display the First Three Rows  🟢 Easy<a class="headerlink" href="#2879-display-the-first-three-rows-easy" title="Permanent link">#</a></h1>
 <p><strong>Tags</strong>: Pandas, DataFrame</p>
 <h2 id="problem">Problem<a class="headerlink" href="#problem" title="Permanent link">#</a></h2>
-<p>给定 pandas DataFrame <code>employees</code>，返回其前 <span class="arithmatex">\(3\)</span> 行。这是 pandas / DataFrame 入门题，几乎是 <code>.head(3)</code> 的一行解。</p>
+<p>给定 pandas DataFrame <code>employees</code>，返回其前 <span class="arithmatex">\(3\)</span> 行。</p>
 <h2 id="background">背景 (Background)<a class="headerlink" href="#background" title="Permanent link">#</a></h2>
-<p>本题属于"30 Days of Pandas"系列的最基础环节，目的是熟悉 pandas API。不挂任何算法/数学背景。</p>
+<p>本题属于 "30 Days of Pandas" 系列的最基础环节，目的是熟悉 pandas API，不涉及任何算法或数学背景知识。它提出的具体问题是：给定一张 <span class="arithmatex">\(n\)</span> 行的表，如何恰好取出开头的 <span class="arithmatex">\(3\)</span> 行。下面先把这个问题写成精确的切片，再让 API 直接落在这个切片上。</p>
 <h2 id="formulation">形式化 (Formulation)<a class="headerlink" href="#formulation" title="Permanent link">#</a></h2>
-<p>设 DataFrame 为 <span class="arithmatex">\(D\)</span> 含 <span class="arithmatex">\(n\)</span> 行 <span class="arithmatex">\(m\)</span> 列，输出 <span class="arithmatex">\(D[0\!:\!\min(3, n)]\)</span>（前 <span class="arithmatex">\(3\)</span> 行的切片）。</p>
+<p>设 DataFrame 为 <span class="arithmatex">\(D\)</span>，含 <span class="arithmatex">\(n\)</span> 行 <span class="arithmatex">\(m\)</span> 列。"取前 <span class="arithmatex">\(3\)</span> 行"是行索引上的一个<strong>前缀切片</strong>：从第 <span class="arithmatex">\(0\)</span> 行起，取到第 <span class="arithmatex">\(3\)</span> 行（不含）。当 <span class="arithmatex">\(n &lt; 3\)</span> 时表里根本没有 <span class="arithmatex">\(3\)</span> 行，上界必须收缩到 <span class="arithmatex">\(n\)</span>。用 <span class="arithmatex">\(\min\)</span> 把这两种情形写成同一个表达式：</p>
+<div class="arithmatex">\[
+\text{output} = D[\,0 : \min(3, n)\,].
+\]</div>
+<p>这里 <span class="arithmatex">\(\min(3, n)\)</span> 不是额外的特判，而是切片上界的自然写法：<span class="arithmatex">\(n \ge 3\)</span> 时取 <span class="arithmatex">\(3\)</span>，<span class="arithmatex">\(n &lt; 3\)</span> 时取 <span class="arithmatex">\(n\)</span>。后面会看到，本题几乎所有结论——包括短表不报错、复杂度的量级——都可以直接从这个表达式读出来。</p>
 <h2 id="approach">数据结构 / 想法 (Approach)<a class="headerlink" href="#approach" title="Permanent link">#</a></h2>
+<p>从零开始想：拿到 <span class="arithmatex">\(D[0:\min(3,n)]\)</span> 这个切片，最朴素的实现是手动遍历。写一个 <code>for i in range(min(3, len(employees)))</code> 把前几行逐行收集起来，或者干脆用原生切片 <code>employees[:3]</code> 让 pandas 替你做边界处理。这两种写法都能得到正确答案，但前者要自己算 <span class="arithmatex">\(\min(3,n)\)</span> 的上界、自己拼回 DataFrame，啰嗦且容易在空表上出错。</p>
+<p>朴素写法的麻烦在于：前缀切片是一个如此常见的操作，重复造轮子不值得。问题自然变成——pandas 有没有为"取前 <span class="arithmatex">\(k\)</span> 行"提供内置方法？有，就是 <code>head</code>。于是三种写法其实是同一个切片 <span class="arithmatex">\(D[0:\min(3,n)]\)</span> 的不同表达：</p>
 <ul>
-<li><code>DataFrame.head(n=5)</code> 默认返回前 5 行，传入 3 即可。</li>
-<li>等价写法：<code>employees.iloc[:3]</code> 或切片 <code>employees[:3]</code>。</li>
-<li><code>.head()</code> 不会修改原 DataFrame，返回视图/副本（取决于实现），无需 <code>inplace</code>。</li>
+<li><code>employees.head(3)</code> —— <code>head(k)</code> 的语义就是"取前 <span class="arithmatex">\(k\)</span> 行"，是这个切片的惯用写法。<code>head</code> 默认 <span class="arithmatex">\(k=5\)</span>，传入 <span class="arithmatex">\(3\)</span> 即可。</li>
+<li><code>employees.iloc[:3]</code> —— 按整数位置切片，显式对应 <span class="arithmatex">\(D[0:3]\)</span>。</li>
+<li><code>employees[:3]</code> —— 原生切片，等价于上面两者。</li>
 </ul>
+<p>这三种写法的结果完全相同（用 <code>df.equals()</code> 验证均为 <code>True</code>）。它们都不修改原 DataFrame，而是返回一个新对象，因此无需 <code>inplace</code> 参数。</p>
 <div class="language-python highlight"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
 
 <span class="k">def</span><span class="w"> </span><span class="nf">selectFirstRows</span><span class="p">(</span><span class="n">employees</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
     <span class="k">return</span> <span class="n">employees</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
 </code></pre></div>
 <h2 id="complexity">复杂度 (Complexity)<a class="headerlink" href="#complexity" title="Permanent link">#</a></h2>
+<p>关键观察：取前 <span class="arithmatex">\(3\)</span> 行不需要扫描全表。它是行索引上的前缀操作——只读开头的 <span class="arithmatex">\(\min(3,n)\)</span> 行，不对任何一行做谓词判断，所以代价与总行数 <span class="arithmatex">\(n\)</span> 无关。这一点把它和"按条件筛选行"区分开：后者必须遍历全部 <span class="arithmatex">\(n\)</span> 行。</p>
+<p>但代价与列数 <span class="arithmatex">\(m\)</span> 有关。<code>head</code> 会把这 <span class="arithmatex">\(\min(3,n)\)</span> 行在全部 <span class="arithmatex">\(m\)</span> 列上<strong>物化</strong>成一个新 DataFrame（实测 <code>np.shares_memory(...)</code> 为 <code>False</code>，且改动结果不影响原表——返回的是副本而非视图）。物化的单元格数为 <span class="arithmatex">\(\min(3,n)\cdot m\)</span>，即 <span class="arithmatex">\(O(m)\)</span>。</p>
 <ul>
-<li>Time: <span class="arithmatex">\(O(1)\)</span> 摊销（head 走的是位置索引，不复制全表）。</li>
-<li>Space: <span class="arithmatex">\(O(1)\)</span> 额外（返回的是视图）。</li>
+<li>Time: <span class="arithmatex">\(O(m)\)</span>。行数固定为常数 <span class="arithmatex">\(\min(3,n)\le 3\)</span>，与 <span class="arithmatex">\(n\)</span> 无关；但要复制这几行的全部 <span class="arithmatex">\(m\)</span> 列。</li>
+<li>Space: <span class="arithmatex">\(O(m)\)</span> 额外。返回的副本需为 <span class="arithmatex">\(\min(3,n)\cdot m\)</span> 个单元格分配新内存。</li>
 </ul>
+<blockquote>
+<p>注：若把列数 <span class="arithmatex">\(m\)</span> 视为固定常数，两者退化为 <span class="arithmatex">\(O(1)\)</span>；但 <code>head</code> 返回的是副本而非视图，"零额外空间"的说法并不成立。</p>
+</blockquote>
 <h2 id="pitfalls">陷阱 (Pitfalls)<a class="headerlink" href="#pitfalls" title="Permanent link">#</a></h2>
 <ul>
-<li>若行数 <span class="arithmatex">\(&lt; 3\)</span>，<code>head(3)</code> 不会报错，返回全部已有行。无需手动判断长度。</li>
+<li><strong>短表不会报错</strong>：若行数 <span class="arithmatex">\(n &lt; 3\)</span>，<code>head(3)</code> 不会抛异常，而是返回全部已有行（空表则返回空表）。这不是 <code>head</code> 的特例，而是切片上界 <span class="arithmatex">\(\min(3,n)\)</span> 的直接后果——当 <span class="arithmatex">\(n&lt;3\)</span> 时 <span class="arithmatex">\(\min(3,n)=n\)</span>，切片变成 <span class="arithmatex">\(D[0:n]\)</span>，恰好是整张表。无需手动判断长度，形式化里的 <span class="arithmatex">\(\min\)</span> 已经替你兜住了这个边界。</li>
 </ul>
 <h2 id="related">相关题目 (Related)<a class="headerlink" href="#related" title="Permanent link">#</a></h2>
 <ul>

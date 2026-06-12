@@ -5485,6 +5485,8 @@
       
         
       
+        
+      
     
     
     
@@ -6024,6 +6026,34 @@
     
   
     #93. Restore IP Addresses
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../0102_binary-tree-level-order-traversal/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    #102. Binary Tree Level Order Traversal
   
 
     
@@ -22675,18 +22705,34 @@
 <h2 id="problem">Problem<a class="headerlink" href="#problem" title="Permanent link">#</a></h2>
 <p><span class="arithmatex">\(m \times n\)</span> 网格中每格为正整数。「拐角路径」是先沿一个方向（水平/垂直）走，最多拐一次，再沿另一方向走。求所有拐角路径中乘积的尾零最大值。<span class="arithmatex">\(m \cdot n \le 10^5\)</span>。</p>
 <h2 id="background">背景 (Background)<a class="headerlink" href="#background" title="Permanent link">#</a></h2>
-<p>「乘积尾零」= <span class="arithmatex">\(\min(\nu_2, \nu_5)\)</span>，其中 <span class="arithmatex">\(\nu_p\)</span> 是乘积中素因子 <span class="arithmatex">\(p\)</span> 的次数。这是初等数论中 <strong>p-adic valuation</strong> 的直接应用（同样的思想出现在 Legendre's formula 计算 <span class="arithmatex">\(n!\)</span> 的尾零）。再叠加二维前缀和处理「路径求和」，便是矩阵上线性扫描的标准做法。</p>
+<p>最直接的想法是穷举：枚举每一条拐角路径，把路径上所有格子相乘，数乘积末尾有几个零，取最大值。这能算出答案，但它会在两处崩掉，而每一处的修补恰好引出本题的两件工具。</p>
+<p><strong>第一处崩在「数尾零」上。</strong> 路径乘积可以非常大（每格可达 <span class="arithmatex">\(10^9\)</span>，路径长可达 <span class="arithmatex">\(m+n\)</span>），直接相乘会溢出，把它当大整数再逐位数零也很慢。要绕开乘积本身，得问：一个整数末尾的零究竟由什么决定？一个尾零对应一个因子 <span class="arithmatex">\(10 = 2 \times 5\)</span>。整数的素因子分解唯一，所以末尾零的个数受限于能凑出多少对 <span class="arithmatex">\((2, 5)\)</span>，即</p>
+<div class="arithmatex">\[z(N) = \min\bigl(\nu_2(N),\ \nu_5(N)\bigr),\]</div>
+<p>其中 <span class="arithmatex">\(\nu_p(N)\)</span> 表示 <span class="arithmatex">\(N\)</span> 的素因子分解中素数 <span class="arithmatex">\(p\)</span> 的次数（<span class="arithmatex">\(p\)</span>-adic 估值）。</p>
+<p>这把问题从「乘积」搬到了「指数」，而指数对乘法是可加的：<span class="arithmatex">\(\nu_p(ab) = \nu_p(a) + \nu_p(b)\)</span>。于是一条路径乘积的 <span class="arithmatex">\(\nu_2\)</span>、<span class="arithmatex">\(\nu_5\)</span>，等于路径上各格 <span class="arithmatex">\(\nu_2\)</span>、<span class="arithmatex">\(\nu_5\)</span> 之和。<strong>乘积变成了求和</strong>——这正是让前缀和能上场的关键一步。</p>
+<p><strong>第二处崩在「枚举」上。</strong> 一条拐角路径由它的两段决定，逐条枚举所有起点、拐点、终点是 <span class="arithmatex">\(O(m^2 n + m n^2)\)</span> 量级，对角处理后仍超预算。修补的支点是：每条拐角路径都有唯一的拐点 <span class="arithmatex">\((i,j)\)</span>（第一段的末格等于第二段的首格）。固定拐点后，路径只剩有限几种形态，每段都是某一行或某一列的一段连续区间——而行/列上的区间和正是前缀和的拿手活。下面把这两步落成精确的形式化。</p>
 <h2 id="formulation">形式化 (Formulation)<a class="headerlink" href="#formulation" title="Permanent link">#</a></h2>
-<p>设 <span class="arithmatex">\(a_2(i, j) = \nu_2(\text{grid}[i][j])\)</span>, <span class="arithmatex">\(a_5(i, j) = \nu_5(\text{grid}[i][j])\)</span>。对每个"拐角"<span class="arithmatex">\((i, j)\)</span>（路径的转折点）与四种"L 形"组合（左+上、左+下、右+上、右+下），路径上 <span class="arithmatex">\(a_2, a_5\)</span> 之和分别为 <span class="arithmatex">\(S_2, S_5\)</span>，答案为</p>
-<div class="arithmatex">\[\max_{(i, j),\ \text{shape}} \min(S_2, S_5).\]</div>
+<p>记 <span class="arithmatex">\(a_2(i,j) = \nu_2(\text{grid}[i][j])\)</span>，<span class="arithmatex">\(a_5(i,j) = \nu_5(\text{grid}[i][j])\)</span>。</p>
+<p><strong>拐点唯一，形态恰好四种。</strong> 固定拐点 <span class="arithmatex">\((i,j)\)</span>。从 <span class="arithmatex">\((i,j)\)</span> 出发的两段必须沿不同朝向，一段水平、一段垂直；水平段在「向左」与「向右」中二选一，垂直段在「向上」与「向下」中二选一。两个独立的二选一给出恰好四种形态：</p>
+<div class="arithmatex">\[\text{shape} \in \{\mathrm{LU},\ \mathrm{LD},\ \mathrm{RU},\ \mathrm{RD}\},\]</div>
+<p>分别对应（左+上）、（左+下）、（右+上）、（右+下）。每条拐角路径属于其中唯一一种。</p>
+<p><strong>路径和。</strong> 对素数 <span class="arithmatex">\(p \in \{2, 5\}\)</span>，定义形态在拐点处的指数和</p>
+<div class="arithmatex">\[S_p(i, j, \text{shape}) = \sum_{(r, c)\, \in\, \text{path}(i, j, \text{shape})} a_p(r, c).\]</div>
+<p>由 <span class="arithmatex">\(\nu_p\)</span> 的可加性，路径乘积的 <span class="arithmatex">\(\nu_p\)</span> 恰为 <span class="arithmatex">\(S_p\)</span>。因此尾零目标为</p>
+<div class="arithmatex">\[\max_{(i, j)} \ \max_{\text{shape} \in \{\mathrm{LU},\mathrm{LD},\mathrm{RU},\mathrm{RD}\}} \ \min\bigl(S_2(i, j, \text{shape}),\ S_5(i, j, \text{shape})\bigr).\]</div>
+<p>只要每个 <span class="arithmatex">\(S_p(i, j, \text{shape})\)</span> 能 <span class="arithmatex">\(O(1)\)</span> 算出，整个最大化就是对 <span class="arithmatex">\(mn\)</span> 个拐点各试四种形态，<span class="arithmatex">\(O(mn)\)</span> 完成。</p>
 <h2 id="approach">数据结构 / 想法 (Approach)<a class="headerlink" href="#approach" title="Permanent link">#</a></h2>
-<p><strong>前缀和准备</strong>：对每行做 <span class="arithmatex">\(a_2, a_5\)</span> 的水平前缀和；对每列做垂直前缀和。复杂度 <span class="arithmatex">\(O(mn)\)</span>。</p>
-<p><strong>枚举拐角</strong>：对每个 <span class="arithmatex">\((i, j)\)</span> 与 4 种 L 形（路径包含 <span class="arithmatex">\((i, j)\)</span> 自身一次），用前缀和 <span class="arithmatex">\(O(1)\)</span> 得 <span class="arithmatex">\(S_2, S_5\)</span>：</p>
-<div class="language-text highlight"><pre><span></span><code>left  = row[i][0..j],  right = row[i][j..n-1]
-up    = col[j][0..i],  down  = col[j][i..m-1]
-4 shapes: (left + up - cell), (left + down - cell), (right + up - cell), (right + down - cell)
+<p><strong>用前缀和把段求和降到 <span class="arithmatex">\(O(1)\)</span>。</strong> 每种形态的水平臂是某一行的一段连续区间，垂直臂是某一列的一段连续区间。对每行分别预处理 <span class="arithmatex">\(a_2\)</span>、<span class="arithmatex">\(a_5\)</span> 的水平前缀和，对每列预处理垂直前缀和，则任意行段或列段之和都是两个前缀值相减。预处理 <span class="arithmatex">\(O(mn)\)</span>。</p>
+<p>约定 <span class="arithmatex">\(R_p[i][k] = \sum_{c &lt; k} a_p(i, c)\)</span>（行 <span class="arithmatex">\(i\)</span> 前 <span class="arithmatex">\(k\)</span> 列之和），<span class="arithmatex">\(C_p[j][k] = \sum_{r &lt; k} a_p(r, j)\)</span>（列 <span class="arithmatex">\(j\)</span> 前 <span class="arithmatex">\(k\)</span> 行之和）。固定拐点 <span class="arithmatex">\((i,j)\)</span>，四条臂各自包含拐点本身：</p>
+<div class="language-text highlight"><pre><span></span><code>left  (含拐点) = R_p[i][j+1]
+right (含拐点) = R_p[i][n] - R_p[i][j]
+up    (含拐点) = C_p[j][i+1]
+down  (含拐点) = C_p[j][m] - C_p[j][i]
 </code></pre></div>
-<p>为什么减一次 <code>cell</code>：水平段和垂直段都包含 <span class="arithmatex">\((i,j)\)</span>，去重。</p>
+<p><strong>为什么要减一次拐点。</strong> 一种形态由一条水平臂加一条垂直臂拼成，两条臂都把拐点 <span class="arithmatex">\((i,j)\)</span> 算进了自己的区间和。它们的并集（即整条路径）只含拐点一次，所以两臂相加把拐点的指数多算了一遍，须减去 <span class="arithmatex">\(a_p(i,j)\)</span> 一次校正：</p>
+<div class="arithmatex">\[S_p(i,j,\mathrm{LU}) = \underbrace{R_p[i][j{+}1]}_{\text{left}} + \underbrace{C_p[j][i{+}1]}_{\text{up}} - a_p(i,j),\]</div>
+<p>其余三种形态同理。</p>
+<p><strong>直线路径无需另算。</strong> 不拐弯的纯水平或纯垂直路径，是上面四种形态的退化情形：当某条臂只剩拐点一格时，它的区间和正好等于 <span class="arithmatex">\(a_p(i,j)\)</span>，减去拐点后该臂贡献为零，整条路径退化成另一臂。例如一条只向右延伸的直线，对应「右臂 + 上臂」中上臂长度为 1 的情形——此时上臂和等于 <span class="arithmatex">\(a_p(i,j)\)</span>，<span class="arithmatex">\(S_p = (\text{右臂}) + a_p(i,j) - a_p(i,j) = (\text{右臂})\)</span>。因此枚举四种形态已覆盖全部拐角路径与全部直线，不必单列直线。</p>
 <div class="language-python highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">Solution</span><span class="p">:</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">maxTrailingZeros</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">grid</span><span class="p">):</span>
         <span class="n">m</span><span class="p">,</span> <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">grid</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">grid</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
@@ -22724,18 +22770,19 @@ up    = col[j][0..i],  down  = col[j][i..m-1]
                     <span class="n">ans</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">ans</span><span class="p">,</span> <span class="nb">min</span><span class="p">(</span><span class="n">s2</span><span class="p">,</span> <span class="n">s5</span><span class="p">))</span>
         <span class="k">return</span> <span class="n">ans</span>
 </code></pre></div>
-<p>样例 1：路径 15 → 20 → 6 → 1 → 10，乘积 18000 = <span class="arithmatex">\(2^4 \cdot 3^2 \cdot 5^3\)</span>，尾零 = min(4, 3) = 3。✅</p>
-<p><strong>不变量</strong>：每条「最多一次拐弯」路径恰好以唯一的转折点 <span class="arithmatex">\((i, j)\)</span> 计入；纯直线（不拐弯）路径也被包含——它对应 L 形中"另一段长度为 1（只有 <span class="arithmatex">\((i, j)\)</span>）"的退化情形，因此无需单独枚举。</p>
+<p>代码中 <code>L2/Rt2/U2/D2</code> 直接对应四条臂，四种形态即四种臂组合各减一次拐点，与上面的推导逐项对应。</p>
+<p>样例 1 的最优路径 <span class="arithmatex">\(15 \to 20 \to 6 \to 1 \to 10\)</span> 是一条拐角路径，乘积 <span class="arithmatex">\(18000 = 2^4 \cdot 3^2 \cdot 5^3\)</span>，尾零 <span class="arithmatex">\(= \min(\nu_2, \nu_5) = \min(4, 3) = 3\)</span>。✅ 它的 <span class="arithmatex">\(S_2 = 4\)</span>、<span class="arithmatex">\(S_5 = 3\)</span> 正是路径各格 <span class="arithmatex">\(a_2\)</span>、<span class="arithmatex">\(a_5\)</span> 之和，与公式一致。</p>
 <h2 id="complexity">复杂度 (Complexity)<a class="headerlink" href="#complexity" title="Permanent link">#</a></h2>
 <ul>
-<li>Time: <span class="arithmatex">\(O(mn \cdot \log_2 V)\)</span>，其中 <span class="arithmatex">\(\log_2 V \le 10\)</span>（因为 <span class="arithmatex">\(V \le 1000\)</span>）。</li>
-<li>Space: <span class="arithmatex">\(O(mn)\)</span>。</li>
+<li>Time: <span class="arithmatex">\(O(mn \cdot \log V)\)</span>，其中 <span class="arithmatex">\(V = \max \text{grid}[i][j] \le 10^9\)</span>。<span class="arithmatex">\(\log\)</span> 因子来自对每格反复除以 2、5 求估值，<span class="arithmatex">\(\log_2 10^9 \approx 30\)</span>；这一步被预处理吸收，主枚举为 <span class="arithmatex">\(O(mn)\)</span>（每拐点四种形态）。</li>
+<li>Space: <span class="arithmatex">\(O(mn)\)</span>（<span class="arithmatex">\(a_2, a_5, R_2, R_5, C_2, C_5\)</span> 均为 <span class="arithmatex">\(O(mn)\)</span>）。</li>
 </ul>
 <h2 id="pitfalls">陷阱 (Pitfalls)<a class="headerlink" href="#pitfalls" title="Permanent link">#</a></h2>
+<p>下面三条是落地时易翻车之处，每条都对应上文推导中的一个约束。</p>
 <ul>
-<li>行 + 列前缀和时务必减去 <code>cell</code> 一次，否则 <span class="arithmatex">\((i,j)\)</span> 被双重计入。</li>
-<li><span class="arithmatex">\(m\)</span> 或 <span class="arithmatex">\(n\)</span> 可达 <span class="arithmatex">\(10^5\)</span>（但 <span class="arithmatex">\(m \cdot n \le 10^5\)</span>），数组要按 <span class="arithmatex">\(m \times n\)</span> 分配而不是 <span class="arithmatex">\(10^5 \times 10^5\)</span>。</li>
-<li>注意路径必须非空——当 grid 只有 <span class="arithmatex">\(1 \times 1\)</span> 时直接判 <span class="arithmatex">\(\min(\nu_2, \nu_5)\)</span>。</li>
+<li><strong>两臂相加务必减一次拐点。</strong> 这是上文「为什么要减一次拐点」的直接后果：漏减则 <span class="arithmatex">\((i,j)\)</span> 的指数被双重计入，<span class="arithmatex">\(S_2\)</span>、<span class="arithmatex">\(S_5\)</span> 同时偏大，答案偏大。</li>
+<li><strong>数组按 <span class="arithmatex">\(m \times n\)</span> 而非 <span class="arithmatex">\(10^5 \times 10^5\)</span> 分配。</strong> 约束是 <span class="arithmatex">\(m \cdot n \le 10^5\)</span>，但 <span class="arithmatex">\(m\)</span> 或 <span class="arithmatex">\(n\)</span> 单独可达 <span class="arithmatex">\(10^5\)</span>（如 <span class="arithmatex">\(1 \times 10^5\)</span>）。按 <span class="arithmatex">\(10^5 \times 10^5\)</span> 开数组会直接爆内存。</li>
+<li><strong>不必为 <span class="arithmatex">\(1 \times 1\)</span> 单列特例。</strong> 通用代码对 <span class="arithmatex">\(1\times1\)</span> 已正确：唯一拐点的四种形态全退化为该单格自身，<span class="arithmatex">\(S_p = a_p(0,0) = \nu_p(\text{grid}[0][0])\)</span>，返回 <span class="arithmatex">\(\min(\nu_2, \nu_5)\)</span>。验证：<code>[[10]]→1</code>、<code>[[100]]→2</code>、<code>[[1]]→0</code>，均无需特判。</li>
 </ul>
 <h2 id="related">相关题目 (Related)<a class="headerlink" href="#related" title="Permanent link">#</a></h2>
 <ul>

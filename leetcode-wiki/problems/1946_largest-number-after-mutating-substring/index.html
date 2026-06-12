@@ -5485,6 +5485,8 @@
       
         
       
+        
+      
     
     
     
@@ -6024,6 +6026,34 @@
     
   
     #93. Restore IP Addresses
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../0102_binary-tree-level-order-traversal/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    #102. Binary Tree Level Order Traversal
   
 
     
@@ -22675,18 +22705,32 @@
 <h2 id="problem">Problem<a class="headerlink" href="#problem" title="Permanent link">#</a></h2>
 <p>数字串 <code>num</code>，映射 <code>change[0..9] -&gt; 0..9</code>。可选<strong>最多一段连续子串</strong> <span class="arithmatex">\(num[l..r]\)</span>，每位 <span class="arithmatex">\(d\)</span> 替换为 <span class="arithmatex">\(change[d]\)</span>。求最大化后的串。约束 <span class="arithmatex">\(|num| \le 10^5\)</span>。</p>
 <h2 id="background">背景 (Background)<a class="headerlink" href="#background" title="Permanent link">#</a></h2>
-<p>经典<strong>贪心</strong>：</p>
-<ul>
-<li>"更高位（更左）" 越大数值越大（数字串长度固定）。</li>
-<li>因此<strong>应从左往右找第一个能"提升"的位</strong>开始 mutate。一旦开始，<strong>只要后续位 mutate 后 <span class="arithmatex">\(\ge\)</span> 原值就继续</strong>；遇到第一个 mutate 后<strong>变小</strong>的位就停止。</li>
-</ul>
-<p>挑战是 mutate 后等值（<code>change[d] == d</code>）的位：这种位在 mutate 段中<strong>不算损失</strong>（数值不变），但若提前在尚未开始 mutate 时遇到，不必立即开段（开了也不变）。所以"开始信号"必须是 <code>change[d] &gt; d</code>。</p>
+<p>mutate 不改变串长，所以"哪个结果更大"就是普通的十进制数值比较：<strong>越高位（越左）的数字越大，整个数越大</strong>。任何替换方案的收益，都可以拆成各位的贡献之和——某位 <span class="arithmatex">\(i\)</span> 从 <span class="arithmatex">\(d\)</span> 变成 <span class="arithmatex">\(change[d]\)</span>，对数值的影响是 <span class="arithmatex">\((change[d]-d)\cdot 10^{n-1-i}\)</span>，其中 <span class="arithmatex">\(n=|num|\)</span>。</p>
+<p>先把这条收益写成一个可优化的目标，再看它的结构能逼出什么算法。</p>
+<p>朴素做法是枚举：对每个 <span class="arithmatex">\((l,r)\)</span> 把 <span class="arithmatex">\([l,r]\)</span> 全部 mutate，比较结果取最大。这有 <span class="arithmatex">\(\Theta(n^2)\)</span> 个候选区间，每个还要 <span class="arithmatex">\(O(n)\)</span> 比较，总共 <span class="arithmatex">\(O(n^3)\)</span>；对 <span class="arithmatex">\(n=10^5\)</span> 不可行。要降下来，得搞清楚最优区间的端点满足什么条件——这正是下面形式化要回答的。</p>
 <h2 id="formulation">形式化 (Formulation)<a class="headerlink" href="#formulation" title="Permanent link">#</a></h2>
-<p>找 <span class="arithmatex">\([l, r]\)</span> (<span class="arithmatex">\(0 \le l \le r &lt; n\)</span> 或不选)，使</p>
-<div class="arithmatex">\[\sum_{i \in [l, r]} (\text{change}[\text{num}[i]] - \text{num}[i]) \cdot 10^{n-1-i}\]</div>
-<p>最大（即新数值减旧数值最大）。</p>
+<p>设 <span class="arithmatex">\(n=|num|\)</span>，<span class="arithmatex">\(num[i]\in\{0,\dots,9\}\)</span> 是第 <span class="arithmatex">\(i\)</span> 位数字。选一段连续区间 <span class="arithmatex">\([l,r]\)</span>（<span class="arithmatex">\(0\le l\le r&lt;n\)</span>，或不选），全部 mutate 后新值减旧值为</p>
+<div class="arithmatex">\[G(l,r)=\sum_{i=l}^{r} g_i\cdot 10^{n-1-i},\qquad g_i := change[num[i]]-num[i].\]</div>
+<p>目标是最大化 <span class="arithmatex">\(G\)</span>。注意 <span class="arithmatex">\(G\)</span> 是各位独立贡献 <span class="arithmatex">\(g_i\cdot 10^{n-1-i}\)</span> 之和，唯一的耦合是<strong>区间必须连续</strong>：所选下标集合不能有缺口。把每位按 <span class="arithmatex">\(g_i\)</span> 的符号分三类：</p>
+<ul>
+<li><span class="arithmatex">\(g_i&gt;0\)</span>（即 <span class="arithmatex">\(change[d]&gt;d\)</span>）：<strong>严格提升位</strong>，纳入区间使 <span class="arithmatex">\(G\)</span> 增大。</li>
+<li><span class="arithmatex">\(g_i=0\)</span>（即 <span class="arithmatex">\(change[d]=d\)</span>）：<strong>中性位</strong>，纳入与否对 <span class="arithmatex">\(G\)</span> 毫无影响。</li>
+<li><span class="arithmatex">\(g_i&lt;0\)</span>（即 <span class="arithmatex">\(change[d]&lt;d\)</span>）：<strong>严格下降位</strong>，纳入区间使 <span class="arithmatex">\(G\)</span> 减小。</li>
+</ul>
+<p>如果可以任选下标子集，最优解显然是"取所有 <span class="arithmatex">\(g_i&gt;0\)</span> 的位，避开所有 <span class="arithmatex">\(g_i&lt;0\)</span> 的位"，中性位无所谓。连续性约束正是难点所在——它逼着我们做权衡，而下面两条引理说明这权衡其实只有一种解法。</p>
+<p><strong>引理 1（高位主导）.</strong> 对任意 <span class="arithmatex">\(i\)</span>，</p>
+<div class="arithmatex">\[10^{n-1-i} &gt; \sum_{j=i+1}^{n-1} 9\cdot 10^{n-1-j}.\]</div>
+<p>证明：右边是首项 <span class="arithmatex">\(9\cdot 10^{n-2-i}\)</span>、公比 <span class="arithmatex">\(1/10\)</span> 的几何和，等于 <span class="arithmatex">\(10^{n-1-i}-1&lt;10^{n-1-i}\)</span>。<span class="arithmatex">\(\square\)</span></p>
+<p>含义：<strong>任何一位的最小正收益（<span class="arithmatex">\(g_i\ge 1\)</span> 给出 <span class="arithmatex">\(10^{n-1-i}\)</span>），都严格大于其右侧所有位收益拉满（每位 <span class="arithmatex">\(g_j\le 9\)</span>）之和。</strong> 高位的得失彻底压过其右侧的一切。</p>
+<p><strong>引理 2（最优区间形态）.</strong> 存在最优解，其区间起点 <span class="arithmatex">\(l\)</span> 是<strong>最左的严格提升位</strong>（最小的满足 <span class="arithmatex">\(g_l&gt;0\)</span> 的下标），终点 <span class="arithmatex">\(r\)</span> 是从 <span class="arithmatex">\(l\)</span> 起<strong>第一个严格下降位之前</strong>的位置（即区间 <span class="arithmatex">\([l,r]\)</span> 内无 <span class="arithmatex">\(g_i&lt;0\)</span>，且 <span class="arithmatex">\(r+1\)</span> 处 <span class="arithmatex">\(g_{r+1}&lt;0\)</span> 或 <span class="arithmatex">\(r+1=n\)</span>）。</p>
+<p>直观：由引理 1，区间应尽量从靠左的提升位开始——越靠左的 <span class="arithmatex">\(+1\)</span> 收益越大，靠后再多提升也补不回来。一旦开始，遇到中性位（<span class="arithmatex">\(g_i=0\)</span>）继续走没有损失；遇到严格下降位（<span class="arithmatex">\(g_i&lt;0\)</span>）就必须停——因为连续性不允许"跳过这一位再继续"，跳一位就分成了两段，违反"最多一段"。把这一位纳入是净损失，停在它前面才对。证明用引理 1 做交换论证：任何起点更靠右、或穿过一个 <span class="arithmatex">\(g_i&lt;0\)</span> 位的方案，都能改成上述形态而不减小 <span class="arithmatex">\(G\)</span>。<span class="arithmatex">\(\square\)</span></p>
+<p>为什么开段信号必须是 <span class="arithmatex">\(g_i&gt;0\)</span>（严格）、而不是 <span class="arithmatex">\(g_i\ge 0\)</span>？因为在中性位（<span class="arithmatex">\(g_i=0\)</span>）开段毫无增益，却可能把区间往后拖过一个下降位，反而净亏。<strong>只有严格提升位才值得作为起点。</strong> 例如 <code>num="120"</code>、<code>change=[9,1,0,3,4,5,6,7,8,2]</code>：第 0 位是中性（<span class="arithmatex">\(1\to1\)</span>，<span class="arithmatex">\(g_0=0\)</span>），第 1 位是下降（<span class="arithmatex">\(2\to0\)</span>，<span class="arithmatex">\(g_1&lt;0\)</span>），第 2 位是提升（<span class="arithmatex">\(0\to9\)</span>，<span class="arithmatex">\(g_2&gt;0\)</span>）。正确做法是跳过中性位与下降位，在第 2 位开段，得 <code>"129"</code>；若错把第 0 位的中性当开段信号，连续性会逼着区间穿过第 1 位的下降，把 <code>2</code> 变成更小的 <code>0</code>，反而更糟。</p>
 <h2 id="approach">数据结构 / 想法 (Approach)<a class="headerlink" href="#approach" title="Permanent link">#</a></h2>
-<p><strong>贪心扫描</strong>：</p>
+<p>引理 2 给出的区间形态可以一次从左到右扫描得到：维护一个布尔 <code>started</code> 表示"是否已进入区间"，按 <span class="arithmatex">\(g_i\)</span> 的三类逐位决策。</p>
+<ul>
+<li>未开段（<code>started=False</code>）：只在遇到 <span class="arithmatex">\(g_i&gt;0\)</span> 时开段并 mutate（引理 2 的"最左提升位起点"）；中性位、下降位都跳过不动。</li>
+<li>已开段（<code>started=True</code>）：<span class="arithmatex">\(g_i&gt;0\)</span> 与 <span class="arithmatex">\(g_i=0\)</span> 都留在段内（提升位 mutate，中性位 mutate 后值不变，不算损失），遇到第一个 <span class="arithmatex">\(g_i&lt;0\)</span> 立即停。</li>
+</ul>
 <div class="language-python highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">Solution</span><span class="p">:</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">maximumNumber</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">num</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">change</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
         <span class="n">arr</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">num</span><span class="p">)</span>
@@ -22707,30 +22751,27 @@
                 <span class="c1"># 还没开始，跳过</span>
         <span class="k">return</span> <span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">arr</span><span class="p">)</span>
 </code></pre></div>
-<p><strong>不变量</strong>：
-- <code>started = False</code> 时还没开段，遇到 <code>c &gt; d</code> 才开段并 mutate。
-- <code>started = True</code> 时段持续到第一个 <code>c &lt; d</code> 截止；其间 <code>c == d</code> 不算损失也不算增益，但要继续走。
-- 只能选<strong>一段</strong>——所以一旦 <code>c &lt; d</code> 结束，后面即使遇到 <code>c &gt; d</code> 也不能再开段（贪心性质：在不能跨越一个 <code>c &lt; d</code> 位的前提下，更靠前的提升永远比靠后的更有价值；既然已选了一段始于最早 <code>c &gt; d</code>，后续提升即使存在，其增益也少于继续段的损失——可证）。</p>
-<p>实际上还需小心：上面"贪心始于最早 <span class="arithmatex">\(c &gt; d\)</span>"成立是因为 <span class="arithmatex">\(10^{n-1-i}\)</span> 按 <span class="arithmatex">\(i\)</span> 单调递减。任何后续提升 <span class="arithmatex">\(10^{n-1-j}\)</span>（<span class="arithmatex">\(j &gt; i\)</span>）即使大也至多 <span class="arithmatex">\(9 \cdot 10^{n-1-j}\)</span>，而早一位的提升即使是 1 也是 $10^{n-1-i} \ge 10^{n-1-(j-1)} \cdot 1 &gt; $ 9 倍后位增益（对 <span class="arithmatex">\(j &gt; i+1\)</span>）。严格证明用"高位主导"原则。</p>
-<p>Trace 例 2 <code>num="021", change=[9,4,3,5,7,2,1,9,0,6]</code>:
+<p>每条分支都对应形式化里的一类位：<code>c &gt; d</code> 开段/续段，<code>c == d</code> 续段不结束，<code>c &lt; d</code> 在段内即终止、段外即跳过。一旦因 <span class="arithmatex">\(c&lt;d\)</span> 停下，后面即使再有 <span class="arithmatex">\(c&gt;d\)</span> 也不再开新段——只能选一段，由引理 1 与引理 2，重开的收益必小于穿过那个下降位的损失。</p>
+<p>下面两个官方样例验证扫描行为，分别覆盖"一路提升到底"和"开段后立即遇下降位停止"两种形态。</p>
+<p>Trace 例 2 <code>num="021", change=[9,4,3,5,7,2,1,9,0,6]</code>（一路提升）:
 - i=0: d=0, c=9, c&gt;d → arr[0]='9', started=True
 - i=1: d=2, c=3, c&gt;d → arr[1]='3'
 - i=2: d=1, c=4, c&gt;d → arr[2]='4'
 - 结果 "934" ✓</p>
-<p>Trace 例 1 <code>num="132", change=[9,8,5,0,3,6,4,2,6,8]</code>:
+<p>Trace 例 1 <code>num="132", change=[9,8,5,0,3,6,4,2,6,8]</code>（开段后即停）:
 - i=0: d=1, c=8, c&gt;d → arr[0]='8', started=True
 - i=1: d=3, c=0, c&lt;d 且 started → break
 - 结果 "832" ✓</p>
 <h2 id="complexity">复杂度 (Complexity)<a class="headerlink" href="#complexity" title="Permanent link">#</a></h2>
 <ul>
-<li>Time: <span class="arithmatex">\(O(n)\)</span> 单次扫描，<span class="arithmatex">\(n = |num|\)</span>。</li>
-<li>Space: <span class="arithmatex">\(O(n)\)</span>（输出字符串）。</li>
+<li>Time: <span class="arithmatex">\(O(n)\)</span> 单次扫描，<span class="arithmatex">\(n = |num|\)</span>。最坏情况触及每一位（直到末尾才停或全程未停），最优情况提前 break，但量级仍是 <span class="arithmatex">\(\Theta(n)\)</span>。</li>
+<li>Space: <span class="arithmatex">\(O(n)\)</span>（输出字符列表 / 拼接后的字符串）。</li>
 </ul>
 <h2 id="pitfalls">陷阱 (Pitfalls)<a class="headerlink" href="#pitfalls" title="Permanent link">#</a></h2>
 <ul>
-<li><strong><code>c == d</code> 的处理</strong>：在段未开始时不算 mutate（不开段），在段中算"无损保持"（不截断段）。如果错把 <code>c == d</code> 当作开段触发，结果错；当作截断触发，也错。</li>
-<li><strong>只能 mutate 一段</strong>——一旦 <code>c &lt; d</code> 终止段，后面即使有 <code>c &gt; d</code> 也忽略。</li>
-<li><strong>不能为了避免"损失"在段中遇到 <code>c &lt; d</code> 时跳过该位</strong>——必须连续子串，跳一位就是两段。所以 break 是唯一选择。</li>
+<li><strong><code>c == d</code> 的双重角色</strong>：段未开始时它不算 mutate（不开段，因为开段信号必须严格 <span class="arithmatex">\(c&gt;d\)</span>）；段中算"无损保持"（不截断段）。错把它当开段触发或当截断触发都会出错——这是本题最容易绊倒人的一点。</li>
+<li><strong>只能 mutate 一段</strong>——一旦 <code>c &lt; d</code> 终止段，后面即使有 <code>c &gt; d</code> 也忽略（引理 1：重开的收益压不过穿越损失）。</li>
+<li><strong>不能为了避免"损失"在段中跳过 <code>c &lt; d</code> 位</strong>——必须连续子串，跳一位就成了两段。所以 <code>break</code> 是唯一选择，这也是引理 2 终点形态的来源。</li>
 <li><strong>修改前转 list</strong>：Python 字符串不可变。</li>
 </ul>
 <h2 id="related">相关题目 (Related)<a class="headerlink" href="#related" title="Permanent link">#</a></h2>

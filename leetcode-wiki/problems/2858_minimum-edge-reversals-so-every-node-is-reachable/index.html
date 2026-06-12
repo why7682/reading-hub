@@ -5485,6 +5485,8 @@
       
         
       
+        
+      
     
     
     
@@ -6024,6 +6026,34 @@
     
   
     #93. Restore IP Addresses
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../0102_binary-tree-level-order-traversal/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    #102. Binary Tree Level Order Traversal
   
 
     
@@ -22675,27 +22705,35 @@
 <h2 id="problem">Problem<a class="headerlink" href="#problem" title="Permanent link">#</a></h2>
 <p>有向图 <code>n</code> 节点，<span class="arithmatex">\(n-1\)</span> 边，若忽略方向是树。对每节点 <span class="arithmatex">\(i\)</span> 求"从 <span class="arithmatex">\(i\)</span> 出发到达所有其他节点所需的最小翻边数"。<span class="arithmatex">\(n \le 10^5\)</span>。</p>
 <h2 id="_1">背景<a class="headerlink" href="#_1" title="Permanent link">#</a></h2>
-<p><strong>树形 DP + Re-rooting (换根) 技巧</strong> 的经典：
-- 第 1 遍 DFS：以 0 为根计算 <code>dp[v]</code> = 从 <span class="arithmatex">\(v\)</span> 出发覆盖<strong>子树</strong>所需翻边数。
-- 第 2 遍 DFS：换根传播——从父节点的答案推到子节点的答案，<span class="arithmatex">\(O(1)\)</span> 转移。</p>
-<p>换根 DP 是处理"对每个节点计算同类指标"的标准模式，同款思想用于：树重心、树直径、子树染色计数、子树路径乘积。</p>
-<p>数学上：对每个节点 <span class="arithmatex">\(v\)</span>，从 <span class="arithmatex">\(v\)</span> 出发覆盖全树需把所有指向 <span class="arithmatex">\(v\)</span> 反向的边翻转——即"在 <span class="arithmatex">\(v\)</span> 处取入度 / 出度的对偶视角"。换根操作改变父子关系，影响仅来自父子边方向的局部翻转。</p>
+<p>先把目标说清楚。固定一个起点 <span class="arithmatex">\(r\)</span>，要让 <span class="arithmatex">\(r\)</span> 能到达所有节点，等价于：把每条边都调成"远离 <span class="arithmatex">\(r\)</span>"的方向（指向更深处）。一条边只有当它现在指向 <span class="arithmatex">\(r\)</span> 一侧时才需要翻转，否则保留。所以对固定的 <span class="arithmatex">\(r\)</span>，答案就是树上"逆着 <span class="arithmatex">\(r\)</span> 方向"的边的数量——这是一个一次遍历（DFS/BFS）就能算的量。记这个量为 <span class="arithmatex">\(\text{ans}[r]\)</span>。</p>
+<p>那把每个节点都当一次起点呢？最直接的办法：对每个 <span class="arithmatex">\(r\)</span> 单独跑一次遍历，数一遍逆向边。每次遍历 <span class="arithmatex">\(O(n)\)</span>，一共 <span class="arithmatex">\(n\)</span> 个起点，总计 <span class="arithmatex">\(O(n^2)\)</span>。当 <span class="arithmatex">\(n = 10^5\)</span> 时这是 <span class="arithmatex">\(10^{10}\)</span> 级别的操作，超时。</p>
+<p>问题出在哪里？这 <span class="arithmatex">\(n\)</span> 次独立遍历几乎在做重复的事。考虑树上相邻的两个节点 <span class="arithmatex">\(u\)</span> 和 <span class="arithmatex">\(v\)</span>。从 <span class="arithmatex">\(u\)</span> 出发和从 <span class="arithmatex">\(v\)</span> 出发，对<strong>除 <span class="arithmatex">\((u,v)\)</span> 边之外</strong>的每一条边，"是否逆向"的判断完全相同——因为树无环，去掉 <span class="arithmatex">\((u,v)\)</span> 后树裂成两块，<span class="arithmatex">\(u\)</span>、<span class="arithmatex">\(v\)</span> 各在一块里，而每条其他边相对 <span class="arithmatex">\(u\)</span> 的远近方向和相对 <span class="arithmatex">\(v\)</span> 的远近方向是一致的。唯一改变方向判断的是 <span class="arithmatex">\((u,v)\)</span> 自己。</p>
+<p>这就是冗余的来源，也是优化的入口：如果已经知道 <span class="arithmatex">\(\text{ans}[u]\)</span>，那么 <span class="arithmatex">\(\text{ans}[v]\)</span> 只需要在 <span class="arithmatex">\(\text{ans}[u]\)</span> 基础上修正 <span class="arithmatex">\((u,v)\)</span> 这一条边的贡献，<span class="arithmatex">\(O(1)\)</span> 即可得到。沿树把答案从一个节点传到相邻节点，就能用一次遍历摊平所有起点——这正是换根（re-rooting）DP 要解决的问题。下面把它形式化。</p>
 <h2 id="_2">形式化<a class="headerlink" href="#_2" title="Permanent link">#</a></h2>
-<p>设 <code>dp[v]</code> (root = 0)：覆盖 <span class="arithmatex">\(v\)</span> 子树所需翻边数。对每条边 <span class="arithmatex">\((u, v)\)</span>（<span class="arithmatex">\(u\)</span> 是父）：
-- 若原图 <span class="arithmatex">\(u \to v\)</span>：方向对 → +0。
-- 若原图 <span class="arithmatex">\(v \to u\)</span>：方向反 → +1。
-<span class="arithmatex">\(\text{dp}[v] = \sum_{c \in \text{children}(v)} (\text{dp}[c] + [\text{edge } v\text{-}c \text{ direction wrong}])\)</span>.</p>
-<p>换根：把根从 <span class="arithmatex">\(u\)</span> 换到子 <span class="arithmatex">\(v\)</span>：
-- 边 <span class="arithmatex">\((u, v)\)</span> 翻转的代价变化：若原图 <span class="arithmatex">\(u \to v\)</span> → 翻 1 次 (变成 <span class="arithmatex">\(v \to u\)</span> 不合新方向)；若原图 <span class="arithmatex">\(v \to u\)</span> → 翻 -1 次。
-- <span class="arithmatex">\(\text{ans}[v] = \text{ans}[u] + \delta\)</span>。</p>
+<p>整个算法是两遍线性扫描：第一遍以 <span class="arithmatex">\(0\)</span> 为根算出 <span class="arithmatex">\(\text{ans}[0]\)</span>，并为换根准备子树信息；第二遍沿父子边把答案传播到全树。</p>
+<p><strong>第一遍：固定根 <span class="arithmatex">\(0\)</span>，自底向上累加。</strong>
+令 <span class="arithmatex">\(\text{dp}[v]\)</span> = 把 <span class="arithmatex">\(v\)</span> 子树内所有边调成"从 <span class="arithmatex">\(v\)</span> 向下"所需的翻转数（树以 <span class="arithmatex">\(0\)</span> 为根）。直觉：要从 <span class="arithmatex">\(v\)</span> 覆盖它的子树，每条子树边都得指向更深处；一条边若本来就指向深处则免费，否则要翻一次。把每条边定义一个权重 <span class="arithmatex">\(w \in \{0,1\}\)</span>：沿"父 → 子"方向走时，若原图就是父指向子则 <span class="arithmatex">\(w=0\)</span>，若原图是子指向父则 <span class="arithmatex">\(w=1\)</span>（需翻）。于是</p>
+<div class="arithmatex">\[\text{dp}[v] = \sum_{c \in \text{children}(v)} \big(\text{dp}[c] + w_{(v,c)}\big). \tag{1}\]</div>
+<p>根的整棵树覆盖代价即 <span class="arithmatex">\(\text{ans}[0] = \text{dp}[0]\)</span>。</p>
+<p><strong>第二遍：换根传播。</strong>
+设已知 <span class="arithmatex">\(\text{ans}[u]\)</span>，<span class="arithmatex">\(v\)</span> 是 <span class="arithmatex">\(u\)</span> 的孩子。把起点从 <span class="arithmatex">\(u\)</span> 移到 <span class="arithmatex">\(v\)</span>，由背景节中的结构观察，只有 <span class="arithmatex">\((u,v)\)</span> 这条边的"是否逆向"判断会翻面，其余所有边贡献不变。设这条边沿"<span class="arithmatex">\(u \to v\)</span>"方向的权重为 <span class="arithmatex">\(w\)</span>（即第一遍存的 <span class="arithmatex">\(w_{(u,v)}\)</span>）：</p>
+<ul>
+<li>若 <span class="arithmatex">\(w = 0\)</span>（原图 <span class="arithmatex">\(u \to v\)</span>，对 <span class="arithmatex">\(u\)</span> 是顺向、不计费）：换根后它对 <span class="arithmatex">\(v\)</span> 变成逆向，多花 <span class="arithmatex">\(1\)</span>。</li>
+<li>若 <span class="arithmatex">\(w = 1\)</span>（原图 <span class="arithmatex">\(v \to u\)</span>，对 <span class="arithmatex">\(u\)</span> 是逆向、计 <span class="arithmatex">\(1\)</span>）：换根后它对 <span class="arithmatex">\(v\)</span> 变成顺向，省 <span class="arithmatex">\(1\)</span>。</li>
+</ul>
+<p>两种情形统一为代价变化 <span class="arithmatex">\(\Delta = (1-w) - w = 1 - 2w\)</span>，于是</p>
+<div class="arithmatex">\[\text{ans}[v] = \text{ans}[u] + (1 - 2w). \tag{2}\]</div>
+<p>公式 (1) 给出递推的基底 <span class="arithmatex">\(\text{ans}[0]\)</span>，公式 (2) 沿父子边把它推广到每个节点。这两个等式就是整段代码的全部内容。</p>
 <h2 id="_3">数据结构 / 想法<a class="headerlink" href="#_3" title="Permanent link">#</a></h2>
+<p>下面的代码是公式 (1) 与 (2) 的直接实现，没有额外技巧。关键的存储约定：树本是有向的，但我们按无向邻接表存，并在每条邻接项里附上"沿这个方向走是否需要翻转"的标记 <span class="arithmatex">\(w\)</span>，这样第一遍和第二遍都能 <span class="arithmatex">\(O(1)\)</span> 读出 <span class="arithmatex">\(w_{(v,c)}\)</span>。</p>
 <div class="language-python highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">minEdgeReversals</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">edges</span><span class="p">):</span>
-    <span class="c1"># adj[u] = [(v, w)]，w=0 表示原方向 u-&gt;v；w=1 表示 v-&gt;u（要翻）</span>
+    <span class="c1"># adj[u] = [(v, w)]，w=0 表示原方向 u-&gt;v（顺向）；w=1 表示 v-&gt;u（沿 u-&gt;v 走需翻）</span>
+    <span class="c1"># 正反两个方向都要存，因为换根时父子关系会反转</span>
     <span class="n">adj</span> <span class="o">=</span> <span class="p">[[]</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">)]</span>
     <span class="k">for</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">edges</span><span class="p">:</span>
         <span class="n">adj</span><span class="p">[</span><span class="n">u</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">v</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
         <span class="n">adj</span><span class="p">[</span><span class="n">v</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">u</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
-    <span class="c1"># 1st DFS: 以 0 为根，迭代避免栈溢出</span>
+    <span class="c1"># 1st DFS: 以 0 为根，迭代避免栈溢出（n 可达 1e5）</span>
     <span class="n">dp</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">n</span><span class="p">;</span> <span class="n">parent</span> <span class="o">=</span> <span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">n</span><span class="p">;</span> <span class="n">order</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="n">stack</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span>
     <span class="k">while</span> <span class="n">stack</span><span class="p">:</span>
@@ -22704,32 +22742,34 @@
             <span class="k">if</span> <span class="n">v</span> <span class="o">!=</span> <span class="n">parent</span><span class="p">[</span><span class="n">u</span><span class="p">]:</span>
                 <span class="n">parent</span><span class="p">[</span><span class="n">v</span><span class="p">]</span> <span class="o">=</span> <span class="n">u</span>
                 <span class="n">stack</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
-    <span class="c1"># 后序累计 dp</span>
+    <span class="c1"># 后序累计 dp —— 公式 (1)</span>
+    <span class="c1"># order 是先序发现序，孩子严格晚于父亲入列，故 reversed(order) 先定稿孩子再定稿父亲</span>
     <span class="k">for</span> <span class="n">u</span> <span class="ow">in</span> <span class="nb">reversed</span><span class="p">(</span><span class="n">order</span><span class="p">):</span>
         <span class="k">for</span> <span class="n">v</span><span class="p">,</span> <span class="n">w</span> <span class="ow">in</span> <span class="n">adj</span><span class="p">[</span><span class="n">u</span><span class="p">]:</span>
             <span class="k">if</span> <span class="n">v</span> <span class="o">!=</span> <span class="n">parent</span><span class="p">[</span><span class="n">u</span><span class="p">]:</span>
                 <span class="n">dp</span><span class="p">[</span><span class="n">u</span><span class="p">]</span> <span class="o">+=</span> <span class="n">dp</span><span class="p">[</span><span class="n">v</span><span class="p">]</span> <span class="o">+</span> <span class="n">w</span>
-    <span class="c1"># 2nd DFS: re-root</span>
+    <span class="c1"># 2nd DFS: re-root —— 公式 (2)</span>
     <span class="n">ans</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">n</span><span class="p">;</span> <span class="n">ans</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">dp</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
     <span class="k">for</span> <span class="n">u</span> <span class="ow">in</span> <span class="n">order</span><span class="p">:</span>
         <span class="k">for</span> <span class="n">v</span><span class="p">,</span> <span class="n">w</span> <span class="ow">in</span> <span class="n">adj</span><span class="p">[</span><span class="n">u</span><span class="p">]:</span>
             <span class="k">if</span> <span class="n">v</span> <span class="o">!=</span> <span class="n">parent</span><span class="p">[</span><span class="n">u</span><span class="p">]:</span>
-                <span class="c1"># 翻转父子边</span>
-                <span class="n">ans</span><span class="p">[</span><span class="n">v</span><span class="p">]</span> <span class="o">=</span> <span class="n">ans</span><span class="p">[</span><span class="n">u</span><span class="p">]</span> <span class="o">+</span> <span class="p">(</span><span class="mi">1</span> <span class="k">if</span> <span class="n">w</span> <span class="o">==</span> <span class="mi">0</span> <span class="k">else</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+                <span class="n">ans</span><span class="p">[</span><span class="n">v</span><span class="p">]</span> <span class="o">=</span> <span class="n">ans</span><span class="p">[</span><span class="n">u</span><span class="p">]</span> <span class="o">+</span> <span class="p">(</span><span class="mi">1</span> <span class="k">if</span> <span class="n">w</span> <span class="o">==</span> <span class="mi">0</span> <span class="k">else</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>  <span class="c1"># 1 - 2w</span>
     <span class="k">return</span> <span class="n">ans</span>
 </code></pre></div>
-<p><strong>不变量</strong> (DP)：<code>dp[v]</code> 是以 <span class="arithmatex">\(v\)</span> 为根的子树覆盖代价（用以 0 为根的父子关系）。
-<strong>不变量</strong> (re-root)：换根 <span class="arithmatex">\(u \to v\)</span> 后，仅 <span class="arithmatex">\((u, v)\)</span> 边对答案的贡献改变：原本 <span class="arithmatex">\(w\)</span> → <span class="arithmatex">\(1 - w\)</span>（方向翻反），代价变化 <span class="arithmatex">\(\Delta = (1-w) - w = 1 - 2w\)</span>。</p>
+<p><strong>不变量</strong> (DP)：<code>dp[v]</code> 始终等于以 <span class="arithmatex">\(v\)</span> 为根的子树（在 <span class="arithmatex">\(0\)</span>-根父子关系下）的覆盖代价，即公式 (1)。<code>reversed(order)</code> 保证每个孩子在其父亲之前定稿；<code>v != parent[u]</code> 恰好排除唯一的父亲、收入全部孩子——这一步只对树成立（每节点恰有一个父亲）。</p>
+<p><strong>不变量</strong> (re-root)：传播保持公式 (2)。换根 <span class="arithmatex">\(u \to v\)</span> 时仅 <span class="arithmatex">\((u,v)\)</span> 边贡献从 <span class="arithmatex">\(w\)</span> 变为 <span class="arithmatex">\(1-w\)</span>，<span class="arithmatex">\(\Delta = 1 - 2w\)</span>；代码中 <code>(1 if w == 0 else -1)</code> 对 <span class="arithmatex">\(w \in \{0,1\}\)</span> 恰好等于 <span class="arithmatex">\(1-2w\)</span>。</p>
+<p>至此每个节点的答案都由一次自底向上 + 一次自顶向下扫描确定，整体保持线性。</p>
 <h2 id="_4">复杂度<a class="headerlink" href="#_4" title="Permanent link">#</a></h2>
 <ul>
-<li>Time: <span class="arithmatex">\(O(n)\)</span> — 两次 DFS。</li>
-<li>Space: <span class="arithmatex">\(O(n)\)</span>。</li>
+<li>Time: <span class="arithmatex">\(O(n)\)</span> — 建表 + 三次线性扫描（发现序、后序累加、换根传播），每条边在邻接表中被访问常数次。</li>
+<li>Space: <span class="arithmatex">\(O(n)\)</span> — 邻接表 <span class="arithmatex">\(2(n-1)\)</span> 项，加 <code>dp/parent/order/ans/stack</code> 各 <span class="arithmatex">\(O(n)\)</span>。</li>
 </ul>
+<p>两遍扫描与数据无关，无最好 / 平均 / 最坏之分，单一 <span class="arithmatex">\(O(n)\)</span> 即准确刻画。</p>
 <h2 id="_5">陷阱<a class="headerlink" href="#_5" title="Permanent link">#</a></h2>
 <ul>
 <li>大 <span class="arithmatex">\(n\)</span> (<span class="arithmatex">\(10^5\)</span>) → 递归爆栈，必须迭代 DFS / BFS。</li>
-<li>邻接表存 <code>(邻居, 翻方向标记)</code>，正反两边都要存（无向图视角）。</li>
-<li>换根公式 <span class="arithmatex">\(\Delta = 1 - 2w\)</span>，注意符号；写错就完全错。</li>
+<li>邻接表存 <code>(邻居, 翻方向标记)</code>，正反两边都要存（无向图视角），换根反转父子关系时两个方向都会用到。</li>
+<li>换根公式 <span class="arithmatex">\(\Delta = 1 - 2w\)</span>，注意符号；写反（<span class="arithmatex">\(2w - 1\)</span>）会让所有非根答案错向，整体全错。</li>
 </ul>
 <h2 id="_6">相关题目<a class="headerlink" href="#_6" title="Permanent link">#</a></h2>
 <ul>

@@ -5485,6 +5485,8 @@
       
         
       
+        
+      
     
     
     
@@ -6024,6 +6026,34 @@
     
   
     #93. Restore IP Addresses
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../0102_binary-tree-level-order-traversal/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    #102. Binary Tree Level Order Traversal
   
 
     
@@ -22675,18 +22705,23 @@
 <h2 id="problem">Problem<a class="headerlink" href="#problem" title="Permanent link">#</a></h2>
 <p>无限二维格 (sx, sy) 起，每秒<strong>必须</strong>走 8 邻一格（含对角）。问能否恰好 <span class="arithmatex">\(t\)</span> 秒到达 (fx, fy)。约束 <span class="arithmatex">\(1 \le \cdot \le 10^9, 0 \le t \le 10^9\)</span>。</p>
 <h2 id="background">背景 (Background)<a class="headerlink" href="#background" title="Permanent link">#</a></h2>
-<p>本题考察 <strong>Chebyshev / Chessboard distance</strong> <span class="arithmatex">\(d_\infty((x_1,y_1), (x_2,y_2)) = \max(|x_1-x_2|, |y_1-y_2|)\)</span>，即国际象棋王在棋盘上从 A 到 B 的最短步数（每步 8 邻一格）。同时考察对偶性：每步必走、不可原地停，故"是否可达 exactly <span class="arithmatex">\(t\)</span> 秒"取决于：
-1. 最短可达步数 <span class="arithmatex">\(d_\infty \le t\)</span>；
-2. 起终点相同时（<span class="arithmatex">\(d_\infty = 0\)</span>）不能 <span class="arithmatex">\(t = 1\)</span>（无法原地）；但 <span class="arithmatex">\(t \ge 2\)</span> 可（走出再走回）。</p>
-<p>Chebyshev metric 与 <span class="arithmatex">\(\ell^1\)</span> 通过 <span class="arithmatex">\(45^\circ\)</span> 旋转等价，是计算几何中常见技巧。</p>
+<p>把题目用它自己的规则复述一遍：你站在无限格点上，每一秒必须移动到当前格子的 8 个相邻格之一（4 个正交方向 + 4 个对角方向）。给定起点、终点和秒数 <span class="arithmatex">\(t\)</span>，问能否<strong>恰好</strong>用 <span class="arithmatex">\(t\)</span> 秒到达。</p>
+<p>先问最朴素的问题：到达终点<strong>最少</strong>需要几步？记水平差 <span class="arithmatex">\(\Delta x = |sx - fx|\)</span>、竖直差 <span class="arithmatex">\(\Delta y = |sy - fy|\)</span>。一个自然但错误的猜测是把两个方向分别走完，即 <span class="arithmatex">\(\Delta x + \Delta y\)</span> 步（这就是曼哈顿距离）。它错在哪？错在对角移动可以<strong>同时</strong>推进两个坐标各一格——一步 <span class="arithmatex">\((+1, +1)\)</span> 让 <span class="arithmatex">\(\Delta x\)</span> 和 <span class="arithmatex">\(\Delta y\)</span> 各减 1。于是两个坐标不是独立消耗的，可以并行推进。</p>
+<p>并行推进意味着：每一步至多让 <span class="arithmatex">\(\Delta x\)</span> 减 1，也至多让 <span class="arithmatex">\(\Delta y\)</span> 减 1。要把较大的那个差降到 0，至少需要 <span class="arithmatex">\(\max(\Delta x, \Delta y)\)</span> 步——这是步数下界。而它也可达到：先沿对角走 <span class="arithmatex">\(\min(\Delta x, \Delta y)\)</span> 步把较小的差清零，剩下的较大差再沿单轴直走 <span class="arithmatex">\(|\Delta x - \Delta y|\)</span> 步，合计恰好 <span class="arithmatex">\(\max(\Delta x, \Delta y)\)</span> 步。因此最少步数</p>
+<div class="arithmatex">\[d = \max(\Delta x, \Delta y) = \max(|sx - fx|, |sy - fy|).\]</div>
+<p>这个量正是 <strong>Chebyshev / Chessboard distance</strong> <span class="arithmatex">\(d_\infty\)</span>：它直接从"对角步可并行推进两轴"这一移动规则推出，不依赖任何外部图景。下一节把"恰好 <span class="arithmatex">\(t\)</span> 秒"的可达条件从这个 <span class="arithmatex">\(d\)</span> 推导出来。</p>
 <h2 id="formulation">形式化 (Formulation)<a class="headerlink" href="#formulation" title="Permanent link">#</a></h2>
-<p>设 <span class="arithmatex">\(d = \max(|sx - fx|, |sy - fy|)\)</span>。</p>
-<p>可达 exactly <span class="arithmatex">\(t\)</span> 秒 ⟺ 
-- <span class="arithmatex">\(d \le t\)</span>；并且
-- 不 (<span class="arithmatex">\(d = 0\)</span> 且 <span class="arithmatex">\(t = 1\)</span>)。</p>
-<p>事实上若 <span class="arithmatex">\(d = 0\)</span> 且 <span class="arithmatex">\(t \ge 2\)</span> 也可，但 <span class="arithmatex">\(t = 1\)</span> 不可（一步必离开起点）；若 <span class="arithmatex">\(d \ge 1\)</span> 则只要 <span class="arithmatex">\(t \ge d\)</span> 都可，因为多余的 <span class="arithmatex">\(t - d\)</span> 步可走出再走回（消耗偶数步）。注意当 <span class="arithmatex">\(t - d\)</span> 是奇数时也可——走一对 (NE, SW) 抵消 2 秒、走一个 NE 再 SW 抵消 2 秒；要消耗 1 秒奇数余量需借助"先朝目标少走 1 步，再用 2 步绕"——实际上：只要 <span class="arithmatex">\(d \ge 1\)</span> 任何 <span class="arithmatex">\(t \ge d\)</span> 都可。证明：若 <span class="arithmatex">\(t = d + e\)</span>，<span class="arithmatex">\(e\)</span> 步消耗只需"任何方向后回退"的 (k, -k) 序列，但本题没"等回退"概念。<strong>更精细</strong>：每多 2 步可走 "→ 一步 + ← 一步" 抵消；多 1 步则改路径绕一格。Chebyshev 距离的连续性允许任意"<span class="arithmatex">\(\ge d\)</span>"。</p>
-<p>详细论证：路径在 <span class="arithmatex">\(\mathbb{Z}^2\)</span> 上的 8 邻走法的可达性，等价 <span class="arithmatex">\(|t - d_\infty|\)</span> 的奇偶约束在 8 邻下不存在（与 4 邻不同）——因为 8 邻可 <span class="arithmatex">\(\pm (1,1)\)</span> 与 <span class="arithmatex">\(\pm (1,0)\)</span>，奇偶自由。</p>
+<p>我们已经知道 <span class="arithmatex">\(d\)</span> 步可以到达，且 <span class="arithmatex">\(d\)</span> 是下界。现在的问题是：给定恰好 <span class="arithmatex">\(t\)</span> 秒，能否到达？</p>
+<p><strong>直觉（在形式陈述之前）。</strong> 分两种情形。</p>
+<p>第一，若 <span class="arithmatex">\(t &lt; d\)</span>：每步至多把 <span class="arithmatex">\(\max(\Delta x, \Delta y)\)</span> 减 1，<span class="arithmatex">\(t\)</span> 步最多减 <span class="arithmatex">\(t &lt; d\)</span>，无法清零，<strong>不可达</strong>。</p>
+<p>第二，若 <span class="arithmatex">\(t \ge d\)</span>：我们有 <span class="arithmatex">\(t - d \ge 0\)</span> 步的富余量需要"消耗"掉。关键在于 8 邻移动让路径长度的奇偶完全自由。看一步对 <span class="arithmatex">\(x + y\)</span> 奇偶的影响：对角步如 <span class="arithmatex">\((+1, +1)\)</span> 使 <span class="arithmatex">\(x + y\)</span> 变化 <span class="arithmatex">\(0\)</span>（偶），正交步如 <span class="arithmatex">\((+1, 0)\)</span> 使 <span class="arithmatex">\(x + y\)</span> 变化 <span class="arithmatex">\(\pm 1\)</span>（奇）。既然单步就能让 <span class="arithmatex">\(x + y\)</span> 的奇偶变或不变，路径总长不受任何奇偶约束。具体地，只要起点不等于终点（<span class="arithmatex">\(d \ge 1\)</span>），就能把富余量全部吸收：在某个轴上来回振荡，每"出一步再回一步"消耗 2 秒；若富余量是奇数，就在抵达前的某一步绕一格（用对角步替换正交步，或反之），单独消耗 1 秒而不改变终点。于是 <span class="arithmatex">\(d \ge 1\)</span> 时任意 <span class="arithmatex">\(t \ge d\)</span> 都可达。</p>
+<p>唯一的例外是 <span class="arithmatex">\(d = 0\)</span>（起点即终点）。此时若 <span class="arithmatex">\(t = 1\)</span>，先看朴素尝试为什么失败：我已经站在终点，本需 0 步，但 <span class="arithmatex">\(t = 1\)</span> 强制我必须移动一次；任何一步都离开终点，而剩下 0 步无法返回——故 <span class="arithmatex">\(t = 1\)</span> <strong>不可达</strong>。而 <span class="arithmatex">\(t = 0\)</span>（无需移动）显然可达，<span class="arithmatex">\(t \ge 2\)</span> 也可达（走出一步再走回，消耗 2 秒；更大的偶数余量继续振荡，奇数余量同样靠绕一格补 1 秒）。</p>
+<p>把上述直觉收成形式陈述。设 <span class="arithmatex">\(d = \max(|sx - fx|, |sy - fy|)\)</span>，则</p>
+<div class="arithmatex">\[\text{恰好 } t \text{ 秒可达} \iff d \le t \ \text{ 且 } \ \lnot\,(d = 0 \ \text{且}\ t = 1). \tag{1}\]</div>
+<p><strong>证明。</strong> 必要性即上面的第一种情形（<span class="arithmatex">\(t &lt; d\)</span> 时步数不够）加上 <span class="arithmatex">\(d = 0, t = 1\)</span> 的反例。充分性即第二种情形的构造：<span class="arithmatex">\(d \ge 1\)</span> 时沿对角与单轴走 <span class="arithmatex">\(d\)</span> 步抵达，再用振荡 + 至多一次绕格吸收 <span class="arithmatex">\(t - d\)</span> 步；<span class="arithmatex">\(d = 0\)</span> 时 <span class="arithmatex">\(t = 0\)</span> 原地不动、<span class="arithmatex">\(t \ge 2\)</span> 走出再走回。<span class="arithmatex">\(\square\)</span></p>
+<p>公式 <span class="arithmatex">\((1)\)</span> 是整页的脊梁——下一节的代码逐分支实现它。</p>
 <h2 id="approach">数据结构 / 想法 (Approach)<a class="headerlink" href="#approach" title="Permanent link">#</a></h2>
+<p>代码直接照搬公式 <span class="arithmatex">\((1)\)</span>：先算 <span class="arithmatex">\(d\)</span>；<span class="arithmatex">\(d = 0\)</span> 时返回 <span class="arithmatex">\(t \ne 1\)</span>（对应"<span class="arithmatex">\(\lnot(d=0 \text{ 且 } t=1)\)</span>"在 <span class="arithmatex">\(d=0\)</span> 下的取值）；否则返回 <span class="arithmatex">\(t \ge d\)</span>（对应主条件 <span class="arithmatex">\(d \le t\)</span>）。</p>
 <div class="language-python highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">isReachableAtTime</span><span class="p">(</span><span class="n">sx</span><span class="p">,</span> <span class="n">sy</span><span class="p">,</span> <span class="n">fx</span><span class="p">,</span> <span class="n">fy</span><span class="p">,</span> <span class="n">t</span><span class="p">):</span>
     <span class="n">d</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">sx</span> <span class="o">-</span> <span class="n">fx</span><span class="p">),</span> <span class="nb">abs</span><span class="p">(</span><span class="n">sy</span> <span class="o">-</span> <span class="n">fy</span><span class="p">))</span>
     <span class="k">if</span> <span class="n">d</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
@@ -22701,9 +22736,9 @@
 </ul>
 <h2 id="pitfalls">陷阱 (Pitfalls)<a class="headerlink" href="#pitfalls" title="Permanent link">#</a></h2>
 <ul>
-<li><strong><code>d=0</code> 与 <code>t=1</code> 唯一禁止</strong>：因为 8 邻必走，不能原地；但 <span class="arithmatex">\(t \ge 2\)</span> 可"走出再走回"。</li>
-<li><strong><code>t=0</code> 与 <code>d=0</code></strong>：起点即终点且 0 秒 → True（已经到）。</li>
-<li><strong>奇偶性误判</strong>：4 邻棋盘王下需考虑 <span class="arithmatex">\(t - d\)</span> 奇偶（曼哈顿距离），8 邻不需。</li>
+<li><strong><code>d=0</code> 与 <code>t=1</code> 是唯一禁止情形</strong>：起点即终点却被强制走一步，离开后无步可回。<span class="arithmatex">\(t = 0\)</span> 与 <span class="arithmatex">\(t \ge 2\)</span> 均可达。</li>
+<li><strong><code>t=0</code> 与 <code>d=0</code></strong>：起点即终点且 0 秒 → True（已经到，无需移动）。</li>
+<li><strong>奇偶性陷阱</strong>：4 邻（仅正交移动）下每步翻转 <span class="arithmatex">\(x + y\)</span> 的奇偶，故需 <span class="arithmatex">\(t - d\)</span> 与 0 同奇偶；8 邻下对角步使奇偶变化为 0、正交步为 <span class="arithmatex">\(\pm 1\)</span>，奇偶自由，故<strong>无</strong> <span class="arithmatex">\(t - d\)</span> 奇偶约束。混淆两者会错误地拒绝合法的 <span class="arithmatex">\(t\)</span>。</li>
 </ul>
 <h2 id="related">相关题目 (Related)<a class="headerlink" href="#related" title="Permanent link">#</a></h2>
 <ul>

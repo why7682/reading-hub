@@ -5485,6 +5485,8 @@
       
         
       
+        
+      
     
     
     
@@ -6024,6 +6026,34 @@
     
   
     #93. Restore IP Addresses
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../0102_binary-tree-level-order-traversal/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    #102. Binary Tree Level Order Traversal
   
 
     
@@ -22675,19 +22705,25 @@
 <h2 id="problem">Problem<a class="headerlink" href="#problem" title="Permanent link">#</a></h2>
 <p>给数组 <code>nums</code>，元素是正整数或 <span class="arithmatex">\(-1\)</span>。维护一个 <code>seen</code> 数组（正整数前置入）和计数 <span class="arithmatex">\(k\)</span>（当前连续 <span class="arithmatex">\(-1\)</span> 的个数）。遇 <span class="arithmatex">\(-1\)</span> 时若 <span class="arithmatex">\(k \le |\text{seen}|\)</span> 取 <code>seen[k-1]</code> 否则取 <span class="arithmatex">\(-1\)</span>，加入 <code>ans</code>。返回 <code>ans</code>。<span class="arithmatex">\(|\text{nums}| \le 100\)</span>。</p>
 <h2 id="background">背景 (Background)<a class="headerlink" href="#background" title="Permanent link">#</a></h2>
-<p>本题为按描述模拟，无特殊学科背景。"前置入" 的 <code>seen</code> 实质是一个<strong>后进先出 (LIFO)</strong> 栈，按下标 <span class="arithmatex">\(k-1\)</span> 访问第 <span class="arithmatex">\(k\)</span> 个最近元素。</p>
+<p>把 <span class="arithmatex">\(-1\)</span> 读作一次「查询」，正整数读作一次「记录」，问题的核心就清晰了：每个 <span class="arithmatex">\(-1\)</span> 要回答的是「在它之前最近记录的若干整数中，倒数第几个是什么」。关键在于 <span class="arithmatex">\(-1\)</span> 是<strong>成段</strong>出现的——一段连续 <span class="arithmatex">\(-1\)</span> 里，第 1 个 <span class="arithmatex">\(-1\)</span> 问的是最近 1 个整数，第 2 个 <span class="arithmatex">\(-1\)</span> 问的是最近 2 个整数，依此类推。设这段连续 <span class="arithmatex">\(-1\)</span> 中当前 <span class="arithmatex">\(-1\)</span> 是第 <span class="arithmatex">\(k\)</span> 个，它要的就是「倒数第 <span class="arithmatex">\(k\)</span> 个最近记录的整数」；若至今记录的整数不足 <span class="arithmatex">\(k\)</span> 个，则答案为 <span class="arithmatex">\(-1\)</span>。</p>
+<p>先看最朴素的做法：每遇到一个 <span class="arithmatex">\(-1\)</span>，就从当前位置向左扫描 <code>nums</code>，跳过沿途的 <span class="arithmatex">\(-1\)</span>，数出第 <span class="arithmatex">\(k\)</span> 个正整数。这能算对，但有两个问题。其一，每次查询都重新向左扫，单次扫描是 <span class="arithmatex">\(O(n)\)</span>，一段长 <span class="arithmatex">\(-1\)</span> 会反复扫同一片前缀；其二，「第 <span class="arithmatex">\(k\)</span> 个」里的 <span class="arithmatex">\(k\)</span> 本身要靠扫描时数当前连续 <span class="arithmatex">\(-1\)</span> 段的长度，逻辑与取值纠缠在一起，容易写错边界。</p>
+<p>两个问题都指向同一处浪费：被查询的那批整数是<strong>固定</strong>的，只是访问的「倒数序号」在一段 <span class="arithmatex">\(-1\)</span> 内逐次加一。于是修复方向自然浮现——把记录过的整数按「最近优先」缓存下来，让「倒数第 <span class="arithmatex">\(k\)</span> 个」退化为一次下标访问；再用一个独立计数器维护 <span class="arithmatex">\(k\)</span>，把「数第几个」从访问逻辑里剥离出去。</p>
+<p>按这个方向缓存：每记录一个正整数就放到缓存最前端，于是缓存里<strong>下标越小越新</strong>。这样一个<strong>后进先出 (LIFO)</strong> 的结构，使「倒数第 <span class="arithmatex">\(k\)</span> 个最近整数」恰好等于「下标 <span class="arithmatex">\(k-1\)</span> 的元素」（<span class="arithmatex">\(k\)</span> 从 1 计起）。访问降为 <span class="arithmatex">\(O(1)\)</span>，<span class="arithmatex">\(k\)</span> 由计数器显式维护，两个问题一并解决。下面把这条结论形式化。</p>
 <h2 id="formulation">形式化 (Formulation)<a class="headerlink" href="#formulation" title="Permanent link">#</a></h2>
-<p>设 <span class="arithmatex">\(S_t\)</span> 为处理完 <span class="arithmatex">\(\text{nums}[0..t]\)</span> 后栈中元素（按入栈反向排列），<span class="arithmatex">\(k_t\)</span> 为以位置 <span class="arithmatex">\(t\)</span> 结尾的连续 <span class="arithmatex">\(-1\)</span> 段长度。则：</p>
-<div class="arithmatex">\[\text{ans 追加项} = \begin{cases} S_t[k_t-1] &amp; k_t \le |S_t| \\ -1 &amp; \text{否则}\end{cases}\]</div>
-<p>仅当 <span class="arithmatex">\(\text{nums}[t] = -1\)</span> 时追加。</p>
+<p>直观地说：每个 <span class="arithmatex">\(-1\)</span> 查询「倒数第 <span class="arithmatex">\(k\)</span> 个最近记录的整数」，其中 <span class="arithmatex">\(k\)</span> 是当前连续 <span class="arithmatex">\(-1\)</span> 段的长度；不足 <span class="arithmatex">\(k\)</span> 个时返回 <span class="arithmatex">\(-1\)</span>。</p>
+<p>形式化如下。设 <span class="arithmatex">\(S_t\)</span> 为处理完 <span class="arithmatex">\(\text{nums}[0..t]\)</span> 后缓存中的元素序列（最新的在前，即按记录顺序反向排列），<span class="arithmatex">\(k_t\)</span> 为以位置 <span class="arithmatex">\(t\)</span> 结尾的连续 <span class="arithmatex">\(-1\)</span> 段长度。当 <span class="arithmatex">\(\text{nums}[t] = -1\)</span> 时，向 <code>ans</code> 追加的项为：</p>
+<div class="arithmatex">\[
+a_t = \begin{cases} S_t[k_t-1] &amp; k_t \le |S_t| \\ -1 &amp; \text{否则}\end{cases}
+\tag{1}
+\]</div>
+<p>边界与读法：<span class="arithmatex">\(k_t\)</span> 从 1 计起（第一个 <span class="arithmatex">\(-1\)</span> 对应 <span class="arithmatex">\(k_t=1\)</span>），故下标用 <span class="arithmatex">\(k_t-1\)</span>；缓存元素不足时（<span class="arithmatex">\(k_t &gt; |S_t|\)</span>）落入第二支返回 <span class="arithmatex">\(-1\)</span>。当 <span class="arithmatex">\(\text{nums}[t]\)</span> 为正整数时不追加任何项，但它会重置后续的连续段计数（见下文）。</p>
 <h2 id="approach">数据结构 / 想法 (Approach)<a class="headerlink" href="#approach" title="Permanent link">#</a></h2>
-<p>直接线性扫描：</p>
+<p>算法就是公式 (1) 的逐字实现：线性扫描 <code>nums</code>，按当前元素分两支处理，分别对应 <span class="arithmatex">\(\text{nums}[t]\)</span> 为正整数与为 <span class="arithmatex">\(-1\)</span> 两种情形。</p>
 <ul>
-<li>维护 <code>seen</code>（python list，新元素 <code>insert(0, x)</code>）和当前连续 <span class="arithmatex">\(-1\)</span> 计数 <span class="arithmatex">\(k\)</span>。</li>
-<li>遇正数：<span class="arithmatex">\(k \leftarrow 0\)</span>，<code>seen.insert(0, x)</code>。</li>
-<li>遇 <span class="arithmatex">\(-1\)</span>：<span class="arithmatex">\(k \leftarrow k+1\)</span>；查 <code>seen[k-1]</code>，越界则 <span class="arithmatex">\(-1\)</span>。</li>
+<li>遇正整数 <span class="arithmatex">\(x\)</span>：它结束了任何正在进行的连续 <span class="arithmatex">\(-1\)</span> 段，故计数 <span class="arithmatex">\(k \leftarrow 0\)</span>；并把它前置入缓存（<code>seen.insert(0, x)</code>），维持「最新在前」，即 <span class="arithmatex">\(S_t\)</span> 的反向排列。</li>
+<li>遇 <span class="arithmatex">\(-1\)</span>：连续段长度加一，<span class="arithmatex">\(k \leftarrow k+1\)</span>，对应公式 (1) 中的 <span class="arithmatex">\(k_t\)</span>；按第一支取 <code>seen[k-1]</code>，越界（<span class="arithmatex">\(k &gt; |\text{seen}|\)</span>）则按第二支取 <span class="arithmatex">\(-1\)</span>，追加进 <code>ans</code>。</li>
 </ul>
-<p><code>list.insert(0, x)</code> 是 <span class="arithmatex">\(O(n)\)</span>，对 <span class="arithmatex">\(n \le 100\)</span> 没问题。优化：改用 <code>deque.appendleft</code>（<span class="arithmatex">\(O(1)\)</span>）或 append 到尾后用倒序索引 <code>seen[-k]</code>。</p>
+<p>每一支与公式 (1) 的分支一一对应：<code>seen[k-1]</code> 即 <span class="arithmatex">\(S_t[k_t-1]\)</span>，越界回退即 <span class="arithmatex">\(-1\)</span>。</p>
 <div class="language-python highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">Solution</span><span class="p">:</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">lastVisitedIntegers</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">nums</span><span class="p">):</span>
         <span class="n">seen</span><span class="p">,</span> <span class="n">ans</span><span class="p">,</span> <span class="n">k</span> <span class="o">=</span> <span class="p">[],</span> <span class="p">[],</span> <span class="mi">0</span>
@@ -22700,22 +22736,27 @@
                 <span class="n">k</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="k">return</span> <span class="n">ans</span>
 </code></pre></div>
-<p><strong>Trace example 1</strong> <code>nums=[1,2,-1,-1,-1]</code>：
-- 1 → seen=[1], k=0
-- 2 → seen=[2,1], k=0
-- -1 → k=1, seen[0]=2, ans=[2]
-- -1 → k=2, seen[1]=1, ans=[2,1]
-- -1 → k=3, |seen|=2 &lt; 3, ans=[2,1,-1] ✓</p>
+<p>下面用 Example 1 走一遍，验证下标与计数随状态推进的对应关系。</p>
+<p>执行轨迹 (Example 1) <code>nums=[1,2,-1,-1,-1]</code>：</p>
+<ul>
+<li><code>1</code> → 正整数，<code>seen=[1]</code>，<code>k=0</code></li>
+<li><code>2</code> → 正整数，<code>seen=[2,1]</code>，<code>k=0</code></li>
+<li><code>-1</code> → <code>k=1</code>，<code>seen[0]=2</code>，<code>ans=[2]</code></li>
+<li><code>-1</code> → <code>k=2</code>，<code>seen[1]=1</code>，<code>ans=[2,1]</code></li>
+<li><code>-1</code> → <code>k=3</code>，<code>|seen|=2 &lt; 3</code>，越界取 <span class="arithmatex">\(-1\)</span>，<code>ans=[2,1,-1]</code> ✓</li>
+</ul>
+<p>每一步缓存「最新在前」，下标 <span class="arithmatex">\(k-1\)</span> 正好取到倒数第 <span class="arithmatex">\(k\)</span> 个最近整数，与公式 (1) 一致。</p>
 <h2 id="complexity">复杂度 (Complexity)<a class="headerlink" href="#complexity" title="Permanent link">#</a></h2>
 <ul>
-<li>Time: <span class="arithmatex">\(O(n^2)\)</span>（因 <code>insert(0,·)</code>）；改 deque 后 <span class="arithmatex">\(O(n)\)</span>。</li>
-<li>Space: <span class="arithmatex">\(O(n)\)</span>。</li>
+<li>Time: <span class="arithmatex">\(O(n^2)\)</span>。瓶颈在 <code>list.insert(0, x)</code>：在列表头部插入需移动其后全部元素，单次 <span class="arithmatex">\(O(n)\)</span>，<span class="arithmatex">\(n\)</span> 次插入累计 <span class="arithmatex">\(O(n^2)\)</span>。对 <span class="arithmatex">\(n \le 100\)</span> 完全够用。</li>
+<li>Space: <span class="arithmatex">\(O(n)\)</span>，缓存至多存下全部正整数。</li>
 </ul>
+<p>若需线性时间，可消除头部插入的开销：改用 <code>deque.appendleft</code>（头部插入 <span class="arithmatex">\(O(1)\)</span>），或改为 append 到尾部、用倒序下标 <code>seen[-k]</code> 访问倒数第 <span class="arithmatex">\(k\)</span> 个（同样 <span class="arithmatex">\(O(1)\)</span>，下标语义不变）。两种改写后总时间降为 <span class="arithmatex">\(O(n)\)</span>。</p>
 <h2 id="pitfalls">陷阱 (Pitfalls)<a class="headerlink" href="#pitfalls" title="Permanent link">#</a></h2>
 <ul>
-<li><span class="arithmatex">\(k\)</span> 必须在遇正数时<strong>清零</strong>——题面说 "consecutive"，非 -1 元素打断连续段。</li>
-<li><span class="arithmatex">\(k\)</span> 是 1-indexed（第 <span class="arithmatex">\(k\)</span> 个），数组下标用 <span class="arithmatex">\(k-1\)</span>。</li>
-<li>越界判定 <span class="arithmatex">\(k &gt; |\text{seen}|\)</span>（不是 <span class="arithmatex">\(k \ge\)</span>）。</li>
+<li><span class="arithmatex">\(k\)</span> 必须在遇正整数时<strong>清零</strong>——题面要求连续段，正整数会打断连续的 <span class="arithmatex">\(-1\)</span>；不清零会把跨段的 <span class="arithmatex">\(-1\)</span> 误当作同一段延续，序号全错。</li>
+<li><span class="arithmatex">\(k\)</span> 从 1 计起（第 <span class="arithmatex">\(k\)</span> 个），数组下标须用 <span class="arithmatex">\(k-1\)</span>；直接用 <code>seen[k]</code> 会取到下一个更旧的元素。</li>
+<li>越界判定是 <span class="arithmatex">\(k &gt; |\text{seen}|\)</span>（严格大于），等价于「在界内」的守卫为 <span class="arithmatex">\(k \le |\text{seen}|\)</span>；写成 <span class="arithmatex">\(k \ge |\text{seen}|\)</span> 会在恰好取到最旧元素那一步误判越界。</li>
 </ul>
 <h2 id="related">相关题目 (Related)<a class="headerlink" href="#related" title="Permanent link">#</a></h2>
 <ul>

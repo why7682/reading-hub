@@ -5485,6 +5485,8 @@
       
         
       
+        
+      
     
     
     
@@ -6024,6 +6026,34 @@
     
   
     #93. Restore IP Addresses
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../0102_binary-tree-level-order-traversal/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    #102. Binary Tree Level Order Traversal
   
 
     
@@ -22675,15 +22705,22 @@
 <h2 id="problem">Problem<a class="headerlink" href="#problem" title="Permanent link">#</a></h2>
 <p>给字符串 <code>answerKey</code>（只含 <code>'T'</code>/<code>'F'</code>，长度 <span class="arithmatex">\(\le 5 \times 10^4\)</span>）和整数 <code>k</code>，可以最多翻转 k 个字符。返回操作后最长连续相同字符段的长度。</p>
 <h2 id="background">背景 (Background)<a class="headerlink" href="#background" title="Permanent link">#</a></h2>
-<p>这是"longest substring with at most k of the minor class"的对称版本。把 T 和 F 都视为可能的"主类"，问题就是"最长子串使得另一类出现次数 ≤ k"。经典的双指针/滑动窗口范式（同 Longest Repeating Character Replacement #424）。</p>
+<p>最终的连续相同段一定落在某个原始子串 <span class="arithmatex">\([l, r]\)</span> 上：我们在这个区间内把所有字符翻成同一类，区间外不动。于是真正要决定的只有两件事——选哪个区间，以及把它统一成 <code>'T'</code> 还是 <code>'F'</code>。这给出一个直接但低效的起点：枚举所有 <span class="arithmatex">\([l, r]\)</span>，对每个区间算"统一成 T 需要几次翻转"和"统一成 F 需要几次翻转"，取两者较小值；若 <span class="arithmatex">\(\le k\)</span> 则该区间可达，用它的长度更新答案。</p>
+<p>把这个朴素想法写清楚，就能看出它慢在哪，以及哪一步是可以省掉的——下面的形式化正是为了精确刻画"一个区间可达"这件事。</p>
 <h2 id="formulation">形式化 (Formulation)<a class="headerlink" href="#formulation" title="Permanent link">#</a></h2>
-<p>设 <span class="arithmatex">\(s \in \{T, F\}^n\)</span>。定义</p>
-<div class="arithmatex">\[L(c) = \max\{r - l + 1 : 0 \le l \le r &lt; n,\; |\{i \in [l, r] : s_i \neq c\}| \le k\}\]</div>
-<p>答案为 <span class="arithmatex">\(\max(L(T), L(F))\)</span>。</p>
+<p>设 <span class="arithmatex">\(s \in \{T, F\}^n\)</span>。固定目标类 <span class="arithmatex">\(c\)</span>，要把区间 <span class="arithmatex">\([l, r]\)</span> 全部统一成 <span class="arithmatex">\(c\)</span>，需要翻转的恰是区间内不等于 <span class="arithmatex">\(c\)</span> 的字符，其个数为 <span class="arithmatex">\(|\{i \in [l, r] : s_i \neq c\}|\)</span>。预算 <span class="arithmatex">\(k\)</span> 下，目标类为 <span class="arithmatex">\(c\)</span> 的最长可达区间长度是</p>
+<div class="arithmatex">\[L(c) = \max\{r - l + 1 : 0 \le l \le r &lt; n,\; |\{i \in [l, r] : s_i \neq c\}| \le k\}.\]</div>
+<p>目标类只有 T、F 两种，最终答案取两者较大者：</p>
+<div class="arithmatex">\[\text{ans} = \max(L(T), L(F)).\]</div>
+<p>这个式子就是整篇解法的脊柱。<span class="arithmatex">\(L(c)\)</span> 的约束 <span class="arithmatex">\(|\{i : s_i \neq c\}| \le k\)</span> 是单调的：固定 <span class="arithmatex">\(r\)</span>，当左端点 <span class="arithmatex">\(l\)</span> 增大时区间收缩，"不等于 <span class="arithmatex">\(c\)</span> 的个数"不增——这一点稍后决定了为什么左指针只需单向移动。下面先把 <span class="arithmatex">\(L(T)\)</span>、<span class="arithmatex">\(L(F)\)</span> 各自算出来再取 max 的两遍扫描，压成一遍。</p>
 <h2 id="approach">数据结构 / 想法 (Approach)<a class="headerlink" href="#approach" title="Permanent link">#</a></h2>
-<p><strong>两次滑动窗口</strong>（分别假设 T 为主、F 为主）或<strong>单次扫描同时维护 T/F 的计数</strong>。</p>
-<p>单次扫描更紧凑：维护窗口 <span class="arithmatex">\([l, r]\)</span> 内 T 和 F 的计数；当 <span class="arithmatex">\(\min(\text{cnt}_T, \text{cnt}_F) &gt; k\)</span> 时说明"少数派也超过 k 个翻不动"，左指针右移。窗口长度 <span class="arithmatex">\(r - l + 1\)</span> 即候选答案。</p>
-<p><strong>不变量</strong>：循环到 <span class="arithmatex">\(r\)</span> 时，所有 <span class="arithmatex">\(r' \le r\)</span> 的合法窗口都被 <span class="arithmatex">\([l_{\text{当前}}, r]\)</span> 包含或更短。每个下标至多被 l/r 各移动 n 次 → 总 <span class="arithmatex">\(O(n)\)</span> 摊销。</p>
+<p><strong>先看朴素法为何慢。</strong> 直接枚举所有 <span class="arithmatex">\([l, r]\)</span> 有 <span class="arithmatex">\(O(n^2)\)</span> 个区间，逐个判定可达性即便用前缀和做到 <span class="arithmatex">\(O(1)\)</span>，总量仍是 <span class="arithmatex">\(O(n^2)\)</span>。浪费在于：对固定的 <span class="arithmatex">\(r\)</span>，我们把每个 <span class="arithmatex">\(l\)</span> 都当成独立问题重算了一遍，而它们之间有上一节指出的单调结构没被利用。</p>
+<p><strong>用单调性把左指针变成单向。</strong> 固定右端点 <span class="arithmatex">\(r\)</span>，记 <span class="arithmatex">\(f_c(l) = |\{i \in [l, r] : s_i \neq c\}|\)</span>。<span class="arithmatex">\(l\)</span> 增大时区间收缩，故 <span class="arithmatex">\(f_c(l)\)</span> 关于 <span class="arithmatex">\(l\)</span> 单调不增。于是对每个目标类 <span class="arithmatex">\(c\)</span>，"区间 <span class="arithmatex">\([l, r]\)</span> 在预算内"（即 <span class="arithmatex">\(f_c(l) \le k\)</span>）这一性质关于 <span class="arithmatex">\(l\)</span> 是<strong>右侧封闭</strong>的：一旦某个 <span class="arithmatex">\(l_0\)</span> 满足，所有 <span class="arithmatex">\(l \ge l_0\)</span> 也满足。因此对固定 <span class="arithmatex">\(r\)</span>，使区间可达的最小左端点 <span class="arithmatex">\(l^*(r)\)</span> 唯一存在，最长可达区间就是 <span class="arithmatex">\([l^*(r), r]\)</span>。</p>
+<p>关键的一步是：当 <span class="arithmatex">\(r\)</span> 增大时，<span class="arithmatex">\(l^*(r)\)</span> 不会减小。把字符加进窗口右端只会让"不等于 <span class="arithmatex">\(c\)</span> 的个数"不减，要重新满足预算只能进一步右移左端，不可能左移。所以左指针在整次扫描里单调不减——这就把朴素法里对每个 <span class="arithmatex">\(r\)</span> 重扫所有 <span class="arithmatex">\(l\)</span> 的开销，摊成了左指针总共移动至多 <span class="arithmatex">\(n\)</span> 步。</p>
+<p><strong>把两个目标类合一。</strong> 维护窗口 <span class="arithmatex">\([l, r]\)</span> 内 T、F 的计数 <span class="arithmatex">\(\text{cnt}_T, \text{cnt}_F\)</span>。窗口对目标类 T 可达当且仅当 <span class="arithmatex">\(\text{cnt}_F \le k\)</span>（要翻的是 F）；对目标类 F 可达当且仅当 <span class="arithmatex">\(\text{cnt}_T \le k\)</span>。窗口"至少对一个目标类可达"当且仅当</p>
+<div class="arithmatex">\[\min(\text{cnt}_T, \text{cnt}_F) \le k.\]</div>
+<p>反面即收缩条件：<span class="arithmatex">\(\min(\text{cnt}_T, \text{cnt}_F) &gt; k\)</span> 意味着 <span class="arithmatex">\(\text{cnt}_T &gt; k\)</span> 且 <span class="arithmatex">\(\text{cnt}_F &gt; k\)</span>，此时无论选哪一类做目标，少数类的个数都超过预算，区间对两个目标类都不可达，必须右移左指针。只要保持 <span class="arithmatex">\(\min(\text{cnt}_T, \text{cnt}_F) \le k\)</span>，当前窗口长度 <span class="arithmatex">\(r - l + 1\)</span> 就是 <span class="arithmatex">\(\max(L(T), L(F))\)</span> 在当前右端点下的一个下界；扫遍所有 <span class="arithmatex">\(r\)</span> 取最大，即得答案。一遍扫描同时覆盖了两个 <span class="arithmatex">\(L(c)\)</span>，无需分两趟。</p>
+<p>下面用归纳确认左指针的单向性正确。记 <span class="arithmatex">\(r\)</span> 推进后、收缩前的左指针为 <span class="arithmatex">\(l_{\text{prev}}\)</span>（它是 <span class="arithmatex">\(r-1\)</span> 时的合法左端点）。基例 <span class="arithmatex">\(r = 0\)</span>：窗口 <span class="arithmatex">\([0,0]\)</span> 只有一个字符，<span class="arithmatex">\(\min(\text{cnt}_T,\text{cnt}_F)=0\le k\)</span>，<span class="arithmatex">\(l=0\)</span> 合法。归纳步：设 <span class="arithmatex">\([l_{\text{prev}}, r-1]\)</span> 合法。把 <span class="arithmatex">\(s_r\)</span> 加入后某类计数加一，若仍 <span class="arithmatex">\(\min \le k\)</span> 则 <span class="arithmatex">\(l\)</span> 不动；否则 <code>while</code> 反复右移 <span class="arithmatex">\(l\)</span>，每移一步少数类计数至多减一，直到 <span class="arithmatex">\(\min \le k\)</span> 重新成立。整个过程 <span class="arithmatex">\(l\)</span> 只增不减，故 <span class="arithmatex">\(l^*(r) \ge l^*(r-1)\)</span>，归纳成立。</p>
 <div class="language-python highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">Solution</span><span class="p">:</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">maxConsecutiveAnswers</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">answerKey</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">k</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
         <span class="n">cnt</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;T&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;F&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">}</span>
@@ -22697,18 +22734,116 @@
             <span class="n">ans</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">ans</span><span class="p">,</span> <span class="n">r</span> <span class="o">-</span> <span class="n">l</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">ans</span>
 </code></pre></div>
-<p>样例 3 trace：<code>"TTFTTFTT", k=1</code>。扫到 r=5（第二个 F），cnt={T:5, F:2}，min=2&gt;1，l 右移直到 cnt={T:4, F:1}（l=2 处 'F' 弹出后 min=1 ≤ k）。继续扫到 r=7，窗口 [2,7] 长 6？再 trace 仔细：l=2 时 [2..5] = "FTTF" → cnt={T:2,F:2}, min=2&gt;1 继续。l=3 [3..5]="TTF" cnt={T:2,F:1} ok 长 3。r=6 [3..6]="TTFT" T:3 F:1 长 4。r=7 [3..7]="TTFTT" T:4 F:1 长 5 ✓。</p>
-<p><strong>二分写法</strong>（hint 暗示）：二分目标长度 L，判定"是否存在长 L 的窗口使少数派 ≤ k"，固定窗口扫描 <span class="arithmatex">\(O(n)\)</span>。总 <span class="arithmatex">\(O(n \log n)\)</span>，比滑窗劣。</p>
+<p><strong>逐步 trace</strong>：<code>answerKey = "TTFTTTFT"</code>, <code>k = 1</code>（LeetCode 样例 3，答案 6）。下表是每步加入 <span class="arithmatex">\(s_r\)</span>、收缩后窗口的状态：</p>
+<table>
+<thead>
+<tr>
+<th><span class="arithmatex">\(r\)</span></th>
+<th><span class="arithmatex">\(s_r\)</span></th>
+<th>收缩后窗口</th>
+<th>子串</th>
+<th><span class="arithmatex">\(\text{cnt}_T\)</span></th>
+<th><span class="arithmatex">\(\text{cnt}_F\)</span></th>
+<th>长度</th>
+<th>ans</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>T</td>
+<td><span class="arithmatex">\([0,0]\)</span></td>
+<td><code>T</code></td>
+<td>1</td>
+<td>0</td>
+<td>1</td>
+<td>1</td>
+</tr>
+<tr>
+<td>1</td>
+<td>T</td>
+<td><span class="arithmatex">\([0,1]\)</span></td>
+<td><code>TT</code></td>
+<td>2</td>
+<td>0</td>
+<td>2</td>
+<td>2</td>
+</tr>
+<tr>
+<td>2</td>
+<td>F</td>
+<td><span class="arithmatex">\([0,2]\)</span></td>
+<td><code>TTF</code></td>
+<td>2</td>
+<td>1</td>
+<td>3</td>
+<td>3</td>
+</tr>
+<tr>
+<td>3</td>
+<td>T</td>
+<td><span class="arithmatex">\([0,3]\)</span></td>
+<td><code>TTFT</code></td>
+<td>3</td>
+<td>1</td>
+<td>4</td>
+<td>4</td>
+</tr>
+<tr>
+<td>4</td>
+<td>T</td>
+<td><span class="arithmatex">\([0,4]\)</span></td>
+<td><code>TTFTT</code></td>
+<td>4</td>
+<td>1</td>
+<td>5</td>
+<td>5</td>
+</tr>
+<tr>
+<td>5</td>
+<td>T</td>
+<td><span class="arithmatex">\([0,5]\)</span></td>
+<td><code>TTFTTT</code></td>
+<td>5</td>
+<td>1</td>
+<td>6</td>
+<td><strong>6</strong></td>
+</tr>
+<tr>
+<td>6</td>
+<td>F</td>
+<td><span class="arithmatex">\([3,6]\)</span></td>
+<td><code>TTTF</code></td>
+<td>3</td>
+<td>1</td>
+<td>4</td>
+<td>6</td>
+</tr>
+<tr>
+<td>7</td>
+<td>T</td>
+<td><span class="arithmatex">\([3,7]\)</span></td>
+<td><code>TTTFT</code></td>
+<td>4</td>
+<td>1</td>
+<td>5</td>
+<td>6</td>
+</tr>
+</tbody>
+</table>
+<p>在 <span class="arithmatex">\(r = 6\)</span> 处加入第二个 F 后 <span class="arithmatex">\(\text{cnt}_T = 5, \text{cnt}_F = 2\)</span>，<span class="arithmatex">\(\min = 2 &gt; 1\)</span>，左指针从 0 右移到 3（弹出 <code>TTF</code>，使 <span class="arithmatex">\(\text{cnt}_F\)</span> 降回 1）。最长可达窗口 <span class="arithmatex">\([0,5]\)</span> 出现在 <span class="arithmatex">\(r = 5\)</span>，把 <code>TTFTTT</code> 中那个 F 翻成 T 即得 6 连 T。</p>
+<p><strong>二分写法</strong>（对应 Binary Search 标签）。把答案的单调性换一个角度用：若长度 <span class="arithmatex">\(L\)</span> 可达，则任何更短长度也可达，故"可达的最大长度"可二分。判定"是否存在长 <span class="arithmatex">\(L\)</span> 的可达窗口"用一个固定宽度 <span class="arithmatex">\(L\)</span> 的窗口扫一遍数组，<span class="arithmatex">\(O(n)\)</span>。二分 <span class="arithmatex">\(O(\log n)\)</span> 层、每层一次 <span class="arithmatex">\(O(n)\)</span> 判定，合计 <span class="arithmatex">\(O(n \log n)\)</span>。它劣于滑动窗口的根源在结构上：每次判定都要把数组从头扫一遍、丢弃上一层的窗口信息；滑动窗口则靠左指针单调不减，把所有 <span class="arithmatex">\(r\)</span> 的工作摊成一趟，不重扫。</p>
 <h2 id="complexity">复杂度 (Complexity)<a class="headerlink" href="#complexity" title="Permanent link">#</a></h2>
+<p>滑动窗口为何是 <span class="arithmatex">\(O(n)\)</span>：右指针 <span class="arithmatex">\(r\)</span> 随 <code>for</code> 走 <span class="arithmatex">\(n\)</span> 步；左指针 <span class="arithmatex">\(l\)</span> 单调不减且上界为 <span class="arithmatex">\(n\)</span>，故 <code>while</code> 内 <code>l += 1</code> 在整次扫描中累计至多执行 <span class="arithmatex">\(n\)</span> 次。两类指针移动各至多 <span class="arithmatex">\(n\)</span> 次，合计 <span class="arithmatex">\(O(n)\)</span> 摊还。</p>
 <ul>
 <li>Time: <span class="arithmatex">\(O(n)\)</span> 滑动窗口；<span class="arithmatex">\(O(n \log n)\)</span> 二分</li>
-<li>Space: <span class="arithmatex">\(O(1)\)</span></li>
+<li>Space: <span class="arithmatex">\(O(1)\)</span>（计数只用固定两项 T、F）</li>
 </ul>
 <h2 id="pitfalls">陷阱 (Pitfalls)<a class="headerlink" href="#pitfalls" title="Permanent link">#</a></h2>
 <ul>
-<li><strong>必须用 <code>min(cnt_T, cnt_F) &gt; k</code> 而非 <code>cnt_F &gt; k</code></strong>：单方向判定只能拿到一类的答案。</li>
-<li><strong><code>while</code> 而非 <code>if</code> 收缩窗口</strong>：单次 l++ 可能不够把 minority 降到 ≤ k。</li>
-<li><strong>k 可能 ≥ n</strong>：此时答案就是 n。</li>
+<li><strong>必须用 <code>min(cnt_T, cnt_F) &gt; k</code> 而非 <code>cnt_F &gt; k</code></strong>：单方向判定只算出 <span class="arithmatex">\(L(T)\)</span> 或 <span class="arithmatex">\(L(F)\)</span> 之一；min 条件才在一趟里给出 <span class="arithmatex">\(\max(L(T), L(F))\)</span>。</li>
+<li><strong><code>while</code> 而非 <code>if</code> 收缩窗口</strong>：一次 <code>l++</code> 未必能把少数类降到 <span class="arithmatex">\(\le k\)</span>。例如 <code>"TTF"</code>, <code>k=0</code>：扫到 <code>r=2</code> 加入 F 后 <span class="arithmatex">\(\text{cnt}_T=2, \text{cnt}_F=1\)</span>，<span class="arithmatex">\(\min=1&gt;0\)</span>；弹出 l=0 的 T 后变 <span class="arithmatex">\(\text{cnt}_T=1,\text{cnt}_F=1\)</span>，<span class="arithmatex">\(\min\)</span> 仍 <span class="arithmatex">\(=1&gt;0\)</span>，须再弹一次才合法。</li>
+<li><strong>k 可能 <span class="arithmatex">\(\ge n\)</span></strong>：此时全串就是一个合法窗口，答案为 <span class="arithmatex">\(n\)</span>；上面的代码自然覆盖（收缩条件永不触发）。</li>
 </ul>
 <h2 id="related">相关题目 (Related)<a class="headerlink" href="#related" title="Permanent link">#</a></h2>
 <ul>

@@ -5485,6 +5485,8 @@
       
         
       
+        
+      
     
     
     
@@ -6024,6 +6026,34 @@
     
   
     #93. Restore IP Addresses
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../0102_binary-tree-level-order-traversal/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    #102. Binary Tree Level Order Traversal
   
 
     
@@ -22675,18 +22705,21 @@
 <h2 id="problem">Problem<a class="headerlink" href="#problem" title="Permanent link">#</a></h2>
 <p>给数组 <code>nums</code> 与正整数 <span class="arithmatex">\(k\)</span>。每次可选长 <span class="arithmatex">\(k\)</span> 的子数组，所有元素 <span class="arithmatex">\(-1\)</span>。问能否经任意次操作使全部归 0。约束 <span class="arithmatex">\(1 \le k \le n \le 10^5\)</span>，<span class="arithmatex">\(0 \le \text{nums}[i] \le 10^6\)</span>。</p>
 <h2 id="background">背景 (Background)<a class="headerlink" href="#background" title="Permanent link">#</a></h2>
-<p>本题核心结构是 <strong>差分数组 (difference array)</strong> —— 子数组减 1 在差分上是两端 <span class="arithmatex">\(\pm 1\)</span> 的点修改。配合贪心策略"从左到右每个位置必须用且仅用恰好一个起于此位置的操作"，可在 <span class="arithmatex">\(O(n)\)</span> 判定可行性。</p>
-<p>差分技巧广泛用于区间修改/单点查询、扫描线、差分前缀和（如 #1109 航班预订统计）。这里反向：把"区间减"摊到差分上做局部决策。</p>
+<p>先把问题摆正：一次操作只能作用在一个长度恰好为 <span class="arithmatex">\(k\)</span> 的连续窗口上，且只能把窗口里每个元素减 1。所以「能否归零」等价于问：能不能挑一组合法窗口、并给每个窗口配一个使用次数，使得每个位置 <span class="arithmatex">\(i\)</span> 被覆盖的总次数恰好等于 <span class="arithmatex">\(a_i = \text{nums}[i]\)</span>。多减会变负（操作不可逆，没法加回去），少减则到不了 0，两者都失败。</p>
+<p>这看起来是个困难的自由度问题——窗口很多，次数又是任意非负整数，组合空间巨大。但请盯住数组最左端的位置 0：哪些窗口能盖到它？窗口是从某个起点 <span class="arithmatex">\(j\)</span> 开始、长度 <span class="arithmatex">\(k\)</span> 的连续段 <span class="arithmatex">\([j,\,j+k-1]\)</span>。要盖到位置 0，必须 <span class="arithmatex">\(j \le 0 \le j+k-1\)</span>；起点不能为负，所以唯一可能是 <span class="arithmatex">\(j = 0\)</span>。<strong>于是盖到位置 0 的窗口只有一种——起点在 0 的窗口。</strong> 它必须被用恰好 <span class="arithmatex">\(a_0\)</span> 次，否则位置 0 配不平。没有别的选择，没有可商量的余地。</p>
+<p>这一步是整道题的脊梁：最左端的决策是被<strong>唯一确定</strong>的，而不是被我们「选」出来的。定下起点 0 的窗口用了 <span class="arithmatex">\(a_0\)</span> 次后，再看位置 1：盖到它的窗口起点只能是 0 或 1（起点 0 的窗口覆盖 <span class="arithmatex">\([0,k-1]\)</span> 含位置 1，起点 1 的窗口覆盖 <span class="arithmatex">\([1,k]\)</span> 也含位置 1）。起点 0 那份已经定死，于是位置 1 的剩余缺口又只能由起点 1 的窗口来补——再次被唯一确定。这个「从左到右、每个位置的缺口只能由起于该位置的窗口来补」的链条会一路推到末尾。我们要做的，就是顺着它走一遍，看是否处处配得平。</p>
 <h2 id="formulation">形式化 (Formulation)<a class="headerlink" href="#formulation" title="Permanent link">#</a></h2>
-<p>给 <span class="arithmatex">\(a \in \mathbb{Z}_{\ge 0}^n\)</span>，决定是否存在非负整数序列 <span class="arithmatex">\(c_0, c_1, \dots, c_{n-k}\)</span>（<span class="arithmatex">\(c_i\)</span> 表示以 <span class="arithmatex">\(i\)</span> 为起点的操作数）使</p>
-<div class="arithmatex">\[\forall i \in [n]:\ a_i = \sum_{j = \max(0, i-k+1)}^{\min(n-k, i)} c_j\]</div>
+<p>把上面的直觉写成方程。设 <span class="arithmatex">\(c_j \ge 0\)</span> 为「以 <span class="arithmatex">\(j\)</span> 为起点的窗口被使用的次数」，合法起点是 <span class="arithmatex">\(j \in [0,\,n-k]\)</span>（起点太靠右会让窗口越界）。位置 <span class="arithmatex">\(i\)</span> 被起点 <span class="arithmatex">\(j\)</span> 的窗口覆盖，当且仅当 <span class="arithmatex">\(j \le i \le j+k-1\)</span>，即 <span class="arithmatex">\(i-k+1 \le j \le i\)</span>。把合法范围一并夹住，覆盖位置 <span class="arithmatex">\(i\)</span> 的起点集合是 <span class="arithmatex">\(j \in [\max(0,\,i-k+1),\ \min(n-k,\,i)]\)</span>。可行性即：是否存在非负整数序列 <span class="arithmatex">\(c_0, c_1, \dots, c_{n-k}\)</span> 使</p>
+<div class="arithmatex">\[\forall i \in [n]:\quad a_i \;=\; \sum_{j = \max(0,\, i-k+1)}^{\min(n-k,\, i)} c_j. \tag{1}\]</div>
+<p>这组方程不需要「猜」一个解。背景里的链条说明：按 <span class="arithmatex">\(i = 0, 1, 2, \dots\)</span> 的顺序逐行看，方程 (1) 在第 <span class="arithmatex">\(i\)</span> 行里唯一<strong>尚未确定</strong>的未知量恰好是 <span class="arithmatex">\(c_i\)</span>——所有 <span class="arithmatex">\(c_j\,(j&lt;i)\)</span> 在更早的行已被定死，而 <span class="arithmatex">\(j&gt;i\)</span> 的窗口起点在 <span class="arithmatex">\(i\)</span> 右侧，根本不覆盖位置 <span class="arithmatex">\(i\)</span>，不出现在这一行。于是第 <span class="arithmatex">\(i\)</span> 行直接解出</p>
+<div class="arithmatex">\[c_i \;=\; a_i - \underbrace{\sum_{\substack{j &lt; i,\ j \ge i-k+1}} c_j}_{\text{已确定的覆盖量,\ 记作 } \mathrm{cur}_i}. \tag{2}\]</div>
+<p>公式 (2) 把存在性问题变成一条<strong>确定性的求解流程</strong>：从左扫到右，每到位置 <span class="arithmatex">\(i\)</span> 就用 (2) 算出 <span class="arithmatex">\(c_i\)</span>。这个解是唯一候选——若它处处落在合法范围内（<span class="arithmatex">\(c_i \ge 0\)</span> 且起点 <span class="arithmatex">\(i\)</span> 不越界），原问题可行；只要任何一步算出非法的 <span class="arithmatex">\(c_i\)</span>，由唯一性可知根本不存在任何可行解，直接判否。</p>
 <h2 id="approach">数据结构 / 想法 (Approach)<a class="headerlink" href="#approach" title="Permanent link">#</a></h2>
-<p><strong>贪心 + 差分</strong>：
-扫描位置 <span class="arithmatex">\(i\)</span>，记当前位置已被多少正在生效的"前序操作"覆盖（设为 <span class="arithmatex">\(\text{cur}\)</span>）。
-- 若 <span class="arithmatex">\(a_i &gt; \text{cur}\)</span>：还差 <span class="arithmatex">\(d = a_i - \text{cur}\)</span>，必须在 <span class="arithmatex">\(i\)</span> 处启动 <span class="arithmatex">\(d\)</span> 个新操作。但若 <span class="arithmatex">\(i &gt; n - k\)</span>（剩余长度 <span class="arithmatex">\(&lt; k\)</span>），无法启动，不可行。
-- 若 <span class="arithmatex">\(a_i &lt; \text{cur}\)</span>：多减了，不可行。
-- 否则：恰好。</p>
-<p>用差分维护"在 <span class="arithmatex">\(i + k\)</span> 处过期 <span class="arithmatex">\(c_i\)</span> 个操作"。</p>
+<p>求解流程已经定了，剩下的只是怎么<strong>高效</strong>算出公式 (2) 里的 <span class="arithmatex">\(\mathrm{cur}_i = \sum_{j&lt;i,\ j\ge i-k+1} c_j\)</span>，也就是「在位置 <span class="arithmatex">\(i\)</span> 仍然生效的前序窗口次数之和」。</p>
+<p><strong>先看朴素做法卡在哪。</strong> 最直接的写法：到位置 <span class="arithmatex">\(i\)</span> 时回头把所有 <span class="arithmatex">\(j \in [i-k+1,\,i-1]\)</span> 的 <span class="arithmatex">\(c_j\)</span> 加一遍。每个位置最多回看 <span class="arithmatex">\(k\)</span> 项，总共 <span class="arithmatex">\(O(nk)\)</span>；当 <span class="arithmatex">\(k\)</span> 与 <span class="arithmatex">\(n\)</span> 同阶时退化到 <span class="arithmatex">\(O(n^2)\)</span>，<span class="arithmatex">\(n = 10^5\)</span> 时约 <span class="arithmatex">\(10^{10}\)</span> 次加法，超时。问题出在：相邻两个位置 <span class="arithmatex">\(i\)</span> 与 <span class="arithmatex">\(i+1\)</span> 的覆盖窗口集合几乎一样，朴素法却每步从头重算这笔和，全是重复劳动。</p>
+<p><strong>改成增量地维护 <span class="arithmatex">\(\mathrm{cur}\)</span>。</strong> 从位置 <span class="arithmatex">\(i\)</span> 走到 <span class="arithmatex">\(i+1\)</span>，覆盖集合只发生两处变化：起点 <span class="arithmatex">\(i-k+1\)</span> 的窗口在位置 <span class="arithmatex">\(i+1\)</span> 已经过期（窗口 <span class="arithmatex">\([i-k+1,\,i]\)</span> 到不了 <span class="arithmatex">\(i+1\)</span>），要从 <span class="arithmatex">\(\mathrm{cur}\)</span> 里<strong>减去</strong> <span class="arithmatex">\(c_{i-k+1}\)</span>；而起点 <span class="arithmatex">\(i\)</span> 的窗口仍覆盖 <span class="arithmatex">\(i+1\)</span>，无需改动。也就是说 <span class="arithmatex">\(\mathrm{cur}\)</span> 只在「窗口启动」和「窗口过期」两个时刻更新，不必重扫。</p>
+<p>启动好处理：在位置 <span class="arithmatex">\(i\)</span> 算出 <span class="arithmatex">\(c_i\)</span> 后立刻 <code>cur += c_i</code>。过期发生在 <span class="arithmatex">\(i+k\)</span> 处（起点 <span class="arithmatex">\(i\)</span> 的窗口覆盖 <span class="arithmatex">\([i,\,i+k-1]\)</span>，到 <span class="arithmatex">\(i+k\)</span> 失效），要减去的量正是 <span class="arithmatex">\(c_i\)</span>。于是把这笔「未来要减的量」预先记在差分数组 <code>diff[i+k] -= c_i</code>，扫到下标 <span class="arithmatex">\(i+k\)</span> 时再 <code>cur += diff[i+k]</code> 把它兑现。这恰好把公式 (2) 的求和换成 <span class="arithmatex">\(O(1)\)</span> 摊销更新——<strong>这便是差分数组在本题的角色</strong>：一个延迟生效的「过期账本」，精确抵消区间覆盖的尾部，把 <span class="arithmatex">\(O(nk)\)</span> 降到 <span class="arithmatex">\(O(n)\)</span>。</p>
+<p>落到代码上，公式 (2) 的 <span class="arithmatex">\(c_i\)</span> 对应变量 <code>need</code>（位置 <span class="arithmatex">\(i\)</span> 还需补的缺口），<span class="arithmatex">\(\mathrm{cur}_i\)</span> 对应 <code>cur</code>，差分账本是 <code>diff</code>：</p>
 <div class="language-python highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">checkArray</span><span class="p">(</span><span class="n">nums</span><span class="p">,</span> <span class="n">k</span><span class="p">):</span>
     <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">nums</span><span class="p">)</span>
     <span class="n">diff</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="n">n</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
@@ -22701,8 +22734,12 @@
             <span class="n">diff</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="n">k</span><span class="p">]</span> <span class="o">-=</span> <span class="n">need</span>
     <span class="k">return</span> <span class="kc">True</span>
 </code></pre></div>
-<p><strong>不变量</strong>：进入位置 <span class="arithmatex">\(i\)</span> 前，<code>cur</code> 是 <span class="arithmatex">\(\sum_{j: i \in [j, j+k-1]} c_j\)</span>，即覆盖 <span class="arithmatex">\(i\)</span> 的操作总数。<code>diff[i+k]</code> 记录 <span class="arithmatex">\(i\)</span> 起的新操作在 <span class="arithmatex">\(i+k\)</span> 处的下降量。</p>
-<p><strong>正确性</strong>：从左到右处理时，能影响 <span class="arithmatex">\(a_i\)</span> 的所有 <span class="arithmatex">\(c_j\)</span>（<span class="arithmatex">\(j \le i\)</span>）已确定，但还可决定 <span class="arithmatex">\(c_i\)</span>；位置 <span class="arithmatex">\(i\)</span> 是 <span class="arithmatex">\(c_i\)</span> 唯一可调一次。<span class="arithmatex">\(c_i\)</span> 必须使 <span class="arithmatex">\(a_i\)</span> 配平——没其他选择。若不可配平则不可行。</p>
+<p>三条分支正是公式 (2) 的三种结果，<code>need = nums[i] - cur</code> 即 <span class="arithmatex">\(c_i\)</span>：
+- <code>need &lt; 0</code>：前序窗口在位置 <span class="arithmatex">\(i\)</span> 覆盖过了头（<span class="arithmatex">\(\mathrm{cur}_i &gt; a_i\)</span>），而 <span class="arithmatex">\(c_i \ge 0\)</span> 无法把多余的减回去，唯一候选解在此非法 → 不可行。
+- <code>need &gt; 0</code>：必须在 <span class="arithmatex">\(i\)</span> 处启动 <code>need</code> 个新窗口。但起点 <span class="arithmatex">\(i\)</span> 合法要求窗口不越界，即 <span class="arithmatex">\(i + k \le n\)</span>；若 <span class="arithmatex">\(i + k &gt; n\)</span>（起点超出 <span class="arithmatex">\([0,\,n-k]\)</span>），无窗口可启动 → 不可行。否则 <code>cur += need</code> 计入新窗口，<code>diff[i+k] -= need</code> 登记它在 <span class="arithmatex">\(i+k\)</span> 处过期。
+- <code>need == 0</code>：缺口已被前序窗口补平，<span class="arithmatex">\(c_i = 0\)</span>，无需动作。</p>
+<p><strong>不变量</strong>：进入位置 <span class="arithmatex">\(i\)</span> 的循环体、执行完 <code>cur += diff[i]</code> 后，<code>cur</code> 等于 <span class="arithmatex">\(\mathrm{cur}_i = \sum_{j:\ i \in [j,\,j+k-1]} c_j\)</span>，即此刻仍覆盖 <span class="arithmatex">\(i\)</span> 的所有已确定窗口次数之和。<code>diff[i+k]</code> 累积了所有「起点 <span class="arithmatex">\(i\)</span> 及更早、恰在 <span class="arithmatex">\(i+k\)</span> 处过期」的负向修正。该不变量由归纳保证：位置 0 时 <code>cur = 0</code> 成立；每步的「启动即加、过期即减」恰好维护它过渡到下一位置。</p>
+<p><strong>正确性</strong>：可行解的唯一候选由公式 (2) 逐位确定，算法只是忠实执行这条求解流程并在每步检查合法性。若全程无非法步，则我们已构造出满足公式 (1) 的非负整数解 <span class="arithmatex">\(c\)</span>，可行；若某步触发 <code>need &lt; 0</code> 或越界，则唯一候选在该位置违反约束，由唯一性可知不存在任何可行解，判否正确。</p>
 <p>样例 1 trace：<code>nums=[2,2,3,1,1,0], k=3</code>。n=6, n-k=3。
 - i=0: cur=0, need=2, i+k=3≤6 ✓. cur=2, diff[3]=-2.
 - i=1: cur=2 (diff[1]=0). need=0. ok.
@@ -22717,13 +22754,13 @@
 - i=2: cur=3+diff[2]=3-1=2. need=1-2=-1&lt;0. ✗ → False。✓</p>
 <h2 id="complexity">复杂度 (Complexity)<a class="headerlink" href="#complexity" title="Permanent link">#</a></h2>
 <ul>
-<li>Time <span class="arithmatex">\(O(n)\)</span> — 单次扫描。</li>
+<li>Time <span class="arithmatex">\(O(n)\)</span> — 单次扫描，每步 <span class="arithmatex">\(O(1)\)</span> 摊销（差分把朴素的 <span class="arithmatex">\(O(nk)\)</span> 回看降到常数）。</li>
 <li>Space <span class="arithmatex">\(O(n)\)</span> — diff 数组。</li>
 </ul>
 <h2 id="pitfalls">陷阱 (Pitfalls)<a class="headerlink" href="#pitfalls" title="Permanent link">#</a></h2>
 <ul>
-<li><strong>边界 <code>i + k &gt; n</code> 写成 <code>&gt;= n</code></strong>：操作起点 <span class="arithmatex">\(i\)</span> 合法范围是 <span class="arithmatex">\([0, n-k]\)</span>，即 <span class="arithmatex">\(i + k \le n\)</span>。</li>
-<li><strong>need &lt; 0</strong>：从左到右不可弥补，立即返回 False。</li>
+<li><strong>边界 <code>i + k &gt; n</code> 写成 <code>&gt;= n</code></strong>：操作起点 <span class="arithmatex">\(i\)</span> 合法范围是 <span class="arithmatex">\([0, n-k]\)</span>，即 <span class="arithmatex">\(i + k \le n\)</span>。最右合法起点 <span class="arithmatex">\(i = n-k\)</span> 给出 <span class="arithmatex">\(i+k = n \le n\)</span>，必须放行。</li>
+<li><strong>need &lt; 0</strong>：<span class="arithmatex">\(c_i \ge 0\)</span> 不允许「负操作」把多减的加回，从左到右一旦覆盖过头即不可弥补，立即返回 False。</li>
 <li><strong>大数</strong>：<span class="arithmatex">\(\text{nums}[i] \le 10^6\)</span>，<span class="arithmatex">\(n \le 10^5\)</span>，cur 最大 <span class="arithmatex">\(\sim 10^6\)</span>，无溢出。</li>
 </ul>
 <h2 id="related">相关题目 (Related)<a class="headerlink" href="#related" title="Permanent link">#</a></h2>

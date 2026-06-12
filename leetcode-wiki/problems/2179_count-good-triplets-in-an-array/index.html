@@ -5485,6 +5485,8 @@
       
         
       
+        
+      
     
     
     
@@ -6024,6 +6026,34 @@
     
   
     #93. Restore IP Addresses
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../0102_binary-tree-level-order-traversal/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    #102. Binary Tree Level Order Traversal
   
 
     
@@ -14909,6 +14939,45 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="数据结构 / 想法 (Approach)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        第一步：把两组约束压成一组
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        第二步：固定中点，把计数拆成乘积
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fenwick" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        第三步：用 Fenwick 树求前缀计数
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -22607,6 +22676,45 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="数据结构 / 想法 (Approach)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        第一步：把两组约束压成一组
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        第二步：固定中点，把计数拆成乘积
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fenwick" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        第三步：用 Fenwick 树求前缀计数
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -22675,23 +22783,42 @@
 <h2 id="problem">Problem<a class="headerlink" href="#problem" title="Permanent link">#</a></h2>
 <p>给定两个长度为 <span class="arithmatex">\(n\)</span> 的数组 <code>nums1</code>, <code>nums2</code>，二者都是 <span class="arithmatex">\([0, n-1]\)</span> 的排列。统计三元组 <span class="arithmatex">\((x, y, z)\)</span> 的个数，使得它们在两个数组中的下标都严格递增。<span class="arithmatex">\(n \leq 10^5\)</span>。</p>
 <h2 id="background">背景 (Background)<a class="headerlink" href="#background" title="Permanent link">#</a></h2>
-<p>本题是经典的「二维偏序计数」问题：把每个值 <span class="arithmatex">\(v\)</span> 视为平面上的点 <span class="arithmatex">\((\text{pos}_1(v), \text{pos}_2(v))\)</span>，要求枚举三个点形成严格递增的链。这是组合学中链计数 / Young tableau 视角下的问题，工程上对应数据库 join + range count、推荐系统中 LIS-on-pairs。所用工具（BIT、归并、有序集）均是 inversion count 的标准武器。</p>
+<p>每个值 <span class="arithmatex">\(v\)</span> 在两个排列里各占一个位置。一个好三元组要求三个值的位置在 <code>nums1</code> 和 <code>nums2</code> 中<strong>同时</strong>严格递增——这是两个排序约束的耦合，而不是某一个数组上的简单递增子序列问题。</p>
+<p>直接枚举所有三元组要检查两组不等式，共 <span class="arithmatex">\(\binom{n}{3} = \Theta(n^3)\)</span> 个候选。当 <span class="arithmatex">\(n = 10^5\)</span> 时这是 <span class="arithmatex">\(\sim 10^{14}\)</span> 次检查，远超可行范围。难点正在于这两个约束彼此牵制：我们既不能只看 <code>nums1</code> 的顺序，也不能只看 <code>nums2</code> 的顺序。下面要解决的第一件事，就是把这两个耦合的约束拆开。</p>
 <h2 id="formulation">形式化 (Formulation)<a class="headerlink" href="#formulation" title="Permanent link">#</a></h2>
 <p>记 <span class="arithmatex">\(p_1(v), p_2(v)\)</span> 为值 <span class="arithmatex">\(v\)</span> 在 <code>nums1</code>, <code>nums2</code> 中的位置。求</p>
-<div class="arithmatex">\[\bigl|\{(x, y, z) : p_1(x) &lt; p_1(y) &lt; p_1(z) \land p_2(x) &lt; p_2(y) &lt; p_2(z)\}\bigr|.\]</div>
+<div class="arithmatex">\[\bigl|\{(x, y, z) : p_1(x) &lt; p_1(y) &lt; p_1(z) \;\land\; p_2(x) &lt; p_2(y) &lt; p_2(z)\}\bigr|. \tag{1}\]</div>
+<p>这是一个干净的集合基数表达式，但式 (1) 同时约束两组位置，无法逐项独立计算。接下来的全部工作就是把它改写成可以高效求和的形式。</p>
 <h2 id="approach">数据结构 / 想法 (Approach)<a class="headerlink" href="#approach" title="Permanent link">#</a></h2>
-<p><strong>关键变换</strong>：以 <code>nums1</code> 的顺序遍历值。先把 <code>nums2</code> 重映射为：第 <span class="arithmatex">\(i\)</span> 个位置上的值是「<code>nums2</code> 中位置 <span class="arithmatex">\(i\)</span> 的元素在 <code>nums1</code> 里出现的下标」。问题即转化为：在数组 <span class="arithmatex">\(A\)</span> 上对每个元素 <span class="arithmatex">\(A[i]\)</span> 求</p>
+<h3 id="_1">第一步：把两组约束压成一组<a class="headerlink" href="#_1" title="Permanent link">#</a></h3>
+<p>式 (1) 的两组不等式之所以难算，是因为它们绑在两套坐标 <span class="arithmatex">\(p_1, p_2\)</span> 上。先做一次换坐标，让其中一组约束变成「自动满足」。</p>
+<p>按 <code>nums2</code> 的位置从左到右遍历值。如果我们只在乎遍历顺序，那么任何两个被遍历到的值 <span class="arithmatex">\(a\)</span>（先）、<span class="arithmatex">\(b\)</span>（后）天然满足 <span class="arithmatex">\(p_2(a) &lt; p_2(b)\)</span>——这正是遍历顺序本身。于是 <span class="arithmatex">\(p_2\)</span> 的约束被遍历顺序吸收，只剩下 <span class="arithmatex">\(p_1\)</span> 的约束需要显式检查。</p>
+<p>要在这个遍历顺序下检查 <span class="arithmatex">\(p_1\)</span> 的约束，我们记录每个被遍历到的值在 <code>nums1</code> 中的位置。定义数组 <span class="arithmatex">\(A \in \mathbb{Z}^n\)</span>：</p>
+<div class="arithmatex">\[A[i] = p_1(\text{nums2}[i]), \tag{2}\]</div>
+<p>即「<code>nums2</code> 第 <span class="arithmatex">\(i\)</span> 个位置上的值，在 <code>nums1</code> 中的下标」。这样，<code>nums2</code> 中位置 <span class="arithmatex">\(i &lt; j\)</span> 的两个值满足 <span class="arithmatex">\(p_1\)</span> 递增，当且仅当 <span class="arithmatex">\(A[i] &lt; A[j]\)</span>。</p>
+<p>代入式 (1)：取三个 <code>nums2</code> 位置 <span class="arithmatex">\(i &lt; j &lt; k\)</span>，它们已经满足 <span class="arithmatex">\(p_2\)</span> 递增；再要求 <span class="arithmatex">\(p_1\)</span> 递增即 <span class="arithmatex">\(A[i] &lt; A[j] &lt; A[k]\)</span>。于是</p>
+<div class="arithmatex">\[\text{好三元组个数} = \bigl|\{(i,j,k) : i&lt;j&lt;k \;\land\; A[i]&lt;A[j]&lt;A[k]\}\bigr|. \tag{3}\]</div>
+<p>式 (3) 就是：在数组 <span class="arithmatex">\(A\)</span> 中统计长度为 3 的严格递增子序列。两组耦合约束被压成了一组。</p>
+<h3 id="_2">第二步：固定中点，把计数拆成乘积<a class="headerlink" href="#_2" title="Permanent link">#</a></h3>
+<p>式 (3) 仍然有三层枚举。但注意三元组的中间元素 <span class="arithmatex">\(j\)</span> 起到了枢纽作用：一旦固定 <span class="arithmatex">\(j\)</span>，左端 <span class="arithmatex">\(i\)</span> 和右端 <span class="arithmatex">\(k\)</span> 的条件互不相干。</p>
 <ul>
-<li><span class="arithmatex">\(\ell_i\)</span>：<span class="arithmatex">\(j &lt; i\)</span> 且 <span class="arithmatex">\(A[j] &lt; A[i]\)</span> 的个数；</li>
-<li><span class="arithmatex">\(r_i\)</span>：<span class="arithmatex">\(j &gt; i\)</span> 且 <span class="arithmatex">\(A[j] &gt; A[i]\)</span> 的个数。</li>
+<li>左端 <span class="arithmatex">\(i\)</span> 需满足 <span class="arithmatex">\(i &lt; j\)</span> 且 <span class="arithmatex">\(A[i] &lt; A[j]\)</span>；</li>
+<li>右端 <span class="arithmatex">\(k\)</span> 需满足 <span class="arithmatex">\(k &gt; j\)</span> 且 <span class="arithmatex">\(A[k] &gt; A[j]\)</span>。</li>
 </ul>
-<p>每个 <span class="arithmatex">\(A[i]\)</span> 作为「中点 <span class="arithmatex">\(y\)</span>」贡献 <span class="arithmatex">\(\ell_i \cdot r_i\)</span> 个好三元组。</p>
-<p><strong>实现</strong>：用 Fenwick (BIT) 维护已扫描位置上「按 <span class="arithmatex">\(A\)</span> 值」的存在 mask。</p>
+<p><span class="arithmatex">\(i\)</span> 取自 <span class="arithmatex">\(j\)</span> 左侧、<span class="arithmatex">\(k\)</span> 取自 <span class="arithmatex">\(j\)</span> 右侧，两者索引范围不相交，取法互相独立。因此以 <span class="arithmatex">\(j\)</span> 为中点的好三元组数目，恰好是「合法左端数」乘「合法右端数」。定义</p>
+<div class="arithmatex">\[\ell_j = \bigl|\{i &lt; j : A[i] &lt; A[j]\}\bigr|, \qquad r_j = \bigl|\{k &gt; j : A[k] &gt; A[j]\}\bigr|. \tag{4}\]</div>
+<p>每个三元组有唯一的中点，所以按中点分类不重不漏，把式 (3) 改写为单层求和：</p>
+<div class="arithmatex">\[\text{好三元组个数} = \sum_{j=0}^{n-1} \ell_j \cdot r_j. \tag{5}\]</div>
+<p>式 (5) 是整个算法的脊柱。剩下的问题只是：如何对每个 <span class="arithmatex">\(j\)</span> 快速求 <span class="arithmatex">\(\ell_j\)</span> 和 <span class="arithmatex">\(r_j\)</span>。</p>
+<h3 id="fenwick">第三步：用 Fenwick 树求前缀计数<a class="headerlink" href="#fenwick" title="Permanent link">#</a></h3>
+<p>观察 <span class="arithmatex">\(\ell_j\)</span> 的定义 (4)：在所有已扫过的位置中，统计 <span class="arithmatex">\(A\)</span> 值严格小于 <span class="arithmatex">\(A[j]\)</span> 的个数。这正是「在值域上做前缀和」——把已扫过的位置按其 <span class="arithmatex">\(A\)</span> 值标记，查询值域区间 <span class="arithmatex">\([0, A[j]-1]\)</span> 上有多少标记。Fenwick 树（BIT）以 <span class="arithmatex">\(O(\log n)\)</span> 支持单点加和前缀和查询，恰好胜任。</p>
+<p><strong>为什么按值域而非位置索引 BIT</strong>：我们要回答的是「已见元素中有多少个值小于 <span class="arithmatex">\(A[j]\)</span>」，这是对值的范围查询。把 BIT 建在值域上，单次前缀查询 <span class="arithmatex">\(\mathrm{query}(A[j]-1)\)</span> 就直接给出 <span class="arithmatex">\(\ell_j\)</span>。</p>
+<p><strong>不变量</strong>：从左到右扫描时，BIT 始终维护「已加入位置的 <span class="arithmatex">\(A\)</span> 值」在值域上的前缀计数。所以在处理位置 <span class="arithmatex">\(j\)</span>、尚未把 <span class="arithmatex">\(A[j]\)</span> 加入之前，<span class="arithmatex">\(\mathrm{query}(A[j]-1)\)</span> 给出严格小于 <span class="arithmatex">\(A[j]\)</span> 的已见值个数，即 <span class="arithmatex">\(\ell_j\)</span>。</p>
+<p>两遍扫描即可：</p>
 <ul>
-<li>从左到右扫一遍得到 <span class="arithmatex">\(\ell_i = \mathrm{BIT.query}(A[i] - 1)\)</span>，然后 <code>update(A[i], +1)</code>。</li>
-<li>再从右到左扫一遍得到 <span class="arithmatex">\(r_i\)</span>（清空 BIT 后重做）。</li>
+<li><strong>从左到右</strong>求 <span class="arithmatex">\(\ell_j\)</span>：先查 <span class="arithmatex">\(\mathrm{query}(A[j]-1)\)</span>，再 <span class="arithmatex">\(\mathrm{update}(A[j], +1)\)</span>。</li>
+<li><strong>从右到左</strong>求 <span class="arithmatex">\(r_j\)</span>：清空 BIT 后反向扫描。此时 BIT 维护的是 <span class="arithmatex">\(j\)</span> 右侧已见值的前缀计数；<span class="arithmatex">\(j\)</span> 右侧共有 <span class="arithmatex">\(n-1-j\)</span> 个元素，其中值 <span class="arithmatex">\(\le A[j]\)</span> 的有 <span class="arithmatex">\(\mathrm{query}(A[j])\)</span> 个，故 <span class="arithmatex">\(r_j = (n-1-j) - \mathrm{query}(A[j])\)</span> 给出严格大于的个数。</li>
 </ul>
-<p><strong>不变量</strong>：BIT 始终维护「已加入的索引集合」在值域上的前缀计数，所以单点 query 给出严格小于的数量。</p>
 <div class="language-python highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">BIT</span><span class="p">:</span>
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">n</span> <span class="o">=</span> <span class="n">n</span>
@@ -22710,31 +22837,38 @@
     <span class="k">def</span><span class="w"> </span><span class="nf">goodTriplets</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">nums1</span><span class="p">,</span> <span class="n">nums2</span><span class="p">):</span>
         <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">nums1</span><span class="p">)</span>
         <span class="n">pos</span> <span class="o">=</span> <span class="p">{</span><span class="n">v</span><span class="p">:</span> <span class="n">i</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">nums1</span><span class="p">)}</span>
-        <span class="n">A</span> <span class="o">=</span> <span class="p">[</span><span class="n">pos</span><span class="p">[</span><span class="n">v</span><span class="p">]</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">nums2</span><span class="p">]</span>  <span class="c1"># A[i] in nums1 order</span>
+        <span class="n">A</span> <span class="o">=</span> <span class="p">[</span><span class="n">pos</span><span class="p">[</span><span class="n">v</span><span class="p">]</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">nums2</span><span class="p">]</span>  <span class="c1"># A[i] = p1(nums2[i]), 式 (2)</span>
+        <span class="c1"># 左扫求 ℓ_j，式 (4)</span>
         <span class="n">left</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">n</span>
         <span class="n">bit</span> <span class="o">=</span> <span class="n">BIT</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
         <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
             <span class="n">left</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">bit</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">A</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="k">if</span> <span class="n">A</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="k">else</span> <span class="mi">0</span>
             <span class="n">bit</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">A</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+        <span class="c1"># 右扫求 r_j，式 (4)</span>
         <span class="n">right</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">n</span>
         <span class="n">bit</span> <span class="o">=</span> <span class="n">BIT</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
         <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">):</span>
-            <span class="c1"># count of A[j] &gt; A[i] for j &gt; i</span>
-            <span class="n">right</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">n</span> <span class="o">-</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">i</span><span class="p">)</span> <span class="o">-</span> <span class="n">bit</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">A</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+            <span class="n">right</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">n</span> <span class="o">-</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">i</span><span class="p">)</span> <span class="o">-</span> <span class="n">bit</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">A</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>  <span class="c1"># 严格大于</span>
             <span class="n">bit</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">A</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
-        <span class="k">return</span> <span class="nb">sum</span><span class="p">(</span><span class="n">l</span> <span class="o">*</span> <span class="n">r</span> <span class="k">for</span> <span class="n">l</span><span class="p">,</span> <span class="n">r</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">left</span><span class="p">,</span> <span class="n">right</span><span class="p">))</span>
+        <span class="k">return</span> <span class="nb">sum</span><span class="p">(</span><span class="n">l</span> <span class="o">*</span> <span class="n">r</span> <span class="k">for</span> <span class="n">l</span><span class="p">,</span> <span class="n">r</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">left</span><span class="p">,</span> <span class="n">right</span><span class="p">))</span>  <span class="c1"># 式 (5)</span>
 </code></pre></div>
-<p>样例 1：<code>nums1=[2,0,1,3]</code>, <code>nums2=[0,1,2,3]</code>，<code>pos = {2:0, 0:1, 1:2, 3:3}</code>，<code>A=[1,2,0,3]</code>。<span class="arithmatex">\(\ell = [0,1,0,3]\)</span>，<span class="arithmatex">\(r=[1,1,0,0]\)</span>，乘积之和 <span class="arithmatex">\(= 0+1+0+0 = 1\)</span>。✅</p>
-<h2 id="complexity">复杂度 (Complexity)<a class="headerlink" href="#complexity" title="Permanent link">#</a></h2>
+<p><strong>走一遍样例</strong>：<code>nums1=[2,0,1,3]</code>, <code>nums2=[0,1,2,3]</code>。由式 (2)，<code>pos = {2:0, 0:1, 1:2, 3:3}</code>，于是 <code>A=[1,2,0,3]</code>。</p>
 <ul>
-<li>Time: <span class="arithmatex">\(O(n \log n)\)</span>，两次 BIT 扫描。</li>
+<li><span class="arithmatex">\(\ell = [0,1,0,3]\)</span>：<code>A[0]=1</code> 左侧无更小者；<code>A[1]=2</code> 左侧有 <code>1</code>；<code>A[2]=0</code> 左侧无更小者；<code>A[3]=3</code> 左侧有 <code>1,2,0</code> 三个。</li>
+<li><span class="arithmatex">\(r = [2,1,1,0]\)</span>：<code>A[0]=1</code> 右侧 <code>2,3</code> 两个更大；<code>A[1]=2</code> 右侧 <code>3</code> 一个；<code>A[2]=0</code> 右侧 <code>3</code> 一个；<code>A[3]=3</code> 右侧无更大者。</li>
+</ul>
+<p>由式 (5)，<span class="arithmatex">\(\sum_j \ell_j r_j = 0\cdot2 + 1\cdot1 + 0\cdot1 + 3\cdot0 = 1\)</span>，与期望输出 1 一致。</p>
+<h2 id="complexity">复杂度 (Complexity)<a class="headerlink" href="#complexity" title="Permanent link">#</a></h2>
+<p>两遍 BIT 扫描，每遍 <span class="arithmatex">\(n\)</span> 次更新加 <span class="arithmatex">\(n\)</span> 次查询，每次 <span class="arithmatex">\(O(\log n)\)</span>；构造 <span class="arithmatex">\(A\)</span> 与求和为 <span class="arithmatex">\(O(n)\)</span>。</p>
+<ul>
+<li>Time: <span class="arithmatex">\(O(n \log n)\)</span>。</li>
 <li>Space: <span class="arithmatex">\(O(n)\)</span>。</li>
 </ul>
 <h2 id="pitfalls">陷阱 (Pitfalls)<a class="headerlink" href="#pitfalls" title="Permanent link">#</a></h2>
 <ul>
-<li>注意 <span class="arithmatex">\(A[i] = 0\)</span> 时 <code>query(-1)</code> 需特判返回 0。</li>
-<li>「严格小于」与「严格大于」的边界：求 <span class="arithmatex">\(r_i\)</span> 时用 <code>(总数) - query(A[i])</code> 才是严格大于。</li>
-<li>64 位安全：<span class="arithmatex">\(n \le 10^5\)</span>，<span class="arithmatex">\(\ell \cdot r\)</span> 单项可达 <span class="arithmatex">\(\sim 10^{10}\)</span>，求和上界更大；Python 自动大整数，C++ 需 <code>long long</code>。</li>
+<li><span class="arithmatex">\(A[i] = 0\)</span> 时 <span class="arithmatex">\(\ell_i = \mathrm{query}(-1)\)</span> 应特判返回 0（值域无负下标），代码已用条件判断守护。</li>
+<li>「严格小于」与「严格大于」的边界：<span class="arithmatex">\(r_j\)</span> 由 <span class="arithmatex">\((n-1-j) - \mathrm{query}(A[j])\)</span> 得到才是<strong>严格</strong>大于；直接用前缀查询只能给出「小于等于」。</li>
+<li>64 位安全：<span class="arithmatex">\(n \le 10^5\)</span>，单项 <span class="arithmatex">\(\ell_j \cdot r_j\)</span> 上界约 <span class="arithmatex">\((n-1)^2 \approx 9.99 \times 10^9\)</span>；总和上界为 <span class="arithmatex">\(\binom{n}{3} \approx 1.67 \times 10^{14}\)</span>。两者都超 32 位，C++ 须用 <code>long long</code>，Python 自动大整数无虞。</li>
 </ul>
 <h2 id="related">相关题目 (Related)<a class="headerlink" href="#related" title="Permanent link">#</a></h2>
 <ul>

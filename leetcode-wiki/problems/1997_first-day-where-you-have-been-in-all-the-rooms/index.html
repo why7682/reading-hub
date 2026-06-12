@@ -5485,6 +5485,8 @@
       
         
       
+        
+      
     
     
     
@@ -6024,6 +6026,34 @@
     
   
     #93. Restore IP Addresses
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../0102_binary-tree-level-order-traversal/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    #102. Binary Tree Level Order Traversal
   
 
     
@@ -22675,14 +22705,26 @@
 <h2 id="problem">Problem<a class="headerlink" href="#problem" title="Permanent link">#</a></h2>
 <p><span class="arithmatex">\(n\)</span> 房间，每日访问规则：访问 <code>i</code> 第奇数次去 <code>nextVisit[i] &lt;= i</code>；第偶数次去 <code>(i+1) mod n</code>。第 0 天访问 0。求首次访问到所有房间的日期，模 <span class="arithmatex">\(10^9 + 7\)</span>。约束 <span class="arithmatex">\(\text{nextVisit}[i] \le i\)</span>，<span class="arithmatex">\(n \le 10^5\)</span>。</p>
 <h2 id="_1">背景<a class="headerlink" href="#_1" title="Permanent link">#</a></h2>
-<p>本题是 <strong>stateful walk on graph</strong> 的 DP。关键观察：从 0 严格按顺序"首次"到达 <span class="arithmatex">\(i, i+1, \dots, n-1\)</span>。"首达 <span class="arithmatex">\(i+1\)</span>" 等同于"在 <span class="arithmatex">\(i\)</span> 已访问偶数次"。</p>
-<p>设 <span class="arithmatex">\(f(i)\)</span> = 首次到达 <span class="arithmatex">\(i\)</span> 的日期。从 <span class="arithmatex">\(i\)</span> 第一次访问后必去 <span class="arithmatex">\(\text{nextVisit}[i] = j\)</span>，再要回到 <span class="arithmatex">\(i\)</span> 需重走"从 <span class="arithmatex">\(j\)</span> 到 <span class="arithmatex">\(i\)</span>"，重走时间 = <span class="arithmatex">\(f(i) - f(j)\)</span>（因 <span class="arithmatex">\(\text{nextVisit}[j], \text{nextVisit}[j+1], \dots\)</span> 序列首次走完用的天数是不变的——这正是 DP 的关键不变量）。</p>
-<p>数学结构：等价于"势能不变量"——从 <span class="arithmatex">\(j\)</span> 重新走到 <span class="arithmatex">\(i\)</span> 所需天数 = 首次从 <span class="arithmatex">\(j\)</span> 走到 <span class="arithmatex">\(i\)</span> 的天数。这种"两次走同一路径耗费时间相同" 的性质在 Markov chain return time 和 group action orbit length 里见过。</p>
+<p>先看规则能告诉我们什么。访问房间 <span class="arithmatex">\(i\)</span> 第奇数次（含第一次）跳回 <span class="arithmatex">\(\text{nextVisit}[i] \le i\)</span>，第偶数次才前进到 <span class="arithmatex">\((i+1) \bmod n\)</span>。所以一个房间至少要被访问两次才放行：奇数次回退、偶数次前进。又因为前进只能从 <span class="arithmatex">\(i\)</span> 走到 <span class="arithmatex">\(i+1\)</span>，房间只能严格按 <span class="arithmatex">\(0, 1, 2, \dots\)</span> 的顺序被首次到达。于是"首次访问到所有房间"等价于"首次到达 <span class="arithmatex">\(n-1\)</span>"——只要到了 <span class="arithmatex">\(n-1\)</span>，前面的房间必然已经先到过。</p>
+<p>最直接的想法是模拟：维护"当前房间"和每个房间"已访问次数"的数组，一天一天走，直到所有房间都被标记。这在小规模上正确，但代价是按天推进，总天数本身可能巨大。每次回退又会把已经走过的一段路重走一遍，回退还能层层嵌套，于是模拟的步数随 <span class="arithmatex">\(n\)</span> 远超线性，<span class="arithmatex">\(n \le 10^5\)</span> 时直接超时。</p>
+<p>模拟的浪费集中在一处：每次从某个房间回退后，都要重新走一段早已走过的路。如果能不靠逐天模拟、直接算出"走完这一段要花多少天"，就不必重复行走。这正是下面要建立的量。</p>
+<p>设 <span class="arithmatex">\(f(i)\)</span> 为房间 <span class="arithmatex">\(i\)</span> 被首次访问的日期（第几天，从 0 计）。<span class="arithmatex">\(f(0) = 0\)</span>。要前进到 <span class="arithmatex">\(i\)</span>，必须先把 <span class="arithmatex">\(i-1\)</span> 访问到偶数次。考虑到达 <span class="arithmatex">\(i-1\)</span> 的那一刻：</p>
+<ul>
+<li>第 <span class="arithmatex">\(f(i-1)\)</span> 天首次（第一次，奇数次）到达 <span class="arithmatex">\(i-1\)</span>；下一天跳回 <span class="arithmatex">\(j = \text{nextVisit}[i-1] \le i-1\)</span>。</li>
+<li>从 <span class="arithmatex">\(j\)</span> 出发，要重新走到 <span class="arithmatex">\(i-1\)</span>（这次是第二次，偶数次到达），再下一天才前进到 <span class="arithmatex">\(i\)</span>。</li>
+</ul>
+<p>关键是这段"从 <span class="arithmatex">\(j\)</span> 重新走到 <span class="arithmatex">\(i-1\)</span>"要花多少天。注意它走的房间是 <span class="arithmatex">\(j, j+1, \dots, i-1\)</span>，而这些房间此前都已被首次访问过——它们的首次到达正是按 <span class="arithmatex">\(f(j), f(j+1), \dots, f(i-1)\)</span> 发生的。约束 <span class="arithmatex">\(\text{nextVisit}[k] \le k\)</span> 保证每次回退都不会越过 <span class="arithmatex">\(j\)</span> 左侧，所以这段重走经过的房间、触发的回退、用到的 <span class="arithmatex">\(\text{nextVisit}\)</span> 值，和当初"首次从 <span class="arithmatex">\(j\)</span> 走到 <span class="arithmatex">\(i-1\)</span>"时完全一致。走法既然逐步相同，耗时也相同：</p>
+<div class="arithmatex">\[\text{从 } j \text{ 重走到 } i-1 \text{ 的天数} = f(i-1) - f(j).\]</div>
+<p>这一步把模拟里"重走一段路"的代价换成了两个已算好的 <span class="arithmatex">\(f\)</span> 之差，不必再逐天行走。</p>
 <h2 id="_2">形式化<a class="headerlink" href="#_2" title="Permanent link">#</a></h2>
-<p><span class="arithmatex">\(f(0) = 0\)</span>。对 <span class="arithmatex">\(i \ge 1\)</span>：</p>
-<div class="arithmatex">\[f(i) = f(i-1) + 1 + (f(i-1) - f(\text{nextVisit}[i-1])) + 1.\]</div>
-<p>即 <span class="arithmatex">\(f(i) = 2 f(i-1) - f(\text{nextVisit}[i-1]) + 2 \pmod{10^9 + 7}\)</span>。</p>
+<p>定义 <span class="arithmatex">\(f(i) :=\)</span> 房间 <span class="arithmatex">\(i\)</span> 被首次访问的日期（从 0 计），<span class="arithmatex">\(f(0) = 0\)</span>。</p>
+<p>把上面到达 <span class="arithmatex">\(i\)</span> 的过程按天累加：第 <span class="arithmatex">\(f(i-1)\)</span> 天首次到 <span class="arithmatex">\(i-1\)</span>，<span class="arithmatex">\(+1\)</span> 天跳回 <span class="arithmatex">\(j = \text{nextVisit}[i-1]\)</span>，<span class="arithmatex">\(+\big(f(i-1) - f(j)\big)\)</span> 天重走回到 <span class="arithmatex">\(i-1\)</span>（第二次到达），再 <span class="arithmatex">\(+1\)</span> 天前进到 <span class="arithmatex">\(i\)</span>。于是对 <span class="arithmatex">\(i \ge 1\)</span>：</p>
+<div class="arithmatex">\[f(i) = f(i-1) + 1 + \big(f(i-1) - f(\text{nextVisit}[i-1])\big) + 1.\]</div>
+<p>合并同类项：</p>
+<div class="arithmatex">\[f(i) = 2 f(i-1) - f(\text{nextVisit}[i-1]) + 2 \pmod{10^9 + 7}.\]</div>
+<p>约束 <span class="arithmatex">\(\text{nextVisit}[i-1] \le i-1 &lt; i\)</span> 保证 <span class="arithmatex">\(f(\text{nextVisit}[i-1])\)</span> 在计算 <span class="arithmatex">\(f(i)\)</span> 之前已经求出，递推单向、良定义。答案即 <span class="arithmatex">\(f(n-1)\)</span>。</p>
 <h2 id="_3">数据结构 / 想法<a class="headerlink" href="#_3" title="Permanent link">#</a></h2>
+<p>递推右侧只引用 <span class="arithmatex">\(f(i-1)\)</span> 和 <span class="arithmatex">\(f(\text{nextVisit}[i-1])\)</span>，从 <span class="arithmatex">\(i=1\)</span> 到 <span class="arithmatex">\(n-1\)</span> 单趟前向扫描即可。<span class="arithmatex">\(\text{nextVisit}[i-1]\)</span> 可指向 <span class="arithmatex">\([0, i-1]\)</span> 内任意位置，所以必须保留完整的 <span class="arithmatex">\(f\)</span> 数组，无法压成 <span class="arithmatex">\(O(1)\)</span> 空间。</p>
 <div class="language-python highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">firstDayBeenInAllRooms</span><span class="p">(</span><span class="n">nextVisit</span><span class="p">):</span>
     <span class="n">MOD</span> <span class="o">=</span> <span class="mi">10</span><span class="o">**</span><span class="mi">9</span> <span class="o">+</span> <span class="mi">7</span>
     <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">nextVisit</span><span class="p">)</span>
@@ -22691,8 +22733,7 @@
         <span class="n">f</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">f</span><span class="p">[</span><span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">f</span><span class="p">[</span><span class="n">nextVisit</span><span class="p">[</span><span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="p">]]</span> <span class="o">+</span> <span class="mi">2</span><span class="p">)</span> <span class="o">%</span> <span class="n">MOD</span>
     <span class="k">return</span> <span class="n">f</span><span class="p">[</span><span class="n">n</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
 </code></pre></div>
-<p><strong>推导</strong>：到达 <span class="arithmatex">\(i-1\)</span> 用了 <span class="arithmatex">\(f(i-1)\)</span> 天（第一次访问），下一天去 <span class="arithmatex">\(\text{nextVisit}[i-1] = j\)</span>，又花 <span class="arithmatex">\(f(i-1) - f(j)\)</span> 天首次回到 <span class="arithmatex">\(i-1\)</span>（此时是第二次访问，偶数次），下一天去 <span class="arithmatex">\(i\)</span>。故 <span class="arithmatex">\(f(i) = f(i-1) + 1 + (f(i-1) - f(j)) + 1\)</span>。</p>
-<p><strong>不变量</strong>：<span class="arithmatex">\(f(i)\)</span> 是"首次访问 <span class="arithmatex">\(i\)</span> 的日期"。<strong>正确性</strong>：归纳，配合 <span class="arithmatex">\(\text{nextVisit}[i] \le i\)</span> 保证只回退到已计算的 <span class="arithmatex">\(f(j)\)</span>。</p>
+<p><strong>正确性</strong>：对 <span class="arithmatex">\(i\)</span> 归纳。<span class="arithmatex">\(f(0) = 0\)</span> 成立。归纳假设 <span class="arithmatex">\(f(0), \dots, f(i-1)\)</span> 均为对应房间的首次访问日期，则 §形式化 的逐天累加给出 <span class="arithmatex">\(f(i)\)</span>，其中重走代价 <span class="arithmatex">\(f(i-1) - f(\text{nextVisit}[i-1])\)</span> 由 §背景 的逐步等同性精确成立；<span class="arithmatex">\(\text{nextVisit}[i-1] \le i-1\)</span> 保证所引用的 <span class="arithmatex">\(f\)</span> 已在归纳范围内。故 <span class="arithmatex">\(f(i)\)</span> 正确。</p>
 <h2 id="_4">复杂度<a class="headerlink" href="#_4" title="Permanent link">#</a></h2>
 <ul>
 <li>Time: <span class="arithmatex">\(O(n)\)</span></li>
@@ -22700,9 +22741,10 @@
 </ul>
 <h2 id="_5">陷阱<a class="headerlink" href="#_5" title="Permanent link">#</a></h2>
 <ul>
-<li>模运算下减法需 <code>+ MOD</code>：<code>(2*f[i-1] - f[j] + 2 + MOD) % MOD</code>，否则 Python OK 但其他语言需手动。</li>
+<li>模运算下减法需 <code>+ MOD</code>：<code>(2*f[i-1] - f[j] + 2 + MOD) % MOD</code>，否则 Python OK 但其他语言（C/Java/Go）中间结果可能为负。</li>
 <li>"首次到所有房间" 即 <span class="arithmatex">\(f(n-1)\)</span>，因之前的房间已先于它到达。</li>
 <li>答案是日期编号（从 0 开始），不是天数。</li>
+<li>空间无法降到 <span class="arithmatex">\(O(1)\)</span>：<span class="arithmatex">\(\text{nextVisit}[i-1]\)</span> 可回指任意已访问房间，需保留完整 <span class="arithmatex">\(f\)</span> 数组。</li>
 </ul>
 <h2 id="_6">相关题目<a class="headerlink" href="#_6" title="Permanent link">#</a></h2>
 <ul>

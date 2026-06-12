@@ -5485,6 +5485,8 @@
       
         
       
+        
+      
     
     
     
@@ -6024,6 +6026,34 @@
     
   
     #93. Restore IP Addresses
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../0102_binary-tree-level-order-traversal/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    #102. Binary Tree Level Order Traversal
   
 
     
@@ -22675,11 +22705,22 @@
 <h2 id="problem">Problem<a class="headerlink" href="#problem" title="Permanent link">#</a></h2>
 <p>字符串 <code>s</code>、整数 <code>k</code>、字符 <code>fill</code>。把 s 按顺序切成长度恰为 k 的组；末组不足 k 个字符时用 <code>fill</code> 补齐。返回组列表。</p>
 <h2 id="background">背景 (Background)<a class="headerlink" href="#background" title="Permanent link">#</a></h2>
-<p>本题为基础字符串分块（chunking）模式，等同 NumPy 的 <code>np.array_split</code> 风味或固定大小的滑窗。</p>
+<p>这道题要求把一条线性序列切成连续、不重叠、长度固定为 <span class="arithmatex">\(k\)</span> 的若干段。结构本身决定了切法：从位置 <span class="arithmatex">\(0\)</span> 出发，每隔 <span class="arithmatex">\(k\)</span> 个字符落下一刀，于是每一个 <span class="arithmatex">\(k\)</span> 的倍数下标 <span class="arithmatex">\(i\)</span> 都开启一段 <span class="arithmatex">\(s[i:i+k]\)</span>。唯一不显然的地方在边界——当 <span class="arithmatex">\(s\)</span> 的长度不是 <span class="arithmatex">\(k\)</span> 的整数倍时，最后一段会短，落在它里面的字符凑不够 <span class="arithmatex">\(k\)</span> 个。整道题的全部内容，就是回答这一个问题：最后一段短了，该补什么、补多少。</p>
 <h2 id="formulation">形式化 (Formulation)<a class="headerlink" href="#formulation" title="Permanent link">#</a></h2>
-<p>设 <span class="arithmatex">\(n = |s|\)</span>。组数 <span class="arithmatex">\(g = \lceil n / k \rceil\)</span>，前 <span class="arithmatex">\(g - 1\)</span> 组为 <span class="arithmatex">\(s[ik : (i+1)k]\)</span>，末组为 <span class="arithmatex">\(s[(g-1)k : n]\)</span> 加 <span class="arithmatex">\(g \cdot k - n\)</span> 个 fill。</p>
+<p>先把上面的结构看清楚，再写公式。</p>
+<p>最朴素的切法：从下标 <span class="arithmatex">\(0\)</span> 开始，每次取 <span class="arithmatex">\(k\)</span> 个字符，步长 <span class="arithmatex">\(k\)</span> 地往后走，直到走完整条串。设 <span class="arithmatex">\(n = |s|\)</span>，这样得到的段是</p>
+<div class="arithmatex">\[s[0:k],\ s[k:2k],\ s[2k:3k],\ \dots\]</div>
+<p>只要 <span class="arithmatex">\(k \mid n\)</span>，最后一段恰好停在 <span class="arithmatex">\(n\)</span>，每段都满 <span class="arithmatex">\(k\)</span> 个，问题就解决了。但当 <span class="arithmatex">\(k \nmid n\)</span>，最后一刀落在 <span class="arithmatex">\(n\)</span> 之前，剩下的尾巴只有 <span class="arithmatex">\(n \bmod k\)</span> 个字符——它短了。<strong>这正是朴素切法失效的地方</strong>：题目要求每组长度恰为 <span class="arithmatex">\(k\)</span>，而这一段不满。</p>
+<p>短了多少是确定的。最后一段从下标 <span class="arithmatex">\((g-1)k\)</span> 取到 <span class="arithmatex">\(n\)</span>，其中 <span class="arithmatex">\(g\)</span> 是总段数，长度为 <span class="arithmatex">\(n - (g-1)k\)</span>。要把它补到 <span class="arithmatex">\(k\)</span>，缺口是</p>
+<div class="arithmatex">\[\text{deficit} = k - \big(n - (g-1)k\big) = gk - n.\]</div>
+<p>补 <span class="arithmatex">\(gk - n\)</span> 个 <code>fill</code> 字符，末段就满了。</p>
+<p>剩下的只是定 <span class="arithmatex">\(g\)</span>。若用 <span class="arithmatex">\(g = \lfloor n/k \rfloor\)</span>，当 <span class="arithmatex">\(k \nmid n\)</span> 时最后 <span class="arithmatex">\(n \bmod k\)</span> 个字符根本不会进入任何一段，被丢掉了——错。只要有余数，就必须额外再开一段装它。因此</p>
+<div class="arithmatex">\[g = \left\lceil \frac{n}{k} \right\rceil.\]</div>
+<p>向上取整不是约定，而是"余下的字符也得有家"这一要求的直接结果。</p>
+<p>汇总。设组下标 <span class="arithmatex">\(i \in \{0, 1, \dots, g-1\}\)</span>，组数 <span class="arithmatex">\(g = \lceil n/k \rceil\)</span>：</p>
+<div class="arithmatex">\[\text{group}_i = \begin{cases} s[ik:(i+1)k], &amp; i &lt; g-1,\\[4pt] s[(g-1)k:n] \,+\, \texttt{fill} \times (gk - n), &amp; i = g-1. \end{cases}\]</div>
 <h2 id="approach">数据结构 / 想法 (Approach)<a class="headerlink" href="#approach" title="Permanent link">#</a></h2>
-<p>直接按区间切片，最后一组单独补字符。</p>
+<p>公式直接翻译成循环。<code>range(0, n, k)</code> 枚举每个起点 <span class="arithmatex">\(ik\)</span>，切片 <code>s[i:i+k]</code> 实例化 <span class="arithmatex">\(s[ik:(i+1)k]\)</span>；唯有最后一段可能短，用一个长度判断捕捉到它，补上缺口的 <code>fill</code>。</p>
 <div class="language-python highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">Solution</span><span class="p">:</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">divideString</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">s</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">k</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">fill</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
         <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
@@ -22691,7 +22732,8 @@
             <span class="n">out</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">chunk</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">out</span>
 </code></pre></div>
-<p>样例 2 trace：<code>s="abcdefghij", k=3, fill="x"</code>。切片 [0:3]="abc", [3:6]="def", [6:9]="ghi", [9:12]="j" 长 1 → "j" + "xx" = "jxx"。结果 <code>["abc","def","ghi","jxx"]</code> ✓。</p>
+<p>代码与公式逐项对应：循环体的切片是通项 <span class="arithmatex">\(s[ik:(i+1)k]\)</span>；<code>if len(chunk) &lt; k</code> 只对短的末段成立，此时 <code>k - len(chunk)</code> 恰是缺口 <span class="arithmatex">\(gk - n\)</span>，<code>fill * (k - len(chunk))</code> 实例化补字符项。这里不必显式算出 <span class="arithmatex">\(g\)</span>——循环走到哪停在哪，缺口由当前切片的实际长度反推，与公式等价。</p>
+<p>样例 2 trace：<code>s="abcdefghij", k=3, fill="x"</code>。切片 [0:3]="abc", [3:6]="def", [6:9]="ghi", [9:12]="j" 长 1 → 缺口 <span class="arithmatex">\(3-1=2\)</span> → "j" + "xx" = "jxx"。结果 <code>["abc","def","ghi","jxx"]</code> ✓。</p>
 <h2 id="complexity">复杂度 (Complexity)<a class="headerlink" href="#complexity" title="Permanent link">#</a></h2>
 <ul>
 <li>Time: <span class="arithmatex">\(O(n)\)</span></li>
@@ -22699,8 +22741,8 @@
 </ul>
 <h2 id="pitfalls">陷阱 (Pitfalls)<a class="headerlink" href="#pitfalls" title="Permanent link">#</a></h2>
 <ul>
-<li><strong>n 恰好整除 k 时不补</strong>：避免追加全 fill 的"幽灵组"。代码靠 <code>if len(chunk) &lt; k</code> 自然处理。</li>
-<li><strong><code>fill * 负数</code></strong>：Python 中等于 <code>''</code>，不会出错，但条件判断更直观。</li>
+<li><strong>n 恰好整除 k 时不补</strong>：此时末段长度已是 <span class="arithmatex">\(k\)</span>，缺口 <span class="arithmatex">\(gk - n = 0\)</span>，不该追加任何 <code>fill</code>，否则会多出一个全 fill 的"幽灵组"。代码靠 <code>if len(chunk) &lt; k</code> 自然处理——满段不进分支。</li>
+<li><strong><code>fill * 负数</code></strong>：Python 中等于 <code>''</code>，不会出错。实际上 <code>if len(chunk) &lt; k</code> 已保证进入分支时缺口 <span class="arithmatex">\(k - \text{len(chunk)} &gt; 0\)</span>，这条永不触发，仅作防御性说明。</li>
 </ul>
 <h2 id="related">相关题目 (Related)<a class="headerlink" href="#related" title="Permanent link">#</a></h2>
 <ul>

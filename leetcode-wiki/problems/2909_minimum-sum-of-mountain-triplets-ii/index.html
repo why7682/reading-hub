@@ -5485,6 +5485,8 @@
       
         
       
+        
+      
     
     
     
@@ -6024,6 +6026,34 @@
     
   
     #93. Restore IP Addresses
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../0102_binary-tree-level-order-traversal/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    #102. Binary Tree Level Order Traversal
   
 
     
@@ -22675,18 +22705,39 @@
 <h2 id="problem">Problem<a class="headerlink" href="#problem" title="Permanent link">#</a></h2>
 <p>给数组 <code>nums</code>，找三元组 <span class="arithmatex">\((i, j, k)\)</span> 满足 <span class="arithmatex">\(i &lt; j &lt; k\)</span> 且 <span class="arithmatex">\(\text{nums}[i] &lt; \text{nums}[j]\)</span> 且 <span class="arithmatex">\(\text{nums}[k] &lt; \text{nums}[j]\)</span>（mountain），求最小 <span class="arithmatex">\(\text{nums}[i] + \text{nums}[j] + \text{nums}[k]\)</span>；无解返回 <span class="arithmatex">\(-1\)</span>。<span class="arithmatex">\(3 \le n \le 10^5\)</span>, <span class="arithmatex">\(a_i \le 10^8\)</span>。</p>
 <h2 id="background">背景 (Background)<a class="headerlink" href="#background" title="Permanent link">#</a></h2>
-<p><strong>模板</strong>：枚举中间元素 <span class="arithmatex">\(j\)</span>，需要 <span class="arithmatex">\(j\)</span> 左侧最小值 &lt; <span class="arithmatex">\(a_j\)</span> 且 <span class="arithmatex">\(j\)</span> 右侧最小值 &lt; <span class="arithmatex">\(a_j\)</span>。这正是"<strong>前缀最小 + 后缀最小</strong>"双扫的经典应用，与 #42 Trapping Rain Water、#11 Container With Most Water 同源。</p>
-<p>I 版 <span class="arithmatex">\(n \le 50\)</span> 暴力 <span class="arithmatex">\(O(n^3)\)</span>；II 版 <span class="arithmatex">\(n \le 10^5\)</span> 必须 <span class="arithmatex">\(O(n)\)</span>。</p>
+<p>最直接的解法是枚举三元组：三重循环遍历所有 <span class="arithmatex">\(i &lt; j &lt; k\)</span>，检查 mountain 条件，取合法和的最小值。</p>
+<div class="language-python highlight"><pre><span></span><code><span class="n">ans</span> <span class="o">=</span> <span class="n">INF</span>
+<span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">j</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">j</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">a</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">a</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="ow">and</span> <span class="n">a</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">a</span><span class="p">[</span><span class="n">j</span><span class="p">]:</span>
+                <span class="n">ans</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">ans</span><span class="p">,</span> <span class="n">a</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+</span> <span class="n">a</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">+</span> <span class="n">a</span><span class="p">[</span><span class="n">k</span><span class="p">])</span>
+</code></pre></div>
+<p>这是 <span class="arithmatex">\(O(n^3)\)</span>。当 <span class="arithmatex">\(n \le 50\)</span>（I 版）时可以接受；当 <span class="arithmatex">\(n \le 10^5\)</span>（本题）时，<span class="arithmatex">\(n^3 = 10^{15}\)</span> 次操作必然超时。要找到加速点，先看暴力到底浪费在哪里。</p>
+<p>固定中间下标 <span class="arithmatex">\(j\)</span>，内层两重循环做的事是：在 <span class="arithmatex">\(i &lt; j\)</span> 中找满足 <span class="arithmatex">\(a_i &lt; a_j\)</span> 且让和最小的那个 <span class="arithmatex">\(a_i\)</span>，在 <span class="arithmatex">\(k &gt; j\)</span> 中同理找 <span class="arithmatex">\(a_k\)</span>。换一个相邻的 <span class="arithmatex">\(j' = j+1\)</span>，内层又把 <span class="arithmatex">\(i &lt; j'\)</span> 全部重扫一遍——而 <span class="arithmatex">\(i &lt; j\)</span> 那部分上一轮刚扫过。<strong>每个 <span class="arithmatex">\(j\)</span> 都从头重算左侧、右侧的最小值，这部分计算在不同 <span class="arithmatex">\(j\)</span> 之间被完全重复。</strong> 消除这个重复，就是从 <span class="arithmatex">\(O(n^3)\)</span> 降到 <span class="arithmatex">\(O(n)\)</span> 的全部内容。</p>
 <h2 id="formulation">形式化 (Formulation)<a class="headerlink" href="#formulation" title="Permanent link">#</a></h2>
-<p><span class="arithmatex">\(\min_{i&lt;j&lt;k} \{ a_i + a_j + a_k : a_i &lt; a_j \land a_k &lt; a_j \}\)</span>，无解 <span class="arithmatex">\(-1\)</span>。</p>
+<p>直觉是：固定峰 <span class="arithmatex">\(j\)</span> 之后，选 <span class="arithmatex">\(i\)</span> 和选 <span class="arithmatex">\(k\)</span> 是两个互不影响的子问题。它们在目标里以加法出现、约束彼此独立（<span class="arithmatex">\(i\)</span> 只需 <span class="arithmatex">\(i&lt;j\)</span> 且 <span class="arithmatex">\(a_i&lt;a_j\)</span>，<span class="arithmatex">\(k\)</span> 只需 <span class="arithmatex">\(k&gt;j\)</span> 且 <span class="arithmatex">\(a_k&lt;a_j\)</span>），所以可以各自独立地取到最小。这就是为什么 <span class="arithmatex">\(j\)</span> 是天然的枚举变量——固定它能把问题拆成两个一维最小化。</p>
+<p>把这一点写进目标。原始目标是</p>
+<div class="arithmatex">\[
+\min_{i&lt;j&lt;k} \{\, a_i + a_j + a_k : a_i &lt; a_j \land a_k &lt; a_j \,\},\quad \text{无解返回 } -1. \tag{1}
+\]</div>
+<p>按 <span class="arithmatex">\(j\)</span> 分组，并利用 <span class="arithmatex">\(i\)</span>、<span class="arithmatex">\(k\)</span> 的约束相互独立，求和的最小可以拆进去：</p>
+<div class="arithmatex">\[
+\min_{1 \le j \le n-2}\Big[\, a_j + \underbrace{\min_{i&lt;j,\,a_i&lt;a_j} a_i}_{\text{左侧合法最小}} + \underbrace{\min_{k&gt;j,\,a_k&lt;a_j} a_k}_{\text{右侧合法最小}} \,\Big]. \tag{2}
+\]</div>
+<p>(2) 是 (1) 的等价改写，也是整个算法的脊柱：剩下要做的，只是高效地为每个 <span class="arithmatex">\(j\)</span> 算出两个内层最小值。</p>
 <h2 id="approach">数据结构 / 想法 (Approach)<a class="headerlink" href="#approach" title="Permanent link">#</a></h2>
-<p><strong>前缀最小 + 后缀最小双扫</strong>：</p>
-<ul>
-<li><code>pre[j]</code> = <span class="arithmatex">\(\min_{i&lt;j} a_i\)</span>（<span class="arithmatex">\(j=0\)</span> 时 <span class="arithmatex">\(+\infty\)</span>）。</li>
-<li><code>suf[j]</code> = <span class="arithmatex">\(\min_{k&gt;j} a_k\)</span>（<span class="arithmatex">\(j=n-1\)</span> 时 <span class="arithmatex">\(+\infty\)</span>）。</li>
-<li>答案 = <span class="arithmatex">\(\min_{j \in [1, n-2]} \{\text{pre}[j] + a_j + \text{suf}[j] : \text{pre}[j] &lt; a_j \land \text{suf}[j] &lt; a_j \}\)</span>。</li>
-</ul>
-<p><strong>不变量</strong>：每个 <span class="arithmatex">\(j\)</span> 我们只需"左侧最小元素"和"右侧最小元素"——因为要使总和最小，固定 <span class="arithmatex">\(j\)</span> 后 <span class="arithmatex">\(a_i\)</span> 取尽可能小、<span class="arithmatex">\(a_k\)</span> 同理，只要它们 <span class="arithmatex">\(&lt; a_j\)</span>。</p>
+<p>(2) 里两个内层最小值就是暴力被重复计算的东西。关键观察是：<strong>严格的下界约束 <span class="arithmatex">\(a_i &lt; a_j\)</span> 可以推迟到使用时再检查。</strong> 先把"不带约束的左侧最小"</p>
+<div class="arithmatex">\[
+\text{pre}[j] = \min_{i&lt;j} a_i \qquad (\text{$j=0$ 时为 } +\infty) \tag{3}
+\]</div>
+<p>整体算出来——它只比真正的"合法最小"少了一道 <span class="arithmatex">\(&lt; a_j\)</span> 的过滤。用时在外层判断 <span class="arithmatex">\(\text{pre}[j] &lt; a_j\)</span> 即可：若成立，<span class="arithmatex">\(\text{pre}[j]\)</span> 就是合法的最小 <span class="arithmatex">\(a_i\)</span>；若不成立，说明左侧没有任何元素严格小于 <span class="arithmatex">\(a_j\)</span>，该 <span class="arithmatex">\(j\)</span> 无效。右侧对称：</p>
+<div class="arithmatex">\[
+\text{suf}[j] = \min_{k&gt;j} a_k \qquad (\text{$j=n-1$ 时为 } +\infty). \tag{4}
+\]</div>
+<p>为什么 <span class="arithmatex">\(\text{pre}[j]\)</span> 配合一次判断就够，而不需要"在 <span class="arithmatex">\(i&lt;j\)</span> 中找最小的、且 <span class="arithmatex">\(&lt;a_j\)</span> 的元素"？因为我们要的是和最小，固定 <span class="arithmatex">\(j\)</span> 后 <span class="arithmatex">\(a_i\)</span> 越小越好；全局最小的 <span class="arithmatex">\(a_i\)</span> 若已 <span class="arithmatex">\(&lt;a_j\)</span>，它就是最优；若它都不 <span class="arithmatex">\(&lt;a_j\)</span>，那比它大的更不可能 <span class="arithmatex">\(&lt;a_j\)</span>，于是该 <span class="arithmatex">\(j\)</span> 整列无解。所以只需保留 <span class="arithmatex">\(\text{pre}[j]\)</span> 这一个值。</p>
+<p>(3) 中所有 <span class="arithmatex">\(\text{pre}[j]\)</span> 可以在一次从左到右的扫描里同时得到：递推 <span class="arithmatex">\(\text{pre}[j] = \min(\text{pre}[j-1], a_{j-1})\)</span>，每个前缀最小都复用上一个的结果，正好消去暴力的重复。(4) 同理用一次从右到左的扫描得到。两次线性扫描替换掉三重循环，目标 (2) 退化为对每个 <span class="arithmatex">\(j\)</span> 的一次 <span class="arithmatex">\(O(1)\)</span> 查表。</p>
+<p>下面的实现把前缀扫描和答案计算合并进同一个正向循环（后缀先单独预处理），左侧用滚动变量 <code>pre</code> 即可：</p>
 <div class="language-python highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">Solution</span><span class="p">:</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">minimumSum</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">nums</span><span class="p">):</span>
         <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">nums</span><span class="p">)</span>
@@ -22702,6 +22753,7 @@
             <span class="n">pre</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">pre</span><span class="p">,</span> <span class="n">nums</span><span class="p">[</span><span class="n">j</span><span class="p">])</span>
         <span class="k">return</span> <span class="n">ans</span> <span class="k">if</span> <span class="n">ans</span> <span class="o">&lt;</span> <span class="n">INF</span> <span class="k">else</span> <span class="o">-</span><span class="mi">1</span>
 </code></pre></div>
+<p>注意 <code>pre = min(pre, nums[j])</code> 写在判断之后：进入 <span class="arithmatex">\(j\)</span> 这一轮时，<code>pre</code> 还只含 <span class="arithmatex">\(i&lt;j\)</span> 的元素，不含 <span class="arithmatex">\(a_j\)</span> 自身，正是 (3) 要的语义。</p>
 <p><strong>Trace example 1</strong> <code>nums=[8,6,1,5,3]</code>：
 - suf = [1,1,1,3,3,INF]（从右往左 min: 3, 3, 1, 1, 1）。
 - j=0: pre=INF，无效；pre=8。
@@ -22710,11 +22762,11 @@
 - j=3: pre=1, suf[4]=3, 1&lt;5 ✓ ∧ 3&lt;5 ✓ → 1+5+3=9，ans=9；pre=1。
 - j=4: pre=1, suf[5]=INF，无效。
 - 返回 9 ✓。</p>
-<p><strong>与 LIS 的对比</strong>：mountain 三元组本质是"递增 2 元 + 递减 2 元在 <span class="arithmatex">\(j\)</span> 拼接"，但因只要求长度 3，无需 LIS 结构，前后缀最值即可。</p>
+<p>跟踪里能看到 (2) 如何落地：每个 <span class="arithmatex">\(j\)</span> 只查一次 <code>pre</code> 和 <code>suf</code>，合法时即为该峰下的最优三元组和，全局取最小得 9。</p>
 <h2 id="complexity">复杂度 (Complexity)<a class="headerlink" href="#complexity" title="Permanent link">#</a></h2>
 <ul>
-<li>Time: <span class="arithmatex">\(O(n)\)</span>。</li>
-<li>Space: <span class="arithmatex">\(O(n)\)</span>（后缀数组；可优化到 <span class="arithmatex">\(O(1)\)</span> 通过两次反向扫）。</li>
+<li>Time: <span class="arithmatex">\(O(n)\)</span>（一次后缀扫描 + 一次正向扫描）。</li>
+<li>Space: <span class="arithmatex">\(O(n)\)</span>。后缀数组需要整体存下：答案在每个 <span class="arithmatex">\(j\)</span> 同时用到左、右两侧的最小，正向滚动只能 <span class="arithmatex">\(O(1)\)</span> 维护一侧，另一侧必须预先物化，因此辅助空间下界是 <span class="arithmatex">\(O(n)\)</span>。</li>
 </ul>
 <h2 id="pitfalls">陷阱 (Pitfalls)<a class="headerlink" href="#pitfalls" title="Permanent link">#</a></h2>
 <ul>

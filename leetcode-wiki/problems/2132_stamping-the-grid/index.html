@@ -5485,6 +5485,8 @@
       
         
       
+        
+      
     
     
     
@@ -6024,6 +6026,34 @@
     
   
     #93. Restore IP Addresses
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../0102_binary-tree-level-order-traversal/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    #102. Binary Tree Level Order Traversal
   
 
     
@@ -22675,14 +22705,51 @@
 <h2 id="problem">Problem<a class="headerlink" href="#problem" title="Permanent link">#</a></h2>
 <p><span class="arithmatex">\(m \times n\)</span> 0/1 矩阵。给定 stamp 大小 <span class="arithmatex">\(H \times W\)</span>。问能否用任意多张 stamp（允许重叠、必须整体在网格内、不能盖到 1）覆盖所有 0？</p>
 <h2 id="_1">背景<a class="headerlink" href="#_1" title="Permanent link">#</a></h2>
-<p>本题是 <strong>二维前缀和 (2D prefix sum) + 差分</strong> 的双重应用，是计算几何 / 图像处理里 "image filtering" 的离散化版。同款思想在：积分图像 (integral image) 用于人脸检测、求和面积 (summed-area table, Crow 1984)、CNN 中的"depth-wise summary"。</p>
-<p><strong>两步思路</strong>：
-1. <strong>判定每个 stamp 位置是否合法</strong>：左上角 <span class="arithmatex">\((i, j)\)</span> 处放 stamp 合法 ↔ <span class="arithmatex">\(H \times W\)</span> 区域内全 0。用 2D 前缀和判区域和 = 0 (<span class="arithmatex">\(O(1)\)</span> per 位置)。
-2. <strong>判定每个 0 cell 是否被覆盖</strong>：把所有合法 stamp 位置 +1 到差分数组，再算前缀和；某 cell 被至少一个 stamp 覆盖 ↔ 该 cell 的差分前缀和 &gt; 0。</p>
+<p>先把可行性条件想清楚，再谈怎么算得快。</p>
+<p>一张 stamp 是一个 <span class="arithmatex">\(H \times W\)</span> 的矩形，左上角落在某个格子 <span class="arithmatex">\((r_0, c_0)\)</span>，覆盖 <span class="arithmatex">\([r_0, r_0+H-1] \times [c_0, c_0+W-1]\)</span>。约束有两条：整张 stamp 必须在网格内，且不能压到任何值为 1 的格子。称满足这两条的 <span class="arithmatex">\((r_0, c_0)\)</span> 为一个<strong>合法放置</strong>。</p>
+<p>题目允许放任意多张、可以重叠，唯一不能动的是值为 1 的格子。于是每个合法放置之间互不干扰：放下任意一张都不会破坏别的放置，也不会盖到 1。既然如此，最优策略就是把<strong>所有</strong>合法放置全部放下——这不会有任何坏处。问题随即归约为一个纯判定：</p>
+<blockquote>
+<p>把所有合法放置都放下后，是否每个值为 0 的格子都被至少一张 stamp 覆盖？</p>
+</blockquote>
+<p>（值为 1 的格子无需覆盖，且合法放置定义上从不覆盖它们，可以忽略。）</p>
+<p>这把原问题拆成两个子问题：<strong>枚举哪些放置合法</strong>，再<strong>判断每个 0 格是否被某合法放置覆盖</strong>。下面先看朴素做法在哪里卡住，再引出加速手段。</p>
 <h2 id="_2">形式化<a class="headerlink" href="#_2" title="Permanent link">#</a></h2>
-<p>设 <span class="arithmatex">\(S(i, j)\)</span> = grid 中 <span class="arithmatex">\([1..i] \times [1..j]\)</span> 区域内 1 的数量（2D 前缀和）。stamp <span class="arithmatex">\((i, j)\)</span> 合法 ↔ <span class="arithmatex">\(\sum_{r=i}^{i+H-1} \sum_{c=j}^{j+W-1} g_{rc} = 0\)</span>（用 <span class="arithmatex">\(S\)</span> <span class="arithmatex">\(O(1)\)</span> 算）。</p>
-<p>记 <span class="arithmatex">\(D[r][c] = 1\)</span> 若 stamp <span class="arithmatex">\((r, c)\)</span> 合法。对每个 0 cell <span class="arithmatex">\((r, c)\)</span>，它被覆盖 ↔ 存在某合法 stamp 包含它 ↔ <span class="arithmatex">\(D\)</span> 在 <span class="arithmatex">\([\max(0, r-H+1), r] \times [\max(0, c-W+1), c]\)</span> 区域至少有一个 1（再用 <span class="arithmatex">\(D\)</span> 的 2D 前缀和 <span class="arithmatex">\(O(1)\)</span> 判）。</p>
+<p><strong>朴素做法与瓶颈。</strong> 直接枚举：对每个候选左上角 <span class="arithmatex">\((r_0, c_0)\)</span>，扫一遍它覆盖的 <span class="arithmatex">\(H \times W\)</span> 区域，看是否全 0，由此得到全部合法放置；再对每个 0 格 <span class="arithmatex">\((r, c)\)</span>，枚举所有可能覆盖它的左上角，看其中有没有一个是合法的。两步各自最坏 <span class="arithmatex">\(O(mn \cdot HW)\)</span>，在 <span class="arithmatex">\(m \cdot n\)</span> 与 <span class="arithmatex">\(H, W\)</span> 同阶时是 <span class="arithmatex">\(O((mn)^2)\)</span> 级别，超时。</p>
+<p>两步的开销都来自同一件事：反复在一个 0/1 矩阵上问"某个矩形区域里有没有 1"。第一步问的是"这个 <span class="arithmatex">\(H \times W\)</span> 区域里有没有 1"（grid 上）；第二步问的是"这个候选区域里有没有合法放置"（一个新指示矩阵上）。<strong>只要矩形区域和能被 <span class="arithmatex">\(O(1)\)</span> 查询，两步都从 <span class="arithmatex">\(O(HW)\)</span> 降到 <span class="arithmatex">\(O(1)\)</span></strong>。这正是二维前缀和的用途。</p>
+<p><strong>二维前缀和。</strong> 设 <span class="arithmatex">\(S(i, j)\)</span> 为 grid 中 <span class="arithmatex">\([0..i{-}1] \times [0..j{-}1]\)</span> 子矩阵的元素和（grid 为 0/1，故等于该区域 1 的个数）。<span class="arithmatex">\(S\)</span> 可在 <span class="arithmatex">\(O(mn)\)</span> 内递推。任意矩形 <span class="arithmatex">\([r_1, r_2] \times [c_1, c_2]\)</span> 的和由容斥（inclusion–exclusion）一步算出：</p>
+<div class="arithmatex">\[
+\mathrm{sum}(r_1, c_1, r_2, c_2) = S(r_2{+}1, c_2{+}1) - S(r_1, c_2{+}1) - S(r_2{+}1, c_1) + S(r_1, c_1).
+\tag{1}
+\]</div>
+<p><strong>子问题一：合法放置。</strong> 左上角 <span class="arithmatex">\((r_0, c_0)\)</span> 合法当且仅当它整体在网格内（<span class="arithmatex">\(0 \le r_0 \le m-H\)</span>，<span class="arithmatex">\(0 \le c_0 \le n-W\)</span>）且覆盖区域全 0，即</p>
+<div class="arithmatex">\[
+\mathrm{sum}(r_0, c_0, r_0{+}H{-}1, c_0{+}W{-}1) = 0.
+\tag{2}
+\]</div>
+<p>用式 (1) 每个 <span class="arithmatex">\(O(1)\)</span>。把合法放置记进指示矩阵 <span class="arithmatex">\(D\)</span>：<span class="arithmatex">\(D[r_0][c_0] = 1\)</span> 当且仅当 <span class="arithmatex">\((r_0, c_0)\)</span> 是合法放置。</p>
+<p><strong>子问题二：覆盖判定。</strong> 关键是先看清"哪些放置能覆盖格子 <span class="arithmatex">\((r, c)\)</span>"。左上角 <span class="arithmatex">\((r_0, c_0)\)</span> 的 stamp 覆盖 <span class="arithmatex">\((r, c)\)</span>，当且仅当</p>
+<div class="arithmatex">\[
+r_0 \le r \le r_0 + H - 1 \quad\text{且}\quad c_0 \le c \le c_0 + W - 1.
+\]</div>
+<p>把它对 <span class="arithmatex">\((r_0, c_0)\)</span> 解出来，得到一个矩形窗口：</p>
+<div class="arithmatex">\[
+r - H + 1 \le r_0 \le r \quad\text{且}\quad c - W + 1 \le c_0 \le c.
+\tag{3}
+\]</div>
+<p>也就是说，能覆盖 <span class="arithmatex">\((r, c)\)</span> 的左上角恰好落在窗口 <span class="arithmatex">\([r{-}H{+}1, r] \times [c{-}W{+}1, c]\)</span> 内。于是</p>
+<blockquote>
+<p><span class="arithmatex">\((r, c)\)</span> 被某合法放置覆盖 <span class="arithmatex">\(\iff\)</span> <span class="arithmatex">\(D\)</span> 在该窗口内至少有一个 1。</p>
+</blockquote>
+<p>这又是一次"矩形区域里有没有 1"的查询——这回在 <span class="arithmatex">\(D\)</span> 上。对 <span class="arithmatex">\(D\)</span> 再建一层二维前缀和，每次查询 <span class="arithmatex">\(O(1)\)</span>。</p>
+<p>窗口还需与合法左上角的范围 <span class="arithmatex">\([0, m{-}H] \times [0, n{-}W]\)</span> 求交，得到实际查询区间</p>
+<div class="arithmatex">\[
+r_1 = \max(0,\, r{-}H{+}1),\ r_2 = \min(m{-}H,\, r),\qquad
+c_1 = \max(0,\, c{-}W{+}1),\ c_2 = \min(n{-}W,\, c).
+\tag{4}
+\]</div>
+<p>若 <span class="arithmatex">\(r_1 &gt; r_2\)</span> 或 <span class="arithmatex">\(c_1 &gt; c_2\)</span>，窗口为空——没有任何合法放置够得着 <span class="arithmatex">\((r, c)\)</span>，该 0 格无法被覆盖，直接判否。这一情形不是补丁，而是式 (3) 与合法范围求交后的自然推论（例如 <span class="arithmatex">\(H &gt; m\)</span> 时根本放不下任何 stamp，每个 0 格的窗口都空）。</p>
 <h2 id="_3">数据结构 / 想法<a class="headerlink" href="#_3" title="Permanent link">#</a></h2>
+<p>代码对应上面的两层前缀和。<code>pre</code> 是 grid 的二维前缀和（实现式 (1)），<code>valid[r][c]</code> 即指示矩阵 <span class="arithmatex">\(D\)</span>（由式 (2) 填），<code>vpre</code> 是 <code>valid</code> 的二维前缀和（在 <span class="arithmatex">\(D\)</span> 上做窗口查询）。<strong>不变量</strong>：<code>pre[i][j]</code> <span class="arithmatex">\(= S(i, j)\)</span>，即 grid <span class="arithmatex">\([0..i{-}1] \times [0..j{-}1]\)</span> 之和；<code>valid[r][c] = 1</code> <span class="arithmatex">\(\iff\)</span> 左上角放此处合法；<code>vpre</code> 是 <code>valid</code> 的前缀和。两个 <code>regionSum</code> / <code>vSum</code> 都是式 (1) 的容斥查询，正确性即标准容斥。</p>
 <div class="language-python highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">possibleToStamp</span><span class="p">(</span><span class="n">grid</span><span class="p">,</span> <span class="n">H</span><span class="p">,</span> <span class="n">W</span><span class="p">):</span>
     <span class="n">m</span><span class="p">,</span> <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">grid</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">grid</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
     <span class="c1"># 2D prefix sum of grid</span>
@@ -22692,7 +22759,7 @@
             <span class="n">pre</span><span class="p">[</span><span class="n">r</span><span class="o">+</span><span class="mi">1</span><span class="p">][</span><span class="n">c</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">grid</span><span class="p">[</span><span class="n">r</span><span class="p">][</span><span class="n">c</span><span class="p">]</span> <span class="o">+</span> <span class="n">pre</span><span class="p">[</span><span class="n">r</span><span class="p">][</span><span class="n">c</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">pre</span><span class="p">[</span><span class="n">r</span><span class="o">+</span><span class="mi">1</span><span class="p">][</span><span class="n">c</span><span class="p">]</span> <span class="o">-</span> <span class="n">pre</span><span class="p">[</span><span class="n">r</span><span class="p">][</span><span class="n">c</span><span class="p">]</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">regionSum</span><span class="p">(</span><span class="n">r1</span><span class="p">,</span> <span class="n">c1</span><span class="p">,</span> <span class="n">r2</span><span class="p">,</span> <span class="n">c2</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">pre</span><span class="p">[</span><span class="n">r2</span><span class="o">+</span><span class="mi">1</span><span class="p">][</span><span class="n">c2</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">pre</span><span class="p">[</span><span class="n">r1</span><span class="p">][</span><span class="n">c2</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">pre</span><span class="p">[</span><span class="n">r2</span><span class="o">+</span><span class="mi">1</span><span class="p">][</span><span class="n">c1</span><span class="p">]</span> <span class="o">+</span> <span class="n">pre</span><span class="p">[</span><span class="n">r1</span><span class="p">][</span><span class="n">c1</span><span class="p">]</span>
-    <span class="c1"># 标记合法 stamp 左上角</span>
+    <span class="c1"># 标记合法 stamp 左上角 (式 2)</span>
     <span class="n">valid</span> <span class="o">=</span> <span class="p">[[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">n</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">m</span><span class="p">)]</span>
     <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">m</span> <span class="o">-</span> <span class="n">H</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
         <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span> <span class="o">-</span> <span class="n">W</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
@@ -22705,7 +22772,7 @@
             <span class="n">vpre</span><span class="p">[</span><span class="n">r</span><span class="o">+</span><span class="mi">1</span><span class="p">][</span><span class="n">c</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">valid</span><span class="p">[</span><span class="n">r</span><span class="p">][</span><span class="n">c</span><span class="p">]</span> <span class="o">+</span> <span class="n">vpre</span><span class="p">[</span><span class="n">r</span><span class="p">][</span><span class="n">c</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">vpre</span><span class="p">[</span><span class="n">r</span><span class="o">+</span><span class="mi">1</span><span class="p">][</span><span class="n">c</span><span class="p">]</span> <span class="o">-</span> <span class="n">vpre</span><span class="p">[</span><span class="n">r</span><span class="p">][</span><span class="n">c</span><span class="p">]</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">vSum</span><span class="p">(</span><span class="n">r1</span><span class="p">,</span> <span class="n">c1</span><span class="p">,</span> <span class="n">r2</span><span class="p">,</span> <span class="n">c2</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">vpre</span><span class="p">[</span><span class="n">r2</span><span class="o">+</span><span class="mi">1</span><span class="p">][</span><span class="n">c2</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">vpre</span><span class="p">[</span><span class="n">r1</span><span class="p">][</span><span class="n">c2</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">vpre</span><span class="p">[</span><span class="n">r2</span><span class="o">+</span><span class="mi">1</span><span class="p">][</span><span class="n">c1</span><span class="p">]</span> <span class="o">+</span> <span class="n">vpre</span><span class="p">[</span><span class="n">r1</span><span class="p">][</span><span class="n">c1</span><span class="p">]</span>
-    <span class="c1"># 检查每个 0 cell 是否被某合法 stamp 覆盖</span>
+    <span class="c1"># 检查每个 0 cell 是否被某合法 stamp 覆盖 (窗口式 4)</span>
     <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">m</span><span class="p">):</span>
         <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
             <span class="k">if</span> <span class="n">grid</span><span class="p">[</span><span class="n">r</span><span class="p">][</span><span class="n">c</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
@@ -22715,17 +22782,17 @@
                     <span class="k">return</span> <span class="kc">False</span>
     <span class="k">return</span> <span class="kc">True</span>
 </code></pre></div>
-<p><strong>不变量</strong>：<code>pre[i][j]</code> = grid <span class="arithmatex">\([0..i-1] \times [0..j-1]\)</span> 之和；<code>valid[r][c] = 1</code> ↔ stamp 左上角放此处合法；<code>vpre</code> 是 <code>valid</code> 的前缀和。<strong>正确性</strong>：标准 inclusion-exclusion 公式。</p>
 <h2 id="_4">复杂度<a class="headerlink" href="#_4" title="Permanent link">#</a></h2>
 <ul>
-<li>Time: <span class="arithmatex">\(O(mn)\)</span> — 三遍 2D scan。</li>
-<li>Space: <span class="arithmatex">\(O(mn)\)</span> — 前缀和表。</li>
+<li>Time: <span class="arithmatex">\(O(mn)\)</span> — 四遍 <span class="arithmatex">\(O(mn)\)</span> 扫描（建 <code>pre</code>、建 <code>valid</code>、建 <code>vpre</code>、查 0 格）。0 格命中即 <code>return False</code> 只影响最好情形，渐近不变。</li>
+<li>Space: <span class="arithmatex">\(O(mn)\)</span> — <code>pre</code>、<code>valid</code>、<code>vpre</code> 三张表各 <span class="arithmatex">\(O(mn)\)</span>。</li>
 </ul>
 <h2 id="_5">陷阱<a class="headerlink" href="#_5" title="Permanent link">#</a></h2>
 <ul>
-<li>区域可能 stamp 部分越界 — 用 <code>max(0, ...)</code> 和 <code>min(m-H, ...)</code> 截断到合法 stamp 区。</li>
-<li><code>r1 &gt; r2</code> 表示无任何合法 stamp 能覆盖该 cell。</li>
-<li><span class="arithmatex">\(H, W\)</span> 可以 <span class="arithmatex">\(&gt; m, n\)</span>：约束保证 <span class="arithmatex">\(H, W \le 10^5\)</span> 但 <span class="arithmatex">\(m \cdot n \le 2 \cdot 10^5\)</span>，要小心 stamp 比 grid 大时直接退化。</li>
+<li>覆盖窗口需与合法左上角范围求交，故用 <span class="arithmatex">\(\max(0, \cdot)\)</span> 与 <span class="arithmatex">\(\min(m{-}H, \cdot)\)</span> 截断，见式 (4)。</li>
+<li><code>r1 &gt; r2</code> 或 <code>c1 &gt; c2</code> 表示窗口为空，无任何合法放置能覆盖该 0 格 → 判否，是式 (3) 求交后的推论，非特例。</li>
+<li><span class="arithmatex">\(H, W\)</span> 可大于 <span class="arithmatex">\(m, n\)</span>：约束 <span class="arithmatex">\(1 \le H, W \le 10^5\)</span> 而 <span class="arithmatex">\(1 \le m \cdot n \le 2 \cdot 10^5\)</span>，故 stamp 可能比 grid 还大。此时 <code>range(m-H+1)</code> 为空（无合法放置），且每个 0 格窗口 <span class="arithmatex">\(r_1 &gt; r_2\)</span> → 判否，逻辑自洽。</li>
+<li>注意 <code>valid</code> 只在<strong>左上角</strong>那一格记 1，而非铺满整张 stamp 的 footprint；覆盖判定靠对左上角窗口（式 3）求和，不是对 footprint 做差分。两种编码都对，但本实现是前者。</li>
 </ul>
 <h2 id="_6">相关题目<a class="headerlink" href="#_6" title="Permanent link">#</a></h2>
 <ul>
@@ -22735,8 +22802,8 @@
 </ul>
 <h2 id="further-reading">Further Reading<a class="headerlink" href="#further-reading" title="Permanent link">#</a></h2>
 <ul>
-<li>Crow, F. (1984). <em>Summed-area tables for texture mapping</em>. ACM SIGGRAPH. ⭐⭐ — 积分图像 (summed-area table) 的奠基论文。</li>
-<li>Viola &amp; Jones (2001). <em>Rapid Object Detection using a Boosted Cascade of Simple Features</em>. CVPR. — 积分图像在人脸检测的工程应用。</li>
+<li>Crow, F. (1984). <em>Summed-area tables for texture mapping</em>. ACM SIGGRAPH. ⭐⭐ — 同款"前缀和→<span class="arithmatex">\(O(1)\)</span> 区域和"思想在图形学中的奠基论文（summed-area table）。</li>
+<li>Viola &amp; Jones (2001). <em>Rapid Object Detection using a Boosted Cascade of Simple Features</em>. CVPR. — summed-area table（此处称 integral image）在工程中的代表性应用。</li>
 <li>USACO Guide: "Introduction to Prefix Sums" — usaco.guide/silver/prefix-sums — 一维 + 二维前缀和 / 差分入门。</li>
 </ul>
 

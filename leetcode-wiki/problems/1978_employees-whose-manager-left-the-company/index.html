@@ -5485,6 +5485,8 @@
       
         
       
+        
+      
     
     
     
@@ -6024,6 +6026,34 @@
     
   
     #93. Restore IP Addresses
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../0102_binary-tree-level-order-traversal/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    #102. Binary Tree Level Order Traversal
   
 
     
@@ -22675,17 +22705,41 @@
 <h2 id="problem">Problem<a class="headerlink" href="#problem" title="Permanent link">#</a></h2>
 <p>给 <code>Employees(employee_id, name, manager_id, salary)</code>。返回所有满足以下条件的员工 id：薪资 <code>salary &lt; 30000</code> 且 <code>manager_id</code> 非空但该 manager_id 已不在表中（经理离职被删除，留下的下属 manager_id 成为悬空引用）。按 <code>employee_id</code> 升序返回。</p>
 <h2 id="background">背景 (Background)<a class="headerlink" href="#background" title="Permanent link">#</a></h2>
-<p>本题模型是关系数据库中的"悬空外键"(dangling foreign key) 检查。在严格遵守引用完整性 (referential integrity) 的设计里，删除一个被引用的行需要 ON DELETE CASCADE 或 SET NULL 之类的策略；这道题恰恰描绘了引用完整性被破坏后的清理查询。</p>
+<p>抛开数据库术语，这道题要侦测的结构事实很具体：表里某些行的 <code>manager_id</code> 写着一个数，但这个数在整张表的 <code>employee_id</code> 列里再也找不到对应的行——经理被删了，下属手上的指针指向了空。注意 <code>manager_id</code> 与 <code>employee_id</code> 取值于同一个域：一个员工的经理也是一个员工。于是整张表既是<strong>待检查的候选集</strong>，又是<strong>查表用的查找集</strong>——这一点是后面所有推导的支点。</p>
+<p>用关系数据库的标准词汇给这个现象命名：它是引用完整性 (referential integrity) 被破坏后留下的<strong>悬空外键</strong> (dangling foreign key)。严格的设计会用 <code>ON DELETE CASCADE</code> 或 <code>SET NULL</code> 在删除被引用行时同步清理下属指针；本题描述的正是没有这层保护、需要事后排查的查询。这个命名是对上述结构事实的标签，不是它的解释。</p>
 <h2 id="formulation">形式化 (Formulation)<a class="headerlink" href="#formulation" title="Permanent link">#</a></h2>
-<p>设关系 <span class="arithmatex">\(E(\text{id}, \text{name}, \text{mgr}, \text{sal})\)</span>。求</p>
-<div class="arithmatex">\[\{e.\text{id} : e \in E,\; e.\text{sal} &lt; 30000,\; e.\text{mgr} \neq \text{NULL},\; \neg\exists m \in E. m.\text{id} = e.\text{mgr}\}\]</div>
-<p>按 <code>id</code> 升序输出。</p>
+<p>先说清楚每行要做的判断。固定一名候选员工 <span class="arithmatex">\(e\)</span>，他的经理 id 是 <span class="arithmatex">\(e.\text{mgr}\)</span>。要判定经理是否"离职"，就是问：<span class="arithmatex">\(e.\text{mgr}\)</span> 这个<strong>具体的值</strong>，是否出现在所有 <code>employee_id</code> 组成的集合里？出现，则经理还在；不出现，则指针悬空。这是一次针对同一张表的<strong>集合成员检查</strong>——正是上文"表既是候选集又是查找集"的形式表达。</p>
+<p>设关系 <span class="arithmatex">\(E(\text{id}, \text{name}, \text{mgr}, \text{sal})\)</span>，其中 <span class="arithmatex">\(e\)</span> 取遍 <span class="arithmatex">\(E\)</span>。求</p>
+<div class="arithmatex">\[\{\, e.\text{id} : e \in E,\; e.\text{sal} &lt; 30000,\; e.\text{mgr} \neq \text{NULL},\; \neg\exists\, m \in E.\; m.\text{id} = e.\text{mgr} \,\} \tag{1}\]</div>
+<p>按 <code>id</code> 升序输出。前三个谓词是过滤条件，第四个 <span class="arithmatex">\(\neg\exists\, m \in E.\, m.\text{id} = e.\text{mgr}\)</span> 就是"经理已不在表中"的精确写法：不存在任何一行 <span class="arithmatex">\(m\)</span> 的 id 等于 <span class="arithmatex">\(e\)</span> 的经理 id。</p>
+<p>在写代码前，先用一组小数据确认 (1) 抓的正是想要的行。薪资 <span class="arithmatex">\(&lt; 30000\)</span> 的候选只有两人：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: center;">employee_id</th>
+<th style="text-align: center;">manager_id</th>
+<th style="text-align: center;">经理是否仍在表中</th>
+<th style="text-align: center;">命中 (1)?</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;">1</td>
+<td style="text-align: center;">11</td>
+<td style="text-align: center;">是（11 在表中）</td>
+<td style="text-align: center;">否</td>
+</tr>
+<tr>
+<td style="text-align: center;">11</td>
+<td style="text-align: center;">6</td>
+<td style="text-align: center;">否（6 不在表中）</td>
+<td style="text-align: center;">是</td>
+</tr>
+</tbody>
+</table>
+<p>只有 id=11 满足全部谓词，输出 <code>[11]</code>。这给了后面 SQL 一个可对照的目标。</p>
 <h2 id="approach">数据结构 / 想法 (Approach)<a class="headerlink" href="#approach" title="Permanent link">#</a></h2>
-<p>两种等价写法：</p>
-<ol>
-<li><strong>LEFT JOIN + IS NULL</strong>（anti-join 的常见实现）：把 <code>Employees</code> 自连接到自身，左连接条件是 <code>e.manager_id = m.employee_id</code>，再筛选 <code>m.employee_id IS NULL</code>。</li>
-<li><strong>NOT IN / NOT EXISTS</strong>：直接子查询 <code>manager_id NOT IN (SELECT employee_id FROM Employees)</code>。注意 <code>NOT IN</code> 在子查询出现 NULL 时会全部判定为 UNKNOWN（三值逻辑陷阱）；本题主键非空所以安全，但更稳的写法是 <code>NOT EXISTS</code>。</li>
-</ol>
+<p><strong>从最直接的尝试出发。</strong> 第四个谓词 (1) 是真正的难点；其余三个谓词都是单行就能判定的常规过滤。先把成员检查直译成 SQL：对每一行，问它的 <code>manager_id</code> 是否<strong>不在</strong>全体 <code>employee_id</code> 之中。这恰好是 <code>NOT IN</code> 加一个子查询：</p>
 <div class="language-sql highlight"><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="n">employee_id</span>
 <span class="k">FROM</span><span class="w"> </span><span class="n">Employees</span>
 <span class="k">WHERE</span><span class="w"> </span><span class="n">salary</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">30000</span>
@@ -22693,16 +22747,18 @@
 <span class="w">  </span><span class="k">AND</span><span class="w"> </span><span class="n">manager_id</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">IN</span><span class="w"> </span><span class="p">(</span><span class="k">SELECT</span><span class="w"> </span><span class="n">employee_id</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">Employees</span><span class="p">)</span>
 <span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">employee_id</span><span class="p">;</span>
 </code></pre></div>
-<p>样例 trace：薪资 &lt; 30000 的有 id=1 (mgr=11) 和 id=11 (mgr=6)。11 仍在表里；6 不在 → 输出 11。</p>
+<p>子查询 <code>(SELECT employee_id FROM Employees)</code> 物化出查找集；<code>NOT IN</code> 就是 (1) 里 <span class="arithmatex">\(\neg\exists\)</span> 的直接对应——"经理 id 不等于任何一个 employee_id"。<code>manager_id IS NOT NULL</code> 排除掉没有经理的行（详见 Pitfalls），<code>salary &lt; 30000</code> 是题目过滤，<code>ORDER BY</code> 给出要求的升序。在上面的小数据上跑这条语句，输出正是 <code>[11]</code>。</p>
+<p>这条 <code>NOT IN</code> 写法在本题成立，但它依赖一个隐含前提：子查询的结果列里没有 <code>NULL</code>。一旦查找集含 <code>NULL</code>，<code>NOT IN</code> 会因三值逻辑整体失效（Pitfalls 给出推导）。这里 <code>employee_id</code> 是主键、非空，所以安全；但同样的成员检查若换一列就可能崩。</p>
+<p><strong>用一个对 NULL 不敏感的写法表达同一个 <span class="arithmatex">\(\neg\exists\)</span>。</strong> 把 <span class="arithmatex">\(\neg\exists\, m.\, m.\text{id} = e.\text{mgr}\)</span> 直接读成"左连接后无匹配"：将 <code>Employees</code> 以 <code>e.manager_id = m.employee_id</code> 左连接到自身，匹配上的行 <span class="arithmatex">\(m\)</span> 侧非空，匹配不上的行 <span class="arithmatex">\(m\)</span> 侧全为 <code>NULL</code>；筛 <code>m.employee_id IS NULL</code> 就精确取出"找不到对应经理"的那些行。这就是 anti-join 的标准写法，与 <code>NOT EXISTS</code> 同样不受查找集中 <code>NULL</code> 影响，是更稳的通用习惯。两种写法都从同一个 <span class="arithmatex">\(\neg\exists\)</span> 谓词读出，只在对 <code>NULL</code> 的鲁棒性上有别。</p>
 <h2 id="complexity">复杂度 (Complexity)<a class="headerlink" href="#complexity" title="Permanent link">#</a></h2>
 <ul>
-<li>Time: <span class="arithmatex">\(O(n)\)</span>（哈希子查询）或 <span class="arithmatex">\(O(n \log n)\)</span>（带排序的索引扫描）</li>
-<li>Space: <span class="arithmatex">\(O(n)\)</span> 用于子查询的 hash set</li>
+<li>Time: 连接/过滤部分用哈希探测子查询为 <span class="arithmatex">\(O(n)\)</span>；加上强制的 <code>ORDER BY employee_id</code>，无序索引时整体为 <span class="arithmatex">\(O(n \log n)\)</span>。</li>
+<li>Space: <span class="arithmatex">\(O(n)\)</span> 用于子查询的 hash set。</li>
 </ul>
 <h2 id="pitfalls">陷阱 (Pitfalls)<a class="headerlink" href="#pitfalls" title="Permanent link">#</a></h2>
 <ul>
-<li><strong>必须排除 <code>manager_id IS NULL</code></strong>：CEO 类的员工没有经理，不能算作"经理离职"。</li>
-<li><strong><code>NOT IN</code> 与 NULL</strong>：若子查询里出现 NULL，整个 <code>NOT IN</code> 结果为空。本题安全，但作为通用习惯优先用 <code>NOT EXISTS</code>。</li>
+<li><strong>必须排除 <code>manager_id IS NULL</code></strong>：CEO 类员工没有经理，<code>manager_id</code> 本就是 <code>NULL</code>，不属于"经理离职"。少了 <code>manager_id IS NOT NULL</code>，这些行会因 <code>NULL NOT IN (非空列表)</code> 求值为 <code>UNKNOWN</code>、被错误地当成候选，或在 anti-join 下混入结果。</li>
+<li><strong><code>NOT IN</code> 与子查询中的 <code>NULL</code></strong>：根源是 SQL 三值逻辑——<code>NULL</code> 不是一个能与任何值相等或不等的值，任何含 <code>NULL</code> 的比较都得 <code>UNKNOWN</code>。<code>x NOT IN (a, b, NULL)</code> 展开为 <code>x≠a AND x≠b AND x≠NULL</code>，最后一项恒为 <code>UNKNOWN</code>，整个合取因而绝不为 <code>TRUE</code>，于是<strong>没有任何行</strong>能通过过滤。本题查找集是非空主键，规避了这一点；但作为通用习惯，应优先用 <code>NOT EXISTS</code>（或上面的 anti-join），它们按"是否存在匹配"判断，不会被查找集里的 <code>NULL</code> 拖垮。</li>
 </ul>
 <h2 id="related">相关题目 (Related)<a class="headerlink" href="#related" title="Permanent link">#</a></h2>
 <ul>

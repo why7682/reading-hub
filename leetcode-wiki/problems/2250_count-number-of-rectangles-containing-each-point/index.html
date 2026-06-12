@@ -5485,6 +5485,8 @@
       
         
       
+        
+      
     
     
     
@@ -6024,6 +6026,34 @@
     
   
     #93. Restore IP Addresses
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../0102_binary-tree-level-order-traversal/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    #102. Binary Tree Level Order Traversal
   
 
     
@@ -22675,14 +22705,25 @@
 <h2 id="problem">Problem<a class="headerlink" href="#problem" title="Permanent link">#</a></h2>
 <p>给若干矩形 <span class="arithmatex">\([0, l_i] \times [0, h_i]\)</span> 与若干点 <span class="arithmatex">\((x_j, y_j)\)</span>。对每个点求覆盖它的矩形数量。约束：<span class="arithmatex">\(l_i \le 10^9\)</span>，但 <span class="arithmatex">\(h_i \le 100\)</span>（重要！）；矩形数与点数都 <span class="arithmatex">\(\le 5 \cdot 10^4\)</span>。</p>
 <h2 id="background">背景 (Background)<a class="headerlink" href="#background" title="Permanent link">#</a></h2>
-<p>经典 <strong>range count on partial dominance</strong>：在 2D 中找「同时 <span class="arithmatex">\(x \le l\)</span> 且 <span class="arithmatex">\(y \le h\)</span>」的对象数量。一般做法是 BIT / merge sort tree / kd-tree，但本题"<span class="arithmatex">\(y\)</span> 维度只有 100 个值"是关键特性——把高度做成桶，再各自二分。这与「数据库中低基数维 + 索引」的实战 trick 直接对应。</p>
+<p>每个矩形左下角固定在原点，所以矩形 <span class="arithmatex">\(i\)</span> 覆盖点 <span class="arithmatex">\((x, y)\)</span> 当且仅当 <span class="arithmatex">\(l_i \ge x\)</span> 且 <span class="arithmatex">\(h_i \ge y\)</span>（边界算覆盖）。于是「覆盖某点的矩形数」就是：在两个坐标上同时不小于该点的矩形有多少个。这是一个二维计数问题，两个条件 <span class="arithmatex">\(l_i \ge x\)</span> 与 <span class="arithmatex">\(h_i \ge y\)</span> 必须<strong>同时</strong>成立——单独处理任一维都不够，难点正在于二者的耦合。</p>
+<p>最直接的办法是对每个点把所有矩形扫一遍，逐个检查两个条件。这给出 <span class="arithmatex">\(O(R \cdot Q)\)</span>，其中 <span class="arithmatex">\(R, Q\)</span> 分别是矩形数与点数。代入上界 <span class="arithmatex">\(R = Q = 5 \cdot 10^4\)</span>，运算量约 <span class="arithmatex">\(2.5 \cdot 10^9\)</span>，会超时。要加速，必须找到这道题区别于一般二维计数的结构。</p>
+<p>关键差别在两维的范围极不对称：<span class="arithmatex">\(l_i\)</span> 可达 <span class="arithmatex">\(10^9\)</span>，而 <span class="arithmatex">\(h_i \le 100\)</span>。一个只有 100 种取值的维度，意味着可以<strong>把它枚举完</strong>——这是下面整套做法的出发点。</p>
 <h2 id="formulation">形式化 (Formulation)<a class="headerlink" href="#formulation" title="Permanent link">#</a></h2>
-<p>对每个点 <span class="arithmatex">\((x, y)\)</span>，求 <span class="arithmatex">\(|\{i : l_i \ge x \land h_i \ge y\}|\)</span>.</p>
+<p>对每个点 <span class="arithmatex">\((x, y)\)</span>，要求的量是满足两个条件的矩形下标个数：</p>
+<div class="arithmatex">\[\text{ans}(x, y) = |\{i : l_i \ge x \;\land\; h_i \ge y\}|.\]</div>
+<p>直接计算这个集合的大小要同时筛两个条件。利用 <span class="arithmatex">\(h_i \in \{1, \dots, 100\}\)</span>，按 <span class="arithmatex">\(h_i\)</span> 的<strong>确切取值</strong>把下标集合划分开，再对各部分求和：</p>
+<div class="arithmatex">\[
+\text{ans}(x, y)
+= \sum_{h = y}^{100} |\{i : h_i = h \;\land\; l_i \ge x\}|.
+\tag{1}
+\]</div>
+<p>这一步只是把「<span class="arithmatex">\(h_i \ge y\)</span>」展开成对所有合法高度 <span class="arithmatex">\(h \in \{y, \dots, 100\}\)</span> 的不相交并集——每个矩形的 <span class="arithmatex">\(h_i\)</span> 是确定的某个值，恰好落入一个 <span class="arithmatex">\(h\)</span>。式 <span class="arithmatex">\((1)\)</span> 把一个二维计数拆成了至多 100 个一维计数：固定 <span class="arithmatex">\(h\)</span> 后，内层 <span class="arithmatex">\(|\{i : h_i = h \land l_i \ge x\}|\)</span> 只剩 <span class="arithmatex">\(l_i \ge x\)</span> 这一个阈值条件。</p>
+<p>阈值计数正是排序 + 二分能高效回答的：若把所有 <span class="arithmatex">\(h_i = h\)</span> 的 <span class="arithmatex">\(l_i\)</span> 预先升序排好，则「其中 <span class="arithmatex">\(\ge x\)</span> 的个数」= 总数减去第一个 <span class="arithmatex">\(\ge x\)</span> 的位置，一次二分 <span class="arithmatex">\(O(\log R)\)</span>。式 <span class="arithmatex">\((1)\)</span> 因此把原问题降为「枚举 <span class="arithmatex">\(\le 100\)</span> 个高度，每个做一次二分」。</p>
 <h2 id="approach">数据结构 / 想法 (Approach)<a class="headerlink" href="#approach" title="Permanent link">#</a></h2>
-<p><strong>核心 trick：<span class="arithmatex">\(h_i \le 100\)</span></strong>。建 101 个桶 <code>bucket[h]</code> = 所有满足 <span class="arithmatex">\(h_i = h\)</span> 的矩形按 <span class="arithmatex">\(l_i\)</span> 升序排序。</p>
-<p>查询 <span class="arithmatex">\((x, y)\)</span>：</p>
-<div class="arithmatex">\[\text{ans} = \sum_{h = y}^{100} (\text{bucket}[h]\text{ 中 } l_i \ge x \text{ 的数量}).\]</div>
-<p>后者用二分：<code>len(bucket[h]) - bisect_left(bucket[h], x)</code>。</p>
+<p>式 <span class="arithmatex">\((1)\)</span> 直接翻译成数据结构：为每个高度 <span class="arithmatex">\(h\)</span> 建一个桶 <code>bucket[h]</code>，装下所有 <span class="arithmatex">\(h_i = h\)</span> 的 <span class="arithmatex">\(l_i\)</span>，并升序排序。预处理后，查询 <span class="arithmatex">\((x, y)\)</span> 就是遍历 <span class="arithmatex">\(h = y, \dots, 100\)</span>，对每个桶二分求 <span class="arithmatex">\(\ge x\)</span> 的元素数并累加：</p>
+<div class="arithmatex">\[\text{ans} = \sum_{h = y}^{100} \big(\,\text{len}(\text{bucket}[h]) - \texttt{bisect\_left}(\text{bucket}[h], x)\,\big).\]</div>
+<p><code>bisect_left(b, x)</code> 返回 <span class="arithmatex">\(b\)</span> 中第一个 <span class="arithmatex">\(\ge x\)</span> 的下标，故 <code>len(b) - bisect_left(b, x)</code> 恰是 <span class="arithmatex">\(b\)</span> 中 <span class="arithmatex">\(\ge x\)</span> 的元素数，对应式 <span class="arithmatex">\((1)\)</span> 的内层计数。</p>
+<p><strong>不变量</strong>：每个矩形被唯一一个桶持有（其 <span class="arithmatex">\(h_i\)</span> 决定落入哪个桶），因此遍历 <span class="arithmatex">\(h = y \to 100\)</span> 不重不漏地枚举了全部满足 <span class="arithmatex">\(h_i \ge y\)</span> 的矩形——这正是式 <span class="arithmatex">\((1)\)</span> 的求和成立的依据，应在写代码前就确认。</p>
 <div class="language-python highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">bisect</span><span class="w"> </span><span class="kn">import</span> <span class="n">bisect_left</span>
 <span class="k">class</span><span class="w"> </span><span class="nc">Solution</span><span class="p">:</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">countRectangles</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rectangles</span><span class="p">,</span> <span class="n">points</span><span class="p">):</span>
@@ -22701,8 +22742,7 @@
         <span class="k">return</span> <span class="n">ans</span>
 </code></pre></div>
 <p>样例 1：<code>rectangles=[[1,2],[2,3],[2,5]], points=[[2,1],[1,4]]</code>. buckets: <code>[2]=[1], [3]=[2], [5]=[2]</code>. 点 (2,1)：h=1..100, h=2 中 l≥2 有 0 个? bucket[2]=[1], bisect_left([1],2)=1, len-1=0. h=3 bucket[3]=[2], 2≥2 → 1 个. h=5 bucket=[2], 1 个. 合计 2. ✅ 点 (1,4)：h=4..100, h=5 bucket=[2], 2≥1 → 1. 合计 1. ✅</p>
-<p><strong>不变量</strong>：每个矩形被唯一一个桶持有；查询遍历 <span class="arithmatex">\(y \to 100\)</span> 等价于"<span class="arithmatex">\(h_i \ge y\)</span>"的全部矩形。</p>
-<p><strong>替代方案</strong>：按 <span class="arithmatex">\(l_i\)</span> 离散 + 离线排序 + BIT，复杂度 <span class="arithmatex">\(O((R + Q) \log R \cdot 1)\)</span>，无 100 倍常数；但实现更复杂。</p>
+<p><strong>替代方案</strong>：按 <span class="arithmatex">\(l_i\)</span> 离散 + 离线排序 + BIT，复杂度 <span class="arithmatex">\(O((R + Q) \log R)\)</span>，无 100 倍常数；但实现更复杂。当 <span class="arithmatex">\(h\)</span> 维范围不再小（本题特性消失）时，这才是该走的路。</p>
 <h2 id="complexity">复杂度 (Complexity)<a class="headerlink" href="#complexity" title="Permanent link">#</a></h2>
 <ul>
 <li>Time: 预处理 <span class="arithmatex">\(O(R \log R)\)</span>；每个查询 <span class="arithmatex">\(O((101 - y) \log R)\)</span>，最坏 <span class="arithmatex">\(O(101 \log R)\)</span>。总 <span class="arithmatex">\(Q \cdot 101 \log R \approx 5 \cdot 10^4 \cdot 100 \cdot 17 \approx 8.5 \cdot 10^7\)</span>，可过。</li>
@@ -22712,7 +22752,7 @@
 <ul>
 <li>题目要求"在边上算包含"（<span class="arithmatex">\(x_j \le l_i\)</span> 且 <span class="arithmatex">\(y_j \le h_i\)</span>），所以二分用 <code>bisect_left</code>（找第一个 <span class="arithmatex">\(\ge x\)</span>）而非 <code>bisect_right</code>。</li>
 <li><span class="arithmatex">\(h_i \ge 1\)</span>：桶从 1 开始；若误用 0..100 不影响（bucket[0] 永远空）。</li>
-<li>不能对每个点 <span class="arithmatex">\(O(R)\)</span> 扫描（<span class="arithmatex">\(2.5 \cdot 10^9\)</span> 超时）。</li>
+<li>不能对每个点 <span class="arithmatex">\(O(R)\)</span> 扫描（<span class="arithmatex">\(2.5 \cdot 10^9\)</span> 超时）——这正是引入桶 + 二分的原因，见背景。</li>
 </ul>
 <h2 id="related">相关题目 (Related)<a class="headerlink" href="#related" title="Permanent link">#</a></h2>
 <ul>
@@ -22721,8 +22761,7 @@
 </ul>
 <h2 id="further-reading">Further Reading<a class="headerlink" href="#further-reading" title="Permanent link">#</a></h2>
 <ul>
-<li>cp-algorithms: <a href="https://cp-algorithms.com/data_structures/sparse-table.html">Sparse Table</a> — 另一种区间聚合的工具，与 BIT 互补。</li>
-<li>de Berg et al., <em>Computational Geometry</em>, Ch. 5（Orthogonal Range Searching）— 系统讲 2D range count。</li>
+<li>de Berg et al., <em>Computational Geometry</em>, Ch. 5（Orthogonal Range Searching）— 系统讲 2D range count，本题是其低基数维特例。</li>
 </ul>
 
 

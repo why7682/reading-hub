@@ -5485,6 +5485,8 @@
       
         
       
+        
+      
     
     
     
@@ -6024,6 +6026,34 @@
     
   
     #93. Restore IP Addresses
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../0102_binary-tree-level-order-traversal/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    #102. Binary Tree Level Order Traversal
   
 
     
@@ -22675,11 +22705,34 @@
 <h2 id="problem">Problem<a class="headerlink" href="#problem" title="Permanent link">#</a></h2>
 <p>正整数数组 <code>nums</code>、正整数 <span class="arithmatex">\(k\)</span>。每次操作可移除并收集尾元素。求收集到 <span class="arithmatex">\(1, 2, \dots, k\)</span> 全集合的最小操作数。约束 <span class="arithmatex">\(1 \le n \le 50\)</span>，<span class="arithmatex">\(\text{nums}[i] \le n\)</span>，输入保证可达。</p>
 <h2 id="background">背景 (Background)<a class="headerlink" href="#background" title="Permanent link">#</a></h2>
-<p>本题是<strong>反向扫描 + 标记集合</strong>的入门题。"从尾出栈"等价于按下标降序遍历，遇到 <span class="arithmatex">\(\text{val} \le k\)</span> 就收集。第一时刻收齐 <span class="arithmatex">\(\{1..k\}\)</span> 即答案。位运算优化（bitmask of <span class="arithmatex">\(k \le 50\)</span> bits）可让标记 O(1)。</p>
+<p>先看操作本身能做什么。每次操作只能移除当前的<strong>尾元素</strong>，所以在做了 <span class="arithmatex">\(t\)</span> 次操作后，被收集的恰好是末尾连续的 <span class="arithmatex">\(t\)</span> 个元素——一个后缀 <span class="arithmatex">\(\text{nums}[n-t..n-1]\)</span>。我们无法跳过中间元素去单独拿某个值：收集的集合永远是某个后缀。这是本题唯一的结构约束，也是一切推导的起点。</p>
+<p>于是问题变成：<strong>找最短的后缀，使它包含 <span class="arithmatex">\(\{1, 2, \dots, k\}\)</span> 中的每一个值。</strong> 操作数就是这个后缀的长度。</p>
+<p>最直接的做法是直接模拟。维护一个 Python <code>set</code>，从尾部逐个弹出元素加入集合，每弹一个就检查 <span class="arithmatex">\(\{1..k\}\)</span> 是否已被全部覆盖：</p>
+<div class="language-python highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">minOperations_naive</span><span class="p">(</span><span class="n">nums</span><span class="p">,</span> <span class="n">k</span><span class="p">):</span>
+    <span class="n">need</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">k</span> <span class="o">+</span> <span class="mi">1</span><span class="p">))</span>
+    <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">nums</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+        <span class="n">v</span> <span class="o">=</span> <span class="n">nums</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">nums</span><span class="p">)</span> <span class="o">-</span> <span class="n">t</span><span class="p">]</span>
+        <span class="n">need</span><span class="o">.</span><span class="n">discard</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>          <span class="c1"># 收集到一个值就划掉</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">need</span><span class="p">:</span>             <span class="c1"># 集合空了 = 全收齐</span>
+            <span class="k">return</span> <span class="n">t</span>
+</code></pre></div>
+<p>这是正确的，但每一步的覆盖检查（<code>not need</code>，或等价的 <code>need &lt;= seen</code>）代价不是常数：判断一个集合是否已覆盖 <span class="arithmatex">\(\{1..k\}\)</span> 在最坏情况下是 <span class="arithmatex">\(O(k)\)</span> 的，总复杂度 <span class="arithmatex">\(O(n \cdot k)\)</span>。瓶颈很明确——<strong>"我是否已经见过 <span class="arithmatex">\(\{1..k\}\)</span> 的全部"这个查询太慢</strong>。下面用一个精确的形式化把这个查询固定下来，再寻找让它 <span class="arithmatex">\(O(1)\)</span> 的表示。</p>
 <h2 id="formulation">形式化 (Formulation)<a class="headerlink" href="#formulation" title="Permanent link">#</a></h2>
-<p>设 <span class="arithmatex">\(f(i) = |\{j \ge i : \text{nums}[j] \le k\} \cap \{1..k\}|\)</span>，求最小 <span class="arithmatex">\(i\)</span> 使 <span class="arithmatex">\(f(i) = k\)</span>；答案 <span class="arithmatex">\(n - i\)</span>。</p>
+<p>承接上面的观察：答案是最短的覆盖后缀，等价于"包含所需值最多的那条后缀的左端点"。把它写精确。</p>
+<p>对后缀起点 <span class="arithmatex">\(i\)</span>（即后缀 <span class="arithmatex">\(\text{nums}[i..n-1]\)</span>），定义它所收集到的、落在 <span class="arithmatex">\(\{1..k\}\)</span> 内的<strong>不同值</strong>的个数：</p>
+<div class="arithmatex">\[f(i) = \bigl|\; \{\,\text{nums}[j] : i \le j \le n-1\,\} \cap \{1, 2, \dots, k\}\;\bigr|.\]</div>
+<p>注意 <span class="arithmatex">\(f\)</span> 作用在<strong>值</strong>的集合上（<span class="arithmatex">\(\{\text{nums}[j]\}\)</span> 与 <span class="arithmatex">\(\{1..k\}\)</span> 同为值域），而不是下标。后缀越长（<span class="arithmatex">\(i\)</span> 越小）收集到的值越多，故 <span class="arithmatex">\(f\)</span> 随 <span class="arithmatex">\(i\)</span> 减小而单调不减。</p>
+<p>后缀 <span class="arithmatex">\(\text{nums}[i..n-1]\)</span> 覆盖全集当且仅当 <span class="arithmatex">\(f(i) = k\)</span>。由单调性，使 <span class="arithmatex">\(f(i) = k\)</span> 的 <span class="arithmatex">\(i\)</span> 构成一段前缀区间 <span class="arithmatex">\(i \in [0, i^\star]\)</span>；其中<strong>最大</strong>的 <span class="arithmatex">\(i^\star\)</span> 对应<strong>最短</strong>的覆盖后缀。因此</p>
+<div class="arithmatex">\[\text{answer} = n - i^\star, \qquad i^\star = \max\{\, i : f(i) = k \,\}.\]</div>
+<p>反向扫描（<span class="arithmatex">\(i\)</span> 从 <span class="arithmatex">\(n-1\)</span> 递减）正是按 <span class="arithmatex">\(i^\star\)</span> 候选从大到小依次试探：第一次令 <span class="arithmatex">\(f(i) = k\)</span> 成立的那个 <span class="arithmatex">\(i\)</span> 就是 <span class="arithmatex">\(i^\star\)</span>，立即停下即可，无需扫完整个数组。这条形式化就是下面代码的脊柱——循环在维护 <span class="arithmatex">\(f\)</span>，停止条件在检测 <span class="arithmatex">\(f(i) = k\)</span>。</p>
 <h2 id="approach">数据结构 / 想法 (Approach)<a class="headerlink" href="#approach" title="Permanent link">#</a></h2>
-<p><strong>位掩码</strong>：
+<p>形式化把开销集中在一处：每步都要更新并检测 <span class="arithmatex">\(f(i) = k\)</span>。朴素的 <code>set</code> 让这步是 <span class="arithmatex">\(O(k)\)</span>。要做到 <span class="arithmatex">\(O(1)\)</span>，需要一个能"一次比较就判满"的覆盖表示。</p>
+<p><strong>用整数的二进制位表示集合。</strong> 把值 <span class="arithmatex">\(v \in \{1..k\}\)</span> 编码为第 <span class="arithmatex">\(v-1\)</span> 个二进制位（位下标从 0 起，故 <span class="arithmatex">\(v=1\)</span> 对应位 0，<span class="arithmatex">\(v=k\)</span> 对应位 <span class="arithmatex">\(k-1\)</span>）。当前已收集的值集合就是一个整数 <code>mask</code>，其第 <span class="arithmatex">\(v-1\)</span> 位为 1 当且仅当值 <span class="arithmatex">\(v\)</span> 已被收集。在此编码下：</p>
+<ul>
+<li>收集到值 <span class="arithmatex">\(v\)</span>：<code>mask |= 1 &lt;&lt; (v - 1)</code>，一次移位加或，<span class="arithmatex">\(O(1)\)</span>。</li>
+<li>"已覆盖 <span class="arithmatex">\(\{1..k\}\)</span>"：等价于位 <span class="arithmatex">\(0\)</span> 到 <span class="arithmatex">\(k-1\)</span> 全为 1，即 <code>mask == target</code>，其中 <code>target = (1 &lt;&lt; k) - 1</code>，一次比较，<span class="arithmatex">\(O(1)\)</span>。</li>
+</ul>
+<p>这样 <code>mask</code> 就是 <span class="arithmatex">\(f(i)\)</span> 的等价载体——<code>mask == target</code> 与 <span class="arithmatex">\(f(i) = k\)</span> 是同一判断——而每步只花常数时间。<span class="arithmatex">\(k \le 50\)</span>，整个集合塞进一个 64-bit 整数，移位与比较都是单条机器指令。</p>
 <div class="language-python highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">minOperations</span><span class="p">(</span><span class="n">nums</span><span class="p">,</span> <span class="n">k</span><span class="p">):</span>
     <span class="n">target</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="n">k</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span>  <span class="c1"># bits 0..k-1 represent collecting 1..k</span>
     <span class="n">mask</span> <span class="o">=</span> <span class="mi">0</span>
@@ -22690,7 +22743,8 @@
             <span class="k">if</span> <span class="n">mask</span> <span class="o">==</span> <span class="n">target</span><span class="p">:</span>
                 <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="n">nums</span><span class="p">)</span> <span class="o">-</span> <span class="n">i</span>
     <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="n">nums</span><span class="p">)</span>  <span class="c1"># never reached given constraints</span>
-</code></pre></div></p>
+</code></pre></div>
+<p>循环从 <span class="arithmatex">\(i = n-1\)</span> 向左推进，<code>mask</code> 始终等于 <span class="arithmatex">\(f(i)\)</span>；第一次 <code>mask == target</code> 的 <span class="arithmatex">\(i\)</span> 就是 <span class="arithmatex">\(i^\star\)</span>（最大的满足者），返回 <span class="arithmatex">\(n - i\)</span>。下面三个样例逐位追踪 <code>mask</code> 的演化。</p>
 <p>样例 1：<code>nums=[3,1,5,4,2], k=2</code>. target=0b11=3.
 - i=4(2): mask=0b10. 
 - i=3(4): &gt;k 跳过.
@@ -22713,8 +22767,8 @@
 </ul>
 <h2 id="pitfalls">陷阱 (Pitfalls)<a class="headerlink" href="#pitfalls" title="Permanent link">#</a></h2>
 <ul>
-<li><strong>位移 <code>v - 1</code></strong>：<span class="arithmatex">\(v \in [1, k]\)</span> 对应位 0..k-1，不要忘减 1。</li>
-<li><strong>跳过 <span class="arithmatex">\(v &gt; k\)</span></strong>：题目用了不需要的元素也会进 nums，但只关注 <span class="arithmatex">\(\le k\)</span>。</li>
+<li><strong>位移 <code>v - 1</code></strong>：按上面的编码，值 <span class="arithmatex">\(v \in [1, k]\)</span> 占位 0..k-1，写 <code>1 &lt;&lt; (v - 1)</code> 而非 <code>1 &lt;&lt; v</code>，否则整体偏移一位、<code>target</code> 永远对不上。</li>
+<li><strong>跳过 <span class="arithmatex">\(v &gt; k\)</span></strong>：约束允许 <span class="arithmatex">\(\text{nums}[i] \le n\)</span>，故会混入大于 <span class="arithmatex">\(k\)</span> 的无关值；它们不在 <span class="arithmatex">\(\{1..k\}\)</span> 内，既不该置位也不影响判满，直接跳过。</li>
 </ul>
 <h2 id="related">相关题目 (Related)<a class="headerlink" href="#related" title="Permanent link">#</a></h2>
 <ul>

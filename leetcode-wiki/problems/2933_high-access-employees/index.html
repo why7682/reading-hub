@@ -5485,6 +5485,8 @@
       
         
       
+        
+      
     
     
     
@@ -6024,6 +6026,34 @@
     
   
     #93. Restore IP Addresses
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../0102_binary-tree-level-order-traversal/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    #102. Binary Tree Level Order Traversal
   
 
     
@@ -22675,40 +22705,47 @@
 <h2 id="problem">Problem<a class="headerlink" href="#problem" title="Permanent link">#</a></h2>
 <p><code>access_times[i] = [name, "HHMM"]</code>。若某员工有 3+ 次访问落在某 1 小时窗口内（"08:15"–"09:14" 算 1 小时），称 high-access。返回所有 high-access 名字。</p>
 <h2 id="_1">背景<a class="headerlink" href="#_1" title="Permanent link">#</a></h2>
-<p><strong>按 key 分组 + 排序 + 滑窗</strong> 模式：先按 name 分组，每组按时间排序，扫描任意 3 个连续时间是否在 60 分钟内（即第 3 个 - 第 1 个 &lt; 60）。</p>
-<p>涉及的小技巧：<strong>时间格式 "HHMM" 转分钟数</strong>，避免字符串比较的繁琐。</p>
+<p>我们手上是一份扁平的访问日志：一串 <code>(name, "HHMM")</code> 二元组，员工交错出现，时间无序。要回答的问题是逐人的——对某个员工，是否存在某个 1 小时窗口，里面落进了他至少 3 次访问？</p>
+<p>先想最直接的做法。窗口的左端点可以放在任意一次访问的时刻 <span class="arithmatex">\(t\)</span>，于是只需对每个员工、每个访问时刻 <span class="arithmatex">\(t\)</span>，数一数有多少次访问落在 <span class="arithmatex">\([t, t+60)\)</span> 内，看是否 <span class="arithmatex">\(\ge 3\)</span>。这要求我们能在两个时刻之间做减法、判断差值——而原始数据是字符串。</p>
+<p>字符串能直接比较大小（<code>"0959" &lt; "1001"</code> 按字典序恰好正确），但<strong>不能做窗口算术</strong>：给定一次访问 <code>"0959"</code>，无法在字符串上算出"60 分钟后"是 <code>"1059"</code>，更无法判断另一次访问与它相差几分钟。窗口判定的核心是 <span class="arithmatex">\(t_a - t_b &lt; 60\)</span> 这个减法，字符串给不了。所以第一步是把 <code>"HHMM"</code> 转成分钟数整数：<code>int(t[:2]) * 60 + int(t[2:])</code>。<code>"0959"</code> → <span class="arithmatex">\(599\)</span>，<code>"1059"</code> → <span class="arithmatex">\(659\)</span>，差值 <span class="arithmatex">\(60\)</span> 一目了然。</p>
+<p>转成整数后，朴素做法是：对每个员工的访问时刻，两两（或对每个左端点扫一遍）检查窗口内计数。设某员工有 <span class="arithmatex">\(n_i\)</span> 次访问，这是 <span class="arithmatex">\(O(n_i^2)\)</span>；而且因为日志是交错的，若不先按 name 分组，还会反复在不同员工之间做无意义的比较。两个浪费指向同一个修复方向：<strong>先按 name 把访问聚到一起，再在每个人内部排序</strong>。排序之后，下一节会看到判定能降到一次线性扫描。</p>
 <h2 id="_2">形式化<a class="headerlink" href="#_2" title="Permanent link">#</a></h2>
-<p>对每个 name 的时间序列 <span class="arithmatex">\(t_1 \le t_2 \le \dots\)</span>（分钟数），存在 <span class="arithmatex">\(i\)</span> 使 <span class="arithmatex">\(t_{i+2} - t_i &lt; 60\)</span> ↔ high-access。</p>
+<p>把某员工的访问时刻转成分钟数并排序，记为 <span class="arithmatex">\(t_0 \le t_1 \le \dots \le t_{n-1}\)</span>。high-access 的定义是：存在某窗口 <span class="arithmatex">\([t, t+60)\)</span> 容纳了 <span class="arithmatex">\(\ge 3\)</span> 个时刻。</p>
+<p>直接按定义要枚举所有三元组 <span class="arithmatex">\((t_a, t_b, t_c)\)</span> 看它们是否同处一窗，仍是 <span class="arithmatex">\(O(n^3)\)</span>。关键观察是：<strong>排好序后，只需检查相邻的三元组 <span class="arithmatex">\((t_i, t_{i+1}, t_{i+2})\)</span>。</strong> 直觉来自序列自身的单调性——若任意三个时刻 <span class="arithmatex">\(t_a &lt; t_b &lt; t_c\)</span> 能塞进 60 分钟（即 <span class="arithmatex">\(t_c - t_a &lt; 60\)</span>），那么夹在 <span class="arithmatex">\(t_a, t_c\)</span> 之间的、在排序里紧挨着的那一段三元组只会更紧凑。具体地，设 <span class="arithmatex">\(t_a\)</span> 的下标为 <span class="arithmatex">\(i\)</span>，则 <span class="arithmatex">\(t_{i+2} \le t_c\)</span>（<span class="arithmatex">\(t_c\)</span> 至少是 <span class="arithmatex">\(t_a\)</span> 之后第 2 个），于是 <span class="arithmatex">\(t_{i+2} - t_i \le t_c - t_a &lt; 60\)</span>。换句话说，任何满足条件的三元组都"诱导"出一个满足条件的相邻三元组。反之相邻三元组本身就是合法见证。两个方向合起来给出等价：</p>
+<div class="arithmatex">\[\text{high-access} \iff \exists\, i:\ t_{i+2} - t_i &lt; 60.\]</div>
+<p>为什么是严格 <code>&lt;</code> 而非 <code>\le</code>？窗口是<strong>半开区间</strong> <span class="arithmatex">\([t, t+60)\)</span>：相距正好 60 分钟的两次访问不算同一窗口。题面的例子是 "08:15"–"09:14" 算 1 小时（跨度 <span class="arithmatex">\(59\)</span> 分钟，落在窗内），而 08:15 与 09:15 跨度 <span class="arithmatex">\(60\)</span> 分钟，不同窗。所以判据取 <span class="arithmatex">\(t_{i+2} - t_i &lt; 60\)</span>，等号被排除。</p>
+<p>这个等价就是算法的脊柱：检查一个人，只要对排序后的序列从左到右看每个 <span class="arithmatex">\(i\)</span>，问 <span class="arithmatex">\(t_{i+2} - t_i &lt; 60\)</span> 是否成立。一次线性扫描即可，把上一节的 <span class="arithmatex">\(O(n^2)\)</span> 判定降到 <span class="arithmatex">\(O(n)\)</span>。</p>
 <h2 id="_3">数据结构 / 想法<a class="headerlink" href="#_3" title="Permanent link">#</a></h2>
+<p>形式化逐句翻译成代码：分组得到每人的时刻列表（<code>defaultdict</code> + <code>"HHMM"</code> 转分钟数），组内排序得到 <span class="arithmatex">\(t_0 \le \dots \le t_{n-1}\)</span>，再线性扫描相邻三元组检验 <span class="arithmatex">\(t_{i+2} - t_i &lt; 60\)</span>。</p>
 <div class="language-python highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">findHighAccessEmployees</span><span class="p">(</span><span class="n">access_times</span><span class="p">):</span>
     <span class="kn">from</span><span class="w"> </span><span class="nn">collections</span><span class="w"> </span><span class="kn">import</span> <span class="n">defaultdict</span>
     <span class="n">times</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="nb">list</span><span class="p">)</span>
     <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">access_times</span><span class="p">:</span>
-        <span class="n">times</span><span class="p">[</span><span class="n">name</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">t</span><span class="p">[:</span><span class="mi">2</span><span class="p">])</span><span class="o">*</span><span class="mi">60</span> <span class="o">+</span> <span class="nb">int</span><span class="p">(</span><span class="n">t</span><span class="p">[</span><span class="mi">2</span><span class="p">:]))</span>
+        <span class="n">times</span><span class="p">[</span><span class="n">name</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">t</span><span class="p">[:</span><span class="mi">2</span><span class="p">])</span><span class="o">*</span><span class="mi">60</span> <span class="o">+</span> <span class="nb">int</span><span class="p">(</span><span class="n">t</span><span class="p">[</span><span class="mi">2</span><span class="p">:]))</span>   <span class="c1"># &quot;HHMM&quot; -&gt; 分钟数</span>
     <span class="n">res</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">ts</span> <span class="ow">in</span> <span class="n">times</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-        <span class="n">ts</span><span class="o">.</span><span class="n">sort</span><span class="p">()</span>
+        <span class="n">ts</span><span class="o">.</span><span class="n">sort</span><span class="p">()</span>                                         <span class="c1"># t_0 &lt;= t_1 &lt;= ...</span>
         <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">ts</span><span class="p">)</span> <span class="o">-</span> <span class="mi">2</span><span class="p">):</span>
-            <span class="k">if</span> <span class="n">ts</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">2</span><span class="p">]</span> <span class="o">-</span> <span class="n">ts</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mi">60</span><span class="p">:</span>
-                <span class="n">res</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">name</span><span class="p">);</span> <span class="k">break</span>
+            <span class="k">if</span> <span class="n">ts</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">2</span><span class="p">]</span> <span class="o">-</span> <span class="n">ts</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mi">60</span><span class="p">:</span>                      <span class="c1"># 相邻三元组判据</span>
+                <span class="n">res</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">name</span><span class="p">);</span> <span class="k">break</span>                   <span class="c1"># 命中即停，避免重复添加</span>
     <span class="k">return</span> <span class="n">res</span>
 </code></pre></div>
-<p><strong>不变量</strong>：每 name 的 ts 升序后，滑窗大小 3，若窗口内 max - min &lt; 60 即触发。</p>
+<p><code>break</code> 是必需的：一个人可能有多个满足条件的 <span class="arithmatex">\(i\)</span>，没有 <code>break</code> 会把同一个名字重复加进 <code>res</code>。命中一次即可确认 high-access，立刻跳出。</p>
 <h2 id="_4">复杂度<a class="headerlink" href="#_4" title="Permanent link">#</a></h2>
 <ul>
-<li>Time: <span class="arithmatex">\(O(\sum n_i \log n_i)\)</span> — 各人排序。</li>
-<li>Space: <span class="arithmatex">\(O(\sum n_i)\)</span>。</li>
+<li>Time: <span class="arithmatex">\(O(\sum n_i \log n_i)\)</span> — 各人排序主导，扫描是线性。</li>
+<li>Space: <span class="arithmatex">\(O(\sum n_i)\)</span> — 存所有访问时刻。</li>
 </ul>
 <h2 id="_5">陷阱<a class="headerlink" href="#_5" title="Permanent link">#</a></h2>
 <ul>
-<li>"1 小时窗口"是<strong>开区间</strong> [t, t+60)：08:15 与 09:15 不算同一窗口（差正好 60 分钟）→ 用严格 <code>&lt;</code> 60。</li>
-<li>时间字符串解析：<code>int(t[:2])</code> 获取小时；<code>int(t[2:])</code> 获取分钟。</li>
-<li>不要忘记 <code>break</code>，否则同名多次重复添加。</li>
+<li>"1 小时窗口"是<strong>半开区间</strong> <span class="arithmatex">\([t, t+60)\)</span>：08:15 与 09:15 相差正好 60 分钟，不算同一窗口。由此判据用严格 <code>&lt; 60</code>，等号必须排除。</li>
+<li>必须先转分钟数再比较：字符串能比大小，但做不了 <span class="arithmatex">\(t_{i+2} - t_i\)</span> 这个窗口减法。<code>int(t[:2])</code> 取小时、<code>int(t[2:])</code> 取分钟，前导零安全（<code>"0009"</code> → <span class="arithmatex">\(9\)</span>）。</li>
+<li>别漏 <code>break</code>：一个人多次满足条件时，会把同名重复添加。</li>
 </ul>
 <h2 id="_6">相关题目<a class="headerlink" href="#_6" title="Permanent link">#</a></h2>
 <ul>
-<li>无强相关；属于"分组排序滑窗"族。</li>
-<li><code>#1224. Maximum Equal Frequency (off-wiki)</code> — 分组计数。</li>
+<li>无强相关；属于"分组排序后线性扫描相邻元素"族。</li>
+<li><code>#1224. Maximum Equal Frequency (off-wiki)</code> — 分组计数（关联较弱，仅作分组思路参考）。</li>
 </ul>
 <h2 id="further-reading">Further Reading<a class="headerlink" href="#further-reading" title="Permanent link">#</a></h2>
 <ul>

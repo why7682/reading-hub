@@ -5485,6 +5485,8 @@
       
         
       
+        
+      
     
     
     
@@ -6024,6 +6026,34 @@
     
   
     #93. Restore IP Addresses
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../0102_binary-tree-level-order-traversal/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    #102. Binary Tree Level Order Traversal
   
 
     
@@ -22675,41 +22705,91 @@
 <h2 id="problem">Problem<a class="headerlink" href="#problem" title="Permanent link">#</a></h2>
 <p>字符串数组 <code>nums</code>（每串表示无前导 0 的非负整数），<span class="arithmatex">\(k \in [1, n]\)</span>。返回第 <span class="arithmatex">\(k\)</span> 大的整数（仍以字符串返回）。<span class="arithmatex">\(n \le 10^4\)</span>, <span class="arithmatex">\(|s| \le 100\)</span>。</p>
 <h2 id="_1">背景<a class="headerlink" href="#_1" title="Permanent link">#</a></h2>
-<p>本题考两件事：(1) 比较两个<strong>任意精度大整数</strong>的字典 vs 数值序：<strong>长度不等时长者大；长度相等时按字典序</strong>。(2) <strong>第 <span class="arithmatex">\(k\)</span> 大</strong> 经典问题，三种解法：堆 (<span class="arithmatex">\(O(n \log k)\)</span>)、排序 (<span class="arithmatex">\(O(n \log n)\)</span>)、Quickselect (<span class="arithmatex">\(O(n)\)</span> 期望)。</p>
-<p>Quickselect 由 Hoare (1961) 提出，是 quicksort 的"只递归一边"版，期望 <span class="arithmatex">\(O(n)\)</span>。Median of Medians (Blum et al. 1973) 提供最坏 <span class="arithmatex">\(O(n)\)</span> 保证。Python 中由于递归常数大，通常用 <code>heapq.nlargest</code> 或 <code>sorted</code> 实战更快。</p>
+<p>每个数最多 100 位，远超机器整数的范围。这一约束把题目劈成两个互相独立的子问题：<strong>怎样比较两个无法装进 <code>int</code> 的大数</strong>，以及<strong>给定一个比较方式，怎样最便宜地取出第 <span class="arithmatex">\(k\)</span> 大</strong>。两个子问题各有一个看似显然但会出错的起点，下面分别从最朴素的尝试出发。</p>
+<p>先看比较。最省事的写法是把字符串直接按字典序排：</p>
+<div class="language-python highlight"><pre><span></span><code><span class="nb">sorted</span><span class="p">(</span><span class="n">nums</span><span class="p">)</span>          <span class="c1"># 朴素：按字符串字典序</span>
+</code></pre></div>
+<p>它在 <code>['100', '99', '2']</code> 上崩掉。字典序逐字符比较，<code>'1' &lt; '9'</code>，于是 <code>'100' &lt; '99'</code>；但数值上 <span class="arithmatex">\(100 &gt; 99\)</span>。取 <span class="arithmatex">\(k=1\)</span>（最大），朴素排序返回 <code>'99'</code>，正确答案是 <code>'100'</code>。</p>
+<p>崩在哪里有迹可循。字典序把 <code>'100'</code> 判小，唯一原因是它的首字符 <code>'1'</code> 小于 <code>'9'</code>——可 <code>'100'</code> 比 <code>'99'</code> 多一位。<strong>无前导 0</strong> 这个条件此刻起作用：没有前导 0，串长就等于十进制位数，位数多的数严格更大，与首字符无关。所以<strong>长度不同的两个串，长者必然数值更大，根本不该比字符</strong>。字典序的错误正是它在长度不同时还去比字符。</p>
+<p>那长度相同呢？此时两串位数一样，从最高位起逐位比较，第一处不同的数字决定大小——这恰好就是字典序在等长串上的行为。于是等长时字典序与数值序一致。</p>
+<p>把两种情形合起来：先按长度，长度相同再按字典序。这条规则不是给定的技巧，而是从"无前导 0 ⟹ 位数定大小"这一结构推出来的。下一节将其写成形式定义。</p>
 <h2 id="_2">形式化<a class="headerlink" href="#_2" title="Permanent link">#</a></h2>
-<p>设 <span class="arithmatex">\(\prec\)</span> 为整数比较关系：<span class="arithmatex">\(a \prec b\)</span> ↔ <span class="arithmatex">\(|a| &lt; |b|\)</span> 或 (<span class="arithmatex">\(|a| = |b|\)</span> 且 <span class="arithmatex">\(a\)</span> 按字典序小于 <span class="arithmatex">\(b\)</span>)。求 <span class="arithmatex">\(\prec\)</span> 下第 <span class="arithmatex">\(k\)</span> 大者。</p>
+<p>设 <span class="arithmatex">\(S\)</span> 为题中的字符串集合，<span class="arithmatex">\(|s|\)</span> 记串 <span class="arithmatex">\(s\)</span> 的长度。定义整数比较关系 <span class="arithmatex">\(\prec\)</span>：</p>
+<div class="arithmatex">\[a \prec b \;\iff\; |a| &lt; |b| \;\;\text{或}\;\; \big(|a| = |b| \;\text{且}\; a \text{ 按字典序小于 } b\big). \tag{1}\]</div>
+<p>由上节论证，在无前导 0 的前提下 <span class="arithmatex">\(\prec\)</span> 与数值序逐点相等：<span class="arithmatex">\(a \prec b\)</span> 当且仅当 <span class="arithmatex">\(a\)</span> 的数值小于 <span class="arithmatex">\(b\)</span> 的数值。<span class="arithmatex">\(\prec\)</span> 是 <span class="arithmatex">\(S\)</span> 上的全序。</p>
+<p>形式 (1) 的价值在于它<strong>可被一个比较键实现</strong>。对每个串取键 <span class="arithmatex">\(\kappa(s) = (|s|, s)\)</span>，则元组的字典序恰好复现 <span class="arithmatex">\(\prec\)</span>：</p>
+<div class="arithmatex">\[\kappa(a) &lt; \kappa(b) \;\iff\; a \prec b. \tag{2}\]</div>
+<p>元组比较先比第一分量 <span class="arithmatex">\(|s|\)</span>，相等再比第二分量 <span class="arithmatex">\(s\)</span>（字符串字典序），与 (1) 的两段定义一一对应。这一步把"比较大数"彻底转化为对键 <span class="arithmatex">\(\kappa\)</span> 的标准比较，第二个子问题随之归约为一句话：</p>
+<blockquote>
+<p>在键 <span class="arithmatex">\(\kappa\)</span> 诱导的序下，求 <span class="arithmatex">\(n\)</span> 个元素中第 <span class="arithmatex">\(k\)</span> 大者，即第 <span class="arithmatex">\((n-k)\)</span> 小者（0 索引位次 <span class="arithmatex">\(n-k\)</span>）。</p>
+</blockquote>
+<p>这是经典的<strong>第 <span class="arithmatex">\(k\)</span> 顺序统计量</strong>问题。下一节从最朴素的解法出发，逐步逼近更便宜的方案；所有方案都只通过键 <span class="arithmatex">\(\kappa\)</span> 访问元素，正确性由 (2) 保证。</p>
 <h2 id="_3">数据结构 / 想法<a class="headerlink" href="#_3" title="Permanent link">#</a></h2>
-<p><strong>方案 A：排序</strong>
+<p>记 <span class="arithmatex">\(L = \max_s |s| \le 100\)</span> 为最长串长，一次键比较代价 <span class="arithmatex">\(O(L)\)</span>。下面三种方案对应"愿意为更低复杂度付出多少额外机制"的递进。</p>
+<p><strong>方案 A：排序（朴素基线）</strong></p>
+<p>把全体按 <span class="arithmatex">\(\kappa\)</span> 升序排，第 <span class="arithmatex">\(k\)</span> 大就是末尾倒数第 <span class="arithmatex">\(k\)</span> 个 <code>nums[-k]</code>。</p>
 <div class="language-python highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">kthLargestNumber</span><span class="p">(</span><span class="n">nums</span><span class="p">,</span> <span class="n">k</span><span class="p">):</span>
     <span class="n">nums</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">),</span> <span class="n">x</span><span class="p">))</span>
     <span class="k">return</span> <span class="n">nums</span><span class="p">[</span><span class="o">-</span><span class="n">k</span><span class="p">]</span>
-</code></pre></div></p>
-<p><strong>方案 B：min-heap of size k</strong>
+</code></pre></div>
+<p>正确、直接，<span class="arithmatex">\(O(nL\log n)\)</span>。它的浪费在于：我们只想要一个位次，却把全部元素都排好了序——位次 <span class="arithmatex">\(n-k\)</span> 两侧的相对顺序对答案毫无影响。两个改进方向分别针对这份浪费。</p>
+<p><strong>方案 B：大小为 <span class="arithmatex">\(k\)</span> 的 min-heap</strong></p>
+<p>若只取第 <span class="arithmatex">\(k\)</span> 大，只需始终保留"目前见过的最大的 <span class="arithmatex">\(k\)</span> 个"。用一个大小至多 <span class="arithmatex">\(k\)</span> 的 min-heap 维护这个集合：</p>
+<blockquote>
+<p><strong>不变量</strong>：扫描到任意时刻，堆中恰是已见元素里最大的 <span class="arithmatex">\(k\)</span> 个（不足 <span class="arithmatex">\(k\)</span> 个时为全部），堆顶是这 <span class="arithmatex">\(k\)</span> 个里的最小者。</p>
+</blockquote>
+<p>每来一个新串就压入；一旦堆超过 <span class="arithmatex">\(k\)</span> 个，弹出堆顶（当前 <span class="arithmatex">\(k+1\)</span> 个里最小的那个）——被弹掉的不可能是最终第 <span class="arithmatex">\(k\)</span> 大。扫描结束后堆顶即答案。</p>
 <div class="language-python highlight"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">heapq</span>
 <span class="k">def</span><span class="w"> </span><span class="nf">kthLargestNumber</span><span class="p">(</span><span class="n">nums</span><span class="p">,</span> <span class="n">k</span><span class="p">):</span>
     <span class="n">h</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">nums</span><span class="p">:</span>
         <span class="n">heapq</span><span class="o">.</span><span class="n">heappush</span><span class="p">(</span><span class="n">h</span><span class="p">,</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">s</span><span class="p">),</span> <span class="n">s</span><span class="p">))</span>
-        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">h</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">k</span><span class="p">:</span> <span class="n">heapq</span><span class="o">.</span><span class="n">heappop</span><span class="p">(</span><span class="n">h</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">h</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">k</span><span class="p">:</span>
+            <span class="n">heapq</span><span class="o">.</span><span class="n">heappop</span><span class="p">(</span><span class="n">h</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">h</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span>
 </code></pre></div>
-<span class="arithmatex">\(O(n \log k)\)</span>。</p>
-<p><strong>方案 C：Quickselect</strong>
-- 随机选 pivot，划分；递归到含目标位次的一边。期望 <span class="arithmatex">\(O(n)\)</span>。
-- 比较用 <code>(len, str)</code> tuple。</p>
-<p><strong>不变量</strong>（Quickselect）：partition 后 pivot 落到最终排序位置 <span class="arithmatex">\(p\)</span>；若 <span class="arithmatex">\(p == n - k\)</span> 则 pivot 是答案；否则递归对应侧。</p>
+<p>堆始终不超过 <span class="arithmatex">\(k+1\)</span> 个元素，每次 push/pop 为 <span class="arithmatex">\(O(\log k)\)</span>，总计 <span class="arithmatex">\(O(nL\log k)\)</span>。当 <span class="arithmatex">\(k \ll n\)</span> 时优于排序，但仍带一个对数因子。</p>
+<p><strong>方案 C：Quickselect（按需划分）</strong></p>
+<p>方案 A 排好了整个数组，却只用其中一个位次。能否只把目标位次"排到位"，而不管其余？这正是 Quickselect 的出发点：它是 quicksort 的"只递归一边"版本。</p>
+<p>划分（partition）的关键性质：随机选一个 pivot，把数组重排成"小于 pivot 的在左、大于 pivot 的在右"后，<strong>pivot 落到了它在完全排序中的最终位置 <span class="arithmatex">\(p\)</span></strong>，且这一性质与左右两侧内部是否有序无关。</p>
+<blockquote>
+<p><strong>不变量</strong>：partition 后 pivot 位于最终排序位次 <span class="arithmatex">\(p\)</span>。若 <span class="arithmatex">\(p = n-k\)</span>，pivot 就是答案；若 <span class="arithmatex">\(p &lt; n-k\)</span>，目标在右侧；若 <span class="arithmatex">\(p &gt; n-k\)</span>，目标在左侧。</p>
+</blockquote>
+<p>每次划分后只需递归含目标位次的那一侧，另一侧整块丢弃——这正是省下方案 A 浪费的那部分工作。比较仍用键 <span class="arithmatex">\(\kappa = (|s|, s)\)</span>。随机 pivot 下每层期望砍掉常数比例，期望总代价 <span class="arithmatex">\(O(nL)\)</span>；但若 pivot 持续不平衡，退化到 <span class="arithmatex">\(O(n^2 L)\)</span>。</p>
 <h2 id="_4">复杂度<a class="headerlink" href="#_4" title="Permanent link">#</a></h2>
-<ul>
-<li>排序：<span class="arithmatex">\(O(n L \log n)\)</span>，<span class="arithmatex">\(L\)</span> 字符串长。</li>
-<li>堆：<span class="arithmatex">\(O(n L \log k)\)</span>。</li>
-<li>Quickselect：<span class="arithmatex">\(O(n L)\)</span> 期望，<span class="arithmatex">\(O(n^2 L)\)</span> 最坏（pivot 不平衡）。</li>
-</ul>
+<p>下表中 <span class="arithmatex">\(n\)</span> 为元素个数，<span class="arithmatex">\(L = \max_s |s| \le 100\)</span> 为最长串长，每次键比较代价 <span class="arithmatex">\(O(L)\)</span>。</p>
+<table>
+<thead>
+<tr>
+<th>方案</th>
+<th>时间</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>A 排序</td>
+<td><span class="arithmatex">\(O(nL\log n)\)</span></td>
+<td>排全序，简单稳妥</td>
+</tr>
+<tr>
+<td>B min-heap</td>
+<td><span class="arithmatex">\(O(nL\log k)\)</span></td>
+<td><span class="arithmatex">\(k \ll n\)</span> 时占优</td>
+</tr>
+<tr>
+<td>C Quickselect</td>
+<td><span class="arithmatex">\(O(nL)\)</span> 期望，<span class="arithmatex">\(O(n^2 L)\)</span> 最坏</td>
+<td>pivot 不平衡时退化</td>
+</tr>
+</tbody>
+</table>
+<p>Quickselect 的期望 <span class="arithmatex">\(O(n)\)</span> 由 Hoare (1961) 给出；Median of Medians (Blum et al. 1973) 通过精心选取 pivot 把最坏情形也压到 <span class="arithmatex">\(O(n)\)</span>，代价是更大的常数。实践中由于 Python 递归常数偏大，方案 A/B（<code>sorted</code> 或 <code>heapq</code>）通常比手写 Quickselect 更快——理论最优与工程最快在此分道。</p>
 <h2 id="_5">陷阱<a class="headerlink" href="#_5" title="Permanent link">#</a></h2>
 <ul>
-<li>不能直接用 <code>int(s)</code> —— <span class="arithmatex">\(L = 100\)</span> 时 Python 处理得了但 C/C++ 必须 BigInt；本题字符串比较更简洁。</li>
-<li>比较 key 用 <code>(len(s), s)</code>：长度不同时按长度，长度相同时按字典序——与数值序一致（无前导 0）。</li>
-<li>"第 <span class="arithmatex">\(k\)</span> 大" 是排序后倒数第 <span class="arithmatex">\(k\)</span> 个，即正向第 <span class="arithmatex">\(n - k\)</span> 个；不要弄反。</li>
+<li><strong>不能直接 <code>int(s)</code> 比较</strong>：<span class="arithmatex">\(L = 100\)</span> 时 Python 大整数尚可处理，但 C/C++ 必须 BigInt；用键 <span class="arithmatex">\((|s|, s)\)</span> 的字符串比较更简洁，且由 (2) 与数值序严格等价。</li>
+<li><strong>比较键必须先长度后字典序</strong>：单纯字典序在长度不同时出错（见背景节 <code>'100'</code> vs <code>'99'</code>）；先比 <span class="arithmatex">\(|s|\)</span> 才与数值序一致，前提是无前导 0。</li>
+<li><strong>第 <span class="arithmatex">\(k\)</span> 大的下标</strong>：排序后第 <span class="arithmatex">\(k\)</span> 大是倒数第 <span class="arithmatex">\(k\)</span> 个，即正向 0 索引第 <span class="arithmatex">\(n-k\)</span> 个（<code>nums[-k]</code>）。"大"与"小"、"正数第几"与"倒数第几"极易写反。</li>
 </ul>
 <h2 id="_6">相关题目<a class="headerlink" href="#_6" title="Permanent link">#</a></h2>
 <ul>

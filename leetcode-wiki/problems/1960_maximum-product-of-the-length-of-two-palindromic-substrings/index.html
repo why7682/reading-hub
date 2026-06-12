@@ -5485,6 +5485,8 @@
       
         
       
+        
+      
     
     
     
@@ -6024,6 +6026,34 @@
     
   
     #93. Restore IP Addresses
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../0102_binary-tree-level-order-traversal/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    #102. Binary Tree Level Order Traversal
   
 
     
@@ -13900,6 +13930,45 @@
       
     </span>
   </a>
+  
+    <nav class="md-nav" aria-label="数据结构 / 想法 (Approach)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1manacher-on" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        步骤 1：Manacher 在 \(O(n)\) 内求所有奇回文
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-left" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        步骤 2：从回文长度构造 left
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-right" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        步骤 3：对称构造 right，再合并
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -22607,6 +22676,45 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="数据结构 / 想法 (Approach)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1manacher-on" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        步骤 1：Manacher 在 \(O(n)\) 内求所有奇回文
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-left" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        步骤 2：从回文长度构造 left
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-right" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        步骤 3：对称构造 right，再合并
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -22675,36 +22783,69 @@
 <h2 id="problem">Problem<a class="headerlink" href="#problem" title="Permanent link">#</a></h2>
 <p>字符串 <code>s</code>，找两个<strong>不相交</strong>、<strong>奇长度</strong>回文子串，使长度积最大。约束 <span class="arithmatex">\(2 \le |s| \le 10^5\)</span>。</p>
 <h2 id="background">背景 (Background)<a class="headerlink" href="#background" title="Permanent link">#</a></h2>
-<p>本题是 <strong>Manacher 算法</strong> 的经典应用。Manacher（1975）在 <span class="arithmatex">\(O(n)\)</span> 时间内计算每个中心的最长回文半径。</p>
-<p>得到所有奇回文 <span class="arithmatex">\([l_i, r_i]\)</span> 后，问题归约为：在串上找分割点 <span class="arithmatex">\(m\)</span>，分别在左侧 <span class="arithmatex">\([0, m]\)</span> 与右侧 <span class="arithmatex">\([m+1, n-1]\)</span> 找最长奇回文，最大化两者长度积。这通过预处理两个数组实现：</p>
+<p>先把问题剥到最小：我们要选两个奇长度回文子串，它们在 <code>s</code> 上不重叠，最大化长度之积。</p>
+<p><strong>最朴素的做法。</strong> 枚举每一对回文子串，检查不相交，取长度积最大者。一个长度 <span class="arithmatex">\(n\)</span> 的串里回文子串可达 <span class="arithmatex">\(\Theta(n^2)\)</span> 个，成对枚举就是 <span class="arithmatex">\(\Theta(n^4)\)</span>，再加上每次回文判定，完全无法在 <span class="arithmatex">\(n = 10^5\)</span> 下通过。即便先用「中心扩展」枚举每个中心的最长奇回文（<span class="arithmatex">\(O(n^2)\)</span>），把候选压到 <span class="arithmatex">\(O(n)\)</span> 个，成对配对仍是 <span class="arithmatex">\(O(n^2)\)</span>。两个瓶颈摆在面前：<strong>回文枚举太慢</strong>，<strong>配对太慢</strong>。这两点分别由后文的两个工具解决，但在引入工具前，先看清「不相交」这个约束到底给了我们什么结构。</p>
+<p><strong>不相交约束决定了循环变量。</strong> 两个不相交的子串，左者末位严格小于右者首位，于是它们之间至少存在一个相邻位置间隙：存在某个 <span class="arithmatex">\(m\)</span>，使左串完全落在 <span class="arithmatex">\([0, m]\)</span>、右串完全落在 <span class="arithmatex">\([m+1, n-1]\)</span>。反过来，任意一个分割点 <span class="arithmatex">\(m\)</span> 对应的「左侧最长奇回文 × 右侧最长奇回文」都是一组合法选择。因此<strong>遍历分割点 <span class="arithmatex">\(m\)</span> 而非遍历回文对</strong>，就能不重不漏地覆盖所有合法配对——分割点只有 <span class="arithmatex">\(n-1\)</span> 个，这把外层配对从 <span class="arithmatex">\(O(n^2)\)</span> 降到 <span class="arithmatex">\(O(n)\)</span>。<strong>真正的循环变量是分割点，不是回文对。</strong></p>
+<p>这立刻提示我们要预处理两个量：</p>
 <ul>
-<li><code>left[i]</code> = "完全位于 <span class="arithmatex">\([0, i]\)</span> 的最长奇回文长度"</li>
-<li><code>right[i]</code> = "完全位于 <span class="arithmatex">\([i, n-1]\)</span> 的最长奇回文长度"</li>
+<li><code>left[i]</code> = 完全位于 <span class="arithmatex">\([0, i]\)</span> 的最长奇回文长度；</li>
+<li><code>right[i]</code> = 完全位于 <span class="arithmatex">\([i, n-1]\)</span> 的最长奇回文长度。</li>
 </ul>
+<p>有了它们，答案就是 <span class="arithmatex">\(\max_m \texttt{left}[m] \cdot \texttt{right}[m+1]\)</span>，一遍线性扫描即可。剩下两件事：<span class="arithmatex">\(O(n)\)</span> 算出所有奇回文（<strong>Manacher 算法</strong>，1975），以及把回文信息 <span class="arithmatex">\(O(n)\)</span> 地摊进 <code>left</code>/<code>right</code> 两个数组。</p>
 <h2 id="formulation">形式化 (Formulation)<a class="headerlink" href="#formulation" title="Permanent link">#</a></h2>
-<p>设 <span class="arithmatex">\(P\)</span> = <span class="arithmatex">\(s\)</span> 的所有奇长度回文子串。求</p>
-<div class="arithmatex">\[\max_{p_1, p_2 \in P,\ p_1 \cap p_2 = \emptyset,\ \text{end}(p_1) &lt; \text{start}(p_2)} |p_1| \cdot |p_2|\]</div>
+<p>上一节的直觉——「不相交 ⇒ 存在分割点 ⇒ 左右独立最优」——现在精确写出来。</p>
+<p>设 <span class="arithmatex">\(P\)</span> 是 <span class="arithmatex">\(s\)</span> 的所有奇长度回文子串。目标是</p>
+<div class="arithmatex">\[\max_{\substack{p_1, p_2 \in P \\ \text{end}(p_1) &lt; \text{start}(p_2)}} |p_1| \cdot |p_2| ,\]</div>
+<p>其中 <span class="arithmatex">\(\text{end}(p_1) &lt; \text{start}(p_2)\)</span> 正是「不相交且 <span class="arithmatex">\(p_1\)</span> 在左」的约束。</p>
+<p><strong>联合优化在分割点处解耦。</strong> 固定一个分割位置 <span class="arithmatex">\(m\)</span>（<span class="arithmatex">\(0 \le m &lt; n-1\)</span>），约束 <span class="arithmatex">\(\text{end}(p_1) &lt; \text{start}(p_2)\)</span> 被拆成两个互不干涉的条件：<span class="arithmatex">\(\text{end}(p_1) \le m\)</span> 与 <span class="arithmatex">\(\text{start}(p_2) \ge m+1\)</span>。此时积被最大化当且仅当两个因子各自最大，于是</p>
+<div class="arithmatex">\[\max_{p_1, p_2} |p_1| \cdot |p_2|
+= \max_{0 \le m &lt; n-1}
+\Big(\max_{\text{end}(p) \le m} |p|\Big)
+\cdot
+\Big(\max_{\text{start}(p) \ge m+1} |p|\Big).\]</div>
+<p>定义括号里的两个因子为</p>
+<div class="arithmatex">\[\texttt{left}[m] = \max_{\text{end}(p) \le m} |p|, \qquad
+\texttt{right}[m+1] = \max_{\text{start}(p) \ge m+1} |p|,\]</div>
+<p>最终目标即</p>
+<div class="arithmatex">\[\text{ans} = \max_{0 \le m &lt; n-1} \texttt{left}[m] \cdot \texttt{right}[m+1]. \tag{$\star$}\]</div>
+<p><code>left</code> 与 <code>right</code> 不是凭空冒出来的辅助数组，而是公式 <span class="arithmatex">\((\star)\)</span> 解耦后两个因子的名字。下一节就是按这个公式倒推：先 <span class="arithmatex">\(O(n)\)</span> 拿到所有 <span class="arithmatex">\(|p|\)</span>（Manacher），再 <span class="arithmatex">\(O(n)\)</span> 把它们摊成 <code>left</code>/<code>right</code>，最后线性扫 <span class="arithmatex">\((\star)\)</span>。</p>
 <h2 id="approach">数据结构 / 想法 (Approach)<a class="headerlink" href="#approach" title="Permanent link">#</a></h2>
-<p><strong>步骤</strong>：</p>
-<ol>
-<li>
-<p><strong>Manacher</strong>：对每个中心 <span class="arithmatex">\(c\)</span>，扩展计算 <span class="arithmatex">\(\text{rad}[c]\)</span>（半径含中心）。回文长度 <span class="arithmatex">\(= 2 \cdot \text{rad}[c] - 1\)</span>。</p>
-</li>
-<li>
-<p><strong>构造 <code>left[i]</code></strong>：</p>
-</li>
-<li>对每个中心 <span class="arithmatex">\(c\)</span> 长度 <span class="arithmatex">\(L = 2 \cdot \text{rad}[c] - 1\)</span> 末端 <span class="arithmatex">\(e = c + \text{rad}[c] - 1\)</span>：<code>left[e] = max(left[e], L)</code>。</li>
-<li><strong>向左收缩传播</strong>：<code>for i from n-2 downto 0: left[i] = max(left[i], left[i+1] - 2)</code>。理由：如果在右一格的最大回文是 <span class="arithmatex">\(L\)</span>，将其两端各缩 1 得到中心不变的长度 <span class="arithmatex">\(L-2\)</span> 回文，它完全位于 <span class="arithmatex">\([0, i]\)</span>。</li>
-<li>
-<p><strong>向右单调传播</strong>：<code>for i from 1 to n-1: left[i] = max(left[i], left[i-1])</code>。</p>
-</li>
-<li>
-<p>对称构造 <code>right[i]</code>：放在 start 位置，向右收缩，向左单调传播。</p>
-</li>
-<li>
-<p><strong>合并</strong>：<span class="arithmatex">\(\text{ans} = \max_{0 \le i &lt; n-1} \text{left}[i] \cdot \text{right}[i+1]\)</span>。</p>
-</li>
-</ol>
+<p>公式 <span class="arithmatex">\((\star)\)</span> 把任务分成三步：(1) 求出每个中心的最长奇回文长度；(2) 由这些长度构造 <code>left</code> 与 <code>right</code>；(3) 扫描分割点。逐一击破。</p>
+<h3 id="1manacher-on">步骤 1：Manacher 在 <span class="arithmatex">\(O(n)\)</span> 内求所有奇回文<a class="headerlink" href="#1manacher-on" title="Permanent link">#</a></h3>
+<p><strong>朴素中心扩展为什么慢。</strong> 以位置 <span class="arithmatex">\(i\)</span> 为中心，向两侧逐字符比较直到失配，得到该中心的最长奇回文半径 <span class="arithmatex">\(\text{rad}[i]\)</span>（半径含中心，对应回文长度 <span class="arithmatex">\(2\,\text{rad}[i]-1\)</span>）。单个中心扩展是 <span class="arithmatex">\(O(n)\)</span>，<span class="arithmatex">\(n\)</span> 个中心就是 <span class="arithmatex">\(O(n^2)\)</span>。慢在哪里？相邻中心的扩展<strong>反复比较同一批字符</strong>——已经确认是回文的区域，下一个中心又从头比了一遍。</p>
+<p><strong>复用已知回文消除重复比较。</strong> Manacher 维护一个不变量：始终记住目前<strong>右端最靠右</strong>的那个回文，记其中心为 <code>c</code>、右边界为 <code>r</code>（即该回文占据 <span class="arithmatex">\([2c-r,\ r]\)</span>，整段已确认是回文）。考虑新中心 <span class="arithmatex">\(i \le r\)</span>，它落在这个已知回文内部。由回文的对称性，<span class="arithmatex">\(i\)</span> 关于 <code>c</code> 的镜像点是 <span class="arithmatex">\(j = 2c - i\)</span>，而 <span class="arithmatex">\(j\)</span> 处的回文半径 <code>rad[j]</code> 已经算好。把 <span class="arithmatex">\(j\)</span> 周围的回文照镜子搬到 <span class="arithmatex">\(i\)</span> 周围：只要不越过右边界 <code>r</code>，<span class="arithmatex">\(i\)</span> 处至少有 <span class="arithmatex">\(\min(r-i,\ \texttt{rad}[j])\)</span> 的半径<strong>无需重新比较</strong>。</p>
+<p>这就把扩展的起点从 1 抬高到了 <span class="arithmatex">\(k = \min(r-i,\ \texttt{rad}[2c-i])\)</span>，只有超出 <code>r</code> 的部分才真正逐字符比较：</p>
+<div class="language-text highlight"><pre><span></span><code>若 i &lt; r:   k = min(r - i, rad[2c - i])    # 镜像复用，免比较
+否则:       k = 1                          # 边界外，从头扩展
+while s[i-k] == s[i+k]:  k += 1            # 仅比较未知区域
+rad[i] = k
+若 i+k-1 &gt; r:  更新 (c, r) = (i, i+k-1)    # 刷新最右回文
+</code></pre></div>
+<p>每次字符比较要么扩张了全局右边界 <code>r</code>（<code>r</code> 单调不减，至多增 <span class="arithmatex">\(n\)</span> 次），要么是失配后立即停止的那一次（每个中心至多一次）。两类比较各 <span class="arithmatex">\(O(n)\)</span>，总比较量 <span class="arithmatex">\(O(n)\)</span>——这正是把「重复比较」识别出来并复用掉的结果。</p>
+<h3 id="2-left">步骤 2：从回文长度构造 <code>left</code><a class="headerlink" href="#2-left" title="Permanent link">#</a></h3>
+<p><code>left[i]</code> 要的是「末端不超过 <span class="arithmatex">\(i\)</span> 的最长奇回文长度」。我们手上只有每个中心 <span class="arithmatex">\(c\)</span> 的最长回文，长度 <span class="arithmatex">\(L = 2\,\text{rad}[c]-1\)</span>，末端在 <span class="arithmatex">\(e = c + \text{rad}[c]-1\)</span>。第一步只能把这条信息放到它<strong>确切的末端</strong>：</p>
+<blockquote>
+<p><strong>放置</strong>：对每个中心 <span class="arithmatex">\(c\)</span>，令 <span class="arithmatex">\(\texttt{left}[e] \leftarrow \max(\texttt{left}[e],\ L)\)</span>，其中 <span class="arithmatex">\(e = c+\text{rad}[c]-1\)</span>。</p>
+</blockquote>
+<p>放完之后 <code>left</code> 还远不是我们要的。以 <code>"ababbb"</code>（<span class="arithmatex">\(n=6\)</span>）为例，放置后</p>
+<div class="arithmatex">\[\texttt{left} = [1,\ 0,\ 3,\ 3,\ 0,\ 3].\]</div>
+<p>逐位看哪里不对。这两类空缺，恰好对应两个修补：</p>
+<p><strong>空缺一：<span class="arithmatex">\(i\)</span> 被某个回文覆盖，但那个回文的末端不在 <span class="arithmatex">\(i\)</span>。</strong> 如 <span class="arithmatex">\(i=1\)</span>：位置 <span class="arithmatex">\(0\)</span> 处长度 <span class="arithmatex">\(1\)</span> 的回文 <code>"a"</code> 末端在 <span class="arithmatex">\(0\)</span>，没有任何末端恰在 <span class="arithmatex">\(1\)</span> 的回文被放进 <code>left[1]</code>，于是它停留在 <span class="arithmatex">\(0\)</span>。但实际上「末端 <span class="arithmatex">\(\le 1\)</span>」最长可取 <span class="arithmatex">\(1\)</span>（就是 <code>"a"</code>）。一般地，若末端在 <span class="arithmatex">\(i+1\)</span> 处有长度 <span class="arithmatex">\(L\)</span> 的奇回文，去掉它最外两个字符，得到一个<strong>同心</strong>、长度 <span class="arithmatex">\(L-2\)</span>、末端在 <span class="arithmatex">\(i\)</span> 的奇回文——它的字符集是原回文索引集去头去尾，仍对称，故仍是回文。所以</p>
+<blockquote>
+<p><strong>向左收缩</strong>：<span class="arithmatex">\(\texttt{left}[i] \leftarrow \max(\texttt{left}[i],\ \texttt{left}[i+1]-2)\)</span>，从右往左扫。</p>
+</blockquote>
+<p><strong>空缺二：<span class="arithmatex">\(i\)</span> 在「目前最长回文」的右边，自身没有回文末端落在此。</strong> 如 <span class="arithmatex">\(i=4\)</span>：放置后 <code>left[4]=0</code>，但末端 <span class="arithmatex">\(\le 4\)</span> 的回文显然存在（如末端在 <span class="arithmatex">\(2\)</span>、<span class="arithmatex">\(3\)</span> 的长度 <span class="arithmatex">\(3\)</span> 回文）。问题在于 <code>left[i]</code> 的定义是「末端落在 <span class="arithmatex">\([0,i]\)</span> 内<strong>任意位置</strong>的最长回文」，而不只是恰好末端在 <span class="arithmatex">\(i\)</span> 的。所以它必须继承左邻的最优值：</p>
+<blockquote>
+<p><strong>向右单调</strong>：<span class="arithmatex">\(\texttt{left}[i] \leftarrow \max(\texttt{left}[i],\ \texttt{left}[i-1])\)</span>，从左往右扫。</p>
+</blockquote>
+<p>把两次修补合起来，每个位置的递推可写成</p>
+<div class="arithmatex">\[\texttt{left}[i] = \max\big(L_i,\ \ \texttt{left}[i+1]-2,\ \ \texttt{left}[i-1]\big),\]</div>
+<p>其中 <span class="arithmatex">\(L_i\)</span> 是末端恰在 <span class="arithmatex">\(i\)</span> 的回文长度（放置步给出）。三项分别对应：恰好末端在此、由右邻收缩而来、由左邻单调继承。两次扫描方向相反，故拆成两遍线性 pass 实现。</p>
+<p>继续 <code>"ababbb"</code>：放置后 <span class="arithmatex">\([1,0,3,3,0,3]\)</span>，收缩 + 单调后得</p>
+<div class="arithmatex">\[\texttt{left} = [1,\ 1,\ 3,\ 3,\ 3,\ 3].\]</div>
+<h3 id="3-right">步骤 3：对称构造 <code>right</code>，再合并<a class="headerlink" href="#3-right" title="Permanent link">#</a></h3>
+<p><code>right[i]</code> = 「首端 <span class="arithmatex">\(\ge i\)</span> 的最长奇回文长度」，构造与 <code>left</code> 镜像：把每个回文放到它的<strong>首端</strong> <span class="arithmatex">\(s = c-\text{rad}[c]+1\)</span>；向右收缩 <span class="arithmatex">\(\texttt{right}[i] \leftarrow \max(\texttt{right}[i],\ \texttt{right}[i-1]-2)\)</span>；向左单调 <span class="arithmatex">\(\texttt{right}[i] \leftarrow \max(\texttt{right}[i],\ \texttt{right}[i+1])\)</span>。对 <code>"ababbb"</code> 得 <span class="arithmatex">\(\texttt{right} = [3,3,3,3,1,1]\)</span>。</p>
+<p>最后按公式 <span class="arithmatex">\((\star)\)</span> 扫分割点：<span class="arithmatex">\(\text{ans} = \max_{0\le m&lt; n-1}\texttt{left}[m]\cdot\texttt{right}[m+1]\)</span>。</p>
 <div class="language-python highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">Solution</span><span class="p">:</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">maxProduct</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">s</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
         <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
@@ -22756,13 +22897,14 @@
                 <span class="n">ans</span> <span class="o">=</span> <span class="n">p</span>
         <span class="k">return</span> <span class="n">ans</span>
 </code></pre></div>
-<p><strong>Trace 例 1 <code>"ababbb"</code></strong> (n=6):
+<p><strong>完整 trace <code>"ababbb"</code></strong> (n=6)，验证全链路：
 - rad = [1, 2, 2, 1, 2, 1]（中心 1 含 "aba"，中心 4 含 "bbb"）
 - 长度 [1, 3, 3, 1, 3, 1]，end 位置 [0, 2, 3, 3, 5, 5]
-- 初始 left = [1, 0, 3, 3, 0, 3]
+- 放置后 left = [1, 0, 3, 3, 0, 3]
 - 向左收缩 + 向右单调后 left = [1, 1, 3, 3, 3, 3]
-- 类似 right = [3, 3, 3, 3, 1, 1]
-- <span class="arithmatex">\(\max_{0 \le i &lt; 5}\)</span> left[i] * right[i+1]: i=2 → 3 * 3 = 9 ✓</p>
+- 对称地 right = [3, 3, 3, 3, 1, 1]
+- 扫 <span class="arithmatex">\((\star)\)</span>：<span class="arithmatex">\(m=2 \Rightarrow \texttt{left}[2]\cdot\texttt{right}[3] = 3 \cdot 3 = 9\)</span> ✓（即 "aba" 与 "bbb"）</p>
+<p>三步走完，公式 <span class="arithmatex">\((\star)\)</span> 的每个因子都被 <span class="arithmatex">\(O(n)\)</span> 地实现，整体线性。下一节核账复杂度。</p>
 <h2 id="complexity">复杂度 (Complexity)<a class="headerlink" href="#complexity" title="Permanent link">#</a></h2>
 <ul>
 <li>Time: <span class="arithmatex">\(O(n)\)</span>（Manacher <span class="arithmatex">\(O(n)\)</span> + 三次线性扫描）。</li>
@@ -22771,9 +22913,9 @@
 <h2 id="pitfalls">陷阱 (Pitfalls)<a class="headerlink" href="#pitfalls" title="Permanent link">#</a></h2>
 <ul>
 <li><strong><code>rad</code> 边界</strong>：扩展时要 <code>i - k &gt;= 0 and i + k &lt; n</code>，少一个就 IndexError。</li>
-<li><strong>传播顺序</strong>：left 必须<strong>先</strong>向左收缩传播、<strong>再</strong>向右单调传播；交换顺序会缺信息。同理 right 先向右收缩、再向左单调。</li>
-<li><strong><code>left[i+1] - 2</code> 可能为负</strong>——max 自然处理，但要确保 <code>&gt;</code> 比较即可。</li>
-<li><strong>奇长度限定</strong>：题目要求奇长度，Manacher 直接给奇回文（偶长度需要插入分隔符变体）。</li>
+<li><strong>两遍 pass 的方向不能错</strong>：<code>left</code> 的收缩 pass 必须从右往左（依赖 <code>left[i+1]</code>），单调 pass 必须从左往右（依赖 <code>left[i-1]</code>）；写反某一遍的扫描方向会读到尚未更新的值。但<strong>两遍 pass 之间谁先谁后无所谓</strong>——收缩算子与单调算子可交换，先单调后收缩得到逐位相同的 <code>left</code>（差分测试已验证）。</li>
+<li><strong><code>left[i+1] - 2</code> 可能为负</strong>——<code>max</code> 自然处理，保证用 <code>&gt;</code> 比较即可。</li>
+<li><strong>奇长度限定</strong>：题目要求奇长度，Manacher 直接给奇回文（偶长度需在字符间插入分隔符的变体）。</li>
 <li><strong>替代解法</strong>：rolling hash + 双指针求每个中心的最长回文，但 Manacher 更稳。</li>
 </ul>
 <h2 id="related">相关题目 (Related)<a class="headerlink" href="#related" title="Permanent link">#</a></h2>

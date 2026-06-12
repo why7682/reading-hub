@@ -5485,6 +5485,8 @@
       
         
       
+        
+      
     
     
     
@@ -6024,6 +6026,34 @@
     
   
     #93. Restore IP Addresses
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../0102_binary-tree-level-order-traversal/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    #102. Binary Tree Level Order Traversal
   
 
     
@@ -22675,10 +22705,33 @@
 <h2 id="problem">Problem<a class="headerlink" href="#problem" title="Permanent link">#</a></h2>
 <p>给小写字母串 <code>s</code> 与若干 shift 操作 <code>[start, end, direction]</code>：把 <span class="arithmatex">\(s[\text{start..end}]\)</span> 每个字符按 direction 前移 (1) 或后移 (0) 一位（绕环）。所有操作完成后返回 <code>s</code>。<span class="arithmatex">\(|s|, |\text{shifts}| \le 5 \cdot 10^4\)</span>。</p>
 <h2 id="background">背景 (Background)<a class="headerlink" href="#background" title="Permanent link">#</a></h2>
-<p>经典 <strong>range update + final query</strong>：用 <strong>差分数组 (difference array)</strong> 把 range add 化为 <span class="arithmatex">\(O(1)\)</span> 端点修改，最后扫一遍求前缀和恢复每位移位量。这是 <em>Fenwick tree</em> 的特化退化版本（无中间查询时无需 BIT）。</p>
+<p>先把问题压到最朴素的做法上。一个 shift 操作 <span class="arithmatex">\((l, r, d)\)</span> 要求把区间 <span class="arithmatex">\([l, r]\)</span> 内每个字符移动一位，方向由 <span class="arithmatex">\(d\)</span> 决定。最直接的实现是：对每个操作，从 <span class="arithmatex">\(l\)</span> 扫到 <span class="arithmatex">\(r\)</span>，逐个字符加一个偏移量。</p>
+<p>这能跑，但代价是每个操作最坏要触碰整条串。<span class="arithmatex">\(m\)</span> 个操作、每个 <span class="arithmatex">\(O(n)\)</span>，总共 <span class="arithmatex">\(O(nm)\)</span>。代入约束 <span class="arithmatex">\(n, m \le 5 \cdot 10^4\)</span>，得到 <span class="arithmatex">\(2.5 \cdot 10^9\)</span> 次字符更新——超时。</p>
+<p>朴素法慢在哪里，值得看清楚，因为修复方向就藏在这里。同一个位置 <span class="arithmatex">\(i\)</span> 会被许多区间反复写入：第一个操作给它 <span class="arithmatex">\(+1\)</span>，第二个给它 <span class="arithmatex">\(-1\)</span>，第三个又给它 <span class="arithmatex">\(+1\)</span>……每次写入都是独立的一笔。但题目只在<strong>所有操作结束后</strong>才读取 <span class="arithmatex">\(s\)</span>，中途的字符值从不被查询。于是这些逐次写入做了大量无用功：我们真正需要的，只是每个位置 <span class="arithmatex">\(i\)</span> 上所有偏移量的<strong>净和</strong>，而不是它一步步变化的过程。</p>
+<p>这把问题从「逐操作更新字符」改写成「先求每个位置的净位移，再一次性应用」。下一节把「净位移」写成一个精确的量，并从它推出一个无需逐位置遍历区间的结构。</p>
 <h2 id="formulation">形式化 (Formulation)<a class="headerlink" href="#formulation" title="Permanent link">#</a></h2>
-<p>构造差分 <span class="arithmatex">\(\Delta \in \mathbb{Z}^{n+1}\)</span>. 对每次 <span class="arithmatex">\((l, r, d)\)</span> 的位移量 <span class="arithmatex">\(v = (d == 1 ? +1 : -1)\)</span>，令 <span class="arithmatex">\(\Delta[l] \mathrel{+}= v\)</span>, <span class="arithmatex">\(\Delta[r+1] \mathrel{-}= v\)</span>. 最终 <span class="arithmatex">\(s_i' = (s_i + \sum_{j \le i} \Delta[j]) \bmod 26\)</span>.</p>
+<p>设位置 <span class="arithmatex">\(i\)</span> 的净位移为 <span class="arithmatex">\(\text{shift}(i)\)</span>，它等于所有覆盖 <span class="arithmatex">\(i\)</span> 的操作贡献之和。记第 <span class="arithmatex">\(k\)</span> 个操作 <span class="arithmatex">\((l_k, r_k, d_k)\)</span> 的单步偏移为 <span class="arithmatex">\(v_k = (d_k = 1 \,?\, +1 : -1)\)</span>，则</p>
+<div class="arithmatex">\[
+\text{shift}(i) = \sum_{k \,:\, l_k \le i \le r_k} v_k. \tag{1}
+\]</div>
+<p>最终答案是把这个净位移加到原字符上、对 26 取模：</p>
+<div class="arithmatex">\[
+s_i' = \bigl(s_i + \text{shift}(i)\bigr) \bmod 26. \tag{2}
+\]</div>
+<p>公式 (1) 直接算仍是 <span class="arithmatex">\(O(nm)\)</span>：对每个 <span class="arithmatex">\(i\)</span> 枚举所有覆盖它的操作。瓶颈在于条件 <span class="arithmatex">\(l_k \le i \le r_k\)</span> 把「贡献」绑在了一段连续区间上，使我们不得不对区间内每个位置重复记账。</p>
+<p>要消去这个重复，关键观察是：一个区间贡献 <span class="arithmatex">\([l, r]\)</span> 加 <span class="arithmatex">\(v\)</span>，沿位置轴看，等价于「在 <span class="arithmatex">\(l\)</span> 处开始贡献 <span class="arithmatex">\(v\)</span>，在 <span class="arithmatex">\(r+1\)</span> 处停止贡献 <span class="arithmatex">\(v\)</span>」。如果我们把每个位置的净位移写成<strong>从左到右的累加</strong>，那么只需在 <span class="arithmatex">\(l\)</span> 记一笔 <span class="arithmatex">\(+v\)</span>、在 <span class="arithmatex">\(r+1\)</span> 记一笔 <span class="arithmatex">\(-v\)</span>，累加过程就会自动让 <span class="arithmatex">\(v\)</span> 在 <span class="arithmatex">\([l, r]\)</span> 上「生效」、在 <span class="arithmatex">\(r\)</span> 之后「失效」。</p>
+<p>形式化地，引入数组 <span class="arithmatex">\(\Delta\)</span>，长度 <span class="arithmatex">\(n+1\)</span>（多出的一格用来安放可能落在 <span class="arithmatex">\(n\)</span> 处的 <span class="arithmatex">\(r+1\)</span>）。对每个操作令</p>
+<div class="arithmatex">\[
+\Delta[l] \mathrel{+}= v, \qquad \Delta[r+1] \mathrel{-}= v. \tag{3}
+\]</div>
+<p>则对任意 <span class="arithmatex">\(i\)</span>，</p>
+<div class="arithmatex">\[
+\text{shift}(i) = \sum_{j \le i} \Delta[j]. \tag{4}
+\]</div>
+<p>公式 (4) 是这套做法的核心不变量：<span class="arithmatex">\(\Delta\)</span> 的前缀和在位置 <span class="arithmatex">\(i\)</span> 处恰好等于式 (1) 定义的净位移。验证它只需展开：位置 <span class="arithmatex">\(i\)</span> 的前缀和里，一个操作 <span class="arithmatex">\((l, r, v)\)</span> 当且仅当 <span class="arithmatex">\(l \le i\)</span> 时计入它的 <span class="arithmatex">\(+v\)</span>，且仅当 <span class="arithmatex">\(r+1 \le i\)</span>（即 <span class="arithmatex">\(i &gt; r\)</span>）时计入抵消的 <span class="arithmatex">\(-v\)</span>。两者结合，操作 <span class="arithmatex">\(v\)</span> 对前缀和的净贡献恰在 <span class="arithmatex">\(l \le i \le r\)</span> 时为 <span class="arithmatex">\(v\)</span>、否则为 <span class="arithmatex">\(0\)</span>，与式 (1) 的求和条件逐字相符。</p>
+<p>这样，每个操作从「触碰区间内每个位置」降到「两次端点修改」，总更新降为 <span class="arithmatex">\(O(m)\)</span>；再一次前缀和扫描得到所有 <span class="arithmatex">\(\text{shift}(i)\)</span>，代入式 (2) 即得答案。</p>
 <h2 id="approach">数据结构 / 想法 (Approach)<a class="headerlink" href="#approach" title="Permanent link">#</a></h2>
+<p>代码是式 (3)、(4)、(2) 的直接转写：先按式 (3) 累出 <span class="arithmatex">\(\Delta\)</span>，再边扫边维护前缀和 <code>cur</code>（即 <span class="arithmatex">\(\text{shift}(i)\)</span>），按式 (2) 生成每个输出字符。</p>
 <div class="language-python highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">Solution</span><span class="p">:</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">shiftingLetters</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span> <span class="n">shifts</span><span class="p">):</span>
         <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
@@ -22695,37 +22748,39 @@
             <span class="n">out</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">chr</span><span class="p">(</span><span class="nb">ord</span><span class="p">(</span><span class="s1">&#39;a&#39;</span><span class="p">)</span> <span class="o">+</span> <span class="n">new</span><span class="p">))</span>
         <span class="k">return</span> <span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">out</span><span class="p">)</span>
 </code></pre></div>
-<p>样例 1：<code>s="abc", shifts=[[0,1,0],[1,2,1],[0,2,1]]</code>. 
-- (0,1,0) v=-1: diff[0]-=1, diff[2]+=1 → [-1,0,1,0].
-- (1,2,1) v=+1: diff[1]+=1, diff[3]-=1 → [-1,1,1,-1].
-- (0,2,1) v=+1: diff[0]+=1, diff[3]-=1 → [0,1,1,-2].</p>
-<p>前缀和：cur 在 i=0:0, i=1:1, i=2:2.
-- s[0]='a' shift 0 → 'a'? 不对，预期是 'a'. ✅
-- s[1]='b' shift 1 → 'c'. ✅
-- s[2]='c' shift 2 → 'e'. ✅</p>
-<p>输出 "ace"。✅</p>
-<p><strong>不变量</strong>：差分 <span class="arithmatex">\(\Delta\)</span> 的前缀和 <span class="arithmatex">\(\sum_{j \le i} \Delta[j]\)</span> 恰为「位置 <span class="arithmatex">\(i\)</span> 上累计的总位移」。Python <code>%</code> 对负数自然给出非负余数（<span class="arithmatex">\(-1 \% 26 = 25\)</span>）。</p>
+<p>下面用一个样例验证不变量 (4) 与最终公式 (2)。取 <code>s="abc", shifts=[[0,1,0],[1,2,1],[0,2,1]]</code>，按式 (3) 逐操作累加 <span class="arithmatex">\(\Delta\)</span>（初值全零，长度 4）：</p>
+<ul>
+<li><span class="arithmatex">\((0,1,0)\)</span>，<span class="arithmatex">\(v=-1\)</span>：<span class="arithmatex">\(\Delta[0]\mathrel{-}=1\)</span>, <span class="arithmatex">\(\Delta[2]\mathrel{+}=1\)</span> → <span class="arithmatex">\([-1,0,1,0]\)</span>。</li>
+<li><span class="arithmatex">\((1,2,1)\)</span>，<span class="arithmatex">\(v=+1\)</span>：<span class="arithmatex">\(\Delta[1]\mathrel{+}=1\)</span>, <span class="arithmatex">\(\Delta[3]\mathrel{-}=1\)</span> → <span class="arithmatex">\([-1,1,1,-1]\)</span>。</li>
+<li><span class="arithmatex">\((0,2,1)\)</span>，<span class="arithmatex">\(v=+1\)</span>：<span class="arithmatex">\(\Delta[0]\mathrel{+}=1\)</span>, <span class="arithmatex">\(\Delta[3]\mathrel{-}=1\)</span> → <span class="arithmatex">\([0,1,1,-2]\)</span>。</li>
+</ul>
+<p>三个操作叠加后的最终 <span class="arithmatex">\(\Delta = [0,1,1,-2]\)</span>。它的前缀和给出各位置净位移 <span class="arithmatex">\(\text{shift}(i)\)</span>：<span class="arithmatex">\(i=0\)</span> 为 <span class="arithmatex">\(0\)</span>，<span class="arithmatex">\(i=1\)</span> 为 <span class="arithmatex">\(1\)</span>，<span class="arithmatex">\(i=2\)</span> 为 <span class="arithmatex">\(2\)</span>。代入式 (2)：</p>
+<ul>
+<li><span class="arithmatex">\(s_0=\)</span><code>a</code>，净位移 <span class="arithmatex">\(0\)</span> → <code>a</code>。</li>
+<li><span class="arithmatex">\(s_1=\)</span><code>b</code>，净位移 <span class="arithmatex">\(1\)</span> → <code>c</code>。</li>
+<li><span class="arithmatex">\(s_2=\)</span><code>c</code>，净位移 <span class="arithmatex">\(2\)</span> → <code>e</code>。</li>
+</ul>
+<p>输出 <code>"ace"</code>，与官方样例一致。</p>
+<p>关于取模的一个语言相关细节：式 (2) 要求结果落在 <span class="arithmatex">\([0, 25]\)</span>，而 <span class="arithmatex">\(\text{shift}(i)\)</span> 可能为负。Python 的 <code>%</code> 对负数返回非负余数（例如 <span class="arithmatex">\(-1 \bmod 26 = 25\)</span>），因此 <code>(... + cur) % 26</code> 直接给出合法结果，无需额外校正。</p>
 <h2 id="complexity">复杂度 (Complexity)<a class="headerlink" href="#complexity" title="Permanent link">#</a></h2>
 <ul>
-<li>Time: <span class="arithmatex">\(O(n + m)\)</span>, <span class="arithmatex">\(n = |s|\)</span>, <span class="arithmatex">\(m = |\text{shifts}|\)</span>.</li>
-<li>Space: <span class="arithmatex">\(O(n)\)</span>.</li>
+<li>Time: <span class="arithmatex">\(O(n + m)\)</span>，<span class="arithmatex">\(n = |s|\)</span>，<span class="arithmatex">\(m = |\text{shifts}|\)</span>。一遍扫 <span class="arithmatex">\(m\)</span> 个操作做端点修改，一遍扫 <span class="arithmatex">\(n\)</span> 个位置求前缀和。</li>
+<li>Space: <span class="arithmatex">\(O(n)\)</span>，即长度 <span class="arithmatex">\(n+1\)</span> 的差分数组。</li>
 </ul>
 <h2 id="pitfalls">陷阱 (Pitfalls)<a class="headerlink" href="#pitfalls" title="Permanent link">#</a></h2>
-<ul>
-<li>不要逐次操作 <span class="arithmatex">\(O(n)\)</span> 修改字符串——<span class="arithmatex">\(O(nm) = 2.5 \cdot 10^9\)</span> TLE.</li>
-<li>负数取模：C++/Java 中 <code>(-1) % 26 = -1</code>，需要 <code>((x % 26) + 26) % 26</code>. Python 自动正确。</li>
-<li>diff 数组大小 <span class="arithmatex">\(n + 1\)</span>（因 <span class="arithmatex">\(r + 1\)</span> 可能 <span class="arithmatex">\(= n\)</span>）。</li>
-</ul>
+<p>朴素的逐操作更新是 <span class="arithmatex">\(O(nm) = 2.5 \cdot 10^9\)</span>，会超时；正是这一点驱动了式 (3) 的端点修改。</p>
+<p>取模对负数的行为依语言而定。Python 的 <code>(-1) % 26</code> 等于 <span class="arithmatex">\(25\)</span>，可直接使用；C++/Java 中 <code>(-1) % 26</code> 等于 <span class="arithmatex">\(-1\)</span>，必须写成 <code>((x % 26) + 26) % 26</code> 才能落回 <span class="arithmatex">\([0, 25]\)</span>。</p>
+<p>差分数组必须取长度 <span class="arithmatex">\(n+1\)</span> 而非 <span class="arithmatex">\(n\)</span>。当某个操作的 <span class="arithmatex">\(r = n-1\)</span> 时，式 (3) 会写 <span class="arithmatex">\(\Delta[r+1] = \Delta[n]\)</span>；若数组只有 <span class="arithmatex">\(n\)</span> 格，这一笔会越界。</p>
 <h2 id="related">相关题目 (Related)<a class="headerlink" href="#related" title="Permanent link">#</a></h2>
 <ul>
-<li><code>#1109. Corporate Flight Bookings (off-wiki)</code> — 同款差分数组模板。</li>
-<li><code>#370. Range Addition (off-wiki)</code> — 入门差分数组。</li>
-<li><a href="../0322_coin-change/">#0322. Coin Change</a> — 不同主题，但都是离线 batch 处理。</li>
+<li><code>#1109. Corporate Flight Bookings (off-wiki)</code> — 同款差分数组模板：区间加、末尾一次性查询。</li>
+<li><code>#370. Range Addition (off-wiki)</code> — 差分数组的入门形态，直接练式 (3)、(4)。</li>
+<li><a href="../0322_coin-change/">#0322. Coin Change</a> — 另一类离线题：所有需求一次给定、整体求解，可对比不同的离线处理结构。</li>
 </ul>
 <h2 id="further-reading">Further Reading<a class="headerlink" href="#further-reading" title="Permanent link">#</a></h2>
 <ul>
 <li>USACO Guide: <a href="https://usaco.guide/silver/prefix-sums">Prefix Sums</a>（含差分应用）。</li>
-<li>cp-algorithms: <a href="https://cp-algorithms.com/data_structures/segment_tree.html">Fenwick tree</a> — 在线 range update 的升级版。</li>
+<li>cp-algorithms: <a href="https://cp-algorithms.com/data_structures/segment_tree.html">Fenwick tree</a> — 当区间更新与查询交错出现（非本题的「末尾一次性查询」）时，用它支持在线 <span class="arithmatex">\(O(\log n)\)</span> 点更新加前缀查询。</li>
 </ul>
 
 

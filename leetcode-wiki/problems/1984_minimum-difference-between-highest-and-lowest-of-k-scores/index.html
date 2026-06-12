@@ -5485,6 +5485,8 @@
       
         
       
+        
+      
     
     
     
@@ -6024,6 +6026,34 @@
     
   
     #93. Restore IP Addresses
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../0102_binary-tree-level-order-traversal/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    #102. Binary Tree Level Order Traversal
   
 
     
@@ -22674,29 +22704,41 @@
 <p><strong>Tags</strong>: Array, Sliding Window, Sorting</p>
 <h2 id="problem">Problem<a class="headerlink" href="#problem" title="Permanent link">#</a></h2>
 <p>给整数数组 <code>nums</code>（长度 ≤ 1000）和整数 <code>k</code>，从中选出 <code>k</code> 个元素，使其最大值与最小值之差最小，返回该最小差值。</p>
+<p>约束：<span class="arithmatex">\(1 \le k \le n\)</span>，其中 $n = $ <code>len(nums)</code>，故至少存在一个合法选择。</p>
 <h2 id="background">背景 (Background)<a class="headerlink" href="#background" title="Permanent link">#</a></h2>
-<p>属于"在固定大小子集上最小化极差"问题。关键观察是：对任意排好序的序列，<strong>最优 k 元素子集必然是排序后连续的一段</strong>（exchange argument：若选了不相邻的元素，把外侧元素往内侧替换不会增大极差）。这把组合优化退化为长度固定的滑动窗口扫描。</p>
+<p>最直接的做法是枚举所有大小为 <span class="arithmatex">\(k\)</span> 的子集，对每个子集算极差（最大减最小），取最小。但子集共有 <span class="arithmatex">\(\binom{n}{k}\)</span> 个，当 <span class="arithmatex">\(n=1000\)</span>、<span class="arithmatex">\(k=500\)</span> 时是天文数字，枚举不可行。需要找到结构性质来削减搜索空间。</p>
+<p>先观察一个具体例子。取 <code>nums = [1, 4, 7, 9]</code>，<code>k = 2</code>。若选 <span class="arithmatex">\(\{1, 9\}\)</span>，极差为 <span class="arithmatex">\(8\)</span>；选 <span class="arithmatex">\(\{1, 4\}\)</span>，极差为 <span class="arithmatex">\(3\)</span>。注意 <span class="arithmatex">\(1\)</span> 与 <span class="arithmatex">\(9\)</span> 之间隔着 <span class="arithmatex">\(4\)</span> 和 <span class="arithmatex">\(7\)</span>：选中的两端之间凡是被跳过的值，都白白拉大了极差却没被计入任何收益。这提示我们：极差只由所选元素的<strong>最小值与最大值</strong>决定，中间选了谁、选了几个都不影响极差的两端。</p>
+<p>于是把视角转到排序后的序列。设 <span class="arithmatex">\(a_1 \le a_2 \le \dots \le a_n\)</span> 为 <code>nums</code> 排序的结果。一个 <span class="arithmatex">\(k\)</span> 元素子集的极差，等于它在 <span class="arithmatex">\(a\)</span> 中最大下标处的值减去最小下标处的值。要让这个差变小，我们希望所选元素在排序序列上<strong>尽量挤在一起</strong>——而能挤到的极致，就是占据一段连续的下标。下一节把这个直觉变成可证的命题。</p>
 <h2 id="formulation">形式化 (Formulation)<a class="headerlink" href="#formulation" title="Permanent link">#</a></h2>
-<p>设 <span class="arithmatex">\(a_1 \le a_2 \le \dots \le a_n\)</span> 为排序后的序列。求</p>
-<div class="arithmatex">\[\min_{1 \le i \le n-k+1} (a_{i+k-1} - a_i)\]</div>
+<p>设排序后的序列为 <span class="arithmatex">\(a_1 \le a_2 \le \dots \le a_n\)</span>。任取下标集合 <span class="arithmatex">\(J = \{j_1 &lt; j_2 &lt; \dots &lt; j_k\}\)</span>，对应子集的极差为 <span class="arithmatex">\(a_{j_k} - a_{j_1}\)</span>。原问题是</p>
+<div class="arithmatex">\[\min_{J,\ |J|=k}\ \bigl(a_{j_k} - a_{j_1}\bigr). \tag{1}\]</div>
+<p>我们将证明 (1) 的最小值只需在<strong>连续下标段</strong>上取，即等于</p>
+<div class="arithmatex">\[\min_{1 \le i \le n-k+1}\ \bigl(a_{i+k-1} - a_i\bigr). \tag{2}\]</div>
+<p>(2) 是 (1) 的一个特例（取 <span class="arithmatex">\(J = \{i, i+1, \dots, i+k-1\}\)</span>），所以 (2) <span class="arithmatex">\(\ge\)</span> (1) 显然成立。真正要证的是反向不等式：任意 <span class="arithmatex">\(J\)</span> 的极差都不小于某个连续段的极差。</p>
 <h2 id="approach">数据结构 / 想法 (Approach)<a class="headerlink" href="#approach" title="Permanent link">#</a></h2>
-<p><strong>排序 + 长度 k 的滑动窗口</strong>。证明思路：设最优子集排序后为 <span class="arithmatex">\(b_1 \le \dots \le b_k\)</span>，目标为 <span class="arithmatex">\(b_k - b_1\)</span>。把它们映射到 <span class="arithmatex">\(a\)</span> 中的下标 <span class="arithmatex">\(j_1 &lt; \dots &lt; j_k\)</span>，那么 <span class="arithmatex">\(a_{j_k} - a_{j_1} = b_k - b_1\)</span>。把这 k 个下标"压紧"成连续段 <span class="arithmatex">\([j_1, j_1+k-1]\)</span>，对应的极差 <span class="arithmatex">\(a_{j_1+k-1} - a_{j_1} \le a_{j_k} - a_{j_1}\)</span>（因为新右端点 <span class="arithmatex">\(\le\)</span> 原右端点）。所以最优一定在连续段中取到。</p>
+<p><strong>从 (1) 推导 (2)。</strong> 任取一个合法下标集合 <span class="arithmatex">\(J = \{j_1 &lt; \dots &lt; j_k\}\)</span>，其极差为 <span class="arithmatex">\(a_{j_k} - a_{j_1}\)</span>。</p>
+<p>把这 <span class="arithmatex">\(k\)</span> 个下标从左端 <span class="arithmatex">\(j_1\)</span> 开始压紧成连续段 <span class="arithmatex">\(\{j_1, j_1+1, \dots, j_1+k-1\}\)</span>。这段的左端点仍是 <span class="arithmatex">\(j_1\)</span>，右端点变为 <span class="arithmatex">\(j_1 + k - 1\)</span>。因为原下标严格递增且共 <span class="arithmatex">\(k\)</span> 个，必有 <span class="arithmatex">\(j_k \ge j_1 + k - 1\)</span>，故右端点没有右移：</p>
+<div class="arithmatex">\[a_{j_1+k-1} \le a_{j_k} \quad\Longrightarrow\quad a_{j_1+k-1} - a_{j_1} \le a_{j_k} - a_{j_1}.\]</div>
+<p>也就是说，每个 <span class="arithmatex">\(J\)</span> 都被一个左端相同的连续段所支配，后者极差不更大。对所有 <span class="arithmatex">\(J\)</span> 取最小，连续段一侧的最小值不超过 (1)，于是 (2) <span class="arithmatex">\(\le\)</span> (1)。结合 (2) <span class="arithmatex">\(\ge\)</span> (1)，两者相等。命题得证：<strong>最优 <span class="arithmatex">\(k\)</span> 元素子集可在排序后的连续段中取到。</strong></p>
+<p>这一替换论证（把外侧元素往内收紧、极差不增）即组合优化里常用的 <strong>exchange argument</strong>。</p>
+<p><strong>算法。</strong> 公式 (2) 直接给出算法：把 <code>nums</code> 排序，再以长度 <span class="arithmatex">\(k\)</span> 的窗口从左扫到右，对每个窗口算右端减左端，取全局最小。窗口右端下标 <span class="arithmatex">\(i+k-1\)</span> 随左端 <span class="arithmatex">\(i\)</span> 同步推进，故无需重复比较，一次线性扫描即可。</p>
 <div class="language-python highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">Solution</span><span class="p">:</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">minimumDifference</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">nums</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">],</span> <span class="n">k</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
         <span class="n">nums</span><span class="o">.</span><span class="n">sort</span><span class="p">()</span>
         <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">nums</span><span class="p">)</span>
         <span class="k">return</span> <span class="nb">min</span><span class="p">(</span><span class="n">nums</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="n">k</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">nums</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span> <span class="o">-</span> <span class="n">k</span> <span class="o">+</span> <span class="mi">1</span><span class="p">))</span>
 </code></pre></div>
-<p>样例 2 trace：<code>[9,4,1,7], k=2</code> → 排序 <code>[1,4,7,9]</code>，差分 <code>[3,3,2]</code> → 2 ✓。</p>
+<p>代码里 <code>range(n - k + 1)</code> 对应 (2) 的下标范围 <span class="arithmatex">\(1 \le i \le n-k+1\)</span>（0-索引下平移一位），<code>nums[i+k-1] - nums[i]</code> 即窗口极差。</p>
+<p>样例 2 trace：<code>[9,4,1,7], k=2</code> → 排序 <code>[1,4,7,9]</code>，相邻窗口差分 <code>[3,3,2]</code> → 最小值 <code>2</code> ✓。</p>
 <h2 id="complexity">复杂度 (Complexity)<a class="headerlink" href="#complexity" title="Permanent link">#</a></h2>
 <ul>
-<li>Time: <span class="arithmatex">\(O(n \log n)\)</span>（排序主导）</li>
-<li>Space: <span class="arithmatex">\(O(1)\)</span> 额外空间（或 <span class="arithmatex">\(O(\log n)\)</span> 给排序栈）</li>
+<li>Time: <span class="arithmatex">\(O(n \log n)\)</span>（排序主导；扫描是 <span class="arithmatex">\(O(n)\)</span>）</li>
+<li>Space: <span class="arithmatex">\(O(1)\)</span> 额外空间（排序原地进行；或 <span class="arithmatex">\(O(\log n)\)</span> 给 Timsort 的递归栈）</li>
 </ul>
 <h2 id="pitfalls">陷阱 (Pitfalls)<a class="headerlink" href="#pitfalls" title="Permanent link">#</a></h2>
 <ul>
-<li><strong>k = 1 的边界</strong>：差值定义为 0，循环逻辑自然返回 0。</li>
-<li><strong>不能不排序</strong>：直接在原序列上滑窗会得到错误答案，因为最优解是值上相邻而非位置上相邻。</li>
+<li><strong>k = 1 的边界</strong>：单元素窗口 <span class="arithmatex">\(a_i - a_i = 0\)</span>，极差恒为 <span class="arithmatex">\(0\)</span>，循环逻辑自然返回 <span class="arithmatex">\(0\)</span>，无需特判。</li>
+<li><strong>不能不排序</strong>：公式 (2) 成立的前提是序列有序——连续段是<strong>值上相邻</strong>才使极差不增。直接在原序列上滑窗，窗口里是<strong>位置上相邻</strong>的元素，极差与最优无关，会得到错误答案。</li>
 </ul>
 <h2 id="related">相关题目 (Related)<a class="headerlink" href="#related" title="Permanent link">#</a></h2>
 <ul>
