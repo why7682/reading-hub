@@ -461,6 +461,8 @@
       
         
       
+        
+      
     
     
     
@@ -505,6 +507,41 @@
 
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../jin-rong/260617_%E5%B8%82%E5%9C%BA%E7%AE%80%E6%8A%A5_postmarket/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    06-17 盘后简报
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--unread"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
             
               
                 
@@ -26193,10 +26230,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#exact-match" class="md-nav__link">
+  <a href="#chen-wan-20243-rubric" class="md-nav__link">
     <span class="md-ellipsis">
       
-        评分：什么算「过」一次重做（开放式，无 exact-match）
+        评分：什么算「过」一次重做（Chen &amp; Wan 2024，3 项二元 rubric）
       
     </span>
   </a>
@@ -26242,37 +26279,35 @@
 <li><strong>重做 = 检索练习</strong>：开<strong>空白文件</strong>凭记忆<strong>重新推导 + 重新实现</strong>，不许重读旧解。卡住了才回看 <code>00_theory.md</code> / <code>10_roadmap.md</code>。</li>
 <li><strong>要记住的是结构不是代码</strong>：能讲清「formulation 长什么样、为什么这个方法、验收靠什么」比逐行背更重要。</li>
 </ul>
-<h2 id="exact-match">评分：什么算「过」一次重做（开放式，无 exact-match）<a class="headerlink" href="#exact-match" title="Permanent link">#</a></h2>
-<blockquote>
-<p>占位：等 Track D research 回填。临时 rubric：</p>
-</blockquote>
+<h2 id="chen-wan-20243-rubric">评分：什么算「过」一次重做（Chen &amp; Wan 2024，3 项二元 rubric）<a class="headerlink" href="#chen-wan-20243-rubric" title="Permanent link">#</a></h2>
+<p>逐项打 <strong>1/0</strong>，多次评判取众数（majority vote）：</p>
 <table>
 <thead>
 <tr>
-<th>维度</th>
-<th>过的标准</th>
+<th>项</th>
+<th>过 (1) 的标准</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>Formulation 复现</td>
-<td>能凭记忆写出精确问题定义</td>
+<td><strong>说原理</strong></td>
+<td>能说出每个核心步背后的原理（far transfer 的 load-bearing 机制，见 track「练习法」§4）</td>
 </tr>
 <tr>
-<td>核心步骤</td>
-<td>能从零写出核心算法步骤（非调库）</td>
+<td><strong>复现 formulation</strong></td>
+<td>凭记忆写出精确问题定义</td>
 </tr>
 <tr>
-<td>验收自证</td>
-<td>能跑通<strong>至少一条</strong>无-oracle 验收（闭式/残差/收敛）</td>
-</tr>
-<tr>
-<td>讲解</td>
-<td>能说清「朴素尝试在哪崩、为什么用这个方法」</td>
+<td><strong>过无-oracle 验收</strong></td>
+<td>跑通 ≥1 条（闭式/残差/收敛，见 <code>10_roadmap.md</code>）</td>
 </tr>
 </tbody>
 </table>
-<p>四条全过 = ✅ 进下一档；任一卡住 = 重置 1 天。</p>
+<p>三项全 1 = ✅ 进下一档；任一 0 = 重置 1d。</p>
+<ul>
+<li><strong>做法</strong>：先空白文件凭记忆重推+重写（retrieval），<strong>再对照 worked solution 复看</strong>（restudy）—— 纯检索对程序性技能常不如配对（Van Gog 2012 / Lyu 2023）。</li>
+<li><strong>校准 gap（可选）</strong>：重做前自评信心，跑完比实际通过率；overconfidence → 该多复看（Lim 2025）。</li>
+</ul>
 <h2 id="skills_matrix">队列条目（映射 skills_matrix）<a class="headerlink" href="#skills_matrix" title="Permanent link">#</a></h2>
 <table>
 <thead>

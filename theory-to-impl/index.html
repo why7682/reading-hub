@@ -467,6 +467,8 @@
       
         
       
+        
+      
     
     
     
@@ -511,6 +513,41 @@
 
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../jin-rong/260617_%E5%B8%82%E5%9C%BA%E7%AE%80%E6%8A%A5_postmarket/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    06-17 盘后简报
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--unread"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
             
               
                 
@@ -26218,6 +26255,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#deliberate-practicedeep-research-2026-06-16-3-0" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        练习法（deliberate practice，deep-research 2026-06-16 验证 3-0）
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#subjects" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -26291,6 +26339,17 @@
 <li><strong>先直觉后形式（intuition before formalism）</strong>：直觉紧贴在形式陈述<strong>之前</strong>。顺序 = 直觉 → formulation → 发展。</li>
 <li><strong>抑制类比（suppress analogy）</strong>：直觉从问题<strong>自身结构</strong>（不变量、约束、状态空间形状）建立，不用外部类比/比喻（除非是可证明的同构）。</li>
 </ol>
+<h2 id="deliberate-practicedeep-research-2026-06-16-3-0">练习法（deliberate practice，deep-research 2026-06-16 验证 3-0）<a class="headerlink" href="#deliberate-practicedeep-research-2026-06-16-3-0" title="Permanent link">#</a></h2>
+<p>实现训练怎么设计才"练了能留住"，4 条已验证规则：</p>
+<ol>
+<li><strong>单制品依赖链</strong>：每个练习项从 primitives 重建<strong>一个有名字的制品</strong>（不调库），是可跑的 deliverable，并声明假设了哪些前置项已会。把项排成 prereq 图（如 投影梯度 → 镜像下降 → VI 残差 → Frank-Wolfe 交通分配 → Nash 求解器）。源：Karpathy zero-to-hero。</li>
+<li><strong>literate 实现</strong>：练习以可跑 notebook 形式，把论文数学与从零代码交织在<strong>同一可执行面</strong>，面向理解、经裁剪（重排/删节）而非 1:1 抄。源：labml.ai / Annotated Transformer。</li>
+<li><strong>复现 = 督察，不是 pass/fail</strong>：问题驱动，判定<strong>哪些部分能复现、代价多少</strong>，产出 report 而非二元结论；按 aspect 标签（从零 replicate / 跑现成 code / ablation / 调参 / 变体）+ 三段（plan → draft+初步 → final），允许部分完成。源：ML Reproducibility Challenge / ReproducedPapers。</li>
+<li><strong>⭐ 头号规则——强制 self-explanation</strong>：每个从零/挖空项都要求<strong>说出每步背后的原理</strong>（"为什么这步是 proximal？""哪条单调性让这 VI 收敛？""这行强制哪个最优性条件？"）。<strong>fading 单用只助 near transfer；fading + self-explanation 对 near &amp; far transfer 都有中-大效应、不增用时</strong>——这是把开放式数学实现的 far transfer 救回来的机制；随熟练度<strong>逐步撤提示</strong>（expertise-reversal）。源：Atkinson-Renkl-Merrill 2003。</li>
+</ol>
+<blockquote>
+<p>诚实注脚（Track A + D 一致）：spacing 对<strong>程序性技能</strong>证据弱（STEM 9 门课仅 2 门显著，Bego 2024；仅最接近"重推数学"的 Calculus I 有标准 spacing 效应）。load-bearing 的是 <strong>self-explanation（说原理）+ retrieval-restudy 配对</strong>，非 flashcard 式纯检索。redo 队列因此以"凭记忆重推 + 说清原理 + 对照复看"为核心，1-3-7-14-30 间隔作外层调度。</p>
+</blockquote>
 <h2 id="subjects">Subjects<a class="headerlink" href="#subjects" title="Permanent link">#</a></h2>
 <table>
 <thead>

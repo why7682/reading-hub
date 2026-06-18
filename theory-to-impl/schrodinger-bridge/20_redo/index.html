@@ -467,6 +467,8 @@
       
         
       
+        
+      
     
     
     
@@ -511,6 +513,41 @@
 
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../jin-rong/260617_%E5%B8%82%E5%9C%BA%E7%AE%80%E6%8A%A5_postmarket/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    06-17 盘后简报
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--unread"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
             
               
                 
@@ -1886,10 +1923,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#rubric" class="md-nav__link">
+  <a href="#rubricchen-wan-20243" class="md-nav__link">
     <span class="md-ellipsis">
       
-        每个里程碑「过一次重做」的临时 rubric
+        每个里程碑「过一次重做」的 rubric（Chen &amp; Wan 2024，3 项二元）
       
     </span>
   </a>
@@ -26267,10 +26304,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#rubric" class="md-nav__link">
+  <a href="#rubricchen-wan-20243" class="md-nav__link">
     <span class="md-ellipsis">
       
-        每个里程碑「过一次重做」的临时 rubric
+        每个里程碑「过一次重做」的 rubric（Chen &amp; Wan 2024，3 项二元）
       
     </span>
   </a>
@@ -26307,37 +26344,38 @@
 
 <h1 id="3-schrodinger-bridge">③ 检索训练：薛定谔桥 Schrödinger Bridge<a class="headerlink" href="#3-schrodinger-bridge" title="Permanent link">#</a></h1>
 <blockquote>
-<p>间隔重复 <code>1 → 3 → 7 → 14 → 30</code>，成功进档、失败重置 1d。重做 = <strong>空文件凭记忆重推导 + 重实现</strong>。
-开放式评分 rubric 待 Track D research 回填。</p>
+<p>间隔重复 <code>1 → 3 → 7 → 14 → 30</code>，成功进档、失败重置 1d。
+重做 = <strong>空文件凭记忆重推导 + 重实现，然后对照 worked solution 复看</strong>（retrieval+restudy 配对）。</p>
 </blockquote>
-<h2 id="rubric">每个里程碑「过一次重做」的临时 rubric<a class="headerlink" href="#rubric" title="Permanent link">#</a></h2>
+<h2 id="rubricchen-wan-20243">每个里程碑「过一次重做」的 rubric（Chen &amp; Wan 2024，3 项二元）<a class="headerlink" href="#rubricchen-wan-20243" title="Permanent link">#</a></h2>
+<p>逐项打 <strong>1/0</strong>，多次评判取众数：</p>
 <table>
 <thead>
 <tr>
-<th>维度</th>
-<th>标准</th>
+<th>项</th>
+<th>过 (1) 的标准</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>Formulation</td>
+<td><strong>说原理</strong></td>
+<td>说清「无熵正则的朴素 OT 在哪崩、为什么要动态桥」「为什么 Sinkhorn=IPFP」</td>
+</tr>
+<tr>
+<td><strong>复现 formulation</strong></td>
 <td>凭记忆写出静态熵-OT 与动态 KL 两个 formulation</td>
 </tr>
 <tr>
-<td>核心步骤</td>
-<td>从零写出 Sinkhorn（M0）/ IPF 前后向拟合（M1）核心循环，不调库</td>
-</tr>
-<tr>
-<td>验收自证</td>
-<td>至少跑通一条：边际匹配 / 高斯闭式对照 / 收敛单调</td>
-</tr>
-<tr>
-<td>讲解</td>
-<td>说清「无熵正则的朴素 OT 在哪崩、为什么要动态桥」</td>
+<td><strong>过无-oracle 验收</strong></td>
+<td>至少跑通一条：边际匹配 / 高斯闭式对照 / 收敛单调（见 10_roadmap）</td>
 </tr>
 </tbody>
 </table>
-<p>四条全过 = ✅ 进下一档；任一卡住 = 重置 1d。</p>
+<p>三项全 1 = ✅ 进下一档；任一 0 = 重置 1d。</p>
+<ul>
+<li><strong>做法</strong>：先凭记忆重推 + 重写核心循环（Sinkhorn/IPF），<strong>再对照 worked solution 复看</strong>（retrieval+restudy 优于纯检索）。</li>
+<li><strong>校准 gap（可选）</strong>：重做前自评信心，跑完比实际；overconfidence → 多复看（Lim 2025）。</li>
+</ul>
 <h2 id="skills_matrix">队列（映射 skills_matrix）<a class="headerlink" href="#skills_matrix" title="Permanent link">#</a></h2>
 <table>
 <thead>

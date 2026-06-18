@@ -467,6 +467,8 @@
       
         
       
+        
+      
     
     
     
@@ -511,6 +513,41 @@
 
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../jin-rong/260617_%E5%B8%82%E5%9C%BA%E7%AE%80%E6%8A%A5_postmarket/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    06-17 盘后简报
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--unread"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
             
               
                 
@@ -1934,6 +1971,17 @@
     <span class="md-ellipsis">
       
         参考来源（已核实 2026-06-15）
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#repos-2026-06-16" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        参考实现（repos，已抓取一手源 2026-06-16）
       
     </span>
   </a>
@@ -26410,6 +26458,17 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#repos-2026-06-16" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        参考实现（repos，已抓取一手源 2026-06-16）
+      
+    </span>
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -26487,6 +26546,56 @@
 <li><strong>[1]</strong> Akyildiz, Del Moral, Miguez. <em>Gaussian entropic optimal transport: Schrödinger bridges and the Sinkhorn algorithm.</em> <a href="https://arxiv.org/abs/2412.18432">arXiv:2412.18432</a> — 高斯 EOT/SB 闭式解、IPF 的 Riccati/Kalman 递推、Gaussian Sinkhorn 收敛。</li>
 <li><strong>[2]</strong> Gushchin, Kolesov, Mokrov, Karpikova, Spiridonov, Burnaev, Korotin. <em>Building the Bridge of Schrödinger: A Continuous Entropic Optimal Transport Benchmark.</em> NeurIPS 2023 Datasets &amp; Benchmarks — 按构造已知 EOT/SB 解的高维基准对、BW₂-UVP/cBW₂-UVP 耦合度量、求解器评测与极端 <span class="arithmatex">\(\varepsilon\)</span> 不稳。<a href="https://proceedings.neurips.cc/paper_files/paper/2023/hash/3c4688b6a76f25f2311daa0d75a58f1a-Abstract-Datasets_and_Benchmarks.html">[abstract]</a></li>
 </ul>
+<h2 id="repos-2026-06-16">参考实现（repos，已抓取一手源 2026-06-16）<a class="headerlink" href="#repos-2026-06-16" title="Permanent link">#</a></h2>
+<table>
+<thead>
+<tr>
+<th>里程碑</th>
+<th>repo</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>M0 验证</td>
+<td><a href="https://github.com/ngushchin/EntropicOTBenchmark">ngushchin/EntropicOTBenchmark</a></td>
+<td>已知解 EOT/SB 基准对</td>
+</tr>
+<tr>
+<td>M0 对照</td>
+<td>POT <code>ot.sinkhorn</code></td>
+<td>离散 Sinkhorn 参照</td>
+</tr>
+<tr>
+<td>M1 DSB</td>
+<td><a href="https://github.com/JTT94/diffusion_schrodinger_bridge">JTT94/diffusion_schrodinger_bridge</a></td>
+<td>De Bortoli DSB 官方 (arXiv 2106.01357)</td>
+</tr>
+<tr>
+<td>M2 DSBM</td>
+<td><a href="https://github.com/yuyang-shi/dsbm-pytorch">yuyang-shi/dsbm-pytorch</a></td>
+<td>DSBM 官方 (arXiv 2303.16852)</td>
+</tr>
+<tr>
+<td>FB-SDE</td>
+<td><a href="https://github.com/ghliu/SB-FBSDE">ghliu/SB-FBSDE</a></td>
+<td>SB-FBSDE 官方 (arXiv 2110.11291)</td>
+</tr>
+<tr>
+<td>外延 I2SB</td>
+<td><a href="https://github.com/NVlabs/I2SB">NVlabs/I2SB</a></td>
+<td>图像翻译 (arXiv 2302.05872)</td>
+</tr>
+<tr>
+<td>外延 Light SB</td>
+<td><a href="https://github.com/ngushchin/LightSB">ngushchin/LightSB</a> · <a href="https://github.com/SKholkin/LightSB-Matching">SKholkin/LightSB-Matching</a></td>
+<td>轻量 simulation-free</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>从零实现时 repos 只当<strong>对照/参考</strong>，不直接调它们代替核心实现。</p>
+</blockquote>
 
 
 
