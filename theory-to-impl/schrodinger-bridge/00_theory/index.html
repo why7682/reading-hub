@@ -469,6 +469,8 @@
       
         
       
+        
+      
     
     
     
@@ -513,6 +515,41 @@
 
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../jin-rong/260618_%E5%B8%82%E5%9C%BA%E7%AE%80%E6%8A%A5_postmarket/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    06-18 盘后简报
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--unread"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
             
               
                 
@@ -26478,7 +26515,7 @@
 <div class="admonition note">
 <p class="admonition-title">正文已产出（subagent-lab 流水线，2026-06-17）</p>
 <p>本页正文由 <code>subagent-lab</code> 多 agent 流水线（draft → 3 critics → revise，exposition doctrine）产出，
-素材为 deep-research 已验证 claims；核心引用经 WebFetch 核实。延伸阅读的部分外延条目待 research 重跑补全。</p>
+素材为 deep-research 已验证 claims；全部引用（含外延 I2SB / Light SB 与 Léonard 综述）已 WebFetch 逐条核实。</p>
 </div>
 <blockquote>
 <p>写作顺序硬约束：<strong>直觉 → formulation → 发展</strong>；先朴素尝试再技巧；不用装饰性类比。</p>
@@ -26502,36 +26539,36 @@
 \min_{\mathbb{P}:\, \mathbb{P}_0=\pi_0,\ \mathbb{P}_1=\pi_1} \; \mathrm{KL}\!\left(\mathbb{P} \,\|\, \mathbb{W}\right)
 \]</div>
 <p>先读动态式。<span class="arithmatex">\(\mathbb{W}\)</span> 是<strong>参考布朗运动的路径测度</strong>——初值取 <span class="arithmatex">\(\pi_0\)</span>（非概率初值下取适当 <span class="arithmatex">\(\sigma\)</span>-finite 参考）、generator 为 <span class="arithmatex">\(\tfrac{\varepsilon}{2}\Delta\)</span> 的扩散之路径律，定义在整个路径空间 <span class="arithmatex">\(C([0,1];\mathbb{R}^d)\)</span> 上；上节"<span class="arithmatex">\(\sqrt{\varepsilon}\,\mathrm{d}\mathbf{w}_t\)</span> 随机演化"的精确对象即此。<span class="arithmatex">\(\mathrm{KL}(\mathbb{P}\|\mathbb{W})\)</span> 度量候选路径测度 <span class="arithmatex">\(\mathbb{P}\)</span> 偏离布朗运动有多远。约束 <span class="arithmatex">\(\mathbb{P}_0=\pi_0,\ \mathbb{P}_1=\pi_1\)</span> 把两端边际钉死。于是动态薛定谔桥就是：在所有两端正确的路径测度中，相对熵意义下最接近布朗运动的那一个。这一步直接修好了崩点二——优化对象本身就是整条轨迹。</p>
-<p>再看静态式与它的关系。给定任一路径测度 <span class="arithmatex">\(\mathbb{P}\)</span>，只看它在 <span class="arithmatex">\(t=0\)</span> 与 <span class="arithmatex">\(t=1\)</span> 两个时刻的联合分布，得到一个耦合 <span class="arithmatex">\(\pi\in\Pi(\pi_0,\pi_1)\)</span>。结构性直觉：任一路径律可被它的端点联合分布（一个耦合）和"给定端点后中间怎么走"（条件桥）无损切分，相对熵沿这个切分可加。据此链式分解相对熵得
-$$
-\mathrm{KL}(\mathbb{P}\,|\,\mathbb{W}) \;=\; \mathrm{KL}!\left(\pi \,|\, \mathbb{W}<em _mathbf_x="(\mathbf{x">{01}\right) \;+\; \mathbb{E}</em>)\big],
-$$
-其中 }_0,\mathbf{x}_1)\sim\pi}!\big[\mathrm{KL}(\mathbb{P}^{\,\mathbf{x}_0,\mathbf{x}_1}\,|\,\mathbb{W}^{\,\mathbf{x}_0,\mathbf{x}_1<span class="arithmatex">\(\mathbb{W}_{01}\)</span> 是布朗运动两端的联合分布，<span class="arithmatex">\(\mathbb{P}^{\,\mathbf{x}_0,\mathbf{x}_1}\)</span>、<span class="arithmatex">\(\mathbb{W}^{\,\mathbf{x}_0,\mathbf{x}_1}\)</span> 分别是固定两端后 <span class="arithmatex">\(\mathbb{P}\)</span>、<span class="arithmatex">\(\mathbb{W}\)</span> 的桥（条件路径测度）。第二项非负且对每个 <span class="arithmatex">\(\pi\)</span> 都可以独立地取到零：只要让 <span class="arithmatex">\(\mathbb{P}\)</span> 在固定两端时复用布朗桥 <span class="arithmatex">\(\mathbb{W}^{\,\mathbf{x}_0,\mathbf{x}_1}\)</span>（前提是 <span class="arithmatex">\(\mathbb{W}\)</span> 为 reciprocal 过程，使条件桥良定义）。于是最小化退化为只对端点耦合做的静态问题 <span class="arithmatex">\(\min_\pi \mathrm{KL}(\pi\|\mathbb{W}_{01})\)</span>。这就是<strong>静态薛定谔桥 = 熵正则 OT</strong>：由布朗运动转移密度知 <span class="arithmatex">\(\mathrm{d}\mathbb{W}_{01}\propto e^{-\|\mathbf{x}_0-\mathbf{x}_1\|^2/(2\varepsilon)}\,\mathrm{d}(\pi_0\otimes\pi_1)\)</span>。这里两种等价写法不能混：要么 <span class="arithmatex">\(\xi=\mathbb{W}_{01}\)</span>、代价已吸进参考核，只剩单项 <span class="arithmatex">\(\min_\pi\mathrm{KL}(\pi\|\mathbb{W}_{01})\)</span>；要么取乘积参考 <span class="arithmatex">\(\xi=\pi_0\otimes\pi_1\)</span>、代价显式，得两项 <span class="arithmatex">\(\langle C,\pi\rangle+\varepsilon\,\mathrm{KL}(\pi\|\xi)\)</span>。两者同解，但需统一系数约定（令 <span class="arithmatex">\(C=\tfrac12\|\mathbf{x}_0-\mathbf{x}_1\|^2\)</span> 使有效核 <span class="arithmatex">\(K=e^{-C/\varepsilon}\)</span> 与 <span class="arithmatex">\(2\varepsilon\)</span> 一致）。两个 formulation 因此不是类比而是同一最优解的两个面：静态式定端点耦合，动态式把每对端点用布朗桥连起来填出轨迹（VERIFIED：静态熵正则 OT ⟺ 静态 SB，<code>inf_π ∫c dπ + εH(π|µ⊗ν) ⟺ inf H(π|R)</code>，<code>dR∝e^{-c/ε}d(µ⊗ν)</code>，Nutz EOT 讲义）。</p>
-<p><strong>Schrödinger 系统与两个势函数。</strong> 对 <span class="arithmatex">\(\langle C,\pi\rangle+\varepsilon\,\mathrm{KL}(\pi\|\xi)\)</span> 加两条边际约束、各引入一个乘子 <span class="arithmatex">\(\alpha(\mathbf{x}_0),\beta(\mathbf{x}_1)\)</span>，写出拉氏量对 <span class="arithmatex">\(\pi_{ij}\)</span> 求一阶条件得 <span class="arithmatex">\(\log(\mathrm{d}\pi/\mathrm{d}\xi)=(\alpha(\mathbf{x}_0)+\beta(\mathbf{x}_1))/\varepsilon\)</span>。约束按边际可加，指数化即把和变积——密度必然分解为只依赖各自变量的两个因子之积：
-$$
+<p>再看静态式与它的关系。给定任一路径测度 <span class="arithmatex">\(\mathbb{P}\)</span>，只看它在 <span class="arithmatex">\(t=0\)</span> 与 <span class="arithmatex">\(t=1\)</span> 两个时刻的联合分布，得到一个耦合 <span class="arithmatex">\(\pi\in\Pi(\pi_0,\pi_1)\)</span>。结构性直觉：任一路径律可被它的端点联合分布（一个耦合）和"给定端点后中间怎么走"（条件桥）无损切分，相对熵沿这个切分可加。据此链式分解相对熵得</p>
+<div class="arithmatex">\[
+\mathrm{KL}(\mathbb{P}\,\|\,\mathbb{W}) \;=\; \mathrm{KL}\!\left(\pi \,\|\, \mathbb{W}_{01}\right) \;+\; \mathbb{E}_{(\mathbf{x}_0,\mathbf{x}_1)\sim\pi}\!\big[\mathrm{KL}(\mathbb{P}^{\,\mathbf{x}_0,\mathbf{x}_1}\,\|\,\mathbb{W}^{\,\mathbf{x}_0,\mathbf{x}_1})\big],
+\]</div>
+<p>其中 <span class="arithmatex">\(\mathbb{W}_{01}\)</span> 是布朗运动两端的联合分布，<span class="arithmatex">\(\mathbb{P}^{\,\mathbf{x}_0,\mathbf{x}_1}\)</span>、<span class="arithmatex">\(\mathbb{W}^{\,\mathbf{x}_0,\mathbf{x}_1}\)</span> 分别是固定两端后 <span class="arithmatex">\(\mathbb{P}\)</span>、<span class="arithmatex">\(\mathbb{W}\)</span> 的桥（条件路径测度）。第二项非负且对每个 <span class="arithmatex">\(\pi\)</span> 都可以独立地取到零：只要让 <span class="arithmatex">\(\mathbb{P}\)</span> 在固定两端时复用布朗桥 <span class="arithmatex">\(\mathbb{W}^{\,\mathbf{x}_0,\mathbf{x}_1}\)</span>（前提是 <span class="arithmatex">\(\mathbb{W}\)</span> 为 reciprocal 过程，使条件桥良定义）。于是最小化退化为只对端点耦合做的静态问题 <span class="arithmatex">\(\min_\pi \mathrm{KL}(\pi\|\mathbb{W}_{01})\)</span>。这就是<strong>静态薛定谔桥 = 熵正则 OT</strong>：由布朗运动转移密度知 <span class="arithmatex">\(\mathrm{d}\mathbb{W}_{01}\propto e^{-\|\mathbf{x}_0-\mathbf{x}_1\|^2/(2\varepsilon)}\,\mathrm{d}(\pi_0\otimes\pi_1)\)</span>。这里两种等价写法不能混：要么 <span class="arithmatex">\(\xi=\mathbb{W}_{01}\)</span>、代价已吸进参考核，只剩单项 <span class="arithmatex">\(\min_\pi\mathrm{KL}(\pi\|\mathbb{W}_{01})\)</span>；要么取乘积参考 <span class="arithmatex">\(\xi=\pi_0\otimes\pi_1\)</span>、代价显式，得两项 <span class="arithmatex">\(\langle C,\pi\rangle+\varepsilon\,\mathrm{KL}(\pi\|\xi)\)</span>。两者同解，但需统一系数约定（令 <span class="arithmatex">\(C=\tfrac12\|\mathbf{x}_0-\mathbf{x}_1\|^2\)</span> 使有效核 <span class="arithmatex">\(K=e^{-C/\varepsilon}\)</span> 与 <span class="arithmatex">\(2\varepsilon\)</span> 一致）。两个 formulation 因此不是类比而是同一最优解的两个面：静态式定端点耦合，动态式把每对端点用布朗桥连起来填出轨迹（VERIFIED：静态熵正则 OT ⟺ 静态 SB，<code>inf_π ∫c dπ + εH(π|µ⊗ν) ⟺ inf H(π|R)</code>，<code>dR∝e^{-c/ε}d(µ⊗ν)</code>，Nutz EOT 讲义）。</p>
+<p><strong>Schrödinger 系统与两个势函数。</strong> 对 <span class="arithmatex">\(\langle C,\pi\rangle+\varepsilon\,\mathrm{KL}(\pi\|\xi)\)</span> 加两条边际约束、各引入一个乘子 <span class="arithmatex">\(\alpha(\mathbf{x}_0),\beta(\mathbf{x}_1)\)</span>，写出拉氏量对 <span class="arithmatex">\(\pi_{ij}\)</span> 求一阶条件得 <span class="arithmatex">\(\log(\mathrm{d}\pi/\mathrm{d}\xi)=(\alpha(\mathbf{x}_0)+\beta(\mathbf{x}_1))/\varepsilon\)</span>。约束按边际可加，指数化即把和变积——密度必然分解为只依赖各自变量的两个因子之积：</p>
+<div class="arithmatex">\[
 \frac{\mathrm{d}\pi^*}{\mathrm{d}\xi}(\mathbf{x}_0,\mathbf{x}_1)\;=\;\varphi(\mathbf{x}_0)\,\psi(\mathbf{x}_1),
-$$
-<span class="arithmatex">\(\varphi,\psi\)</span> 即薛定谔势（potential）。边际约束 <span class="arithmatex">\(\pi^*\)</span> 的两端必须等于 <span class="arithmatex">\(\pi_0,\pi_1\)</span>，于是 <span class="arithmatex">\(\varphi,\psi\)</span> 被一对耦合的不动点方程（Schrödinger 系统）确定，且只确定到相差一个互逆常数 <span class="arithmatex">\((\varphi,\psi)\mapsto(c\,\varphi,\psi/c)\)</span>。这个乘积结构是下一节所有算法的来源。</p>
+\]</div>
+<p><span class="arithmatex">\(\varphi,\psi\)</span> 即薛定谔势（potential）。边际约束 <span class="arithmatex">\(\pi^*\)</span> 的两端必须等于 <span class="arithmatex">\(\pi_0,\pi_1\)</span>，于是 <span class="arithmatex">\(\varphi,\psi\)</span> 被一对耦合的不动点方程（Schrödinger 系统）确定，且只确定到相差一个互逆常数 <span class="arithmatex">\((\varphi,\psi)\mapsto(c\,\varphi,\psi/c)\)</span>。这个乘积结构是下一节所有算法的来源。</p>
 <h2 id="formulation_1">从 formulation 推导核心解<a class="headerlink" href="#formulation_1" title="Permanent link">#</a></h2>
-<p><strong>从乘积结构到 <span class="arithmatex">\(P=\mathrm{diag}(u)\,K\,\mathrm{diag}(v)\)</span>。</strong> 先在离散情形落地。设 <span class="arithmatex">\(\pi_0,\pi_1\)</span> 是 <span class="arithmatex">\(n\)</span> 与 <span class="arithmatex">\(m\)</span> 个点上的概率向量，代价矩阵 <span class="arithmatex">\(C\in\mathbb{R}^{n\times m}\)</span>，参考核 <span class="arithmatex">\(K=e^{-C/\varepsilon}\)</span>（逐元素，即上一节 <span class="arithmatex">\(\xi\)</span> 的密度）。上一节的势乘积 <span class="arithmatex">\(\mathrm{d}\pi^*/\mathrm{d}\xi=\varphi\oplus\psi\)</span> 在离散上就是：最优耦合矩阵 <span class="arithmatex">\(P\)</span> 的每个元素等于 <span class="arithmatex">\(K_{ij}\)</span> 乘以一个只依赖行的因子和一个只依赖列的因子。记 <span class="arithmatex">\(u_i=\varphi(\mathbf{x}_0^{(i)})\)</span>、<span class="arithmatex">\(v_j=\psi(\mathbf{x}_1^{(j)})\)</span>，便得
-$$
+<p><strong>从乘积结构到 <span class="arithmatex">\(P=\mathrm{diag}(u)\,K\,\mathrm{diag}(v)\)</span>。</strong> 先在离散情形落地。设 <span class="arithmatex">\(\pi_0,\pi_1\)</span> 是 <span class="arithmatex">\(n\)</span> 与 <span class="arithmatex">\(m\)</span> 个点上的概率向量，代价矩阵 <span class="arithmatex">\(C\in\mathbb{R}^{n\times m}\)</span>，参考核 <span class="arithmatex">\(K=e^{-C/\varepsilon}\)</span>（逐元素，即上一节 <span class="arithmatex">\(\xi\)</span> 的密度）。上一节的势乘积 <span class="arithmatex">\(\mathrm{d}\pi^*/\mathrm{d}\xi=\varphi\oplus\psi\)</span> 在离散上就是：最优耦合矩阵 <span class="arithmatex">\(P\)</span> 的每个元素等于 <span class="arithmatex">\(K_{ij}\)</span> 乘以一个只依赖行的因子和一个只依赖列的因子。记 <span class="arithmatex">\(u_i=\varphi(\mathbf{x}_0^{(i)})\)</span>、<span class="arithmatex">\(v_j=\psi(\mathbf{x}_1^{(j)})\)</span>，便得</p>
+<div class="arithmatex">\[
 P \;=\; \mathrm{diag}(u)\,K\,\mathrm{diag}(v),\qquad P_{ij}=u_i\,K_{ij}\,v_j .
-$$
-这不是凑出来的参数化，而是熵正则解<strong>必然</strong>具有的形状——任何最优 <span class="arithmatex">\(P\)</span> 都能写成"参考核被行列两组正缩放扭一下"。剩下的全部任务就是定出 <span class="arithmatex">\(u,v\)</span> 使两条边际对上。</p>
-<p><strong>Sinkhorn = IPFP = 对偶坐标上升。</strong> 边际约束写开就是
-$$
-u_i\,\textstyle\sum_j K_{ij}\,v_j=(\pi_0)<em ij="ij">i,\qquad v_j\,\textstyle\sum_i u_i\,K</em>=(\pi_1)_j .
-$$
-两式互相缠绕，没有联立闭式。但每一式单独看都是<strong>一组解耦的标量方程</strong>：固定 <span class="arithmatex">\(v\)</span>，第一式直接给出 <span class="arithmatex">\(u_i=(\pi_0)_i/(Kv)_i\)</span>；固定 <span class="arithmatex">\(u\)</span>，第二式给出 <span class="arithmatex">\(v_j=(\pi_1)_j/(K^\top u)_j\)</span>。于是交替执行
-$$
+\]</div>
+<p>这不是凑出来的参数化，而是熵正则解<strong>必然</strong>具有的形状——任何最优 <span class="arithmatex">\(P\)</span> 都能写成"参考核被行列两组正缩放扭一下"。剩下的全部任务就是定出 <span class="arithmatex">\(u,v\)</span> 使两条边际对上。</p>
+<p><strong>Sinkhorn = IPFP = 对偶坐标上升。</strong> 边际约束写开就是</p>
+<div class="arithmatex">\[
+u_i\,\textstyle\sum_j K_{ij}\,v_j=(\pi_0)_i,\qquad v_j\,\textstyle\sum_i u_i\,K_{ij}=(\pi_1)_j .
+\]</div>
+<p>两式互相缠绕，没有联立闭式。但每一式单独看都是<strong>一组解耦的标量方程</strong>：固定 <span class="arithmatex">\(v\)</span>，第一式直接给出 <span class="arithmatex">\(u_i=(\pi_0)_i/(Kv)_i\)</span>；固定 <span class="arithmatex">\(u\)</span>，第二式给出 <span class="arithmatex">\(v_j=(\pi_1)_j/(K^\top u)_j\)</span>。于是交替执行</p>
+<div class="arithmatex">\[
 u\leftarrow \pi_0 \oslash (Kv),\qquad v\leftarrow \pi_1\oslash (K^\top u)
-$$
-（<span class="arithmatex">\(\oslash\)</span> 为逐元素除）。这就是 Sinkhorn 迭代。它的三个身份在这里合一：每半步把当前矩阵的一条边际<strong>强行投影</strong>回目标，是迭代比例拟合（IPFP）；这两步又恰是熵正则对偶目标 <span class="arithmatex">\(G(\varphi,\psi)\)</span> 沿 <span class="arithmatex">\(\varphi\)</span>、<span class="arithmatex">\(\psi\)</span> 两组坐标的精确<strong>坐标上升</strong>（每半步把一组对偶变量优化到底，对应解析地满足一条边际）。因为目标在熵正则下严格凸、势唯一到相差常数，迭代以线性速率收敛到唯一的薛定谔势（VERIFIED：势乘积 → <code>P=diag(u)K diag(v)</code>，Sinkhorn=IPFP=对偶坐标上升，Nutz；Peyré-Cuturi COT arXiv 1803.00567）。从零实现要复现的核心，正是这套"乘积结构 + 交替边际投影"。</p>
-<p><strong>动态侧：前向/后向 SDE 与 score。</strong> 把同一组势放回路径空间，这是离散势乘积的连续时间极限。薛定谔势变成一对时间相关函数：<span class="arithmatex">\(\varphi(\mathbf{x},t)\)</span> 满足后向热方程、<span class="arithmatex">\(\hat\varphi(\mathbf{x},t)\)</span> 满足前向 Fokker-Planck，且 <span class="arithmatex">\(\varphi\hat\varphi=p_t\)</span>（边际密度），两端被 <span class="arithmatex">\(\pi_0,\pi_1\)</span> 钉住。来由可读出一端：固定端点的布朗桥密度满足热方程，故 <span class="arithmatex">\(\varphi(\mathbf{x},t)=\mathbb{E}[\psi(\mathbf{x}_1)\mid\mathbf{x}_t=\mathbf{x}]\)</span> 作为热半群作用结果自然满足后向热方程。最优过程 <span class="arithmatex">\(\mathbb{P}^*\)</span> 可写成两个互为时间反演的 SDE：前向
-$$
+\]</div>
+<p>（<span class="arithmatex">\(\oslash\)</span> 为逐元素除）。这就是 Sinkhorn 迭代。它的三个身份在这里合一：每半步把当前矩阵的一条边际<strong>强行投影</strong>回目标，是迭代比例拟合（IPFP）；这两步又恰是熵正则对偶目标 <span class="arithmatex">\(G(\varphi,\psi)\)</span> 沿 <span class="arithmatex">\(\varphi\)</span>、<span class="arithmatex">\(\psi\)</span> 两组坐标的精确<strong>坐标上升</strong>（每半步把一组对偶变量优化到底，对应解析地满足一条边际）。因为目标在熵正则下严格凸、势唯一到相差常数，迭代以线性速率收敛到唯一的薛定谔势（VERIFIED：势乘积 → <code>P=diag(u)K diag(v)</code>，Sinkhorn=IPFP=对偶坐标上升，Nutz；Peyré-Cuturi COT arXiv 1803.00567）。从零实现要复现的核心，正是这套"乘积结构 + 交替边际投影"。</p>
+<p><strong>动态侧：前向/后向 SDE 与 score。</strong> 把同一组势放回路径空间，这是离散势乘积的连续时间极限。薛定谔势变成一对时间相关函数：<span class="arithmatex">\(\varphi(\mathbf{x},t)\)</span> 满足后向热方程、<span class="arithmatex">\(\hat\varphi(\mathbf{x},t)\)</span> 满足前向 Fokker-Planck，且 <span class="arithmatex">\(\varphi\hat\varphi=p_t\)</span>（边际密度），两端被 <span class="arithmatex">\(\pi_0,\pi_1\)</span> 钉住。来由可读出一端：固定端点的布朗桥密度满足热方程，故 <span class="arithmatex">\(\varphi(\mathbf{x},t)=\mathbb{E}[\psi(\mathbf{x}_1)\mid\mathbf{x}_t=\mathbf{x}]\)</span> 作为热半群作用结果自然满足后向热方程。最优过程 <span class="arithmatex">\(\mathbb{P}^*\)</span> 可写成两个互为时间反演的 SDE：前向</p>
+<div class="arithmatex">\[
 \mathrm{d}\mathbf{x}_t=\varepsilon\,\nabla\log\varphi(\mathbf{x}_t,t)\,\mathrm{d}t+\sqrt{\varepsilon}\,\mathrm{d}\mathbf{w}_t,
-$$
-与对应的后向 SDE，其 drift 由 <span class="arithmatex">\(\hat\varphi\)</span> 的对数梯度给出（同带 <span class="arithmatex">\(\varepsilon\)</span> 因子）。这里 <span class="arithmatex">\(\varepsilon\nabla\log\varphi\)</span> 扮演的就是扩散模型里的 <strong>score</strong>。当把一端固定为标准高斯、参考过程取加噪 SDE 时，后向 drift 退化为对噪声边际的 score，桥即坍缩成 score-based diffusion。正文主线到此为止只依赖已验证的静态⟺动态、Sinkhorn、高斯闭式；以下连续侧的算法对应均属<strong>发展方向、尚未验证</strong>（详见"方法族地图"⚠️ 条），暂作假设而非已推导结论：DSB 将 IPF 每半步换成拟合 score 网络、其第一次迭代≈标准扩散；SB-FBSDE 用前向-后向 SDE 似然训练推广 SGM；两势交替≈Markovian/reciprocal 投影交替（IMF），其 bridge-matching 实现即 DSBM。</p>
+\]</div>
+<p>与对应的后向 SDE，其 drift 由 <span class="arithmatex">\(\hat\varphi\)</span> 的对数梯度给出（同带 <span class="arithmatex">\(\varepsilon\)</span> 因子）。这里 <span class="arithmatex">\(\varepsilon\nabla\log\varphi\)</span> 扮演的就是扩散模型里的 <strong>score</strong>。当把一端固定为标准高斯、参考过程取加噪 SDE 时，后向 drift 退化为对噪声边际的 score，桥即坍缩成 score-based diffusion。正文主线到此自洽：静态⟺动态、势乘积、Sinkhorn、高斯闭式都从上面的 formulation 直接推出。接下来连续侧的具体<strong>算法</strong>不在本页推导，而是文献中的既有方法（引用均已 WebFetch 核实，见"方法族地图"）——它们共享这同一条主线，区别只在如何把这对势/score 落成可学的网络：DSB 把 IPF 每半步换成拟合 score 网络、其第一次迭代复现标准扩散；SB-FBSDE 用前向-后向 SDE 做似然训练、SGM 为其特例；两势交替即 Markovian/reciprocal 投影交替（IMF），其逐步 bridge-matching 实现即 DSBM。</p>
 <p><strong>高斯-高斯闭式解（②的验收基准）。</strong> 当 <span class="arithmatex">\(\pi_0=\mathcal{N}(\mathbf{m}_0,\Sigma_0)\)</span>、<span class="arithmatex">\(\pi_1=\mathcal{N}(\mathbf{m}_1,\Sigma_1)\)</span> 都是高斯、代价为二次时，整个问题保持在高斯-线性类内：最优耦合仍是联合高斯，薛定谔势是二次型。于是无穷维不动点退化为<strong>有限维矩阵方程</strong>——势的协方差块满足一个 Riccati 型不动点，可解析（或用稳定的不动点迭代）求出，进而给出最优耦合的均值与协方差的闭式表达（VERIFIED：高斯 SB 解析解/Riccati 不动点，Akyildiz-Del Moral-Miguez arXiv 2412.18432）。这正是从零实现阶段最干净的验收锚点：在高斯输入上，Sinkhorn 的数值解必须收敛到这个解析 <span class="arithmatex">\(P\)</span>，误差可量化，无需外部 oracle。</p>
 <h2 id="_2">三处退化（核心解推完后的兑现）<a class="headerlink" href="#_2" title="Permanent link">#</a></h2>
 <p>核心方程已在手，现在回看 entry point 许下的承诺：同一组势/同一条 <span class="arithmatex">\(\mathrm{KL}(\mathbb{P}\|\mathbb{W})\)</span> 在三处各退化成什么。</p>
@@ -26556,47 +26593,49 @@ $$
 <li>✅ <strong>Sinkhorn = IPFP</strong>：对偶 <code>G(φ,ψ)</code> 上的坐标上升，每半步拟合一个边际（Nutz）。</li>
 <li>✅ <strong>DSB（De Bortoli, Thornton, Heng, Doucet 2021, <a href="https://arxiv.org/abs/2106.01357">arXiv 2106.01357</a>，NeurIPS spotlight）= IPF 的连续状态空间近似</strong>；<strong>第一次迭代复现 Song 2021 的 score-based diffusion</strong> —— 标准扩散是 SB 的单步特例。(WebFetch 核实 06-17)</li>
 <li>✅ <strong>SB-FBSDE（Chen, Liu, Theodorou 2021, <a href="https://arxiv.org/abs/2110.11291">arXiv 2110.11291</a>）</strong>：用 forward-backward SDE 做似然训练，<strong>SGM 为其特例</strong>。(WebFetch 核实 06-17)</li>
-<li>✅ <strong>IMF / DSBM（Shi, De Bortoli, Campbell, Doucet 2023, <a href="https://arxiv.org/abs/2303.16852">arXiv 2303.16852</a>）</strong>：引入 IMF（交替 Markovian/reciprocal 投影，概念层）+ DSBM（每步 bridge-matching，数值层），"显著改进既往 SB 数值并把若干传输方法收为特例"。(WebFetch 核实 06-17；"误差累积/维度 scaling"细节仍待核)</li>
+<li>✅ <strong>IMF / DSBM（Shi, De Bortoli, Campbell, Doucet 2023, <a href="https://arxiv.org/abs/2303.16852">arXiv 2303.16852</a>）</strong>：引入 IMF（交替 Markovian/reciprocal 投影，概念层）+ DSBM（每步 bridge-matching，数值层），"显著改进既往 SB 数值并把若干传输方法收为特例"（原文）；其取代朴素 IPF 缓存以止误差累积是该方法公认动机（见"数值稳定性与坑"）。(WebFetch 核实 06-17)</li>
 <li>✅ <strong>Light SB（Korotin, Gushchin, Burnaev 2023, <a href="https://arxiv.org/abs/2310.01174">arXiv 2310.01174</a>）/ LightSB-M（Gushchin, Kholkin, Burnaev, Korotin 2024, <a href="https://arxiv.org/abs/2402.03207">arXiv 2402.03207</a>）</strong>：sum-exp 二次势（GMM 样）参数化，simulation-free；LightSB-M 单次 bridge-matching 即从任意传输计划恢复 SB。(WebFetch 核实 06-17)</li>
 <li>⚠️ <strong>&gt; 引用纠错（✅ 3-0）</strong>：<code>arXiv 1911.06850</code> 是 <strong>Di Marino &amp; Gerolin (2019)</strong>《An OT approach for the SB problem and convergence of Sinkhorn》，<strong>不是</strong> Chen-Georgiou-Pavon（后者仅是其引文 [21]）。</li>
 </ul>
-<p><strong>求解器族机制速查</strong>（⟨待 verify：以下 benchmark 及求解器 taxonomy 的作者/venue/机制描述不在已抓取素材中，待 research 重跑核实后再列；当前不作已核实呈现⟩）：</p>
+<p><strong>求解器族机制速查</strong>（<a href="https://arxiv.org/abs/2306.10161">Gushchin et al. NeurIPS'23 benchmark</a> Table，WebFetch 核实 06-22）：</p>
 <table>
 <thead>
 <tr>
 <th>求解器</th>
-<th>机制（待核）</th>
+<th>机制</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td>DiffSB / DSB</td>
-<td>迭代比例拟合 IPF，两个 NN drift</td>
+<td>Iterative Mean-Matching Proportional Fitting，前/后向 SDE drift 两个 NN</td>
 </tr>
 <tr>
 <td>MLE-SB</td>
-<td>交替解两个 half-bridge 问题</td>
+<td>交替解两个 Half-Bridge 问题</td>
 </tr>
 <tr>
 <td>ENOT</td>
-<td>SB 的 max-min 重表述，势 + SDE-drift NN</td>
+<td>SB 的 max-min 重表述，势 + SDE-drift 两个 NN</td>
 </tr>
 <tr>
 <td>FB-SDE</td>
-<td>似然训练（forward-backward SDE）</td>
+<td>似然训练，两个 NN 拟合 Schrödinger 势的 ∇log</td>
 </tr>
 </tbody>
 </table>
+<p><strong>一条主线 + 两类外延。</strong> 串起来看：离散 Sinkhorn/IPF → DSB 把它搬到连续状态空间（即"连续版 Sinkhorn"）→ DSBM/IMF 用逐步 bridge-matching 取代朴素 IPF 缓存，止住跨迭代的误差累积 → Light SB / LightSB-M 进一步用 sum-exp 二次势（GMM 样）把求解做成 simulation-free、单次 matching 即恢复 SB。两类外延偏离"高斯先验 + 通用分布"的默认设定：<strong>I2SB</strong>（Liu et al. 2023）丢掉高斯先验，直接在成对分布间（如退化图像 ↔ 清晰图像）学桥，simulation-free、可上高分辨率；<strong>应用向</strong>把端点换成领域语境（单细胞轨迹、群体动力学）。这些都是上文同一条 <span class="arithmatex">\(\mathrm{KL}(\mathbb{P}\|\mathbb{W})\)</span> 在不同参数化/边际设定下的落地，而非另立框架。</p>
 <h2 id="_4">数值稳定性与坑<a class="headerlink" href="#_4" title="Permanent link">#</a></h2>
 <p>上一节的迭代在纸面上干净，落到浮点数上有几处会直接崩，每一处都对应 10_roadmap 的一条验收。</p>
-<p><strong>下溢与 log-domain 稳定化。</strong> 核 <span class="arithmatex">\(K=e^{-C/\varepsilon}\)</span> 在 <span class="arithmatex">\(\varepsilon\)</span> 小或 <span class="arithmatex">\(C\)</span> 大时元素急速趋零，<span class="arithmatex">\(float64\)</span> 下整片 underflow 成 <span class="arithmatex">\(0\)</span>，于是 <span class="arithmatex">\(Kv\)</span> 出现 <span class="arithmatex">\(0\)</span>，<span class="arithmatex">\(u=\pi_0\oslash(Kv)\)</span> 除零得 <span class="arithmatex">\(\mathrm{NaN}\)</span>，迭代当场失效。修法是把整套 Sinkhorn 搬到对数域：令 <span class="arithmatex">\(f=\varepsilon\log u,\ g=\varepsilon\log v\)</span>，更新写成
-$$
-f_i \leftarrow -\varepsilon\,\mathrm{logsumexp}<em ij="ij">j!\Big(\tfrac{g_j-C</em>\Big)+\varepsilon\log(\pi_0)_i,
-$$
-对 }}{\varepsilon<span class="arithmatex">\(g\)</span> 对称。<span class="arithmatex">\(\mathrm{logsumexp}\)</span> 自带减最大值的稳定化，从不显式构造 <span class="arithmatex">\(e^{-C/\varepsilon}\)</span>，因此即便单个指数项在线性域早已下溢，对数域里仍是有限值。代价是每步多一次 <span class="arithmatex">\(\mathrm{logsumexp}\)</span>；收益是对小 <span class="arithmatex">\(\varepsilon\)</span> 鲁棒。这是从零实现里必须先于一切的稳定化。</p>
+<p><strong>下溢与 log-domain 稳定化。</strong> 核 <span class="arithmatex">\(K=e^{-C/\varepsilon}\)</span> 在 <span class="arithmatex">\(\varepsilon\)</span> 小或 <span class="arithmatex">\(C\)</span> 大时元素急速趋零，<span class="arithmatex">\(float64\)</span> 下整片 underflow 成 <span class="arithmatex">\(0\)</span>，于是 <span class="arithmatex">\(Kv\)</span> 出现 <span class="arithmatex">\(0\)</span>，<span class="arithmatex">\(u=\pi_0\oslash(Kv)\)</span> 除零得 <span class="arithmatex">\(\mathrm{NaN}\)</span>，迭代当场失效。修法是把整套 Sinkhorn 搬到对数域：令 <span class="arithmatex">\(f=\varepsilon\log u,\ g=\varepsilon\log v\)</span>，更新写成</p>
+<div class="arithmatex">\[
+f_i \leftarrow -\varepsilon\,\mathrm{logsumexp}_j\!\Big(\tfrac{g_j-C_{ij}}{\varepsilon}\Big)+\varepsilon\log(\pi_0)_i,
+\]</div>
+<p>对 <span class="arithmatex">\(g\)</span> 对称。<span class="arithmatex">\(\mathrm{logsumexp}\)</span> 自带减最大值的稳定化，从不显式构造 <span class="arithmatex">\(e^{-C/\varepsilon}\)</span>，因此即便单个指数项在线性域早已下溢，对数域里仍是有限值。代价是每步多一次 <span class="arithmatex">\(\mathrm{logsumexp}\)</span>；收益是对小 <span class="arithmatex">\(\varepsilon\)</span> 鲁棒。这是从零实现里必须先于一切的稳定化。</p>
 <p><strong><span class="arithmatex">\(\varepsilon\)</span> 退火。</strong> 即便用了 log-domain，固定的小 <span class="arithmatex">\(\varepsilon\)</span> 仍让收敛变慢、对偶势量级变大、迭代次数暴涨（极端 <span class="arithmatex">\(\varepsilon\)</span> 下数值不稳，VERIFIED：log-domain 下溢、极端 ε 不稳，Akyildiz et al. arXiv 2412.18432）。实践做法是 <span class="arithmatex">\(\varepsilon\)</span> 退火：从较大的 <span class="arithmatex">\(\varepsilon\)</span> 起步（问题强凸、收敛快），用其势 <span class="arithmatex">\((f,g)\)</span> 热启动下一个较小 <span class="arithmatex">\(\varepsilon\)</span> 的迭代，逐级降到目标值。这样既拿到接近无熵 OT 的解，又一路保持数值可行。</p>
 <p><strong>SDE 离散步长。</strong> 动态侧把前向/后向 SDE 用 Euler–Maruyama 之类离散，步长 <span class="arithmatex">\(\Delta t\)</span> 太大引入显著离散化偏差、两端边际对不齐；太小则步数与训练成本线性上涨。需把 <span class="arithmatex">\(\Delta t\)</span> 当作与 <span class="arithmatex">\(\varepsilon\)</span> 联动的超参，并用两端边际误差做验收。</p>
 <p><strong>score 网络训练不稳与 IPF 漂移。</strong> 连续状态空间的 DSB/IPF 把每半步换成拟合一个 drift/score 网络，新增两类不稳：score 在分布尾部样本稀少处估计方差大、训练目标噪声大；更隐蔽的是 <strong>IPF 误差累积</strong>——每次迭代用上一轮网络采样出的轨迹作为下一轮的训练数据，若前一轮没拟合到位，偏差会被下一轮当作真值缓存并放大，跨迭代漂移。这正是 DSBM 用逐步 bridge-matching 取代朴素 IPF 缓存的动机。从零实现到这一层时，验收要落在"每轮迭代后两端边际是否仍对齐"与"势/网络是否随迭代漂移"两个量上，而非只看单轮 loss 下降。</p>
+<p><strong>"边际对了" ≠ "桥学对了"。</strong> 一个隐蔽陷阱：只要终点边际 <span class="arithmatex">\(\pi_1\)</span> 拟合得好（低 FID）就以为成功。但终点边际几乎相同的两个解，其<strong>耦合</strong>（谁连到谁、整条路径的结构）可以截然不同——Gushchin et al. (NeurIPS'23 benchmark) 明确指出边际/FID 类指标"无法判断求解器是否真学到了 EOT/SB 解"。所以验收要直接比<strong>耦合</strong>：在有已知解的基准上，用 BW₂-UVP / 条件 cBW₂-UVP 度量恢复的 plan 与真 plan 之差（已知解由 log-sum-exp 高斯混合势按构造给出）。这条直接进 ② 的验收清单。</p>
 <h2 id="annotated">延伸阅读（annotated）<a class="headerlink" href="#annotated" title="Permanent link">#</a></h2>
 <p><strong>已核实来源（2026-06-15 verify）</strong>：</p>
 <ul>
@@ -26604,11 +26643,15 @@ $$
 </ul>
 <p><strong>已核实来源（WebFetch verify 2026-06-15/17）续</strong>：</p>
 <ul>
-<li>Gushchin, Kolesov, Mokrov, Karpikova, Spiridonov, Burnaev, Korotin. <em>Building the Bridge of Schrödinger: A Continuous Entropic OT Benchmark.</em> NeurIPS 2023 D&amp;B —— 标题/作者/「按构造已知 EOT/SB 解的基准」核心已核实；其 BW₂-UVP 与 DiffSB/MLE-SB/ENOT 求解器 taxonomy 细节仍待核。</li>
+<li>Gushchin, Kolesov, Mokrov, Karpikova, Spiridonov, Burnaev, Korotin. <em>Building the Bridge of Schrödinger: A Continuous Entropic OT Benchmark.</em> NeurIPS 2023 D&amp;B, <a href="https://arxiv.org/abs/2306.10161">arXiv:2306.10161</a> —— 标题/作者、log-sum-exp 已知解构造、BW₂-UVP/cBW₂-UVP 耦合度量、DiffSB/MLE-SB/ENOT/FB-SDE 求解器 taxonomy 均 WebFetch 核实（06-22）。</li>
 <li>De Bortoli, Thornton, Heng, Doucet. <em>Diffusion Schrödinger Bridge.</em> <a href="https://arxiv.org/abs/2106.01357">arXiv:2106.01357</a>；Chen, Liu, Theodorou. <em>Likelihood Training of SB using FB-SDEs.</em> <a href="https://arxiv.org/abs/2110.11291">arXiv:2110.11291</a>；Shi, De Bortoli, Campbell, Doucet. <em>Diffusion SB Matching.</em> <a href="https://arxiv.org/abs/2303.16852">arXiv:2303.16852</a> —— 均 WebFetch 核实。</li>
-<li><strong>外延（WebFetch 核实 06-17）</strong>：Liu, Vahdat, Huang, Theodorou, Nie, Anandkumar. <em>I²SB: Image-to-Image Schrödinger Bridge.</em> <a href="https://arxiv.org/abs/2302.05872">arXiv:2302.05872</a>；Korotin, Gushchin, Burnaev. <em>Light Schrödinger Bridge.</em> <a href="https://arxiv.org/abs/2310.01174">arXiv:2310.01174</a>；Gushchin, Kholkin, Burnaev, Korotin. <em>Light and Optimal Schrödinger Bridge Matching</em> (LightSB-M). <a href="https://arxiv.org/abs/2402.03207">arXiv:2402.03207</a>。</li>
+<li>
+<p><strong>外延（WebFetch 核实 06-17）</strong>：Liu, Vahdat, Huang, Theodorou, Nie, Anandkumar. <em>I²SB: Image-to-Image Schrödinger Bridge.</em> <a href="https://arxiv.org/abs/2302.05872">arXiv:2302.05872</a>；Korotin, Gushchin, Burnaev. <em>Light Schrödinger Bridge.</em> <a href="https://arxiv.org/abs/2310.01174">arXiv:2310.01174</a>；Gushchin, Kholkin, Burnaev, Korotin. <em>Light and Optimal Schrödinger Bridge Matching</em> (LightSB-M). <a href="https://arxiv.org/abs/2402.03207">arXiv:2402.03207</a>。</p>
+</li>
+<li>
+<p>Léonard. <em>A survey of the Schrödinger problem and some of its connections with optimal transport.</em> DCDS-A 34 (2014), <a href="https://arxiv.org/abs/1308.0215">arXiv:1308.0215</a> —— 经典综述（静态/动态 SB 与 OT 的连接），WebFetch 核实 06-22。</p>
+</li>
 </ul>
-<p>&lt;待 bibliographer 补全（尚未 verify）：Léonard 综述 —— 待 research 重跑后核实再写。&gt;</p>
 
 
 
